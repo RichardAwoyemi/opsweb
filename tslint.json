@@ -117,6 +117,12 @@
       "check-separator",
       "check-type"
     ],
+    "extends": "tslint:latest",
+    "cliOptions": {
+        "exclude": [
+          "/src/assets/js/*.js"
+        ]
+    },
     "no-output-on-prefix": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
