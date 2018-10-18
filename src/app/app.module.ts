@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
@@ -37,7 +38,8 @@ import { ServicesComponent } from './services/services.component';
   imports: [
     AppRoutingModule,
     BrowserModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RecaptchaModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

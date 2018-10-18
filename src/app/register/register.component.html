@@ -1,6 +1,6 @@
 <style>
-  .g-recaptcha {
-      display: inline-block;
+  re-captcha {
+    display: inline-block;
   }
 </style>
 <section class="section text-center">
@@ -25,12 +25,12 @@
         <div class="form-group">
           <label class="checkbox">
             <input name="user[accepted_user_agreement]" type="hidden" value="0"><input type="checkbox" value="1" name="user[accepted_user_agreement]"
-              id="user_accepted_user_agreement">&nbsp;I certify that I am 18 years of age or older, and I agree to the <a routerLink="/legal" target="_blank"
-              tabindex="-1">User Agreement and Privacy Policy</a>.
+              id="user_accepted_user_agreement">&nbsp;I certify that I am 18 years of age or older, and I agree to the
+            <a routerLink="/legal" target="_blank" tabindex="-1">User Agreement and Privacy Policy</a>.
           </label>
         </div>
         <div class="form-group text-center">
-          <div class="g-recaptcha" data-sitekey="6LeAv3UUAAAAAPYLttDEohg_KgyNifLN0Cx6IlPc"></div>
+          <re-captcha (resolved)="resolved($event)" siteKey="6LeAv3UUAAAAAPYLttDEohg_KgyNifLN0Cx6IlPc"></re-captcha>
         </div>
         <button class="btn btn-lg btn-block btn-primary" type="submit">Create Account</button>
         <p class="small-2 text-left mt-5 mb-0 text-center"><a routerLink="/login">Already have an account?</a></p>

@@ -9,4 +9,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  public resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response ${captchaResponse}:`);
+  }
 }
