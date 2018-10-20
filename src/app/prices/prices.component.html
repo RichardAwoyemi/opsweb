@@ -27,7 +27,7 @@
               <td class="crypto-price">{{ crypto.price }}</td>
               <td class="crypto-market-cap">{{ crypto.marketCap }}</td>
               <td [ngClass]="(crypto.change24Num > 0) ? 'change24-green' : 'change24-red'" class="crypto-change24">&pound;
-                {{ crypto.change24Num | number:'1.1-5' }}</td>
+                {{ crypto.change24Num | number:'1.2-5' }}</td>
             </tr>
           </tbody>
         </table>
