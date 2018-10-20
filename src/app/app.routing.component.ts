@@ -7,7 +7,7 @@ import { ContactComponent } from './contact/contact.component';
 import { LegalComponent } from './legal/legal.component';
 import { LoginComponent } from './login/login.component';
 import { PressComponent } from './press/press.component';
-import { PricesComponent } from './prices/prices.component';
+import { MarketsComponent } from './markets/markets.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'legal', component: LegalComponent },
   { path: 'login', component: LoginComponent },
   { path: 'press', component: PressComponent },
-  { path: 'prices', component: PricesComponent },
+  { path: 'markets', component: MarketsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'status', component: StatusComponent },
   { path: 'services', component: ServicesComponent },
