@@ -1,10 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
@@ -18,6 +20,7 @@ import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
+import { PricesService } from 'src/providers/prices/prices.service';
 
 @NgModule({
   declarations: [
@@ -39,9 +42,13 @@ import { ServicesComponent } from './services/services.component';
     AppRoutingModule,
     BrowserModule,
     FontAwesomeModule,
-    RecaptchaModule.forRoot()
+    RecaptchaModule.forRoot(),
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    PricesService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
