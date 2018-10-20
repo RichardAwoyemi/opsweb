@@ -15,12 +15,12 @@ import { ContactComponent } from './contact/contact.component';
 import { LegalComponent } from './legal/legal.component';
 import { LoginComponent } from './login/login.component';
 import { PressComponent } from './press/press.component';
-import { PricesComponent } from './prices/prices.component';
+import { MarketsComponent } from './markets/markets.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
-import { PricesService } from 'src/providers/prices/prices.service';
+import { MarketsService } from 'src/providers/markets/markets.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { PricesService } from 'src/providers/prices/prices.service';
     LegalComponent,
     LoginComponent,
     PressComponent,
-    PricesComponent,
+    MarketsComponent,
     RegisterComponent,
     ServicesComponent,
     StatusComponent,
@@ -47,7 +47,7 @@ import { PricesService } from 'src/providers/prices/prices.service';
     BrowserAnimationsModule
   ],
   providers: [
-    PricesService
+    MarketsService
   ],
   bootstrap: [AppComponent]
 })

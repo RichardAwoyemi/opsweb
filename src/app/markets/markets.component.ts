@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, state, transition, animate, style } from '@angular/animations';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subscription, timer } from 'rxjs';
-import { Price } from './prices';
-import { PricesService } from 'src/providers/prices/prices.service';
+import { Price } from './markets';
+import { MarketsService } from 'src/providers/markets/markets.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  templateUrl: './prices.component.html',
-  styleUrls: [ './prices.component.css' ],
+  templateUrl: './markets.component.html',
+  styleUrls: [ './markets.component.css' ],
   animations: [
     trigger('fadeInOut', [
       state('in', style({ opacity: 1, visibility: 'visible' })),
@@ -19,10 +19,10 @@ import { environment } from 'src/environments/environment';
     ])
   ]
 })
-export class PricesComponent implements OnInit {
+export class MarketsComponent implements OnInit {
 
   constructor(
-    private _prices: PricesService,
+    private _prices: MarketsService,
     private _sanitizer: DomSanitizer
   ) { }
 

@@ -6,8 +6,8 @@ import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
-export class PricesService {
-  private symbolnameData: any = {
+export class MarketsService {
+  private symbolNameData: any = {
     'Bitcoin': 'BTC',
     'Ethereum': 'ETH',
     'Ripple': 'XRP',
@@ -22,7 +22,7 @@ export class PricesService {
     'Dash': 'DASH',
     'NEM': 'XEM',
     'TRON': 'TRX',
-    'Eth Classic': 'ETC',
+    'Ethereum Classic': 'ETC',
     'Tether': 'USDT',
     'VeChain': 'VEN',
     'Qtum': 'QTUM',
@@ -70,7 +70,7 @@ export class PricesService {
     'Gas': 'GAS'
   };
 
-  private defaultDataCopy: any = { ...this.symbolnameData };
+  private defaultDataCopy: any = { ...this.symbolNameData };
   private priceMultiurl: string;
   private imageurlPrefix = './assets/img/crypto-icons/';
   private imageurlSuffix: string[];
@@ -90,11 +90,11 @@ export class PricesService {
   filter(searchText: string): boolean {
 
     // Recover default data set before filter
-    this.symbolnameData = this.defaultDataCopy;
+    this.symbolNameData = this.defaultDataCopy;
 
     // If search text is not empty, find fuzzy match and convert to the same object structure
     if (searchText !== '') {
-      const data: any[] = (JSON.stringify(this.symbolnameData)).replace(/{|}/g, '').split(',')
+      const data: any[] = (JSON.stringify(this.symbolNameData)).replace(/{|}/g, '').split(',')
         .filter((el) => el.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
       if (environment.production === false) {
         console.log(data);
@@ -111,12 +111,12 @@ export class PricesService {
       if (environment.production === false) {
         console.log(arr);
       }
-      this.symbolnameData = arr.reduce((obj, [key, value]) => {
+      this.symbolNameData = arr.reduce((obj, [key, value]) => {
         obj[key] = value;
         return obj;
       }, {});
       if (environment.production === false) {
-        console.log(this.symbolnameData);
+        console.log(this.symbolNameData);
       }
       this._filterd = true;
       return true;
@@ -124,7 +124,7 @@ export class PricesService {
 
       // If search text is empty, recover from copy
       this._filterd = false;
-      this.symbolnameData = this.defaultDataCopy;
+      this.symbolNameData = this.defaultDataCopy;
       return true;
     }
   }
@@ -137,52 +137,52 @@ export class PricesService {
     switch (sortName) {
       case 'name': {
         if (sortOrder === 'ascend') {
-          this.symbolnameData = Object.keys(this.symbolnameData).sort().reduce((r, k) => (r[k] = this.symbolnameData[k], r), {});
+          this.symbolNameData = Object.keys(this.symbolNameData).sort().reduce((r, k) => (r[k] = this.symbolNameData[k], r), {});
         } else if (sortOrder === 'descend') {
-          this.symbolnameData = Object.keys(this.symbolnameData).sort((a, b) => b.localeCompare(a))
-            .reduce((r, k) => (r[k] = this.symbolnameData[k], r), {});
+          this.symbolNameData = Object.keys(this.symbolNameData).sort((a, b) => b.localeCompare(a))
+            .reduce((r, k) => (r[k] = this.symbolNameData[k], r), {});
         } else {
           if (!this._filterd) {
-            this.symbolnameData = this.defaultDataCopy;
+            this.symbolNameData = this.defaultDataCopy;
             if (environment.production === false) {
               console.log('Use copy data');
             }
           } else {
-            this.symbolnameData = this._previousData;
+            this.symbolNameData = this._previousData;
             if (environment.production === false) {
               console.log('Use previous data');
             }
           }
           if (environment.production === false) {
-            console.log(this.symbolnameData);
+            console.log(this.symbolNameData);
           }
         }
         break;
       }
       case 'symbol': {
         if (sortOrder === 'ascend') {
-          this.symbolnameData = Object.keys(this.symbolnameData).sort((a, b) =>
-            this.symbolnameData[a].localeCompare(this.symbolnameData[b]))
-            .reduce((r, k) => (r[k] = this.symbolnameData[k], r), {});
+          this.symbolNameData = Object.keys(this.symbolNameData).sort((a, b) =>
+            this.symbolNameData[a].localeCompare(this.symbolNameData[b]))
+            .reduce((r, k) => (r[k] = this.symbolNameData[k], r), {});
           if (environment.production === false) {
-            console.log(this.symbolnameData);
+            console.log(this.symbolNameData);
           }
         } else if (sortOrder === 'descend') {
-          this.symbolnameData = Object.keys(this.symbolnameData).sort((a, b) =>
-            this.symbolnameData[b].localeCompare(this.symbolnameData[a]))
-            .reduce((r, k) => (r[k] = this.symbolnameData[k], r), {});
+          this.symbolNameData = Object.keys(this.symbolNameData).sort((a, b) =>
+            this.symbolNameData[b].localeCompare(this.symbolNameData[a]))
+            .reduce((r, k) => (r[k] = this.symbolNameData[k], r), {});
         } else {
           if (!this._filterd) {
-            this.symbolnameData = this.defaultDataCopy;
+            this.symbolNameData = this.defaultDataCopy;
           } else {
-            this.symbolnameData = this._previousData;
+            this.symbolNameData = this._previousData;
             if (environment.production === false) {
               console.log('Use previous data');
             }
           }
         }
         if (environment.production === false) {
-          console.log(this.symbolnameData);
+          console.log(this.symbolNameData);
         }
         break;
       }
@@ -190,11 +190,11 @@ export class PricesService {
         if (environment.production === false) {
           console.log('sort default called');
         }
-        this.symbolnameData = this.defaultDataCopy;
+        this.symbolNameData = this.defaultDataCopy;
       }
     }
 
-    console.log(this.symbolnameData);
+    console.log(this.symbolNameData);
   }
 
   // Keep previous table state data
@@ -203,14 +203,14 @@ export class PricesService {
     this._previousPageSize = pageSize;
     this._previousSortMapName = sortMapName;
     this._previousSortMapSymbol = sortMapSymbol;
-    this._previousData = { ...this.symbolnameData };
+    this._previousData = { ...this.symbolNameData };
   }
 
   // Fetch price data every 15 seconds
   getPricesFull(): Observable<any> {
-    const coinlist: string[] = Object.values(this.symbolnameData);
+    const coinlist: string[] = Object.values(this.symbolNameData);
     if (environment.production === false) {
-      console.log(this.symbolnameData);
+      console.log(this.symbolNameData);
     }
     this.priceMultiurl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' +
       coinlist.join() + '&tsyms=GBP&extraParams=Cryptocurrency_Market';
@@ -232,19 +232,19 @@ export class PricesService {
   // Return all coin names as arrays
   getNamesFull(): string[] {
     if (environment.production === false) {
-      console.log(Object.keys(this.symbolnameData));
+      console.log(Object.keys(this.symbolNameData));
     }
-    return Object.keys(this.symbolnameData);
+    return Object.keys(this.symbolNameData);
   }
 
   // Return coin name by symbol
   getNameSingle(symbol: string): string {
-    return Object.keys(this.symbolnameData).find(key => this.symbolnameData[key] === symbol);
+    return Object.keys(this.symbolNameData).find(key => this.symbolNameData[key] === symbol);
   }
 
   // Get all img paths
   getImagesFull(): any[] {
-    const coinlist: string[] = Object.values(this.symbolnameData);
+    const coinlist: string[] = Object.values(this.symbolNameData);
     this.images = [];
 
     this.imageurlSuffix = coinlist.map(res => res.toLowerCase());
@@ -294,6 +294,6 @@ export class PricesService {
    * Below are functions only used in testing
    */
   setCoinData(coins: any) {
-    this.symbolnameData = coins;
+    this.symbolNameData = coins;
   }
 }
