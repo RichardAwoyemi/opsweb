@@ -63,12 +63,12 @@
 }
 
 .crypto-name {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .crypto-price, .crypto-market-cap,
 .crypto-change24, .crypto-symbol {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .price-up {

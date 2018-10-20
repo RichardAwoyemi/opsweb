@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   templateUrl: './prices.component.html',
+  styleUrls: [ './prices.component.css' ],
   animations: [
     trigger('fadeInOut', [
       state('in', style({ opacity: 1, visibility: 'visible' })),
@@ -92,6 +93,24 @@ export class PricesComponent implements OnInit {
     });
     this._prices.reseverState(this._current, this._pageSize, this._sortMap.name, this._sortMap.symbol);
     this.refreshData();
+  }
+
+  resetAll(): void {
+    this._sortName = null;
+    this._sortValue = null;
+    this.input_id = '';
+    this._index = 1;
+    this._pageSize = 20;
+    this._searchResult = false;
+    this._searchText = '';
+
+    this._prices._previousPageSize = 20;
+    this._prices._previousSortMapName = null;
+    this._prices._previousSortMapSymbol = null;
+    this._prices._previousData = null;
+
+    this._prices.sortData(this._sortName, this._sortValue);
+    this.refreshData(true);
   }
 
   refreshData(reset: boolean = false) {
@@ -186,5 +205,14 @@ export class PricesComponent implements OnInit {
       // Set showloader to false to hide colored div from view after 1.5 seconds
       this.showloader = false;
     });
+  }
+
+  public get placeholder() {
+    return this._placeHolderSafe;
+  }
+
+  // Input element id added when focused
+  addId() {
+    this.input_id = 'focusWidth';
   }
 }
