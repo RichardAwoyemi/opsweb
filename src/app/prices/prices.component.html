@@ -1,5 +1,9 @@
 <section class="section">
   <div class="container">
+    <header class="section-header">
+      <h2>Prices</h2>
+      <hr>
+    </header>
     <div class="row">
       <div class="col-lg-12 mx-auto">
         <table class="table">
@@ -17,12 +21,13 @@
               <td class="crypto-name">
                 <img [@fadeInOut]="fadeInState" class="blur" alt="placeholder" [src]="placeholder" style="width: 0;">
                 <img [@fadeInOut]="fadeOutState" alt="{{ crypto.symbol }}" src="{{ crypto.image }}" (load)="isLoaded($event)" />
-                &nbsp;{{ crypto.name }} 
+                &nbsp;{{ crypto.name }}
               </td>
               <td class="crypto-symbol">{{ crypto.symbol }}</td>
               <td class="crypto-price">{{ crypto.price }}</td>
               <td class="crypto-market-cap">{{ crypto.marketCap }}</td>
-              <td [ngClass]="(crypto.change24Num > 0) ? 'change24-green' : 'change24-red'" class="crypto-change24">&pound; {{ crypto.change24Num | number:'1.1-5' }}</td>
+              <td [ngClass]="(crypto.change24Num > 0) ? 'change24-green' : 'change24-red'" class="crypto-change24">&pound;
+                {{ crypto.change24Num | number:'1.1-5' }}</td>
             </tr>
           </tbody>
         </table>
