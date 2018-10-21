@@ -14,6 +14,7 @@
   "dependencies": {
     "@angular/animations": "^6.1.10",
     "@angular/common": "^6.1.10",
+    "@angular/cdk": "^6.4.7",
     "@angular/compiler": "^6.1.10",
     "@angular/compiler-cli": "6.1.0",
     "@angular/core": "^6.1.10",
@@ -30,7 +31,6 @@
     "express": "^4.16.4",
     "install-peers": "^1.0.2",
     "ng-recaptcha": "^4.0.0",
-    "ng-zorro-antd": "^0.6.15",
     "rxjs": "~6.2.0",
     "rxjs-compat": "^6.3.3",
     "typescript": "~2.9.2",

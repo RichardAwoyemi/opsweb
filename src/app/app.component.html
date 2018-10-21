@@ -11,18 +11,30 @@
 
     <section class="navbar-mobile">
       <span class="navbar-divider d-mobile-none"></span>
-
-      <nav class="nav nav-navbar mr-auto">
-        <a class="nav-link" routerLink="/about">About</a>
-        <a class="nav-link" routerLink="/services">Services</a>
-        <a class="nav-link" routerLink="/careers">Careers</a>
-        <a class="nav-link" routerLink="/markets">Markets</a>
-        <a class="nav-link" routerLink="/support">Support</a>
-      </nav>
-
-      <div>
+      <!-- Desktop links -->
+      <div *ngIf="!(isMobile | async)?.matches">
+        <nav class="nav nav-navbar mr-auto">
+          <a class="nav-link" routerLink="/about">About</a>
+          <a class="nav-link" routerLink="/services">Services</a>
+          <a class="nav-link" routerLink="/careers">Careers</a>
+          <a class="nav-link" routerLink="/markets">Markets</a>
+          <a class="nav-link" routerLink="/support">Support</a>
+        </nav>
         <a class="btn btn-sm btn-light ml-lg-5 mr-2" routerLink="/login">Login</a>
-        <a class="btn btn-sm btn-primary" routerLink="/register">Sign up</a>
+        <a class="btn btn-sm btn-primary" routerLink="/register">Sign Up</a>
+      </div>
+      <!-- Mobile links -->
+      <div *ngIf="(isMobile | async)?.matches">
+        <nav class="nav nav-navbar mr-auto">
+          <a class="nav-link" routerLink="/">Home</a>
+          <a class="nav-link" routerLink="/about">About</a>
+          <a class="nav-link" routerLink="/services">Services</a>
+          <a class="nav-link" routerLink="/careers">Careers</a>
+          <a class="nav-link" routerLink="/markets">Markets</a>
+          <a class="nav-link" routerLink="/support">Support</a>
+          <a class="nav-link" routerLink="/login">Login</a>
+          <a class="nav-link" routerLink="/register">Register</a>
+        </nav>
       </div>
     </section>
 
@@ -38,7 +50,7 @@
     <div class="row gap-y">
       <div class="col-xl-5">
         <p>Opsonion is the easiest and most trusted place to earn, invest, and spend digital
-            currency.</p>
+          currency.</p>
         <hr class="d-xl-none">
         <small class="opacity-70">&copy; 2018 Opsonion. All rights reserved.</small>
       </div>

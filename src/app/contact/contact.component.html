@@ -1,8 +1,15 @@
 <section class="section">
   <div class="container">
-    <h2 class="text-center">Contact</h2>
-    <p class="text-center">Get in touch with us today, whatever your query.</p>
-    <hr class="w-10">
+    <div *ngIf="!(isMobile | async)?.matches">
+      <h2 class="text-center">Contact</h2>
+      <p class="text-center">Get in touch with us today, whatever your query.</p>
+      <hr class="w-10">
+    </div>
+    <div *ngIf="(isMobile | async)?.matches" style="padding-top: 2.5em">
+      <h2 class="text-center">Contact</h2>
+      <p class="text-center">Get in touch with us today, whatever your query.</p>
+      <hr class="w-10">
+    </div>
     <form class="col-md-8 col-xl-8 mx-auto input-border">
       <div class="col-lg-12">
         <div class="form-row">

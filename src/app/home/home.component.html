@@ -1,99 +1,98 @@
-<header id="home" class="header">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-5" style="padding-top: 4em" aos-init aos-animate data-aos="fade-in">
-        <h1 class="fw-600">Experience the open financial system.</h1>
-        <p class="lead mt-5">Opsonion is the easiest and most trusted place to earn, invest, and spend digital
-          currency.</p>
-        <hr class="w-10 ml-0 my-7">
-        <p class="gap-xy">
-          <img src="assets/img/app-store.svg">
-          <img src="assets/img/google-play.svg">
-        </p>
-      </div>
-      <div class="col-lg-6 ml-auto" aos-init aos-animate data-aos="fade-up">
-        <img src="assets/img/wallet-image.png">
+<!-- Desktop -->
+<div *ngIf="!(isMobile | async)?.matches">
+  <header id="home" class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5" style="padding-top: 4em" aos-init aos-animate data-aos="fade-in">
+          <h1 class="fw-600">Experience the open financial system.</h1>
+          <p class="lead mt-5">Opsonion is the easiest and most trusted place to earn, invest, and spend digital
+            currency.</p>
+          <hr class="w-10 ml-0 my-7">
+          <p class="gap-xy">
+            <img src="assets/img/app-store.svg">
+            <img src="assets/img/google-play.svg">
+          </p>
+        </div>
+        <div class="col-lg-6 ml-auto" aos-init aos-animate data-aos="fade-up">
+          <img src="assets/img/wallet-image.png">
+        </div>
       </div>
     </div>
-  </div>
-</header>
-
-<section class="section bg-gray">
-  <div class="container">
-    <div class="row gap-y">
-      <div class="col-lg-4" aos-animate data-aos="fade-up">
-        <div class="card card-body border text-center">
-          <p class="my-5"><i class="icon-wallet lead-8 text-lighter"></i></p>
-          <h5>Earn</h5>
-          <p>Get paid in digital currency to complete tasks, answer questions, participate in communities and solve
-            bounties.</p>
-        </div>
-      </div>
-      <div class="col-lg-4" aos-animate data-aos="fade-up" data-aos-delay="1000">
-        <div class="card card-body border text-center">
-          <p class="my-5"><i class="icon-linegraph lead-8 text-lighter"></i></p>
-          <h5>Invest</h5>
-          <p>Grow your earnings by investing in the multitude of financial assets on offer.<br><span style="color: #D5D5D5">Coming
-              soon</span></p>
-        </div>
-      </div>
-      <div class="col-lg-4" aos-animate data-aos="fade-up" data-aos-delay="2000">
+  </header>
+  <section class="section bg-gray">
+    <div class="container">
+      <div class="row gap-y">
+        <div class="col-lg-4" aos-animate data-aos="fade-up">
           <div class="card card-body border text-center">
-          <p class="my-5"><i class="icon-basket lead-8 text-lighter"></i></p>
-          <h5>Spend</h5>
-          <p>Purchase discounted goods and services from our network of merchants.<br><span style="color: #D5D5D5">Coming
-              soon</span></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section cryptocurrencies">
-  <div class="container">
-    <header class="section-header">
-      <h2>Easily convert, send and receive digital currency</h2>
-      <hr>
-      <p class="lead">Pay anyone in the world in with just their Opsonion username</p>
-    </header>
-    <div class="map">
-      <div class="card card--1 row">
-        <div class="column1">
-          <img src="assets/img/mofe.png" alt="cryptouser-mofe">
-        </div>
-        <div class="copy column2">
-          <div class="">
-            <span style="font-size: 18px;">Sent from <span class="username">@mofe</span></span>
-            <span class="alt-text currency">£60.00</span>
-          </div>
-          <div>
-            <span class="alt-text shortAddress">0xt5....4f2d</span>
-            <span class="alt-text longAddress">0xf1f1...x12e4324</span>
-            <span class="alt-text currency">6 OPSN</span>
+            <p class="my-5"><i class="icon-wallet lead-8 text-lighter"></i></p>
+            <h5>Earn</h5>
+            <p>Get paid in digital currency to complete tasks, answer questions, participate in communities and solve
+              bounties.</p>
           </div>
         </div>
-      </div>
-      <div class="card card--2 row">
-        <div class="column1">
-          <img src="/assets/img/josh.png" alt="cryptouser-josh">
-        </div>
-        <div class="copy column2">
-          <div>
-            <span style="font-size: 18px;">Received by <span class="username">@josh</span></span>
-            <span class="alt-text currency">£60.00</span>
+        <div class="col-lg-4" aos-animate data-aos="fade-up" data-aos-delay="1000">
+          <div class="card card-body border text-center">
+            <p class="my-5"><i class="icon-linegraph lead-8 text-lighter"></i></p>
+            <h5>Invest</h5>
+            <p>Grow your earnings by investing in the multitude of financial assets on offer.<br><span style="color: #D5D5D5">Coming
+                soon</span></p>
           </div>
-          <div>
-            <span class="alt-text shortAddress">0x9t....9r3d</span>
-            <span class="alt-text longAddress">0xf1f1...x12e4324</span>
-            <span class=" alt-text currency">0.35 ETH</span>
+        </div>
+        <div class="col-lg-4" aos-animate data-aos="fade-up" data-aos-delay="2000">
+          <div class="card card-body border text-center">
+            <p class="my-5"><i class="icon-basket lead-8 text-lighter"></i></p>
+            <h5>Spend</h5>
+            <p>Purchase discounted goods and services from our network of merchants.<br><span style="color: #D5D5D5">Coming
+                soon</span></p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="section bg-gray">
+  </section>
+  <section class="section cryptocurrencies">
+    <div class="container">
+      <header class="section-header">
+        <h2>Easily convert, send and receive digital currency</h2>
+        <hr>
+        <p class="lead">Pay anyone in the world in with just their Opsonion username</p>
+      </header>
+      <div class="map">
+        <div class="card card--1 row">
+          <div class="column1">
+            <img src="assets/img/mofe.png" alt="cryptouser-mofe">
+          </div>
+          <div class="copy column2">
+            <div class="">
+              <span style="font-size: 18px;">Sent from <span class="username">@mofe</span></span>
+              <span class="alt-text currency">£60.00</span>
+            </div>
+            <div>
+              <span class="alt-text shortAddress">0xt5....4f2d</span>
+              <span class="alt-text longAddress">0xf1f1...x12e4324</span>
+              <span class="alt-text currency">6 OPSN</span>
+            </div>
+          </div>
+        </div>
+        <div class="card card--2 row">
+          <div class="column1">
+            <img src="/assets/img/josh.png" alt="cryptouser-josh">
+          </div>
+          <div class="copy column2">
+            <div>
+              <span style="font-size: 18px;">Received by <span class="username">@josh</span></span>
+              <span class="alt-text currency">£60.00</span>
+            </div>
+            <div>
+              <span class="alt-text shortAddress">0x9t....9r3d</span>
+              <span class="alt-text longAddress">0xf1f1...x12e4324</span>
+              <span class=" alt-text currency">0.35 ETH</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section bg-gray">
     <div class="container">
       <h3 class="text-center fw-200">Get started in a few minutes</h3>
       <form class="row gap-y mt-7" _lpchecked="1">
@@ -108,4 +107,82 @@
         </div>
       </form>
     </div>
-</section>
+  </section>
+</div>
+
+<div *ngIf="(isMobile | async)?.matches">
+  <header id="home" class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <img src="assets/img/wallet-image.png">
+        </div>
+        <div class="col-md-12 text-center">
+          <h1 class="fw-600">Experience the open financial system.</h1>
+          <p class="lead mt-5">Opsonion is the easiest and most trusted place to earn, invest, and spend digital
+            currency.</p>
+          <hr class="w-10 ml-0 my-7">
+          <p class="gap-xy">
+            <img src="assets/img/app-store.svg">
+            <img src="assets/img/google-play.svg">
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="section bg-gray">
+    <div class="container">
+      <div class="row gap-y">
+        <div class="col-md-12">
+          <div class="card card-body border text-center">
+            <p class="my-5"><i class="icon-wallet lead-8 text-lighter"></i></p>
+            <h5>Earn</h5>
+            <p>Get paid in digital currency to complete tasks, answer questions, participate in communities and solve
+              bounties.</p>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card card-body border text-center">
+            <p class="my-5"><i class="icon-linegraph lead-8 text-lighter"></i></p>
+            <h5>Invest</h5>
+            <p>Grow your earnings by investing in the multitude of financial assets on offer.<br><span style="color: #D5D5D5">Coming
+                soon</span></p>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card card-body border text-center">
+            <p class="my-5"><i class="icon-basket lead-8 text-lighter"></i></p>
+            <h5>Spend</h5>
+            <p>Purchase discounted goods and services from our network of merchants.<br><span style="color: #D5D5D5">Coming
+                soon</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section cryptocurrencies">
+    <div class="container">
+      <header class="section-header">
+        <h2>Easily convert, send and receive digital currency</h2>
+        <hr>
+        <p class="lead">Pay anyone in the world in with just their Opsonion username</p>
+      </header>
+    </div>
+  </section>
+  <section class="section bg-gray">
+    <div class="container">
+      <h3 class="text-center fw-200">Get started in a few minutes</h3>
+      <form class="row gap-y mt-7" _lpchecked="1">
+        <div class="col-md-6 col-lg-4">
+          <input type="text" class="form-control" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <input type="password" class="form-control" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <button class="btn btn-block btn-success h-100">Register</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

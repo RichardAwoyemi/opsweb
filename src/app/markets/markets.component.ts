@@ -5,6 +5,7 @@ import { Observable, Subscription, timer } from 'rxjs';
 import { Price } from './markets';
 import { MarketsService } from 'src/providers/markets/markets.service';
 import { environment } from 'src/environments/environment';
+import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   templateUrl: './markets.component.html',
@@ -23,8 +24,11 @@ export class MarketsComponent implements OnInit {
 
   constructor(
     private _prices: MarketsService,
-    private _sanitizer: DomSanitizer
+    private _sanitizer: DomSanitizer,
+    private breakpointObserver: BreakpointObserver
   ) { }
+
+  isMobile: Observable<BreakpointState>;
 
   public loaded = false;
   public fadeInState = 'in';
@@ -76,6 +80,7 @@ export class MarketsComponent implements OnInit {
 
   ngOnInit() {
     this.refreshData();
+    this.isMobile = this.breakpointObserver.observe(Breakpoints.Handset);
   }
 
   sort(sortName: string, sortEvent: string) {

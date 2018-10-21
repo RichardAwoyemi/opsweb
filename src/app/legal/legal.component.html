@@ -1,9 +1,17 @@
 <section class="section">
   <div class="container">
-    <header class="section-header">
-      <h2>Legal</h2>
-      <hr>
-    </header>
+    <div *ngIf="!(isMobile | async)?.matches">
+      <header class="section-header">
+        <h2>Legal</h2>
+        <hr>
+      </header>
+    </div>
+    <div *ngIf="(isMobile | async)?.matches">
+      <header class="section-header" style="padding-bottom: 0px; padding-top: 70px">
+        <h2>Legal</h2>
+        <hr>
+      </header>
+    </div>
     <div class="row gap-y">
       <div class="col-md-12">
         <p>Effective date: September 15, 2018</p>

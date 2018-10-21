@@ -7,9 +7,16 @@
   <div class="container">
     <div class="row">
       <form class="col-md-4 col-xl-4 mx-auto input-border">
-        <h3 class="fw-200 text-center">Sign Up</h3>
-        <p class="text-center">Create your Opsonion acount.</p>
-        <hr class="w-10">
+        <div *ngIf="!(isMobile | async)?.matches">
+          <h3 class="fw-200 text-center">Sign Up</h3>
+          <p class="text-center">Create your Opsonion acount.</p>
+          <hr class="w-10">
+        </div>
+        <div *ngIf="(isMobile | async)?.matches" style="padding-top: 2.5em">
+          <h3 class="fw-200 text-center">Sign Up</h3>
+          <p class="text-center">Create your Opsonion acount.</p>
+          <hr class="w-10">
+        </div>
         <div class="form-group">
           <input class="form-control" type="text" name="fName" placeholder="First Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
         </div>
