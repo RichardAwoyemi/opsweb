@@ -9,35 +9,36 @@
       </a>
     </div>
 
-    <section class="navbar-mobile">
+    <!-- Desktop links -->
+    <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches">
       <span class="navbar-divider d-mobile-none"></span>
-      <!-- Desktop links -->
-      <div *ngIf="!(isMobile | async)?.matches">
-        <nav class="nav nav-navbar mr-auto">
-          <a class="nav-link" routerLink="/about">About</a>
-          <a class="nav-link" routerLink="/services">Services</a>
-          <a class="nav-link" routerLink="/careers">Careers</a>
-          <a class="nav-link" routerLink="/markets">Markets</a>
-          <a class="nav-link" routerLink="/support">Support</a>
-        </nav>
+      <nav class="nav nav-navbar mr-auto">
+        <a class="nav-link" routerLink="/about">About</a>
+        <a class="nav-link" routerLink="/services">Services</a>
+        <a class="nav-link" routerLink="/careers">Careers</a>
+        <a class="nav-link" routerLink="/markets">Markets</a>
+        <a class="nav-link" routerLink="/support">Support</a>
+      </nav>
+      <div>
         <a class="btn btn-sm btn-light ml-lg-5 mr-2" routerLink="/login">Login</a>
-        <a class="btn btn-sm btn-primary" routerLink="/register">Sign Up</a>
-      </div>
-      <!-- Mobile links -->
-      <div *ngIf="(isMobile | async)?.matches">
-        <nav class="nav nav-navbar mr-auto">
-          <a class="nav-link" routerLink="/">Home</a>
-          <a class="nav-link" routerLink="/about">About</a>
-          <a class="nav-link" routerLink="/services">Services</a>
-          <a class="nav-link" routerLink="/careers">Careers</a>
-          <a class="nav-link" routerLink="/markets">Markets</a>
-          <a class="nav-link" routerLink="/support">Support</a>
-          <a class="nav-link" routerLink="/login">Login</a>
-          <a class="nav-link" routerLink="/register">Register</a>
-        </nav>
+        <a class="btn btn-sm btn-primary" routerLink="/register">Sign up</a>
       </div>
     </section>
 
+    <!-- Mobile links -->
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
+      <span class="navbar-divider d-mobile-none"></span>
+      <nav class="nav nav-navbar mr-auto">
+        <a class="nav-link" routerLink="/">Home</a>
+        <a class="nav-link" routerLink="/about">About</a>
+        <a class="nav-link" routerLink="/services">Services</a>
+        <a class="nav-link" routerLink="/careers">Careers</a>
+        <a class="nav-link" routerLink="/markets">Markets</a>
+        <a class="nav-link" routerLink="/support">Support</a>
+        <a class="nav-link" routerLink="/login">Login</a>
+        <a class="nav-link" routerLink="/register">Register</a>
+      </nav>
+    </section>
   </div>
 </nav>
 <!-- /.navbar -->
