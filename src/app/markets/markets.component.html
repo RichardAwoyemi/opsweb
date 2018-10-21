@@ -30,7 +30,7 @@
                 <td class="crypto-name">
                   <img [@fadeInOut]="fadeInState" class="blur" alt="placeholder" [src]="placeholder" style="width: 0;">
                   <img [@fadeInOut]="fadeOutState" alt="{{ crypto.symbol }}" src="{{ crypto.image }}" (load)="isLoaded($event)" />
-                  &nbsp;{{ crypto.name }}
+                  &nbsp;&nbsp;{{ crypto.name }}
                 </td>
                 <td class="crypto-symbol">{{ crypto.symbol }}</td>
                 <td class="crypto-price">{{ crypto.price }}</td>
