@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, state, transition, animate, style } from '@angular/animations';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subscription, timer } from 'rxjs';
-import { Price } from './markets';
-import { MarketsService } from 'src/providers/markets/markets.service';
+import { Price } from '../_models/markets';
+import { MarketsService } from 'src/app/_services/markets.service';
 import { environment } from 'src/environments/environment';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 

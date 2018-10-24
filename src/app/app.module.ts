@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app.routing.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
@@ -20,7 +21,7 @@ import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
-import { MarketsService } from 'src/providers/markets/markets.service';
+import { MarketsService } from 'src/app/_services/markets.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,9 @@ import { MarketsService } from 'src/providers/markets/markets.service';
     FontAwesomeModule,
     RecaptchaModule.forRoot(),
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     MarketsService
