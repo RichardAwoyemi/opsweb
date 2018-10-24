@@ -1,0 +1,14 @@
+<section class="section">
+  <div *ngIf="!(isMobile | async)?.matches">
+    <header class="section-header" style="padding-top: 3em">
+      <h2>Account Mangement</h2>
+      <hr>
+    </header>
+  </div>
+  <div *ngIf="(isMobile | async)?.matches">
+    <header class="section-header" style="padding-bottom: 0px; padding-top: 70px">
+      <h2>Account Management</h2>
+      <hr>
+    </header>
+  </div>
+</section>

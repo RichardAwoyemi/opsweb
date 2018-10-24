@@ -21,6 +21,7 @@ import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
+
 import { MarketsService } from 'src/app/_services/markets.service';
 
 @NgModule({
