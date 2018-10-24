@@ -3,9 +3,9 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 
 @Component({
-  templateUrl: './transaction.component.html'
+  templateUrl: './transactions.component.html'
 })
-export class TransactionComponent implements OnInit {
+export class TransactionsComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
 
   constructor(private breakpointObserver: BreakpointObserver) {}

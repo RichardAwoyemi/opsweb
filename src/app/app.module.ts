@@ -20,6 +20,12 @@ import { MarketsComponent } from './markets/markets.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
+import { AccountManagementComponent } from './support/account-management/account-management.component';
+import { PaymentMethodsComponent } from './support/payment-methods/payment-methods.component';
+import { SecurityComponent } from './support/security/security.component';
+import { TaskAdministrationComponent } from './support/task-administration/task-administration.component';
+import { TransactionsComponent } from './support/transactions/transactions.component';
+import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
 import { ServicesComponent } from './services/services.component';
 
 import { MarketsService } from 'src/app/_services/markets.service';
@@ -38,7 +44,13 @@ import { MarketsService } from 'src/app/_services/markets.service';
     RegisterComponent,
     ServicesComponent,
     StatusComponent,
-    SupportComponent
+    SupportComponent,
+    AccountManagementComponent,
+    PaymentMethodsComponent,
+    SecurityComponent,
+    TaskAdministrationComponent,
+    TransactionsComponent,
+    WalletServicesComponent
   ],
   imports: [
     AppRoutingModule,
