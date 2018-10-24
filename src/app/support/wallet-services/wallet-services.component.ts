@@ -3,8 +3,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 
 @Component({
-  templateUrl: './wallet-services.component.html',
-  styleUrls: [ './wallet-services.component.css' ]
+  templateUrl: './wallet-services.component.html'
 })
 export class WalletServicesComponent implements OnInit {
   isMobile: Observable<BreakpointState>;

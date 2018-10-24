@@ -3,8 +3,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 
 @Component({
-  templateUrl: './task-administration.component.html',
-  styleUrls: [ './task-administration.component.css' ]
+  templateUrl: './task-administration.component.html'
 })
 export class TaskAdministrationComponent implements OnInit {
   isMobile: Observable<BreakpointState>;

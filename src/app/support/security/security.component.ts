@@ -3,8 +3,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 
 @Component({
-  templateUrl: './security.component.html',
-  styleUrls: [ './security.component.css' ]
+  templateUrl: './security.component.html'
 })
 export class SecurityComponent implements OnInit {
   isMobile: Observable<BreakpointState>;

@@ -12,6 +12,7 @@ import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
+import { AccountManagementComponent } from './support/account-management/account-management.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'status', component: StatusComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'support', component: SupportComponent },
+  { path: 'account-management', component: AccountManagementComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

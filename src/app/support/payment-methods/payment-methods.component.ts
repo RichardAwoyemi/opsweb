@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 @Component({
   templateUrl: './payment-methods.component.html',
-  styleUrls: [ './payment-methods.component.css' ]
 })
 export class PaymentMethodsComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
