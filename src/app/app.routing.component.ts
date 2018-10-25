@@ -13,6 +13,8 @@ import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
 import { AccountManagementComponent } from './support/account-management/account-management.component';
+import { TransactionsComponent } from './support/transactions/transactions.component';
+import { PaymentMethodsComponent } from './support/payment-methods/payment-methods.component';
 import { FaqsComponent } from './support/faqs/faqs.component';
 
 const routes: Routes = [
@@ -30,6 +32,8 @@ const routes: Routes = [
   { path: 'services', component: ServicesComponent },
   { path: 'support', component: SupportComponent },
   { path: 'account-management', component: AccountManagementComponent },
+  { path: 'transactions', component: TransactionsComponent },
+  { path: 'payment-methods', component: PaymentMethodsComponent },
   { path: 'faqs', component: FaqsComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
