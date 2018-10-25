@@ -1,9 +1,9 @@
 <section class="section">
   <article>
+
     <div *ngIf="!(isMobile | async)?.matches">
       <header class="section-header">
         <h2 id="account-management">Account Management</h2>
-        <hr>
       </header>
     </div>
     <div *ngIf="(isMobile | async)?.matches">
@@ -12,6 +12,7 @@
         <hr>
       </header>
     </div>
+
     <div class="row gap-y">
       <div class="col-md-7 mx-auto">
         <div style="padding-bottom: 0em">&nbsp;</div>
@@ -47,8 +48,53 @@
             totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
 
         <hr class="hr-dash">
+
       </div>
     </div>
+
+    <div *ngIf="!(isMobile | async)?.matches">
+      <header class="section-header">
+        <h2 id="transactions">Transactions</h2>
+      </header>
+    </div>
+    <div *ngIf="(isMobile | async)?.matches">
+      <header class="section-header" style="padding-top: 70px">
+        <h2 id="transactions">Transactions</h2>
+        <hr>
+      </header>
+    </div>
+
+    <div class="row gap-y">
+        <div class="col-md-7 mx-auto">
+          <div style="padding-bottom: 0em">&nbsp;</div>
+  
+          <h6 id="transactions-1" data-provide="anchor">How do I buy digital assets?<a class="anchor" href="#transactions-1"></a></h6>
+          <p class="lead" style="text-align:justify" font="2"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+            totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+  
+          <hr class="hr-dash">
+  
+          <h6 id="transactions-2" data-provide="anchor">How do I deposit fiat into my Opsonion account?<a class="anchor" href="#transactions-2"></a></h6>
+          <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+              totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+  
+          <hr class="hr-dash">
+  
+          <h6 id="transactions-3" data-provide="anchor">How do I sell or "cash out" my digital assets?<a class="anchor" href="#transactions-3"></a></h6>
+          <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+            totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+  
+          <hr class="hr-dash">
+  
+          <h6 id="transactions-4" data-provide="anchor">How long does a purchase or deposit take to complete?<a class="anchor" href="#transactions-4"></a></h6>
+          <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+              totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+  
+          <hr class="hr-dash">
+  
+        </div>
+      </div>
+
     <!--
     |‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒
     | Sidebar
@@ -61,6 +107,7 @@
           <h6 class="sidebar-title">Questions</h6>
           <nav id="nav-scrollspy" class="nav flex-column">
             <a class="nav-link" href="#account-management">Account Management</a>
+            <a class="nav-link" href="#transactions">Transactions</a>
           </nav>
         </aside>
       </div>  
