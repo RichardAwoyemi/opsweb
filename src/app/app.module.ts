@@ -20,6 +20,7 @@ import { MarketsComponent } from './markets/markets.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
+import { FaqsComponent } from './support/faqs/faqs.component';
 import { AccountManagementComponent } from './support/account-management/account-management.component';
 import { PaymentMethodsComponent } from './support/payment-methods/payment-methods.component';
 import { SecurityComponent } from './support/security/security.component';
@@ -45,6 +46,7 @@ import { MarketsService } from 'src/app/_services/markets.service';
     ServicesComponent,
     StatusComponent,
     SupportComponent,
+    FaqsComponent,
     AccountManagementComponent,
     PaymentMethodsComponent,
     SecurityComponent,
