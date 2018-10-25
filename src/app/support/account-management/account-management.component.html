@@ -1,21 +1,65 @@
 <section class="section">
   <div *ngIf="!(isMobile | async)?.matches">
-    <header class="section-header" style="padding-top: 3em">
-      <h2>Account Mangement</h2>
-      <hr>
+    <header class="section-header">
+      <h2 id="account-management">Account Management</h2>
     </header>
   </div>
   <div *ngIf="(isMobile | async)?.matches">
-    <header class="section-header" style="padding-bottom: 0px; padding-top: 70px">
-      <h2>Account Management</h2>
+    <header class="section-header" style="padding-top: 70px">
+      <h2 id="account-management">Account Management</h2>
       <hr>
     </header>
   </div>
+
   <div class="row gap-y">
-    <div class="col-md-12">
-      <div style="padding-bottom: 10em">&nbsp;</div>
-      <h5 id="account-management">How do I verify my account?</h5>
-      <p>Test</p>
+    <div class="col-md-7 mx-auto">
+      <div style="padding-bottom: 0em">&nbsp;</div>
+
+      <h6 id="account-management-1" data-provide="anchor">How do I verify my account?<a class="anchor" href="#account-management-1"></a></h6>
+      <p class="lead" style="text-align:justify" font="2"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+        totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+
+      <hr class="hr-dash">
+
+      <h6 id="account-management-2" data-provide="anchor">What is 2-factor authentication (2FA)?<a class="anchor" href="#account-management-2"></a></h6>
+      <p class="lead" style="text-align:justify">Two-factor (2FA) or multi-factor authentication (MFA) is an additional security layer for your account. 
+        It reduces the likelihood of having an account compromised by addressing the vulnerabilities of a standard password-only approach. 
+        At the point of authentication, a code that only a specific user has access to (typically sent to an immediately accessible device) 
+        will be required of the user following the standard login. This dual authentication method can be summarised as a combination of
+        "something you have and something you know”.</p>
+
+      <hr class="hr-dash">
+
+      <h6 id="account-management-3" data-provide="anchor">I can't remember my password<a class="anchor" href="#account-management-3"></a></h6>
+      <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+        totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam 
+        voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, 
+        neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet, consectetur, adipisci[ng] velit, sed quia non numquam [do] eius modi tempora 
+        inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
+        suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam 
+        nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?”.</p>
+
+      <hr class="hr-dash">
+
+      <h6 id="account-management-4" data-provide="anchor">How can I close my account?<a class="anchor" href="#account-management-4"></a></h6>
+      <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+          totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+
+      <hr class="hr-dash">
+
     </div>
+  </div>
+  <div class="col-9">
+    <div style="position: fixed">
+      <aside class="sidebar sidebar-sticky stick" style="width:auto; height:auto">
+        <h6 class="sidebar-title">Account Management Questions</h6>
+        <nav id="nav-scrollspy" class="nav flex-column">
+          <a class="nav-link" href="#account-management-1">How do I verify my account?</a>
+          <a class="nav-link" href="#account-management-2">What is 2-factor authentication (2FA)?</a>
+          <a class="nav-link" href="#account-management-3">I can't remember my password</a>
+          <a class="nav-link" href="#account-management-4">How can I close my account?</a>
+        </nav>
+      </aside>
+    </div>  
   </div>
 </section>
