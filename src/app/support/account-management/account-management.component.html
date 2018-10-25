@@ -1,0 +1,21 @@
+<section class="section">
+  <div *ngIf="!(isMobile | async)?.matches">
+    <header class="section-header" style="padding-top: 3em">
+      <h2>Account Mangement</h2>
+      <hr>
+    </header>
+  </div>
+  <div *ngIf="(isMobile | async)?.matches">
+    <header class="section-header" style="padding-bottom: 0px; padding-top: 70px">
+      <h2>Account Management</h2>
+      <hr>
+    </header>
+  </div>
+  <div class="row gap-y">
+    <div class="col-md-12">
+      <div style="padding-bottom: 10em">&nbsp;</div>
+      <h5 id="account-management">How do I verify my account?</h5>
+      <p>Test</p>
+    </div>
+  </div>
+</section>
