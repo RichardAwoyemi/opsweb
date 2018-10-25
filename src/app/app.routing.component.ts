@@ -12,7 +12,6 @@ import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
-import { AccountManagementComponent } from './support/account-management/account-management.component';
 import { FaqsComponent } from './support/faqs/faqs.component';
 
 const routes: Routes = [
@@ -29,7 +28,6 @@ const routes: Routes = [
   { path: 'status', component: StatusComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'support', component: SupportComponent },
-  { path: 'account-management', component: AccountManagementComponent },
   { path: 'faqs', component: FaqsComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
