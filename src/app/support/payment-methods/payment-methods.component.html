@@ -1,57 +1,82 @@
 <section class="section">
-  <div *ngIf="!(isMobile | async)?.matches">
-    <header class="section-header">
-      <h2 id="payment-methods">Payment Methods</h2>
-    </header>
-  </div>
-  <div *ngIf="(isMobile | async)?.matches">
-    <header class="section-header" style="padding-top: 70px">
-      <h2 id="payment-methods">Payment Methods</h2>
-      <hr>
-    </header>
-  </div>
+  <main class="main-content">
+    <div class="container">
+      <div class="row">
 
-  <div class="row gap-y">
-    <div class="col-md-7 mx-auto">
-      <div style="padding-bottom: 0em">&nbsp;</div>
+        <!--
+          |‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒
+          | Article
+          |‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒
+          !-->
+        <div class="col-md-7 col-xl-8 mr-md-auto py-8">
+          <article>
+            <h3 id="0">Payment Method Questions</h3>
+            <br>
+            <h6 id="1" data-provide="anchor">What payment methods are available for UK customers?</h6>
+            <p>
+              <!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium,
+              totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
+              sunt, explicabo.</p>
 
-      <h6 id="payment-methods-1" data-provide="anchor">Payment methods for UK customers<a class="anchor" href="#payment-methods-1"></a></h6>
-      <p class="lead" style="text-align:justify" font="2"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-        totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+            <hr class="hr-dash">
 
-      <hr class="hr-dash">
+            <h6 id="2" data-provide="anchor">What payment methods are available for European customers?</h6>
+            <p>
+              <!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium,
+              totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
+              sunt, explicabo.</p>
 
-      <h6 id="payment-methods-2" data-provide="anchor">Payment methods for European customers<a class="anchor" href="#payment-methods-2"></a></h6>
-      <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-          totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+            <hr class="hr-dash">
+            
+            <h6 id="3" data-provide="anchor">What payment methods are available for US customers?</h6>
+            <p>
+              <!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium,
+              totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
+              sunt, explicabo.</p>
 
-      <hr class="hr-dash">
+            <hr class="hr-dash">
 
-      <h6 id="payment-methods-3" data-provide="anchor">Payment methods for US customers<a class="anchor" href="#payment-methods-3"></a></h6>
-      <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-        totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+            <h6 id="4" data-provide="anchor">What payment methods are available for Australian customers?</h6>
+            <p>
+              <!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium,
+              totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
+              sunt, explicabo.</p>
 
-      <hr class="hr-dash">
+            <hr class="hr-dash">
 
-      <h6 id="payment-methods-4" data-provide="anchor">Payment methods for Australian customers<a class="anchor" href="#payment-methods-4"></a></h6>
-      <p class="lead" style="text-align:justify"><!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-          totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</p>
+            <h6 id="4" data-provide="anchor">What payment methods are available for African customers?</h6>
+            <p>
+              <!-- PLACEHOLDER TEXT --> Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium,
+              totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
+              sunt, explicabo.</p>
 
-      <hr class="hr-dash">
+          </article>
+        </div>
 
+
+        <!--
+          |‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒
+          | Sidebar
+          |‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒‒
+          !-->
+        <div class="col-md-4 col-xl-3 d-none d-md-block">
+          <aside class="sidebar sidebar-sticky" style="width: 255px;">
+            <h6 class="sidebar-title" href="#0">Questions</h6>
+            <nav id="nav-scrollspy" class="nav flex-column">
+              <a class="nav-link" href="#1">What payment methods are available for UK customers?</a>
+              <a class="nav-link" href="#2">What payment methods are available for European customers?</a>
+              <a class="nav-link" href="#3">What payment methods are available for US customers?</a>
+              <a class="nav-link" href="#4">What payment methods are available for Australian customers?</a>
+              <a class="nav-link" href="#4">What payment methods are available for African customers?</a>
+            </nav>
+          </aside>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="col-9">
-    <div style="position: fixed">
-      <aside class="sidebar sidebar-sticky stick" style="width:auto; height:auto">
-        <h6 class="sidebar-title">Payment Methods Questions</h6>
-        <nav id="nav-scrollspy" class="nav flex-column">
-          <a class="nav-link" href="#payment-methods-1">Payment methods for UK customers</a>
-          <a class="nav-link" href="#payment-methods-2">Payment methods for European customers</a>
-          <a class="nav-link" href="#payment-methods-3">Payment methods for US customers</a>
-          <a class="nav-link" href="#payment-methods-4">Payment methods for Australian customers</a>
-        </nav>
-      </aside>
-    </div>  
-  </div>
+  </main>
 </section>

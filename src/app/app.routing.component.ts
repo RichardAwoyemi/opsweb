@@ -8,6 +8,7 @@ import { LegalComponent } from './legal/legal.component';
 import { LoginComponent } from './login/login.component';
 import { PressComponent } from './press/press.component';
 import { MarketsComponent } from './markets/markets.component';
+import { PriceComponent } from './markets/price/price.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
@@ -15,8 +16,9 @@ import { ServicesComponent } from './services/services.component';
 import { AccountManagementComponent } from './support/account-management/account-management.component';
 import { TransactionsComponent } from './support/transactions/transactions.component';
 import { PaymentMethodsComponent } from './support/payment-methods/payment-methods.component';
-import { FaqsComponent } from './support/faqs/faqs.component';
-import { PriceComponent } from './markets/price/price.component';
+import { SecurityComponent } from './support/security/security.component';
+import { TaskAdministrationComponent } from './support/task-administration/task-administration.component';
+import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -36,7 +38,9 @@ const routes: Routes = [
   { path: 'account-management', component: AccountManagementComponent },
   { path: 'transactions', component: TransactionsComponent },
   { path: 'payment-methods', component: PaymentMethodsComponent },
-  { path: 'faqs', component: FaqsComponent },
+  { path: 'security', component: SecurityComponent },
+  { path: 'task-administration', component: TaskAdministrationComponent },
+  { path: 'wallet-services', component: WalletServicesComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
