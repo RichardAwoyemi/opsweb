@@ -35,12 +35,12 @@ const routes: Routes = [
   { path: 'status', component: StatusComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'support', component: SupportComponent },
-  { path: 'account-management', component: AccountManagementComponent },
-  { path: 'transactions', component: TransactionsComponent },
-  { path: 'payment-methods', component: PaymentMethodsComponent },
-  { path: 'security', component: SecurityComponent },
-  { path: 'task-administration', component: TaskAdministrationComponent },
-  { path: 'wallet-services', component: WalletServicesComponent },
+  { path: 'support/account-management', component: AccountManagementComponent },
+  { path: 'support/transactions', component: TransactionsComponent },
+  { path: 'support/payment-methods', component: PaymentMethodsComponent },
+  { path: 'support/security', component: SecurityComponent },
+  { path: 'support/task-administration', component: TaskAdministrationComponent },
+  { path: 'support/wallet-services', component: WalletServicesComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

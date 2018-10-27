@@ -15,6 +15,6 @@ export class AppComponent {
 
   onActivate(event) {
     window.scroll(0, 0);
-    this.isMobile = this.breakpointObserver.observe(Breakpoints.Handset);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
   }
 }

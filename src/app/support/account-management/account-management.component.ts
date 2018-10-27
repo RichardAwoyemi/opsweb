@@ -14,6 +14,6 @@ export class AccountManagementComponent implements OnInit {
 
   ngOnInit() {
     library.add(faAngleRight);
-    this.isMobile = this.breakpointObserver.observe(Breakpoints.Handset);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
   }
 }
