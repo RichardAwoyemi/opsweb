@@ -1,0 +1,42 @@
+  /* Global */
+a.typewrite{
+      animation:  blinkTextCursor 700ms steps(33) infinite normal;
+  }
+  h1.typewriter2{
+    position: relative;
+    width: 24em;
+    margin: 0 auto;
+    border-right: 4px solid rgba(32,85,236,.0);
+    font-size: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    animation:  typewriter2 2s steps(44) 5s 2 alternate both,
+                blinkTextCursor 700ms steps(33) infinite normal;
+}
+h1.typewriter3{
+    position: relative;
+    width: 24em;
+    margin: 0 auto;
+    border-right: 4px solid rgba(32,85,236,.0);
+    font-size: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    animation:  typewriter3 2s steps(44) 9s 2 alternate both,
+                blinkTextCursor 700ms steps(33) infinite normal;
+}
+  @keyframes typewriter1{
+    from{width: 0em;}
+    to{width: 6.5em;}
+  }
+  @keyframes typewriter2{
+    from{width: 0em;}
+    to{width: 6.5em;}
+  }
+  @keyframes typewriter3{
+    from{width: 0em;}
+    to{width: 6.5em;}
+  }
+  @keyframes blinkTextCursor{
+    from{border-right-color: rgba(32,85,236,.75);}
+    to{border-right-color: transparent;}
+  }
