@@ -16,6 +16,7 @@ import { AccountManagementComponent } from './support/account-management/account
 import { TransactionsComponent } from './support/transactions/transactions.component';
 import { PaymentMethodsComponent } from './support/payment-methods/payment-methods.component';
 import { FaqsComponent } from './support/faqs/faqs.component';
+import { PriceComponent } from './markets/price/price.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'press', component: PressComponent },
   { path: 'markets', component: MarketsComponent },
+  { path: 'markets/:symbol', component: PriceComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'status', component: StatusComponent },
   { path: 'services', component: ServicesComponent },

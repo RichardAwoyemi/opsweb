@@ -5,8 +5,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 
 @Component({
-  templateUrl: './account-management.component.html',
-  styleUrls: [ './account-management.component.css' ]
+  templateUrl: './account-management.component.html'
 })
 export class AccountManagementComponent implements OnInit {
   isMobile: Observable<BreakpointState>;

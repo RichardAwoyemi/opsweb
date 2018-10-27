@@ -1,0 +1,16 @@
+<section class="section">
+  <div class="container">
+    <div *ngIf="!(isMobile | async)?.matches">
+      <header class="section-header" style="padding-top: 3em">
+        <h2>{{ name }} ({{ symbol }})</h2>
+        <hr>
+      </header>
+    </div>
+    <div *ngIf="(isMobile | async)?.matches">
+      <header class="section-header" style="padding-bottom: 0px; padding-top: 70px">
+        <h2>{{ symbol }}</h2>
+        <hr>
+      </header>
+    </div>
+  </div>
+</section>
