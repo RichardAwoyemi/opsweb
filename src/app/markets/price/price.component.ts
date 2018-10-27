@@ -114,7 +114,7 @@ export class PriceComponent implements OnInit {
           maxRotation: 0,
           fontSize: 12,
           fontStyle: 'bold',
-          fontColor: '#7289a1',
+          fontColor: '#323D47',
           padding: 8
         },
         gridLines: {
@@ -128,7 +128,7 @@ export class PriceComponent implements OnInit {
           drawBorder: false,
         },
         ticks: {
-          callback: function (value, index, values) {
+          callback: function (value) {
             return '£ ' + Number(value).toFixed(2);
           },
           autoSkip: true,
