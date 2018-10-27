@@ -137,6 +137,7 @@ export class MarketsComponent implements OnInit {
     }
 
     this._loading = true;
+
     // Sort dataset before getting it
     if (this._sortName !== null || this._sortValue !== null) {
       this._prices.sortData(this._sortName, this._sortValue);

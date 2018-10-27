@@ -8,7 +8,8 @@ import { MarketsService } from 'src/app/_services/markets.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  templateUrl: './price.component.html'
+  templateUrl: './price.component.html',
+  styleUrls: [ './price.component.css' ],
 })
 export class PriceComponent implements OnInit {
 
@@ -22,32 +23,34 @@ export class PriceComponent implements OnInit {
   private symbol: string;
   private price: string;
   private name: string;
-  private image: string;
   private chart: any;
   private selectedType: string;
   private timeLimit: number;
   private aggregate: number;
-  private selectedIndex = 0;
   private tabs = [
     {
       name: '24 HOURS',
       index: 0,
-      content: this.chart
+      content: this.chart,
+      active: 'active show'
     },
     {
       name: '7 DAYS',
       index: 1,
-      content: this.chart
+      content: this.chart,
+      active: ''
     },
     {
       name: '1 MONTH',
       index: 2,
-      content: this.chart
+      content: this.chart,
+      active: ''
     },
     {
       name: '1 YEAR',
       index: 3,
-      content: this.chart
+      content: this.chart,
+      active: ''
     }
   ];
 
@@ -71,14 +74,20 @@ export class PriceComponent implements OnInit {
       bodySpacing: 6,
       yPadding: 8,
       custom: function (tooltip) {
+
         // remove color square label
+
         if (!tooltip) { return; }
+
         // disable displaying the color box;
+
         tooltip.displayColors = false;
       },
       callbacks: {
         label: function (tooltipItem, data) {
-          // Add a pound sign, rounding, and thousands commas
+
+          // add a pound sign, rounding, and thousands commas
+
           return '£ ' + Number(tooltipItem.yLabel).toFixed(2).replace(/./g, function (c, i, a) {
             return i > 0 && c !== '.' && (a.length - i) % 3 === 0 ? ',' + c : c;
           });
@@ -160,35 +169,36 @@ export class PriceComponent implements OnInit {
             console.log(this.cryptoPrice);
           }
           this.drawChart('A', 1440, 15);
+          this.selectChange(0);
         });
     }
   }
 
-  selectChange() {
-    switch (this.selectedIndex) {
+  selectChange(selectedIndex) {
+    switch (selectedIndex) {
       case 0: {
-        this.selectedType = "A";
+        this.selectedType = 'A';
         this.timeLimit = 1440;
         this.aggregate = 15;
         this.drawChart(this.selectedType, this.timeLimit, this.aggregate);
         break;
       }
       case 1: {
-        this.selectedType = "B";
+        this.selectedType = 'B';
         this.timeLimit = 168;
         this.aggregate = 1;
         this.drawChart(this.selectedType, this.timeLimit, this.aggregate);
         break;
       }
       case 2: {
-        this.selectedType = "C";
+        this.selectedType = 'C';
         this.timeLimit = 720;
         this.aggregate = 10;
         this.drawChart(this.selectedType, this.timeLimit, this.aggregate);
         break;
       }
       case 3: {
-        this.selectedType = "D";
+        this.selectedType = 'D';
         this.timeLimit = 365;
         this.aggregate = 2;
         this.drawChart(this.selectedType, this.timeLimit, this.aggregate);
@@ -259,17 +269,18 @@ export class PriceComponent implements OnInit {
         console.log(res.Data.length);
       }
 
-      priceChart = res['Data'].map(res => res.close);
-      allDates = res['Data'].map(res => res.time);
+      priceChart = res['Data'].map(result => result.close);
+      allDates = res['Data'].map(result => result.time);
 
       if (environment.production === false) {
         console.log(priceChart);
+        console.log(allDates);
       }
 
       cryptoDates = [];
-      allDates.forEach(() => {
-        const jsDate = new Date(res * 1000);
-        cryptoDates.push(jsDate.toLocaleTimeString([], { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }));
+      allDates.forEach((result) => {
+        const jsDate = new Date(result * 1000);
+        cryptoDates.push(jsDate.toLocaleTimeString(['en-US'], { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }));
       });
 
       // Draw new chart
