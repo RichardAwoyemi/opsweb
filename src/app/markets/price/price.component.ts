@@ -292,7 +292,7 @@ export class PriceComponent implements OnInit {
           datasets: [
             {
               data: priceChart,
-              borderColor: '#60acf3',
+              borderColor: '#2055EC',
               cubicInterpolationMode: 'monotone',
               fill: false
             }
