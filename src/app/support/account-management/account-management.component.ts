@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 @Component({
   templateUrl: './account-management.component.html',
-  styleUrls: [ './account-management.component.css' ]
 })
 export class AccountManagementComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
