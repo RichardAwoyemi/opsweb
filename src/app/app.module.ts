@@ -29,6 +29,7 @@ import { WalletServicesComponent } from './support/wallet-services/wallet-servic
 import { ServicesComponent } from './services/services.component';
 
 import { MarketsService } from 'src/app/_services/markets.service';
+import { PriceComponent } from './markets/price/price.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MarketsService } from 'src/app/_services/markets.service';
     LegalComponent,
     LoginComponent,
     PressComponent,
+    PriceComponent,
     MarketsComponent,
     RegisterComponent,
     ServicesComponent,

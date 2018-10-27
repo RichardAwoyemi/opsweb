@@ -11,10 +11,11 @@ import { Observable } from 'rxjs';
 export class SupportComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver) {
+  }
 
   ngOnInit() {
     library.add(faAngleRight);
-    this.isMobile = this.breakpointObserver.observe(Breakpoints.Handset);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ] );
   }
 }

@@ -19,7 +19,7 @@ export class AboutComponent implements OnInit {
   private registerForm = document.forms['registerForm'];
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe(Breakpoints.Handset);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
 
     this.registerFormGroup = new FormGroup({
       name: new FormControl(),
