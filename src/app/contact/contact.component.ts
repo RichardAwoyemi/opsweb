@@ -18,21 +18,20 @@ export class ContactComponent implements OnInit {
   @ViewChild('errorModal') errorModal: ElementRef;
 
   private scriptURL = 'https://script.google.com/macros/s/AKfycbzeO_PLnm4HHAKlwPQ3PHN6j9TSVkxt0NJW0cy2NfRb1KZvLDA/exec';
-  contactForm = document.forms['registerForm'];
+  contactForm = document.forms['contactForm'];
 
   constructor(private breakpointObserver: BreakpointObserver,
-    private formBuilder: FormBuilder) {}
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
 
     this.contactFormGroup = new FormGroup({
       firstName: new FormControl(),
       lastName: new FormControl(),
       email: new FormControl(),
       phone: new FormControl(),
-      message: new FormControl(),
-      captcha: new FormControl()
+      message: new FormControl()
     });
 
     this.contactForm = this.formBuilder.group({
@@ -46,10 +45,7 @@ export class ContactComponent implements OnInit {
 
   get f() { return this.contactForm.controls; }
 
-
   onSubmit() {
-    // Stop here if form is invalid
-
     if (this.contactForm.invalid) {
       $(this.errorModal.nativeElement).modal('show');
       return;
@@ -62,20 +58,19 @@ export class ContactComponent implements OnInit {
     }
 
     fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
-    .then(response => {
-      if (environment.production === false) {
-        console.log('Success!', response);
-        this.submitted = true;
-      }
-    })
-    .catch(
-      error => {
+      .then(response => {
         if (environment.production === false) {
-          console.error('Error!', error.message);
-          $(this.errorModal.nativeElement).modal('show');
-          this.submitted = false;
+          console.log('Success!', response);
+          this.submitted = true;
         }
-      });
-
+      })
+      .catch(
+        error => {
+          if (environment.production === false) {
+            console.error('Error!', error.message);
+            $(this.errorModal.nativeElement).modal('show');
+            this.submitted = false;
+          }
+        });
   }
 }
