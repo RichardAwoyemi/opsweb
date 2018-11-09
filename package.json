@@ -13,8 +13,8 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.10",
-    "@angular/common": "^6.1.10",
     "@angular/cdk": "^6.4.7",
+    "@angular/common": "^6.1.10",
     "@angular/compiler": "^6.1.10",
     "@angular/compiler-cli": "6.1.0",
     "@angular/core": "^6.1.10",
@@ -26,6 +26,8 @@
     "@fortawesome/angular-fontawesome": "^0.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
     "@fortawesome/free-solid-svg-icons": "^5.3.1",
+    "@ng-bootstrap/ng-bootstrap": "^4.0.0",
+    "@types/jquery": "^3.3.22",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.4",
     "express": "^4.16.4",

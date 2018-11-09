@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
+declare var $;
 
 @Component({
   templateUrl: './about.component.html'
@@ -10,16 +13,19 @@ export class AboutComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   submitted = false;
   registerFormGroup: FormGroup;
+  closeResult: string;
+
+  @ViewChild('errorModal') errorModal: ElementRef;
+
+  private scriptURL = 'https://script.google.com/macros/s/AKfycbxFNLTWjBgRoS6TATor0jIOXm3a4XkSsBpdeKTZRE8tmElepek/exec';
+  registerForm = document.forms['registerForm'];
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder) { }
 
-  private scriptURL = 'https://script.google.com/macros/s/AKfycbxFNLTWjBgRoS6TATor0jIOXm3a4XkSsBpdeKTZRE8tmElepek/exec';
-  private registerForm = document.forms['registerForm'];
-
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
 
     this.registerFormGroup = new FormGroup({
       name: new FormControl(),
@@ -35,17 +41,31 @@ export class AboutComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   onSubmit() {
-    this.submitted = true;
-
-    // Stop here if form is invalid
     if (this.registerForm.invalid) {
-        return;
+      $(this.errorModal.nativeElement).modal('show');
+      return;
     }
 
-    alert('hello');
+    const formObject = document.forms['registerForm'];
 
-    fetch(this.scriptURL, { method: 'POST', body: new FormData(this.registerForm)})
-      .then(response => console.log('Success!', response))
-      .catch(error => console.error('Error!', error.message));
+    if (environment.production === false) {
+      console.log(new FormData(formObject));
+    }
+
+    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
+      .then(response => {
+        if (environment.production === false) {
+          console.log('Success!', response);
+          this.submitted = true;
+        }
+      })
+      .catch(
+        error => {
+          if (environment.production === false) {
+            console.error('Error!', error.message);
+            $(this.errorModal.nativeElement).modal('show');
+            this.submitted = false;
+          }
+        });
   }
 }

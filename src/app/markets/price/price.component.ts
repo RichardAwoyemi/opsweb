@@ -27,7 +27,7 @@ export class PriceComponent implements OnInit {
   private selectedType: string;
   private timeLimit: number;
   private aggregate: number;
-  private tabs = [
+  tabs = [
     {
       name: '24 HOURS',
       index: 0,
