@@ -1,4 +1,4 @@
-ersion: 2
+version: 2
 jobs:
   build:
     working_directory: ~/opsonion-web
@@ -18,5 +18,5 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: ng build --prod
-      - run: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
+      - run: git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
       
