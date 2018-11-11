@@ -1,0 +1,181 @@
+<header class="header" style="padding-bottom: 0px">
+  <div class="container">
+    <div *ngIf="!(isMobile | async)?.matches">
+      <div class="row align-items-center h-100">
+        <div class="col-md-7 mx-auto">
+          <h1>Services</h1>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(isMobile | async)?.matches">
+      <div class="row align-items-center h-100">
+        <div class="col-md-7 mx-auto text-center">
+          <h1>Services</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="main-content">
+  <section id="section-mission" class="section" style="padding-top: 3em;">
+    <div class="container">
+      <div class="row gap-y align-items-center">
+        <div class="col-md-7 mx-auto">
+          <h4 style="text-align:justify">
+            Opsonion will resolve the problem of order and integration in the digital asset ecosystem.
+          </h4>
+          <br>
+          <br>
+          <h3>Order</h3>
+          <p class="lead" style="text-align:justify">
+            This issue permeates the entire digital asset ecosystem, so much that the problem is almost normalised.
+            Whether conducting or participating in an Initial Coin Offering (ICO),
+            the process is frustrating and unorganised. Bounty marketing campaigns are slow, scattered and opaque.
+            Withdrawing money is exponentially harder than depositing. The communication of meaningful information
+            following the purchase of tokens is deemed a luxury. This lack of order indirectly facilitates
+            exploitative behaviours.
+          </p>
+          <br>
+          <h3>Integration</h3>
+          <p class="lead" style="text-align:justify">As a
+            company, we have a strong emphasis on creating accessible solutions that resolve these problems. In all of
+            our efforts, we
+            prioritise improving the application of blockchain technology to everyday life in a practical manner. This
+            entails making
+            the acquisition, utilisation and liquidation of digital assets simpler. We are committed to building
+            durable structures that will aid the mass adoption of digital assets.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section bg-gray">
+    <div class="container">
+      <header class="section-header">
+        <h2>Our Solution</h2>
+        <hr>
+      </header>
+      <div *ngIf="!(isMobile | async)?.matches">
+        <div class="row gap-y text-center">
+          <div class="col-md-4" aos-init data-aos="fade-in" data-aos-once="true">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-layers"></i></p>
+                <h5 class="card-title">Data Aggregation</h5>
+                <p>Real-time information relating to digital asset prices, ICOs and bounty campaigns.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" aos-init data-aos="fade-in" data-aos-once="true" data-aos-delay="1000">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-gears"></i></p>
+                <h5 class="card-title">Task Administration</h5>
+                <p>Simplified task creation, submission review and reward distribution workflow.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" aos-init data-aos="fade-in" data-aos-once="true" data-aos-delay="1500">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-shield"></i></p>
+                <h5 class="card-title">Safe and Secure</h5>
+                <p>Continuous screening to monitor user records and flag suspicious activity.<p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" aos-init data-aos="fade-in" data-aos-once="true" data-aos-delay="2000">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-refresh"></i></p>
+                <h5 class="card-title">Currency Exchange</h5>
+                <p>Fricitonless digital asset to fiat conversion at a competitive rate.</p>
+                <span style="color: #D5D5D5">Coming soon</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" aos-init data-aos="fade-in" data-aos-once="true" data-aos-delay="2500">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-bargraph"></i></p>
+                <h5 class="card-title">Security Tokens</h5>
+                <p>Invest in tokenised securities which represents ownership in an real-world asset.</p>
+                <span style="color: #D5D5D5">Coming soon</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" aos-init data-aos="fade-in" data-aos-once="true" data-aos-delay="3000">
+            <div class="card border hover-shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-global"></i></p>
+                <h5 class="card-title">Merchant Integration</h5>
+                <p>Seamlessly purchase goods and services from our partners with your digital assets.</p>
+                <span style="color: #D5D5D5">Coming soon</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="(isMobile | async)?.matches">
+        <div class="row gap-y text-center">
+          <div class="col-md-4">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-layers"></i></p>
+                <h5 class="card-title">Data Aggregation</h5>
+                <p>Real-time information relating to digital asset prices, ICOs and bounty campaigns.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-gears"></i></p>
+                <h5 class="card-title">Task Administration</h5>
+                <p>Simplified task creation, submission review and reward distribution workflow.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-shield"></i></p>
+                <h5 class="card-title">Safe and Secure</h5>
+                <p>Continuous screening to monitor user records and flag suspicious activity.<p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-refresh"></i></p>
+                <h5 class="card-title">Currency Exchange</h5>
+                <p>Fricitonless digital asset to fiat conversion at a competitive rate.</p>
+                <span style="color: #D5D5D5">Coming soon</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-bargraph"></i></p>
+                <h5 class="card-title">Security Tokens</h5>
+                <p>Invest in tokenised securities which represents ownership in an real-world asset.</p>
+                <span style="color: #D5D5D5">Coming soon</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border hover-shadow-4">
+              <div class="card-body">
+                <p class="feature-icon lead-8"><i class="icon-global"></i></p>
+                <h5 class="card-title">Merchant Integration</h5>
+                <p>Seamlessly purchase goods and services from our partners with your digital assets.</p>
+                <span style="color: #D5D5D5">Coming soon</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

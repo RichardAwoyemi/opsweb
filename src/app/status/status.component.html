@@ -1,0 +1,106 @@
+<section class="section">
+  <div *ngIf="!(isMobile | async)?.matches">
+    <header class="section-header" style="padding-top: 3em">
+      <h2>Status</h2>
+      <hr>
+    </header>
+  </div>
+  <div *ngIf="(isMobile | async)?.matches">
+    <header class="section-header" style="padding-bottom: 0px; padding-top: 70px">
+      <h2>Status</h2>
+      <hr>
+    </header>
+  </div>
+  <div class="container text-center">
+    <div *ngIf="!(isMobile | async)?.matches">
+      <div class="row gap-y col-md-6 col-xl-6 mx-auto">
+        <div class="col-md-12 text-left">
+          <div class="alert alert-success" role="alert">
+            All Systems Operational
+          </div>
+        </div>
+        <div class="col-md-6 text-left">
+          <p><strong>Website</strong></p>
+        </div>
+        <div class="col-md-6 text-right">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-md-6 text-left">
+          <p><strong>Mobile Application</strong></p>
+        </div>
+        <div class="col-md-6 text-right">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-md-6 text-left">
+          <p><strong>API</strong></p>
+        </div>
+        <div class="col-md-6 text-right">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-md-6 text-left">
+          <p><strong>Customer Support</strong></p>
+        </div>
+        <div class="col-md-6 text-right">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-md-6 text-left">
+          <p><strong>2FA</strong></p>
+        </div>
+        <div class="col-md-6 text-right">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-md-6 text-left">
+          <p><strong>Digital Assets</strong></p>
+        </div>
+        <div class="col-md-6 text-right">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(isMobile | async)?.matches">
+      <div class="row gap-y align-items-center mx-auto">
+        <div class="col-12">
+          <div class="alert alert-success" role="alert">
+            All Systems Operational
+          </div>
+        </div>
+        <div class="col-6 text-left" style="padding-right: 0px">
+          <p><strong>Website</strong></p>
+        </div>
+        <div class="col-6 text-center" style="padding-top: 0px">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-6 text-left" style="padding-right: 0px">
+          <p><strong>Mobile Application</strong></p>
+        </div>
+        <div class="col-6 text-center" style="padding-top: 0px">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-6 text-left" style="padding-right: 0px">
+          <p><strong>API</strong></p>
+        </div>
+        <div class="col-6 text-center" style="padding-top: 0px">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-6 text-left" style="padding-right: 0px">
+          <p><strong>Customer Support</strong></p>
+        </div>
+        <div class="col-6 text-center" style="padding-top: 0px">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-6 text-left" style="padding-right: 0px">
+          <p><strong>2FA</strong></p>
+        </div>
+        <div class="col-6 text-center" style="padding-top: 0px">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+        <div class="col-6 text-left" style="padding-right: 0px">
+          <p><strong>Digital Assets</strong></p>
+        </div>
+        <div class="col-6 text-center" style="padding-top: 0px">
+          <span class="badge badge-pale badge-success">Operational</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

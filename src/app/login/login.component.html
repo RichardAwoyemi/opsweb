@@ -1,0 +1,40 @@
+<section class="section text-center">
+  <div class="container">
+    <div class="row">
+      <form class="col-md-4 col-xl-4 mx-auto input-border">
+        <div *ngIf="!(isMobile | async)?.matches">
+          <h3 class="fw-200 text-center">Login</h3>
+          <p class="text-center">Sign into your account using your credentials.</p>
+          <hr class="w-10">
+        </div>
+        <div *ngIf="(isMobile | async)?.matches" style="padding-top: 3em">
+            <h3 class="fw-200 text-center">Login</h3>
+            <p class="text-center">Sign into your account using your credentials.</p>
+            <hr class="w-10">         
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="text" name="username" placeholder="Username" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="password" name="password" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+        </div>
+        <div class="row align-items-center pt-3 pb-5">
+          <div class="col-auto">
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox">
+              <label class="custom-control-label">Remember me</label>
+            </div>
+          </div>
+          <div class="col text-right">
+            <p class="mb-0 fw-300"><a class="text-muted small-2" routerLink="/forgotpassword">Forgot password?</a></p>
+          </div>
+        </div>
+        <button class="btn btn-lg btn-block btn-primary" type="submit">Login</button>
+        <p class="small-2 text-left mt-5 mb-0 text-center">Don't have an account? <a routerLink="/register">Create one</a>.</p>
+        <hr class="w-10">
+        <button class="btn btn-lg btn-block btn-secondary">Continue with Google</button>
+        <button class="btn btn-lg btn-block btn-secondary">Continue with Facebook</button>
+      </form>
+    </div>
+  </div>
+</section>

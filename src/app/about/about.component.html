@@ -1,0 +1,92 @@
+<header class="header" style="padding-bottom: 0px">
+  <div class="container">
+    <div *ngIf="!(isMobile | async)?.matches">
+      <div class="row align-items-center h-100">
+        <div class="col-md-7 mx-auto">
+          <h1>About</h1>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(isMobile | async)?.matches">
+      <div class="row align-items-center h-100">
+        <div class="col-md-7 mx-auto text-center">
+          <h1>About</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="main-content">
+  <section id="section-mission" class="section" style="padding-top: 3em;">
+    <div class="container">
+      <div class="row gap-y align-items-center">
+        <div class="col-md-7 mx-auto">
+          <h4 style="text-align:justify">
+            Opsonion is a platform which makes earning, spending and investing in digital assets easier with the
+            maximum level of consumer protection and
+            efficiency.
+          </h4><br>
+          <p class="lead" style="text-align:justify">
+            Digital assets are revolutionising the financial industry. The establishment of programmable money has
+            open doors that were previously closed. However, despite the emergence of such innovation, the issue of
+            <em>order</em> and <em>integration</em> continue to prevent mainstream adoption.
+          </p>
+          <br>
+          <p class="lead" style="text-align:justify">As a
+            company, we have a strong emphasis on creating accessible solutions that resolve these problems. In all of
+            our efforts, we
+            prioritise improving the application of blockchain technology to everyday life in a practical manner. This
+            entails making
+            the acquisition, utilisation and liquidation of digital assets simpler. We are committed to building
+            durable structures that will aid the mass adoption of digital assets.</p>
+          <br>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section bg-gray">
+    <div class="container">
+      <h3 class="text-center fw-200">Sign up to our newsletter</h3>
+      <form class="row gap-y mt-7" [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
+        <div class="col-md-6 col-lg-4">
+          <input required type="text" class="form-control" formControlName="name" name="name" placeholder="Name"
+            autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <input required type="text" class="form-control" formControlName="email" name="email" placeholder="Email"
+            autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <button class="btn btn-block btn-success h-100" type="submit">Register</button>
+        </div>
+      </form>
+      <div class="row gap-y align-items-center mt-7" [hidden]="!submitted">
+        <div class="col-md-7 mx-auto">
+          <p style="text-align:center">
+            Thanks. Your email has been added to our mailing list.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" #errorModal id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel">Oops!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        There was something wrong with your submission. Please try again.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
