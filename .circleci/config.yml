@@ -1,0 +1,14 @@
+machine:
+  node:
+    version: 8.12.0
+
+dependencies:
+  pre:
+    - npm install -g @angular/cli
+    - npm install -g npm@latest
+
+deployment:
+  staging:
+    branch: develop
+    heroku:
+      appname: opsonion-web
