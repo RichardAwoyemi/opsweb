@@ -23,3 +23,9 @@ jobs:
             if [[ "$CIRCLE_BRANCH" == "develop" || "$CIRCLE_BRANCH" == "master" ]]; then
               git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
             fi
+workflows:
+  filters:
+  branches:
+    only: 
+    - master
+    - develop
