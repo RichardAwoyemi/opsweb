@@ -21,13 +21,6 @@
 }
 
 @font-face {
-  font-family: 'Avenir Next Regular';
-  src: url('assets/fonts/avenir-next/regular.eot'),
-  url('assets/fonts/avenir-next/regular.woff') format('woff'),
-  url('assets/fonts/avenir-next/regular.ttf') format('truetype');
-}
-
-@font-face {
   font-family: 'Avenir Next Medium';
   src: url('assets/fonts/avenir-next/medium.eot'),
   url('assets/fonts/avenir-next/medium.woff') format('woff'),
@@ -35,7 +28,7 @@
 }
 
 body, div {
-  font-family: 'Avenir Next', Helvetica, sans-serif !important;
+  font-family: 'Avenir Next Regular', Helvetica, sans-serif !important;
 }
 
 h1, h1, h2, h3, h4, h5, h6 {

@@ -1,5 +1,39 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart">
+<!-- Logged in navbar -->
+
+<section class="topbar d-lg-flex text-black bg-white" *ngIf="loggedIn">
+  <div class="container small-3">
+    <nav class="nav">
+      <a class="nav-link pl-0" href="#">Dashboard</a>
+      <a class="nav-link pl-0" href="#">Exchange</a>
+      <a class="nav-link pl-0" href="#">Accounts</a>
+      <a class="nav-link pl-0" href="#">Tasks</a>
+      <a class="nav-link pl-0" href="#">Tools</a>
+      <a class="nav-link pl-0" href="#">Settings</a>
+    </nav>
+    <div class="dropdown mr-4">
+      <span class="dropdown-toggle" data-toggle="dropdown">{{ user.firstName }} {{ user.lastName }}</span>
+      <div class="dropdown-menu dropdown-menu-right">
+          <div style="text-align: center">
+            <img src="{{user.avatar}}" class="rounded-circle avatar avatar-xl" style="margin-bottom: 0.75em">
+            <br>
+            <strong>@{{ user.username }}</strong>
+            <br>
+            <small>{{ user.email }}</small>
+          </div>
+          <hr style="margin-top: 1em; margin-bottom: 1em">
+          <div style="text-align: left">
+            <a href="">Settings</a><br>
+            <a href="">Invite Friends</a><br>
+            <a (click)="logout()">Log Out</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Not logged in navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart" *ngIf="!loggedIn">
   <div class="container">
 
     <div class="navbar-left mr-4">
@@ -35,8 +69,9 @@
         <a class="nav-link" routerLink="/careers">Careers</a>
         <a class="nav-link" routerLink="/markets">Markets</a>
         <a class="nav-link" routerLink="/support">Support</a>
-        <a class="nav-link" routerLink="/login">Login</a>
-        <a class="nav-link" routerLink="/register">Register</a>
+        <a class="nav-link" routerLink="/login" *ngIf="!loggedIn">Login</a>
+        <a class="nav-link" routerLink="/register" *ngIf="!loggedIn">Register</a>
+        <a class="nav-link" routerLink="/register" *ngIf="loggedIn">Log out</a>
       </nav>
     </section>
   </div>

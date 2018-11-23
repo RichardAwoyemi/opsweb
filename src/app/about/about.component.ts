@@ -56,16 +56,16 @@ export class AboutComponent implements OnInit {
       .then(response => {
         if (environment.production === false) {
           console.log('Success!', response);
-          this.submitted = true;
         }
+        this.submitted = true;
       })
       .catch(
         error => {
           if (environment.production === false) {
             console.error('Error!', error.message);
-            $(this.errorModal.nativeElement).modal('show');
-            this.submitted = false;
           }
+          $(this.errorModal.nativeElement).modal('show');
+          this.submitted = false;
         });
   }
 }

@@ -11,7 +11,9 @@ import { Observable } from 'rxjs';
 export class SupportComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(
+    private breakpointObserver: BreakpointObserver
+  ) {
   }
 
   ngOnInit() {

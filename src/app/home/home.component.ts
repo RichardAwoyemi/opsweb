@@ -8,9 +8,11 @@ import { Observable } from 'rxjs';
 export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver
+  ) {}
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
   }
 }

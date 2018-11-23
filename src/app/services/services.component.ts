@@ -8,7 +8,9 @@ import { Observable } from 'rxjs';
 export class ServicesComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver
+  ) {}
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);

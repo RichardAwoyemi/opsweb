@@ -13,12 +13,14 @@ import { environment } from 'src/environments/environment';
 })
 export class PriceComponent implements OnInit {
 
-  constructor(private breakpointObserver: BreakpointObserver,
+  constructor(
+    private breakpointObserver: BreakpointObserver,
     private _router: Router,
     private _prices: MarketsService,
-    private _route: ActivatedRoute) { }
-  isMobile: Observable<BreakpointState>;
+    private _route: ActivatedRoute
+  ) { }
 
+  isMobile: Observable<BreakpointState>;
   cryptoPrice: Price;
   private symbol: string;
   private price: string;

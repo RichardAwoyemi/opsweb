@@ -30,7 +30,9 @@ import { WalletServicesComponent } from './support/wallet-services/wallet-servic
 import { ServicesComponent } from './services/services.component';
 
 import { MarketsService } from 'src/app/_services/markets.service';
+import { UserService } from 'src/app/_services/user.service';
 import { PriceComponent } from './markets/price/price.component';
+import { EnvService } from './_services/env.service';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { PriceComponent } from './markets/price/price.component';
     NgbModule
   ],
   providers: [
-    MarketsService
+    MarketsService,
+    UserService,
+    EnvService
   ],
   bootstrap: [AppComponent]
 })
