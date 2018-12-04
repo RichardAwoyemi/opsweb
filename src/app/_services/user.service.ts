@@ -30,12 +30,11 @@ export class UserService {
       password: user.password
     }).subscribe(response => {
       if (response['message'] === 'Authentication success') {
-        sessionStorage.setItem('token', btoa(user.username + ':' + user.password));
+        localStorage.setItem('token', btoa(user.username + ':' + user.password));
         if (environment.production === false) {
           console.log(response);
           console.log('Authentication success');
           console.log('Token is: ' + btoa(user.username + ':' + user.password));
-          this.router.navigate(['/']);
         }
       } else {
         if (environment.production === false) {
@@ -50,12 +49,16 @@ export class UserService {
     let apiUrl = this.envService.getApiUrl();
     apiUrl = apiUrl + '/account';
 
-    const sessionStorageObjectSize = Object.keys(sessionStorage['token']).length;
-    if (environment.production === false) {
-      console.log('Returned token object has ' + sessionStorageObjectSize + ' properties');
+    if (localStorage.getItem('token') === null) {
+      return null;
     }
 
-    if (sessionStorageObjectSize === 0) {
+    const localStorageObjectSize = Object.keys(localStorage['token']).length;
+    if (environment.production === false) {
+      console.log('Returned token object has ' + localStorageObjectSize + ' properties');
+    }
+
+    if (localStorageObjectSize === 0) {
       if (environment.production === false) {
         console.log('Token not found');
       }
@@ -63,18 +66,15 @@ export class UserService {
     }
 
     if (environment.production === false) {
-      console.log('Authorization : Basic ' + sessionStorage.getItem('token'));
+      console.log('Authorization : Basic ' + localStorage.getItem('token'));
     }
 
     const headers: HttpHeaders = new HttpHeaders({
-      'Authorization': 'Basic ' + sessionStorage.getItem('token')
+      'Authorization': 'Basic ' + localStorage.getItem('token')
     });
     const options = { headers: headers };
 
     this.http.post<Observable<Response>>(apiUrl, {}, options).subscribe(response => {
-      if (environment.production === false) {
-        console.log(response);
-      }
       if (response['message'] === 'User found') {
         this.user.id = response['data'].id;
         this.user.email = response['data'].email;
@@ -82,13 +82,24 @@ export class UserService {
         this.user.firstName = response['data'].firstName;
         this.user.lastName = response['data'].lastName;
         this.user.avatar = response['data'].avatar;
+        if (environment.production === false) {
+          console.log(response);
+        }
       }
-    });
+    }, error => {
+      if (environment.production === false) {
+        console.log(error);
+        localStorage.removeItem('token');
+        location.reload();
+        return null;
+      }
+    }
+    );
     return this.user;
   }
 
   logout() {
-    sessionStorage.setItem('token', '');
+    localStorage.removeItem('token');
     this.router.navigate(['/']);
   }
 }

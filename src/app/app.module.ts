@@ -33,6 +33,10 @@ import { MarketsService } from 'src/app/_services/markets.service';
 import { UserService } from 'src/app/_services/user.service';
 import { PriceComponent } from './markets/price/price.component';
 import { EnvService } from './_services/env.service';
+import { AuthService } from './_services/auth.service';
+import { AuthGuard } from './_guards/auth.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AnonymousGuard } from './_guards/anonymous.guard';
 
 @NgModule({
   declarations: [
@@ -55,7 +59,8 @@ import { EnvService } from './_services/env.service';
     SecurityComponent,
     TaskAdministrationComponent,
     TransactionsComponent,
-    WalletServicesComponent
+    WalletServicesComponent,
+    DashboardComponent
   ],
   imports: [
     AppRoutingModule,
@@ -71,7 +76,10 @@ import { EnvService } from './_services/env.service';
   providers: [
     MarketsService,
     UserService,
-    EnvService
+    EnvService,
+    AuthService,
+    AuthGuard,
+    AnonymousGuard
   ],
   bootstrap: [AppComponent]
 })

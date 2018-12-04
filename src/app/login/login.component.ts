@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
-    sessionStorage.setItem('token', '');
+    localStorage.setItem('token', '');
   }
 
   login() {
