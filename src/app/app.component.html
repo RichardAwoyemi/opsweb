@@ -3,14 +3,15 @@
 <section class="topbar d-lg-flex text-black bg-white" *ngIf="authService.isLoggedIn()">
   <div class="container small-3">
     <nav class="nav">
-      <a class="nav-link pl-0" href="#">Dashboard</a>
-      <a class="nav-link pl-0" href="#">Exchange</a>
-      <a class="nav-link pl-0" href="#">Accounts</a>
-      <a class="nav-link pl-0" href="#">Tasks</a>
-      <a class="nav-link pl-0" href="#">Tools</a>
-      <a class="nav-link pl-0" href="#">Settings</a>
+      <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+      <a class="nav-link" routerLink="/exchange">Exchange</a>
+      <a class="nav-link" routerLink="/accounts">Accounts</a>
+      <a class="nav-link" href="#">Tasks</a>
+      <a class="nav-link" href="#">Tools</a>
     </nav>
     <div class="dropdown mr-4">
+
+      
       <span class="dropdown-toggle" data-toggle="dropdown">{{ user.firstName }} {{ user.lastName }}</span>
       <div class="dropdown-menu dropdown-menu-right">
           <div style="text-align: center">
@@ -20,11 +21,11 @@
             <br>
             <small>{{ user.email }}</small>
           </div>
-          <hr style="margin-top: 1em; margin-bottom: 1em">
+          <div class="dropdown-divider"></div>          
           <div style="text-align: left" class="nav">
-            <a href="">Settings</a><br>
-            <a href="">Invite Friends</a><br>
-            <a (click)="logout()">Log Out</a>
+            <a class="dropdown-item" href="#" style="padding: 0rem;">Settings</a>
+            <a class="dropdown-item" href="#" style="padding: 0rem;">Invite Friends</a>
+            <a class="dropdown-item" href="#" (click)="logout()" style="padding: 0rem;">Log Out</a>              
           </div>
       </div>
     </div>
@@ -59,7 +60,7 @@
     </section>
 
     <!-- Mobile links -->
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
+    <section class="navbar-mobile">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link" routerLink="/">Home</a>
@@ -70,7 +71,7 @@
         <a class="nav-link" routerLink="/support">Support</a>
         <a class="nav-link" routerLink="/login" *ngIf="!authService.isLoggedIn()">Login</a>
         <a class="nav-link" routerLink="/register" *ngIf="!authService.isLoggedIn()">Register</a>
-        <a class="nav-link" routerLink="/logout" *ngIf="authService.isLoggedIn()">Log out</a>
+        <a class="nav-link" (click)="logout()" *ngIf="authService.isLoggedIn()">Log out</a>
       </nav>
     </section>
   </div>

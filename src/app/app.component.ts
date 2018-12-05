@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { User } from './_models/user';
@@ -13,6 +13,7 @@ import { UserService } from './_services/user.service';
 export class AppComponent implements OnInit {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
+  data: any;
   user: User;
 
   constructor(
@@ -23,6 +24,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
+    this.user = this.userService.getUserAccount();
+  }
+
+  logout() {
+    this.userService.logout();
   }
 
   onActivate(event) {

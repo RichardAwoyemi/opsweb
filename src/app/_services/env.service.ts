@@ -5,13 +5,11 @@ import { environment } from 'src/environments/environment';
 export class EnvService {
   public getApiUrl(): string {
     let apiUrl = '';
-    if (location.host == 'localhost:4200') {
+    if (location.host === 'localhost:4200') {
       apiUrl = 'http://localhost:8080';
-    }
-    else if (environment.production === true) {
+    } else if (environment.production === true) {
       apiUrl = '';
-    }
-    else {
+    } else {
       apiUrl = '';
     }
     return apiUrl;
