@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    if (this.userService.getUserAccount()) {
+    if (this.userService.getUserAccount() === null) {
       console.log('User is logged in');
       return true;
     }
