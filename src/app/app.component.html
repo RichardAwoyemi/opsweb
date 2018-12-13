@@ -44,7 +44,7 @@
     </div>
 
     <!-- Desktop links -->
-    <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches;">
+    <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link" routerLink="/about">About</a>
@@ -60,7 +60,7 @@
     </section>
 
     <!-- Mobile links -->
-    <section class="navbar-mobile">
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link" routerLink="/">Home</a>
