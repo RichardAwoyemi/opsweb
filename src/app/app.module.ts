@@ -39,6 +39,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AnonymousGuard } from './_guards/anonymous.guard';
 import { AccountsComponent } from './accounts/accounts.component';
 import { ExchangeComponent } from './exchange/exchange.component';
+import { ErrorModalComponent } from './_modals/error.modal.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,11 @@ import { ExchangeComponent } from './exchange/exchange.component';
     WalletServicesComponent,
     DashboardComponent,
     AccountsComponent,
-    ExchangeComponent
+    ExchangeComponent,
+    ErrorModalComponent
+  ],
+  entryComponents: [
+    ErrorModalComponent
   ],
   imports: [
     AppRoutingModule,

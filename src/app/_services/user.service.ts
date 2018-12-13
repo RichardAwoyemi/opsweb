@@ -1,16 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild, ElementRef } from '@angular/core';
 import { User } from '../_models/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, take, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { EnvService } from './env.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { ErrorModalComponent } from '../_modals/error.modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class UserService {
   constructor(
     public http: HttpClient,
+    private modalService: NgbModal,
     private router: Router,
     public envService: EnvService) {
   }
@@ -35,21 +38,31 @@ export class UserService {
           console.log(response);
           console.log('Authentication success');
           console.log('Token is: ' + btoa(user.username + ':' + user.password));
-          location.reload();
         }
+        location.reload();
       } else {
         if (environment.production === false) {
           console.log(response);
           console.log('Authentication failed');
-          this.router.navigate(['/login']);
         }
+        const modalReference = this.modalService.open(ErrorModalComponent);
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = 'Your username and password appear to be incorrect. Please try again.';
+        this.router.navigate(['/login']);
+      }
+    }, err => {
+      if (environment.production === false) {
+        console.log('The API service is currently inaccessible.');
+        console.log(err);
+        const modalReference = this.modalService.open(ErrorModalComponent);
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = 'We are unable to log you in at this time. Please try again.';
       }
     });
   }
 
   getUserAccount(): User {
     const apiUrl = this.envService.getApiUrl() + '/account';
-
     if (!localStorage.getItem('token')) {
       return null;
     }
