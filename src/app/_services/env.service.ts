@@ -5,12 +5,15 @@ import { environment } from 'src/environments/environment';
 export class EnvService {
   public getApiUrl(): string {
     let apiUrl = '';
+    // Local
     if (location.host === 'localhost:4200') {
       apiUrl = 'http://localhost:8080';
+    // Production
     } else if (environment.production === true) {
-      apiUrl = '';
+      apiUrl = 'http://opsonion-api.herokuapp.com/';
+    // UAT
     } else {
-      apiUrl = '';
+      apiUrl = 'http://opsonion-api.herokuapp.com/';
     }
     return apiUrl;
   }
