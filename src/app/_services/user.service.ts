@@ -36,23 +36,20 @@ export class UserService {
         localStorage.setItem('token', btoa(user.username + ':' + user.password));
         if (environment.production === false) {
           console.log(response);
-          console.log('Authentication success');
           console.log('Token is: ' + btoa(user.username + ':' + user.password));
         }
         location.reload();
       } else {
         if (environment.production === false) {
           console.log(response);
-          console.log('Authentication failed');
         }
         const modalReference = this.modalService.open(ErrorModalComponent);
         modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = 'Your username and password appear to be incorrect. Please try again.';
+        modalReference.componentInstance.message = 'Your username or password is incorrect. Please try again.';
         this.router.navigate(['/login']);
       }
     }, err => {
       if (environment.production === false) {
-        console.log('The API service is currently inaccessible.');
         console.log(err);
         const modalReference = this.modalService.open(ErrorModalComponent);
         modalReference.componentInstance.header = 'Oops!';
