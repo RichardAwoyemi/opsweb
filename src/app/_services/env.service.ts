@@ -10,10 +10,10 @@ export class EnvService {
       apiUrl = 'http://localhost:8080';
     // Production
     } else if (environment.production === true) {
-      apiUrl = 'http://opsonion-cors.herokuapp.com/http://opsonion-api.herokuapp.com';
+      apiUrl = 'http://opsonion-api.herokuapp.com';
     // UAT
     } else {
-      apiUrl = 'http://opsonion-cors.herokuapp.com/http://opsonion-api.herokuapp.com';
+      apiUrl = 'http://opsonion-api.herokuapp.com';
     }
     return apiUrl;
   }
