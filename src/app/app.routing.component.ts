@@ -13,19 +13,23 @@ import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
 import { ServicesComponent } from './services/services.component';
+import { AccountsComponent } from './accounts/accounts.component';
 import { AccountManagementComponent } from './support/account-management/account-management.component';
 import { TransactionsComponent } from './support/transactions/transactions.component';
 import { PaymentMethodsComponent } from './support/payment-methods/payment-methods.component';
 import { SecurityComponent } from './support/security/security.component';
 import { TaskAdministrationComponent } from './support/task-administration/task-administration.component';
 import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { AnonymousGuard } from './_guards/anonymous.guard';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { ExchangeComponent } from './exchange/exchange.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
+  { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
   { path: 'about', component: AboutComponent, canActivate: [AnonymousGuard] },
+  { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
+  { path: 'exchange', component: ExchangeComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AnonymousGuard] },
   { path: 'careers', component: CareersComponent, canActivate: [AnonymousGuard] },
   { path: 'contact', component: ContactComponent, canActivate: [AnonymousGuard] },
@@ -50,7 +54,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule implements OnInit {
   constructor() { }

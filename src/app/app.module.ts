@@ -37,6 +37,8 @@ import { AuthService } from './_services/auth.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AnonymousGuard } from './_guards/anonymous.guard';
+import { AccountsComponent } from './accounts/accounts.component';
+import { ExchangeComponent } from './exchange/exchange.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { AnonymousGuard } from './_guards/anonymous.guard';
     TaskAdministrationComponent,
     TransactionsComponent,
     WalletServicesComponent,
-    DashboardComponent
+    DashboardComponent,
+    AccountsComponent,
+    ExchangeComponent
   ],
   imports: [
     AppRoutingModule,

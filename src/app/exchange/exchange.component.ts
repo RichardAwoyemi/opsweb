@@ -3,16 +3,16 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 
 @Component({
-  templateUrl: './home.component.html'
+  templateUrl: './exchange.component.html'
 })
-export class HomeComponent implements OnInit {
+export class ExchangeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
+    private breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
   }
 }

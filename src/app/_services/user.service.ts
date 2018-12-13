@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../_models/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, take, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { EnvService } from './env.service';
 import { environment } from 'src/environments/environment';
@@ -35,33 +35,22 @@ export class UserService {
           console.log(response);
           console.log('Authentication success');
           console.log('Token is: ' + btoa(user.username + ':' + user.password));
+          location.reload();
         }
       } else {
         if (environment.production === false) {
           console.log(response);
           console.log('Authentication failed');
+          this.router.navigate(['/login']);
         }
       }
     });
   }
 
   getUserAccount(): User {
-    let apiUrl = this.envService.getApiUrl();
-    apiUrl = apiUrl + '/account';
+    const apiUrl = this.envService.getApiUrl() + '/account';
 
-    if (localStorage.getItem('token') === null) {
-      return null;
-    }
-
-    const localStorageObjectSize = Object.keys(localStorage['token']).length;
-    if (environment.production === false) {
-      console.log('Returned token object has ' + localStorageObjectSize + ' properties');
-    }
-
-    if (localStorageObjectSize === 0) {
-      if (environment.production === false) {
-        console.log('Token not found');
-      }
+    if (!localStorage.getItem('token')) {
       return null;
     }
 
@@ -74,27 +63,25 @@ export class UserService {
     });
     const options = { headers: headers };
 
-    this.http.post<Observable<Response>>(apiUrl, {}, options).subscribe(response => {
-      if (response['message'] === 'User found') {
-        this.user.id = response['data'].id;
-        this.user.email = response['data'].email;
-        this.user.username = response['data'].username;
-        this.user.firstName = response['data'].firstName;
-        this.user.lastName = response['data'].lastName;
-        this.user.avatar = response['data'].avatar;
+    this.http.post<Observable<Response>>(apiUrl, {}, options)
+      .subscribe(response => {
         if (environment.production === false) {
           console.log(response);
         }
-      }
-    }, error => {
-      if (environment.production === false) {
-        console.log(error);
-        localStorage.removeItem('token');
-        location.reload();
-        return null;
-      }
-    }
-    );
+        if (response['message'] === 'User found') {
+          this.user.id = response['data'].id;
+          this.user.email = response['data'].email;
+          this.user.username = response['data'].username;
+          this.user.firstName = response['data'].firstName;
+          this.user.lastName = response['data'].lastName;
+          this.user.avatar = response['data'].avatar;
+        }
+      },
+        err => {
+          if (environment.production === false) {
+            console.log(err);
+          }
+        });
     return this.user;
   }
 

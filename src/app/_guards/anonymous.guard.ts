@@ -16,14 +16,14 @@ export class AnonymousGuard implements CanActivate {
     _state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.authService.isLoggedIn()) {
       if (environment.production === false) {
-        console.log('Token not found, redirecting to home');
+        console.log('Token not found');
       }
       return true;
     } else {
-      this.router.navigate(['dashboard']);
       if (environment.production === false) {
-        console.log('Token found, redirecting to dashboard');
+        console.log('Token found');
       }
+      this.router.navigate(['dashboard']);
       return false;
     }
   }
