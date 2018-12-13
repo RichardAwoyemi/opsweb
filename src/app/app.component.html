@@ -71,7 +71,7 @@
         <a class="nav-link" routerLink="/support">Support</a>
         <a class="nav-link" routerLink="/login" *ngIf="!authService.isLoggedIn()">Login</a>
         <a class="nav-link" routerLink="/register" *ngIf="!authService.isLoggedIn()">Register</a>
-        <a class="nav-link" (click)="logout()" *ngIf="authService.isLoggedIn()">Log out</a>
+        <a class="nav-link" (click)="logout()" *ngIf="authService.isLoggedIn()">Logout</a>
       </nav>
     </section>
   </div>
