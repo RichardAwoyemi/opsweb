@@ -1,8 +1,13 @@
-const express = require('express');
-const app = express();
-const path = require('path');
-app.use(express.static(__dirname + '/dist/opsonion-web'));
-app.get('/*', function (res) {
-  res.sendFile(path.join(__dirname + '/dist/opsonion-web/index.html'));
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}) );
+
+app.use( express.static(__dirname + '/dist/opsonion-web' ) );
+
+var listener = server.listen(process.env.PORT || 5000, function(){
+    console.log('Listening on port ' + listener.address().port);
 });
-app.listen(process.env.PORT || 8080);
