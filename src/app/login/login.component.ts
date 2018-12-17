@@ -16,11 +16,15 @@ export class LoginComponent implements OnInit {
   ) { }
 
   model: any = {};
+  rememberMe = false;
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
-    if (localStorage.getItem('token') === null) {
+    if (localStorage.getItem('token')) {
       localStorage.removeItem('token');
+    }
+    if (sessionStorage.getItem('token')) {
+      sessionStorage.removeItem('token');
     }
   }
 
@@ -28,6 +32,12 @@ export class LoginComponent implements OnInit {
     const user = new User;
     user.username = this.model.username;
     user.password = this.model.password;
-    this.userService.login(user);
+    console.log(this.rememberMe);
+    this.userService.login(user, this.rememberMe);
+  }
+
+  toggleRememberMe() {
+    console.log('test');
+    this.rememberMe = !this.rememberMe;
   }
 }

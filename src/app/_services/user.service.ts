@@ -25,7 +25,7 @@ export class UserService {
     return this.http.post(apiUrl + '/register', user).pipe(map(response => response));
   }
 
-  login(user: User) {
+  login(user: User, rememberMe) {
     let apiUrl = this.envService.getApiUrl();
     apiUrl = apiUrl + '/login';
     this.http.post<Observable<Response>>(apiUrl, {

@@ -23,8 +23,8 @@
         <div class="row align-items-center pt-3 pb-5">
           <div class="col-auto">
             <div class="custom-control custom-checkbox">
-              <input class="custom-control-input" type="checkbox">
-              <label class="custom-control-label">Remember me</label>
+              <input class="custom-control-input" type="checkbox" (change)="toggleRememberMe" name="rememberMe">
+              <label class="custom-control-label">Remember me ~ {{ rememberMe }}</label>
             </div>
           </div>
           <div class="col text-right">
