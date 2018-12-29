@@ -48,6 +48,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { UtilService } from './_services/util.service';
 import { UserService } from './_services/user.service';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { UserService } from './_services/user.service';
     AccountsComponent,
     ExchangeComponent,
     ModalComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    ForgotPasswordComponent
   ],
   entryComponents: [
     ModalComponent

@@ -4,26 +4,21 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
-  templateUrl: './login.component.html'
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html'
 })
-export class LoginComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private authService: AuthService,
+    public authService: AuthService
   ) { }
 
   model: any = {};
 
   ngOnInit() {
-    localStorage.removeItem('loggedIn');
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
   }
 
-  login() {
-    const email = this.model.email;
-    const password = this.model.password;
-    this.authService.signIn(email, password);
-  }
 }

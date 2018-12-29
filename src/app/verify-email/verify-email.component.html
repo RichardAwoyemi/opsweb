@@ -2,6 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-9 col-xl-9 mx-auto input-border">
+        <div *ngIf="(isMobile | async)?.matches" style="padding-top: 3em">&nbsp;</div>
         <div *ngIf="authService.userData as user">
           <h3 class="fw-200 text-center">Thank you for registering.</h3>
           <hr class="w-10">

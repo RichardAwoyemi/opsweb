@@ -29,7 +29,9 @@ export class AppComponent implements OnInit {
           this.user = {
             firstName: value.payload.data().firstName,
             lastName: value.payload.data().lastName,
-            email: value.payload.data().email
+            email: value.payload.data().email,
+            profilePic: value.payload.data().profilePic,
+            username: value.payload.data().username
           };
         });
       } else {

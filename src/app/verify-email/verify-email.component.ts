@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -6,10 +8,14 @@ import { AuthService } from '../_services/auth.service';
   templateUrl: './verify-email.component.html'
 })
 export class VerifyEmailComponent implements OnInit {
+  isMobile: Observable<BreakpointState>;
+
   constructor(
-    public authService: AuthService
+    private breakpointObserver: BreakpointObserver,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
   }
 }
