@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
   user: any;
+  today: number = Date.now();
 
   constructor(
     private breakpointObserver: BreakpointObserver,
