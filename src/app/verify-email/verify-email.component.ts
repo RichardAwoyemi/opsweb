@@ -12,7 +12,7 @@ export class VerifyEmailComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private authService: AuthService
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
