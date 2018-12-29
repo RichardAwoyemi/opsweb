@@ -24,6 +24,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { AnonymousGuard } from './_guards/anonymous.guard';
 import { ExchangeComponent } from './exchange/exchange.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'support/task-administration', component: TaskAdministrationComponent, canActivate: [AnonymousGuard] },
   { path: 'support/wallet-services', component: WalletServicesComponent, canActivate: [AnonymousGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AnonymousGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

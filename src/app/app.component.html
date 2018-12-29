@@ -1,6 +1,5 @@
 <!-- Logged in navbar -->
-
-<section class="topbar d-lg-flex text-black bg-white" *ngIf="authService.isLoggedIn()">
+<section class="topbar d-lg-flex text-black bg-white" *ngIf="authService.isLoggedIn">
   <div class="container small-3">
     <nav class="nav">
       <a class="nav-link" routerLink="/dashboard">Dashboard</a>
@@ -10,31 +9,32 @@
       <a class="nav-link" href="#">Tools</a>
     </nav>
     <div class="dropdown mr-4">
-
-      
-      <span class="dropdown-toggle" data-toggle="dropdown">{{ user.firstName }} {{ user.lastName }}</span>
+      <span class="dropdown-toggle" data-toggle="dropdown">{{ user?.firstName }} {{ user?.lastName }}</span>
       <div class="dropdown-menu dropdown-menu-right">
-          <div style="text-align: center">
-            <img src="{{user.avatar}}" class="rounded-circle avatar avatar-xl" style="margin-bottom: 0.75em">
+        <div style="text-align: center">
+          <div *ngIf="user?.avatar">
+            <img src="{{user?.avatar}}" class="rounded-circle avatar avatar-xl" style="margin-bottom: 0.75em">
             <br>
-            <strong>@{{ user.username }}</strong>
+          </div>
+          <div *ngIf="user?.username">
+            <strong>@{{ user?.username }}</strong>
             <br>
-            <small>{{ user.email }}</small>
           </div>
-          <div class="dropdown-divider"></div>          
-          <div style="text-align: left" class="nav">
-            <a class="dropdown-item" href="#" style="padding: 0rem;">Settings</a>
-            <a class="dropdown-item" href="#" style="padding: 0rem;">Invite Friends</a>
-            <a class="dropdown-item" href="#" (click)="logout()" style="padding: 0rem;">Log Out</a>              
-          </div>
+          <small>{{ user?.email }}</small>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div style="text-align: left" class="nav">
+          <a class="dropdown-item" href="/" style="padding: 0rem;">Settings</a>
+          <a class="dropdown-item" href="/" style="padding: 0rem;">Invite Friends</a>
+          <a class="dropdown-item" href="/" (click)="authService.signOut()" style="padding: 0rem;">Log Out</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Not logged in navbar -->
-
-<nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart" *ngIf="!authService.isLoggedIn()">
+<nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart" *ngIf="!authService.isLoggedIn">
   <div class="container">
     <div class="navbar-left mr-4">
       <button class="navbar-toggler" type="button">&#9776;</button>
@@ -53,7 +53,7 @@
         <a class="nav-link" routerLink="/markets">Markets</a>
         <a class="nav-link" routerLink="/support">Support</a>
       </nav>
-      <div *ngIf="!authService.isLoggedIn()">
+      <div *ngIf="!authService.isLoggedIn">
         <a class="btn btn-sm btn-light ml-lg-5 mr-2" routerLink="/login">Login</a>
         <a class="btn btn-sm btn-primary" routerLink="/register">Sign up</a>
       </div>
@@ -69,9 +69,9 @@
         <a class="nav-link" routerLink="/careers">Careers</a>
         <a class="nav-link" routerLink="/markets">Markets</a>
         <a class="nav-link" routerLink="/support">Support</a>
-        <a class="nav-link" routerLink="/login" *ngIf="!authService.isLoggedIn()">Login</a>
-        <a class="nav-link" routerLink="/register" *ngIf="!authService.isLoggedIn()">Register</a>
-        <a class="nav-link" (click)="logout()" *ngIf="authService.isLoggedIn()">Logout</a>
+        <a class="nav-link" routerLink="/login" *ngIf="!authService.isLoggedIn">Login</a>
+        <a class="nav-link" routerLink="/register" *ngIf="!authService.isLoggedIn">Register</a>
+        <a class="nav-link" (click)="authService.signOut()" *ngIf="authService.isLoggedIn">Logout</a>
       </nav>
     </section>
   </div>
@@ -80,8 +80,8 @@
 
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 
-<!-- Footer -->
-<footer id="footer" class="footer py-9">
+<!-- Not logged in footer -->
+<footer id="footer" class="footer py-9" *ngIf="!authService.isLoggedIn">
   <div class="container">
     <div class="row gap-y">
       <div class="col-xl-5">
@@ -115,6 +115,18 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</footer>
+
+<!-- Logged in footer -->
+<footer id="footer" class="footer py-9" *ngIf="authService.isLoggedIn">
+  <div class="container">
+    <div class="col-xl-12">
+      <p>Opsonion is the easiest and most trusted place to earn, invest, and spend digital
+        currency.</p>
+      <hr class="d-xl-none">
+      <small class="opacity-70">&copy; 2018 Opsonion. All rights reserved.</small>
     </div>
   </div>
 </footer>

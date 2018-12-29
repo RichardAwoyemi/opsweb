@@ -6,9 +6,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
@@ -30,7 +31,6 @@ import { WalletServicesComponent } from './support/wallet-services/wallet-servic
 import { ServicesComponent } from './services/services.component';
 
 import { MarketsService } from 'src/app/_services/markets.service';
-import { UserService } from 'src/app/_services/user.service';
 import { PriceComponent } from './markets/price/price.component';
 import { EnvService } from './_services/env.service';
 import { AuthService } from './_services/auth.service';
@@ -39,7 +39,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AnonymousGuard } from './_guards/anonymous.guard';
 import { AccountsComponent } from './accounts/accounts.component';
 import { ExchangeComponent } from './exchange/exchange.component';
-import { ErrorModalComponent } from './_modals/error.modal.component';
+import { ModalComponent } from './_modals/modal.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from 'src/environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { UtilService } from './_services/util.service';
+import { UserService } from './_services/user.service';
 
 @NgModule({
   declarations: [
@@ -66,29 +74,42 @@ import { ErrorModalComponent } from './_modals/error.modal.component';
     DashboardComponent,
     AccountsComponent,
     ExchangeComponent,
-    ErrorModalComponent
+    ModalComponent,
+    VerifyEmailComponent
   ],
   entryComponents: [
-    ErrorModalComponent
+    ModalComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     FontAwesomeModule,
     RecaptchaModule.forRoot(),
+    RecaptchaFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   providers: [
     MarketsService,
-    UserService,
     EnvService,
     AuthService,
+    UtilService,
+    UserService,
     AuthGuard,
-    AnonymousGuard
+    AnonymousGuard,
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: '6LeAv3UUAAAAAPYLttDEohg_KgyNifLN0Cx6IlPc',
+      } as RecaptchaSettings,
+    }
   ],
   bootstrap: [AppComponent]
 })

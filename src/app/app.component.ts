@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { User } from './_models/user';
 import { AuthService } from './_services/auth.service';
 import { UserService } from './_services/user.service';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -13,25 +14,36 @@ import { UserService } from './_services/user.service';
 export class AppComponent implements OnInit {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
-  data: any;
-  user: User;
+  user: any;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    public authService: AuthService,
-    public userService: UserService) {
+    public userService: UserService,
+    public afAuth: AngularFireAuth,
+    public db: AngularFirestore,
+    public authService: AuthService) {
+    this.afAuth.authState.subscribe(response => {
+      if (response) {
+        const userDoc = db.doc<any>(`users/${response.uid}`);
+        userDoc.snapshotChanges().subscribe(value => {
+          this.user = {
+            firstName: value.payload.data().firstName,
+            lastName: value.payload.data().lastName,
+            email: value.payload.data().email
+          };
+        });
+      } else {
+        localStorage.setItem('user', null);
+        JSON.parse(localStorage.getItem('user'));
+      }
+    });
   }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
-    this.user = this.userService.getUserAccount();
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
   }
 
-  logout() {
-    this.userService.logout();
-  }
-
-  onActivate(event) {
+  onActivate(_event) {
     window.scroll(0, 0);
   }
 }
