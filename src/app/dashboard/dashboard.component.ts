@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   templateUrl: './dashboard.component.html'
