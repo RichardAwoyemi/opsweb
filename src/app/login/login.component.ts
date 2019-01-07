@@ -3,6 +3,8 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
 
+declare var $;
+
 @Component({
   templateUrl: './login.component.html'
 })
@@ -25,5 +27,12 @@ export class LoginComponent implements OnInit {
     const email = this.model.email;
     const password = this.model.password;
     this.authService.signIn(email, password);
+  }
+
+  googleSignIn() {
+    this.authService.googleSignIn();
+  }
+
+  facebookSignIn() {
   }
 }

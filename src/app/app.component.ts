@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
             firstName: value.payload.data().firstName,
             lastName: value.payload.data().lastName,
             email: value.payload.data().email,
-            profilePic: value.payload.data().profilePic,
+            photoURL: value.payload.data().photoURL,
             username: value.payload.data().username
           };
         });

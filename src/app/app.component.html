@@ -12,8 +12,8 @@
       <span class="dropdown-toggle" data-toggle="dropdown">{{ user?.firstName }} {{ user?.lastName }}</span>
       <div class="dropdown-menu dropdown-menu-right">
         <div style="text-align: center">
-          <div *ngIf="user?.avatar">
-            <img src="{{user?.avatar}}" class="rounded-circle avatar avatar-xl" style="margin-bottom: 0.75em">
+          <div *ngIf="user?.photoURL">
+            <img src="{{ user?.photoURL }}" class="rounded-circle avatar avatar-xl" style="margin-bottom: 0.75em">
             <br>
           </div>
           <div *ngIf="user?.username">
