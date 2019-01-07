@@ -35,4 +35,12 @@ export class RegisterComponent implements OnInit {
     const lastName = this.model.lastName;
     this.authService.register(email, password, firstName, lastName);
   }
+
+
+  googleSignIn() {
+    this.authService.googleSignIn();
+  }
+
+  facebookSignIn() {
+  }
 }
