@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
 import { UtilService } from './util.service';
+import { auth } from 'firebase/app';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +33,22 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user'));
       }
     });
+  }
+
+  googleSignIn() {
+    const provider = new auth.GoogleAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then((result) => {
+        this.setUserData(result.user);
+        this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
+          result.additionalUserInfo.profile['family_name']);
+        localStorage.setItem('loggedIn', 'true');
+        this.router.navigate(['dashboard']);
+      }).catch((error) => {
+        if (environment.production === false) {
+          console.log(error);
+        }
+      });
   }
 
   // Register with email/password
@@ -144,6 +162,7 @@ export class AuthService {
         return true;
       }
     }
+
     return false;
   }
 
