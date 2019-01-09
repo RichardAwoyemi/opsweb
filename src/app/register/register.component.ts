@@ -42,5 +42,6 @@ export class RegisterComponent implements OnInit {
   }
 
   facebookSignIn() {
+    this.authService.facebookSignIn();
   }
 }

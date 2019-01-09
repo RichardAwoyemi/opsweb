@@ -120,8 +120,8 @@
 </footer>
 
 <!-- Logged in footer -->
-<footer id="footer" class="footer py-9" *ngIf="authService.isLoggedIn">
-  <div class="container" style="margin-top: -6em">
+<footer id="footer" class="footer py-4" *ngIf="authService.isLoggedIn">
+  <div class="container">
     <div class="col-xl-12">
       <small class="opacity-70">&copy; {{ today | date: 'yyyy' }} Opsonion. All rights reserved.</small>
     </div>

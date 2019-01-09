@@ -1,0 +1,12 @@
+#avatar:hover {
+  cursor: pointer;
+}
+
+#avatar {
+  width: 75%;
+  margin-bottom: 1em;
+}
+
+section {
+  padding-bottom: 5rem;
+}

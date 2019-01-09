@@ -7,6 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { useAnimation } from '@angular/animations';
 import { ifStmt } from '@angular/compiler/src/output/output_ast';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     public userService: UserService,
     public afAuth: AngularFireAuth,
     public db: AngularFirestore,
+    public router: Router,
     public authService: AuthService) {
     this.afAuth.authState.subscribe(response => {
       if (response) {
@@ -37,7 +39,10 @@ export class AppComponent implements OnInit {
             username: value.payload.data().username
           };
           if (!this.user.photoUrl) {
-            this.user.photoURL = 'https://i.imgur.com/8n6ODeX.png';
+            this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
+          }
+          if (!this.user.username) {
+            this.router.navigate(['setup-profile']);
           }
         });
       } else {

@@ -49,6 +49,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { UtilService } from './_services/util.service';
 import { UserService } from './_services/user.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SetupProfileComponent } from './setup-profile/setup-profile.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     ExchangeComponent,
     ModalComponent,
     VerifyEmailComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    SetupProfileComponent
   ],
   entryComponents: [
     ModalComponent
