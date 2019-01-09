@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
-
-declare var $;
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
+  errorMessage: String;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
+    public modalService: NgbModal,
   ) { }
 
   model: any = {};
@@ -34,5 +35,6 @@ export class LoginComponent implements OnInit {
   }
 
   facebookSignIn() {
+    this.authService.facebookSignIn();
   }
 }

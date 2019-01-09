@@ -106,6 +106,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     UserService,
     AuthGuard,
     AnonymousGuard,
+    NgbModule,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {

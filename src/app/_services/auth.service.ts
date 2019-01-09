@@ -7,7 +7,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
 import { UtilService } from './util.service';
 import { auth } from 'firebase/app';
-import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class AuthService {
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    private modalService: NgbModal,
+    public modalService: NgbModal,
     private utilService: UtilService,
     public ngZone: NgZone           // NgZone service to remove outside scope warning
   ) {
@@ -35,6 +34,22 @@ export class AuthService {
     });
   }
 
+  facebookSignIn() {
+    const provider = new auth.FacebookAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then((result) => {
+        this.setUserData(result.user);
+        this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['first_name'],
+        result.additionalUserInfo.profile['last_name']);
+        localStorage.setItem('loggedIn', 'true');
+        this.router.navigate(['dashboard']);
+      }).catch((error) => {
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = error.message;
+      });
+  }
+
   googleSignIn() {
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider)
@@ -45,9 +60,9 @@ export class AuthService {
         localStorage.setItem('loggedIn', 'true');
         this.router.navigate(['dashboard']);
       }).catch((error) => {
-        if (environment.production === false) {
-          console.log(error);
-        }
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = error.message;
       });
   }
 
@@ -55,6 +70,7 @@ export class AuthService {
   register(email, password, firstName, lastName) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
+
         /* Call the SendVerificationMail() function when a new user signs
         up and returns promise */
         this.sendVerificationMail();
@@ -158,8 +174,14 @@ export class AuthService {
     }
 
     if (user !== null) {
-      if (loggedIn === true && user.emailVerified !== false) {
-        return true;
+      if (user.providerData[0].providerId !== 'facebook.com') {
+        if (loggedIn === true && user.emailVerified !== false) {
+          return true;
+        }
+      } else {
+        if (loggedIn === true) {
+          return true;
+        }
       }
     }
 
@@ -172,6 +194,20 @@ export class AuthService {
       localStorage.removeItem('user');
       localStorage.removeItem('loggedIn');
       this.router.navigate(['login']);
+    });
+  }
+
+  checkIfMailExists(email: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.afAuth.auth.fetchSignInMethodsForEmail(email)
+        .then(res => {
+          if (res.length === 0) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        })
+        .catch(err => reject(err));
     });
   }
 }
