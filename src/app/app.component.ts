@@ -5,6 +5,8 @@ import { AuthService } from './_services/auth.service';
 import { UserService } from './_services/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { useAnimation } from '@angular/animations';
+import { ifStmt } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +36,9 @@ export class AppComponent implements OnInit {
             photoURL: value.payload.data().photoURL,
             username: value.payload.data().username
           };
+          if (!this.user.photoUrl) {
+            this.user.photoURL = 'https://i.imgur.com/8n6ODeX.png';
+          }
         });
       } else {
         localStorage.setItem('user', null);
