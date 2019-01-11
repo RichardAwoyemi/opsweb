@@ -21,6 +21,7 @@ section {
   border: none;
 }
 
-#qrcode-holder qrcode {
-  text-align: center;
+.right-arrow {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
