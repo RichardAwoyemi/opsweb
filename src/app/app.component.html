@@ -1,36 +1,36 @@
 <!-- Logged in navbar -->
 <section class="topbar d-lg-flex text-black bg-white" *ngIf="authService.isLoggedIn">
-  <div class="container small-3">
-    <nav class="nav">
-      <a class="nav-link" routerLink="/dashboard">Dashboard</a>
-      <a class="nav-link" routerLink="/exchange">Exchange</a>
-      <a class="nav-link" routerLink="/accounts">Accounts</a>
-      <a class="nav-link" href="#">Tasks</a>
-      <a class="nav-link" href="#">Tools</a>
-    </nav>
-    <div class="dropdown mr-4">
-      <span class="dropdown-toggle" data-toggle="dropdown">{{ user?.firstName }} {{ user?.lastName }}</span>
-      <div class="dropdown-menu dropdown-menu-right">
-        <div style="text-align: center">
-          <div *ngIf="user?.photoURL">
-            <img src="{{ user?.photoURL }}" class="rounded-circle avatar avatar-xl" style="margin-bottom: 0.75em">
-            <br>
+    <div class="container small-3">
+      <nav class="nav">
+        <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        <a class="nav-link" routerLink="/exchange">Exchange</a>
+        <a class="nav-link" routerLink="/accounts">Accounts</a>
+        <a class="nav-link" href="#">Tasks</a>
+        <a class="nav-link" routerLink="/tools">Tools</a>
+      </nav>
+      <div class="dropdown mr-4">
+        <span class="dropdown-toggle" data-toggle="dropdown">{{ user?.firstName }} {{ user?.lastName }}</span>
+        <div class="dropdown-menu dropdown-menu-right">
+          <div style="text-align: center">
+            <div *ngIf="user?.photoURL">
+              <img src="{{ user?.photoURL }}" class="rounded-circle avatar avatar-xl" style="margin-bottom: 0.75em">
+              <br>
+            </div>
+            <div *ngIf="user?.username">
+              <strong>@{{ user?.username }}</strong>
+              <br>
+            </div>
+            <small>{{ user?.email }}</small>
           </div>
-          <div *ngIf="user?.username">
-            <strong>@{{ user?.username }}</strong>
-            <br>
+          <div class="dropdown-divider"></div>
+          <div style="text-align: left" class="nav">
+            <a class="dropdown-item" href="/" style="padding: 0rem;">Settings</a>
+            <a class="dropdown-item" href="/" style="padding: 0rem;">Invite Friends</a>
+            <a class="dropdown-item" href="/" (click)="authService.signOut()" style="padding: 0rem;">Log Out</a>
           </div>
-          <small>{{ user?.email }}</small>
-        </div>
-        <div class="dropdown-divider"></div>
-        <div style="text-align: left" class="nav">
-          <a class="dropdown-item" href="/" style="padding: 0rem;">Settings</a>
-          <a class="dropdown-item" href="/" style="padding: 0rem;">Invite Friends</a>
-          <a class="dropdown-item" href="/" (click)="authService.signOut()" style="padding: 0rem;">Log Out</a>
         </div>
       </div>
     </div>
-  </div>
 </section>
 
 <!-- Not logged in navbar -->

@@ -38,11 +38,11 @@ export class AppComponent implements OnInit {
             photoURL: value.payload.data().photoURL,
             username: value.payload.data().username
           };
-          if (!this.user.photoUrl) {
+          if (!this.user.photoURL) {
             this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
           }
           if (!this.user.username) {
-            this.router.navigate(['setup-profile']);
+            // this.router.navigate(['setup-profile']);
           }
         });
       } else {

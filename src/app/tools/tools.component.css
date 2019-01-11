@@ -1,0 +1,26 @@
+section {
+  background-color: #F4F7FA !important;
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+}
+
+.container {
+  background-color: #fff;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.detail-table {
+  border: none; 
+  padding-left: 0px;
+  padding-bottom: 0px;
+}
+
+.detail-table tbody, .detail-table tr, .detail-table th, .detail-table td {
+  padding-left: 0px;
+  border: none;
+}
+
+#qrcode-holder qrcode {
+  text-align: center;
+}

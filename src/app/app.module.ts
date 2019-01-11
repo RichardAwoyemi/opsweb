@@ -50,6 +50,8 @@ import { UtilService } from './_services/util.service';
 import { UserService } from './_services/user.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SetupProfileComponent } from './setup-profile/setup-profile.component';
+import { ToolsComponent } from './tools/tools.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,8 @@ import { SetupProfileComponent } from './setup-profile/setup-profile.component';
     ModalComponent,
     VerifyEmailComponent,
     ForgotPasswordComponent,
-    SetupProfileComponent
+    SetupProfileComponent,
+    ToolsComponent
   ],
   entryComponents: [
     ModalComponent
@@ -98,7 +101,8 @@ import { SetupProfileComponent } from './setup-profile/setup-profile.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    QRCodeModule
   ],
   providers: [
     MarketsService,
@@ -108,7 +112,6 @@ import { SetupProfileComponent } from './setup-profile/setup-profile.component';
     UserService,
     AuthGuard,
     AnonymousGuard,
-    NgbModule,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {
