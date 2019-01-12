@@ -1,0 +1,19 @@
+section {
+  background-color: #F4F7FA !important;
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+}
+
+.table-cart tr td:first-child {
+  padding-left: 15px;
+  width: 50px;
+}
+
+.table-icon {
+  padding-left: 15px;
+  width: 50px;
+}
+
+.modal-tab {
+  padding: 0px;
+}
