@@ -5,8 +5,6 @@ import { AuthService } from './_services/auth.service';
 import { UserService } from './_services/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { useAnimation } from '@angular/animations';
-import { ifStmt } from '@angular/compiler/src/output/output_ast';
 import { Router } from '@angular/router';
 
 @Component({

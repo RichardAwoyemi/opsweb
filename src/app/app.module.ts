@@ -49,9 +49,10 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { UtilService } from './_services/util.service';
 import { UserService } from './_services/user.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { SetupProfileComponent } from './setup-profile/setup-profile.component';
 import { ToolsComponent } from './tools/tools.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SettingsComponent } from './settings/settings.component';
+import { InviteComponent } from './invite/invite.component';
 
 @NgModule({
   declarations: [
@@ -81,8 +82,9 @@ import { QRCodeModule } from 'angularx-qrcode';
     ModalComponent,
     VerifyEmailComponent,
     ForgotPasswordComponent,
-    SetupProfileComponent,
-    ToolsComponent
+    ToolsComponent,
+    SettingsComponent,
+    InviteComponent
   ],
   entryComponents: [
     ModalComponent
