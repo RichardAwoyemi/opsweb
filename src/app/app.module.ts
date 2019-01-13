@@ -53,6 +53,7 @@ import { ToolsComponent } from './tools/tools.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SettingsComponent } from './settings/settings.component';
 import { InviteComponent } from './invite/invite.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { InviteComponent } from './invite/invite.component';
     ForgotPasswordComponent,
     ToolsComponent,
     SettingsComponent,
-    InviteComponent
+    InviteComponent,
+    TasksComponent
   ],
   entryComponents: [
     ModalComponent

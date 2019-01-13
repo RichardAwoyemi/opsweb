@@ -197,16 +197,16 @@
       </div>
       <!-- Accounts -->
       <div class="col-lg-4">
-        <table class="table table-cart table-hover">
+        <table class="table table-cart">
           <tbody valign="middle">
             <tr>
-              <td style="width: auto">
+              <td style="width: 4em">
                 <img src="assets/img/crypto-icons/btc.svg">
               </td>
               <td style="width: auto">
                 <div class="text-left">
-                  <h5>Bitcoin Wallet</h5>
-                  <p>0.0000 BTC ≈ &pound;0.00</p>
+                  <h5>BTC Wallet</h5>
+                  <p>0.08362493 BTC ≈ &pound;236.21</p>
                   <div style="padding-top: 1em">
                     <button type="button" class="btn btn-secondary" (click)="showSendBitcoinModal()">Send</button>
                     &nbsp;
@@ -216,12 +216,12 @@
               </td>
             </tr>
             <tr>
-              <td style="width: auto">
+              <td style="width: 4em">
                 <img src="assets/img/crypto-icons/eth.svg">
               </td>
               <td style="width: auto">
                 <div class="text-left">
-                  <h5>Ethereum Wallet</h5>
+                  <h5>ETH Wallet</h5>
                   <p>0.0000 ETH ≈ &pound;0.00</p>
                   <div style="padding-top: 1em">
                     <button type="button" class="btn btn-secondary" (click)="showSendEthereumModal()">Send</button>
@@ -233,6 +233,16 @@
             </tr>
           </tbody>
         </table>
+        <div class="cart-price table-cart">
+          <div class="flexbox">
+            <div>
+              <p><strong>Total:</strong></p>
+            </div>
+            <div>
+              <h5 class="fw-600">£236.21</h5>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
@@ -345,7 +355,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-warning" role="alert">
-          Only send Bitcoin (BTC) to this address. Sending any other digital asset, will result in permanent loss.
+          Only send Bitcoin (BTC) to this address. Sending any other digital asset will result in permanent loss.
         </div>
         <div id="qrcode-holder" style="padding-top: 1em; padding-bottom: 1em;">
           <qrcode [qrdata]="'3MJfbE3JTtiEA7uKwz4KPgFLA8pDE9XBn9'" [size]="128" [level]="'M'"></qrcode>
@@ -473,7 +483,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-warning" role="alert">
-          Only send Ethereum (ETH) to this address. Sending any other digital asset, will result in permanent loss.
+          Only send Ethereum (ETH) to this address. Sending any other digital asset will result in permanent loss.
         </div>
         <div id="qrcode-holder" style="padding-top: 1em; padding-bottom: 1em;">
           <qrcode [qrdata]="'0x8FC65145D0d1589147dCeF988d63CF06E7ee2CD5'" [size]="128" [level]="'M'"></qrcode>

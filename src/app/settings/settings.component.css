@@ -1,0 +1,23 @@
+section {
+  background-color: #F4F7FA !important;
+  padding-top: 11rem;
+  padding-bottom: 3rem;
+}
+
+.container {
+  background-color: #fff;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.flexbox-border {
+  border-right: 1px solid #f2f2f2; 
+}
+
+.flexbox {
+  justify-content: start;
+}
+
+.flexbox > div {
+  padding-right: 2em;
+}

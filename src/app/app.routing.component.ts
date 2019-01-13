@@ -28,6 +28,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ToolsComponent } from './tools/tools.component';
 import { SettingsComponent } from './settings/settings.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
@@ -56,7 +57,8 @@ const routes: Routes = [
   { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AnonymousGuard] },
   { path: 'tools', component: ToolsComponent, canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
-  { path: 'settings', component: SettingsComponent, canActivate: [AnonymousGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

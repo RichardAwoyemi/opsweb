@@ -1,5 +1,6 @@
 <!-- Logged in navbar -->
-<section class="topbar d-lg-flex text-black bg-white" *ngIf="authService.isLoggedIn">
+<!--
+<section class="topbar d-lg-flex text-black bg-white" *ngIf="authService.isLoggedIn">   
     <div class="container small-3">
       <nav class="nav">
         <a class="nav-link" routerLink="/dashboard">Dashboard</a>
@@ -32,6 +33,48 @@
       </div>
     </div>
 </section>
+-->
+<nav class="navbar navbar-expand-lg navbar-dark flex-column" style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0">
+  <div class="container d-stick-none" style="padding-top: 1.5em; padding-bottom: 1.5em">
+    <div class="row">
+      <div class="col-4">
+        <div class="nav nav-navbar ">
+          <a class="navbar-brand" href="#">
+            <img class="logo-dark" src="../assets/img/opsonion-cropped-white.png" alt="logo">
+          </a>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+      </div>
+      <div class="col-4 text-right">
+        <span class="dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false">
+          <img class="avatar avatar-xs" src="{{ user?.photoURL }}" alt="user">
+        </span>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
+          <a class="dropdown-item" href="/" style="padding: 0rem;">Invite Friends</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/" (click)="authService.signOut()" style="padding: 0rem;">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="my-0 w-100">
+  <div style="background-color: #fff; width: 100%">
+    <div class="container" style="padding-left: 0px">
+      <div class="navbar-left">
+      </div>
+      <section>
+        <div class="nav nav-navbar mr-auto">
+          <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
+          <a class="nav-link" routerLink="/accounts">ACCOUNTS</a>
+          <a class="nav-link" routerLink="/tasks">TASKS</a>
+          <a class="nav-link" routerLink="/tools">TOOLS</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</nav>
 
 <!-- Not logged in navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart" *ngIf="!authService.isLoggedIn">
@@ -114,7 +157,6 @@
           <a class="nav-link" routerLink="/contact">Contact</a>
         </div>
       </div>
-
     </div>
   </div>
 </footer>

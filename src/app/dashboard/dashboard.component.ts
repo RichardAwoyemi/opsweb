@@ -3,7 +3,8 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 
 @Component({
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard.component.html',
+  styleUrls: [ './dashboard.component.css' ]
 })
 export class DashboardComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
