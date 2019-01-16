@@ -1,3 +1,4 @@
+<!-- Logged in navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark flex-column" style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0" *ngIf="authService.isLoggedIn">
   <div class="container d-stick-none" style="padding-top: 1.5em; padding-bottom: 1.5em">
     <div class="row">
@@ -59,11 +60,9 @@
         <a class="nav-link" routerLink="/careers">Careers</a>
         <a class="nav-link" routerLink="/markets">Markets</a>
         <a class="nav-link" routerLink="/support">Support</a>
+        <a class="nav-link" routerLink="/login" >Login</a>
+        <a class="nav-link" routerLink="/register">Register</a>
       </nav>
-      <div *ngIf="!authService.isLoggedIn">
-        <a class="btn btn-sm btn-light ml-lg-5 mr-2" routerLink="/login">Login</a>
-        <a class="btn btn-sm btn-primary" routerLink="/register">Sign up</a>
-      </div>
     </section>
 
     <!-- Mobile links -->
@@ -95,7 +94,6 @@
         <hr class="d-xl-none">
         <small class="opacity-70">&copy; 2018 Opsonion. All rights reserved.</small>
       </div>
-
       <div class="col-4 col-xl-2 offset-xl-1">
         <div class="nav flex-column">
           <a class="nav-link" routerLink="/about">About</a>
@@ -103,7 +101,6 @@
           <a class="nav-link" routerLink="/careers">Careers</a>
         </div>
       </div>
-
       <div class="col-4 col-xl-2">
         <div class="nav flex-column">
           <a class="nav-link" routerLink="/markets">Markets</a>
@@ -111,7 +108,6 @@
           <a class="nav-link" routerLink="/status">Status</a>
         </div>
       </div>
-
       <div class="col-4 col-xl-2">
         <div class="nav flex-column">
           <a class="nav-link" routerLink="/press">Press</a>

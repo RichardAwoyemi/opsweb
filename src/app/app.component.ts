@@ -6,6 +6,8 @@ import { UserService } from './_services/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { UtilService } from './_services/util.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +21,11 @@ export class AppComponent implements OnInit {
   today: number = Date.now();
   appStoreUrl: string;
   userAgentString: string;
-  iosAppUrl = 'https://itunes.apple.com';
-  androidAppUrl = 'https://play.google.com';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public userService: UserService,
+    public utilService: UtilService,
     public afAuth: AngularFireAuth,
     public db: AngularFirestore,
     public router: Router,
@@ -53,16 +54,16 @@ export class AppComponent implements OnInit {
       }
     });
     this.userAgentString = navigator.userAgent;
+    if (environment.production === false) {
+      console.log(this.userAgentString);
+    }
   }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
-    if (this.userAgentString.indexOf('iPhone') > -1 ||
-        this.userAgentString.indexOf('iPod') > -1 ||
-        this.userAgentString.indexOf('iPad') > -1) {
-      this.appStoreUrl = this.iosAppUrl;
-    } else if (/Android/.test(this.userAgentString)) {
-      this.appStoreUrl = this.androidAppUrl;
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset ]);
+    this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
+    if (environment.production === false) {
+      console.log(this.appStoreUrl);
     }
   }
 
