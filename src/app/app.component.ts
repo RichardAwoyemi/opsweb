@@ -17,6 +17,10 @@ export class AppComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   user: any;
   today: number = Date.now();
+  appStoreUrl: string;
+  userAgentString: string;
+  iosAppUrl = 'https://itunes.apple.com';
+  androidAppUrl = 'https://play.google.com';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -48,10 +52,18 @@ export class AppComponent implements OnInit {
         JSON.parse(localStorage.getItem('user'));
       }
     });
+    this.userAgentString = navigator.userAgent;
   }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
+    if (this.userAgentString.indexOf('iPhone') > -1 ||
+        this.userAgentString.indexOf('iPod') > -1 ||
+        this.userAgentString.indexOf('iPad') > -1) {
+      this.appStoreUrl = this.iosAppUrl;
+    } else if (/Android/.test(this.userAgentString)) {
+      this.appStoreUrl = this.androidAppUrl;
+    }
   }
 
   onActivate(_event) {
