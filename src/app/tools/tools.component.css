@@ -25,3 +25,19 @@ section {
   padding-left: 0.5em;
   padding-right: 0.5em;
 }
+
+.balance p {
+  font-size: 13px;
+  color: #929daf;
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+.balance h5 {
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.balance {
+  padding-bottom: 1.5em;
+}

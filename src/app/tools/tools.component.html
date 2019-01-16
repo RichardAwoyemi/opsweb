@@ -66,26 +66,46 @@
             </ul>
           </div>
           <div class="tab-pane fade" id="tab-history">
-            <div class="col-lg-12 mx-auto">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="balance">
+                  <p>Balance</p>
+                  <h5>236.21 GBP</h5>
+                </div>
+              </div>
+              <div class="col-md-6 text-right" style="padding-top: 1.25em">
+                  <button class="btn btn-lg btn-secondary" type="button">Export</button>
+              </div>
+            </div>
+            <div class="col-lg-12 mx-auto" style="padding-left: 0px; padding-right: 0px">
               <table class="table table-hover">
                 <thead>
                   <tr>
                     <!-- Types: Buy, Sell, Withdraw, Deposit -->
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Fees</th>
-                      <!-- Status: In Progress, Complete, Failed -->
-                    <th>Status</th>
                     <th>Date</th>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <!-- Status: In Progress, Complete, Failed -->
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">Buy</th>
-                    <td>284.69 GBP <span class="right-arrow">&#8594;</span> 0.1 BTC</td>
-                    <td>7.12 GBP</td>
+                    <td>Jan 11, 2019</td>
+                    <td>Transfer to</td>
+                    <th>Richard Awoyemi</th>
+                    <td>0.1 BTC (284.69 GBP)</td>
+                    <td><span class="badge badge-warning">IN PROGRESS</span></td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td>Jan 09, 2019</td>
+                    <td>Payment from</td>
+                    <th>Mofe Salami</th>
+                    <td>0.1 BTC (284.69 GBP)</td>
                     <td><span class="badge badge-success">COMPLETED</span></td>
-                    <td>January 11, 2019</td>
                   </tr>
                 </tbody>
               </table>
