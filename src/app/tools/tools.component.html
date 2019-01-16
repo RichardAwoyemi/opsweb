@@ -74,11 +74,11 @@
                 </div>
               </div>
               <div class="col-md-6 text-right" style="padding-top: 1.25em">
-                  <button class="btn btn-lg btn-secondary" type="button">Export</button>
+                  <button class="btn btn-lg btn-secondary" type="button" (click)="showExportOptions()">Export</button>
               </div>
             </div>
             <div class="col-lg-12 mx-auto" style="padding-left: 0px; padding-right: 0px">
-              <table class="table table-hover">
+              <table class="table table-hover" id="contentToExport">
                 <thead>
                   <tr>
                     <!-- Types: Buy, Sell, Withdraw, Deposit -->
@@ -116,6 +116,31 @@
     </div>
   </div>
 </section>
+
+<!-- Export -->
+<div class="modal fade" #showExportModal id="showExportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exportModalLabel">Export</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12" style="padding-left: 0px;">
+          <button type="button" class="btn btn-block btn-light" (click)="exportToPdf()">Export to PDF</button>
+          <button type="button" class="btn btn-block btn-light" (click)="exportToCsv()">Export to CSV</button>
+          <button type="button" class="btn btn-block btn-light" (click)="exportToExcel()">Export to Excel</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Show Details -->
 <div class="modal fade" #showDetailsModal id="showDetailsModal" tabindex="-1" role="dialog" aria-labelledby="showDetailsModalLabel"

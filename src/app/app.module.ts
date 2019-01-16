@@ -54,6 +54,9 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { SettingsComponent } from './settings/settings.component';
 import { InviteComponent } from './invite/invite.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { ExcelService } from './_services/excel.service';
+import { CsvService } from './_services/csv.service';
+import { PdfService } from './_services/pdf.service';
 
 @NgModule({
   declarations: [
@@ -114,6 +117,9 @@ import { TasksComponent } from './tasks/tasks.component';
     AuthService,
     UtilService,
     UserService,
+    ExcelService,
+    CsvService,
+    PdfService,
     AuthGuard,
     AnonymousGuard,
     {
