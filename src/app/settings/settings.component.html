@@ -538,31 +538,23 @@
               <div class="col-md-6" style="padding-left: 0px">
                 <ol class="step" style="padding-left: 0px">
                   <li class="step-item">
-                    <div class="step-icon">
+                    <div class="step-icon" (click)="showVerifyIdentity()"> 
                       <span class="iconbox"></span>
                     </div>
                     <div class="step-content">
                       <small>Unverified</small>
-                      <h6><strong>Level 1</strong></h6>
-                      <ul>
-                        <li>Lorem ipsum dolor sit amet</li>
-                        <li>Consectetur adipiscing elit</li>
-                        <li>Integer molestie lorem at massa</li>
-                      </ul>
+                      <h6><strong>Level 1 - Verify your identity</strong></h6>
+                      <p>This helps build trust between users on the Opsonion platform. Your personal details will not be shared with anyone.</p>
                     </div>
                   </li>
                   <li class="step-item">
-                    <div class="step-icon">
+                    <div class="step-icon"  (click)="showVerifyDocumentation()">
                       <span class="iconbox"></span>
                     </div>
                     <div class="step-content">
                       <small>Unverified</small>
-                      <h6><strong>Level 2</strong></h6>
-                      <ul>
-                        <li>Lorem ipsum dolor sit amet</li>
-                        <li>Consectetur adipiscing elit</li>
-                        <li>Integer molestie lorem at massa</li>
-                      </ul>
+                      <h6><strong>Level 2 - Provide official documentation</strong></h6>
+                      <p>We need a photo ID, such as your passport or driving license, to verify your account. It will not be shared with anyone.</p>
                     </div>
                   </li>
                 </ol>
@@ -575,16 +567,14 @@
                   </div>
                   <div style="padding-top: 1em">
                     <ul class="list-unstyled">
-                      <li><i class="ti-check text-success mr-2"></i> Lorem ipsum dolor sit amet</li>
-                      <li><i class="ti-close text-danger mr-2"></i> Consectetur adipiscing elit</li>
-                      <li><i class="ti-close text-danger mr-2"></i> Integer molestie lorem at massa</li>
-                      <li><i class="ti-close text-danger mr-2"></i> Lorem ipsum dolor sit amet</li>
-                      <li><i class="ti-close text-danger mr-2"></i> Consectetur adipiscing elit</li>
-                      <li><i class="ti-close text-danger mr-2"></i> Integer molestie lorem at massa</li>
+                      <li><i class="ti-check text-success mr-2"></i>Browse the platform</li>
+                      <li><i class="ti-close text-danger mr-2"></i>Send and receive payment</li>
+                      <li><i class="ti-close text-danger mr-2"></i>Create new tasks</li>
+                      <li><i class="ti-close text-danger mr-2"></i>Pick up a task</li>
                     </ul>
                   </div>
                   <div class="form-group" style="padding-top: 1em">
-                    <button type="button" class="btn btn-lg btn-secondary">Upgrade Your Account</button>
+                    <button type="button" class="btn btn-lg btn-secondary" (click)="showVerifyIdentity()">Upgrade Your Account</button>
                   </div>
                 </div>
               </div>
@@ -595,3 +585,43 @@
     </div>
   </div>
 </section>
+
+<!-- Verify identity -->
+<div class="modal fade" #showVerifyIdentityModal id="showVerifyIdentityModal" tabindex="-1" role="dialog" aria-labelledby="showVerifyIdentityModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showVerifyIdentityModalLabel">Verify your identity</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Verify documentation -->
+<div class="modal fade" #showVerifyDocumentationModal id="showVerifyDocumentationModal" tabindex="-1" role="dialog" aria-labelledby="showVerifyDocumentationModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showVerifyDocumentationModalLabel">Verify official documentation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
