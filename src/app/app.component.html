@@ -17,9 +17,9 @@
         </span>
         <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
-          <a class="dropdown-item" href="/" style="padding: 0rem;">Invite Friends</a>
+          <a class="dropdown-item" routerLink="/invite" style="padding: 0rem;">Invite Friends</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/" (click)="authService.signOut()" style="padding: 0rem;">Log Out</a>
+          <a class="dropdown-item" (click)="authService.signOut()" style="padding: 0rem;">Log Out</a>
         </div>
       </div>
     </div>
@@ -33,6 +33,7 @@
         <div class="nav nav-navbar mr-auto">
           <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
           <a class="nav-link" routerLink="/accounts">ACCOUNTS</a>
+          <a class="nav-link" routerLink="/accounts">EXCHANGE</a>
           <a class="nav-link" routerLink="/tasks">TASKS</a>
           <a class="nav-link" routerLink="/tools">TOOLS</a>
         </div>
@@ -60,7 +61,7 @@
         <a class="nav-link" routerLink="/careers">Careers</a>
         <a class="nav-link" routerLink="/markets">Markets</a>
         <a class="nav-link" routerLink="/support">Support</a>
-        <a class="nav-link" routerLink="/login" >Login</a>
+        <a class="nav-link" routerLink="/login">Login</a>
         <a class="nav-link" routerLink="/register">Register</a>
       </nav>
     </section>
