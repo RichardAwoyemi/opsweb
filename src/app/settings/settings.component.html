@@ -538,23 +538,25 @@
               <div class="col-md-6" style="padding-left: 0px">
                 <ol class="step" style="padding-left: 0px">
                   <li class="step-item">
-                    <div class="step-icon" (click)="showVerifyIdentity()"> 
-                      <span class="iconbox"></span>
+                    <div class="step-icon" (click)="showVerifyIdentity()">
+                      <span class="iconbox"><i class="ti-close text-center"></i></span>
                     </div>
                     <div class="step-content">
                       <small>Unverified</small>
                       <h6><strong>Level 1 - Verify your identity</strong></h6>
-                      <p>This helps build trust between users on the Opsonion platform. Your personal details will not be shared with anyone.</p>
+                      <p>This helps build trust between users on the Opsonion platform. Your personal details will not
+                        be shared with anyone.</p>
                     </div>
                   </li>
                   <li class="step-item">
-                    <div class="step-icon"  (click)="showVerifyDocumentation()">
-                      <span class="iconbox"></span>
+                    <div class="step-icon" (click)="showVerifyDocumentation()">
+                      <span class="iconbox"><i class="ti-close text-center"></i></span>
                     </div>
                     <div class="step-content">
                       <small>Unverified</small>
                       <h6><strong>Level 2 - Provide official documentation</strong></h6>
-                      <p>We need a photo ID, such as your passport or driving license, to verify your account. It will not be shared with anyone.</p>
+                      <p>We need a photo ID, such as your passport or driving licence, to verify your account. It will
+                        not be shared with anyone.</p>
                     </div>
                   </li>
                 </ol>
@@ -574,7 +576,8 @@
                     </ul>
                   </div>
                   <div class="form-group" style="padding-top: 1em">
-                    <button type="button" class="btn btn-lg btn-secondary" (click)="showVerifyIdentity()">Upgrade Your Account</button>
+                    <button type="button" class="btn btn-lg btn-secondary" (click)="showVerifyIdentity()">Upgrade Your
+                      Account</button>
                   </div>
                 </div>
               </div>
@@ -587,8 +590,8 @@
 </section>
 
 <!-- Verify identity -->
-<div class="modal fade" #showVerifyIdentityModal id="showVerifyIdentityModal" tabindex="-1" role="dialog" aria-labelledby="showVerifyIdentityModalLabel"
-  aria-hidden="!submitted">
+<div class="modal fade" #showVerifyIdentityModal id="showVerifyIdentityModal" tabindex="-1" role="dialog"
+  aria-labelledby="showVerifyIdentityModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -598,8 +601,76 @@
         </button>
       </div>
       <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Legal Name</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <input class="form-control" placeholder="First Name" type="text" value="{{ user.firstName }}">
+                </div>
+                <div class="col-md-6">
+                  <input class="form-control" placeholder="Last Name" type="text" value="{{ user.lastName }}">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <select class="form-control">
+                    <option>Month</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control">
+                    <option>Day</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control">
+                    <option>Year</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Street Address 1</label>
+              <div class="row">
+                <div class="col-md-12">
+                  <input class="form-control" type="text" placeholder="Street Address">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Street Address 2</label>
+              <div class="row">
+                <div class="col-md-12">
+                  <input class="form-control" type="text" placeholder="Street Address">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <div class="row">
+                <div class="col-md-12">
+                  <input class="form-control" type="text" placeholder="City">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Postal Code</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <input class="form-control" type="text" placeholder="Postal Code">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -607,8 +678,8 @@
 </div>
 
 <!-- Verify documentation -->
-<div class="modal fade" #showVerifyDocumentationModal id="showVerifyDocumentationModal" tabindex="-1" role="dialog" aria-labelledby="showVerifyDocumentationModalLabel"
-  aria-hidden="!submitted">
+<div class="modal fade" #showVerifyDocumentationModal id="showVerifyDocumentationModal" tabindex="-1" role="dialog"
+  aria-labelledby="showVerifyDocumentationModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -618,8 +689,25 @@
         </button>
       </div>
       <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          <small>Please take a close-up photo of your ID in a well-lit room. If you’re using your passport, you must
+            provide the page which contains your ID. It will take two working days (Monday to Friday) for your
+            request to be validated.</small>
+        </div>
+        <div class="form-group" style="padding-top: 1em">
+          <label>Select your documentation type</label>
+          <select class="form-control form-control-sm">
+            <option>Passport</option>
+            <option>Driving licence</option>
+          </select>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="customFile" accept=".png, .jpg, .jpeg">
+          <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
