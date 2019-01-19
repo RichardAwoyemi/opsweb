@@ -22,6 +22,10 @@ section {
   text-align: right;
 }
 
+.table-hover:hover {
+  cursor: pointer;
+}
+
 .table-cart tr td:first-child {
   padding-left: 15px;
 }
