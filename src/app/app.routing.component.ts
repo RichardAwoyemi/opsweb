@@ -31,6 +31,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { InviteComponent } from './invite/invite.component';
 import { TaskComponent } from './task/task.component';
+import { NewTaskComponent } from './new-task/new-task.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
@@ -62,6 +63,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
   { path: 'tasks/:id', component: TaskComponent, canActivate: [AuthGuard] },
+  { path: 'tasks/new', component: NewTaskComponent, canActivate: [AuthGuard] },
   { path: 'invite', component: InviteComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

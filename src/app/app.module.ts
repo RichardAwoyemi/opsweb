@@ -59,6 +59,7 @@ import { CsvService } from './_services/csv.service';
 import { PdfService } from './_services/pdf.service';
 import { TaskComponent } from './task/task.component';
 import { UserComponent } from './user/user.component';
+import { NewTaskComponent } from './new-task/new-task.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { UserComponent } from './user/user.component';
     InviteComponent,
     TasksComponent,
     TaskComponent,
-    UserComponent
+    UserComponent,
+    NewTaskComponent
   ],
   entryComponents: [
     ModalComponent
