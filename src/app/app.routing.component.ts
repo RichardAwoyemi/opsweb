@@ -30,6 +30,7 @@ import { ToolsComponent } from './tools/tools.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { InviteComponent } from './invite/invite.component';
+import { TaskComponent } from './task/task.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
@@ -60,6 +61,7 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
+  { path: 'tasks/:id', component: TaskComponent, canActivate: [AuthGuard] },
   { path: 'invite', component: InviteComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

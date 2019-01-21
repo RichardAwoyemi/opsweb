@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent implements OnInit {
+  showMoreTasks = false;
 
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit() {
   }
 
+  loadMoreTasks() {
+    this.showMoreTasks = true;
+  }
 }

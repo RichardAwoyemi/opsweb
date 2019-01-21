@@ -50,6 +50,6 @@ section {
   cursor: pointer;
 }
 
-.reset-link:hover {
+.reset-link:hover, .user-link:hover {
   text-decoration: underline;
 }
