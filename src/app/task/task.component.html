@@ -86,12 +86,14 @@
                   <td style="width: 100%; padding-top: 1.5rem; padding-bottom: 1.5rem" class="text-left">
                     <div class="row">
                       <div class="col-md-6">
-                        <button type="button" class="btn btn-square btn-secondary"><i class="ti-share"></i></button>&nbsp;
-                        <button type="button" class="btn btn-square btn-secondary"><i class="ti-pencil-alt2"></i></button>&nbsp;
-                        <button type="button" class="btn btn-square btn-secondary"><i class="ti-flag"></i></button>
+                        <button type="button" class="btn btn-square btn-secondary" (click)="showShareOptions()"><i
+                            class="ti-share"></i></button>&nbsp;
+                        <button type="button" class="btn btn-square btn-secondary" (click)="showEditOptions()"><i class="ti-pencil-alt2"></i></button>&nbsp;
+                        <button type="button" class="btn btn-square btn-secondary" (click)="showReportOptions()"><i
+                            class="ti-flag"></i></button>
                       </div>
                       <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-success">Apply</button>
+                        <button type="button" class="btn btn-primary">Apply</button>
                       </div>
                     </div>
                     <hr>
@@ -144,3 +146,161 @@
     </div>
   </div>
 </section>
+
+<!-- Report -->
+<div class="modal fade" #showReportModal id="showReportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">Report</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Choose a reason for reporting this task. We won't tell <strong>darrellekow</strong> who reported them.
+        <div class="custom-controls-stacked" style="padding-top: 1em">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio1">
+            <label class="custom-control-label">It's spam</label>
+            <!--
+              We use spam reports as a signal to understand problems we're having with spam on 
+              Opsonion. If you think this post should be removed, mark it as inappropriate.
+            -->
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio1">
+            <label class="custom-control-label">Contains nudity or pornography</label>
+            <!--
+              Report as nudity or pornography?
+              We remove:
+              - Photos or videos of sexual intercourse
+              - Posts showing sexual intercourse, genitals or close-ups of fully-nude buttocks
+              - Posts of nude or partially nude children
+              If you report someone's post, Opsonion doesn't tell them who reported it.
+              If someone is in immediate danger, call local emergency services. Don't wait.
+            -->
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio2">
+            <label class="custom-control-label">Hate speech or symbols</label>
+            <!--
+              Report as hate speech or symbols?
+              We remove:
+              - Photos of hate speech or symbols, like swastikas or white power hand signs
+              - Posts with captions that encourage violence or attack anyone based on who they are
+              - Specific threats of physical harm, theft or vandalism
+              If you report someone's post, Opsonion doesn't tell them who reported it.
+              If someone is in immediate danger, call local emergency services. Don't wait.
+            -->
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio2">
+            <label class="custom-control-label">Violence or threat of violence</label>
+            <!--
+              Report as violence or threat of violence?
+              We remove:
+              - Photos or videos of extreme graphic violence
+              - Posts that encourage violence or attacks anyone based on their religious, ethnic or sexual background
+              - Specific threats of physical harm, theft, vandalism or financial harm
+              If you report someone's post, Instagram doesn't tell them who reported it.
+              If someone is in immediate danger, call local emergency services. Don't wait.
+            -->
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio2">
+            <label class="custom-control-label">Promotion of drugs</label>
+            <!--
+              Report as sale or promotion of drugs?
+              We remove:
+              - Posts promoting the use of hard drugs
+              - Posts intended to sell or distribute drugs
+              If you report someone's post, Instagram doesn't tell them who reported it.
+              If someone is in immediate danger, call local emergency services. Don't wait.
+            -->
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio2">
+            <label class="custom-control-label">Harrassment or bullying</label>
+            <!--
+              Report as harassment or bullying?
+              We remove:
+              - Posts that contain credible threats
+              - Content that targets people to degrade or shame them
+              - Personal information shared to blackmail or harass
+              If you report someone's post, Instagram doesn't tell them who reported it.
+              If someone is in immediate danger, call local emergency services. Don't wait.            
+            -->
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio2">
+            <label class="custom-control-label">Intellectual property violation</label>
+            <!-- 
+              We remove posts that include copyright or trademark infringement. If you report 
+              someone's post, Opsonion doesn't tell them who reported it. 
+            -->
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="radio2">
+            <label class="custom-control-label">Self injury</label>
+            <!-- 
+              We remove posts encouraging or promoting self injury, which includes suicide, 
+              cutting and eating disorders. We may also remove posts identifying victims of 
+              self injury if the post attacks or makes fun of them. If you report someone's 
+              post, Opsonion doesn't tell them who reported it. If someone is in immediate 
+              danger, call local emergency services. Don't wait.
+            -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Share -->
+<div class="modal fade" #showShareModal id="showShareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shareModalLabel">Share</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-block btn-light">Facebook</button>
+        <button type="button" class="btn btn-block btn-light">Twitter</button>
+        <button type="button" class="btn btn-block btn-light">Google</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Suggest -->
+<div class="modal fade" #showExportModal id="showSuggestModal" tabindex="-1" role="dialog" aria-labelledby="suggestModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="suggestModalLabel">Share</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

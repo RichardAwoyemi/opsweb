@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+declare var $;
 
 @Component({
   selector: 'app-task',
@@ -8,16 +10,27 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TaskComponent implements OnInit {
   id: number;
-  private task: any;
+  task: any;
 
   constructor(
     private route: ActivatedRoute
   ) { }
+
+  @ViewChild('showReportModal') showReportModal: ElementRef;
+  @ViewChild('showShareModal') showShareModal: ElementRef;
 
   ngOnInit() {
     this.task = this.route.params.subscribe(params => {
       this.id = params['id'];
       console.log(this.id);
    });
+  }
+
+  showReportOptions() {
+    $(this.showReportModal.nativeElement).modal('show');
+  }
+
+  showShareOptions() {
+    $(this.showShareModal.nativeElement).modal('show');
   }
 }
