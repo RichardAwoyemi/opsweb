@@ -35,6 +35,10 @@ export class TaskComponent implements OnInit {
     $(this.showShareModal.nativeElement).modal('show');
   }
 
+  showEditOptions() {
+    console.log('todo');
+  }
+
   showApplyTask() {
     $(this.showApplyTaskModal.nativeElement).modal('show');
   }
