@@ -93,7 +93,7 @@
                             class="ti-flag"></i></button>
                       </div>
                       <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-primary">Apply</button>
+                        <button type="button" class="btn btn-primary" (click)="showApplyTask()">Apply</button>
                       </div>
                     </div>
                     <hr>
@@ -285,20 +285,24 @@
   </div>
 </div>
 
-<!-- Suggest -->
-<div class="modal fade" #showExportModal id="showSuggestModal" tabindex="-1" role="dialog" aria-labelledby="suggestModalLabel"
+<!-- Apply for Task -->
+<div class="modal fade" #showApplyTaskModal id="show" tabindex="-1" role="dialog" aria-labelledby="applyTaskModalLabel"
   aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="suggestModalLabel">Share</h5>
+        <h5 class="modal-title" id="applyTaskModalLabel">Apply</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <div class="form-group">
+          <textarea class="form-control" placeholder="Tell the client why you are the best person for this task." rows="7"></textarea>
+        </div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>

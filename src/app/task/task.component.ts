@@ -18,6 +18,7 @@ export class TaskComponent implements OnInit {
 
   @ViewChild('showReportModal') showReportModal: ElementRef;
   @ViewChild('showShareModal') showShareModal: ElementRef;
+  @ViewChild('showApplyTaskModal') showApplyTaskModal: ElementRef;
 
   ngOnInit() {
     this.task = this.route.params.subscribe(params => {
@@ -32,5 +33,9 @@ export class TaskComponent implements OnInit {
 
   showShareOptions() {
     $(this.showShareModal.nativeElement).modal('show');
+  }
+
+  showApplyTask() {
+    $(this.showApplyTaskModal.nativeElement).modal('show');
   }
 }
