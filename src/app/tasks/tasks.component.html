@@ -53,7 +53,7 @@
                     <label class="custom-control-label">Advanced</label>
                   </div>
                   <br>
-                  <button class="btn btn-block btn-primary" type="button">Search</button>
+                  <button class="btn btn-block btn-secondary" type="button">Search</button>
                 </div>
               </td>
             </tr>
@@ -69,20 +69,20 @@
             <span style="display: inline">tasks found</span>
           </div>
           <div class="col-md-6 text-right">
-            <button class="btn btn-sm btn-primary" type="button">Post Task</button>
+            <button class="btn btn-sm btn-primary" type="button" routerLink="/tasks/new">Post Task</button>
           </div>
         </div>
         <!-- List of tasks -->
         <table class="table table-cart table-task table-hover" style="background-color: #fff;">
           <tbody>
-            <tr routerLink="/tasks/1">
+            <tr routerLink="/task/1">
               <td style="width: 60px; padding-right: 0px; padding-left: 1em">
                 <img class="avatar avatar-sm" src="https://pbs.twimg.com/profile_images/1078036367748354073/xc7KVRiN_400x400.jpg"
                   alt="avatar">
               </td>
               <td style="padding-right: 0px">
                 <div style="display: inline-block">
-                  <h5><a routerLink="/tasks/1">Uniswap logo design</a></h5>
+                  <h5><a routerLink="/task/1">Uniswap logo design</a></h5>
                   <small><a routerLink="/user/1" class="user-link">@darrellekow</a></small>
                   <div style="padding-top: 0.25em">
                     <span class="badge badge-pill badge-secondary">ethereum</span>&nbsp;
@@ -106,14 +106,14 @@
                 <p>0.08362493 BTC</p>
               </td>
             </tr>
-            <tr routerLink="/tasks/1">
+            <tr routerLink="/task/1">
               <td style="width: 60px; padding-right: 0px; padding-left: 1em">
                 <img class="avatar avatar-sm" src="https://pbs.twimg.com/profile_images/972908053153681408/7F4-SeoD_400x400.jpg"
                   alt="avatar">
               </td>
               <td style="padding-right: 0px">
                 <div style="display: inline-block">
-                  <h5><a routerLink="/tasks/1">Complete an interview on cryptocurrency mining</a></h5>
+                  <h5><a routerLink="/task/1">Complete an interview on cryptocurrency mining</a></h5>
                   <small><a routerLink="/user/1" class="user-link">@richardawoyemi</a></small>
                   <div style="padding-top: 0.25em">
                     <span class="badge badge-pill badge-secondary">interview</span>&nbsp;
@@ -134,14 +134,14 @@
                 <p>0.4 ETH</p>
               </td>
             </tr>
-            <tr *ngIf="this.showMoreTasks" routerLink="/tasks/1">
+            <tr *ngIf="this.showMoreTasks" routerLink="/task/1">
               <td style="width: 60px; padding-right: 0px; padding-left: 1em">
                 <img class="avatar avatar-sm" src="https://scontent-lhr3-1.xx.fbcdn.net/v/t1.0-9/11062358_10153178224024757_9166271015191030512_n.jpg?_nc_cat=100&_nc_ht=scontent-lhr3-1.xx&oh=cf0e80441bb9ba4c8e2d7dd6b23a02f4&oe=5CBD500B"
                   alt="avatar">
               </td>
               <td style="padding-right: 0px">
                 <div style="display: inline-block">
-                  <h5><a routerLink="/tasks/1">Web design for property based site</a></h5>
+                  <h5><a routerLink="/task/1">Web design for property based site</a></h5>
                   <small><a routerLink="/user/1" class="user-link">@mofesal</a></small>
                   <div style="padding-top: 0.25em">
                     <span class="badge badge-pill badge-secondary">php</span>&nbsp;

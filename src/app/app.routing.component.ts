@@ -62,7 +62,7 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
-  { path: 'tasks/:id', component: TaskComponent, canActivate: [AuthGuard] },
+  { path: 'task/:id', component: TaskComponent, canActivate: [AuthGuard] },
   { path: 'tasks/new', component: NewTaskComponent, canActivate: [AuthGuard] },
   { path: 'invite', component: InviteComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }

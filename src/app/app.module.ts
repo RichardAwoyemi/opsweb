@@ -60,6 +60,7 @@ import { PdfService } from './_services/pdf.service';
 import { TaskComponent } from './task/task.component';
 import { UserComponent } from './user/user.component';
 import { NewTaskComponent } from './new-task/new-task.component';
+import { InboxComponent } from './inbox/inbox.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { NewTaskComponent } from './new-task/new-task.component';
     TasksComponent,
     TaskComponent,
     UserComponent,
-    NewTaskComponent
+    NewTaskComponent,
+    InboxComponent
   ],
   entryComponents: [
     ModalComponent
