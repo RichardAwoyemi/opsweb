@@ -62,9 +62,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset ]);
     this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
-    if (environment.production === false) {
-      console.log(this.appStoreUrl);
-    }
   }
 
   onActivate(_event) {
