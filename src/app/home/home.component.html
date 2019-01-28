@@ -1,115 +1,193 @@
 <!-- Desktop -->
 <div *ngIf="!(isMobile | async)?.matches">
-  <header id="home" class="header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-5" style="padding-top: 4em" aos-init aos-animate data-aos="fade-in">
-          <h1 class="fw-600">Experience the open financial system.</h1>
-          <p class="lead mt-5">Opsonion is the easiest and most trusted place to earn, invest, and spend digital
-            currency.</p>
-          <hr class="w-10 ml-0 my-7">
+  <header id="home" class="header h-fullscreen" style="background-color: #ffffff">
+    <canvas class="constellation" data-color="rgba(32,85,236,0.3)" width="1672" height="879"></canvas>
+    <div class="container position-static">
+      <div class="row align-items-center h-100">
+
+        <div class="col-lg-5">
+          <h1>The marketplace for services.</h1>
+          <p class="lead mt-5 mb-8">Opsonion is the best software solution for the self-employed work market.
+              Join quick for the best quality and cheapest fees! 
+          </p>
           <p class="gap-xy">
-            <img src="assets/img/app-store.svg">
-            <img src="assets/img/google-play.svg">
+            <a class="btn btn-round btn-outline-dark mw-150" href="#BetterFeatures">Learn more</a>
+            <a class="btn btn-round btn-outline-dark mw-150" href="#">Sign up</a>
           </p>
         </div>
-        <div class="col-lg-6 ml-auto" aos-init aos-animate data-aos="fade-up">
-          <img src="assets/img/wallet-image.png">
+
+        <div class="col-lg-5 ml-auto" aos-animate data-aos="fade-up"> 
+          <img class="mt-5" src="../assets/img/5a57b98b595b8.png" alt="img">
         </div>
+
       </div>
     </div>
   </header>
-  <section class="section bg-gray">
+
+<!-- 3 Better Features  -->
+  <section id="BetterFeatures" class="section bg-gray h-fullscreen">
+    <canvas class="constellation h-fullscreen" data-color="rgba(32,85,236,0.3)" data-radius="300"></canvas>
+    <div class="container position-static">
+      <div class="h-100 row align-items-center">
+
+        <div class="col-md-6 col-lg-4"  aos-animate data-aos="fade-up">
+          <div class="card text-center bg-gray">
+            <div class="card-body" >
+              <h3 class="card-title"><br><br> Better Quality <br><br>   </h3>
+            </div>
+
+            <div class="card-hover bg-primary text-white" data-animation="zoom">
+              <div class="card-body align-self-center">
+                <h5>Better Quality</h5>
+                <p class="mb-0">At Opsonion, the power belongs to community. Therefore, users like yourselves get to determine whether work has met pre-determined quality standards. The process is unbiased and bad players are disincentivised.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4"  aos-animate data-aos="fade-up" data-aos-delay="1000">
+          <div class="card text-center bg-gray">
+            <div class="card-body" >
+              <h3 class="card-title"><br><br> Better Prices <br><br> </h3>
+            </div>
+
+            <div class="card-hover bg-primary text-white" data-animation="zoom">
+              <div class="card-body align-self-center">
+                <h5>Better Prices</h5>
+                <p class="mb-0">Using blockchain, we have radically reduced the platform costs and consequently, the fees charged to platform users. This means service providers can charge less and earn more.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4"  aos-animate data-aos="fade-up" data-aos-delay="2000">
+            <div class="card text-center bg-gray">
+              <div class="card-body" >
+                <h3 class="card-title"><br><br> Better Community <br><br> </h3>
+              </div>
+  
+              <div class="card-hover bg-primary text-white" data-animation="zoom">
+                <div class="card-body align-self-center">
+                  <h5>Better Community</h5>
+                  <p class="mb-0">Blockchain technology allows us to tap into a more geographically diverse community, empowering billions to join the Opsonion revolution.</p>
+                </div>
+              </div>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+<!-- Central Picture  -->
+  <section class="section bg-fixed text-white" style="background-image: url(../assets/img/Handshake.jpg)" data-overlay="5">
     <div class="container">
-      <div class="row gap-y">
-        <div class="col-lg-4" aos-animate data-aos="fade-up">
-          <div class="card card-body border text-center">
-            <p class="my-5"><i class="icon-wallet lead-8 text-lighter"></i></p>
-            <h5>Earn</h5>
-            <p>Get paid in digital currency to complete tasks, answer questions, participate in communities and solve
-              bounties.</p>
-          </div>
-        </div>
-        <div class="col-lg-4" aos-animate data-aos="fade-up" data-aos-delay="1000">
-          <div class="card card-body border text-center">
-            <p class="my-5"><i class="icon-linegraph lead-8 text-lighter"></i></p>
-            <h5>Invest</h5>
-            <p>Grow your earnings by investing in the multitude of financial assets on offer.<br><span style="color: #D5D5D5">Coming
-                soon</span></p>
-          </div>
-        </div>
-        <div class="col-lg-4" aos-animate data-aos="fade-up" data-aos-delay="2000">
-          <div class="card card-body border text-center">
-            <p class="my-5"><i class="icon-basket lead-8 text-lighter"></i></p>
-            <h5>Spend</h5>
-            <p>Purchase discounted goods and services from our network of merchants.<br><span style="color: #D5D5D5">Coming
-                soon</span></p>
-          </div>
+      <div class="row">
+        <div class="col-md-8 pt-10">
+
+          <h2>A Unique Community</h2>
+          <p class="lead-2">Opsonion leverages blockchain technology, creating a solution that makes opportunity global. Expand your network by connecting with our talented community of unique individuals from across the globe.</p>
+          <br>
+          <p><a class="btn btn-lg btn-round btn-light" href="#">Get involved</a></p>
+
         </div>
       </div>
     </div>
   </section>
-  <section class="section cryptocurrencies">
-    <div class="container">
-      <header class="section-header">
-        <h2>Easily convert, send and receive digital currency</h2>
-        <hr>
-        <p class="lead">Pay anyone in the world in with just their Opsonion username</p>
-      </header>
-      <div class="map">
-        <div class="card card--1 row">
-          <div class="column1">
-            <img src="assets/img/mofe.png" alt="cryptouser-mofe">
+
+
+<!-- Buy, Sell & Earn  -->
+  <main class="main-content">
+
+    <section class="section overflow-hidden">
+      <canvas class="constellation" data-color="rgba(32,85,236,0.3)" data-radius="200"></canvas>
+      <div class="container-fluid position-static">
+        <div class="row gap-y align-items-center">
+
+          <div class="col-md-4 mx-auto text-center">
+            <img class=" aos-init aos-animate" src="../assets/img/D6 Adjusted.png" alt="..." data-aos="fade-right">
           </div>
-          <div class="copy column2">
-            <div class="">
-              <span style="font-size: 18px;">Sent from <span class="username">@mofe</span></span>
-              <span class="alt-text currency">£60.00</span>
-            </div>
-            <div>
-              <span class="alt-text shortAddress">0xt5....4f2d</span>
-              <span class="alt-text longAddress">0xf1f1...x12e4324</span>
-              <span class="alt-text currency">6 OPSN</span>
-            </div>
+
+
+          <div class="col-md-4 mx-auto">
+            <h3>Start Selling</h3>
+            <p>Are you a self-employed and looking to expand your network? Join a community of sellers who provide pre-defined services and bespoke solutions to fulfil client needs.</p>
+            <a href="#">Get Started <i class="ti-angle-right fs-10 ml-1"></i></a>
           </div>
-        </div>
-        <div class="card card--2 row">
-          <div class="column1">
-            <img src="/assets/img/josh.png" alt="cryptouser-josh">
-          </div>
-          <div class="copy column2">
-            <div>
-              <span style="font-size: 18px;">Received by <span class="username">@josh</span></span>
-              <span class="alt-text currency">£60.00</span>
-            </div>
-            <div>
-              <span class="alt-text shortAddress">0x9t....9r3d</span>
-              <span class="alt-text longAddress">0xf1f1...x12e4324</span>
-              <span class=" alt-text currency">0.35 ETH</span>
-            </div>
-          </div>
+
         </div>
       </div>
-    </div>
-  </section>
-  <section class="section bg-gray">
-    <div class="container">
-      <h3 class="text-center fw-200">Get started in a few minutes</h3>
-      <form class="row gap-y mt-7" _lpchecked="1">
-        <div class="col-md-6 col-lg-4">
-          <input type="text" class="form-control" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+    </section>
+
+
+    <section class="section overflow-hidden">
+    <canvas class="constellation" data-color="rgba(32,85,236,0.3)" data-radius="200"></canvas>
+    <div class="container-fluid position-static">
+        <div class="row gap-y align-items-center">
+
+          <div class="col-md-4 mx-auto text-center">
+            <img class="aos-init aos-animate" src="../assets/img/Buy Image2.png" alt="..." data-aos="fade-left">
+          </div>
+
+
+          <div class="col-md-4 mx-auto order-md-first">
+            <h3>Start Buying</h3>
+            <p>Are you looking for a particular set of skills? Look no further! At Opsonion, we have talented individuals and companies who offer everything from essay writing to web design. If you can't find what you want, then you tell us and the talant will come to you.</p>
+            <a href="#">Get Started <i class="ti-angle-right fs-10 ml-1"></i></a>
+          </div>
+
         </div>
-        <div class="col-md-6 col-lg-4">
-          <input type="password" class="form-control" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+      </div>
+    </section>
+
+
+      <section class="section overflow-hidden">
+      <canvas class="constellation" data-color="rgba(32,85,236,0.3)" data-radius="200"></canvas>
+      <div class="container-fluid position-static">
+          <div class="row gap-y align-items-center">
+
+            <div class="col-md-4 mx-auto text-center">
+              <img class="aos-init" src="../assets/img/Buy Image.png" alt="..." data-aos="fade-right">
+            </div>
+
+
+            <div class="col-md-4 mx-auto">
+              <h3>Start Earning</h3>
+              <p>Are you ready to start earning by helping the empowered community? Become a verifier, where bias is removed and quality standards are met. We invest heavily to ensure that the users get their say when dealing with conflict resolution.</p>
+              <a href="#">Read More <i class="ti-angle-right fs-10 ml-1"></i></a>
+            </div>
+
+          </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-          <button class="btn btn-block btn-success h-100">Register</button>
-        </div>
-      </form>
+      </section>
+  </main>
+
+
+  <!-- Subscribe -->
+
+  <section class="section text-white" style="background-color: #2055ec;">
+    <div class="container text-center">
+
+      <p class="small-4 text-uppercase ls-2 fw-600 opacity-70">Get Connected</p>
+      <h2>Ready to begin?</h2>
+
+      <div class="row mt-7">
+        <form class="col-md-8 col-xl-5 input-glass mx-auto" action="" method="post" target="_blank">
+          <div class="input-group">
+
+            <input type="text" name="EMAIL" class="form-control" placeholder="Enter Your Email">
+            <span class="input-group-append">
+              <button class="btn btn-light">Subscribe</button>
+            </span>
+          </div>
+        </form>
+      </div>
+
     </div>
   </section>
 </div>
 
+<!-- Mobile -->
 <div *ngIf="(isMobile | async)?.matches">
   <header id="home" class="header">
     <div class="container">
@@ -183,6 +261,29 @@
           <button class="btn btn-block btn-success h-100">Register</button>
         </div>
       </form>
+    </div>
+  </section>
+  <section class="section py-10" style="background-image: url(../assets/img/StockSnap_DZ7DC58DSV.jpg)">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-xl-6 mx-auto">
+
+          <div class="section-dialog bg-primary text-white shadow-6">
+            <h4>Latest news direct to your inbox</h4>
+            <br><br>
+            <p class="text-right small pr-5">Subscribe Now</p>
+            <form class="input-glass input-round" action="" method="post" target="_blank">
+              <div class="input-group">
+                <input type="text" name="EMAIL" class="form-control" placeholder="Enter Email Address">
+                <span class="input-group-append">
+                  <button class="btn btn-glass btn-light" type="button">Sign up <i class="ti-arrow-right fs-9 ml-2"></i></button>
+                </span>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
     </div>
   </section>
 </div>
