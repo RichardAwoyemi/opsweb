@@ -230,29 +230,27 @@
       </section>
   </main>
 
-  <section class="section py-10 bg-gray" > <!-- style="background-image: url(../assets/img/Subs2.jpg)" -->
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-xl-6 mx-auto">
 
-          <div class="section-dialog bg-primary text-white shadow-6">
-            <h4>Latest news direct to your inbox</h4>
-            <br><br>
-          <p class="text-right small pr-5">Subscribe now</p>
-            <form class="input-glass input-round" action="" method="post" target="_blank">
-              <div class="input-group">
-                <input type="text" name="EMAIL" class="form-control" placeholder="Enter Email Address">
-                <span class="input-group-append">
-                  <button class="btn btn-glass btn-light" type="button">Sign up <i class="ti-arrow-right fs-9 ml-2"></i></button>
-                </span>
-              </div>
-            </form>
-          </div>
+  <section class="section text-white" style="background-color: #56a9ef;">
+      <div class="container text-center">
 
+        <p class="small-4 text-uppercase ls-2 fw-600 opacity-70">Get Connected</p>
+        <h2>Ready to begin?</h2>
+
+        <div class="row mt-7">
+          <form class="col-md-8 col-xl-5 input-glass mx-auto" action="" method="post" target="_blank">
+            <div class="input-group">
+
+              <input type="text" name="EMAIL" class="form-control" placeholder="Enter Your Email">
+              <span class="input-group-append">
+                <button class="btn btn-light">Subscribe</button>
+              </span>
+            </div>
+          </form>
         </div>
+
       </div>
-    </div>
-  </section>
+    </section>
 </div>
 
 <div *ngIf="(isMobile | async)?.matches">
