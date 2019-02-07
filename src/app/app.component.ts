@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   today: number = Date.now();
   appStoreUrl: string;
   userAgentString: string;
+  landingPageMode = true;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit {
     this.userAgentString = navigator.userAgent;
     if (environment.production === false) {
       console.log(this.userAgentString);
+      this.landingPageMode = true;
     }
   }
 
