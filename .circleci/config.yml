@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/opsonion-web
     docker:
-      - image: circleci/node:8.12.0
+      - image: node:8.12.0
     steps:
       - checkout
       - restore_cache:
@@ -14,11 +14,7 @@ jobs:
       - run: npm install -g @angular/cli
       - run: npm install
       - run:
-          name: Install AWS CLI
-          command:
-            sudo apt-get -y -qq install awscli
-      - run:
-          name: S3 request authentication
+          name: S3 Request Authentication
           command: aws configure set default.s3.signature_version s3v4
       - save_cache:
           paths:
