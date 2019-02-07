@@ -14,14 +14,11 @@ jobs:
       - run: npm install -g @angular/cli
       - run: npm install
       - run:
+          name: Install PIP
+          command: sudo apt-get install python-pip python-dev
+      - run:
           name: Install AWS CLI
-          working_directory: /
-          command: |
-            apt-get -y -qq update
-            apt-get -y -qq install python3.4-dev
-            curl -O https://bootstrap.pypa.io/get-pip.py
-            python3.4 get-pip.py --user
-            pip install awscli --upgrade --user
+          command: sudo pip install awscli
       - run:
           name: S3 Request Authentication
           command: aws configure set default.s3.signature_version s3v4
