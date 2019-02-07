@@ -13,6 +13,13 @@ jobs:
             - v1-dependencies-
       - run: npm install -g @angular/cli
       - run: npm install
+      - run:
+          name: Install AWS CLI
+          command:
+              sudo apt-get -y -qq install awscli
+      - run:
+          name: Setting signature version 4 for S3 request authentication
+          command: aws configure set default.s3.signature_version s3v4
       - save_cache:
           paths:
             - node_modules
@@ -26,8 +33,9 @@ jobs:
       - run:
           name: Deploy to AWS
           command: |
+            AWS_BUCKET_TARGET="opsonion.com"
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              echo "aws deployment stuff goes here"
+              aws --region eu-west-2 s3 sync ./dist/ s3://$AWS_BUCKET_TARGET --delete --exclude '.git/*'
             fi
     branches:
       only: 
