@@ -7,7 +7,7 @@
           <h1 class="fw-600">The marketplace for services.</h1>
           <p class="lead mt-5">Opsonion is a platform which allows you to hire or work for digital currency.</p>
           <hr class="w-10 ml-0 my-7">
-          <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
             <div class="form-group input-group">
               <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
               <div class="input-group-append">
@@ -16,6 +16,9 @@
             </div>
             <small>We will never share your information or send you spam.</small>
           </form>
+          <div [hidden]="!submitted">
+            <small>Thanks for signing up. We'll be in touch.</small>
+          </div>
         </div>
         <div class="col-lg-6 ml-auto" aos-init aos-animate data-aos="fade-up">
           <img src="assets/img/freelancer-image.png">
@@ -73,7 +76,7 @@
       <hr class="my-8">
       <div class="row gap-y align-items-center">
         <div class="col-md-6 mr-auto">
-          <h3 style="font-weight: bold">Create multiple income streams</h3>
+          <h3 style="font-weight: bold">Create new income streams</h3>
           <p>No need for a bank account, just bring your experience to the table:</p>
           <ul class="list-unstyled" style="line-height: 2.5em">
             <li><i class="ti-check text-success mr-2"></i> Get automatically matched with opportunites that match your
@@ -95,7 +98,7 @@
       <h3 class="text-center fw-200">Get early access</h3>
       <br>
       <div class="col-md-6 mx-auto">
-        <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
           <div class="form-group input-group">
             <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
             <div class="input-group-append">
@@ -103,6 +106,9 @@
             </div>
           </div>
         </form>
+        <div [hidden]="!submitted">
+          <small>Thanks for signing up. We'll be in touch.</small>
+        </div>
       </div>
     </div>
   </section>
@@ -120,7 +126,7 @@
           <h1 class="fw-600">The marketplace for services.</h1>
           <p class="lead mt-5">Opsonion is a platform which allows you to hire or work for digital currency.</p>
           <hr class="w-100 ml-0 my-7">
-          <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()" [hidden]="!submitted">
             <div class="form-group input-group">
               <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
             </div>
@@ -128,6 +134,7 @@
             <br>
             <small>We will never share your information or send you spam.</small>
           </form>
+          <small [hidden]="!submitted">Thanks for signing up. We'll be in touch.</small>
         </div>
       </div>
     </div>
