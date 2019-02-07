@@ -46,8 +46,13 @@
 <!-- Not logged in navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart" *ngIf="!authService.isLoggedIn">
   <div class="container">
-    <div class="navbar-left mr-4">
+    <div class="navbar-left mr-4" *ngIf="!landingPageMode">
       <button class="navbar-toggler" type="button">&#9776;</button>
+      <a class="navbar-brand" routerLink="/">
+        <img src="../assets/img/logo.svg" style="height: 42px; width: 42px;">
+      </a>
+    </div>
+    <div class="navbar-left mx-auto" *ngIf="landingPageMode">
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo.svg" style="height: 42px; width: 42px;">
       </a>
@@ -66,18 +71,20 @@
       </nav>
     </section>
     <!-- Mobile links -->
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
-      <span class="navbar-divider d-mobile-none"></span>
-      <nav class="nav nav-navbar mr-auto">
-        <a class="nav-link" routerLink="/">Home</a>
-        <a class="nav-link" routerLink="/about">About</a>
-        <a class="nav-link" routerLink="/services">Services</a>
-        <a class="nav-link" routerLink="/careers">Careers</a>
-        <a class="nav-link" routerLink="/markets">Markets</a>
-        <a class="nav-link" routerLink="/support">Support</a>
-        <a class="nav-link" href="{{ appStoreUrl }}">Download</a>
-      </nav>
-    </section>
+    <div *ngIf="!landingPageMode">
+      <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
+        <span class="navbar-divider d-mobile-none"></span>
+        <nav class="nav nav-navbar mr-auto">
+          <a class="nav-link" routerLink="/">Home</a>
+          <a class="nav-link" routerLink="/about">About</a>
+          <a class="nav-link" routerLink="/services">Services</a>
+          <a class="nav-link" routerLink="/careers">Careers</a>
+          <a class="nav-link" routerLink="/markets">Markets</a>
+          <a class="nav-link" routerLink="/support">Support</a>
+          <a class="nav-link" href="{{ appStoreUrl }}">Download</a>
+        </nav>
+      </section>
+    </div>
   </div>
 </nav>
 <!-- /.navbar -->
