@@ -1,6 +1,6 @@
 <!-- Desktop -->
 <div *ngIf="!(isMobile | async)?.matches">
-  <header id="home" class="header">
+  <header id="home" class="header h-fullscreen">
     <div class="container">
       <div class="row">
         <div class="col-lg-5">
@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="row gap-y align-items-center" style="margin-top: 5em">
-        <div class="col-md-5 mx-auto text-center" aos-init aos-animate data-aos="fade-left" style="margin-left: 0px">
+        <div class="col-md-5 mx-auto text-center" aos-init aos-animate data-aos="fade-left">
           <img src="../assets/img/start-selling.png" style="width: 100%">
         </div>
         <div class="col-md-5 mx-auto">
@@ -116,17 +116,17 @@
   <section class="section bg-gray">
     <div class="container">
       <h3 class="text-center fw-200">Get early access</h3>
-      <form class="row gap-y mt-7">
-        <div class="col-md-6 col-lg-4">
-          <input type="text" class="form-control" placeholder="Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <input type="text" class="form-control" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <button class="btn btn-block btn-primary h-100">Register</button>
-        </div>
-      </form>
+      <br>
+      <div class="col-md-6 mx-auto">
+        <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-group input-group">
+            <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">Sign Up</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </div>
@@ -220,15 +220,12 @@
   <section class="section bg-gray">
       <div class="container">
         <h3 class="text-center fw-200">Get early access</h3>
-        <form class="row gap-y mt-7">
-          <div class="col-md-6 col-lg-4">
-            <input type="text" class="form-control" placeholder="Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <input type="text" class="form-control" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <button class="btn btn-block btn-primary h-100">Sign up</button>
+        <form [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-group input-group">
+            <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="register">Get Early Access</button>
+            </div>
           </div>
         </form>
       </div>
