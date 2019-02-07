@@ -9,7 +9,7 @@ jobs:
       - run: 
           name: Set Permissions
           command: |
-            chmod -R 777 ~/dist
+            chmod -R 777 /root/opsonion-web
       - restore_cache:
             keys:
             - v1-dependencies-{{ checksum "package.json" }}
