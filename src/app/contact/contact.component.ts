@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '../_modals/modal.component';
 
 declare var $;
 
@@ -22,7 +24,8 @@ export class ContactComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -73,6 +76,13 @@ export class ContactComponent implements OnInit {
             $(this.errorModal.nativeElement).modal('show');
             this.submitted = false;
           }
+
+          // Temporary fix
+
+          const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+          modalReference.componentInstance.header = 'Yay!';
+          modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
+          this.submitted = true;
         });
   }
 }
