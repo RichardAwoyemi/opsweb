@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/opsonion-web
     docker:
-        - image: circleci/node:8.12.0-browsers
+      - image: node:8.12.0
     steps:
       - checkout
       - restore_cache:
@@ -15,8 +15,12 @@ jobs:
       - run: npm install
       - run:
           name: Install AWS CLI
-          command:
-              sudo apt-get -y -qq install awscli
+          command: |
+            apt-get -y -qq update
+            apt-get -y -qq install python3.4-dev
+            curl -O https://bootstrap.pypa.io/get-pip.py
+            python3.4 get-pip.py --user
+            pip install awscli --upgrade --user
       - run:
           name: S3 Request Authentication
           command: aws configure set default.s3.signature_version s3v4
