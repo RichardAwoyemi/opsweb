@@ -20,7 +20,7 @@ jobs:
             apt-get -y -qq install python3
             curl -O https://bootstrap.pypa.io/get-pip.py
             python3 get-pip.py --user
-            export PATH=~/.local/bin:$PATH
+            export PATH=/root/.local/bin:$PATH
             source ~/.bash_profile
             pip install awscli --upgrade --user
       - run:
