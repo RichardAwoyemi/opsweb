@@ -19,7 +19,7 @@ jobs:
             apt-get -y -qq update
             apt-get -y -qq install python3.4-dev
             curl -O https://bootstrap.pypa.io/get-pip.py
-            python3 get-pip.py --user
+            python3.4 get-pip.py --user
             echo 'export PATH=/root/.local/bin:$PATH' >> ~/.bash_profile 
             source ~/.bash_profile
             pip install awscli --upgrade --user
