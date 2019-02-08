@@ -17,9 +17,9 @@ jobs:
           name: Install AWS CLI
           command: |
             apt-get -y -qq update
-            apt-get -y -qq install python3.4-dev
+            apt-get -y -qq install python-dev
             curl -O https://bootstrap.pypa.io/get-pip.py
-            python3.4 get-pip.py --user
+            python get-pip.py --user
             pip install awscli --upgrade --user
       - run:
           name: S3 Request Authentication
