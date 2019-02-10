@@ -14,7 +14,8 @@ declare var $;
 })
 export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
-  registerFormGroup: FormGroup;
+  registerTopFormGroup: FormGroup;
+  registerBottomFormGroup: FormGroup;
   submitted = false;
   closeResult: string;
 
@@ -32,7 +33,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
-    this.registerFormGroup = new FormGroup({
+    this.registerTopFormGroup = new FormGroup({
+      email: new FormControl()
+    });
+
+    this.registerBottomFormGroup = new FormGroup({
       email: new FormControl()
     });
 
