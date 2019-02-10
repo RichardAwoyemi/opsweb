@@ -19,7 +19,8 @@ export class HomeComponent implements OnInit {
   closeResult: string;
 
   @ViewChild('errorModal') errorModal: ElementRef;
-  registerForm = document.forms['registerForm'];
+  registerTopForm = document.forms['registerTopForm'];
+  registerBottomForm = document.forms['registerBottomForm'];
 
   private scriptURL = 'https://script.google.com/macros/s/AKfycbxFNLTWjBgRoS6TATor0jIOXm3a4XkSsBpdeKTZRE8tmElepek/exec';
 
@@ -35,44 +36,69 @@ export class HomeComponent implements OnInit {
       email: new FormControl()
     });
 
-    this.registerForm = this.formBuilder.group({
+    this.registerTopForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+
+    this.registerBottomForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  onSubmit() {
-    if (this.registerForm.invalid) {
+  onTopSubmit() {
+    if (this.registerTopForm.invalid) {
       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
       modalReference.componentInstance.header = 'Oops!';
       modalReference.componentInstance.message = 'Please ensure that have entered your email address correctly.';
       return;
     }
 
-    const formObject = document.forms['registerForm'];
+    const formObject = document.forms['registerTopForm'];
 
     if (environment.production === false) {
       console.log(new FormData(formObject));
     }
 
+    this.submitForm(formObject);
+  }
+
+  onBottomSubmit() {
+    if (this.registerBottomForm.invalid) {
+      const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+      modalReference.componentInstance.header = 'Oops!';
+      modalReference.componentInstance.message = 'Please ensure that have entered your email address correctly.';
+      return;
+    }
+
+    const formObject = document.forms['registerBottomForm'];
+
+    if (environment.production === false) {
+      console.log(new FormData(formObject));
+    }
+
+    this.submitForm(formObject);
+  }
+
+  submitForm(formObject) {
     fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
-      .then(response => {
+    .then(response => {
+      if (environment.production === false) {
+        console.log('Success!', response);
+      }
+      const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+      modalReference.componentInstance.header = 'Yay!';
+      modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
+      this.submitted = true;
+    })
+    .catch(
+      error => {
         if (environment.production === false) {
-          console.log('Success!', response);
+          console.error('Error!', error.message);
         }
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Yay!';
-        modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = 'Something has gone wrong. Please try again.';
         this.submitted = true;
-      })
-      .catch(
-        error => {
-          if (environment.production === false) {
-            console.error('Error!', error.message);
-          }
-          const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-          modalReference.componentInstance.header = 'Oops!';
-          modalReference.componentInstance.message = 'Something has gone wrong. Please try again.';
-          this.submitted = true;
-        });
+      });
   }
 }
