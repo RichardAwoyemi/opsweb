@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   registerBottomFormGroup: FormGroup;
   submitted = false;
   closeResult: string;
-  landingPageMode = true;
+  landingPageMode: boolean;
 
   @ViewChild('errorModal') errorModal: ElementRef;
   registerTopForm = document.forms['registerTopForm'];
