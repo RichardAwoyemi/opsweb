@@ -7,5 +7,6 @@ export const environment = {
     projectId: 'opsonion-live',
     storageBucket: 'opsonion-live.appspot.com',
     messagingSenderId: '202919224596'
-  }
+  },
+  landingPageMode: true
 };

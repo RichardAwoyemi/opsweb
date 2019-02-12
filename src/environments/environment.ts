@@ -11,7 +11,8 @@ export const environment = {
     projectId: 'opsonion-dev',
     storageBucket: 'opsonion-dev.appspot.com',
     messagingSenderId: '994826852330'
-  }
+  },
+  landingPageMode: false
 };
 
 /*

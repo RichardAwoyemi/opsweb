@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]]
     });
 
-    this.landingPageMode = this.utilService.showLandingPage();
+    this.landingPageMode = environment.landingPageMode;
   }
 
   onTopSubmit() {
