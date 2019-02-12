@@ -57,8 +57,6 @@ export class AppComponent implements OnInit {
     this.userAgentString = navigator.userAgent;
     this.landingPageMode = environment.landingPageMode;
 
-    // if landing page is enabled then clear local storage
-
     if (this.landingPageMode) {
       authService.clearLocalStorage();
     }
