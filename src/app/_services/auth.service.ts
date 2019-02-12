@@ -198,6 +198,11 @@ export class AuthService {
     });
   }
 
+  public clearLocalStorage() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('loggedIn');
+  }
+
   checkIfMailExists(email: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.afAuth.auth.fetchSignInMethodsForEmail(email)

@@ -5,6 +5,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ModalComponent } from '../_modals/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
+import { UtilService } from '../_services/util.service';
 
 declare var $;
 
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
   registerBottomFormGroup: FormGroup;
   submitted = false;
   closeResult: string;
+  landingPageMode = true;
 
   @ViewChild('errorModal') errorModal: ElementRef;
   registerTopForm = document.forms['registerTopForm'];
@@ -28,6 +30,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     public modalService: NgbModal,
+    public utilService: UtilService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -48,6 +51,8 @@ export class HomeComponent implements OnInit {
     this.registerBottomForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
+
+    this.landingPageMode = this.utilService.showLandingPage();
   }
 
   onTopSubmit() {

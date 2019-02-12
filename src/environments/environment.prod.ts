@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebaseConfig : {
-    apiKey: 'AIzaSyBO1VomFZItRtbngspTGNKdOxwDb_civJo',
-    authDomain: 'opsonion-53025.firebaseapp.com',
-    databaseURL: 'https://opsonion-53025.firebaseio.com',
-    projectId: 'opsonion-53025',
-    storageBucket: 'opsonion-53025.appspot.com',
-    messagingSenderId: '341657187113'
+    apiKey: 'AIzaSyC1_kUGqJtNyOnvRcXxTrBcHb_3YdRr1bk',
+    authDomain: 'opsonion-live.firebaseapp.com',
+    databaseURL: 'https://opsonion-live.firebaseio.com',
+    projectId: 'opsonion-live',
+    storageBucket: 'opsonion-live.appspot.com',
+    messagingSenderId: '202919224596'
   }
 };

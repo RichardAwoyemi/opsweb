@@ -7,15 +7,24 @@
           <h1 class="fw-600">The marketplace for services.</h1>
           <p class="lead mt-5">Opsonion is a platform which allows you to hire or work for digital currency.</p>
           <hr class="w-10 ml-0 my-7">
-          <form [formGroup]="registerTopForm" id="registerTopForm" (ngSubmit)="onTopSubmit()" [hidden]="submitted">
-            <div class="form-group input-group">
-              <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Get Early Access</button>
+          <div *ngIf="landingPageMode">
+            <form [formGroup]="registerTopForm" id="registerTopForm" (ngSubmit)="onTopSubmit()" [hidden]="submitted">
+              <div class="form-group input-group">
+                <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email"
+                  name="email">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Get Early Access</button>
+                </div>
               </div>
-            </div>
-            <small>We will never share your information or send you spam.</small>
-          </form>
+              <small>We will never share your information or send you spam.</small>
+            </form>
+          </div>
+          <div *ngIf="!landingPageMode">
+            <p class="gap-xy">
+              <a class="btn btn-lg btn-round btn-primary mw-200" routerLink="login">Get Started</a>
+              <a class="btn btn-lg btn-round btn-outline-primary mw-200" routerLink="about">Learn More</a>
+            </p>
+          </div>
           <div [hidden]="!submitted">
             <small>Thanks for signing up. We'll be in touch.</small>
           </div>
@@ -62,7 +71,8 @@
             community
             within minutes:</p>
           <ul class="list-unstyled" style="line-height: 2.5em">
-            <li><i class="ti-check text-success mr-2"></i> Browse previous work and reviews of candidates before hiring</li>
+            <li><i class="ti-check text-success mr-2"></i> Browse previous work and reviews of candidates before hiring
+            </li>
             <li><i class="ti-check text-success mr-2"></i> Live chat with freelancers to remain updated on work
               progress</li>
             <li><i class="ti-check text-success mr-2"></i> Only pay once the job is completed and you are 100%
@@ -95,12 +105,14 @@
   </section>
   <section class="section bg-gray">
     <div class="container">
-      <h3 class="text-center fw-200">Get early access</h3>
+      <h3 class="text-center fw-200">Stay up to date</h3>
       <br>
       <div class="col-md-6 mx-auto">
-        <form [formGroup]="registerBottomForm" id="registerBottomForm" (ngSubmit)="onBottomSubmit()" [hidden]="submitted">
+        <form [formGroup]="registerBottomForm" id="registerBottomForm" (ngSubmit)="onBottomSubmit()"
+          [hidden]="submitted">
           <div class="form-group input-group">
-            <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
+            <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email"
+              name="email">
             <div class="input-group-append">
               <button class="btn btn-primary" type="submit">Sign Up</button>
             </div>
@@ -128,7 +140,8 @@
           <hr class="w-100 ml-0 my-7">
           <form [formGroup]="registerTopForm" id="registerTopForm" (ngSubmit)="onTopSubmit()" [hidden]="submitted">
             <div class="form-group input-group">
-              <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email" name="email">
+              <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email"
+                name="email">
             </div>
             <button class="btn btn-primary btn-block" type="submit">Get Early Access</button>
             <br>
@@ -178,7 +191,8 @@
             community
             within minutes:</p>
           <ul class="list-unstyled" style="line-height: 2.5em">
-            <li><i class="ti-check text-success mr-2"></i> Browse previous work and reviews of candidates before hiring</li>
+            <li><i class="ti-check text-success mr-2"></i> Browse previous work and reviews of candidates before hiring
+            </li>
             <li><i class="ti-check text-success mr-2"></i> Live chat with freelancers to remain updated on work
               progress</li>
             <li><i class="ti-check text-success mr-2"></i> Only pay once the job is completed and you are 100%
@@ -225,7 +239,8 @@
   data-animation="slide-up" data-autoshow="2000">
   <div class="row gap-y align-items-center">
     <div class="col-md">
-      This website uses cookies to ensure you get the best experience on our website. Click <a routerLink="privacy">here</a>
+      This website uses cookies to ensure you get the best experience on our website. Click <a
+        routerLink="privacy">here</a>
       to learn more.
     </div>
     <div class="col-md-auto">

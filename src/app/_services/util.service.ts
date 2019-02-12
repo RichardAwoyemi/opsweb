@@ -20,4 +20,13 @@ export class UtilService {
       return this.ANDROID_APP_URL;
     }
   }
+
+  public showLandingPage() {
+    const url = window.location.href;
+    let landingPageActive = true;
+    if (url.includes('localhost') || url.includes('herokuapp')) {
+      landingPageActive = false;
+    }
+    return landingPageActive;
+  }
 }
