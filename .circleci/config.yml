@@ -44,10 +44,14 @@ jobs:
       - run:
           name: Deploy to AWS
           command: |
+            export AWS_ACCESS_KEY_ID="AKIAJSKDPYHGG3W7OZKQ"
+            export AWS_SECRET_ACCESS_KEY="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"
             AWS_BUCKET_TARGET="opsonion.com"
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               ~/.local/bin/aws --region eu-west-2 s3 sync ./dist/ s3://$AWS_BUCKET_TARGET --delete --exclude '.git/*'
             fi
+            unset AWS_ACCESS_KEY_ID
+            unset AWS_SECRET_ACCESS_KEY
     branches:
       only: 
       - develop
