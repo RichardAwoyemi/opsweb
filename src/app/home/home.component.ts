@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   registerBottomFormGroup: FormGroup;
   submitted = false;
   closeResult: string;
-  landingPageMode: boolean;
+  campaignMode: boolean;
 
   @ViewChild('errorModal') errorModal: ElementRef;
   registerTopForm = document.forms['registerTopForm'];
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]]
     });
 
-    this.landingPageMode = environment.landingPageMode;
+    this.campaignMode = environment.campaignMode;
   }
 
   onTopSubmit() {

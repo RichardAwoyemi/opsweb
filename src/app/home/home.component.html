@@ -7,7 +7,7 @@
           <h1 class="fw-600">The marketplace for services.</h1>
           <p class="lead mt-5">Opsonion is a platform which allows you to hire or work for digital currency.</p>
           <hr class="w-10 ml-0 my-7">
-          <div *ngIf="landingPageMode">
+          <div *ngIf="campaignMode">
             <form [formGroup]="registerTopForm" id="registerTopForm" (ngSubmit)="onTopSubmit()" [hidden]="submitted">
               <div class="form-group input-group">
                 <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email"
@@ -19,7 +19,7 @@
               <small>We will never share your information or send you spam.</small>
             </form>
           </div>
-          <div *ngIf="!landingPageMode">
+          <div *ngIf="!campaignMode">
             <p class="gap-xy">
               <a class="btn btn-lg btn-round btn-primary mw-200" routerLink="login">Get Started</a>
               <a class="btn btn-lg btn-round btn-outline-primary mw-200" routerLink="about">Learn More</a>
@@ -104,7 +104,7 @@
     </div>
   </section>
   <section class="section bg-gray">
-    <div class="container" *ngIf="landingPageMode">
+    <div class="container" *ngIf="campaignMode">
       <h3 class="text-center fw-200">Get early access</h3>
       <br>
       <div class="col-md-6 mx-auto">
@@ -123,7 +123,7 @@
         </div>
       </div>
     </div>
-    <div class="container" *ngIf="!landingPageMode">
+    <div class="container" *ngIf="!campaignMode">
       <h3 class="text-center fw-200">Stay up to date</h3>
       <br>
       <div class="col-md-6 mx-auto">

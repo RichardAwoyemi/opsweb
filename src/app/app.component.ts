@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   today: number = Date.now();
   appStoreUrl: string;
   userAgentString: string;
-  landingPageMode = true;
+  campaignMode = true;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -55,9 +55,9 @@ export class AppComponent implements OnInit {
       }
     });
     this.userAgentString = navigator.userAgent;
-    this.landingPageMode = environment.landingPageMode;
+    this.campaignMode = environment.campaignMode;
 
-    if (this.landingPageMode) {
+    if (this.campaignMode) {
       authService.clearLocalStorage();
     }
   }

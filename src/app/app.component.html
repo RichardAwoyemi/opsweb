@@ -46,21 +46,21 @@
 <!-- Not logged in navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart" *ngIf="!authService.isLoggedIn">
   <div class="container">
-    <div class="navbar-left mr-4" *ngIf="!landingPageMode">
+    <div class="navbar-left mr-4" *ngIf="!campaignMode">
       <button class="navbar-toggler" type="button">&#9776;</button>
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo.svg" style="height: 42px; width: 42px;">
       </a>
     </div>
-    <div class="navbar-left mr-4" *ngIf="landingPageMode">
+    <div class="navbar-left mr-4" *ngIf="campaignMode">
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo.svg" style="height: 42px; width: 42px;">
       </a>
     </div>
     <!-- Desktop links -->
     <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches">
-      <span class="navbar-divider d-mobile-none" *ngIf="!landingPageMode"></span>
-      <nav class="nav nav-navbar mr-auto" *ngIf="!landingPageMode">
+      <span class="navbar-divider d-mobile-none" *ngIf="!campaignMode"></span>
+      <nav class="nav nav-navbar mr-auto" *ngIf="!campaignMode">
         <a class="nav-link" routerLink="/about">About</a>
         <a class="nav-link" routerLink="/services">Services</a>
         <a class="nav-link" routerLink="/careers">Careers</a>
@@ -71,7 +71,7 @@
       </nav>
     </section>
     <!-- Mobile links -->
-    <div *ngIf="!landingPageMode">
+    <div *ngIf="!campaignMode">
       <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
         <span class="navbar-divider d-mobile-none"></span>
         <nav class="nav nav-navbar mr-auto">
@@ -92,7 +92,7 @@
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 
 <!-- Not logged in footer -->
-<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && !landingPageMode">
+<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && !campaignMode">
   <div class="container">
     <div class="row gap-y">
       <div class="col-xl-5">
@@ -126,7 +126,7 @@
 </footer>
 
 <!--Landing page footer -->
-<footer id="footer" class="footer py-7" *ngIf="landingPageMode">
+<footer id="footer" class="footer py-7" *ngIf="campaignMode">
   <div class="container">
     <div class="row gap-y">
       <div class="col-xl-12 text-center">

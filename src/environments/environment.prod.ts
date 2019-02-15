@@ -8,5 +8,5 @@ export const environment = {
     storageBucket: 'opsonion-live.appspot.com',
     messagingSenderId: '202919224596'
   },
-  landingPageMode: true
+  campaignMode: true
 };
