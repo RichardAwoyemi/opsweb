@@ -7,27 +7,10 @@
           <h1 class="fw-600">The marketplace for services.</h1>
           <p class="lead mt-5">Opsonion is a platform which allows you to hire or work for digital currency.</p>
           <hr class="w-10 ml-0 my-7">
-          <div *ngIf="campaignMode">
-            <form [formGroup]="registerTopForm" id="registerTopForm" (ngSubmit)="onTopSubmit()" [hidden]="submitted">
-              <div class="form-group input-group">
-                <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email"
-                  name="email">
-                <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit">Get Early Access</button>
-                </div>
-              </div>
-              <small>We will never share your information or send you spam.</small>
-            </form>
-          </div>
-          <div *ngIf="!campaignMode">
-            <p class="gap-xy">
-              <a class="btn btn-lg btn-round btn-primary mw-200" routerLink="login">Get Started</a>
-              <a class="btn btn-lg btn-round btn-outline-primary mw-200" routerLink="about">Learn More</a>
-            </p>
-          </div>
-          <div [hidden]="!submitted">
-            <small>Thanks for signing up. We'll be in touch.</small>
-          </div>
+          <p class="gap-xy">
+            <a class="btn btn-lg btn-round btn-primary mw-200" routerLink="register">Get Started</a>
+            <a class="btn btn-lg btn-round btn-outline-primary mw-200" routerLink="about">Learn More</a>
+          </p>
         </div>
         <div class="col-lg-6 ml-auto" aos-init aos-animate data-aos="fade-up">
           <img src="assets/img/freelancer-image.png">

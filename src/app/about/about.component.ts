@@ -28,10 +28,12 @@ export class AboutComponent implements OnInit {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
 
     this.registerFormGroup = new FormGroup({
+      name: new FormControl(),
       email: new FormControl()
     });
 
     this.registerForm = this.formBuilder.group({
+      name: ['', [Validators.required ]],
       email: ['', [Validators.required, Validators.email]]
     });
   }

@@ -12,7 +12,7 @@ export const environment = {
     storageBucket: 'opsonion-dev.appspot.com',
     messagingSenderId: '994826852330'
   },
-  campaignMode: false
+  campaignMode: true
 };
 
 /*

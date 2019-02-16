@@ -69,6 +69,12 @@
         <a class="nav-link" routerLink="/login">Login</a>
         <a class="nav-link" routerLink="/register">Register</a>
       </nav>
+      <span class="navbar-divider d-mobile-none" *ngIf="campaignMode"></span>
+      <nav class="nav nav-navbar mr-auto" *ngIf="campaignMode">
+        <a class="nav-link" routerLink="/about">About</a>
+        <a class="nav-link" routerLink="/login">Login</a>
+        <a class="nav-link" routerLink="/register">Register</a>
+      </nav>
     </section>
     <!-- Mobile links -->
     <div *ngIf="!campaignMode">
@@ -125,7 +131,7 @@
   </div>
 </footer>
 
-<!--Landing page footer -->
+<!-- Landing page footer -->
 <footer id="footer" class="footer py-7" *ngIf="campaignMode">
   <div class="container">
     <div class="row gap-y">

@@ -20,26 +20,72 @@
   <section id="section-mission" class="section" style="padding-top: 3em;">
     <div class="container">
       <div class="row gap-y align-items-center">
-        <div class="col-md-7 mx-auto">
-          <h4 style="text-align:justify">
-            Opsonion is a platform which makes earning, spending and investing in digital assets easier with the
-            maximum level of consumer protection and
-            efficiency.
-          </h4><br>
-          <p class="lead" style="text-align:justify">
-            Digital assets are revolutionising the financial industry. The establishment of programmable money has
-            open doors that were previously closed. However, despite the emergence of such innovation, the issue of
-            <em>order</em> and <em>integration</em> continue to prevent mainstream adoption.
+        <div class="col-md-9 mx-auto">
+          <h4 style="text-align:center">
+            Opsonion connects talent to opportunity. We want to leverage human
+            capital in places that no one has previously ever reached.
+          </h4>
+          <br>
+          <hr style="width: 25%">
+          <br>
+          <p class="lead" style="margin-top: 1em; text-align:center">
+            The world is full of gifted people that have been let down by an inefficient global labor market.
           </p>
           <br>
-          <p class="lead" style="text-align:justify">As a
-            company, we have a strong emphasis on creating accessible solutions that resolve these problems. In all of
-            our efforts, we
-            prioritise improving the application of blockchain technology to everyday life in a practical manner. This
-            entails making
-            the acquisition, utilisation and liquidation of digital assets simpler. We are committed to building
-            durable structures that will aid the mass adoption of digital assets.</p>
+          <div class="row gap-y align-items-center" style="margin-top: 1em; margin-bottom: 1em">
+            <div class="col-md-4" aos-animate data-aos="fade-up">
+              <div class="card card-body border text-center">
+                <h5 style="font-weight: bold">Unbanked</h5>
+                <p class="small-1">One third of the world does not have access to a bank account, limiting their
+                  scope of work remote opportunities.</p>
+              </div>
+            </div>
+            <div class="col-md-4" aos-animate data-aos="fade-up" data-aos-delay="1000">
+              <div class="card card-body border text-center">
+                <h5 style="font-weight: bold">Underpaid</h5>
+                <p class="small-1">Existing platforms charge high transaction fees of 15-20% which make it difficult for
+                  many to earn a
+                  decent living.</p>
+              </div>
+            </div>
+            <div class="col-md-4" aos-animate data-aos="fade-up" data-aos-delay="2000">
+              <div class="card card-body border text-center">
+                <h5 style="font-weight: bold">Unstable</h5>
+                <p class="small-1">Self-employment continues to remain a financially insecure profession despite its
+                  ever increasing popularity.</p>
+              </div>
+            </div>
+          </div>
           <br>
+          <hr style="width: 25%">
+          <br>
+          <p class="lead" style="margin-top: 1em; text-align:center">
+            Using blockchain technology, Opsonion creates and brings opportunities directly to individuals all around
+            the world in a fair and efficient manner.
+          </p>
+          <br>
+          <div class="row gap-y align-items-center" style="margin-top: 1em">
+            <div class="col-md-4" aos-animate data-aos="fade-up">
+              <div class="card card-body border text-center">
+                <h5 style="font-weight: bold">Accessible</h5>
+                <p class="small-1">Seamlessly earn and spend digital currency with our secure wallet service.</p>
+              </div>
+            </div>
+            <div class="col-md-4" aos-animate data-aos="fade-up" data-aos-delay="1000">
+              <div class="card card-body border text-center">
+                <h5 style="font-weight: bold">Affordable</h5>
+                <p class="small-1">Lower fees provided by digital currency transactions benefit all parties involved.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4" aos-animate data-aos="fade-up" data-aos-delay="2000">
+              <div class="card card-body border text-center">
+                <h5 style="font-weight: bold">Appropriate</h5>
+                <p class="small-1">Community members review disputes and cast votes in favor of one party or another.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -47,13 +93,20 @@
   <section class="section bg-gray">
     <div class="container">
       <h3 class="text-center fw-200">Sign up to our newsletter</h3>
-      <form class="row gap-y mt-7" [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
+      <form class="row gap-y mt-7" [formGroup]="registerForm" id="registerForm" (ngSubmit)="onSubmit()"
+        [hidden]="submitted">
         <div class="col-md-6 col-lg-4">
-          <input required type="text" class="form-control" formControlName="email" name="email" placeholder="Email"
-            autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+            <input required type="text" class="form-control" formControlName="name" name="name" placeholder="Name"
+              autocomplete="off"
+              style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+          </div>
+        <div class="col-md-6 col-lg-4">
+          <input required type="email" class="form-control" formControlName="email" name="email" placeholder="Email"
+            autocomplete="off"
+            style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
         </div>
         <div class="col-md-6 col-lg-4">
-          <button class="btn btn-block btn-success h-100" type="submit">Register</button>
+          <button class="btn btn-block btn-primary h-100" type="submit">Register</button>
         </div>
       </form>
       <div class="row gap-y align-items-center mt-7" [hidden]="!submitted">
