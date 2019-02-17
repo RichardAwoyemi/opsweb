@@ -65,6 +65,7 @@ const routes: Routes = [
   { path: 'task/:id', component: TaskComponent, canActivate: [AuthGuard] },
   { path: 'tasks/new', component: NewTaskComponent, canActivate: [AuthGuard] },
   { path: 'invite', component: InviteComponent, canActivate: [AuthGuard] },
+  { path: 'invite/:id', component: InviteComponent, canActivate: [AnonymousGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

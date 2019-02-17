@@ -50,20 +50,19 @@ export class AboutComponent implements OnInit {
       console.log(new FormData(formObject));
     }
 
-    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
-      .then(response => {
+    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
+      if (environment.production === false) {
+        console.log('Success!', response);
+      }
+      this.submitted = true;
+    }).catch(
+      error => {
         if (environment.production === false) {
-          console.log('Success!', response);
+          console.error('Error!', error.message);
         }
-        this.submitted = true;
-      })
-      .catch(
-        error => {
-          if (environment.production === false) {
-            console.error('Error!', error.message);
-          }
-          $(this.errorModal.nativeElement).modal('show');
-          this.submitted = false;
-        });
+        $(this.errorModal.nativeElement).modal('show');
+        this.submitted = false;
+      }
+    );
   }
 }

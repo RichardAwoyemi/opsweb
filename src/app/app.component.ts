@@ -17,11 +17,11 @@ import { environment } from 'src/environments/environment';
 export class AppComponent implements OnInit {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
+  campaignMode: boolean;
   user: any;
   today: number = Date.now();
   appStoreUrl: string;
   userAgentString: string;
-  campaignMode = true;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     public router: Router,
     public authService: AuthService) {
     this.afAuth.authState.subscribe(response => {
-      if (response) {
+      if (response && authService.isLoggedIn) {
         const userDoc = db.doc<any>(`users/${response.uid}`);
         userDoc.snapshotChanges().subscribe(value => {
           this.user = {
@@ -51,15 +51,10 @@ export class AppComponent implements OnInit {
         });
       } else {
         localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
       }
     });
     this.userAgentString = navigator.userAgent;
     this.campaignMode = environment.campaignMode;
-
-    if (this.campaignMode) {
-      authService.clearLocalStorage();
-    }
   }
 
   ngOnInit() {

@@ -63,6 +63,7 @@ import { TaskComponent } from './task/task.component';
 import { UserComponent } from './user/user.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { InboxComponent } from './inbox/inbox.component';
+import { ReferralService } from './_services/referral.service';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { InboxComponent } from './inbox/inbox.component';
     ExcelService,
     CsvService,
     PdfService,
+    ReferralService,
     AuthGuard,
     AnonymousGuard,
     {

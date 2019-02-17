@@ -1,3 +1,38 @@
-<section class="section">
-dashboard
+<section class="section" *ngIf="campaignMode">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12" *ngIf="userData">
+        <h2>Hi, {{ userData?.firstName }}.</h2>
+        <br>
+        <p style="font-size: 1.25em">You are in position <strong>1</strong> of <strong>1</strong> on the waitlist.</p>
+      </div>
+    </div>
+    <br>
+    <div class="row gap-y" style="margin-left: 0.1em">
+      <div class="col-md-6" style="background-color: #fff; padding: 2em">
+        <h4>Current Task</h4>
+        <br>
+        <p style="font-size: 1em">Interested in early access? Improve your spot in line by inviting friends. 
+        The more who join, the sooner you will get in.</p>
+        <div class="form-group input-group">
+          <input type="text" class="form-control" placeholder=""
+            value="{{ referralUrl }}" readonly>
+          <div class="input-group-append">
+            <button class="btn btn-secondary" type="button">Copy Link</button>
+          </div>
+        </div>
+        <div class="small mt-3 opacity-70">or share with:</div>
+        <div style="padding-top: 1em">
+          <img src="../assets/img/facebook.png" class="social-media-icon">
+          <img src="../assets/img/messenger.png" class="social-media-icon">
+          <a href="https://wa.me/?text={{ campaignMessage }}" target="_blank"><img src="../assets/img/whatsapp.png" class="social-media-icon"></a>
+          <img src="../assets/img/twitter.png" class="social-media-icon">
+          <img src="../assets/img/mail.png" class="social-media-icon">
+        </div>
+      </div>
+      <!-- Tasks -->
+      <div class="col-md-6">
+      </div>
+    </div>
+  </div>
 </section>

@@ -62,27 +62,26 @@ export class ContactComponent implements OnInit {
       console.log(new FormData(formObject));
     }
 
-    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
-      .then(response => {
+    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
+      if (environment.production === false) {
+        console.log('Success!', response);
+        this.submitted = true;
+      }
+    }).catch(
+      error => {
         if (environment.production === false) {
-          console.log('Success!', response);
-          this.submitted = true;
+          console.error('Error!', error.message);
+          $(this.errorModal.nativeElement).modal('show');
+          this.submitted = false;
         }
-      })
-      .catch(
-        error => {
-          if (environment.production === false) {
-            console.error('Error!', error.message);
-            $(this.errorModal.nativeElement).modal('show');
-            this.submitted = false;
-          }
 
-          // Temporary fix
+        // Temporary fix
 
-          const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-          modalReference.componentInstance.header = 'Yay!';
-          modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
-          this.submitted = true;
-        });
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Yay!';
+        modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
+        this.submitted = true;
+      }
+    );
   }
 }

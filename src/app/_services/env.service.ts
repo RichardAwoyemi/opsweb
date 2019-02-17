@@ -10,7 +10,7 @@ export class EnvService {
       apiUrl = 'http://localhost:8080';
     // Production
     } else if (environment.production === true) {
-      apiUrl = 'http://opsonion-api.herokuapp.com';
+      apiUrl = 'https://api.opsonion.com';
     // UAT
     } else {
       apiUrl = 'http://opsonion-api.herokuapp.com';

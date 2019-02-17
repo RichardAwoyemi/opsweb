@@ -90,8 +90,7 @@ export class HomeComponent implements OnInit {
   }
 
   submitForm(formObject) {
-    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
-    .then(response => {
+    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
       if (environment.production === false) {
         console.log('Success!', response);
       }
@@ -99,8 +98,7 @@ export class HomeComponent implements OnInit {
       modalReference.componentInstance.header = 'Yay!';
       modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
       this.submitted = true;
-    })
-    .catch(
+    }).catch(
       error => {
         if (environment.production === false) {
           console.error('Error!', error.message);
@@ -109,6 +107,7 @@ export class HomeComponent implements OnInit {
         modalReference.componentInstance.header = 'Oops!';
         modalReference.componentInstance.message = 'Something has gone wrong. Please try again.';
         this.submitted = true;
-      });
+      }
+    );
   }
 }

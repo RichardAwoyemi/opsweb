@@ -1,12 +1,13 @@
 <!-- Logged in navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark flex-column" style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0"
-  *ngIf="authService.isLoggedIn">
+<nav class="navbar navbar-expand-lg navbar-dark flex-column"
+  style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0" *ngIf="authService.isLoggedIn">
   <div class="container d-stick-none" style="padding-top: 1.5em; padding-bottom: 1.5em">
     <div class="row">
       <div class="col-4">
         <div class="nav nav-navbar ">
           <a class="navbar-brand" href="#">
-            <img class="logo-dark" src="../assets/img/opsonion-cropped-white.png" alt="logo" style="height: 32px; width: 131px">
+            <img class="logo-dark" src="../assets/img/opsonion-cropped-white.png" alt="logo"
+              style="height: 32px; width: 131px">
           </a>
         </div>
       </div>
@@ -16,9 +17,15 @@
         <span class="dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false">
           <img class="avatar avatar-xs" src="{{ user?.photoURL }}" alt="user">
         </span>
-        <div class="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-right" *ngIf="!campaignMode">
           <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
           <a class="dropdown-item" routerLink="/invite" style="padding: 0rem;">Invite Friends</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
+        </div>
+        <div class="dropdown-menu dropdown-menu-right" *ngIf="campaignMode">
+          <a class="dropdown-item" routerLink="/dashboard" style="padding: 0rem;">Dashboard</a>
+          <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
         </div>
@@ -31,12 +38,16 @@
       <div class="navbar-left">
       </div>
       <section>
-        <div class="nav nav-navbar mr-auto">
+        <div class="nav nav-navbar mr-auto" *ngIf="!campaignMode">
           <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
           <a class="nav-link" routerLink="/accounts">ACCOUNTS</a>
           <a class="nav-link" routerLink="/accounts">EXCHANGE</a>
           <a class="nav-link" routerLink="/tasks">TASKS</a>
           <a class="nav-link" routerLink="/tools">TOOLS</a>
+        </div>
+        <div class="nav nav-navbar mr-auto" *ngIf="campaignMode">
+          <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
+          <a class="nav-link" routerLink="/settings">SETTINGS</a>
         </div>
       </section>
     </div>
@@ -58,7 +69,7 @@
       </a>
     </div>
     <!-- Desktop links -->
-    <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches">
+    <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches && !authService.isLoggedIn">
       <span class="navbar-divider d-mobile-none" *ngIf="!campaignMode"></span>
       <nav class="nav nav-navbar mr-auto" *ngIf="!campaignMode">
         <a class="nav-link" routerLink="/about">About</a>
@@ -132,7 +143,7 @@
 </footer>
 
 <!-- Landing page footer -->
-<footer id="footer" class="footer py-7" *ngIf="campaignMode">
+<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && campaignMode">
   <div class="container">
     <div class="row gap-y">
       <div class="col-xl-12 text-center">

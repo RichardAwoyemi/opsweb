@@ -1,5 +1,21 @@
 section {
   background-color: #F4F7FA !important;
   padding-top: 11rem;
-  padding-bottom: 3rem;
+  padding-bottom: 4rem;
+}
+
+input[readonly]
+{
+  background-color:#fff;
+}
+
+.social-media-icon {
+  width: 24px; 
+  height: 24px; 
+  margin-right: 0.75em;
+}
+
+.social-media-icon:hover {
+  cursor: pointer;
+  opacity: 0.75;
 }

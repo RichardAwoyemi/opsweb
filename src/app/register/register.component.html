@@ -45,7 +45,7 @@
             <input name="userAcceptedAgreement" type="hidden" value="0"><input type="checkbox" required value="1" name="userAcceptedAgreement"
               [(ngModel)]="model.userAcceptedAgreement" id="userAcceptedAgreement" ngControl="userAcceptedAgreement"
               #userAcceptedAgreement="ngModel">&nbsp;I certify that I am 18 years of age or older, and I agree to the
-            <a routerLink="/legal" target="_blank" tabindex="-1">User Agreement and Privacy Policy</a>.
+            <a routerLink="/legal" target="_blank">User Agreement and Privacy Policy</a>.
           </label>
           <div *ngIf="f.submitted && !userAcceptedAgreement.valid" style="padding-bottom: 1em">
             <small>Please accept the user agreement and privacy

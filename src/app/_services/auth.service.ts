@@ -7,20 +7,22 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
 import { UtilService } from './util.service';
 import { auth } from 'firebase/app';
+import { ReferralService } from './referral.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  userData: any;                    // Save logged in user data
+  userData: any;
 
   constructor(
-    public afs: AngularFirestore,   // Inject Firestore service
-    public afAuth: AngularFireAuth, // Inject Firebase auth service
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
     public router: Router,
     public modalService: NgbModal,
     private utilService: UtilService,
-    public ngZone: NgZone           // NgZone service to remove outside scope warning
+    private referralService: ReferralService,
+    public ngZone: NgZone
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
@@ -40,7 +42,7 @@ export class AuthService {
       .then((result) => {
         this.setUserData(result.user);
         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['first_name'],
-        result.additionalUserInfo.profile['last_name']);
+        result.additionalUserInfo.profile['last_name'], this.referralService.generateRandomString(8));
         localStorage.setItem('loggedIn', 'true');
         this.router.navigate(['dashboard']);
       }).catch((error) => {
@@ -56,7 +58,7 @@ export class AuthService {
       .then((result) => {
         this.setUserData(result.user);
         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
-          result.additionalUserInfo.profile['family_name']);
+          result.additionalUserInfo.profile['family_name'], this.referralService.generateRandomString(8));
         localStorage.setItem('loggedIn', 'true');
         this.router.navigate(['dashboard']);
       }).catch((error) => {
@@ -71,8 +73,7 @@ export class AuthService {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
 
-        /* Call the SendVerificationMail() function when a new user signs
-        up and returns promise */
+        // Call the SendVerificationMail() function when a new user signs up and returns promise
         this.sendVerificationMail();
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Yay!';
@@ -82,12 +83,35 @@ export class AuthService {
         // Sanitise name before post
         firstName = this.utilService.toTitleCase(firstName);
         lastName = this.utilService.toTitleCase(lastName);
-        this.setUserDetailData(result.user.uid, firstName, lastName);
+        this.setUserDetailData(result.user.uid, firstName, lastName, this.referralService.generateRandomString(8));
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
         modalReference.componentInstance.message = error.message;
-      });
+    });
+  }
+
+  // Register through referral
+  registerWithReferral(email, password, firstName, lastName, referredBy) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+
+        // Call the SendVerificationMail() function when a new user signs up and returns promise
+        this.sendVerificationMail();
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Yay!';
+        modalReference.componentInstance.message = 'Your registration was successful.';
+        this.setUserData(result.user);
+
+        // Sanitise name before post
+        firstName = this.utilService.toTitleCase(firstName);
+        lastName = this.utilService.toTitleCase(lastName);
+        this.setUserReferralData(result.user.uid, firstName, lastName, this.referralService.generateRandomString(8), referredBy);
+      }).catch((error) => {
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = error.message;
+    });
   }
 
   // Sign in with email/password
@@ -141,7 +165,6 @@ export class AuthService {
   AngularFirestoreDocument service */
   setUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-
     const userData: User = {
       uid: user.uid,
       email: user.email,
@@ -154,11 +177,25 @@ export class AuthService {
     });
   }
 
-  setUserDetailData(uid, firstName, lastName) {
+  setUserDetailData(uid, firstName, lastName, referralId) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     const userDetailData = {
       firstName: firstName,
       lastName: lastName,
+      referralId: referralId
+    };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
+  setUserReferralData(uid, firstName, lastName, referralId, referredBy) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    const userDetailData = {
+      firstName: firstName,
+      lastName: lastName,
+      referralId: referralId,
+      referredBy: referredBy
     };
     return userRef.set(userDetailData, {
       merge: true
