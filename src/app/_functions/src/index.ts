@@ -8,15 +8,15 @@ exports.createUser = functions.firestore
     return admin.firestore().runTransaction(function (transaction: any) {
       return transaction.get(userDocRef).then(function (userDoc: any) {
         if (!userDoc.exists) {
-          userDocRef.set({ counter: 100 })
+          userDocRef.set({ counter: 100 });
         }
         const newUserCount = userDoc.data().counter + 1;
         transaction.update(userDocRef, { counter: newUserCount });
       })
     }).then(function () {
-      console.log('createUser transaction successfully committed!');
+      console.log('Transaction successfully committed!');
     }).catch(function (error: any) {
-      console.log('createUser transaction failed: ', error);
+      console.log('Transaction failed: ', error);
     });
   });
 
@@ -26,14 +26,14 @@ exports.deleteUser = functions.firestore
     return admin.firestore().runTransaction(function (transaction: any) {
       return transaction.get(userDocRef).then(function (userDoc: any) {
         if (!userDoc.exists) {
-          userDocRef.set({ counter: 100 })
+          userDocRef.set({ counter: 100 });
         }
         const newUserCount = userDoc.data().counter - 1;
-        transaction.update(userDocRef, { counter: newUserCount });
+        transaction.update(userDocRef, { counter: newUserCount });    
       })
     }).then(function () {
-      console.log('deleteUser transaction successfully committed!');
+      console.log('Transaction successfully committed.');
     }).catch(function (error: any) {
-      console.log('deleteUser transaction failed: ', error);
+      console.log('Transaction failed: ', error);
     });
   });
