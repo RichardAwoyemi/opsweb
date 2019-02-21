@@ -8,6 +8,7 @@ import { ModalComponent } from '../_modals/modal.component';
 import { UtilService } from './util.service';
 import { auth } from 'firebase/app';
 import { ReferralService } from './referral.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -56,10 +57,14 @@ export class AuthService {
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
+        const referralId = this.referralService.generateRandomString(8);
         this.setUserData(result.user);
         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
-          result.additionalUserInfo.profile['family_name'], this.referralService.generateRandomString(8));
+          result.additionalUserInfo.profile['family_name'], referralId);
         localStorage.setItem('loggedIn', 'true');
+        if (environment.campaignMode === true) {
+          this.addUserToWaitlist(referralId);
+        }
         this.router.navigate(['dashboard']);
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
@@ -107,6 +112,7 @@ export class AuthService {
         firstName = this.utilService.toTitleCase(firstName);
         lastName = this.utilService.toTitleCase(lastName);
         this.setUserReferralData(result.user.uid, firstName, lastName, this.referralService.generateRandomString(8), referredBy);
+        this.addReferralPoints(referredBy);
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -210,7 +216,6 @@ export class AuthService {
     if (user == null) {
       localStorage.removeItem('loggedIn');
     }
-
     if (user !== null) {
       if (user.providerData[0].providerId !== 'facebook.com') {
         if (loggedIn === true && user.emailVerified !== false) {
@@ -237,6 +242,34 @@ export class AuthService {
   public clearLocalStorage() {
     localStorage.removeItem('user');
     localStorage.removeItem('loggedIn');
+  }
+
+  addUserToWaitlist(referralId) {
+    const waitlistDocRef = this.afs.firestore.collection('counters').doc('waitlist');
+    return this.afs.firestore.runTransaction(function (transaction: any) {
+      return transaction.get(waitlistDocRef).then(function (waitlistDoc: any) {
+        if (!waitlistDoc.exists) {
+          waitlistDocRef.set({ [referralId]: 0 });
+        }
+      });
+    }).then(function () {
+      console.log('Transaction successfully committed!');
+    }).catch(function (error: any) {
+      console.log('Transaction failed: ', error);
+    });
+  }
+
+  addReferralPoints(referralId) {
+    const waitlistDocRef = this.afs.firestore.collection('counters').doc('waitlist');
+    return this.afs.firestore.runTransaction(function (transaction: any) {
+      return transaction.get(waitlistDocRef).then(function (waitlistDoc: any) {
+        if (!waitlistDoc.exists) {
+          waitlistDocRef.set({ [referralId]: 0 });
+        }
+        const newReferralPointsCount = waitlistDoc.data()[referralId] + 1;
+        transaction.update(waitlistDocRef, { counter: newReferralPointsCount });
+      });
+    });
   }
 
   checkIfMailExists(email: string): Promise<any> {

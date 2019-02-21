@@ -54,13 +54,6 @@ export class ToolsComponent implements OnInit {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
   }
 
-  // createNewAddress() {
-  //   const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //   modalReference.componentInstance.header = 'Oops!';
-  //   modalReference.componentInstance.message = 'This feature is currently under construction. ' +
-  //     'For the time being, you are only allowed a single address.';
-  // }
-
   showDetails() {
     $(this.showDetailsModal.nativeElement).modal('show');
   }
