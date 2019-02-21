@@ -13,7 +13,7 @@ export const environment = {
     messagingSenderId: '994826852330'
   },
   campaignMode: true,
-  numberOfShards: 3
+  firebaseApiUrl: 'https://us-central1-opsonion-dev.cloudfunctions.net'
 };
 
 /*

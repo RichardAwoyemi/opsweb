@@ -8,7 +8,6 @@ import { ModalComponent } from '../_modals/modal.component';
 import { UtilService } from './util.service';
 import { auth } from 'firebase/app';
 import { ReferralService } from './referral.service';
-import { environment } from 'src/environments/environment.staging';
 
 @Injectable({
   providedIn: 'root'
@@ -46,10 +45,6 @@ export class AuthService {
           result.additionalUserInfo.profile['last_name'], this.referralService.generateRandomString(8));
         localStorage.setItem('loggedIn', 'true');
         this.router.navigate(['dashboard']);
-
-        // Increment total number of users on platform
-        this.setupUserCounter();
-        this.incrementUserCounter();
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -66,10 +61,6 @@ export class AuthService {
           result.additionalUserInfo.profile['family_name'], this.referralService.generateRandomString(8));
         localStorage.setItem('loggedIn', 'true');
         this.router.navigate(['dashboard']);
-
-        // Increment total number of users on platform
-        this.setupUserCounter();
-        this.incrementUserCounter();
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -93,10 +84,6 @@ export class AuthService {
         firstName = this.utilService.toTitleCase(firstName);
         lastName = this.utilService.toTitleCase(lastName);
         this.setUserDetailData(result.user.uid, firstName, lastName, this.referralService.generateRandomString(8));
-
-        // Increment total number of users on platform
-        this.setupUserCounter();
-        this.incrementUserCounter();
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -120,10 +107,6 @@ export class AuthService {
         firstName = this.utilService.toTitleCase(firstName);
         lastName = this.utilService.toTitleCase(lastName);
         this.setUserReferralData(result.user.uid, firstName, lastName, this.referralService.generateRandomString(8), referredBy);
-
-        // Increment total number of users on platform
-        this.setupUserCounter();
-        this.incrementUserCounter();
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -267,32 +250,6 @@ export class AuthService {
           }
         })
         .catch(err => reject(err));
-    });
-  }
-
-  setupUserCounter() {
-    for (let i = 0; i < environment.numberOfShards; i++) {
-      this.afs.firestore.collection('counters').doc(i.toString()).get().then(
-        doc => {
-          if (!doc.exists) {
-            const counter = {
-              userCount: 0
-            };
-            this.afs.firestore.collection('counters').doc(i.toString()).set(counter);
-          }
-        }
-      );
-    }
-  }
-
-  incrementUserCounter() {
-    const randomShard = Math.floor(Math.random() * environment.numberOfShards).toString();
-    const shardReference = this.afs.firestore.collection('counters').doc(randomShard);
-    return this.afs.firestore.runTransaction(t => {
-      return t.get(shardReference).then(doc => {
-        const newCount = doc.data().userCount + 1;
-        t.update(shardReference, { userCount: newCount });
-      });
     });
   }
 }
