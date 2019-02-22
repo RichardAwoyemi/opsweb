@@ -4,7 +4,7 @@
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em">You are in position <strong>1</strong> of <strong>1</strong> on the waitlist.</p>
+        <p style="font-size: 1.25em">You are in position <strong>1</strong> of <strong>{{ noOfUsers }}</strong> on the waitlist.</p>
       </div>
     </div>
     <br>

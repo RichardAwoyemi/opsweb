@@ -11,6 +11,18 @@ export class UtilService {
     );
   }
 
+  public generateRandomString(length) {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
+    if (!length) {
+      length = Math.floor(Math.random() * chars.length);
+    }
+    let str = '';
+    for (let i = 0; i < length; i++) {
+      str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
+  }
+
   public getAppStoreLink(userAgentString: string) {
     if (userAgentString.indexOf('iPhone') > -1 ||
       userAgentString.indexOf('iPod') > -1 ||

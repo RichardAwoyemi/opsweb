@@ -24,10 +24,10 @@ exports.createUser = functions.firestore
       })
       .catch((error: any) => {
         console.log('Transaction failed: ', error);
-      })
+      });
   });
 
-  exports.deleteUser = functions.firestore
+exports.deleteUser = functions.firestore
   .document('users/{userId}').onDelete(() => {
     const ref = admin.firestore().collection('counters').doc('users');
     return admin.firestore().runTransaction(async (transaction: any) => {
@@ -49,5 +49,5 @@ exports.createUser = functions.firestore
       })
       .catch((error: any) => {
         console.log('Transaction failed: ', error);
-      })
+      });
   });

@@ -56,4 +56,12 @@ export class InviteComponent implements OnInit {
     const lastName = this.model.lastName;
     this.authService.registerWithReferral(email, password, firstName, lastName, this.referredById);
   }
+
+  googleSignInWithReferral() {
+    this.authService.googleSignInWithReferral();
+  }
+
+  facebookSignInWithReferral() {
+    this.authService.facebookSignIn();
+  }
 }

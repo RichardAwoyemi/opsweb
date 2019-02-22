@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
-    public modalService: NgbModal,
+    public modalService: NgbModal
   ) { }
 
   model: any = {};

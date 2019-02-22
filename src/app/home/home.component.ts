@@ -6,6 +6,10 @@ import { ModalComponent } from '../_modals/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { UtilService } from '../_services/util.service';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons';
+import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../_services/auth.service';
 
 declare var $;
 
@@ -29,13 +33,17 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private authService: AuthService,
     public modalService: NgbModal,
     public utilService: UtilService,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
+    library.add(faFacebookF, faGoogle, faLongArrowAltRight);
+
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
+
     this.registerTopFormGroup = new FormGroup({
       email: new FormControl()
     });
@@ -53,6 +61,14 @@ export class HomeComponent implements OnInit {
     });
 
     this.campaignMode = environment.campaignMode;
+  }
+
+  googleSignIn() {
+    this.authService.googleSignIn();
+  }
+
+  facebookSignIn() {
+    this.authService.facebookSignIn();
   }
 
   onTopSubmit() {

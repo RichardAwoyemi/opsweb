@@ -43,7 +43,7 @@ export class AuthService {
       .then((result) => {
         this.setUserData(result.user);
         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['first_name'],
-          result.additionalUserInfo.profile['last_name'], this.referralService.generateRandomString(8));
+          result.additionalUserInfo.profile['last_name'], this.utilService.generateRandomString(8));
         localStorage.setItem('loggedIn', 'true');
         this.router.navigate(['dashboard']);
       }).catch((error) => {
@@ -57,13 +57,34 @@ export class AuthService {
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
-        const referralId = this.referralService.generateRandomString(8);
+        const referralId = this.utilService.generateRandomString(8);
         this.setUserData(result.user);
         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
           result.additionalUserInfo.profile['family_name'], referralId);
         localStorage.setItem('loggedIn', 'true');
         if (environment.campaignMode === true) {
-          this.addUserToWaitlist(referralId);
+          this.referralService.addUserToWaitlist(referralId);
+        }
+        this.router.navigate(['dashboard']);
+      }).catch((error) => {
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = error.message;
+      });
+  }
+
+  googleSignInWithReferral() {
+    const provider = new auth.GoogleAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then((result) => {
+        const referralId = this.utilService.generateRandomString(8);
+        this.setUserData(result.user);
+        this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
+          result.additionalUserInfo.profile['family_name'], referralId);
+        localStorage.setItem('loggedIn', 'true');
+        if (environment.campaignMode === true) {
+          this.referralService.addUserToWaitlist(referralId);
+          this.referralService.addReferralPoints(result.user.uid);
         }
         this.router.navigate(['dashboard']);
       }).catch((error) => {
@@ -88,7 +109,7 @@ export class AuthService {
         // Sanitise name before post
         firstName = this.utilService.toTitleCase(firstName);
         lastName = this.utilService.toTitleCase(lastName);
-        this.setUserDetailData(result.user.uid, firstName, lastName, this.referralService.generateRandomString(8));
+        this.setUserDetailData(result.user.uid, firstName, lastName, this.utilService.generateRandomString(8));
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -111,8 +132,8 @@ export class AuthService {
         // Sanitise name before post
         firstName = this.utilService.toTitleCase(firstName);
         lastName = this.utilService.toTitleCase(lastName);
-        this.setUserReferralData(result.user.uid, firstName, lastName, this.referralService.generateRandomString(8), referredBy);
-        this.addReferralPoints(referredBy);
+        this.setUserReferralData(result.user.uid, firstName, lastName, this.utilService.generateRandomString(8), referredBy);
+        this.referralService.addReferralPoints(result.user.uid);
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -188,7 +209,8 @@ export class AuthService {
     const userDetailData = {
       firstName: firstName,
       lastName: lastName,
-      referralId: referralId
+      referralId: referralId,
+      referralScore: 0
     };
     return userRef.set(userDetailData, {
       merge: true
@@ -216,6 +238,7 @@ export class AuthService {
     if (user == null) {
       localStorage.removeItem('loggedIn');
     }
+
     if (user !== null) {
       if (user.providerData[0].providerId !== 'facebook.com') {
         if (loggedIn === true && user.emailVerified !== false) {
@@ -242,40 +265,6 @@ export class AuthService {
   public clearLocalStorage() {
     localStorage.removeItem('user');
     localStorage.removeItem('loggedIn');
-  }
-
-  addUserToWaitlist(referralId) {
-    const waitlistDocRef = this.afs.firestore.collection('counters').doc('waitlist');
-    return this.afs.firestore.runTransaction(function (transaction: any) {
-      return transaction.get(waitlistDocRef).then(function (waitlistDoc: any) {
-        if (!waitlistDoc.exists) {
-          waitlistDocRef.set({ [referralId]: 0 });
-        }
-        const waitlistData = {
-          [referralId]: 0
-        };
-        return waitlistDocRef.set(waitlistData, {
-          merge: true
-        });
-      });
-    }).then(function () {
-      console.log('Transaction successfully committed!');
-    }).catch(function (error: any) {
-      console.log('Transaction failed: ', error);
-    });
-  }
-
-  addReferralPoints(referralId) {
-    const waitlistDocRef = this.afs.firestore.collection('counters').doc('waitlist');
-    return this.afs.firestore.runTransaction(function (transaction: any) {
-      return transaction.get(waitlistDocRef).then(function (waitlistDoc: any) {
-        if (!waitlistDoc.exists) {
-          waitlistDocRef.set({ [referralId]: 0 });
-        }
-        const newReferralPointsCount = waitlistDoc.data()[referralId] + 1;
-        transaction.update(waitlistDocRef, { counter: newReferralPointsCount });
-      });
-    });
   }
 
   checkIfMailExists(email: string): Promise<any> {

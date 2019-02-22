@@ -24,6 +24,13 @@ export class UserService {
     }));
   }
 
+  public getNumberOfUsers() {
+    return this.afs.collection('counters').doc('users').snapshotChanges().pipe(map(action => {
+      const data = action.payload.data();
+      return { data };
+    }));
+  }
+
   public getUserByReferralId(referralId) {
     return this.afs.collection('users', ref => ref.where('referralId', '==', referralId)).valueChanges();
   }

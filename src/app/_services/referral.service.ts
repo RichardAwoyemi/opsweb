@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.staging';
@@ -32,15 +32,52 @@ export class ReferralService {
     }
   }
 
-  public generateRandomString(length) {
-    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
-    if (!length) {
-      length = Math.floor(Math.random() * chars.length);
-    }
-    let str = '';
-    for (let i = 0; i < length; i++) {
-      str += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return str;
+  public addReferralPoints(uid) {
+    const userRef = this.afs.firestore.collection('users').doc(`users/${uid}`);
+    return this.afs.firestore.runTransaction(async (transaction: any) => {
+      const doc = await transaction.get(userRef);
+      if (!doc.exists) {
+        transaction.set(userRef, { referralScore: 1 });
+        return 1;
+      }
+      const newReferralScore = doc.data().referralScore + 1;
+      transaction.update(userRef, {
+        referralScore: newReferralScore,
+      });
+      return newReferralScore;
+    })
+      .then((newCount: any) => {
+        console.log(
+          `Transaction successfully committed and new score for '${uid}' is '${newCount}'.`
+        );
+      })
+      .catch((error: any) => {
+        console.log('Transaction failed: ', error);
+      });
+  }
+
+  public addUserToWaitlist(referralId) {
+    const waitlistDocRef = this.afs.firestore.collection('counters').doc('waitlist');
+    return this.afs.firestore.runTransaction(function (transaction: any) {
+      return transaction.get(waitlistDocRef).then(function (waitlistDoc: any) {
+        if (!waitlistDoc.exists) {
+          waitlistDocRef.set({ [referralId]: 0 });
+        }
+        const waitlistData = {
+          [referralId]: 0
+        };
+        return waitlistDocRef.set(waitlistData, {
+          merge: true
+        });
+      });
+    }).then(function () {
+      if (!environment.production) {
+        console.log(`Transaction successfully committed and user with referral id '${referralId}' has been added to waitlist.`);
+      }
+    }).catch(function (error: any) {
+      if (!environment.production) {
+        console.log('Transaction failed: ', error);
+      }
+    });
   }
 }
