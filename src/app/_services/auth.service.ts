@@ -251,6 +251,12 @@ export class AuthService {
         if (!waitlistDoc.exists) {
           waitlistDocRef.set({ [referralId]: 0 });
         }
+        const waitlistData = {
+          [referralId]: 0
+        };
+        return waitlistDocRef.set(waitlistData, {
+          merge: true
+        });
       });
     }).then(function () {
       console.log('Transaction successfully committed!');

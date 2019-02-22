@@ -4,36 +4,50 @@ admin.initializeApp(functions.config().firebase);
 
 exports.createUser = functions.firestore
   .document('users/{userId}').onCreate(() => {
-    const userDocRef = admin.firestore().collection('counters').doc('users');
-    return admin.firestore().runTransaction(function (transaction: any) {
-      return transaction.get(userDocRef).then(function (userDoc: any) {
-        if (!userDoc.exists) {
-          userDocRef.set({ counter: 100 });
-        }
-        const newUserCount = userDoc.data().counter + 1;
-        transaction.update(userDocRef, { counter: newUserCount });
+    const ref = admin.firestore().collection('counters').doc('users');
+    return admin.firestore().runTransaction(async (transaction: any) => {
+      const doc = await transaction.get(ref);
+      if (!doc.exists) {
+        transaction.set(ref, { counter: 101 });
+        return 101;
+      }
+      const newCount = doc.data().counter + 1;
+      transaction.update(ref, {
+        counter: newCount,
+      });
+      return newCount;
+    })
+      .then((newCount: any) => {
+        console.log(
+          `Transaction successfully committed and new user count is '${newCount}'.`
+        );
       })
-    }).then(function () {
-      console.log('Transaction successfully committed!');
-    }).catch(function (error: any) {
-      console.log('Transaction failed: ', error);
-    });
+      .catch((error: any) => {
+        console.log('Transaction failed: ', error);
+      })
   });
 
-exports.deleteUser = functions.firestore
+  exports.deleteUser = functions.firestore
   .document('users/{userId}').onDelete(() => {
-    const userDocRef = admin.firestore().collection('counters').doc('users');
-    return admin.firestore().runTransaction(function (transaction: any) {
-      return transaction.get(userDocRef).then(function (userDoc: any) {
-        if (!userDoc.exists) {
-          userDocRef.set({ counter: 100 });
-        }
-        const newUserCount = userDoc.data().counter - 1;
-        transaction.update(userDocRef, { counter: newUserCount });    
+    const ref = admin.firestore().collection('counters').doc('users');
+    return admin.firestore().runTransaction(async (transaction: any) => {
+      const doc = await transaction.get(ref);
+      if (!doc.exists) {
+        transaction.set(ref, { counter: 100 });
+        return 100;
+      }
+      const newCount = doc.data().counter - 1;
+      transaction.update(ref, {
+        counter: newCount,
+      });
+      return newCount;
+    })
+      .then((newCount: any) => {
+        console.log(
+          `Transaction successfully committed and new user count is '${newCount}'.`
+        );
       })
-    }).then(function () {
-      console.log('Transaction successfully committed.');
-    }).catch(function (error: any) {
-      console.log('Transaction failed: ', error);
-    });
+      .catch((error: any) => {
+        console.log('Transaction failed: ', error);
+      })
   });
