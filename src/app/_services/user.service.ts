@@ -16,7 +16,7 @@ export class UserService {
   ) {
   }
 
-  public getUserById(id) {
+  getUserById(id) {
     return this.afs.collection('users').doc(id).snapshotChanges().pipe(map(action => {
       const data = action.payload.data();
       const uid = action.payload.id;
@@ -24,14 +24,14 @@ export class UserService {
     }));
   }
 
-  public getNumberOfUsers() {
+  getNumberOfUsers() {
     return this.afs.collection('counters').doc('users').snapshotChanges().pipe(map(action => {
       const data = action.payload.data();
       return { data };
     }));
   }
 
-  public getUserByReferralId(referralId) {
+  getUserByReferralId(referralId) {
     return this.afs.collection('users', ref => ref.where('referralId', '==', referralId)).valueChanges();
   }
  }

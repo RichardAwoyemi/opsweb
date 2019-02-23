@@ -16,6 +16,7 @@ export class InviteComponent implements OnInit {
   referredByUserId: String;
   referredBy: any;
   referredByUserData: any;
+  currentRanking: any;
   isMobile: Observable<BreakpointState>;
 
   constructor(
@@ -30,6 +31,7 @@ export class InviteComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
+
     this.referredBy = this.route.params.subscribe(params => {
       this.referredById = params['id'];
       if (this.referredById) {
@@ -41,7 +43,7 @@ export class InviteComponent implements OnInit {
           }
         });
       }
-   });
+    });
   }
 
   public resolved(captchaResponse: string) {
@@ -55,7 +57,7 @@ export class InviteComponent implements OnInit {
     const password = this.model.password;
     const firstName = this.model.firstName;
     const lastName = this.model.lastName;
-    this.authService.registerWithReferral(email, password, firstName, lastName, this.referredById, this.referredByUserData.uid);
+    this.authService.registerWithReferral(email, password, firstName, lastName, this.referredById);
   }
 
   googleSignInWithReferral() {

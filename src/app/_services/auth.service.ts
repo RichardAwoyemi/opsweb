@@ -118,7 +118,7 @@ export class AuthService {
   }
 
   // Register through referral
-  registerWithReferral(email, password, firstName, lastName, referredBy, referredByUserId) {
+  registerWithReferral(email, password, firstName, lastName, referredBy) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         const referralId = this.utilService.generateRandomString(8);
@@ -137,7 +137,7 @@ export class AuthService {
         // Referral campaign
         this.referralService.addUserToWaitlist(referralId);
         this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredBy);
-        this.referralService.addReferralPoints(referredByUserId);
+        this.referralService.addReferralPoints(referredBy);
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -213,8 +213,7 @@ export class AuthService {
     const userDetailData = {
       firstName: firstName,
       lastName: lastName,
-      referralId: referralId,
-      referralScore: 0
+      referralId: referralId
     };
     return userRef.set(userDetailData, {
       merge: true
@@ -227,8 +226,7 @@ export class AuthService {
       firstName: firstName,
       lastName: lastName,
       referralId: referralId,
-      referredBy: referredBy,
-      referralScore: 0
+      referredBy: referredBy
     };
     return userRef.set(userDetailData, {
       merge: true

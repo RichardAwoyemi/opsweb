@@ -13,6 +13,8 @@ export class DashboardComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   user: any;
   userData: any;
+  waitlist: any;
+  ranking: any;
   campaignMode: boolean;
   campaignMessage: string;
   referralUrl: string;
@@ -35,6 +37,12 @@ export class DashboardComponent implements OnInit {
         this.referralUrl = this.referralService.generateReferralUrl(this.userData.referralId);
         this.campaignMessage = 'I am creating new income streams working for digital currency on Opsonion. ' +
         'Join me today by signing up using my link: ' + this.referralUrl + '.';
+
+        this.waitlist = this.referralService.getWaitlist().subscribe(result => {
+          if (result) {
+            this.ranking = this.referralService.calculateRanking(this.userData.referralId, result);
+          }
+        });
       }
     });
 
