@@ -33,48 +33,40 @@ export class ReferralService {
   }
 
   public addReferralPoints(uid) {
-    const userRef = this.afs.firestore.collection('users').doc(`users/${uid}`);
+    const ref = this.afs.firestore.collection('users').doc(uid);
     return this.afs.firestore.runTransaction(async (transaction: any) => {
-      const doc = await transaction.get(userRef);
+      const doc = await transaction.get(ref);
       if (!doc.exists) {
-        transaction.set(userRef, { referralScore: 1 });
-        return 1;
+        transaction.set(ref, { referralScore: 1 }, { merge: true });
       }
-      const newReferralScore = doc.data().referralScore + 1;
-      transaction.update(userRef, {
-        referralScore: newReferralScore,
-      });
-      return newReferralScore;
-    })
-      .then((newCount: any) => {
+      const newCount = doc.data().referralScore + 1;
+      transaction.set(ref, { referralScore: newCount }, { merge: true });
+    }).then(() => {
+      if (!environment.production) {
         console.log(
-          `Transaction successfully committed and new score for '${uid}' is '${newCount}'.`
+          'Transaction successfully committed.'
         );
-      })
-      .catch((error: any) => {
+      }
+    }).catch((error) => {
+      if (!environment.production) {
         console.log('Transaction failed: ', error);
-      });
+      }
+    });
   }
 
   public addUserToWaitlist(referralId) {
-    const waitlistDocRef = this.afs.firestore.collection('counters').doc('waitlist');
-    return this.afs.firestore.runTransaction(function (transaction: any) {
-      return transaction.get(waitlistDocRef).then(function (waitlistDoc: any) {
-        if (!waitlistDoc.exists) {
-          waitlistDocRef.set({ [referralId]: 0 });
-        }
-        const waitlistData = {
-          [referralId]: 0
-        };
-        return waitlistDocRef.set(waitlistData, {
-          merge: true
-        });
-      });
-    }).then(function () {
+    const ref = this.afs.firestore.collection('counters').doc('waitlist');
+    return this.afs.firestore.runTransaction(async (transaction: any) => {
+      transaction.set(ref, {
+        [referralId]: 0,
+      }, { merge: true });
+    }).then(() => {
       if (!environment.production) {
-        console.log(`Transaction successfully committed and user with referral id '${referralId}' has been added to waitlist.`);
+        console.log(
+          `Transaction successfully committed.`
+        );
       }
-    }).catch(function (error: any) {
+    }).catch((error) => {
       if (!environment.production) {
         console.log('Transaction failed: ', error);
       }

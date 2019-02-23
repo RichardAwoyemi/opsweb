@@ -82,10 +82,10 @@ export class AuthService {
         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
           result.additionalUserInfo.profile['family_name'], referralId);
         localStorage.setItem('loggedIn', 'true');
-        if (environment.campaignMode === true) {
-          this.referralService.addUserToWaitlist(referralId);
-          this.referralService.addReferralPoints(result.user.uid);
-        }
+
+        // Referral campaign
+        this.referralService.addUserToWaitlist(referralId);
+        this.referralService.addReferralPoints(result.user.uid);
         this.router.navigate(['dashboard']);
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
@@ -118,9 +118,10 @@ export class AuthService {
   }
 
   // Register through referral
-  registerWithReferral(email, password, firstName, lastName, referredBy) {
+  registerWithReferral(email, password, firstName, lastName, referredBy, referredByUserId) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
+        const referralId = this.utilService.generateRandomString(8);
 
         // Call the SendVerificationMail() function when a new user signs up and returns promise
         this.sendVerificationMail();
@@ -132,8 +133,11 @@ export class AuthService {
         // Sanitise name before post
         firstName = this.utilService.toTitleCase(firstName);
         lastName = this.utilService.toTitleCase(lastName);
-        this.setUserReferralData(result.user.uid, firstName, lastName, this.utilService.generateRandomString(8), referredBy);
-        this.referralService.addReferralPoints(result.user.uid);
+
+        // Referral campaign
+        this.referralService.addUserToWaitlist(referralId);
+        this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredBy);
+        this.referralService.addReferralPoints(referredByUserId);
       }).catch((error) => {
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Oops!';
@@ -223,7 +227,8 @@ export class AuthService {
       firstName: firstName,
       lastName: lastName,
       referralId: referralId,
-      referredBy: referredBy
+      referredBy: referredBy,
+      referralScore: 0
     };
     return userRef.set(userDetailData, {
       merge: true

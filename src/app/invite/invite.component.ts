@@ -13,6 +13,7 @@ import { UserService } from '../_services/user.service';
 })
 export class InviteComponent implements OnInit {
   referredById: String;
+  referredByUserId: String;
   referredBy: any;
   referredByUserData: any;
   isMobile: Observable<BreakpointState>;
@@ -54,7 +55,7 @@ export class InviteComponent implements OnInit {
     const password = this.model.password;
     const firstName = this.model.firstName;
     const lastName = this.model.lastName;
-    this.authService.registerWithReferral(email, password, firstName, lastName, this.referredById);
+    this.authService.registerWithReferral(email, password, firstName, lastName, this.referredById, this.referredByUserData.uid);
   }
 
   googleSignInWithReferral() {
