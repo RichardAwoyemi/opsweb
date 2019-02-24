@@ -34,4 +34,8 @@ export class UserService {
   getUserByReferralId(referralId) {
     return this.afs.collection('users', ref => ref.where('referralId', '==', referralId)).valueChanges();
   }
+
+  getReferredUsers(referralId) {
+    return this.afs.collection('users', ref => ref.where('referredBy', '==', referralId).limit(5)).valueChanges();
+  }
  }

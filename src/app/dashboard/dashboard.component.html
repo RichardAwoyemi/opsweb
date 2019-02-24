@@ -18,31 +18,32 @@
         <div class="form-group input-group">
           <input type="text" class="form-control" placeholder="" value="{{ referralUrl }}" readonly>
           <div class="input-group-append">
-            <button class="btn btn-secondary" type="button">Copy Link</button>
+            <button class="btn btn-secondary" type="button" (click)="copyMessage()" >Copy Link</button>
           </div>
         </div>
         <div class="small mt-3 opacity-70">or share with:</div>
         <div style="padding-top: 1em">
-          <img src="../assets/img/facebook.png" class="social-media-icon">
-          <img src="../assets/img/messenger.png" class="social-media-icon">
-          <a href="https://wa.me/?text={{ campaignMessage }}" target="_blank"><img src="../assets/img/whatsapp.png"
-              class="social-media-icon"></a>
-          <img src="../assets/img/twitter.png" class="social-media-icon">
-          <img src="../assets/img/mail.png" class="social-media-icon">
+          <a href="http://www.facebook.com/sharer/sharer.php?u={{ referralUrl }}" target="_blank" class="share-popup"><img src="../assets/img/facebook.png" class="social-media-icon"></a>
+          <a href="https://wa.me/?text={{ campaignMessage }}" target="_blank"><img src="../assets/img/whatsapp.png" class="social-media-icon"></a>
+          <a href="https://twitter.com/intent/tweet?text={{ campaignMessage }}"  target="_blank"><img src="../assets/img/twitter.png" class="social-media-icon"></a>
+          <a href="mailto:?subject=Hire and work for digital currency!&amp;body={{ campaignMessage }}"><img src="../assets/img/mail.png" class="social-media-icon"></a>
         </div>
       </div>
       <div class="col-md-6" style="padding-top: 0">
         <div class="col-md-12" style="background-color: #fff; padding: 2em">
           <h4>Invitees</h4>
           <br>
-          <table class="table" style="border: none; padding: 0px">
+          <p style="font-size: 1em">Below are the status of recent invitees who have signed up and confirmed their email address.</p>
+          <table class="table" style="border: none; padding: 0px; margin-top: 1.5em" *ngIf="invitees?.length > 0">
             <tbody>
-              <tr style="border: none">
+              <tr style="border: none" *ngFor="let invitee of invitees">
                 <td style="padding-left: 0px; padding-top: 0px; border: none">
-                  Mark Otto
+                  <img class="avatar avatar-xs" src="{{ invitee?.photoURL }}" alt="avatar" style="margin-right: 0.5em">
+                  {{ invitee.firstName }} {{ invitee.lastName }}
                 </td>
                 <td style="text-align: right; padding-top: 0px; border: none;">
-                  @mdo
+                  <div *ngIf="invitee.emailVerified"><i class="ti-check text-success mr-2"></i></div>
+                  <div *ngIf="!invitee.emailVerified"><i class="ti-close text-danger mr-2"></i></div>
                 </td>
               </tr>
             </tbody>
