@@ -11,7 +11,7 @@ export class UtilService {
     );
   }
 
-  public generateRandomString(length) {
+  generateRandomString(length) {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
     if (!length) {
       length = Math.floor(Math.random() * chars.length);
@@ -23,7 +23,7 @@ export class UtilService {
     return str;
   }
 
-  public getAppStoreLink(userAgentString: string) {
+  getAppStoreLink(userAgentString: string) {
     if (userAgentString.indexOf('iPhone') > -1 ||
       userAgentString.indexOf('iPod') > -1 ||
       userAgentString.indexOf('iPad') > -1) {

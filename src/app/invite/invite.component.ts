@@ -61,10 +61,10 @@ export class InviteComponent implements OnInit {
   }
 
   googleSignInWithReferral() {
-    this.authService.googleSignInWithReferral();
+    this.authService.googleSignInWithReferral(this.referredById);
   }
 
   facebookSignInWithReferral() {
-    this.authService.facebookSignIn();
+    this.authService.facebookSignInWithReferral(this.referredById);
   }
 }

@@ -9,7 +9,7 @@
       </div>
     </div>
     <br>
-    <div class="row gap-y" style="margin-left: 0.1em;" *ngIf="userData && ranking">
+    <div class="row gap-y" style="margin-left: 0.1em;" *ngIf="userData">
       <div class="col-md-6" style="background-color: #fff; padding: 2em">
         <h4>Current Task</h4>
         <br>
@@ -34,7 +34,7 @@
           <h4>Invitees</h4>
           <br>
           <p style="font-size: 1em">Below are the status of recent invitees who have signed up and confirmed their email address.</p>
-          <table class="table" style="border: none; padding: 0px; margin-top: 1.5em" *ngIf="invitees?.length > 0">
+          <table class="table" style="border: none; padding: 0px; margin-top: 1.5em">
             <tbody>
               <tr style="border: none" *ngFor="let invitee of invitees">
                 <td style="padding-left: 0px; padding-top: 0px; border: none">
