@@ -4,7 +4,7 @@
   <div class="container d-stick-none" style="padding-top: 1.5em; padding-bottom: 1.5em">
     <div class="row">
       <div class="col-4">
-        <div class="nav nav-navbar ">
+        <div class="nav nav-navbar">
           <a class="navbar-brand" href="#">
             <img class="logo-dark" src="../assets/img/opsonion-cropped-white.png" alt="logo"
               style="height: 32px; width: 131px">
@@ -64,6 +64,7 @@
       </a>
     </div>
     <div class="navbar-left mr-4" *ngIf="campaignMode">
+      <button class="navbar-toggler" type="button">&#9776;</button>
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo.svg" style="height: 42px; width: 42px;">
       </a>
@@ -87,20 +88,26 @@
       </nav>
     </section>
     <!-- Mobile links -->
-    <div *ngIf="!campaignMode">
-      <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
-        <span class="navbar-divider d-mobile-none"></span>
-        <nav class="nav nav-navbar mr-auto">
-          <a class="nav-link" routerLink="/">Home</a>
-          <a class="nav-link" routerLink="/about">About</a>
-          <a class="nav-link" routerLink="/services">Services</a>
-          <a class="nav-link" routerLink="/careers">Careers</a>
-          <a class="nav-link" routerLink="/markets">Markets</a>
-          <a class="nav-link" routerLink="/support">Support</a>
-          <a class="nav-link" href="{{ appStoreUrl }}">Download</a>
-        </nav>
-      </section>
-    </div>
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && !campaignMode && !authService.isLoggedIn">
+      <span class="navbar-divider d-mobile-none"></span>
+      <nav class="nav nav-navbar mr-auto">
+        <a class="nav-link" routerLink="/">Home</a>
+        <a class="nav-link" routerLink="/about">About</a>
+        <a class="nav-link" routerLink="/services">Services</a>
+        <a class="nav-link" routerLink="/careers">Careers</a>
+        <a class="nav-link" routerLink="/markets">Markets</a>
+        <a class="nav-link" routerLink="/support">Support</a>
+        <a class="nav-link" href="{{ appStoreUrl }}">Download</a>
+      </nav>
+    </section>
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && campaignMode && !authService.isLoggedIn">
+      <span class="navbar-divider d-mobile-none"></span>
+      <nav class="nav nav-navbar mr-auto">
+        <a class="nav-link" routerLink="/">Home</a>
+        <a class="nav-link" routerLink="/login">Login</a>
+        <a class="nav-link" routerLink="/register">Register</a>
+      </nav>
+    </section>
   </div>
 </nav>
 <!-- /.navbar -->
