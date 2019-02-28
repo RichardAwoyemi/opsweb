@@ -1,14 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
-import { User } from '../_models/user';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
-import { UtilService } from './util.service';
 import { auth } from 'firebase/app';
-import { ReferralService } from './referral.service';
 import { FirebaseService } from './firebase.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +19,13 @@ export class AuthService {
     public afAuth: AngularFireAuth,
     public router: Router,
     public modalService: NgbModal,
-    private utilService: UtilService,
     private firebaseService: FirebaseService,
-    private referralService: ReferralService,
+    private userService: UserService,
     public ngZone: NgZone
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
+        this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user'));
       } else {
@@ -35,21 +33,6 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user'));
       }
     });
-  }
-
-  processNewSignIn(result, firstName, lastName) {
-    const referralId = this.utilService.generateRandomString(8);
-    this.setUserData(result.user);
-    this.setUserDetailData(result.user.uid, firstName, lastName, referralId);
-    this.referralService.addUserToWaitlist(referralId);
-  }
-
-  processNewReferral(result, firstName, lastName, referredBy) {
-    const referralId = this.utilService.generateRandomString(8);
-    this.setUserData(result.user);
-    this.setUserDetailData(result.user.uid, firstName, lastName, referralId);
-    this.referralService.addUserToWaitlist(referralId);
-    this.referralService.addReferralPoints(referredBy);
   }
 
   completeSignIn() {
@@ -64,146 +47,143 @@ export class AuthService {
   }
 
   facebookSignIn() {
-    const provider = new auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider).then((result) => {
-      const firstName = result.additionalUserInfo.profile['first_name'];
-      const lastName = result.additionalUserInfo.profile['last_name'];
-      if (!this.referralService.checkIfReferralIdExists(result.user.uid)) {
-        this.processNewSignIn(result, firstName, lastName);
-      }
-      localStorage.setItem('loggedIn', 'true');
-      this.router.navigate(['dashboard']);
-    }).catch((error) => {
-      this.displaySignInError(error);
-    });
+  //   const provider = new auth.FacebookAuthProvider();
+  //   return this.afAuth.auth.signInWithPopup(provider).then((result) => {
+  //     const firstName = result.additionalUserInfo.profile['first_name'];
+  //     const lastName = result.additionalUserInfo.profile['last_name'];
+  //     if (!this.referralService.checkIfReferralIdExists(result.user.uid)) {
+  //       this.processNewSignIn(result, firstName, lastName);
+  //     }
+  //     localStorage.setItem('loggedIn', 'true');
+  //     this.router.navigate(['dashboard']);
+  //   }).catch((error) => {
+  //     this.displaySignInError(error);
+  //   });
   }
 
   facebookSignInWithReferral(referredBy) {
-    const provider = new auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((result) => {
-      }).catch((error) => {
-        this.displaySignInError(error);
-      });
+  //   const provider = new auth.FacebookAuthProvider();
+  //   return this.afAuth.auth.signInWithPopup(provider)
+  //     .then((result) => {
+  //     }).catch((error) => {
+  //       this.displaySignInError(error);
+  //     });
   }
 
   googleSignIn() {
     const provider = new auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider).then(async(result) => {
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['given_name'];
       const lastName = result.additionalUserInfo.profile['family_name'];
       const doc = await this.firebaseService.docExists(path);
       if (!doc) {
-        this.processNewSignIn(result, firstName, lastName);
+        this.userService.processNewUser(result, firstName, lastName);
       }
       this.completeSignIn();
     }).catch((error) => {
-      const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-      modalReference.componentInstance.header = 'Oops!';
-      modalReference.componentInstance.message = error.message;
+      this.displaySignInError(error);
     });
   }
 
   googleSignInWithReferral(referredBy) {
-    const provider = new auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((result) => {
-        if (!this.referralService.checkIfReferralIdExists(result.user.uid)) {
-          const referralId = this.utilService.generateRandomString(8);
-          this.setUserData(result.user);
-          this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
-            result.additionalUserInfo.profile['family_name'], referralId);
-          this.referralService.addUserToWaitlist(referralId);
-          this.referralService.addReferralPoints(referredBy);
-        }
+  //   const provider = new auth.GoogleAuthProvider();
+  //   return this.afAuth.auth.signInWithPopup(provider)
+  //     .then((result) => {
+  //       if (!this.referralService.checkIfReferralIdExists(result.user.uid)) {
+  //         const referralId = this.utilService.generateRandomString(8);
+  //         this.setUserData(result.user);
+  //         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
+  //           result.additionalUserInfo.profile['family_name'], referralId);
+  //         this.referralService.addUserToWaitlist(referralId);
+  //         this.referralService.addReferralPoints(referredBy);
+  //       }
 
-        localStorage.setItem('loggedIn', 'true');
-        this.router.navigate(['dashboard']);
-      }).catch((error) => {
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = error.message;
-      });
+  //       localStorage.setItem('loggedIn', 'true');
+  //       this.router.navigate(['dashboard']);
+  //     }).catch((error) => {
+  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+  //       modalReference.componentInstance.header = 'Oops!';
+  //       modalReference.componentInstance.message = error.message;
+  //     });
   }
 
   // Register with email/password
   register(email, password, firstName, lastName) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        const referralId = this.utilService.generateRandomString(8);
+  //   return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+  //     .then((result) => {
+  //       const referralId = this.utilService.generateRandomString(8);
 
-        // Call the SendVerificationMail() function when a new user signs up and returns promise
-        this.sendVerificationMail();
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Yay!';
-        modalReference.componentInstance.message = 'Your registration was successful.';
-        this.setUserData(result.user);
+  //       // Call the SendVerificationMail() function when a new user signs up and returns promise
+  //       this.sendVerificationMail();
+  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+  //       modalReference.componentInstance.header = 'Yay!';
+  //       modalReference.componentInstance.message = 'Your registration was successful.';
+  //       this.setUserData(result.user);
 
-        // Sanitise name before post
-        firstName = this.utilService.toTitleCase(firstName);
-        lastName = this.utilService.toTitleCase(lastName);
+  //       // Sanitise name before post
+  //       firstName = this.utilService.toTitleCase(firstName);
+  //       lastName = this.utilService.toTitleCase(lastName);
 
-        this.setUserDetailData(result.user.uid, firstName, lastName, referralId);
-        this.referralService.addUserToWaitlist(referralId);
-      }).catch((error) => {
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = error.message;
-      });
+  //       this.setUserDetailData(result.user.uid, firstName, lastName, referralId);
+  //       this.referralService.addUserToWaitlist(referralId);
+  //     }).catch((error) => {
+  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+  //       modalReference.componentInstance.header = 'Oops!';
+  //       modalReference.componentInstance.message = error.message;
+  //     });
   }
 
   registerWithReferral(email, password, firstName, lastName, referredBy) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        const referralId = this.utilService.generateRandomString(8);
+  //   return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+  //     .then((result) => {
+  //       const referralId = this.utilService.generateRandomString(8);
 
-        // Call the SendVerificationMail() function when a new user signs up and returns promise
-        this.sendVerificationMail();
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Yay!';
-        modalReference.componentInstance.message = 'Your registration was successful.';
-        this.setUserData(result.user);
+  //       // Call the SendVerificationMail() function when a new user signs up and returns promise
+  //       this.sendVerificationMail();
+  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+  //       modalReference.componentInstance.header = 'Yay!';
+  //       modalReference.componentInstance.message = 'Your registration was successful.';
+  //       this.setUserData(result.user);
 
-        // Sanitise name before post
-        firstName = this.utilService.toTitleCase(firstName);
-        lastName = this.utilService.toTitleCase(lastName);
+  //       // Sanitise name before post
+  //       firstName = this.utilService.toTitleCase(firstName);
+  //       lastName = this.utilService.toTitleCase(lastName);
 
-        // Referral campaign
-        this.referralService.addUserToWaitlist(referralId);
-        this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredBy);
-        this.referralService.addReferralPoints(referredBy);
-      }).catch((error) => {
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = error.message;
-      });
+  //       // Referral campaign
+  //       this.referralService.addUserToWaitlist(referralId);
+  //       this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredBy);
+  //       this.referralService.addReferralPoints(referredBy);
+  //     }).catch((error) => {
+  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+  //       modalReference.componentInstance.header = 'Oops!';
+  //       modalReference.componentInstance.message = error.message;
+  //     });
   }
 
   // Sign in with email/password
   signIn(email, password) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.ngZone.run(() => {
-          if (result.user.emailVerified === false) {
-            this.router.navigate(['verify-email']);
-            const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-            modalReference.componentInstance.header = 'Oops!';
-            modalReference.componentInstance.message = 'Your email account has not been verified yet.';
-          } else {
-            localStorage.setItem('loggedIn', 'true');
-            this.router.navigate(['dashboard']);
-          }
-        });
-        this.setUserData(result.user);
-      }).catch((error) => {
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = error.message;
-      });
+  //   return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+  //     .then((result) => {
+  //       this.ngZone.run(() => {
+  //         if (result.user.emailVerified === false) {
+  //           this.router.navigate(['verify-email']);
+  //           const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+  //           modalReference.componentInstance.header = 'Oops!';
+  //           modalReference.componentInstance.message = 'Your email account has not been verified yet.';
+  //         } else {
+  //           localStorage.setItem('loggedIn', 'true');
+  //           this.router.navigate(['dashboard']);
+  //         }
+  //       });
+  //       this.setUserData(result.user);
+  //     }).catch((error) => {
+  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+  //       modalReference.componentInstance.header = 'Oops!';
+  //       modalReference.componentInstance.message = error.message;
+  //     });
   }
 
-  // Send email verification when new user sign up
   sendVerificationMail() {
     return this.afAuth.auth.currentUser.sendEmailVerification()
       .then(() => {
@@ -211,7 +191,6 @@ export class AuthService {
       });
   }
 
-  // Reset forgot password
   forgotPassword(passwordResetEmail) {
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
@@ -226,49 +205,6 @@ export class AuthService {
       });
   }
 
-  /* Setting up user data when registering with username/password, sign up with username/password and
-  sign in with social auth provider in Firestore database using AngularFirestore +
-  AngularFirestoreDocument service */
-  setUserData(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified
-    };
-    return userRef.set(userData, {
-      merge: true
-    });
-  }
-
-  setUserDetailData(uid, firstName, lastName, referralId) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    const userDetailData = {
-      firstName: firstName,
-      lastName: lastName,
-      referralId: referralId
-    };
-    return userRef.set(userDetailData, {
-      merge: true
-    });
-  }
-
-  setUserReferralData(uid, firstName, lastName, referralId, referredBy) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    const userDetailData = {
-      firstName: firstName,
-      lastName: lastName,
-      referralId: referralId,
-      referredBy: referredBy
-    };
-    return userRef.set(userDetailData, {
-      merge: true
-    });
-  }
-
-  // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     const loggedIn = JSON.parse(localStorage.getItem('loggedIn'));
@@ -288,7 +224,6 @@ export class AuthService {
         }
       }
     }
-
     return false;
   }
 
@@ -301,35 +236,21 @@ export class AuthService {
   }
 
   clearLocalStorage() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('loggedIn');
+  //   localStorage.removeItem('user');
+  //   localStorage.removeItem('loggedIn');
   }
 
-  checkUserExists(uid: string) {
-    const userDocRef = this.afs.firestore.collection('users').doc(uid);
-    return userDocRef.get().then(doc => {
-      if (!doc.exists) {
-        return false;
-      } else {
-        return true;
-      }
-    })
-      .catch(err => {
-        console.log('Error getting document: ', err);
-      });
-  }
-
-  checkIfMailExists(email: string): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this.afAuth.auth.fetchSignInMethodsForEmail(email)
-        .then(res => {
-          if (res.length === 0) {
-            resolve(false);
-          } else {
-            resolve(true);
-          }
-        })
-        .catch(err => reject(err));
-    });
-  }
+  // checkIfMailExists(email: string): Promise<any> {
+  //   return new Promise<any>((resolve, reject) => {
+  //     this.afAuth.auth.fetchSignInMethodsForEmail(email)
+  //       .then(res => {
+  //         if (res.length === 0) {
+  //           resolve(false);
+  //         } else {
+  //           resolve(true);
+  //         }
+  //       })
+  //       .catch(err => reject(err));
+  //   });
+  // }
 }

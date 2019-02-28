@@ -80,5 +80,6 @@ export class DashboardComponent implements OnInit {
     const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
     modalReference.componentInstance.header = 'Yay!';
     modalReference.componentInstance.message = 'Your referral message has been copied to the clipboard.';
-    return;  }
+    return;
+  }
 }
