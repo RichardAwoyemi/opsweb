@@ -103,7 +103,7 @@
     <div class="container" *ngIf="campaignMode">
       <h3 class="text-center fw-200">Get early access</h3>
       <br>
-      <p class="gap-xy">
+      <p class="gap-xy text-center">
         <button type="button" class="btn btn-label btn-google" (click)="googleSignIn()">
           <label>
             <fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon>
@@ -115,10 +115,6 @@
           </label> Sign in with Facebook
         </button>
       </p>
-      <div style="margin-top: 1em">
-        <small><a class="text-muted small-2" routerLink="/register">or use your email address&nbsp;&nbsp;<fa-icon
-              [icon]="['fas', 'long-arrow-alt-right']" size="xs"></fa-icon></a></small>
-      </div>
     </div>
     <div class="container" *ngIf="!campaignMode">
       <h3 class="text-center fw-200">Stay up to date</h3>
