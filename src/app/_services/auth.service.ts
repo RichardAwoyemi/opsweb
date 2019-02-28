@@ -163,7 +163,7 @@ export class AuthService {
       this.ngZone.run(() => {
         if (result.user.emailVerified === false) {
           this.displayVerifyEmailError();
-          this.ngZone.run(() => { this.router.navigate(['verify-email']); });
+          this.router.navigate(['verify-email']);
         } else {
           this.completeSignIn();
         }

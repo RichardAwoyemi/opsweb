@@ -20,7 +20,12 @@ export class DashboardComponent implements OnInit {
   ranking: any;
   campaignMode: boolean;
   campaignMessage: string;
+  facebookShareUrl: string;
+  whatsappShareUrl: string;
+  twitterShareUrl: string;
+  emailShareUrl: string;
   referralUrl: string;
+  anonymousPhotoURL: string;
   noOfUsers: number;
 
   constructor(
@@ -32,16 +37,22 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.campaignMode = environment.campaignMode;
     this.user = JSON.parse(localStorage.getItem('user'));
 
     this.userService.getUserById(this.user.uid).subscribe(data => {
       if (data) {
         this.userData = data;
+        this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
         this.referralUrl = this.referralService.generateReferralUrl(this.userData.referralId);
         this.campaignMessage = 'I am creating new income streams working for digital currency on Opsonion. ' +
         'Join me today by signing up using my link: ' + this.referralUrl + '.';
+
+        this.facebookShareUrl = 'http://www.facebook.com/sharer/sharer.php?u=' + this.referralUrl;
+        this.whatsappShareUrl = 'https://wa.me/?text=' + this.campaignMessage;
+        this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
+        this.emailShareUrl = 'mailto:?subject=Hire and work for digital currency!&amp;body=' + this.campaignMessage;
 
         this.waitlist = this.referralService.getWaitlist().subscribe(waitlistResult => {
           if (waitlistResult) {
@@ -71,7 +82,7 @@ export class DashboardComponent implements OnInit {
     selectBox.style.left = '0';
     selectBox.style.top = '0';
     selectBox.style.opacity = '0';
-    selectBox.value = this.campaignMessage;
+    selectBox.value = this.referralUrl;
     document.body.appendChild(selectBox);
     selectBox.focus();
     selectBox.select();
@@ -79,7 +90,7 @@ export class DashboardComponent implements OnInit {
     document.body.removeChild(selectBox);
     const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
     modalReference.componentInstance.header = 'Yay!';
-    modalReference.componentInstance.message = 'Your referral message has been copied to the clipboard.';
+    modalReference.componentInstance.message = 'Your referral link has been copied to the clipboard.';
     return;
   }
 }

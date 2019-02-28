@@ -79,7 +79,7 @@ export class UserService {
   processNewUserReferral(result, firstName, lastName, referredBy) {
     const referralId = this.utilService.generateRandomString(8);
     this.setUserData(result.user);
-    this.setUserDetailData(result.user.uid, firstName, lastName, referralId);
+    this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredBy);
     this.referralService.addUserToWaitlist(referralId);
     this.referralService.addReferralPoints(referredBy);
   }
