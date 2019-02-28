@@ -53,6 +53,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.user = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      photoURL: 'https://i.imgflip.com/1slnr0.jpg',
+      username: ''
+    };
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset ]);
     this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
   }

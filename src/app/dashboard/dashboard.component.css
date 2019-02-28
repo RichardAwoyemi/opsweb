@@ -1,8 +1,15 @@
-section {
+.section-desktop {
   background-color: #F4F7FA !important;
   padding-top: 11rem;
   padding-bottom: 4rem;
 }
+
+.section-mobile {
+  background-color: #F4F7FA !important;
+  padding-top: 6.5rem;
+  padding-bottom: 2rem;
+}
+
 
 input[readonly]
 {

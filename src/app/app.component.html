@@ -1,6 +1,7 @@
 <!-- Logged in navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark flex-column"
-  style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0" *ngIf="authService.isLoggedIn">
+  style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0"
+  *ngIf="!(isMobile | async)?.matches && authService.isLoggedIn">
   <div class="container d-stick-none" style="padding-top: 1.5em; padding-bottom: 1.5em">
     <div class="row">
       <div class="col-4">
@@ -15,7 +16,7 @@
       </div>
       <div class="col-4 text-right">
         <span class="dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false" *ngIf="user.photoURL">
-          <img class="avatar avatar-xs" src="{{ user.photoURL }}" alt="user">
+          <img class="avatar avatar-xs" src="{{ user?.photoURL }}" alt="user">
         </span>
         <div class="dropdown-menu dropdown-menu-right" *ngIf="!campaignMode">
           <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
@@ -51,6 +52,28 @@
         </div>
       </section>
     </div>
+  </div>
+</nav>
+
+<!-- Logged in mobile navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark"
+  style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0"
+  *ngIf="(isMobile | async)?.matches && authService.isLoggedIn">
+  <div class="container">
+    <div class="navbar-left mr-4" *ngIf="campaignMode">
+      <button class="navbar-toggler" type="button" style="color: #F4F7FA">&#9776;</button>
+      <a class="navbar-brand" routerLink="/">
+        <img src="../assets/img/logo-white.svg" style="height: 35px; width: 35px;">
+      </a>
+    </div>
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && campaignMode">
+      <span class="navbar-divider d-mobile-none"></span>
+      <nav class="nav nav-navbar mr-auto">
+        <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        <a class="nav-link" routerLink="/settings">Settings</a>
+        <a class="nav-link" routerLink="/register">Logout</a>
+      </nav>
+    </section>
   </div>
 </nav>
 
