@@ -7,6 +7,7 @@ import { ModalComponent } from '../_modals/modal.component';
 import { auth } from 'firebase/app';
 import { FirebaseService } from './firebase.service';
 import { UserService } from './user.service';
+import { UtilService } from './util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class AuthService {
     public afAuth: AngularFireAuth,
     public router: Router,
     public modalService: NgbModal,
+    private utilService: UtilService,
     private firebaseService: FirebaseService,
     private userService: UserService,
     public ngZone: NgZone
@@ -37,7 +39,7 @@ export class AuthService {
 
   completeSignIn() {
     localStorage.setItem('loggedIn', 'true');
-    this.router.navigate(['dashboard']);
+    this.ngZone.run(() => { this.router.navigate(['dashboard']); });
   }
 
   displaySignInError(error) {
@@ -46,28 +48,48 @@ export class AuthService {
     modalReference.componentInstance.message = error.message;
   }
 
+  displayRegisterSucesss() {
+    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+    modalReference.componentInstance.header = 'Yay!';
+    modalReference.componentInstance.message = 'Your registration was successful.';
+  }
+
+  displayVerifyEmailError() {
+    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+    modalReference.componentInstance.header = 'Oops!';
+    modalReference.componentInstance.message = 'Your email account has not been verified yet.';
+  }
+
   facebookSignIn() {
-  //   const provider = new auth.FacebookAuthProvider();
-  //   return this.afAuth.auth.signInWithPopup(provider).then((result) => {
-  //     const firstName = result.additionalUserInfo.profile['first_name'];
-  //     const lastName = result.additionalUserInfo.profile['last_name'];
-  //     if (!this.referralService.checkIfReferralIdExists(result.user.uid)) {
-  //       this.processNewSignIn(result, firstName, lastName);
-  //     }
-  //     localStorage.setItem('loggedIn', 'true');
-  //     this.router.navigate(['dashboard']);
-  //   }).catch((error) => {
-  //     this.displaySignInError(error);
-  //   });
+    const provider = new auth.FacebookAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      const path = `/users/${result.user.uid}/`;
+      const firstName = result.additionalUserInfo.profile['first_name'];
+      const lastName = result.additionalUserInfo.profile['last_name'];
+      const doc = await this.firebaseService.docExists(path);
+      if (!doc) {
+        this.userService.processNewUser(result, firstName, lastName);
+      }
+      this.completeSignIn();
+    }).catch((error) => {
+      this.displaySignInError(error);
+    });
   }
 
   facebookSignInWithReferral(referredBy) {
-  //   const provider = new auth.FacebookAuthProvider();
-  //   return this.afAuth.auth.signInWithPopup(provider)
-  //     .then((result) => {
-  //     }).catch((error) => {
-  //       this.displaySignInError(error);
-  //     });
+    const provider = new auth.FacebookAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      const path = `/users/${result.user.uid}/`;
+      const firstName = result.additionalUserInfo.profile['first_name'];
+      const lastName = result.additionalUserInfo.profile['last_name'];
+      const doc = await this.firebaseService.docExists(path);
+      if (!doc) {
+        this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+      }
+      this.completeSignIn();
+    }).catch((error) => {
+      this.displaySignInError(error);
+    });
   }
 
   googleSignIn() {
@@ -87,107 +109,74 @@ export class AuthService {
   }
 
   googleSignInWithReferral(referredBy) {
-  //   const provider = new auth.GoogleAuthProvider();
-  //   return this.afAuth.auth.signInWithPopup(provider)
-  //     .then((result) => {
-  //       if (!this.referralService.checkIfReferralIdExists(result.user.uid)) {
-  //         const referralId = this.utilService.generateRandomString(8);
-  //         this.setUserData(result.user);
-  //         this.setUserDetailData(result.user.uid, result.additionalUserInfo.profile['given_name'],
-  //           result.additionalUserInfo.profile['family_name'], referralId);
-  //         this.referralService.addUserToWaitlist(referralId);
-  //         this.referralService.addReferralPoints(referredBy);
-  //       }
-
-  //       localStorage.setItem('loggedIn', 'true');
-  //       this.router.navigate(['dashboard']);
-  //     }).catch((error) => {
-  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //       modalReference.componentInstance.header = 'Oops!';
-  //       modalReference.componentInstance.message = error.message;
-  //     });
+    const provider = new auth.GoogleAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      const path = `/users/${result.user.uid}/`;
+      const firstName = result.additionalUserInfo.profile['given_name'];
+      const lastName = result.additionalUserInfo.profile['family_name'];
+      const doc = await this.firebaseService.docExists(path);
+      if (!doc) {
+        this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+      }
+      this.completeSignIn();
+    }).catch((error) => {
+      this.displaySignInError(error);
+    });
   }
 
-  // Register with email/password
   register(email, password, firstName, lastName) {
-  //   return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-  //     .then((result) => {
-  //       const referralId = this.utilService.generateRandomString(8);
-
-  //       // Call the SendVerificationMail() function when a new user signs up and returns promise
-  //       this.sendVerificationMail();
-  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //       modalReference.componentInstance.header = 'Yay!';
-  //       modalReference.componentInstance.message = 'Your registration was successful.';
-  //       this.setUserData(result.user);
-
-  //       // Sanitise name before post
-  //       firstName = this.utilService.toTitleCase(firstName);
-  //       lastName = this.utilService.toTitleCase(lastName);
-
-  //       this.setUserDetailData(result.user.uid, firstName, lastName, referralId);
-  //       this.referralService.addUserToWaitlist(referralId);
-  //     }).catch((error) => {
-  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //       modalReference.componentInstance.header = 'Oops!';
-  //       modalReference.componentInstance.message = error.message;
-  //     });
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
+      this.sendVerificationMail();
+      const path = `/users/${result.user.uid}/`;
+      firstName = this.utilService.toTitleCase(firstName);
+      lastName = this.utilService.toTitleCase(lastName);
+      const doc = await this.firebaseService.docExists(path);
+      if (!doc) {
+        this.userService.processNewUser(result, firstName, lastName);
+      }
+      this.displayRegisterSucesss();
+      this.completeSignIn();
+    }).catch((error) => {
+      this.displaySignInError(error);
+    });
   }
 
   registerWithReferral(email, password, firstName, lastName, referredBy) {
-  //   return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-  //     .then((result) => {
-  //       const referralId = this.utilService.generateRandomString(8);
-
-  //       // Call the SendVerificationMail() function when a new user signs up and returns promise
-  //       this.sendVerificationMail();
-  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //       modalReference.componentInstance.header = 'Yay!';
-  //       modalReference.componentInstance.message = 'Your registration was successful.';
-  //       this.setUserData(result.user);
-
-  //       // Sanitise name before post
-  //       firstName = this.utilService.toTitleCase(firstName);
-  //       lastName = this.utilService.toTitleCase(lastName);
-
-  //       // Referral campaign
-  //       this.referralService.addUserToWaitlist(referralId);
-  //       this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredBy);
-  //       this.referralService.addReferralPoints(referredBy);
-  //     }).catch((error) => {
-  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //       modalReference.componentInstance.header = 'Oops!';
-  //       modalReference.componentInstance.message = error.message;
-  //     });
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
+      this.sendVerificationMail();
+      const path = `/users/${result.user.uid}/`;
+      firstName = this.utilService.toTitleCase(firstName);
+      lastName = this.utilService.toTitleCase(lastName);
+      const doc = await this.firebaseService.docExists(path);
+      if (!doc) {
+        this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+      }
+      this.displayRegisterSucesss();
+      this.completeSignIn();
+    }).catch((error) => {
+      this.displaySignInError(error);
+    });
   }
 
-  // Sign in with email/password
   signIn(email, password) {
-  //   return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-  //     .then((result) => {
-  //       this.ngZone.run(() => {
-  //         if (result.user.emailVerified === false) {
-  //           this.router.navigate(['verify-email']);
-  //           const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //           modalReference.componentInstance.header = 'Oops!';
-  //           modalReference.componentInstance.message = 'Your email account has not been verified yet.';
-  //         } else {
-  //           localStorage.setItem('loggedIn', 'true');
-  //           this.router.navigate(['dashboard']);
-  //         }
-  //       });
-  //       this.setUserData(result.user);
-  //     }).catch((error) => {
-  //       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-  //       modalReference.componentInstance.header = 'Oops!';
-  //       modalReference.componentInstance.message = error.message;
-  //     });
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password).then((result) => {
+      this.ngZone.run(() => {
+        if (result.user.emailVerified === false) {
+          this.displayVerifyEmailError();
+          this.ngZone.run(() => { this.router.navigate(['verify-email']); });
+        } else {
+          this.completeSignIn();
+        }
+      });
+    }).catch((error) => {
+      this.displaySignInError(error);
+    });
   }
 
   sendVerificationMail() {
     return this.afAuth.auth.currentUser.sendEmailVerification()
       .then(() => {
-        this.router.navigate(['verify-email']);
+        this.ngZone.run(() => { this.router.navigate(['verify-email']); });
       });
   }
 
@@ -224,6 +213,7 @@ export class AuthService {
         }
       }
     }
+
     return false;
   }
 
@@ -236,21 +226,21 @@ export class AuthService {
   }
 
   clearLocalStorage() {
-  //   localStorage.removeItem('user');
-  //   localStorage.removeItem('loggedIn');
+    localStorage.removeItem('user');
+    localStorage.removeItem('loggedIn');
   }
 
-  // checkIfMailExists(email: string): Promise<any> {
-  //   return new Promise<any>((resolve, reject) => {
-  //     this.afAuth.auth.fetchSignInMethodsForEmail(email)
-  //       .then(res => {
-  //         if (res.length === 0) {
-  //           resolve(false);
-  //         } else {
-  //           resolve(true);
-  //         }
-  //       })
-  //       .catch(err => reject(err));
-  //   });
-  // }
+  checkIfMailExists(email: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.afAuth.auth.fetchSignInMethodsForEmail(email)
+        .then(res => {
+          if (res.length === 0) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        })
+        .catch(err => reject(err));
+    });
+  }
 }

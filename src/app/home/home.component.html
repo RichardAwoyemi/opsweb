@@ -5,18 +5,23 @@
       <div class="row align-items-center h-100">
         <div class="col-lg-6">
           <h1 class="fw-600">The marketplace for services.</h1>
-          <p class="lead mt-5">Opsonion is a platform which allows you to hire or work for digital currency.</p>
+          <p class="lead mt-5">Opsonion is a platform which connects talent to opportunity, allowing you to work or hire from anywhere in the world.</p>
           <hr class="w-10 ml-0 my-7">
           <p class="gap-xy">
             <button type="button" class="btn btn-label btn-google" (click)="googleSignIn()">
-              <label><fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon></label> Sign in with Google
-            </button>            
+              <label>
+                <fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon>
+              </label> Sign in with Google
+            </button>
             <button type="button" class="btn btn-label btn-facebook" (click)="facebookSignIn()">
-              <label><fa-icon [icon]="['fab', 'facebook-f']" size="xs"></fa-icon></label> Sign in with Facebook
-            </button> 
+              <label>
+                <fa-icon [icon]="['fab', 'facebook-f']" size="xs"></fa-icon>
+              </label> Sign in with Facebook
+            </button>
           </p>
           <div style="margin-top: 1em">
-            <small><a class="text-muted small-2" routerLink="/register">or use your email address&nbsp;&nbsp;<fa-icon [icon]="['fas', 'long-arrow-alt-right']" size="xs"></fa-icon></a></small>
+            <small><a class="text-muted small-2" routerLink="/register">or use your email address&nbsp;&nbsp;<fa-icon
+                  [icon]="['fas', 'long-arrow-alt-right']" size="xs"></fa-icon></a></small>
           </div>
         </div>
         <div class="col-lg-6 ml-auto" aos-init aos-animate data-aos="fade-up">
@@ -98,19 +103,18 @@
       <h3 class="text-center fw-200">Get early access</h3>
       <br>
       <div class="col-md-6 mx-auto">
-        <form [formGroup]="registerBottomForm" id="registerBottomForm" (ngSubmit)="onBottomSubmit()"
-          [hidden]="submitted">
-          <div class="form-group input-group">
-            <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email"
-              name="email">
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="submit">Sign Up</button>
-            </div>
-          </div>
-        </form>
-        <div [hidden]="!submitted" class="text-center">
-          <small>Thanks for signing up. We'll be in touch.</small>
-        </div>
+        <p class="gap-xy">
+          <button type="button" class="btn btn-label btn-google" (click)="googleSignIn()">
+            <label>
+              <fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon>
+            </label> Sign in with Google
+          </button>
+          <button type="button" class="btn btn-label btn-facebook" (click)="facebookSignIn()">
+            <label>
+              <fa-icon [icon]="['fab', 'facebook-f']" size="xs"></fa-icon>
+            </label> Sign in with Facebook
+          </button>
+        </p>
       </div>
     </div>
     <div class="container" *ngIf="!campaignMode">

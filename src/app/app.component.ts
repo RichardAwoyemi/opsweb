@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { AuthService } from './_services/auth.service';
@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
     public afAuth: AngularFireAuth,
     public db: AngularFirestore,
     public router: Router,
-    private zone: NgZone,
     public authService: AuthService) {
     this.afAuth.authState.subscribe(response => {
       if (response && authService.isLoggedIn) {
@@ -46,12 +45,7 @@ export class AppComponent implements OnInit {
           if (!this.user.photoURL) {
             this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
           }
-          if (!this.user.username) {
-            // this.router.navigate(['setup-profile']);
-          }
         });
-      } else {
-        localStorage.setItem('user', null);
       }
     });
     this.userAgentString = navigator.userAgent;
