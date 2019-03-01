@@ -96,4 +96,15 @@ export class UserService {
       merge: true
     });
   }
+
+  setUserCurrencyAndTimezonePreferences(uid, timezone, currency) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    const userDetailData = {
+      selectedCurrency: currency,
+      selectedTimezone: timezone
+    };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
  }

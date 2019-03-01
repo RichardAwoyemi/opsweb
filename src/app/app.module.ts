@@ -65,6 +65,7 @@ import { NewTaskComponent } from './new-task/new-task.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { ReferralService } from './_services/referral.service';
 import { FirebaseService } from './_services/firebase.service';
+import { DataService } from './_services/data.service';
 
 @NgModule({
   declarations: [
@@ -138,6 +139,7 @@ import { FirebaseService } from './_services/firebase.service';
     AuthGuard,
     AnonymousGuard,
     FirebaseService,
+    DataService,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {

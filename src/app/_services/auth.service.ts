@@ -42,7 +42,7 @@ export class AuthService {
     this.ngZone.run(() => { this.router.navigate(['dashboard']); });
   }
 
-  displaySignInError(error) {
+  displayGenericError(error) {
     const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
     modalReference.componentInstance.header = 'Oops!';
     modalReference.componentInstance.message = error.message;
@@ -60,6 +60,13 @@ export class AuthService {
     modalReference.componentInstance.message = 'Your email account has not been verified yet.';
   }
 
+  displayPasswordResetInfo() {
+    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+    modalReference.componentInstance.header = 'Yay!';
+    modalReference.componentInstance.message = 'Password reset email sent, check your inbox. ' +
+      'If you do not receive this email, please check your spam or bulk email folder.';
+  }
+
   facebookSignIn() {
     const provider = new auth.FacebookAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
@@ -72,7 +79,7 @@ export class AuthService {
       }
       this.completeSignIn();
     }).catch((error) => {
-      this.displaySignInError(error);
+      this.displayGenericError(error);
     });
   }
 
@@ -88,7 +95,7 @@ export class AuthService {
       }
       this.completeSignIn();
     }).catch((error) => {
-      this.displaySignInError(error);
+      this.displayGenericError(error);
     });
   }
 
@@ -104,7 +111,7 @@ export class AuthService {
       }
       this.completeSignIn();
     }).catch((error) => {
-      this.displaySignInError(error);
+      this.displayGenericError(error);
     });
   }
 
@@ -120,7 +127,7 @@ export class AuthService {
       }
       this.completeSignIn();
     }).catch((error) => {
-      this.displaySignInError(error);
+      this.displayGenericError(error);
     });
   }
 
@@ -137,7 +144,7 @@ export class AuthService {
       this.displayRegisterSucesss();
       this.completeSignIn();
     }).catch((error) => {
-      this.displaySignInError(error);
+      this.displayGenericError(error);
     });
   }
 
@@ -154,7 +161,7 @@ export class AuthService {
       this.displayRegisterSucesss();
       this.completeSignIn();
     }).catch((error) => {
-      this.displaySignInError(error);
+      this.displayGenericError(error);
     });
   }
 
@@ -169,7 +176,7 @@ export class AuthService {
         }
       });
     }).catch((error) => {
-      this.displaySignInError(error);
+      this.displayGenericError(error);
     });
   }
 
@@ -183,14 +190,9 @@ export class AuthService {
   forgotPassword(passwordResetEmail) {
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Yay!';
-        modalReference.componentInstance.message = 'Password reset email sent, check your inbox. ' +
-          'If you do not receive this email, please check your spam or bulk email folder.';
+        this.displayPasswordResetInfo();
       }).catch((error) => {
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = error.message;
+        this.displayGenericError(error);
       });
   }
 

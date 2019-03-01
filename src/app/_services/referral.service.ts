@@ -103,16 +103,16 @@ export class ReferralService {
     });
 
     for (let i = 0; i < arr.length; i++) {
-      arr[i]['ranking'] = i + 101;
+      arr[i]['ranking'] = i + 1;
     }
 
     return arr;
   }
 
   addUserToWaitlist(referralId) {
-    const ref = this.afs.firestore.collection('counters').doc('waitlist');
+    const waitlistRef = this.afs.firestore.collection('counters').doc('waitlist');
     return this.afs.firestore.runTransaction(async (transaction: any) => {
-      transaction.set(ref, {
+      transaction.set(waitlistRef, {
         [referralId]: 0,
       }, { merge: true });
     }).then(() => {
