@@ -103,7 +103,7 @@
           <p style="font-size: 1em">Below are the status of recent invitees who have signed up and confirmed their email
             address.</p>
           <table class="table" style="border: none; padding: 0px; margin-top: 1.5em">
-            <tbody>
+            <tbody valign="middle">
               <tr style="border: none" *ngFor="let invitee of invitees">
                 <td style="padding-left: 0px; padding-top: 0px; border: none">
                   <img *ngIf="invitee?.photoURL" class="avatar avatar-xs" src="{{ invitee?.photoURL }}" alt="avatar"
@@ -112,7 +112,7 @@
                     style="margin-right: 0.5em">
                   {{ invitee.firstName }} {{ invitee.lastName }}
                 </td>
-                <td style="text-align: right; padding-top: 0px; border: none;">
+                <td style="text-align: right; padding-top: 5px; border: none;">
                   <div *ngIf="invitee.emailVerified"><i class="ti-check text-success mr-2"></i></div>
                   <div *ngIf="!invitee.emailVerified"><i class="ti-close text-danger mr-2"></i></div>
                 </td>

@@ -71,7 +71,7 @@
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link" routerLink="/dashboard">Dashboard</a>
         <a class="nav-link" routerLink="/settings">Settings</a>
-        <a class="nav-link" routerLink="/register">Logout</a>
+        <a class="nav-link" (click)="authService.signOut()" href="#">Logout</a>
       </nav>
     </section>
   </div>

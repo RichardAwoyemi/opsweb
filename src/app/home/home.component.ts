@@ -41,7 +41,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
-
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
 
     this.registerTopFormGroup = new FormGroup({
