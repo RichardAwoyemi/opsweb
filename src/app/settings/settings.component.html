@@ -48,7 +48,8 @@
                     </small>
                   </div>
                   <div>
-                    <button type="button" class="btn btn-xs btn-secondary">Change Password</button>
+                    <button type="button" class="btn btn-xs btn-secondary" *ngIf="isPasswordChangeEnabled">Change Password</button>
+                    <button type="button" disabled class="btn btn-xs btn-secondary" *ngIf="!isPasswordChangeEnabled">Change Password</button>
                   </div>
                 </div>
               </div>

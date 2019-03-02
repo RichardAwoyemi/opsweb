@@ -219,6 +219,18 @@ export class AuthService {
     return false;
   }
 
+  enableChangePasswordOption() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const loggedIn = JSON.parse(localStorage.getItem('loggedIn'));
+    if (user != null && loggedIn === true) {
+      if (user.providerData[0].providerId === 'facebook.com' || user.providerData[0].providerId === 'google.com') {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   signOut() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.removeItem('user');

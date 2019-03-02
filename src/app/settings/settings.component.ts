@@ -7,6 +7,7 @@ import { DataService } from '../_services/data.service';
 import { ModalComponent } from '../_modals/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilService } from '../_services/util.service';
+import { AuthService } from '../_services/auth.service';
 
 declare var $;
 
@@ -36,6 +37,7 @@ export class SettingsComponent implements OnInit {
   timezones: any;
   dates: any;
   years: any;
+  isPasswordChangeEnabled: boolean;
   isMobile: Observable<BreakpointState>;
 
   @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
@@ -46,7 +48,8 @@ export class SettingsComponent implements OnInit {
     private userService: UserService,
     private modalService: NgbModal,
     private dataService: DataService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -134,6 +137,9 @@ export class SettingsComponent implements OnInit {
         this.dates = Object.values(data);
       }
     });
+
+    this.isPasswordChangeEnabled = this.authService.enableChangePasswordOption();
+    console.log(this.isPasswordChangeEnabled);
 
     this.campaignMode = environment.campaignMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
