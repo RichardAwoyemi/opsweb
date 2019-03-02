@@ -32,4 +32,19 @@ export class UtilService {
       return this.ANDROID_APP_URL;
     }
   }
+
+  createYearRange(start, end) {
+    const s = new Date(start);
+    const startYear = s.getFullYear();
+
+    const e = new Date(end);
+    const endYear = e.getFullYear();
+    const arr = Array();
+
+    for (let i = startYear; i <= endYear; i++) {
+      arr.push(i);
+    }
+
+    return arr;
+  }
 }

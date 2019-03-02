@@ -6,6 +6,7 @@ import { UserService } from '../_services/user.service';
 import { DataService } from '../_services/data.service';
 import { ModalComponent } from '../_modals/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UtilService } from '../_services/util.service';
 
 declare var $;
 
@@ -23,8 +24,18 @@ export class SettingsComponent implements OnInit {
   lastName: string;
   timezone: string;
   currency: string;
+  username: string;
+  dobDay: string;
+  dobMonth: string;
+  dobYear: string;
+  streetAddress1: string;
+  streetAddress2: string;
+  city: string;
+  postcode: string;
   currencies: any;
   timezones: any;
+  dates: any;
+  years: any;
   isMobile: Observable<BreakpointState>;
 
   @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
@@ -34,7 +45,8 @@ export class SettingsComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
     private modalService: NgbModal,
-    private dataService: DataService
+    private dataService: DataService,
+    private utilService: UtilService
   ) { }
 
   ngOnInit() {
@@ -43,6 +55,10 @@ export class SettingsComponent implements OnInit {
       if (data) {
         this.firstName = data['firstName'];
         this.lastName = data['lastName'];
+
+        if (data['username']) {
+          this.username = data['username'];
+        }
 
         if (data['selectedTimezone']) {
           this.timezone = data['selectedTimezone'];
@@ -54,6 +70,40 @@ export class SettingsComponent implements OnInit {
           this.currency = data['selectedCurrency'];
         } else {
           this.currency = 'GBP';
+        }
+
+        if (data['dobYear']) {
+          this.dobYear = data['dobYear'];
+        } else {
+          this.dobYear = 'Year';
+        }
+
+        if (data['dobMonth']) {
+          this.dobMonth = data['dobMonth'];
+        } else {
+          this.dobMonth = 'Month';
+        }
+
+        if (data['dobDay']) {
+          this.dobDay = data['dobDay'];
+        } else {
+          this.dobDay = 'Day';
+        }
+
+        if (data['streetAddress1']) {
+          this.streetAddress1 = data['streetAddress1'];
+        }
+
+        if (data['streetAddress2']) {
+          this.streetAddress2 = data['streetAddress2'];
+        }
+
+        if (data['city']) {
+          this.city = data['city'];
+        }
+
+        if (data['postcode']) {
+          this.postcode = data['postcode'];
         }
       }
     });
@@ -76,9 +126,29 @@ export class SettingsComponent implements OnInit {
       }
     });
 
+    this.dataService.getAllDates().subscribe(data => {
+      if (data) {
+        if (!environment.production) {
+          console.log(Object.values(data));
+        }
+        this.dates = Object.values(data);
+      }
+    });
+
     this.campaignMode = environment.campaignMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
+
+    const lastYear = (new Date().getFullYear() - 18).toString();
+    this.years = this.utilService.createYearRange('1930', lastYear);
+
+    if (!environment.production) {
+      console.log(this.years);
+    }
+  }
+
+  counter(i: number) {
+    return new Array(i);
   }
 
   displayUpdateSuccess() {
@@ -108,6 +178,25 @@ export class SettingsComponent implements OnInit {
       ).catch((error) => {
         this.displayGenericError(error);
       });
+    } else {
+      this.displayGenericError('Please fill in all required fields.');
+    }
+  }
+
+  setUserPersonalDetails() {
+    if (this.user.uid && this.username && this.firstName && this.lastName && this.dobDay && this.dobMonth
+      && this.dobYear && this.streetAddress1 && this.city && this.postcode) {
+        if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
+          this.userService.setUserPersonalDetails(this.user.uid, this.username, this.firstName, this.lastName,
+            this.dobDay, this.dobMonth, this.dobYear, this.streetAddress1, this.streetAddress2, this.city,
+            this.postcode).then(() =>
+              this.displayUpdateSuccess()
+            ).catch((error) => {
+              this.displayGenericError(error);
+            });
+        }
+    } else {
+      this.displayGenericError('Please fill in all required fields.');
     }
   }
 }

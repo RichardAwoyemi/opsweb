@@ -40,7 +40,7 @@ export class UserService {
   }
 
   getReferredUsers(referralId) {
-    return this.afs.collection('users', ref => ref.where('referredBy', '==', referralId).limit(5)).valueChanges();
+    return this.afs.collection('users', ref => ref.where('referredBy', '==', referralId).limit(3)).valueChanges();
   }
 
   setUserData(user) {
@@ -103,6 +103,42 @@ export class UserService {
       selectedCurrency: currency,
       selectedTimezone: timezone
     };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
+  setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = { };
+    if (!streetAddress2) {
+      userDetailData = {
+        uid: uid,
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+        dobDay: dobDay,
+        dobMonth: dobMonth,
+        dobYear: dobYear,
+        streetAddress1: streetAddress1,
+        city: city,
+        postcode: postcode
+      };
+    } else {
+      userDetailData = {
+        uid: uid,
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+        dobDay: dobDay,
+        dobMonth: dobMonth,
+        dobYear: dobYear,
+        streetAddress1: streetAddress1,
+        streetAddress2: streetAddress2,
+        city: city,
+        postcode: postcode
+      };
+    }
     return userRef.set(userDetailData, {
       merge: true
     });
