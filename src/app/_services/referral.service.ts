@@ -24,15 +24,13 @@ export class ReferralService {
   }
 
   generateReferralUrl(referralId) {
-    if (environment.production) {
-      return 'opsonion.com/invite/' + referralId;
-    } else {
       if (location.host === 'localhost:4200') {
         return 'localhost:4200/invite/' + referralId;
-      } else {
-        return 'opsonion-web.herokuapp.com/invite/' + referralId;
+      } else if (location.host === 'opsonion.herokuapp.com') {
+        return 'opsonion.herokuapp.com/invite/' + referralId;
+      } else if (location.host === 'opsonion.com') {
+        return 'opsonion.com/invite/' + referralId;
       }
-    }
   }
 
   addReferralPoints(userReferralId) {
