@@ -89,11 +89,16 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['first_name'];
       const lastName = result.additionalUserInfo.profile['last_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-      }
-      this.completeSignIn();
+      if (firstName && lastName) {
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+        }
+        this.completeSignIn();
+     } else {
+      this.displayGenericError('Your Facebook account does not have a valid ' +
+      'first or last name. Please update your profile before continuing.');
+     }
     }).catch((error) => {
       this.displayGenericError(error);
     });
@@ -105,11 +110,16 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['given_name'];
       const lastName = result.additionalUserInfo.profile['family_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        this.userService.processNewUser(result, firstName, lastName);
+      if (firstName && lastName) {
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewUser(result, firstName, lastName);
+        }
+        this.completeSignIn();
+      } else {
+        this.displayGenericError('Your Google account does not have a valid ' +
+        'firstname or lastname. Please update your profile before continuing.');
       }
-      this.completeSignIn();
     }).catch((error) => {
       this.displayGenericError(error);
     });
