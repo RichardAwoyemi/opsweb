@@ -65,7 +65,7 @@
     <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && campaignMode">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
-        <a class="nav-link" routerLink="/register">Logout</a>
+        <a class="nav-link" (click)="authService.signOut()">Logout</a>
       </nav>
     </section>
   </div>
