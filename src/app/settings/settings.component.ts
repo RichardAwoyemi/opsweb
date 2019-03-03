@@ -189,6 +189,9 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  uploadSingle() {
+  }
+
   setUserPersonalDetails() {
     if (this.user.uid && this.username && this.firstName && this.lastName && this.dobDay && this.dobMonth
       && this.dobYear && this.streetAddress1 && this.city && this.postcode) {
