@@ -20,8 +20,6 @@ export class LoginComponent implements OnInit {
   model: any = {};
 
   ngOnInit() {
-    localStorage.removeItem('loggedIn');
-    localStorage.removeItem('user');
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
   }
 
