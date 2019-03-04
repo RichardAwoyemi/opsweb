@@ -62,10 +62,10 @@ export class ReferralService {
     }));
   }
 
-  calculateRanking(referralId, waitlist) {
+  async calculateRanking(referralId, waitlist) {
     if (!environment.production) {
-      console.log('Referral id: ' + referralId);
-      console.log('Waitlist: ' + waitlist);
+      console.log(referralId);
+      console.log(waitlist);
     }
 
     if (waitlist && referralId) {
@@ -75,17 +75,21 @@ export class ReferralService {
         console.log('Referral id found!');
       }
 
-      const waitlistSorted = this.sortRanking(waitlist);
-      if (!environment.production) {
-        console.log('Waitlist: ', waitlist);
-        console.log('Waitlist: ', waitlistSorted);
+      const waitlistSorted = await this.sortRanking(waitlist);
+
+      if (waitlistSorted) {
+        if (!environment.production) {
+          console.log(waitlistSorted);
+        }
+        console.log(waitlist);
+        const result = waitlistSorted.filter(obj => {
+          return obj.referralId === referralId;
+        });
+
+        if (result[0]) {
+          return result[0].ranking;
+        }
       }
-
-      const result = waitlistSorted.filter(obj => {
-        return obj.referralId === referralId;
-      });
-
-      return result[0].ranking;
     }
   }
 

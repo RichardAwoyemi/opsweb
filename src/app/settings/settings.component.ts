@@ -139,18 +139,12 @@ export class SettingsComponent implements OnInit {
     });
 
     this.isPasswordChangeEnabled = this.authService.enableChangePasswordOption();
-    console.log(this.isPasswordChangeEnabled);
-
     this.campaignMode = environment.campaignMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
     const lastYear = (new Date().getFullYear() - 18).toString();
     this.years = this.utilService.createYearRange('1930', lastYear);
-
-    if (!environment.production) {
-      console.log(this.years);
-    }
   }
 
   counter(i: number) {
@@ -187,9 +181,6 @@ export class SettingsComponent implements OnInit {
     } else {
       this.displayGenericError('Please fill in all required fields.');
     }
-  }
-
-  uploadSingle() {
   }
 
   setUserPersonalDetails() {

@@ -16,8 +16,8 @@ export class DashboardComponent implements OnInit {
   user: any;
   userData: any;
   invitees: any;
-  waitlist: any;
-  ranking: any;
+  tempRanking: any;
+  ranking: number;
   campaignMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
@@ -53,14 +53,18 @@ export class DashboardComponent implements OnInit {
         this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
         this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
 
-        this.waitlist = this.referralService.getWaitlist().subscribe(waitlistResult => {
-          if (waitlistResult) {
-            this.ranking = this.referralService.calculateRanking(this.userData.referralId, waitlistResult);
+        this.tempRanking = this.referralService.getWaitlist().subscribe(waitlistResult => {
+          if (waitlistResult && this.userData.referralId) {
+            return this.referralService.calculateRanking(this.userData.referralId, waitlistResult).then((result: number) => {
+              if (result) {
+                this.ranking = result;
+              }
+            });
           }
         });
 
         this.userService.getReferredUsers(this.userData.referralId).subscribe(referredUsersResult => {
-          if (referredUsersResult) {
+          if (referredUsersResult && this.userData.referralId) {
             console.log('Referred users: ', referredUsersResult);
             this.invitees = referredUsersResult;
           }

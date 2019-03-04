@@ -18,7 +18,9 @@ export class AppComponent implements OnInit {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
   campaignMode: boolean;
-  user: any;
+  user: any = {
+    photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+  };
   today: number = Date.now();
   appStoreUrl: string;
   userAgentString: string;
@@ -31,35 +33,22 @@ export class AppComponent implements OnInit {
     public db: AngularFirestore,
     public router: Router,
     public authService: AuthService) {
-    this.afAuth.authState.subscribe(response => {
-      if (response && authService.isLoggedIn) {
-        const userDoc = db.doc<any>(`users/${response.uid}`);
-        userDoc.snapshotChanges().subscribe(value => {
-          this.user = {
-            firstName: value.payload.data().firstName,
-            lastName: value.payload.data().lastName,
-            email: value.payload.data().email,
-            photoURL: value.payload.data().photoURL,
-            username: value.payload.data().username
-          };
-          if (!this.user.photoURL) {
-            this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
-          }
-        });
-      }
-    });
     this.userAgentString = navigator.userAgent;
     this.campaignMode = environment.campaignMode;
+    this.afAuth.authState.subscribe(response => {
+      if (response) {
+        this.user = {
+          firstName: response['firstName'],
+          lastName: response['lastName'],
+          email: response['email'],
+          photoURL: response['photoURL'],
+          username: response['username']
+        };
+      }
+    });
   }
 
   ngOnInit() {
-    this.user = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      photoURL: 'https://i.imgflip.com/1slnr0.jpg',
-      username: ''
-    };
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset ]);
     this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
   }
