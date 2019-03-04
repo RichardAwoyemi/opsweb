@@ -36,11 +36,15 @@ export class UserService {
   }
 
   getUserByReferralId(referralId) {
-    return this.afs.collection('users', ref => ref.where('referralId', '==', referralId).limit(1)).valueChanges();
+    if (referralId) {
+      return this.afs.collection('users', ref => ref.where('referralId', '==', referralId).limit(1)).valueChanges();
+    }
   }
 
   getReferredUsers(referralId) {
-    return this.afs.collection('users', ref => ref.where('referredBy', '==', referralId).limit(3)).valueChanges();
+    if (referralId) {
+      return this.afs.collection('users', ref => ref.where('referredBy', '==', referralId).limit(3)).valueChanges();
+    }
   }
 
   setUserData(user) {

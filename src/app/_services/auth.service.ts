@@ -95,10 +95,10 @@ export class AuthService {
           this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
         }
         this.completeSignIn();
-     } else {
-      this.displayGenericError('Your Facebook account does not have a valid ' +
-      'first or last name. Please update your profile before continuing.');
-     }
+      } else {
+        this.displayGenericError('Your Facebook account does not have a valid ' +
+          'first or last name. Please update your profile before continuing.');
+      }
     }).catch((error) => {
       this.displayGenericError(error);
     });
@@ -118,7 +118,7 @@ export class AuthService {
         this.completeSignIn();
       } else {
         this.displayGenericError('Your Google account does not have a valid ' +
-        'firstname or lastname. Please update your profile before continuing.');
+          'firstname or lastname. Please update your profile before continuing.');
       }
     }).catch((error) => {
       this.displayGenericError(error);
@@ -177,12 +177,17 @@ export class AuthService {
 
   signIn(email, password) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password).then((result) => {
-      this.ngZone.run(() => {
+      this.ngZone.run(async () => {
         if (result.user.emailVerified === false) {
           this.displayVerifyEmailError();
           this.router.navigate(['verify-email']);
         } else {
-          this.completeSignIn();
+          const path = `/users/${result.user.uid}/`;
+          const doc = await this.firebaseService.docExists(path);
+          if (doc) {
+            localStorage.setItem('loggedIn', 'true');
+            this.router.navigate(['dashboard']);
+          }
         }
       });
     }).catch((error) => {
