@@ -28,17 +28,18 @@ export class AuthService {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
+        this.utilService.setLocalStorageItem('user', JSON.stringify(this.userData)).then(() => {
+          JSON.parse(localStorage.getItem('user'));
+        });
       } else {
-        localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
+        this.utilService.setLocalStorageItem('user', null).then(() => {
+          localStorage.setItem('user', null);
+        });
       }
     });
   }
 
   completeSignIn() {
-    localStorage.setItem('loggedIn', 'true');
     this.ngZone.run(() => { this.router.navigate(['dashboard']); });
   }
 
@@ -152,7 +153,6 @@ export class AuthService {
         this.userService.processNewUser(result, firstName, lastName);
       }
       this.displayRegisterSucesss();
-      this.completeSignIn();
     }).catch((error) => {
       this.displayGenericError(error);
     });
@@ -176,23 +176,16 @@ export class AuthService {
   }
 
   signIn(email, password) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password).then((result) => {
-      this.ngZone.run(async () => {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      .then((result) => {
         if (result.user.emailVerified === false) {
-          this.displayVerifyEmailError();
           this.router.navigate(['verify-email']);
-        } else {
-          const path = `/users/${result.user.uid}/`;
-          const doc = await this.firebaseService.docExists(path);
-          if (doc) {
-            localStorage.setItem('loggedIn', 'true');
-            this.router.navigate(['dashboard']);
-          }
+          this.displayGenericError('Your email account has not been verified yet.');
         }
+        this.completeSignIn();
+      }).catch((error) => {
+        this.displayGenericError(error);
       });
-    }).catch((error) => {
-      this.displayGenericError(error);
-    });
   }
 
   sendVerificationMail() {
@@ -211,33 +204,16 @@ export class AuthService {
       });
   }
 
-  get isLoggedIn(): boolean {
+  get isLoggedIn() {
     const user = JSON.parse(localStorage.getItem('user'));
-    const loggedIn = JSON.parse(localStorage.getItem('loggedIn'));
-
-    if (user == null) {
-      localStorage.removeItem('loggedIn');
-    }
-
-    if (user !== null) {
-      if (user.providerData[0].providerId !== 'facebook.com') {
-        if (loggedIn === true && user.emailVerified !== false) {
-          return true;
-        }
-      } else {
-        if (loggedIn === true) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+    return (user !== null &&
+          ((user.emailVerified === false && user.providerData[0].providerId === 'facebook.com') ||
+          ((user.emailVerified !== false))) ? true : false);
   }
 
   enableChangePasswordOption() {
     const user = JSON.parse(localStorage.getItem('user'));
-    const loggedIn = JSON.parse(localStorage.getItem('loggedIn'));
-    if (user != null && loggedIn === true) {
+    if (user != null) {
       if (user.providerData[0].providerId === 'facebook.com' || user.providerData[0].providerId === 'google.com') {
         return false;
       }
@@ -249,14 +225,12 @@ export class AuthService {
   signOut() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.removeItem('user');
-      localStorage.removeItem('loggedIn');
       this.router.navigate(['login']);
     });
   }
 
   clearLocalStorage() {
     localStorage.removeItem('user');
-    localStorage.removeItem('loggedIn');
   }
 
   checkIfMailExists(email: string): Promise<any> {
