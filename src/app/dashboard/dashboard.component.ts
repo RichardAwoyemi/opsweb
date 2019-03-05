@@ -53,16 +53,6 @@ export class DashboardComponent implements OnInit {
         this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
         this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
 
-        this.tempRanking = this.referralService.getWaitlist().subscribe(waitlistResult => {
-          if (waitlistResult && this.userData.referralId) {
-            return this.referralService.calculateRanking(this.userData.referralId, waitlistResult).then((result: number) => {
-              if (result) {
-                this.ranking = result;
-              }
-            });
-          }
-        });
-
         this.userService.getReferredUsers(this.userData.referralId).subscribe(referredUsersResult => {
           if (referredUsersResult && this.userData.referralId) {
             if (environment.production === false) {
@@ -77,14 +67,19 @@ export class DashboardComponent implements OnInit {
     this.userService.getNumberOfUsers().subscribe(data => {
       if (data) {
         this.noOfUsers = data.data['counter'];
-
-        // Ensure ranking position never exceeds number of users
-
-        if (this.ranking) {
-          if (this.ranking > this.noOfUsers) {
-            this.ranking = this.noOfUsers;
+        this.tempRanking = this.referralService.getWaitlist().subscribe(waitlistResult => {
+          if (waitlistResult && this.userData.referralId) {
+            return this.referralService.calculateRanking(this.userData.referralId, waitlistResult).then((result: number) => {
+              if (result) {
+                if (result > this.noOfUsers) {
+                  this.ranking = this.noOfUsers;
+                } else {
+                  this.ranking = result;
+                }
+              }
+            });
           }
-        }
+        });
       }
     });
   }
