@@ -35,8 +35,15 @@ export class LoginComponent implements OnInit {
       if (environment.production === false) {
         console.log(JSON.stringify(result.user));
       }
-      localStorage.setItem('user', JSON.stringify(result.user));
-      this.ngZone.run(() => { this.router.navigate(['dashboard']); });
+      if (result.user.emailVerified !== false) {
+        localStorage.setItem('user', JSON.stringify(result.user));
+        this.ngZone.run(() => { this.router.navigate(['dashboard']); });
+      } else {
+        this.router.navigate(['verify-email']);
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Oops!';
+        modalReference.componentInstance.message = 'Your email account has not been verified yet.';
+      }
     }, error => {
       const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
       modalReference.componentInstance.header = 'Oops!';

@@ -103,7 +103,7 @@ export class AuthService {
       } else {
         this.displayGenericError('Your Facebook account does not have a valid ' +
           'first or last name. Please update your profile before continuing.');
-          localStorage.removeItem('user');
+        localStorage.removeItem('user');
       }
     }).catch((error) => {
       this.displayGenericError(error);
@@ -125,6 +125,7 @@ export class AuthService {
       } else {
         this.displayGenericError('Your Google account does not have a valid ' +
           'firstname or lastname. Please update your profile before continuing.');
+        localStorage.removeItem('user');
       }
     }).catch((error) => {
       this.displayGenericError(error);
@@ -137,11 +138,17 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['given_name'];
       const lastName = result.additionalUserInfo.profile['family_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+      if (firstName && lastName) {
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+        }
+        this.completeSignIn();
+      } else {
+        this.displayGenericError('Your Google account does not have a valid ' +
+          'firstname or lastname. Please update your profile before continuing.');
+        localStorage.removeItem('user');
       }
-      this.completeSignIn();
     }).catch((error) => {
       this.displayGenericError(error);
     });
@@ -183,9 +190,9 @@ export class AuthService {
   signIn(email, password) {
     return new Promise<any>((resolve, reject) => {
       return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then(res => {
-        resolve(res);
-      }, err => reject(err));
+        .then(res => {
+          resolve(res);
+        }, err => reject(err));
     });
   }
 
