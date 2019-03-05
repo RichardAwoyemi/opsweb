@@ -73,10 +73,16 @@ export class AuthService {
       const firstName = result.additionalUserInfo.profile['first_name'];
       const lastName = result.additionalUserInfo.profile['last_name'];
       const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        this.userService.processNewUser(result, firstName, lastName);
+      if (firstName && lastName) {
+        if (!doc) {
+          this.userService.processNewUser(result, firstName, lastName);
+        }
+        this.completeSignIn();
+      } else {
+        this.displayGenericError('Your Facebook account does not have a valid ' +
+          'first or last name. Please update your profile before continuing.');
+        localStorage.removeItem('user');
       }
-      this.completeSignIn();
     }).catch((error) => {
       this.displayGenericError(error);
     });
@@ -97,6 +103,7 @@ export class AuthService {
       } else {
         this.displayGenericError('Your Facebook account does not have a valid ' +
           'first or last name. Please update your profile before continuing.');
+          localStorage.removeItem('user');
       }
     }).catch((error) => {
       this.displayGenericError(error);

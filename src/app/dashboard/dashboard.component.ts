@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
 
         if (this.ranking) {
           if (this.ranking > this.noOfUsers) {
-            this.noOfUsers = this.ranking;
+            this.ranking = this.noOfUsers;
           }
         }
       }
