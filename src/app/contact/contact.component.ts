@@ -79,7 +79,7 @@ export class ContactComponent implements OnInit {
 
         const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
         modalReference.componentInstance.header = 'Yay!';
-        modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
+        modalReference.componentInstance.message = 'Thanks. We will be in touch.';
         this.submitted = true;
       }
     );
