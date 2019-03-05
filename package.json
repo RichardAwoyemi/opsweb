@@ -51,7 +51,7 @@
     "rxjs-compat": "^6.3.3",
     "typescript": "~3.1.6",
     "xlsx": "^0.14.1",
-    "zone.js": "~0.8.26"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.12.1",

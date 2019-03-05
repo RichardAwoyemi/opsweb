@@ -28,13 +28,11 @@ export class AuthService {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userData = user;
-        this.utilService.setLocalStorageItem('user', JSON.stringify(this.userData)).then(() => {
-          JSON.parse(localStorage.getItem('user'));
-        });
+        localStorage.setItem('user', JSON.stringify(this.userData));
+        JSON.parse(localStorage.getItem('user'));
       } else {
-        this.utilService.setLocalStorageItem('user', null).then(() => {
-          localStorage.setItem('user', null);
-        });
+        localStorage.setItem('user', null);
+        JSON.parse(localStorage.getItem('user'));
       }
     });
   }
@@ -176,16 +174,12 @@ export class AuthService {
   }
 
   signIn(email, password) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        if (result.user.emailVerified === false) {
-          this.router.navigate(['verify-email']);
-          this.displayGenericError('Your email account has not been verified yet.');
-        }
-        this.completeSignIn();
-      }).catch((error) => {
-        this.displayGenericError(error);
-      });
+    return new Promise<any>((resolve, reject) => {
+      return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      .then(res => {
+        resolve(res);
+      }, err => reject(err));
+    });
   }
 
   sendVerificationMail() {
@@ -207,8 +201,8 @@ export class AuthService {
   get isLoggedIn() {
     const user = JSON.parse(localStorage.getItem('user'));
     return (user !== null &&
-          ((user.emailVerified === false && user.providerData[0].providerId === 'facebook.com') ||
-          ((user.emailVerified !== false))) ? true : false);
+      ((user.emailVerified === false && user.providerData[0].providerId === 'facebook.com') ||
+        ((user.emailVerified !== false))) ? true : false);
   }
 
   enableChangePasswordOption() {

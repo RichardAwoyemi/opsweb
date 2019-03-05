@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
     this.userAgentString = navigator.userAgent;
     this.campaignMode = environment.campaignMode;
     this.afAuth.authState.subscribe(response => {
-      if (response) {
+      if (response && authService.isLoggedIn) {
         this.user = {
           firstName: response['firstName'],
           lastName: response['lastName'],
@@ -44,6 +44,9 @@ export class AppComponent implements OnInit {
           photoURL: response['photoURL'],
           username: response['username']
         };
+      }
+      if (!this.user.photoURL) {
+        this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
       }
     });
   }
