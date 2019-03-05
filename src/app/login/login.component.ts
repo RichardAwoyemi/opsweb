@@ -5,6 +5,7 @@ import { AuthService } from '../_services/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ModalComponent } from '../_modals/modal.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   templateUrl: './login.component.html'
@@ -31,7 +32,9 @@ export class LoginComponent implements OnInit {
     const email = this.model.email;
     const password = this.model.password;
     this.authService.signIn(email, password).then((result) => {
-      console.log(JSON.stringify(result.user));
+      if (environment.production === false) {
+        console.log(JSON.stringify(result.user));
+      }
       localStorage.setItem('user', JSON.stringify(result.user));
       this.ngZone.run(() => { this.router.navigate(['dashboard']); });
     }, error => {

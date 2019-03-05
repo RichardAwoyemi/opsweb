@@ -43,13 +43,13 @@ export class ReferralService {
       const newCount = doc.data()[userReferralId] + 1;
       transaction.set(ref, { [userReferralId]: newCount }, { merge: true });
     }).then(() => {
-      if (!environment.production) {
+      if (environment.production === false) {
         console.log(
           'Transaction successfully committed.'
         );
       }
     }).catch((error) => {
-      if (!environment.production) {
+      if (environment.production === false) {
         console.log('Transaction failed: ', error);
       }
     });
@@ -63,7 +63,7 @@ export class ReferralService {
   }
 
   async calculateRanking(referralId, waitlist) {
-    if (!environment.production) {
+    if (environment.production === false) {
       console.log(referralId);
       console.log(waitlist);
     }
@@ -71,14 +71,14 @@ export class ReferralService {
     if (waitlist && referralId) {
       if (!waitlist.hasOwnProperty(referralId)) {
         this.addUserToWaitlist(referralId);
-      } else if (!environment.production) {
+      } else if (environment.production === false) {
         console.log('Referral id found!');
       }
 
       const waitlistSorted = await this.sortRanking(waitlist);
 
       if (waitlistSorted) {
-        if (!environment.production) {
+        if (environment.production === false) {
           console.log(waitlistSorted);
         }
         console.log(waitlist);
@@ -125,13 +125,13 @@ export class ReferralService {
         [referralId]: 0,
       }, { merge: true });
     }).then(() => {
-      if (!environment.production) {
+      if (environment.production === false) {
         console.log(
           `Transaction successfully committed.`
         );
       }
     }).catch((error) => {
-      if (!environment.production) {
+      if (environment.production === false) {
         console.log('Transaction failed: ', error);
       }
     });

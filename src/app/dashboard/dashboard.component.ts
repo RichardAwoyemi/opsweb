@@ -65,7 +65,9 @@ export class DashboardComponent implements OnInit {
 
         this.userService.getReferredUsers(this.userData.referralId).subscribe(referredUsersResult => {
           if (referredUsersResult && this.userData.referralId) {
-            console.log('Referred users: ', referredUsersResult);
+            if (environment.production === false) {
+              console.log('Referred users: ', referredUsersResult);
+            }
             this.invitees = referredUsersResult;
           }
         });

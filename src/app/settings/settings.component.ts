@@ -113,7 +113,7 @@ export class SettingsComponent implements OnInit {
 
     this.dataService.getAllTimezones().subscribe(data => {
       if (data) {
-        if (!environment.production) {
+        if (environment.production === false) {
           console.log(data);
         }
         this.timezones = data;
@@ -122,7 +122,7 @@ export class SettingsComponent implements OnInit {
 
     this.dataService.getAllCurrencies().subscribe(data => {
       if (data) {
-        if (!environment.production) {
+        if (environment.production === false) {
           console.log(data);
         }
         this.currencies = data;
@@ -131,7 +131,7 @@ export class SettingsComponent implements OnInit {
 
     this.dataService.getAllDates().subscribe(data => {
       if (data) {
-        if (!environment.production) {
+        if (environment.production === false) {
           console.log(Object.values(data));
         }
         this.dates = Object.values(data);
