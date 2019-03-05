@@ -77,6 +77,14 @@ export class DashboardComponent implements OnInit {
     this.userService.getNumberOfUsers().subscribe(data => {
       if (data) {
         this.noOfUsers = data.data['counter'];
+
+        // Ensure ranking position never exceeds number of users
+
+        if (this.ranking) {
+          if (this.ranking > this.noOfUsers) {
+            this.noOfUsers = this.ranking;
+          }
+        }
       }
     });
   }
