@@ -4,8 +4,8 @@
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em" *ngIf="ranking">You are in position <strong> {{ ranking }}</strong> of
-          <strong>{{ noOfUsers }}</strong> on the waitlist.</p>
+        <p style="font-size: 1.25em" *ngIf="ranking$">You are in position <strong> {{ ranking$ | async }}</strong> of
+          <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
       </div>
     </div>
     <br>
@@ -67,8 +67,8 @@
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em" *ngIf="ranking">You are in position <strong> {{ ranking }}</strong> of
-          <strong>{{ noOfUsers }}</strong> on the waitlist.</p>
+        <p style="font-size: 1.25em" *ngIf="ranking$">You are in position <strong> {{ ranking$ | async }}</strong> of
+          <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
       </div>
       <div style="padding: 1em">
         <div class="col-md-12" style="background-color: #fff; padding: 2em">

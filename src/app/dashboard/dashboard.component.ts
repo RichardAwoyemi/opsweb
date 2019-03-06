@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../_services/user.service';
 import { ReferralService } from '../_services/referral.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -16,8 +17,6 @@ export class DashboardComponent implements OnInit {
   user: any;
   userData: any;
   invitees: any;
-  tempRanking: any;
-  ranking: number;
   campaignMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
@@ -26,7 +25,8 @@ export class DashboardComponent implements OnInit {
   emailShareUrl: string;
   referralUrl: string;
   anonymousPhotoURL: string;
-  noOfUsers: number;
+  noOfUsers$: Observable<number>;
+  ranking$: Observable<number>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
         this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
         this.referralUrl = this.referralService.generateReferralUrl(this.userData.referralId);
         this.campaignMessage = 'I can hire and work from anywhere on Opsonion, a new platform that ' +
-        'connects talent and opportunity. Join me today by signing up using my link: ' + this.referralUrl + '.';
+          'connects talent and opportunity. Join me today by signing up using my link: ' + this.referralUrl + '.';
         this.facebookShareUrl = 'http://www.facebook.com/sharer/sharer.php?u=' + this.referralUrl;
         this.whatsappShareUrl = 'https://wa.me/?text=' + this.campaignMessage;
         this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
@@ -64,24 +64,23 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.userService.getNumberOfUsers().subscribe(data => {
-      if (data) {
-        this.noOfUsers = data.data['counter'];
-        this.tempRanking = this.referralService.getWaitlist().subscribe(waitlistResult => {
-          if (waitlistResult && this.userData.referralId) {
-            return this.referralService.calculateRanking(this.userData.referralId, waitlistResult).then((result: number) => {
-              if (result) {
-                if (result > this.noOfUsers) {
-                  this.ranking = this.noOfUsers;
-                } else {
-                  this.ranking = result;
-                }
-              }
-            });
-          }
-        });
-      }
-    });
+    this.noOfUsers$ = this.userService.getNumberOfUsers().pipe(map(result => {
+      return result.data['counter'];
+    }));
+
+    this.ranking$ = this.referralService.getWaitlist().pipe(
+      filter(waitlistResult => waitlistResult != null),
+      switchMap(waitlistResult => combineLatest(from(this.referralService.calculateRanking(this.
+        userData.referralId, waitlistResult)), this.noOfUsers$)),
+      filter(combined => combined[0] != null && combined[1] != null),
+      map(combined => {
+        if (combined[0] > combined[1]) {
+          return combined[1];
+        } else {
+          return combined[0];
+        }
+      })
+    );
   }
 
   copyMessage() {
