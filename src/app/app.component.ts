@@ -55,8 +55,6 @@ export class AppComponent implements OnInit {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.router.navigate(['dashboard']);
-      } else {
-        this.router.navigate(['home']);
       }
     });
   }
