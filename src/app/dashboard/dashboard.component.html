@@ -1,11 +1,11 @@
-<section class="section-desktop"
+<section ngxUiLoaderBlurred class="section-desktop"
   *ngIf="!(isMobile | async)?.matches && campaignMode && (userData?.firstName || userData?.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em" *ngIf="ranking$">You are in position <strong> {{ ranking$ | async }}</strong> of
+        <p style="font-size: 1.25em" *ngIf="ranking$ && noOfUsers$">You are in position <strong> {{ ranking$ | async }}</strong> of
           <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
       </div>
     </div>
@@ -62,7 +62,7 @@
   </div>
 </section>
 
-<section class="section-desktop"
+<section ngxUiLoaderBlurred class="section-desktop"
   *ngIf="!(isMobile | async)?.matches && campaignMode && (!userData?.firstName || !userData?.lastName)">
   <div class="container">
     <div class="row">
@@ -89,14 +89,14 @@
   </div>
 </section>
 
-<section class="section-mobile"
+<section ngxUiLoaderBlurred class="section-mobile"
   *ngIf="(isMobile | async)?.matches && campaignMode && (userData?.firstName || userData.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em" *ngIf="ranking$">You are in position <strong> {{ ranking$ | async }}</strong> of
+        <p style="font-size: 1.25em" *ngIf="ranking$ && noOfUsers$">You are in position <strong> {{ ranking$ | async }}</strong> of
           <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
       </div>
       <div style="padding: 1em">
@@ -154,7 +154,7 @@
   </div>
 </section>
 
-<section class="section-mobile"
+<section ngxUiLoaderBlurred class="section-mobile"
   *ngIf="(isMobile | async)?.matches && campaignMode && (!userData?.firstName || !userData?.lastName)">
   <div class="container">
     <div class="row">

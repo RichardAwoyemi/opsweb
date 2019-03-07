@@ -66,6 +66,12 @@ import { InboxComponent } from './inbox/inbox.component';
 import { ReferralService } from './_services/referral.service';
 import { FirebaseService } from './_services/firebase.service';
 import { DataService } from './_services/data.service';
+import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  fgsType: SPINNER.ballSpin,
+  bgsOpacity: 0.7
+};
 
 @NgModule({
   declarations: [
@@ -124,7 +130,8 @@ import { DataService } from './_services/data.service';
     AngularFireAuthModule,
     QRCodeModule,
     QuillModule,
-    Ng5SliderModule
+    Ng5SliderModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
   providers: [
     MarketsService,

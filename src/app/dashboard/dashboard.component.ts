@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { UtilService } from '../_services/util.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -36,14 +37,18 @@ export class DashboardComponent implements OnInit {
     private userService: UserService,
     private referralService: ReferralService,
     private utilService: UtilService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private ngxLoader: NgxUiLoaderService
   ) {
   }
 
   ngOnInit() {
+    this.ngxLoader.start();
+
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.campaignMode = environment.campaignMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
+
     this.user = JSON.parse(localStorage.getItem('user'));
 
     if (this.user.firstName && this.user.lastName) {
@@ -72,6 +77,10 @@ export class DashboardComponent implements OnInit {
             this.invitees = referredUsersResult;
           }
         });
+
+        setTimeout(() => {
+          this.ngxLoader.stop();
+        }, 3000);
       }
     });
 
@@ -130,6 +139,7 @@ export class DashboardComponent implements OnInit {
       const lastName = this.utilService.toTitleCase(this.lastName);
       this.userService.setUserLegalNameData(this.user.uid, firstName, lastName).then(() => {
         this.displayUpdateSuccess();
+        location.reload();
       }).catch((error) => {
         this.displayGenericError(error);
       });
