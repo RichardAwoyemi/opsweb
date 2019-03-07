@@ -40,6 +40,10 @@ export class DashboardComponent implements OnInit {
     private modalService: NgbModal,
     private ngxLoader: NgxUiLoaderService
   ) {
+    this.userData = {
+      firstName: null,
+      lastName: null
+    };
   }
 
   ngOnInit() {
@@ -115,9 +119,6 @@ export class DashboardComponent implements OnInit {
     selectBox.select();
     document.execCommand('copy');
     document.body.removeChild(selectBox);
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Yay!';
-    modalReference.componentInstance.message = 'Your referral link has been copied to the clipboard.';
     return;
   }
 

@@ -60,8 +60,16 @@ export class InviteComponent implements OnInit {
     this.authService.registerWithReferral(email, password, firstName, lastName, this.referredById);
   }
 
+  mobileGoogleSignInWithReferral() {
+    this.authService.mobileGoogleSignInWithReferral(this.referredById);
+  }
+
   googleSignInWithReferral() {
     this.authService.googleSignInWithReferral(this.referredById);
+  }
+
+  mobileFacebookSignInWithReferral() {
+    this.authService.mobileFacebookSignInWithReferral(this.referredById);
   }
 
   facebookSignInWithReferral() {

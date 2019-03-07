@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { ModalComponent } from '../_modals/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { UtilService } from '../_services/util.service';
@@ -11,54 +9,25 @@ import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../_services/auth.service';
 
-declare var $;
-
 @Component({
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
-  registerTopFormGroup: FormGroup;
-  registerBottomFormGroup: FormGroup;
   submitted = false;
-  closeResult: string;
   campaignMode: boolean;
-
-  @ViewChild('errorModal') errorModal: ElementRef;
-  registerTopForm = document.forms['registerTopForm'];
-  registerBottomForm = document.forms['registerBottomForm'];
-
-  private scriptURL = 'https://script.google.com/macros/s/AKfycbxFNLTWjBgRoS6TATor0jIOXm3a4XkSsBpdeKTZRE8tmElepek/exec';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
     public modalService: NgbModal,
     public utilService: UtilService,
-    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
-
-    this.registerTopFormGroup = new FormGroup({
-      email: new FormControl()
-    });
-
-    this.registerBottomFormGroup = new FormGroup({
-      email: new FormControl()
-    });
-
-    this.registerTopForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]]
-    });
-
-    this.registerBottomForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]]
-    });
-
     this.campaignMode = environment.campaignMode;
   }
 
@@ -66,63 +35,11 @@ export class HomeComponent implements OnInit {
     this.authService.googleSignIn();
   }
 
+  mobileGoogleSignIn() {
+    this.authService.mobileGoogleSignIn();
+  }
+
   facebookSignIn() {
     this.authService.facebookSignIn();
-  }
-
-  onTopSubmit() {
-    if (this.registerTopForm.invalid) {
-      const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-      modalReference.componentInstance.header = 'Oops!';
-      modalReference.componentInstance.message = 'Please ensure that have entered your email address correctly.';
-      return;
-    }
-
-    const formObject = document.forms['registerTopForm'];
-
-    if (environment.production === false) {
-      console.log(new FormData(formObject));
-    }
-
-    this.submitForm(formObject);
-  }
-
-  onBottomSubmit() {
-    if (this.registerBottomForm.invalid) {
-      const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-      modalReference.componentInstance.header = 'Oops!';
-      modalReference.componentInstance.message = 'Please ensure that have entered your email address correctly.';
-      return;
-    }
-
-    const formObject = document.forms['registerBottomForm'];
-
-    if (environment.production === false) {
-      console.log(new FormData(formObject));
-    }
-
-    this.submitForm(formObject);
-  }
-
-  submitForm(formObject) {
-    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
-      if (environment.production === false) {
-        console.log('Success!', response);
-      }
-      const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-      modalReference.componentInstance.header = 'Yay!';
-      modalReference.componentInstance.message = 'Thanks for signing up. We will be in touch.';
-      this.submitted = true;
-    }).catch(
-      error => {
-        if (environment.production === false) {
-          console.error('Error!', error.message);
-        }
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = 'Something has gone wrong. Please try again.';
-        this.submitted = true;
-      }
-    );
   }
 }

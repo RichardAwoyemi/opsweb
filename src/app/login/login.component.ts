@@ -55,7 +55,15 @@ export class LoginComponent implements OnInit {
     this.authService.googleSignIn();
   }
 
+  mobileGoogleSignIn() {
+    this.authService.mobileGoogleSignIn();
+  }
+
   facebookSignIn() {
     this.authService.facebookSignIn();
+  }
+
+  mobileFacebookSignIn() {
+    this.authService.mobileFacebookSignIn();
   }
 }

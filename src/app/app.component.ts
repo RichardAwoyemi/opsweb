@@ -52,6 +52,13 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset ]);
     this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.router.navigate(['dashboard']);
+      } else {
+        this.router.navigate(['login']);
+      }
+    });
   }
 
   onActivate(_event) {

@@ -37,10 +37,6 @@ export class AuthService {
     });
   }
 
-  completeSignIn() {
-    this.ngZone.run(() => { this.router.navigate(['dashboard']); });
-  }
-
   displayGenericError(error) {
     const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
     modalReference.componentInstance.header = 'Oops!';
@@ -68,20 +64,24 @@ export class AuthService {
 
   facebookSignIn() {
     const provider = new auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['first_name'];
-      const lastName = result.additionalUserInfo.profile['last_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (firstName && lastName) {
-        if (!doc) {
-          this.userService.processNewUser(result, firstName, lastName);
-        }
-        this.completeSignIn();
-      } else {
-        this.userService.processNewUser(result, null, null);
-        this.completeSignIn();
-      }
+    return new Promise((resolve) => {
+      this.afAuth.auth.signInWithPopup(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['first_name'];
+          const lastName = result.additionalUserInfo.profile['last_name'];
+          const doc = await this.firebaseService.docExists(path);
+          if (firstName && lastName) {
+            if (!doc) {
+              this.userService.processNewUser(result, firstName, lastName);
+            }
+            resolve(result.user);
+          } else {
+            this.userService.processNewUser(result, null, null);
+            resolve(result.user);
+          }
+        });
+      });
     }).catch((error) => {
       this.displayGenericError(error);
     });
@@ -89,64 +89,182 @@ export class AuthService {
 
   facebookSignInWithReferral(referredBy) {
     const provider = new auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['first_name'];
-      const lastName = result.additionalUserInfo.profile['last_name'];
-      if (firstName && lastName) {
-        const doc = await this.firebaseService.docExists(path);
-        if (!doc) {
-          this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-        }
-        this.completeSignIn();
-      } else {
-        this.userService.processNewUserReferral(result, null, null, referredBy);
-        this.completeSignIn();
-      }
+    return new Promise((resolve) => {
+      this.afAuth.auth.signInWithPopup(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['first_name'];
+          const lastName = result.additionalUserInfo.profile['last_name'];
+          if (firstName && lastName) {
+            const doc = await this.firebaseService.docExists(path);
+            if (!doc) {
+              this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+            }
+            resolve(result.user);
+          } else {
+            this.userService.processNewUserReferral(result, null, null, referredBy);
+            resolve(result.user);
+          }
+        });
+      });
     }).catch((error) => {
       this.displayGenericError(error);
+    });
+  }
+
+  mobileFacebookSignIn() {
+    const provider = new auth.FacebookAuthProvider();
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.signInWithRedirect(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['given_name'];
+          const lastName = result.additionalUserInfo.profile['family_name'];
+          if (firstName && lastName) {
+            const doc = await this.firebaseService.docExists(path);
+            if (!doc) {
+              this.userService.processNewUser(result, firstName, lastName);
+            }
+          }
+          resolve(result.user);
+        }).catch((error) => {
+          this.displayGenericError(error);
+          reject(error);
+        });
+      }).catch((error) => {
+        this.displayGenericError(error);
+        reject(error);
+      });
+    });
+  }
+
+  mobileFacebookSignInWithReferral(referredBy) {
+    const provider = new auth.FacebookAuthProvider();
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.signInWithRedirect(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['given_name'];
+          const lastName = result.additionalUserInfo.profile['family_name'];
+          if (firstName && lastName) {
+            const doc = await this.firebaseService.docExists(path);
+            if (!doc) {
+              this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+            }
+          }
+          resolve(result.user);
+        }).catch((error) => {
+          this.displayGenericError(error);
+          reject(error);
+        });
+      }).catch((error) => {
+        this.displayGenericError(error);
+        reject(error);
+      });
     });
   }
 
   googleSignIn() {
     const provider = new auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['given_name'];
-      const lastName = result.additionalUserInfo.profile['family_name'];
-      if (firstName && lastName) {
-        const doc = await this.firebaseService.docExists(path);
-        if (!doc) {
-          this.userService.processNewUser(result, firstName, lastName);
-        }
-        this.completeSignIn();
-      } else {
-        this.userService.processNewUser(result, null, null);
-        this.completeSignIn();
-      }
+    return new Promise((resolve) => {
+      this.afAuth.auth.signInWithPopup(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['given_name'];
+          const lastName = result.additionalUserInfo.profile['family_name'];
+          if (firstName && lastName) {
+            const doc = await this.firebaseService.docExists(path);
+            if (!doc) {
+              this.userService.processNewUser(result, firstName, lastName);
+            }
+            resolve(result.user);
+          } else {
+            this.userService.processNewUser(result, null, null);
+            resolve(result.user);
+          }
+        });
+      });
     }).catch((error) => {
       this.displayGenericError(error);
     });
   }
 
+  mobileGoogleSignIn() {
+    const provider = new auth.GoogleAuthProvider();
+    return new Promise((resolve) => {
+      this.afAuth.auth.signInWithRedirect(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['given_name'];
+          const lastName = result.additionalUserInfo.profile['family_name'];
+          if (firstName && lastName) {
+            const doc = await this.firebaseService.docExists(path);
+            if (!doc) {
+              this.userService.processNewUser(result, firstName, lastName);
+            }
+          } else {
+            this.userService.processNewUser(result, null, null);
+            resolve(result.user);
+          }
+          resolve(result.user);
+        }).catch((error) => {
+          this.displayGenericError(error);
+        });
+      }).catch((error) => {
+        this.displayGenericError(error);
+      });
+    });
+  }
+
   googleSignInWithReferral(referredBy) {
     const provider = new auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['given_name'];
-      const lastName = result.additionalUserInfo.profile['family_name'];
-      if (firstName && lastName) {
-        const doc = await this.firebaseService.docExists(path);
-        if (!doc) {
-          this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-        }
-        this.completeSignIn();
-      } else {
-        this.userService.processNewUserReferral(result, null, null, referredBy);
-        this.completeSignIn();
-      }
+    return new Promise((resolve) => {
+      return this.afAuth.auth.signInWithPopup(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['given_name'];
+          const lastName = result.additionalUserInfo.profile['family_name'];
+          if (firstName && lastName) {
+            const doc = await this.firebaseService.docExists(path);
+            if (!doc) {
+              this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+            }
+            resolve(result.user);
+          } else {
+            this.userService.processNewUserReferral(result, null, null, referredBy);
+            resolve(result.user);
+          }
+        });
+      });
     }).catch((error) => {
       this.displayGenericError(error);
+    });
+  }
+
+  mobileGoogleSignInWithReferral(referredBy) {
+    const provider = new auth.GoogleAuthProvider();
+    return new Promise((resolve) => {
+      this.afAuth.auth.signInWithRedirect(provider).then(() => {
+        this.afAuth.auth.getRedirectResult().then(async (result) => {
+          const path = `/users/${result.user.uid}/`;
+          const firstName = result.additionalUserInfo.profile['given_name'];
+          const lastName = result.additionalUserInfo.profile['family_name'];
+          if (firstName && lastName) {
+            const doc = await this.firebaseService.docExists(path);
+            if (!doc) {
+              this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+            }
+          } else {
+            this.userService.processNewUserReferral(result, null, null, referredBy);
+            resolve(result.user);
+          }
+          resolve(result.user);
+        }).catch((error) => {
+          this.displayGenericError(error);
+        });
+      }).catch((error) => {
+        this.displayGenericError(error);
+      });
     });
   }
 
@@ -177,7 +295,7 @@ export class AuthService {
         this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
       }
       this.displayRegisterSucesss();
-      this.completeSignIn();
+      this.ngZone.run(() => { this.router.navigate(['dashboard']); });
     }).catch((error) => {
       this.displayGenericError(error);
     });
