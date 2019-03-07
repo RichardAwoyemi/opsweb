@@ -61,13 +61,34 @@ export class UserService {
     });
   }
 
+  setUserLegalNameData(uid, firstName, lastName) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = { };
+    if (firstName && lastName) {
+      userDetailData = {
+        firstName: firstName,
+        lastName: lastName
+      };
+    }
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
   setUserDetailData(uid, firstName, lastName, referralId) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    const userDetailData = {
-      firstName: firstName,
-      lastName: lastName,
-      referralId: referralId
-    };
+    let userDetailData = { };
+    if (firstName && lastName) {
+      userDetailData = {
+        firstName: firstName,
+        lastName: lastName,
+        referralId: referralId
+      };
+    } else {
+      userDetailData = {
+        referralId: referralId
+      };
+    }
     return userRef.set(userDetailData, {
       merge: true
     });
@@ -90,12 +111,20 @@ export class UserService {
 
   setUserReferralData(uid, firstName, lastName, referralId, referredBy) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    const userDetailData = {
-      firstName: firstName,
-      lastName: lastName,
-      referralId: referralId,
-      referredBy: referredBy
-    };
+    let userDetailData = { };
+    if (firstName && lastName) {
+      userDetailData = {
+        firstName: firstName,
+        lastName: lastName,
+        referralId: referralId,
+        referredBy: referredBy
+      };
+    } else {
+      userDetailData = {
+        referralId: referralId,
+        referredBy: referredBy
+      };
+    }
     return userRef.set(userDetailData, {
       merge: true
     });
@@ -117,7 +146,6 @@ export class UserService {
     let userDetailData = { };
     if (!streetAddress2) {
       userDetailData = {
-        uid: uid,
         username: username,
         firstName: firstName,
         lastName: lastName,
@@ -130,7 +158,6 @@ export class UserService {
       };
     } else {
       userDetailData = {
-        uid: uid,
         username: username,
         firstName: firstName,
         lastName: lastName,

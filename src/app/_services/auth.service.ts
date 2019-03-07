@@ -79,9 +79,8 @@ export class AuthService {
         }
         this.completeSignIn();
       } else {
-        this.displayGenericError('Your Facebook account does not have a valid ' +
-          'first or last name. Please update your profile before continuing.');
-        localStorage.removeItem('user');
+        this.userService.processNewUser(result, null, null);
+        this.completeSignIn();
       }
     }).catch((error) => {
       this.displayGenericError(error);
@@ -101,9 +100,8 @@ export class AuthService {
         }
         this.completeSignIn();
       } else {
-        this.displayGenericError('Your Facebook account does not have a valid ' +
-          'first or last name. Please update your profile before continuing.');
-        localStorage.removeItem('user');
+        this.userService.processNewUserReferral(result, null, null, referredBy);
+        this.completeSignIn();
       }
     }).catch((error) => {
       this.displayGenericError(error);
@@ -123,9 +121,8 @@ export class AuthService {
         }
         this.completeSignIn();
       } else {
-        this.displayGenericError('Your Google account does not have a valid ' +
-          'firstname or lastname. Please update your profile before continuing.');
-        localStorage.removeItem('user');
+        this.userService.processNewUser(result, null, null);
+        this.completeSignIn();
       }
     }).catch((error) => {
       this.displayGenericError(error);
@@ -145,9 +142,8 @@ export class AuthService {
         }
         this.completeSignIn();
       } else {
-        this.displayGenericError('Your Google account does not have a valid ' +
-          'firstname or lastname. Please update your profile before continuing.');
-        localStorage.removeItem('user');
+        this.userService.processNewUserReferral(result, null, null, referredBy);
+        this.completeSignIn();
       }
     }).catch((error) => {
       this.displayGenericError(error);

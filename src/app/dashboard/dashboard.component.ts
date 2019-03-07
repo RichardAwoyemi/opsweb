@@ -7,6 +7,7 @@ import { ReferralService } from '../_services/referral.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
 import { filter, map, switchMap } from 'rxjs/operators';
+import { UtilService } from '../_services/util.service';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -25,6 +26,8 @@ export class DashboardComponent implements OnInit {
   emailShareUrl: string;
   referralUrl: string;
   anonymousPhotoURL: string;
+  firstName: string;
+  lastName: string;
   noOfUsers$: Observable<number>;
   ranking$: Observable<number>;
 
@@ -32,19 +35,27 @@ export class DashboardComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
     private referralService: ReferralService,
-    private modalService: NgbModal,
+    private utilService: UtilService,
+    private modalService: NgbModal
   ) {
   }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.campaignMode = environment.campaignMode;
+    this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
+
+    if (this.user.firstName && this.user.lastName) {
+      this.userData = {
+        firstName: this.user.firstName,
+        lastName: this.user.lastName
+      };
+    }
 
     this.userService.getUserById(this.user.uid).subscribe(data => {
       if (data) {
         this.userData = data;
-        this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
         this.referralUrl = this.referralService.generateReferralUrl(this.userData.referralId);
         this.campaignMessage = 'I can hire and work from anywhere on Opsonion, a new platform that ' +
           'connects talent and opportunity. Join me today by signing up using my link: ' + this.referralUrl + '.';
@@ -99,5 +110,31 @@ export class DashboardComponent implements OnInit {
     modalReference.componentInstance.header = 'Yay!';
     modalReference.componentInstance.message = 'Your referral link has been copied to the clipboard.';
     return;
+  }
+
+  displayUpdateSuccess() {
+    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+    modalReference.componentInstance.header = 'Yay!';
+    modalReference.componentInstance.message = 'Your settings have been updated.';
+  }
+
+  displayGenericError(error) {
+    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+    modalReference.componentInstance.header = 'Oops!';
+    modalReference.componentInstance.message = error;
+  }
+
+  setUserLegalNameData() {
+    if (this.firstName && this.lastName) {
+      const firstName = this.utilService.toTitleCase(this.firstName);
+      const lastName = this.utilService.toTitleCase(this.lastName);
+      this.userService.setUserLegalNameData(this.user.uid, firstName, lastName).then(() => {
+        this.displayUpdateSuccess();
+      }).catch((error) => {
+        this.displayGenericError(error);
+      });
+    } else {
+      this.displayGenericError('Please fill in all required fields.');
+    }
   }
 }

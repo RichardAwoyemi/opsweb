@@ -1,4 +1,5 @@
-<section class="section-desktop" *ngIf="!(isMobile | async)?.matches && campaignMode">
+<section class="section-desktop"
+  *ngIf="!(isMobile | async)?.matches && campaignMode && (userData?.firstName || userData?.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
@@ -61,7 +62,35 @@
   </div>
 </section>
 
-<section class="section-mobile" *ngIf="(isMobile | async)?.matches && campaignMode">
+<section class="section-desktop"
+  *ngIf="!(isMobile | async)?.matches && campaignMode && (!userData?.firstName || !userData?.lastName)">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <p style="font-size: 1.25em">Please provide the following details to continue.</p>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Legal Name</label>
+          <div class="row">
+            <div class="col-md-6">
+              <input class="form-control" placeholder="First Name" type="text" [(ngModel)]="firstName">
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" placeholder="Last Name" type="text" [(ngModel)]="lastName">
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="padding-top: 1em">
+          <button type="button" class="btn btn-lg btn-secondary" (click)="setUserLegalNameData()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-mobile"
+  *ngIf="(isMobile | async)?.matches && campaignMode && (userData?.firstName || userData.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
@@ -119,6 +148,36 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-mobile"
+  *ngIf="(isMobile | async)?.matches && campaignMode && (!userData?.firstName || !userData?.lastName)">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <p style="font-size: 1.25em">Please provide the following details to continue.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <br>
+        <div class="form-group">
+          <label>Legal Name</label>
+          <div class="row">
+            <div class="col-md-12" style="margin-bottom: 0.5em">
+              <input class="form-control" placeholder="First Name" type="text" [(ngModel)]="firstName">
+            </div>
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Last Name" type="text" [(ngModel)]="lastName">
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="padding-top: 1em">
+          <button type="button" class="btn btn-lg btn-secondary"  (click)="setUserLegalNameData()">Save</button>
         </div>
       </div>
     </div>

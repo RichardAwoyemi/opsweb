@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { AuthService } from './_services/auth.service';
 import { UserService } from './_services/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { UtilService } from './_services/util.service';
 import { environment } from 'src/environments/environment';
@@ -30,7 +29,6 @@ export class AppComponent implements OnInit {
     public userService: UserService,
     public utilService: UtilService,
     public afAuth: AngularFireAuth,
-    public db: AngularFirestore,
     public router: Router,
     public authService: AuthService) {
     this.userAgentString = navigator.userAgent;
