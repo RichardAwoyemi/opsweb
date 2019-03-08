@@ -59,4 +59,19 @@ export class UtilService {
 
     return arr;
   }
+
+  copyMessage(referralUrl) {
+    const selectBox = document.createElement('textarea');
+    selectBox.style.position = 'fixed';
+    selectBox.style.left = '0';
+    selectBox.style.top = '0';
+    selectBox.style.opacity = '0';
+    selectBox.value = referralUrl;
+    document.body.appendChild(selectBox);
+    selectBox.focus();
+    selectBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selectBox);
+    return;
+  }
 }

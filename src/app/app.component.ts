@@ -54,6 +54,10 @@ export class AppComponent implements OnInit {
     this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
     this.afAuth.authState.subscribe(user => {
       if (user) {
+        if (!environment.production) {
+          console.log(user);
+        }
+        localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['dashboard']);
       }
     });

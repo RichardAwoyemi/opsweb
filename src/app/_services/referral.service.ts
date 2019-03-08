@@ -24,13 +24,13 @@ export class ReferralService {
   }
 
   generateReferralUrl(referralId) {
-      if (location.host === 'localhost:4200') {
-        return 'localhost:4200/invite/' + referralId;
-      } else if (location.host === 'opsonion.herokuapp.com') {
-        return 'opsonion.herokuapp.com/invite/' + referralId;
-      } else if (location.host === 'opsonion.com') {
-        return 'opsonion.com/invite/' + referralId;
-      }
+    if (location.host === 'localhost:4200') {
+      return 'localhost:4200/invite/' + referralId;
+    } else if (location.host === 'opsonion.herokuapp.com') {
+      return 'opsonion.herokuapp.com/invite/' + referralId;
+    } else if (location.host === 'opsonion.com') {
+      return 'opsonion.com/invite/' + referralId;
+    }
   }
 
   addReferralPoints(userReferralId) {
@@ -63,7 +63,7 @@ export class ReferralService {
   }
 
   async calculateRanking(referralId, waitlist) {
-    if (environment.production === false) {
+    if (!environment.production) {
       console.log(referralId);
       console.log(waitlist);
     }
@@ -71,17 +71,16 @@ export class ReferralService {
     if (waitlist && referralId) {
       if (!waitlist.hasOwnProperty(referralId)) {
         this.addUserToWaitlist(referralId);
-      } else if (environment.production === false) {
+      } else if (!environment.production) {
         console.log('Referral id found!');
       }
 
       const waitlistSorted = await this.sortRanking(waitlist);
 
       if (waitlistSorted) {
-        if (environment.production === false) {
+        if (!environment.production) {
           console.log(waitlistSorted);
         }
-        console.log(waitlist);
         const result = waitlistSorted.filter(obj => {
           return obj.referralId === referralId;
         });

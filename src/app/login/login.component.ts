@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   model: any = {};
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
   }
 
   login() {

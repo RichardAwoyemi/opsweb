@@ -5,7 +5,8 @@
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em" *ngIf="ranking$ && noOfUsers$">You are in position <strong> {{ ranking$ | async }}</strong> of
+        <p style="font-size: 1.25em" *ngIf="ranking$ && noOfUsers$">You are in position <strong>
+            {{ ranking$ | async }}</strong> of
           <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
       </div>
     </div>
@@ -96,7 +97,8 @@
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em" *ngIf="ranking$ && noOfUsers$">You are in position <strong> {{ ranking$ | async }}</strong> of
+        <p style="font-size: 1.25em" *ngIf="ranking$ && noOfUsers$">You are in position <strong>
+            {{ ranking$ | async }}</strong> of
           <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
       </div>
       <div style="padding: 1em">
@@ -177,7 +179,7 @@
           </div>
         </div>
         <div class="form-group" style="padding-top: 1em">
-          <button type="button" class="btn btn-lg btn-secondary"  (click)="setUserLegalNameData()">Save</button>
+          <button type="button" class="btn btn-lg btn-secondary" (click)="setUserLegalNameData()">Save</button>
         </div>
       </div>
     </div>

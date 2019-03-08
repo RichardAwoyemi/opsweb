@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   user: any;
   userData: any;
-  invitees: any;
   campaignMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
@@ -29,7 +28,10 @@ export class DashboardComponent implements OnInit {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
+  user$: Observable<any>;
+  referralUrl$: Observable<string>;
   noOfUsers$: Observable<number>;
+  invitees$: Observable<any>;
   ranking$: Observable<number>;
 
   constructor(
@@ -52,50 +54,51 @@ export class DashboardComponent implements OnInit {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.campaignMode = environment.campaignMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
-
     this.user = JSON.parse(localStorage.getItem('user'));
 
-    if (this.user.firstName && this.user.lastName) {
-      this.userData = {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName
-      };
-    }
-
-    this.userService.getUserById(this.user.uid).subscribe(data => {
-      if (data) {
-        this.userData = data;
-        this.referralUrl = this.referralService.generateReferralUrl(this.userData.referralId);
-        this.campaignMessage = 'I can hire and work from anywhere on Opsonion, a new platform that ' +
-          'connects talent and opportunity. Join me today by signing up using my link: ' + this.referralUrl + '.';
-        this.facebookShareUrl = 'http://www.facebook.com/sharer/sharer.php?u=' + this.referralUrl;
-        this.whatsappShareUrl = 'https://wa.me/?text=' + this.campaignMessage;
-        this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
-        this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
-
-        this.userService.getReferredUsers(this.userData.referralId).subscribe(referredUsersResult => {
-          if (referredUsersResult && this.userData.referralId) {
-            if (environment.production === false) {
-              console.log('Referred users: ', referredUsersResult);
-            }
-            this.invitees = referredUsersResult;
-          }
-        });
-
-        setTimeout(() => {
-          this.ngxLoader.stop();
-        }, 3000);
+    this.userService.getUserById(this.user.uid).subscribe(result => {
+      if (result) {
+        this.setUser(result);
+        this.createReferralUrls();
+        this.calculateNoOfUsers();
+        this.calculateRanking();
+        this.getReferredUsers();
+        this.ngxLoader.stop();
       }
     });
+  }
 
+  setUser(data) {
+    this.userData = data;
+  }
+
+  createReferralUrls() {
+    this.referralUrl = this.referralService.generateReferralUrl(this.userData.referralId);
+    this.campaignMessage = 'I can hire and work from anywhere on Opsonion, a new platform that ' +
+      'connects talent and opportunity. Join me today by signing up using my link: ' + this.referralUrl + '.';
+    this.facebookShareUrl = 'http://www.facebook.com/sharer/sharer.php?u=' + this.referralUrl;
+    this.whatsappShareUrl = 'https://wa.me/?text=' + this.campaignMessage;
+    this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
+    this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
+  }
+
+  calculateNoOfUsers() {
     this.noOfUsers$ = this.userService.getNumberOfUsers().pipe(map(result => {
       return result.data['counter'];
     }));
+  }
 
+  getReferredUsers() {
+    this.invitees$ = this.userService.getReferredUsers(this.userData.referralId).pipe(map(result => {
+      return result;
+    }));
+  }
+
+  calculateRanking() {
     this.ranking$ = this.referralService.getWaitlist().pipe(
       filter(waitlistResult => waitlistResult != null),
-      switchMap(waitlistResult => combineLatest(from(this.referralService.calculateRanking(this.
-        userData.referralId, waitlistResult)), this.noOfUsers$)),
+      switchMap(waitlistResult => combineLatest(
+      from(this.referralService.calculateRanking(this.userData.referralId, waitlistResult)), this.noOfUsers$)),
       filter(combined => combined[0] != null && combined[1] != null),
       map(combined => {
         if (combined[0] > combined[1]) {
@@ -108,18 +111,7 @@ export class DashboardComponent implements OnInit {
   }
 
   copyMessage() {
-    const selectBox = document.createElement('textarea');
-    selectBox.style.position = 'fixed';
-    selectBox.style.left = '0';
-    selectBox.style.top = '0';
-    selectBox.style.opacity = '0';
-    selectBox.value = this.referralUrl;
-    document.body.appendChild(selectBox);
-    selectBox.focus();
-    selectBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selectBox);
-    return;
+    this.utilService.copyMessage(this.referralUrl);
   }
 
   displayUpdateSuccess() {
