@@ -101,10 +101,25 @@ export class UserService {
     this.referralService.addUserToWaitlist(referralId);
   }
 
+  processNewMobileUser(result, firstName, lastName) {
+    const referralId = this.utilService.generateRandomString(8);
+    this.setUserData(result);
+    this.setUserDetailData(result.uid, firstName, lastName, referralId);
+    this.referralService.addUserToWaitlist(referralId);
+  }
+
   processNewUserReferral(result, firstName, lastName, referredBy) {
     const referralId = this.utilService.generateRandomString(8);
     this.setUserData(result.user);
     this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredBy);
+    this.referralService.addUserToWaitlist(referralId);
+    this.referralService.addReferralPoints(referredBy);
+  }
+
+  processNewMobileUserReferral(result, firstName, lastName, referredBy) {
+    const referralId = this.utilService.generateRandomString(8);
+    this.setUserData(result);
+    this.setUserReferralData(result.uid, firstName, lastName, referralId, referredBy);
     this.referralService.addUserToWaitlist(referralId);
     this.referralService.addReferralPoints(referredBy);
   }

@@ -3,8 +3,8 @@
     <div *ngIf="!(isMobile | async)?.matches && referredByUserData">
       <div class="row align-items-center h-100">
         <div class="col-md-8 mx-auto text-center">
-            <h3>{{ referredByUserData?.firstName }} has invited you to join Opsonion!</h3>
-          </div>
+          <h3>{{ referredByUserData?.firstName }} has invited you to join Opsonion!</h3>
+        </div>
       </div>
     </div>
     <div *ngIf="(isMobile | async)?.matches && referredByUserData">
@@ -22,14 +22,14 @@
       <div class="row gap-y align-items-center">
         <div class="col-md-8 mx-auto">
           <p class="lead" style="text-align: center">
-            With Opsonion, you can easily connect talent to opportunity. Don't miss your chance, sign up today 
+            With Opsonion, you can easily connect talent to opportunity. Don't miss your chance, sign up today
             and start working or hiring from anywhere in the world.
           </p>
         </div>
       </div>
       <div class="row" style="padding-top: 3em">
-        <form class="col-md-4 col-xl-4 mx-auto input-border" name="registerForm" (ngSubmit)="f.form.valid && registerWithReferral()"
-          #f="ngForm" novalidate>
+        <form class="col-md-4 col-xl-4 mx-auto input-border" name="registerForm"
+          (ngSubmit)="f.form.valid && registerWithReferral()" #f="ngForm" novalidate>
           <div class="form-group">
             <input class="form-control" required type="text" name="firstName" [(ngModel)]="model.firstName"
               #firstName="ngModel" placeholder="First Name" autocomplete="off"
@@ -77,8 +77,14 @@
           </div>
           <button class="btn btn-lg btn-block btn-primary" type="submit">Create Account</button>
           <hr class="w-10">
-          <button class="btn btn-lg btn-block btn-google" (click)="googleSignInWithReferral()">Continue with Google</button>
-          <button class="btn btn-lg btn-block btn-facebook" (click)="facebookSignInWithReferral()">Continue with Facebook</button>
+          <button *ngIf="!(isMobile | async)?.matches" class="btn btn-lg btn-block btn-google"
+          (click)="googleSignInWithReferral()">Continue with Google</button>
+          <button *ngIf="(isMobile | async)?.matches" class="btn btn-lg btn-block btn-google"
+            (click)="mobileGoogleSignInWithReferral()">Continue with Google</button>
+          <button *ngIf="!(isMobile | async)?.matches" class="btn btn-lg btn-block btn-facebook"
+            (click)="facebookSignInWithReferral()" type="button">Continue with Facebook</button>
+          <button *ngIf="(isMobile | async)?.matches" class="btn btn-lg btn-block btn-facebook"
+            (click)="mobileFacebookSignInWithReferral()" type="button">Continue with Facebook</button>
         </form>
       </div>
     </div>

@@ -19,7 +19,7 @@ declare var $;
 export class SettingsComponent implements OnInit {
   userData: any;
   user: any;
-  campaignMode: boolean;
+  referralMode: boolean;
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
@@ -139,7 +139,7 @@ export class SettingsComponent implements OnInit {
     });
 
     this.isPasswordChangeEnabled = this.authService.enableChangePasswordOption();
-    this.campaignMode = environment.campaignMode;
+    this.referralMode = environment.referralMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 

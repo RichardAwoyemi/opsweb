@@ -8,6 +8,7 @@ import { auth } from 'firebase/app';
 import { FirebaseService } from './firebase.service';
 import { UserService } from './user.service';
 import { UtilService } from './util.service';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -91,9 +92,14 @@ export class AuthService {
   }
 
   mobileFacebookSignInWithReferral(referredBy) {
+    const provider = new auth.FacebookAuthProvider();
+    localStorage.setItem('referredBy', referredBy);
+    return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   mobileFacebookSignIn() {
+    const provider = new auth.FacebookAuthProvider();
+    return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   googleSignIn() {
@@ -116,6 +122,8 @@ export class AuthService {
   }
 
   mobileGoogleSignIn() {
+    const provider = new auth.GoogleAuthProvider();
+    return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   googleSignInWithReferral(referredBy) {
@@ -138,6 +146,39 @@ export class AuthService {
   }
 
   mobileGoogleSignInWithReferral(referredBy) {
+    const provider = new auth.GoogleAuthProvider();
+    localStorage.setItem('referredBy', referredBy);
+    return this.afAuth.auth.signInWithRedirect(provider);
+  }
+
+  async processMobileLogin(result, uid) {
+    const path = `/users/${uid}/`;
+    const doc = await this.firebaseService.docExists(path);
+    if (!doc) {
+      const userData: User = {
+        uid: uid,
+        email: result.email,
+        displayName: result.displayName,
+        photoURL: result.photoURL,
+        emailVerified: true
+      };
+      this.userService.processNewMobileUser(userData, null, null);
+    }
+  }
+
+  async processMobileReferralLogin(result, uid, referredBy) {
+    const path = `/users/${uid}/`;
+    const doc = await this.firebaseService.docExists(path);
+    if (!doc) {
+      const userData: User = {
+        uid: uid,
+        email: result.email,
+        displayName: result.displayName,
+        photoURL: result.photoURL,
+        emailVerified: true
+      };
+      this.userService.processNewMobileUserReferral(userData, null, null, referredBy);
+    }
   }
 
   register(email, password, firstName, lastName) {

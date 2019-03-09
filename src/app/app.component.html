@@ -18,13 +18,13 @@
         <span class="dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false" *ngIf="user.photoURL">
           <img class="avatar avatar-xs" src="{{ user?.photoURL }}" alt="user">
         </span>
-        <div class="dropdown-menu dropdown-menu-right" *ngIf="!campaignMode">
+        <div class="dropdown-menu dropdown-menu-right" *ngIf="!referralMode">
           <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
           <a class="dropdown-item" routerLink="/invite" style="padding: 0rem;">Invite Friends</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
         </div>
-        <div class="dropdown-menu dropdown-menu-right" *ngIf="campaignMode">
+        <div class="dropdown-menu dropdown-menu-right" *ngIf="referralMode">
           <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
         </div>
       </div>
@@ -36,14 +36,14 @@
       <div class="navbar-left">
       </div>
       <section>
-        <div class="nav nav-navbar mr-auto" *ngIf="!campaignMode">
+        <div class="nav nav-navbar mr-auto" *ngIf="!referralMode">
           <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
           <a class="nav-link" routerLink="/accounts">ACCOUNTS</a>
           <a class="nav-link" routerLink="/accounts">EXCHANGE</a>
           <a class="nav-link" routerLink="/tasks">TASKS</a>
           <a class="nav-link" routerLink="/tools">TOOLS</a>
         </div>
-        <div class="nav nav-navbar mr-auto" *ngIf="campaignMode">
+        <div class="nav nav-navbar mr-auto" *ngIf="referralMode">
           <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
         </div>
       </section>
@@ -56,13 +56,13 @@
   style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0"
   *ngIf="(isMobile | async)?.matches && authService.isLoggedIn">
   <div class="container">
-    <div class="navbar-left mr-4" *ngIf="campaignMode">
+    <div class="navbar-left mr-4" *ngIf="referralMode">
       <button class="navbar-toggler" type="button" style="color: #F4F7FA">&#9776;</button>
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo-white.svg" style="height: 35px; width: 35px;">
       </a>
     </div>
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && campaignMode">
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && referralMode">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link" (click)="authService.signOut()">Logout</a>
@@ -74,13 +74,13 @@
 <!-- Not logged in navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" data-navbar="smart" *ngIf="!authService.isLoggedIn">
   <div class="container">
-    <div class="navbar-left mr-4" *ngIf="!campaignMode">
+    <div class="navbar-left mr-4" *ngIf="!referralMode">
       <button class="navbar-toggler" type="button">&#9776;</button>
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo.svg" style="height: 42px; width: 42px;">
       </a>
     </div>
-    <div class="navbar-left mr-4" *ngIf="campaignMode">
+    <div class="navbar-left mr-4" *ngIf="referralMode">
       <button class="navbar-toggler" type="button">&#9776;</button>
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo.svg" style="height: 42px; width: 42px;">
@@ -88,8 +88,8 @@
     </div>
     <!-- Desktop links -->
     <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches && !authService.isLoggedIn">
-      <span class="navbar-divider d-mobile-none" *ngIf="!campaignMode"></span>
-      <nav class="nav nav-navbar mr-auto" *ngIf="!campaignMode">
+      <span class="navbar-divider d-mobile-none" *ngIf="!referralMode"></span>
+      <nav class="nav nav-navbar mr-auto" *ngIf="!referralMode">
         <a class="nav-link" routerLink="/about">About</a>
         <a class="nav-link" routerLink="/services">Services</a>
         <a class="nav-link" routerLink="/careers">Careers</a>
@@ -98,14 +98,14 @@
         <a class="nav-link" routerLink="/login">Login</a>
         <a class="nav-link" routerLink="/register">Register</a>
       </nav>
-      <span class="navbar-divider d-mobile-none" *ngIf="campaignMode"></span>
-      <nav class="nav nav-navbar mr-auto" *ngIf="campaignMode">
+      <span class="navbar-divider d-mobile-none" *ngIf="referralMode"></span>
+      <nav class="nav nav-navbar mr-auto" *ngIf="referralMode">
         <a class="nav-link" routerLink="/login">Login</a>
         <a class="nav-link" routerLink="/register">Register</a>
       </nav>
     </section>
     <!-- Mobile links -->
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && !campaignMode && !authService.isLoggedIn">
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && !referralMode && !authService.isLoggedIn">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link" routerLink="/">Home</a>
@@ -117,7 +117,7 @@
         <a class="nav-link" href="{{ appStoreUrl }}">Download</a>
       </nav>
     </section>
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && campaignMode && !authService.isLoggedIn">
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && referralMode && !authService.isLoggedIn">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link" routerLink="/">Home</a>
@@ -133,7 +133,7 @@
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 
 <!-- Not logged in footer -->
-<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && !campaignMode">
+<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && !referralMode">
   <div class="container">
     <div class="row gap-y">
       <div class="col-xl-5">
@@ -167,7 +167,7 @@
 </footer>
 
 <!-- Landing page footer -->
-<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && campaignMode">
+<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && referralMode">
   <div class="container">
     <div class="row gap-y">
       <div class="col-xl-12 text-center">

@@ -33,18 +33,6 @@ export class UtilService {
     }
   }
 
-  setLocalStorageItem(key, value) {
-    return Promise.resolve().then(function () {
-      localStorage.setItem(key, value);
-    });
-  }
-
-  getLocalStorageItem(key) {
-    return Promise.resolve().then(function () {
-        return localStorage.getItem(key);
-    });
-  }
-
   createYearRange(start, end) {
     const s = new Date(start);
     const startYear = s.getFullYear();

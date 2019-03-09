@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user: any;
   userData: any;
   invitees: any;
-  campaignMode: boolean;
+  referralMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
   whatsappShareUrl: string;
@@ -53,9 +53,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ngxLoader.start();
-
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.campaignMode = environment.campaignMode;
+    this.referralMode = environment.referralMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
 
@@ -143,7 +142,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const lastName = this.utilService.toTitleCase(this.lastName);
       this.userService.setUserLegalNameData(this.user.uid, firstName, lastName).then(() => {
         this.displayUpdateSuccess();
-        location.reload();
       }).catch((error) => {
         this.displayGenericError(error);
       });
@@ -153,7 +151,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSubscription.unsubscribe();
-    this.referredUserSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+
+    if (this.referredUserSubscription) {
+      this.referredUserSubscription.unsubscribe();
+    }
   }
 }

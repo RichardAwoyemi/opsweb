@@ -16,7 +16,7 @@ import { AuthService } from '../_services/auth.service';
 export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   submitted = false;
-  campaignMode: boolean;
+  referralMode: boolean;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
-    this.campaignMode = environment.campaignMode;
+    this.referralMode = environment.referralMode;
   }
 
   googleSignIn() {

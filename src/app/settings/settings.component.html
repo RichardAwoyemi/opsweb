@@ -9,10 +9,10 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#tab-preferences"><strong>Preferences</strong></a>
           </li>
-          <li class="nav-item" *ngIf="!campaignMode">
+          <li class="nav-item" *ngIf="!referralMode">
             <a class="nav-link" data-toggle="tab" href="#tab-linkedaccounts"><strong>Linked Accounts</strong></a>
           </li>
-          <li class="nav-item" *ngIf="!campaignMode">
+          <li class="nav-item" *ngIf="!referralMode">
             <a class="nav-link" data-toggle="tab" href="#tab-accountlevels"><strong>Account Levels</strong></a>
           </li>
         </ul>
@@ -219,7 +219,7 @@
             </div>
 
             <!-- Notifications -->
-            <div *ngIf="!campaignMode">
+            <div *ngIf="!referralMode">
               <hr>
               <h5 style="padding-bottom: 0.5em">Notifications</h5>
               <strong>Email me when:</strong>
@@ -256,7 +256,7 @@
           </div>
 
           <!-- Linked accounts -->
-          <div class="tab-pane fade" id="tab-linkedaccounts" *ngIf="!campaignMode">
+          <div class="tab-pane fade" id="tab-linkedaccounts" *ngIf="!referralMode">
             <div class="alert alert-warning" role="alert">
               This feature is currently under construction.
             </div>
@@ -267,7 +267,7 @@
           </div>
 
           <!-- Account levels -->
-          <div class="tab-pane fade" id="tab-accountlevels" *ngIf="!campaignMode">
+          <div class="tab-pane fade" id="tab-accountlevels" *ngIf="!referralMode">
             <div class="row">
               <div class="col-md-6" style="padding-left: 0px">
                 <ol class="step" style="padding-left: 0px">
@@ -334,10 +334,10 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#tab-preferences"><strong>Preferences</strong></a>
           </li>
-          <li class="nav-item" *ngIf="!campaignMode">
+          <li class="nav-item" *ngIf="!referralMode">
             <a class="nav-link" data-toggle="tab" href="#tab-linkedaccounts"><strong>Linked Accounts</strong></a>
           </li>
-          <li class="nav-item" *ngIf="!campaignMode">
+          <li class="nav-item" *ngIf="!referralMode">
             <a class="nav-link" data-toggle="tab" href="#tab-accountlevels"><strong>Account Levels</strong></a>
           </li>
         </ul>
@@ -810,7 +810,7 @@
             <div class="form-group" style="padding-top: 1em">
               <button type="button" class="btn btn-lg btn-secondary">Save</button>
             </div>
-            <div *ngIf="!campaignMode">
+            <div *ngIf="!referralMode">
               <hr>
               <h5 style="padding-bottom: 0.5em">Notifications</h5>
               <strong>Email me when:</strong>
@@ -847,7 +847,7 @@
           </div>
 
           <!-- Linked accounts -->
-          <div class="tab-pane fade" id="tab-linkedaccounts" *ngIf="!campaignMode">
+          <div class="tab-pane fade" id="tab-linkedaccounts" *ngIf="!referralMode">
             <div class="alert alert-warning" role="alert">
               This feature is currently under construction.
             </div>
@@ -858,7 +858,7 @@
           </div>
 
           <!-- Account levels -->
-          <div class="tab-pane fade" id="tab-accountlevels" *ngIf="!campaignMode">
+          <div class="tab-pane fade" id="tab-accountlevels" *ngIf="!referralMode">
             <div class="row">
               <div class="col-md-6" style="padding-left: 0px">
                 <ol class="step" style="padding-left: 0px">
