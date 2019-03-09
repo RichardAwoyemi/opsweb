@@ -183,7 +183,6 @@ export class AuthService {
 
   register(email, password, firstName, lastName) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
-      this.sendVerificationMail();
       const path = `/users/${result.user.uid}/`;
       firstName = this.utilService.toTitleCase(firstName);
       lastName = this.utilService.toTitleCase(lastName);
@@ -191,6 +190,7 @@ export class AuthService {
       if (!doc) {
         this.userService.processNewUser(result, firstName, lastName);
       }
+      this.sendVerificationMail();
       this.displayRegisterSucesss();
     }).catch((error) => {
       this.displayGenericError(error);
@@ -199,7 +199,6 @@ export class AuthService {
 
   registerWithReferral(email, password, firstName, lastName, referredBy) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
-      this.sendVerificationMail();
       const path = `/users/${result.user.uid}/`;
       firstName = this.utilService.toTitleCase(firstName);
       lastName = this.utilService.toTitleCase(lastName);
@@ -207,8 +206,8 @@ export class AuthService {
       if (!doc) {
         this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
       }
+      this.sendVerificationMail();
       this.displayRegisterSucesss();
-      this.ngZone.run(() => { this.router.navigate(['dashboard']); });
     }).catch((error) => {
       this.displayGenericError(error);
     });
