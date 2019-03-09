@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable, combineLatest, from } from 'rxjs';
+import { Observable, combineLatest, from, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../_services/user.service';
 import { ReferralService } from '../_services/referral.service';
@@ -14,10 +14,11 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   isMobile: Observable<BreakpointState>;
   user: any;
   userData: any;
+  invitees: any;
   campaignMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
@@ -31,8 +32,10 @@ export class DashboardComponent implements OnInit {
   user$: Observable<any>;
   referralUrl$: Observable<string>;
   noOfUsers$: Observable<number>;
-  invitees$: Observable<any>;
   ranking$: Observable<number>;
+
+  private userSubscription: Subscription;
+  private referredUserSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -56,7 +59,7 @@ export class DashboardComponent implements OnInit {
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
 
-    this.userService.getUserById(this.user.uid).subscribe(result => {
+    this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(result => {
       if (result) {
         this.setUser(result);
         this.createReferralUrls();
@@ -68,8 +71,11 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  setUser(data) {
-    this.userData = data;
+  setUser(result) {
+    if (!environment.production) {
+      console.log(result);
+    }
+    this.userData = result;
   }
 
   createReferralUrls() {
@@ -89,9 +95,14 @@ export class DashboardComponent implements OnInit {
   }
 
   getReferredUsers() {
-    this.invitees$ = this.userService.getReferredUsers(this.userData.referralId).pipe(map(result => {
-      return result;
-    }));
+    if (this.userData.referralId) {
+      this.referredUserSubscription = this.userService.getReferredUsers(this.userData.referralId).subscribe(result => {
+        if (!environment.production) {
+          console.log(result);
+        }
+        this.invitees = result;
+      });
+    }
   }
 
   calculateRanking() {
@@ -139,5 +150,10 @@ export class DashboardComponent implements OnInit {
     } else {
       this.displayGenericError('Please fill in all required fields.');
     }
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+    this.referredUserSubscription.unsubscribe();
   }
 }
