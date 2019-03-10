@@ -6,7 +6,7 @@
     "start": "node server.js",
     "build": "ng build",
     "postinstall": "ng build --prod --configuration=staging",
-    "test": "ng test --environment=staging",
+    "test": "ng test --environment=staging --no-progress --browsers=ChromeNoSandbox",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
