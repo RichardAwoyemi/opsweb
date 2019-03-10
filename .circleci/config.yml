@@ -4,6 +4,9 @@ jobs:
     working_directory: ~/opsonion-web
     docker:
       - image: node:8.12.0
+        env:
+          - DISPLAY=:99
+          - CHROME_BIN=/usr/bin/google-chrome
     steps:
       - checkout
       - restore_cache:
@@ -40,7 +43,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: 
           name: Run Tests
-          command: npm run test
+          command: xvfb-run -a npm run test
       - run: 
           name: Deploy to Heroku
           command: |
