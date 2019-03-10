@@ -111,6 +111,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       from(this.referralService.calculateRanking(this.userData.referralId, waitlistResult)), this.noOfUsers$)),
       filter(combined => combined[0] != null && combined[1] != null),
       map(combined => {
+        if (!environment.production) {
+          console.log('User ranking: ' + combined[0]);
+          console.log('Number of users: ' + combined[1]);
+        }
         if (combined[0] > combined[1]) {
           return combined[1];
         } else {

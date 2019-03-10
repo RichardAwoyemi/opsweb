@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
@@ -23,8 +23,14 @@ export class AuthService {
     public modalService: NgbModal,
     private utilService: UtilService,
     private firebaseService: FirebaseService,
-    private userService: UserService
+    private userService: UserService,
+    public ngZone: NgZone
   ) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userData = user;
+      }
+    });
   }
 
   displayGenericError(error) {
@@ -222,7 +228,7 @@ export class AuthService {
 
   sendVerificationMail() {
     return this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
-      this.router.navigate(['verify-email']);
+      this.ngZone.run(() => { this.router.navigate(['verify-email']); });
     });
   }
 
