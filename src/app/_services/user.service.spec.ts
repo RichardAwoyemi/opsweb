@@ -24,7 +24,7 @@ describe('UserService unit tests', () => {
       ]
     });
   });
-  
+
   describe('getNumberOfUsers()', () => {
     it('should return total number of users', (done: DoneFn) => {
       inject([UserService], (userService) => {
