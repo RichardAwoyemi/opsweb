@@ -30,7 +30,7 @@ describe('UserService unit tests', () => {
       inject([UserService], (userService) => {
         userService.getNumberOfUsers().subscribe((result) => {
           const noOfUsers = result.data.counter;
-          console.log('Total number of users: ' + noOfUsers);
+          console.log(`Total number of users: ${noOfUsers}`);
           expect(noOfUsers).toBeGreaterThan(0);
           done();
         });
