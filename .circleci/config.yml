@@ -43,7 +43,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: 
           name: Run Tests
-          command: xvfb-run -a npm run test
+          command: npm run test
       - run: 
           name: Deploy to Heroku
           command: |
