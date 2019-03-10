@@ -36,6 +36,9 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: 
+          name: Run Tests
+          command: npm run test
+      - run: 
           name: Deploy to Heroku
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
