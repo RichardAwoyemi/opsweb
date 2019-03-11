@@ -7,9 +7,9 @@ jobs:
         env:
           - DISPLAY=:99
           - CHROME_BIN=/usr/bin/google-chrome
-          - AWS_ACCESS_KEY_ID="AKIAJSKDPYHGG3W7OZKQ"
-          - AWS_SECRET_ACCESS_KEY="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"
-          - AWS_BUCKET_TARGET="opsonion.com"
+          - AWS_ACCESS_KEY_ID=AKIAJSKDPYHGG3W7OZKQ
+          - AWS_SECRET_ACCESS_KEY=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
+          - AWS_BUCKET_TARGET=opsonion.com
     steps:
       - checkout
       - restore_cache:
@@ -60,8 +60,8 @@ jobs:
           name: Deploy to AWS
           command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              ng build --prod --configuration=production
-              ~/.local/bin/aws --region eu-west-2 s3 sync ./dist/opsonion-web/ s3://$AWS_BUCKET_TARGET --delete --exclude '.git/*'
+              ng build --prod --configuration=production --progress=false
+              ~/.local/bin/aws --region eu-west-2 s3 sync /root/opsonion-web/dist/opsonion-web/ s3://$AWS_BUCKET_TARGET --delete --exclude '.git/*'
             fi
     branches:
       only: 
