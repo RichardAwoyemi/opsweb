@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { InviteComponent } from './invite/invite.component';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
@@ -20,7 +21,7 @@ const routes: Routes = [
   // { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
   // { path: 'exchange', component: ExchangeComponent, canActivate: [AuthGuard] },
   // { path: 'careers', component: CareersComponent, canActivate: [AnonymousGuard] },
-  // { path: 'contact', component: ContactComponent, canActivate: [AnonymousGuard] },
+  { path: 'contact', component: ContactComponent, canActivate: [AnonymousGuard] },
   { path: 'legal', component: LegalComponent, canActivate: [AnonymousGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'press', component: PressComponent, canActivate: [AnonymousGuard] },
