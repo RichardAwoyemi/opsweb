@@ -28,12 +28,10 @@ export class AboutComponent implements OnInit {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
 
     this.registerFormGroup = new FormGroup({
-      name: new FormControl(),
       email: new FormControl()
     });
 
     this.registerForm = this.formBuilder.group({
-      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
   }
@@ -52,20 +50,19 @@ export class AboutComponent implements OnInit {
       console.log(new FormData(formObject));
     }
 
-    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
-      .then(response => {
+    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
+      if (environment.production === false) {
+        console.log('Success!', response);
+      }
+      this.submitted = true;
+    }).catch(
+      error => {
         if (environment.production === false) {
-          console.log('Success!', response);
-          this.submitted = true;
+          console.error('Error!', error.message);
         }
-      })
-      .catch(
-        error => {
-          if (environment.production === false) {
-            console.error('Error!', error.message);
-            $(this.errorModal.nativeElement).modal('show');
-            this.submitted = false;
-          }
-        });
+        $(this.errorModal.nativeElement).modal('show');
+        this.submitted = false;
+      }
+    );
   }
 }

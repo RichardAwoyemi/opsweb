@@ -1,0 +1,55 @@
+section {
+  background-color: #F4F7FA !important;
+  padding-top: 11rem;
+  padding-bottom: 3rem;
+}
+
+.form-search-bar {
+  font-size: 0.75rem;
+}
+
+.table-cart {
+  background-color: #fff;
+}
+
+.table-cart input {
+  max-width: 100%;
+  display: inline-block;
+}
+
+.table-cart tr td:last-child {
+  padding-right: 15px;
+  text-align: right;
+}
+
+.table-hover:hover {
+  cursor: pointer;
+}
+
+.table-cart tr td:first-child {
+  padding-left: 15px;
+}
+
+.table-cart label {
+  font-size: 12px;
+  display: flex !important;
+}
+
+.table-task td {
+  vertical-align: top !important;
+}
+
+.badge-secondary {
+  color: #A09CA8;
+  background-color: #fff;
+  border: 1px solid #D9D8DE;
+}
+
+.badge-secondary:hover {
+  background-color: #e9ecf0;
+  cursor: pointer;
+}
+
+.reset-link:hover, .user-link:hover {
+  text-decoration: underline;
+}

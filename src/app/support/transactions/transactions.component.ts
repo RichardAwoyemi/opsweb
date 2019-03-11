@@ -11,9 +11,11 @@ export class TransactionsComponent implements OnInit, AfterViewChecked {
   isMobile: Observable<BreakpointState>;
   private scrollExecuted = false;
 
-  constructor(private breakpointObserver: BreakpointObserver,
+  constructor(
+    private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute) {
   }
+
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
   }

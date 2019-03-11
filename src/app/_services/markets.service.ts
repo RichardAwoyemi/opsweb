@@ -81,7 +81,7 @@ export class MarketsService {
   public _previousPageSize: number = null;
   public _previousSortMapName: string = null;
   public _previousSortMapSymbol: string = null;
-  private _filterd = false;
+  private _filtered = false;
 
   constructor(private _http: HttpClient) { }
 
@@ -99,7 +99,7 @@ export class MarketsService {
         console.log(data);
       }
       if (data.length === 0) {
-        this._filterd = false;
+        this._filtered = false;
         return false;
       }
       const arr: any[] = [];
@@ -117,12 +117,12 @@ export class MarketsService {
       if (environment.production === false) {
         console.log(this.symbolNameData);
       }
-      this._filterd = true;
+      this._filtered = true;
       return true;
     } else {
 
       // If search text is empty, recover from copy
-      this._filterd = false;
+      this._filtered = false;
       this.symbolNameData = this.defaultDataCopy;
       return true;
     }
@@ -141,7 +141,7 @@ export class MarketsService {
           this.symbolNameData = Object.keys(this.symbolNameData).sort((a, b) => b.localeCompare(a))
             .reduce((r, k) => (r[k] = this.symbolNameData[k], r), {});
         } else {
-          if (!this._filterd) {
+          if (!this._filtered) {
             this.symbolNameData = this.defaultDataCopy;
             if (environment.production === false) {
               console.log('Use copy data');
@@ -171,7 +171,7 @@ export class MarketsService {
             this.symbolNameData[b].localeCompare(this.symbolNameData[a]))
             .reduce((r, k) => (r[k] = this.symbolNameData[k], r), {});
         } else {
-          if (!this._filterd) {
+          if (!this._filtered) {
             this.symbolNameData = this.defaultDataCopy;
           } else {
             this.symbolNameData = this._previousData;
@@ -187,7 +187,7 @@ export class MarketsService {
       }
       default: {
         if (environment.production === false) {
-          console.log('sort default called');
+          console.log('Sort default called');
         }
         this.symbolNameData = this.defaultDataCopy;
       }

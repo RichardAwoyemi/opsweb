@@ -25,3 +25,25 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Deleting all users from Firebase authentication console
+
+Browse to the Firebase authentication console page, and then run the following in Developer Tools, on the Console tab. 
+
+```js
+var intervalId;
+
+var clearFunction = function() {
+  if ($('[aria-label="Delete account"]').size() == 0) {
+    console.log("interval cleared")
+    clearInterval(intervalId)
+    return
+  }
+  $('[aria-label="Delete account"]')[0].click();
+  setTimeout(function () {
+     $(".md-raised:contains(Delete)").click()
+  }, 1000);
+};
+
+intervalId = setInterval(clearFunction, 3000)
+```

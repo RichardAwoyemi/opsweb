@@ -1,0 +1,180 @@
+<section class="section bb-1">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mx-auto">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active show" data-toggle="tab" href="#tab-addresses"><strong>Addresses</strong></a>
+          </li>
+          <!--
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab-recurring"><strong>Recurring Transactions</strong></a>
+          </li>
+          -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab-history"><strong>Balance History</strong></a>
+          </li>
+        </ul>
+        <div class="tab-content p-4">
+          <div class="tab-pane fade active show" id="tab-addresses">
+            <div style="padding-bottom: 1.5em">
+              Each account on Opsonion is a collection of addresses. Your addresses automatically stay
+              associated with your account forever (so it is safe to reuse them).
+            </div>
+            <div class="row gap-y">
+              <div class="col-md-6">
+                <div class="form-group col-md-9" style="padding-left: 0px">
+                  <select class="form-control">
+                    <option>BTC Wallet (0.1000 BTC)</option>
+                    <option>ETH Wallet (0.0000 BTC)</option>
+                  </select>
+                </div>
+              </div>
+              <!-- 
+              <div class="col-md-6" style="text-align: right">
+                <button type="button" class="btn btn-lg btn-secondary" (click)="createNewAddress()">Create New Address</button>
+              </div>
+              -->
+              <div class="col-lg-12 mx-auto">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Address</th>
+                      <th>Label</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">3MJfbE3JTtiEA7uKwz4KPgFLA8pDE9XBn9</th>
+                      <td>Savings</td>
+                      <td><button type="button" class="btn btn-xs btn-secondary" (click)="showDetails()">Details</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="tab-recurring">
+            <div class="alert alert-warning" role="alert">
+              This feature is currently under construction.
+            </div>
+            Recurring transactions can be used to:
+            <ul>
+              <li>Buy, exchange and sell digital assets on a regular schedule</li>
+              <li>Schedule outgoing payments to contractors</li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="tab-history">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="balance">
+                  <p>Balance</p>
+                  <h5>236.21 GBP</h5>
+                </div>
+              </div>
+              <div class="col-md-6 text-right" style="padding-top: 1.25em">
+                  <button class="btn btn-lg btn-secondary" type="button" (click)="showExportOptions()">Export</button>
+              </div>
+            </div>
+            <div class="col-lg-12 mx-auto" style="padding-left: 0px; padding-right: 0px">
+              <table class="table table-hover" id="contentToExport">
+                <thead>
+                  <tr>
+                    <!-- Types: Buy, Sell, Withdraw, Deposit -->
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <!-- Status: In Progress, Complete, Failed -->
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Jan 11, 2019</td>
+                    <td>Transfer to</td>
+                    <th>Richard Awoyemi</th>
+                    <td>0.1 BTC (284.69 GBP)</td>
+                    <td><span class="badge badge-warning">IN PROGRESS</span></td>
+                  </tr>
+                  <tr>
+                    <td>Jan 09, 2019</td>
+                    <td>Payment from</td>
+                    <th>Mofe Salami</th>
+                    <td>0.1 BTC (284.69 GBP)</td>
+                    <td><span class="badge badge-success">COMPLETED</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Export -->
+<div class="modal fade" #showExportModal id="showExportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exportModalLabel">Export</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12" style="padding-left: 0px;">
+          <button type="button" class="btn btn-block btn-light" (click)="exportToPdf()">Export to PDF</button>
+          <button type="button" class="btn btn-block btn-light" (click)="exportToCsv()">Export to CSV</button>
+          <button type="button" class="btn btn-block btn-light" (click)="exportToExcel()">Export to Excel</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Show Details -->
+<div class="modal fade" #showDetailsModal id="showDetailsModal" tabindex="-1" role="dialog" aria-labelledby="showDetailsModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showDetailsModalLabel">Bitcoin Wallet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12" style="padding-left: 0px;">
+          <div id="qrcode-holder" style="padding-bottom: 1em;">
+            <qrcode [qrdata]="'3MJfbE3JTtiEA7uKwz4KPgFLA8pDE9XBn9'" [size]="128" [level]="'M'"></qrcode>
+          </div>
+          <table class="table detail-table">
+            <tbody>
+              <tr>
+                <th scope="row">Address</th>
+                <td>3MJfbE3JTtiEA7uKwz4KPgFLA8pDE9XBn9</td>
+              </tr>
+              <tr>
+                <th scope="row">Label</th>
+                <td><input class="form-control form-control-sm" type="text" value="Savings" style="font-size: 0.85em"
+                    placeholder="My address"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

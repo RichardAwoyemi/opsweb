@@ -6,7 +6,8 @@
 <section class="section text-center">
   <div class="container">
     <div class="row">
-      <form class="col-md-4 col-xl-4 mx-auto input-border">
+      <form class="col-md-4 col-xl-4 mx-auto input-border" name="registerForm" (ngSubmit)="f.form.valid && register()"
+        #f="ngForm" novalidate>
         <div *ngIf="!(isMobile | async)?.matches">
           <h3 class="fw-200 text-center">Sign Up</h3>
           <p class="text-center">Create your Opsonion acount.</p>
@@ -18,32 +19,50 @@
           <hr class="w-10">
         </div>
         <div class="form-group">
-          <input class="form-control" type="text" name="fName" placeholder="First Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <input class="form-control" required type="text" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
+            placeholder="First Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <small *ngIf="f.submitted && !firstName.valid">First Name is required</small>
         </div>
         <div class="form-group">
-          <input class="form-control" type="text" name="lName" placeholder="Last Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <input class="form-control" required type="text" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel"
+            placeholder="Last Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <small *ngIf="f.submitted && !lastName.valid">Last Name is required</small>
         </div>
         <div class="form-group">
-          <input class="form-control" type="text" name="email" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <input class="form-control" required type="email" name="email" [(ngModel)]="model.email" #email="ngModel"
+            placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <small *ngIf="f.submitted && !email.valid">Email is required</small>
         </div>
         <div class="form-group">
-          <input class="form-control" type="password" name="password" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <input class="form-control" required type="password" name="password" [(ngModel)]="model.password" #password="ngModel"
+            placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+          <div *ngIf="f.submitted && !password.valid" style="padding-bottom: 1em" pattern=".{8}">
+            <small>Password is required (8 characters minimum)</small>
+          </div>
         </div>
         <div class="form-group">
           <label class="checkbox">
-            <input name="user[accepted_user_agreement]" type="hidden" value="0"><input type="checkbox" value="1" name="user[accepted_user_agreement]"
-              id="user_accepted_user_agreement">&nbsp;I certify that I am 18 years of age or older, and I agree to the
-            <a routerLink="/legal" target="_blank" tabindex="-1">User Agreement and Privacy Policy</a>.
+            <input name="userAcceptedAgreement" type="hidden" value="0"><input type="checkbox" required value="1" name="userAcceptedAgreement"
+              [(ngModel)]="model.userAcceptedAgreement" id="userAcceptedAgreement" ngControl="userAcceptedAgreement"
+              #userAcceptedAgreement="ngModel">&nbsp;I certify that I am 18 years of age or older, and I agree to the
+            <a routerLink="/legal" target="_blank">User Agreement and Privacy Policy</a>.
           </label>
+          <div *ngIf="f.submitted && !userAcceptedAgreement.valid" style="padding-bottom: 1em">
+            <small>Please accept the user agreement and privacy
+              policy</small>
+          </div>
         </div>
         <div class="form-group text-center">
-          <re-captcha (resolved)="resolved($event)" siteKey="6LeAv3UUAAAAAPYLttDEohg_KgyNifLN0Cx6IlPc"></re-captcha>
+          <re-captcha [(ngModel)]="model.captcha" name="captcha" ngControl="captcha" #captcha="ngModel"></re-captcha>
+          <div *ngIf="f.submitted && !captcha.valid" style="padding-bottom: 1em">
+            <small style="display: inline-block">Please complete the CAPTCHA correctly</small>
+          </div>
         </div>
         <button class="btn btn-lg btn-block btn-primary" type="submit">Create Account</button>
         <p class="small-2 text-left mt-5 mb-0 text-center"><a routerLink="/login">Already have an account?</a></p>
         <hr class="w-10">
-        <button class="btn btn-lg btn-block btn-secondary">Continue with Google</button>
-        <button class="btn btn-lg btn-block btn-secondary">Continue with Facebook</button>
+        <button class="btn btn-lg btn-block btn-google" (click)="googleSignIn()">Continue with Google</button>
+        <button class="btn btn-lg btn-block btn-facebook" (click)="facebookSignIn()">Continue with Facebook</button>
       </form>
     </div>
   </div>

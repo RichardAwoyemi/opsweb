@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '../_modals/modal.component';
 
 declare var $;
 
@@ -20,8 +22,11 @@ export class ContactComponent implements OnInit {
   private scriptURL = 'https://script.google.com/macros/s/AKfycbzeO_PLnm4HHAKlwPQ3PHN6j9TSVkxt0NJW0cy2NfRb1KZvLDA/exec';
   contactForm = document.forms['contactForm'];
 
-  constructor(private breakpointObserver: BreakpointObserver,
-    private formBuilder: FormBuilder) { }
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private formBuilder: FormBuilder,
+    public modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
@@ -57,20 +62,26 @@ export class ContactComponent implements OnInit {
       console.log(new FormData(formObject));
     }
 
-    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) })
-      .then(response => {
+    fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
+      if (environment.production === false) {
+        console.log('Success!', response);
+        this.submitted = true;
+      }
+    }).catch(
+      error => {
         if (environment.production === false) {
-          console.log('Success!', response);
-          this.submitted = true;
+          console.error('Error!', error.message);
+          $(this.errorModal.nativeElement).modal('show');
+          this.submitted = false;
         }
-      })
-      .catch(
-        error => {
-          if (environment.production === false) {
-            console.error('Error!', error.message);
-            $(this.errorModal.nativeElement).modal('show');
-            this.submitted = false;
-          }
-        });
+
+        // Temporary fix
+
+        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
+        modalReference.componentInstance.header = 'Yay!';
+        modalReference.componentInstance.message = 'Thanks. We will be in touch.';
+        this.submitted = true;
+      }
+    );
   }
 }

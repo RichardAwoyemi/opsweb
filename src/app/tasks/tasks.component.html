@@ -1,0 +1,172 @@
+<section class="section">
+  <div class="container">
+    <div class="row gap-y">
+      <div class="col-md-3">
+        <table class="table table-cart" style="background-color: #fff">
+          <tbody>
+            <tr>
+              <td>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="ti-search"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <hr class="my-6">
+                <div class="row" style="padding-bottom: 1em">
+                  <div class="text-left col-md-6">
+                    <h5>Refine By</h5>
+                  </div>
+                  <div class="text-right col-md-6">
+                    <small><a routerLink="/tasks" class="reset-link">Reset</a></small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label><strong>Sort By</strong></label>
+                  <select class="form-control form-search-bar">
+                    <option>Value (Highest to Lowest)</option>
+                    <option>Value (Lowest to Highest)</option>
+                    <option>Date (Newest to Oldest)</option>
+                    <option>Date (Oldest to Newest)</option>
+                  </select>
+                </div>
+                <div class="form-group text-left">
+                  <label><strong>Category</strong></label>
+                  <select class="form-control form-search-bar">
+                    <option>JavaScript</option>
+                    <option>HTML</option>
+                    <option>CSS</option>
+                  </select>
+                </div>
+                <div class="form-group text-left">
+                  <label><strong>Difficulty</strong></label>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label">Beginner</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label">Intermediate</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input">
+                    <label class="custom-control-label">Advanced</label>
+                  </div>
+                  <br>
+                  <button class="btn btn-block btn-secondary" type="button">Search</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Tasks -->
+      <div class="col-md-9">
+        <!-- Number of tasks and post task button -->
+        <div class="row" style="padding-bottom: 2em">
+          <div class="col-md-6">
+            <h3 class="text-dark" style="display: inline; padding-right: 0.2em">236</h3>
+            <span style="display: inline">tasks found</span>
+          </div>
+          <div class="col-md-6 text-right">
+            <button class="btn btn-sm btn-primary" type="button" routerLink="/tasks/new">Post Task</button>
+          </div>
+        </div>
+        <!-- List of tasks -->
+        <table class="table table-cart table-task table-hover" style="background-color: #fff;">
+          <tbody>
+            <tr routerLink="/task/1">
+              <td style="width: 60px; padding-right: 0px; padding-left: 1em">
+                <img class="avatar avatar-sm" src="https://pbs.twimg.com/profile_images/1078036367748354073/xc7KVRiN_400x400.jpg"
+                  alt="avatar">
+              </td>
+              <td style="padding-right: 0px">
+                <div style="display: inline-block">
+                  <h5><a routerLink="/task/1">Uniswap logo design</a></h5>
+                  <small><a routerLink="/user/1" class="user-link">@darrellekow</a></small>
+                  <div style="padding-top: 0.25em">
+                    <span class="badge badge-pill badge-secondary">ethereum</span>&nbsp;
+                    <span class="badge badge-pill badge-secondary">logo</span>&nbsp;
+                    <span class="badge badge-pill badge-secondary">illustration</span>&nbsp;
+                    <span class="badge badge-pill badge-secondary">design</span>&nbsp;
+                    <span class="badge badge-pill badge-secondary">creative</span>
+                  </div>
+                </div>
+              </td>
+              <td style="width: 20%">
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-bar-chart" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">Beginner</span></strong> difficulty</span><br>
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-time" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">a month</span></strong> remaining</span><br>
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-upload" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">0</span></strong> applications</span>
+              </td>
+              <td style="width: 20%; padding-left: 0px">
+                <h5>236.21 GBP</h5>
+                <p>0.08362493 BTC</p>
+              </td>
+            </tr>
+            <tr routerLink="/task/1">
+              <td style="width: 60px; padding-right: 0px; padding-left: 1em">
+                <img class="avatar avatar-sm" src="https://pbs.twimg.com/profile_images/972908053153681408/7F4-SeoD_400x400.jpg"
+                  alt="avatar">
+              </td>
+              <td style="padding-right: 0px">
+                <div style="display: inline-block">
+                  <h5><a routerLink="/task/1">Complete an interview on cryptocurrency mining</a></h5>
+                  <small><a routerLink="/user/1" class="user-link">@richardawoyemi</a></small>
+                  <div style="padding-top: 0.25em">
+                    <span class="badge badge-pill badge-secondary">interview</span>&nbsp;
+                    <span class="badge badge-pill badge-secondary">cryptocurrency</span>&nbsp;
+                  </div>
+                </div>
+              </td>
+              <td style="width: 20%">
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-bar-chart" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">Beginner</span></strong> difficulty</span><br>
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-time" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">12 days</span></strong> remaining</span><br>
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-upload" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">5</span></strong> applications</span>
+              </td>
+              <td style="width: 20%; padding-left: 0px">
+                <h5>50 GBP</h5>
+                <p>0.4 ETH</p>
+              </td>
+            </tr>
+            <tr *ngIf="this.showMoreTasks" routerLink="/task/1">
+              <td style="width: 60px; padding-right: 0px; padding-left: 1em">
+                <img class="avatar avatar-sm" src="https://scontent-lhr3-1.xx.fbcdn.net/v/t1.0-9/11062358_10153178224024757_9166271015191030512_n.jpg?_nc_cat=100&_nc_ht=scontent-lhr3-1.xx&oh=cf0e80441bb9ba4c8e2d7dd6b23a02f4&oe=5CBD500B"
+                  alt="avatar">
+              </td>
+              <td style="padding-right: 0px">
+                <div style="display: inline-block">
+                  <h5><a routerLink="/task/1">Web design for property based site</a></h5>
+                  <small><a routerLink="/user/1" class="user-link">@mofesal</a></small>
+                  <div style="padding-top: 0.25em">
+                    <span class="badge badge-pill badge-secondary">php</span>&nbsp;
+                    <span class="badge badge-pill badge-secondary">wordpress</span>&nbsp;
+                  </div>
+                </div>
+              </td>
+              <td style="width: 20%">
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-bar-chart" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">Advanced</span></strong> difficulty</span><br>
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-time" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">3 days</span></strong> remaining</span><br>
+                <span style="line-height: 1.25em; font-size: 0.8rem"><i class="ti-upload" style="padding-right: 0.5em"></i><strong><span
+                      class="text-dark">2</span></strong> applications</span>
+              </td>
+              <td style="width: 20%; padding-left: 0px">
+                <h5>500 GBP</h5>
+                <p>5.20 ETH</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <hr class="my-6">
+        <a class="btn btn-block btn-secondary" (click)="loadMoreTasks()">Load More</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -80,7 +80,7 @@ export class MarketsComponent implements OnInit {
 
   ngOnInit() {
     this.refreshData();
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
+    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
   }
 
   sort(sortName: string, sortEvent: string) {

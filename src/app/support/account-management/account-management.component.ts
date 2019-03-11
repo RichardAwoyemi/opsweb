@@ -11,7 +11,8 @@ export class AccountManagementComponent implements OnInit, AfterViewChecked {
   isMobile: Observable<BreakpointState>;
   private scrollExecuted = false;
 
-  constructor(private breakpointObserver: BreakpointObserver,
+  constructor(
+    private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute) {
   }
 

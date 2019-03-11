@@ -14,3 +14,7 @@ a:hover {
 .btn-primary:hover {
   color: #fff !important;
 }
+
+.nav-blue {
+  background-color: #2055EC;
+}
