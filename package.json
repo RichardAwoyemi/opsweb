@@ -6,7 +6,8 @@
     "start": "node server.js",
     "build": "ng build",
     "postinstall": "ng build --prod --configuration=staging",
-    "test": "ng test --environment=staging --no-progress --browsers=ChromeNoSandbox",
+    "test": "ng test --environment=staging",
+    "test-headless": "ng test --watch=false --environment=staging",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -71,6 +72,7 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "~5.4.0",
+    "puppeteer": "^1.13.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0"
   }
