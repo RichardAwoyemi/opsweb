@@ -30,7 +30,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 Browse to the Firebase authentication console page, and then run the following in Developer Tools, on the Console tab. 
 
-```
+```js
 var intervalId;
 
 var clearFunction = function() {
