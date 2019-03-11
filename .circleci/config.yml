@@ -60,7 +60,7 @@ jobs:
           name: Deploy to AWS
           command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              ng build --prod --configuration=production
+              ng build --prod --configuration=production --progress=false
               ~/.local/bin/aws --region eu-west-2 s3 sync ./root/opsonion-web/dist/ s3://$AWS_BUCKET_TARGET --delete --exclude '.git/*'
             fi
     branches:
