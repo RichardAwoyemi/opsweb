@@ -1,37 +1,17 @@
 import { NgModule, OnInit } from '@angular/core';
+import { AuthGuard } from './_guards/auth.guard';
+import { AnonymousGuard } from './_guards/anonymous.guard';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
-import { CareersComponent } from './careers/careers.component';
-import { ContactComponent } from './contact/contact.component';
 import { LegalComponent } from './legal/legal.component';
 import { LoginComponent } from './login/login.component';
 import { PressComponent } from './press/press.component';
-import { MarketsComponent } from './markets/markets.component';
-import { PriceComponent } from './markets/price/price.component';
 import { RegisterComponent } from './register/register.component';
-import { StatusComponent } from './status/status.component';
-import { SupportComponent } from './support/support.component';
-import { ServicesComponent } from './services/services.component';
-import { AccountsComponent } from './accounts/accounts.component';
-import { AccountManagementComponent } from './support/account-management/account-management.component';
-import { TransactionsComponent } from './support/transactions/transactions.component';
-import { PaymentMethodsComponent } from './support/payment-methods/payment-methods.component';
-import { SecurityComponent } from './support/security/security.component';
-import { TaskAdministrationComponent } from './support/task-administration/task-administration.component';
-import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AuthGuard } from './_guards/auth.guard';
-import { AnonymousGuard } from './_guards/anonymous.guard';
-import { ExchangeComponent } from './exchange/exchange.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ToolsComponent } from './tools/tools.component';
-import { SettingsComponent } from './settings/settings.component';
-import { TasksComponent } from './tasks/tasks.component';
 import { InviteComponent } from './invite/invite.component';
-import { TaskComponent } from './task/task.component';
-import { NewTaskComponent } from './new-task/new-task.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
