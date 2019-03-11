@@ -7,7 +7,7 @@
     "build": "ng build",
     "postinstall": "ng build --prod --configuration=staging",
     "test": "ng test --environment=staging",
-    "test-headless": "ng test --watch=false --environment=staging",
+    "test-headless": "ng test --watch=false --environment=staging --progress=false",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
