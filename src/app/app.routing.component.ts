@@ -82,6 +82,7 @@ if (environment.referralMode) {
     { path: 'legal', component: LegalComponent, canActivate: [AnonymousGuard] },
     { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
     { path: 'press', component: PressComponent, canActivate: [AnonymousGuard] },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AnonymousGuard] },
     { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
