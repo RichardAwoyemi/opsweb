@@ -8,8 +8,8 @@ exports.createUser = functions.firestore
     return admin.firestore().runTransaction(async (transaction: any) => {
       const doc = await transaction.get(ref);
       if (!doc.exists) {
-        transaction.set(ref, { counter: 101 });
-        return 101;
+        transaction.set(ref, { counter: 1 });
+        return 1;
       }
       const newCount = doc.data().counter + 1;
       transaction.update(ref, {
