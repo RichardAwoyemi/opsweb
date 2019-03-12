@@ -30,7 +30,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   firstName: string;
   lastName: string;
   user$: Observable<any>;
-  referralUrl$: Observable<string>;
   noOfUsers$: Observable<number>;
   ranking$: Observable<number>;
 
