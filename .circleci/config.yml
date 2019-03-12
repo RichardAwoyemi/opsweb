@@ -69,10 +69,12 @@ jobs:
           name: Deploy to Firebase
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
+              cd /root/opsonion-web/src/app/_functions/
               firebase use opsonion-dev
               firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+              cd /root/opsonion-web/src/app/_functions/
               npm firebase use opsonion-live
               npm firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
