@@ -69,12 +69,12 @@ jobs:
           name: Deploy to Firebase
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              firebase use opsonion-dev
-              firebase deploy
+              npm firebase use opsonion-dev
+              npm firebase deploy
             fi
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              firebase use opsonion-live
-              firebase deploy
+              npm firebase use opsonion-live
+              npm firebase deploy
             fi
     branches:
       only: 
