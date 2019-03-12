@@ -22,8 +22,8 @@ jobs:
           name: Install Dependencies
           command: |
             npm install -g @angular/cli
-            npm install -g firebase-tools
             npm install
+            npm install -g firebase-tools
             apt-get -y -qq update
             apt-get -y -qq install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
@@ -52,12 +52,12 @@ jobs:
           name: Run Tests
           command: 
             npm run test-headless
-      - run: 
-          name: Deploy to Heroku
-          command: |
-            if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
-            fi
+      # - run: 
+      #     name: Deploy to Heroku
+      #     command: |
+      #       if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
+      #         git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
+      #       fi
       - run:
           name: Deploy to AWS
           command: |
@@ -69,12 +69,12 @@ jobs:
           name: Deploy to Firebase
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              npm firebase use opsonion-dev
-              npm firebase deploy
+              firebase use opsonion-dev
+              firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               npm firebase use opsonion-live
-              npm firebase deploy
+              npm firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
     branches:
       only: 
