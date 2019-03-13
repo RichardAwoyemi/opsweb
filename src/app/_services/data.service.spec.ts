@@ -24,23 +24,35 @@ describe('DataService unit tests', () => {
   }));
 
   describe('getAllTimezones()', () => {
-    it('should return total number of timezones',
+    it('should return total number of timezones', (done: DoneFn) => {
       inject([DataService], (dataService) => {
-        dataService.getAllTimezones().subscribe(result => expect(result.length).toBeGreaterThan(0));
-      }));
-  });
+        dataService.getAllTimezones().subscribe(result => {
+          expect(result.length).toBeGreaterThan(0);
+          done();
+        });
+      })();
+    });
 
-  describe('getAllCurrencies()', () => {
-    it('should return total number of currencies',
-      inject([DataService], (dataService) => {
-        dataService.getAllCurrencies().subscribe(result => expect(result.length).toBeGreaterThan(0));
-      }));
-  });
+    describe('getAllCurrencies()', () => {
+      it('should return total number of currencies', (done: DoneFn) => {
+        inject([DataService], (dataService) => {
+          dataService.getAllCurrencies().subscribe(result => {
+            expect(result.length).toBeGreaterThan(0);
+            done();
+          });
+        })();
+      });
 
-  describe('getAllDates()', () => {
-    it('should return total number of dates',
-      inject([DataService], (dataService) => {
-        dataService.getAllDates().subscribe(result => expect(result.length).toBeGreaterThan(0));
-      }));
+      describe('getAllDates()', () => {
+        it('should return total number of dates', (done: DoneFn) => {
+          inject([DataService], (dataService) => {
+            dataService.getAllDates().subscribe(result => {
+              expect(result.length).toBeGreaterThan(0);
+              done();
+            });
+          })();
+        });
+      });
+    });
   });
 });
