@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
-describe('Unit tests for DataService', () => {
+describe('DataService unit tests', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
       AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -25,22 +25,22 @@ describe('Unit tests for DataService', () => {
 
   describe('getAllTimezones()', () => {
     it('should return total number of timezones',
-      inject( [DataService], (dataService) => {
+      inject([DataService], (dataService) => {
         dataService.getAllTimezones().subscribe(result => expect(result.length).toBeGreaterThan(0));
-    }));
+      }));
   });
 
   describe('getAllCurrencies()', () => {
     it('should return total number of currencies',
-      inject( [DataService], (dataService) => {
+      inject([DataService], (dataService) => {
         dataService.getAllCurrencies().subscribe(result => expect(result.length).toBeGreaterThan(0));
-    }));
+      }));
   });
 
   describe('getAllDates()', () => {
     it('should return total number of dates',
-      inject( [DataService], (dataService) => {
+      inject([DataService], (dataService) => {
         dataService.getAllDates().subscribe(result => expect(result.length).toBeGreaterThan(0));
-    }));
+      }));
   });
 });
