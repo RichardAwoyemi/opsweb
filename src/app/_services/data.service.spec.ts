@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
-
 import { DataService } from './data.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../../environments/environment.staging';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,7 +16,6 @@ describe('DataService unit tests', () => {
     providers: [
       DataService,
       HttpClient,
-      HttpHandler,
       AngularFirestore,
       AngularFireAuth
     ]
