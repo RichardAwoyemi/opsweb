@@ -5,6 +5,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.staging';
 import { UtilService } from './util.service';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ReferralService {
@@ -14,7 +16,8 @@ export class ReferralService {
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
-    public utilService: UtilService
+    public utilService: UtilService,
+    public http: HttpClient,
   ) {
   }
 
@@ -25,11 +28,11 @@ export class ReferralService {
 
   generateReferralUrl(referralId) {
     if (location.host === 'localhost:4200') {
-      return 'localhost:4200/invite/' + referralId;
+      return Observable.create((observer) => { observer.next('localhost:4200/invite/' + referralId); });
     } else if (location.host === 'opsonion.herokuapp.com') {
-      return 'opsonion.herokuapp.com/invite/' + referralId;
+      return Observable.create((observer) => { observer.next('opsonion.herokuapp.com/invite/' + referralId); });
     } else if (location.host === 'opsonion.com') {
-      return 'opsonion.com/invite/' + referralId;
+      return Observable.create((observer) => { observer.next('opsonion.com/invite/' + referralId); });
     }
   }
 
