@@ -83,10 +83,17 @@ export class AppComponent implements OnInit, OnDestroy {
   cacheUserProfile(user) {
     if (!environment.production) {
       console.log(user);
+      console.log(user.photoURL);
     }
-    this.user = {
-      photoURL: user.photoURL
-    };
+    if (user.photoURL) {
+      this.user = {
+        photoURL: user.photoURL
+      };
+    } else {
+      this.user = {
+        photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+      };
+    }
     localStorage.setItem('user', JSON.stringify(user));
     this.router.navigate(['dashboard']);
   }

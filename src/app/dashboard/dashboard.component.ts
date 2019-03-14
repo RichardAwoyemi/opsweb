@@ -30,7 +30,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   firstName: string;
   lastName: string;
   user$: Observable<any>;
-  referralUrl$: Observable<string>;
   noOfUsers$: Observable<number>;
   ranking$: Observable<number>;
 
@@ -78,13 +77,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createReferralUrls() {
-    this.referralUrl = this.referralService.generateReferralUrl(this.userData.referralId);
-    this.campaignMessage = 'I can hire and work from anywhere on Opsonion, a new platform that ' +
-      'connects talent and opportunity. Join me today by signing up using my link: ' + this.referralUrl + '.';
-    this.facebookShareUrl = 'http://www.facebook.com/sharer/sharer.php?u=' + this.referralUrl;
-    this.whatsappShareUrl = 'https://wa.me/?text=' + this.campaignMessage;
-    this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
-    this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
+    this.referralService.generateReferralUrl(this.userData.referralId).subscribe((result) => {
+      this.referralUrl = result;
+      this.campaignMessage = 'I can hire and work from anywhere on Opsonion, a new platform that ' +
+        'connects talent and opportunity. Join me today by signing up using my link: ' + result + '.';
+      this.facebookShareUrl = 'http://www.facebook.com/sharer/sharer.php?u=' + result;
+      this.whatsappShareUrl = 'https://wa.me/?text=' + this.campaignMessage;
+      this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
+      this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
+    }, (error) => {
+      if (!environment.production) {
+        console.log(error);
+      }
+    }
+    );
   }
 
   calculateNoOfUsers() {
@@ -108,7 +114,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.ranking$ = this.referralService.getWaitlist().pipe(
       filter(waitlistResult => waitlistResult != null),
       switchMap(waitlistResult => combineLatest(
-      from(this.referralService.calculateRanking(this.userData.referralId, waitlistResult)), this.noOfUsers$)),
+        from(this.referralService.calculateRanking(this.userData.referralId, waitlistResult)), this.noOfUsers$)),
       filter(combined => combined[0] != null && combined[1] != null),
       map(combined => {
         if (!environment.production) {
@@ -142,8 +148,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   setUserLegalNameData() {
     if (this.firstName && this.lastName) {
-      const firstName = this.utilService.toTitleCase(this.firstName);
-      const lastName = this.utilService.toTitleCase(this.lastName);
+      const firstName = this.utilService.toTitleCase(this.firstName).trim();
+      const lastName = this.utilService.toTitleCase(this.lastName).trim();
       this.userService.setUserLegalNameData(this.user.uid, firstName, lastName).then(() => {
         this.displayUpdateSuccess();
       }).catch((error) => {

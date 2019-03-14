@@ -7,6 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UtilService } from './util.service';
 import { ReferralService } from './referral.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('UserService unit tests', () => {
   beforeEach(() => {
@@ -18,6 +19,8 @@ describe('UserService unit tests', () => {
       providers: [
         UserService,
         UtilService,
+        HttpClient,
+        HttpHandler,
         ReferralService,
         AngularFirestore,
         AngularFireAuth

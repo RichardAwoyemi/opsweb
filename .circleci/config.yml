@@ -10,6 +10,7 @@ jobs:
           - AWS_ACCESS_KEY_ID=AKIAJSKDPYHGG3W7OZKQ
           - AWS_SECRET_ACCESS_KEY=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
           - AWS_BUCKET_TARGET=opsonion.com
+          - FIREBASE_TOKEN=1/MXC8JhRwX2z3pg3FWQl1U9SW6OPjkxC6QY_32bKqzZ0
     steps:
       - checkout
       - restore_cache:
@@ -22,11 +23,9 @@ jobs:
           command: |
             npm install -g @angular/cli
             npm install
+            npm install -g firebase-tools
             apt-get -y -qq update
             apt-get -y -qq install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
-      - run:
-          name: Install AWS CLI
-          command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               apt-get -y -qq update
               apt-get -y -qq install python3.4-dev
@@ -36,11 +35,14 @@ jobs:
               source ~/.bash_profile
               pip install awscli --upgrade --user
             fi
-      - run:
-          name: S3 Request Authentication
-          command: | 
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               ~/.local/bin/aws configure set default.s3.signature_version s3v4
+            fi
+            if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
+              cd /root/opsonion-web/src/app/_functions/ && npm install
+            fi
+            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+              cd /root/opsonion-web/src/app/_functions/ && npm install
             fi
       - save_cache:
           paths:
@@ -62,6 +64,19 @@ jobs:
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               ng build --prod --configuration=production --progress=false
               ~/.local/bin/aws --region eu-west-2 s3 sync /root/opsonion-web/dist/opsonion-web/ s3://$AWS_BUCKET_TARGET --delete --exclude '.git/*'
+            fi
+      - run:
+          name: Deploy to Firebase
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
+              cd /root/opsonion-web/src/app/_functions/
+              firebase use opsonion-dev
+              firebase deploy --token=$FIREBASE_TOKEN --non-interactive
+            fi
+            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+              cd /root/opsonion-web/src/app/_functions/
+              npm firebase use opsonion-live
+              npm firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
     branches:
       only: 

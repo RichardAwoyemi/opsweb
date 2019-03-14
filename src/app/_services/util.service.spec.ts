@@ -20,6 +20,14 @@ describe('UtilService unit tests', () => {
         name = 'JOHN';
         formattedName = utilService.toTitleCase(name);
         expect(formattedName).toEqual('John');
+
+        name = 'SaM    ';
+        formattedName = utilService.toTitleCase(name);
+        expect(formattedName).toEqual('Sam');
+
+        name = '    RiChArD    ';
+        formattedName = utilService.toTitleCase(name);
+        expect(formattedName).toEqual('Richard');
       })
     );
   });
