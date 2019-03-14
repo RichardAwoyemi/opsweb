@@ -3,10 +3,11 @@ export class UtilService {
   ANDROID_APP_URL = 'https://play.google.com';
 
   toTitleCase(str) {
+    str = str.replace(/^\s+|\s+$/gm, '');
     return str.replace(
       /\w\S*/g,
       function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
       }
     );
   }
