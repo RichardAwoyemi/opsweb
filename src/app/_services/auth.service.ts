@@ -2,13 +2,12 @@ import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from '../_modals/modal.component';
 import { auth } from 'firebase/app';
 import { FirebaseService } from './firebase.service';
 import { UserService } from './user.service';
 import { UtilService } from './util.service';
 import { User } from '../_models/user';
+import { ModalService } from './modal.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class AuthService {
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
-    public modalService: NgbModal,
+    public modalService: ModalService,
     private utilService: UtilService,
     private firebaseService: FirebaseService,
     private userService: UserService,
@@ -31,31 +30,6 @@ export class AuthService {
         this.userData = user;
       }
     });
-  }
-
-  displayGenericError(error) {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Oops!';
-    modalReference.componentInstance.message = error.message;
-  }
-
-  displayRegisterSucesss() {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Yay!';
-    modalReference.componentInstance.message = 'Your registration was successful.';
-  }
-
-  displayVerifyEmailError() {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Oops!';
-    modalReference.componentInstance.message = 'Your email account has not been verified yet.';
-  }
-
-  displayPasswordResetInfo() {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Yay!';
-    modalReference.componentInstance.message = 'Password reset email sent, check your inbox. ' +
-      'If you do not receive this email, please check your spam or bulk email folder.';
   }
 
   facebookSignIn() {
@@ -73,7 +47,7 @@ export class AuthService {
         this.userService.processNewUser(result, null, null);
       }
     }).catch((error) => {
-      this.displayGenericError(error);
+      this.modalService.displayMessage('Oops', error.message)
     });
   }
 
@@ -92,7 +66,7 @@ export class AuthService {
         this.userService.processNewUserReferral(result, null, null, referredBy);
       }
     }).catch((error) => {
-      this.displayGenericError(error);
+      this.modalService.displayMessage('Oops', error.message);
     });
   }
 
@@ -122,7 +96,7 @@ export class AuthService {
         this.userService.processNewUser(result, null, null);
       }
     }).catch((error) => {
-      this.displayGenericError(error);
+      this.modalService.displayMessage('Oops', error.message);
     });
   }
 
@@ -146,7 +120,7 @@ export class AuthService {
         this.userService.processNewUserReferral(result, null, null, referredBy);
       }
     }).catch((error) => {
-      this.displayGenericError(error);
+      this.modalService.displayMessage('Oops', error.message);
     });
   }
 
@@ -196,9 +170,9 @@ export class AuthService {
         this.userService.processNewUser(result, firstName, lastName);
       }
       this.sendVerificationMail();
-      this.displayRegisterSucesss();
+      this.modalService.displayMessage('Yay!', 'Your registration was successful.');
     }).catch((error) => {
-      this.displayGenericError(error);
+      this.modalService.displayMessage('Oops', error.message);
     });
   }
 
@@ -212,9 +186,9 @@ export class AuthService {
         this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
       }
       this.sendVerificationMail();
-      this.displayRegisterSucesss();
+      this.modalService.displayMessage('Yay!', 'Your registration was successful.');
     }).catch((error) => {
-      this.displayGenericError(error);
+      this.modalService.displayMessage('Oops', error.message)
     });
   }
 
@@ -234,9 +208,10 @@ export class AuthService {
 
   forgotPassword(passwordResetEmail) {
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
-      this.displayPasswordResetInfo();
+      this.modalService.displayMessage('Yay!', 'Password reset email sent, check your inbox.' +
+      ' If you do not receive this email, please check your spam or bulk email folder.');
     }).catch((error) => {
-      this.displayGenericError(error);
+      this.modalService.displayMessage('Oops', error.message);
     });
   }
 
