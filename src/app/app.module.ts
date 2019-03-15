@@ -20,7 +20,6 @@ import { ContactComponent } from './contact/contact.component';
 import { LegalComponent } from './legal/legal.component';
 import { LoginComponent } from './login/login.component';
 import { PressComponent } from './press/press.component';
-import { MarketsComponent } from './markets/markets.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
@@ -32,8 +31,6 @@ import { TransactionsComponent } from './support/transactions/transactions.compo
 import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
 import { ServicesComponent } from './services/services.component';
 
-import { MarketsService } from 'src/app/_services/markets.service';
-import { PriceComponent } from './markets/price/price.component';
 import { EnvService } from './_services/env.service';
 import { AuthService } from './_services/auth.service';
 import { AuthGuard } from './_guards/auth.guard';
@@ -83,8 +80,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     LegalComponent,
     LoginComponent,
     PressComponent,
-    PriceComponent,
-    MarketsComponent,
     RegisterComponent,
     ServicesComponent,
     StatusComponent,
@@ -134,7 +129,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
   providers: [
-    MarketsService,
     EnvService,
     AuthService,
     UtilService,
