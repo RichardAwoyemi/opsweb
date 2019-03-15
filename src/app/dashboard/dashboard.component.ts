@@ -28,12 +28,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
+  noOfReferredUsers: number;
   user$: Observable<any>;
   noOfUsers$: Observable<number>;
   ranking$: Observable<number>;
 
   private userSubscription: Subscription;
   private referredUserSubscription: Subscription;
+  private noOfReferredUserSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -63,6 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.calculateNoOfUsers();
         this.calculateRanking();
         this.getReferredUsers();
+        this.getNoOfReferredUsers();
         this.ngxLoader.stop();
       }
     });
@@ -105,6 +108,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.log(result);
         }
         this.invitees = result;
+      });
+    }
+  }
+
+  getNoOfReferredUsers() {
+    if (this.userData.referralId) {
+      this.noOfReferredUserSubscription = this.referralService.getNoOfReferredUsers(this.userData.referralId).subscribe(result => {
+        if (!environment.production) {
+          console.log(result);
+        }
+        this.noOfReferredUsers = result;
       });
     }
   }
@@ -155,6 +169,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     if (this.referredUserSubscription) {
       this.referredUserSubscription.unsubscribe();
+    }
+
+    if (this.noOfReferredUserSubscription) {
+      this.noOfReferredUserSubscription.unsubscribe();
     }
   }
 }

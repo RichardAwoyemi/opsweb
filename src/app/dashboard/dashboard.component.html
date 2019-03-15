@@ -38,8 +38,8 @@
         <div class="col-md-12" style="background-color: #fff; padding: 2em">
           <h4>Invitees</h4>
           <br>
-          <p style="font-size: 1em">Below are the status of recent invitees who have signed up and confirmed their email
-            address.</p>
+          <p style="font-size: 1em" *ngIf="noOfReferredUsers < 2">You have referred <strong>{{ noOfReferredUsers }}</strong> person so far. Below is a list of your most recent invitees.</p>
+          <p style="font-size: 1em" *ngIf="noOfReferredUsers > 1">You have referred <strong>{{ noOfReferredUsers }}</strong> people so far. Below is a list of your most recent invitees.</p>
           <table class="table" style="border: none; padding: 0px; margin-top: 1.5em">
             <tbody>
               <tr style="border: none" *ngFor="let invitee of invitees">
