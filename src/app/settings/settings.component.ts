@@ -4,7 +4,6 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { DataService } from '../_services/data.service';
-import { ModalComponent } from '../_modals/modal.component';
 import { UtilService } from '../_services/util.service';
 import { AuthService } from '../_services/auth.service';
 import { ModalService } from '../_services/modal.service';

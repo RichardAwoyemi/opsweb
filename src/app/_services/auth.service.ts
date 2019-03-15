@@ -47,7 +47,7 @@ export class AuthService {
         this.userService.processNewUser(result, null, null);
       }
     }).catch((error) => {
-      this.modalService.displayMessage('Oops', error.message)
+      this.modalService.displayMessage('Oops', error.message);
     });
   }
 
@@ -188,7 +188,7 @@ export class AuthService {
       this.sendVerificationMail();
       this.modalService.displayMessage('Yay!', 'Your registration was successful.');
     }).catch((error) => {
-      this.modalService.displayMessage('Oops', error.message)
+      this.modalService.displayMessage('Oops', error.message);
     });
   }
 
