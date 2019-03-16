@@ -25,6 +25,7 @@
           <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
         </div>
         <div class="dropdown-menu dropdown-menu-right" *ngIf="referralMode">
+          <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
           <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
         </div>
       </div>

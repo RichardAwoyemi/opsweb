@@ -65,7 +65,7 @@ export class SettingsComponent implements OnInit {
         if (data['selectedTimezone']) {
           this.timezone = data['selectedTimezone'];
         } else {
-          this.timezone = 'Greenwich Median Time';
+          this.timezone = '(UTC) Edinburgh, London';
         }
 
         if (data['selectedCurrency']) {
