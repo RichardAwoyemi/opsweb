@@ -63,6 +63,7 @@ import { InboxComponent } from './inbox/inbox.component';
 import { ReferralService } from './_services/referral.service';
 import { FirebaseService } from './_services/firebase.service';
 import { DataService } from './_services/data.service';
+import { ModalService } from './_services/modal.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -141,6 +142,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AnonymousGuard,
     FirebaseService,
     DataService,
+    ModalService,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {

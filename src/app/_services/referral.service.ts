@@ -26,6 +26,13 @@ export class ReferralService {
     user.update({ referralId: referralId });
   }
 
+  getNoOfReferredUsers(referralId) {
+    if (referralId) {
+      return this.afs.collection('counters').doc('waitlist').valueChanges()
+        .pipe(map(referrals => referrals[referralId]));
+    }
+  }
+
   generateReferralUrl(referralId) {
     if (location.host === 'localhost:4200') {
       return Observable.create((observer) => { observer.next('localhost:4200/invite/' + referralId); });

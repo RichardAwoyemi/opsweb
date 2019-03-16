@@ -4,11 +4,10 @@ import { Observable, combineLatest, from, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../_services/user.service';
 import { ReferralService } from '../_services/referral.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from '../_modals/modal.component';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { UtilService } from '../_services/util.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ModalService } from '../_services/modal.service';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -29,19 +28,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
+  noOfReferredUsers: number;
   user$: Observable<any>;
   noOfUsers$: Observable<number>;
   ranking$: Observable<number>;
 
   private userSubscription: Subscription;
   private referredUserSubscription: Subscription;
+  private noOfReferredUserSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
     private referralService: ReferralService,
+    private modalService: ModalService,
     private utilService: UtilService,
-    private modalService: NgbModal,
     private ngxLoader: NgxUiLoaderService
   ) {
     this.userData = {
@@ -64,6 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.calculateNoOfUsers();
         this.calculateRanking();
         this.getReferredUsers();
+        this.getNoOfReferredUsers();
         this.ngxLoader.stop();
       }
     });
@@ -110,6 +112,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  getNoOfReferredUsers() {
+    if (this.userData.referralId) {
+      this.noOfReferredUserSubscription = this.referralService.getNoOfReferredUsers(this.userData.referralId).subscribe(result => {
+        if (!environment.production) {
+          console.log(result);
+        }
+        this.noOfReferredUsers = result;
+      });
+    }
+  }
+
   calculateRanking() {
     this.ranking$ = this.referralService.getWaitlist().pipe(
       filter(waitlistResult => waitlistResult != null),
@@ -132,18 +145,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   copyMessage() {
     this.utilService.copyMessage(this.referralUrl);
-  }
-
-  displayUpdateSuccess() {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Yay!';
-    modalReference.componentInstance.message = 'Your settings have been updated.';
-  }
-
-  displayGenericError(error) {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Oops!';
-    modalReference.componentInstance.message = error;
+    this.modalService.displayMessage('Yay!', 'Your referral URL has been copied.');
   }
 
   setUserLegalNameData() {
@@ -151,12 +153,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const firstName = this.utilService.toTitleCase(this.firstName).trim();
       const lastName = this.utilService.toTitleCase(this.lastName).trim();
       this.userService.setUserLegalNameData(this.user.uid, firstName, lastName).then(() => {
-        this.displayUpdateSuccess();
+        this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
       }).catch((error) => {
-        this.displayGenericError(error);
+        this.modalService.displayMessage('Oops!', error);
       });
     } else {
-      this.displayGenericError('Please fill in all required fields.');
+      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
   }
 
@@ -167,6 +169,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     if (this.referredUserSubscription) {
       this.referredUserSubscription.unsubscribe();
+    }
+
+    if (this.noOfReferredUserSubscription) {
+      this.noOfReferredUserSubscription.unsubscribe();
     }
   }
 }
