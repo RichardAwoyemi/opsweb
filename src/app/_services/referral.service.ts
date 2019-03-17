@@ -34,13 +34,7 @@ export class ReferralService {
   }
 
   generateReferralUrl(referralId) {
-    if (location.host.indexOf('localhost:4200') !== -1) {
-      return Observable.create((observer) => { observer.next('localhost:4200/invite/' + referralId); });
-    } else if (location.host.indexOf('opsonion.herokuapp.com') !== -1) {
-      return Observable.create((observer) => { observer.next('opsonion.herokuapp.com/invite/' + referralId); });
-    } else if (location.host.indexOf('opsonion.com') !== -1) {
-      return Observable.create((observer) => { observer.next('opsonion.com/invite/' + referralId); });
-    }
+    return Observable.create((observer) => { observer.next(location.host + '/invite/' + referralId); });
   }
 
   addReferralPoints(userReferralId) {
