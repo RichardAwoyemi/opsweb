@@ -1,46 +1,62 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { DataService } from './data.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { AngularFireModule } from '@angular/fire';
-import { environment } from '../../environments/environment.staging';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { HttpClient } from '@angular/common/http';
+import { Data } from '@angular/router';
 
-describe('Unit tests for DataService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      AngularFireModule.initializeApp(environment.firebaseConfig),
-      RouterTestingModule
-    ],
-    providers: [
-      DataService,
-      HttpClient,
-      HttpHandler,
-      AngularFirestore,
-      AngularFireAuth
-    ]
-  }));
+describe('DataService testing', () => {
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+  let timeZonesDataPath = './assets/data/timezones.json';
+  let currenciesDataPath = './assets/data/currencies.json';
+  let datesDataPath = './assets/data/dates.json';
 
-  describe('getAllTimezones()', () => {
-    it('should return total number of timezones',
-      inject( [DataService], (dataService) => {
-        dataService.getAllTimezones().subscribe(result => expect(result.length).toBeGreaterThan(0));
-    }));
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ HttpClientTestingModule ]
+    });
+
+    httpClient = TestBed.get(HttpClient);
+    httpTestingController = TestBed.get(HttpTestingController);
   });
 
-  describe('getAllCurrencies()', () => {
-    it('should return total number of currencies',
-      inject( [DataService], (dataService) => {
-        dataService.getAllCurrencies().subscribe(result => expect(result.length).toBeGreaterThan(0));
-    }));
+  afterEach(() => {
+    httpTestingController.verify();
+  });
+  
+  it('can test getTimezones() HttpClient.get request', () => {
+    const testData: Data = {name: 'Test Data'};
+    httpClient.get<Data>(timeZonesDataPath)
+      .subscribe(data =>
+        expect(data).toEqual(testData)
+      );
+
+    const req = httpTestingController.expectOne(timeZonesDataPath);
+    expect(req.request.method).toEqual('GET');
+    req.flush(testData);
   });
 
-  describe('getAllDates()', () => {
-    it('should return total number of dates',
-      inject( [DataService], (dataService) => {
-        dataService.getAllDates().subscribe(result => expect(result.length).toBeGreaterThan(0));
-    }));
+  it('can test getAllCurrencies() HttpClient.get request', () => {
+    const testData: Data = {name: 'Test Data'};
+    httpClient.get<Data>(currenciesDataPath)
+      .subscribe(data =>
+        expect(data).toEqual(testData)
+      );
+
+    const req = httpTestingController.expectOne(currenciesDataPath);
+    expect(req.request.method).toEqual('GET');
+    req.flush(testData);
+  });
+
+  it('can test getDates() HttpClient.get request', () => {
+    const testData: Data = {name: 'Test Data'};
+    httpClient.get<Data>(datesDataPath)
+      .subscribe(data =>
+        expect(data).toEqual(testData)
+      );
+
+    const req = httpTestingController.expectOne(datesDataPath);
+    expect(req.request.method).toEqual('GET');
+    req.flush(testData);
   });
 });
