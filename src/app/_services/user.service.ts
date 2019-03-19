@@ -146,6 +146,20 @@ export class UserService {
     });
   }
 
+  setUserLegalNameData(uid, firstName, lastName) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = { };
+    if (firstName && lastName) {
+      userDetailData = {
+        firstName: firstName,
+        lastName: lastName
+      };
+    }
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     let userDetailData = {};
