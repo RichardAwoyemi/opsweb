@@ -21,11 +21,6 @@ export class ReferralService {
   ) {
   }
 
-  generateReferralIdForUser(userId, referralId) {
-    const user = this.afs.firestore.collection('users').doc(userId);
-    user.update({ referralId: referralId });
-  }
-
   getNoOfReferredUsers(referralId) {
     if (referralId) {
       return this.afs.collection('counters').doc('waitlist').valueChanges()
@@ -47,13 +42,13 @@ export class ReferralService {
       const newCount = doc.data()[userReferralId] + 1;
       transaction.set(ref, { [userReferralId]: newCount }, { merge: true });
     }).then(() => {
-      if (environment.production === false) {
+      if (!environment.production) {
         console.log(
           'Transaction successfully committed.'
         );
       }
     }).catch((error) => {
-      if (environment.production === false) {
+      if (!environment.production) {
         console.log('Transaction failed: ', error);
       }
     });
@@ -128,13 +123,13 @@ export class ReferralService {
         [referralId]: 0,
       }, { merge: true });
     }).then(() => {
-      if (environment.production === false) {
+      if (!environment.production) {
         console.log(
           `Transaction successfully committed.`
         );
       }
     }).catch((error) => {
-      if (environment.production === false) {
+      if (!environment.production) {
         console.log('Transaction failed: ', error);
       }
     });
