@@ -1,19 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
 import { HttpClient } from '@angular/common/http';
 import { Data } from '@angular/router';
 
 describe('DataService testing', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let timeZonesDataPath = './assets/data/timezones.json';
-  let currenciesDataPath = './assets/data/currencies.json';
-  let datesDataPath = './assets/data/dates.json';
+  const timeZonesDataPath = './assets/data/timezones.json';
+  const currenciesDataPath = './assets/data/currencies.json';
+  const datesDataPath = './assets/data/dates.json';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ]
+      imports: [HttpClientTestingModule]
     });
 
     httpClient = TestBed.get(HttpClient);
@@ -23,9 +22,9 @@ describe('DataService testing', () => {
   afterEach(() => {
     httpTestingController.verify();
   });
-  
+
   it('can test getTimezones() HttpClient.get request', () => {
-    const testData: Data = {name: 'Test Data'};
+    const testData: Data = { name: 'Test Data' };
     httpClient.get<Data>(timeZonesDataPath)
       .subscribe(data =>
         expect(data).toEqual(testData)
@@ -37,7 +36,7 @@ describe('DataService testing', () => {
   });
 
   it('can test getAllCurrencies() HttpClient.get request', () => {
-    const testData: Data = {name: 'Test Data'};
+    const testData: Data = { name: 'Test Data' };
     httpClient.get<Data>(currenciesDataPath)
       .subscribe(data =>
         expect(data).toEqual(testData)
@@ -49,7 +48,7 @@ describe('DataService testing', () => {
   });
 
   it('can test getDates() HttpClient.get request', () => {
-    const testData: Data = {name: 'Test Data'};
+    const testData: Data = { name: 'Test Data' };
     httpClient.get<Data>(datesDataPath)
       .subscribe(data =>
         expect(data).toEqual(testData)

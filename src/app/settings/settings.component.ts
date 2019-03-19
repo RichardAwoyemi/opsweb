@@ -8,8 +8,6 @@ import { UtilService } from '../_services/util.service';
 import { AuthService } from '../_services/auth.service';
 import { ModalService } from '../_services/modal.service';
 
-declare var $;
-
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -38,9 +36,6 @@ export class SettingsComponent implements OnInit {
   years: any;
   isPasswordChangeEnabled: boolean;
   isMobile: Observable<BreakpointState>;
-
-  @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
-  @ViewChild('showVerifyDocumentationModal') showVerifyDocumentationModal: ElementRef;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -150,14 +145,6 @@ export class SettingsComponent implements OnInit {
     return new Array(i);
   }
 
-  showVerifyIdentity() {
-    $(this.showVerifyIdentityModal.nativeElement).modal('show');
-  }
-
-  showVerifyDocumentation() {
-    $(this.showVerifyDocumentationModal.nativeElement).modal('show');
-  }
-
   setUserCurrencyAndTimezonePreferences() {
     if (this.user.uid && this.timezone && this.currency) {
       this.userService.setUserCurrencyAndTimezonePreferences(this.user.uid, this.timezone, this.currency).then(() =>
@@ -185,5 +172,8 @@ export class SettingsComponent implements OnInit {
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
+  }
+
+  uploadPhoto(files: File[]) {
   }
 }
