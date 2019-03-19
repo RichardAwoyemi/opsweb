@@ -98,6 +98,8 @@ export class SettingsComponent implements OnInit {
 
         if (data['streetAddress2']) {
           this.streetAddress2 = data['streetAddress2'];
+        } else {
+          this.streetAddress2 = null;
         }
 
         if (data['city']) {
@@ -172,7 +174,7 @@ export class SettingsComponent implements OnInit {
 
   setUserPersonalDetails() {
     if (this.user.uid && this.username && this.firstName && this.lastName && this.dobDay && this.dobMonth
-      && this.dobYear && this.streetAddress1 && this.city && this.postcode) {
+      && this.dobYear && this.streetAddress1 && this.streetAddress2 && this.city && this.postcode) {
         if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
           this.userService.setUserPersonalDetails(this.user.uid, this.username, this.firstName, this.lastName,
             this.dobDay, this.dobMonth, this.dobYear, this.streetAddress1, this.streetAddress2, this.city,
