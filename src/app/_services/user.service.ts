@@ -24,7 +24,7 @@ export class UserService {
     return this.afs.collection('users').doc(id).snapshotChanges().pipe(map(action => {
       const data = action.payload.data();
       const uid = action.payload.id;
-      return { uid, ... data };
+      return { uid, ...data };
     }));
   }
 
@@ -63,7 +63,7 @@ export class UserService {
 
   setUserLegalNameData(uid, firstName, lastName) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    let userDetailData = { };
+    let userDetailData = {};
     if (firstName && lastName) {
       userDetailData = {
         firstName: firstName,
@@ -77,7 +77,7 @@ export class UserService {
 
   setUserDetailData(uid, firstName, lastName, referralId) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    let userDetailData = { };
+    let userDetailData = {};
     if (firstName && lastName) {
       userDetailData = {
         firstName: firstName,
@@ -126,7 +126,7 @@ export class UserService {
 
   setUserReferralData(uid, firstName, lastName, referralId, referredBy) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    let userDetailData = { };
+    let userDetailData = {};
     if (firstName && lastName) {
       userDetailData = {
         firstName: firstName,
@@ -158,35 +158,20 @@ export class UserService {
 
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    let userDetailData = { };
-    if (!streetAddress2) {
-      userDetailData = {
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        dobDay: dobDay,
-        dobMonth: dobMonth,
-        dobYear: dobYear,
-        streetAddress1: streetAddress1,
-        city: city,
-        postcode: postcode
-      };
-    } else {
-      userDetailData = {
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        dobDay: dobDay,
-        dobMonth: dobMonth,
-        dobYear: dobYear,
-        streetAddress1: streetAddress1,
-        streetAddress2: streetAddress2,
-        city: city,
-        postcode: postcode
-      };
-    }
+    let userDetailData = {};
+    userDetailData = {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      dobDay: dobDay,
+      dobMonth: dobMonth,
+      dobYear: dobYear,
+      streetAddress1: streetAddress1,
+      city: city,
+      postcode: postcode
+    };
     return userRef.set(userDetailData, {
       merge: true
     });
   }
- }
+}
