@@ -38,13 +38,13 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['first_name'];
       const lastName = result.additionalUserInfo.profile['last_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        if (firstName && lastName) {
+      if (firstName && lastName) {
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
           this.userService.processNewUser(result, firstName, lastName);
-        } else {
-          this.userService.processNewUser(result, null, null);
         }
+      } else {
+        this.userService.processNewUser(result, null, null);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -57,13 +57,13 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['first_name'];
       const lastName = result.additionalUserInfo.profile['last_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        if (firstName && lastName) {
+      if (firstName && lastName) {
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
           this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-        } else {
-          this.userService.processNewUserReferral(result, null, null, referredBy);
         }
+      } else {
+        this.userService.processNewUserReferral(result, null, null, referredBy);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -87,13 +87,13 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['given_name'];
       const lastName = result.additionalUserInfo.profile['family_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        if (firstName && lastName) {
+      if (firstName && lastName) {
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
           this.userService.processNewUser(result, firstName, lastName);
-        } else {
-          this.userService.processNewUser(result, null, null);
         }
+      } else {
+        this.userService.processNewUser(result, null, null);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -168,9 +168,9 @@ export class AuthService {
       const doc = await this.firebaseService.docExists(path);
       if (!doc) {
         this.userService.processNewUser(result, firstName, lastName);
-        this.sendVerificationMail();
-        this.modalService.displayMessage('Yay!', 'Your registration was successful.');
       }
+      this.sendVerificationMail();
+      this.modalService.displayMessage('Yay!', 'Your registration was successful.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
     });
@@ -184,9 +184,9 @@ export class AuthService {
       const doc = await this.firebaseService.docExists(path);
       if (!doc) {
         this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-        this.sendVerificationMail();
-        this.modalService.displayMessage('Yay!', 'Your registration was successful.');
       }
+      this.sendVerificationMail();
+      this.modalService.displayMessage('Yay!', 'Your registration was successful.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
     });
@@ -209,7 +209,7 @@ export class AuthService {
   forgotPassword(passwordResetEmail) {
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
       this.modalService.displayMessage('Yay!', 'Password reset email sent, check your inbox.' +
-        ' If you do not receive this email, please check your spam or bulk email folder.');
+      ' If you do not receive this email, please check your spam or bulk email folder.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
     });
