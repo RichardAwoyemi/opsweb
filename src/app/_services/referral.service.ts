@@ -3,10 +3,10 @@ import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment.staging';
 import { UtilService } from './util.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable()
 export class ReferralService {
@@ -18,6 +18,7 @@ export class ReferralService {
     public router: Router,
     public utilService: UtilService,
     public http: HttpClient,
+    private logger: NGXLogger
   ) {
   }
 
@@ -42,44 +43,40 @@ export class ReferralService {
       const newCount = doc.data()[userReferralId] + 1;
       transaction.set(ref, { [userReferralId]: newCount }, { merge: true });
     }).then(() => {
-      if (!environment.production) {
-        console.log(
-          'Transaction successfully committed.'
-        );
-      }
+        this.logger.debug('Transaction successfully committed.');
     }).catch((error) => {
-      if (!environment.production) {
-        console.log('Transaction failed: ', error);
-      }
+        this.logger.debug(`Transaction failed: + ${error}`);
     });
   }
 
   getWaitlist() {
     return this.afs.collection('counters').doc('waitlist').snapshotChanges().pipe(map(action => {
       const data = action.payload.data();
+      this.logger.debug('Waitlist:');
+      this.logger.debug(data);
       return data;
     }));
   }
 
   async calculateRanking(referralId, waitlist) {
-    if (!environment.production) {
-      console.log(referralId);
-      console.log(waitlist);
-    }
+    this.logger.debug('Referral id:');
+    this.logger.debug(referralId);
+    this.logger.debug('Waitlist:');
+    this.logger.debug(waitlist);
 
     if (waitlist && referralId) {
       if (!waitlist.hasOwnProperty(referralId)) {
+        this.logger.debug('Referral id not found, creating new one');
         this.addUserToWaitlist(referralId);
-      } else if (!environment.production) {
-        console.log('Referral id found!');
+      } else {
+        this.logger.debug('Referral id found!');
       }
 
       const waitlistSorted = await this.sortRanking(waitlist);
 
       if (waitlistSorted) {
-        if (!environment.production) {
-          console.log(waitlistSorted);
-        }
+        this.logger.debug('Waitlist sorted:');
+        this.logger.debug(waitlistSorted);
         const result = waitlistSorted.filter(obj => {
           return obj.referralId === referralId;
         });
@@ -118,20 +115,15 @@ export class ReferralService {
 
   addUserToWaitlist(referralId) {
     const waitlistRef = this.afs.firestore.collection('counters').doc('waitlist');
+    this.logger.debug(`Adding ${referralId} to waitlist`);
     return this.afs.firestore.runTransaction(async (transaction: any) => {
       transaction.set(waitlistRef, {
         [referralId]: 0,
       }, { merge: true });
     }).then(() => {
-      if (!environment.production) {
-        console.log(
-          `Transaction successfully committed.`
-        );
-      }
+        this.logger.debug(`Transaction successfully committed.`);
     }).catch((error) => {
-      if (!environment.production) {
-        console.log('Transaction failed: ', error);
-      }
+        this.logger.debug(`Transaction failed: ${error}`);
     });
   }
 }

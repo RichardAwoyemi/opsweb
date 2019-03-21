@@ -8,6 +8,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import { UtilService } from '../_services/util.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ModalService } from '../_services/modal.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -43,7 +44,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private referralService: ReferralService,
     private modalService: ModalService,
     private utilService: UtilService,
-    private ngxLoader: NgxUiLoaderService
+    private ngxLoader: NgxUiLoaderService,
+    private logger: NGXLogger
   ) {
     this.userData = {
       firstName: null,
@@ -72,9 +74,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setUser(result) {
-    if (!environment.production) {
-      console.log(result);
-    }
+    this.logger.info('Setting user:');
+    this.logger.debug(result);
     this.userData = result;
   }
 
@@ -88,9 +89,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
       this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
     }, (error) => {
-      if (!environment.production) {
-        console.log(error);
-      }
+      this.logger.debug(error);
     }
     );
   }
@@ -104,9 +103,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getReferredUsers() {
     if (this.userData.referralId) {
       this.referredUserSubscription = this.userService.getReferredUsers(this.userData.referralId).subscribe(result => {
-        if (!environment.production) {
-          console.log(result);
-        }
+        this.logger.debug('Getting referred users:');
+        this.logger.debug(result);
         this.invitees = result;
       });
     }
@@ -115,8 +113,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getNoOfReferredUsers() {
     if (this.userData.referralId) {
       this.noOfReferredUserSubscription = this.referralService.getNoOfReferredUsers(this.userData.referralId).subscribe(result => {
-        if (!environment.production) {
-          console.log(result);
+        if (this.noOfReferredUsers) {
+          this.logger.debug('Getting number of referred users:');
+          this.logger.debug(result);
         }
         this.noOfReferredUsers = result;
       });
@@ -130,10 +129,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         from(this.referralService.calculateRanking(this.userData.referralId, waitlistResult)), this.noOfUsers$)),
       filter(combined => combined[0] != null && combined[1] != null),
       map(combined => {
-        if (!environment.production) {
-          console.log('User ranking: ' + combined[0]);
-          console.log('Number of users: ' + combined[1]);
-        }
+        this.logger.debug('User ranking: ' + combined[0]);
+        this.logger.debug('Number of users: ' + combined[1]);
         if (combined[0] > combined[1]) {
           return combined[1];
         } else {
@@ -145,7 +142,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   copyMessage() {
     this.utilService.copyMessage(this.referralUrl);
-    this.modalService.displayMessage('Yay!', 'Your referral URL has been copied.');
+    this.modalService.displayMessage('Yay!', 'Your referral link has been copied.');
   }
 
   setUserLegalNameData() {

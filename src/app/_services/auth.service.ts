@@ -8,6 +8,8 @@ import { UserService } from './user.service';
 import { UtilService } from './util.service';
 import { User } from '../_models/user';
 import { ModalService } from './modal.service';
+import { NGXLogger } from 'ngx-logger';
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,7 @@ export class AuthService {
     private utilService: UtilService,
     private firebaseService: FirebaseService,
     private userService: UserService,
+    private logger: NGXLogger,
     public ngZone: NgZone
   ) {
     this.afAuth.authState.subscribe(user => {
@@ -38,13 +41,13 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['first_name'];
       const lastName = result.additionalUserInfo.profile['last_name'];
+      const doc = await this.firebaseService.docExists(path);
       if (firstName && lastName) {
-        const doc = await this.firebaseService.docExists(path);
         if (!doc) {
           this.userService.processNewUser(result, firstName, lastName);
+        } else {
+          this.userService.processNewUser(result, null, null);
         }
-      } else {
-        this.userService.processNewUser(result, null, null);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -57,13 +60,13 @@ export class AuthService {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['first_name'];
       const lastName = result.additionalUserInfo.profile['last_name'];
+      const doc = await this.firebaseService.docExists(path);
       if (firstName && lastName) {
-        const doc = await this.firebaseService.docExists(path);
         if (!doc) {
           this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+        } else {
+          this.userService.processNewUserReferral(result, null, null, referredBy);
         }
-      } else {
-        this.userService.processNewUserReferral(result, null, null, referredBy);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -82,18 +85,19 @@ export class AuthService {
   }
 
   googleSignIn() {
+    this.logger.debug('Initialising desktop Google sign in');
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
       const path = `/users/${result.user.uid}/`;
       const firstName = result.additionalUserInfo.profile['given_name'];
       const lastName = result.additionalUserInfo.profile['family_name'];
+      const doc = await this.firebaseService.docExists(path);
       if (firstName && lastName) {
-        const doc = await this.firebaseService.docExists(path);
         if (!doc) {
           this.userService.processNewUser(result, firstName, lastName);
+        } else {
+          this.userService.processNewUser(result, null, null);
         }
-      } else {
-        this.userService.processNewUser(result, null, null);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -101,11 +105,13 @@ export class AuthService {
   }
 
   mobileGoogleSignIn() {
+    this.logger.debug('Initialising mobile Google sign in');
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   googleSignInWithReferral(referredBy) {
+    this.logger.debug(`Initialising desktop Google sign in with referral id ${referredBy}`);
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
       const path = `/users/${result.user.uid}/`;
@@ -116,8 +122,6 @@ export class AuthService {
         if (!doc) {
           this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
         }
-      } else {
-        this.userService.processNewUserReferral(result, null, null, referredBy);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -125,6 +129,7 @@ export class AuthService {
   }
 
   mobileGoogleSignInWithReferral(referredBy) {
+    this.logger.debug(`Initialising mobile Google sign in with referral id ${referredBy}`);
     const provider = new auth.GoogleAuthProvider();
     localStorage.setItem('referredBy', referredBy);
     return this.afAuth.auth.signInWithRedirect(provider);
@@ -161,6 +166,7 @@ export class AuthService {
   }
 
   register(email, password, firstName, lastName) {
+    this.logger.debug('Initialising registration');
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
       const path = `/users/${result.user.uid}/`;
       firstName = this.utilService.toTitleCase(firstName);
@@ -168,15 +174,16 @@ export class AuthService {
       const doc = await this.firebaseService.docExists(path);
       if (!doc) {
         this.userService.processNewUser(result, firstName, lastName);
+        this.sendVerificationMail();
+        this.modalService.displayMessage('Yay!', 'Your registration was successful.');
       }
-      this.sendVerificationMail();
-      this.modalService.displayMessage('Yay!', 'Your registration was successful.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
     });
   }
 
   registerWithReferral(email, password, firstName, lastName, referredBy) {
+    this.logger.debug(`Initialising registration with referral id ${referredBy}`);
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
       const path = `/users/${result.user.uid}/`;
       firstName = this.utilService.toTitleCase(firstName);
@@ -184,15 +191,16 @@ export class AuthService {
       const doc = await this.firebaseService.docExists(path);
       if (!doc) {
         this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+        this.sendVerificationMail();
+        this.modalService.displayMessage('Yay!', 'Your registration was successful.');
       }
-      this.sendVerificationMail();
-      this.modalService.displayMessage('Yay!', 'Your registration was successful.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
     });
   }
 
   signIn(email, password) {
+    this.logger.debug('Initialising sign in');
     return new Promise<any>((resolve, reject) => {
       return this.afAuth.auth.signInWithEmailAndPassword(email, password).then(res => {
         resolve(res);
@@ -201,15 +209,17 @@ export class AuthService {
   }
 
   sendVerificationMail() {
+    this.logger.debug('Sending verification email');
     return this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
       this.ngZone.run(() => { this.router.navigate(['verify-email']); });
     });
   }
 
   forgotPassword(passwordResetEmail) {
+    this.logger.debug('Sending password reset email');
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
       this.modalService.displayMessage('Yay!', 'Password reset email sent, check your inbox.' +
-      ' If you do not receive this email, please check your spam or bulk email folder.');
+        ' If you do not receive this email, please check your spam or bulk email folder.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
     });
@@ -225,36 +235,22 @@ export class AuthService {
   enableChangePasswordOption() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user != null) {
+      this.logger.debug('Disabling change password option');
       if (user.providerData[0].providerId === 'facebook.com' || user.providerData[0].providerId === 'google.com') {
         return false;
       }
     } else {
+      this.logger.debug('Enabling change password option');
       return true;
     }
   }
 
   signOut() {
+    this.logger.debug('Signing out');
     return this.afAuth.auth.signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.removeItem('referredBy');
       this.router.navigate(['login']);
-    });
-  }
-
-  clearLocalStorage() {
-    localStorage.removeItem('user');
-  }
-
-  checkIfMailExists(email: string): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this.afAuth.auth.fetchSignInMethodsForEmail(email)
-        .then(res => {
-          if (res.length === 0) {
-            resolve(false);
-          } else {
-            resolve(true);
-          }
-        })
-        .catch(err => reject(err));
     });
   }
 }

@@ -65,6 +65,7 @@ import { FirebaseService } from './_services/firebase.service';
 import { DataService } from './_services/data.service';
 import { ModalService } from './_services/modal.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -127,7 +128,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     QRCodeModule,
     QuillModule,
     Ng5SliderModule,
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    LoggerModule.forRoot(environment.logging),
   ],
   providers: [
     EnvService,

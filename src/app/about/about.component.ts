@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { NGXLogger } from 'ngx-logger';
 
 declare var $;
 
@@ -22,6 +23,7 @@ export class AboutComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private logger: NGXLogger,
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -47,12 +49,12 @@ export class AboutComponent implements OnInit {
     const formObject = document.forms['registerForm'];
 
     if (environment.production === false) {
-      console.log(new FormData(formObject));
+      this.logger.debug(new FormData(formObject));
     }
 
     fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
       if (environment.production === false) {
-        console.log('Success!', response);
+        this.logger.debug(`Success: ${response}`);
       }
       this.submitted = true;
     }).catch(

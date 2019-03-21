@@ -7,6 +7,7 @@ import { DataService } from '../_services/data.service';
 import { UtilService } from '../_services/util.service';
 import { AuthService } from '../_services/auth.service';
 import { ModalService } from '../_services/modal.service';
+import { NGXLogger } from 'ngx-logger';
 
 declare var $;
 
@@ -48,7 +49,8 @@ export class SettingsComponent implements OnInit {
     private modalService: ModalService,
     private dataService: DataService,
     private utilService: UtilService,
-    private authService: AuthService
+    private authService: AuthService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
@@ -115,7 +117,7 @@ export class SettingsComponent implements OnInit {
     this.dataService.getAllTimezones().subscribe(data => {
       if (data) {
         if (environment.production === false) {
-          console.log(data);
+          this.logger.debug(data);
         }
         this.timezones = data;
       }
@@ -124,7 +126,7 @@ export class SettingsComponent implements OnInit {
     this.dataService.getAllCurrencies().subscribe(data => {
       if (data) {
         if (environment.production === false) {
-          console.log(data);
+          this.logger.debug(data);
         }
         this.currencies = data;
       }
@@ -133,7 +135,7 @@ export class SettingsComponent implements OnInit {
     this.dataService.getAllDates().subscribe(data => {
       if (data) {
         if (environment.production === false) {
-          console.log(Object.values(data));
+          this.logger.debug(Object.values(data));
         }
         this.dates = Object.values(data);
       }
