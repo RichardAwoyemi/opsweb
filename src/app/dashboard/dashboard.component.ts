@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setUser(result) {
-    this.logger.info('Setting user:');
+    this.logger.debug('Setting user:');
     this.logger.debug(result);
     this.userData = result;
   }
