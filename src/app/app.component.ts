@@ -40,10 +40,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.referralMode = environment.referralMode;
     this.afAuth.authState.subscribe(response => {
       this.referredBy = localStorage.getItem('referredBy');
-      localStorage.removeItem('referredBy');
       this.assignUserProfile(response);
       this.processMobileLogin(response);
       this.processMobileReferralLogin(response);
+      localStorage.removeItem('referredBy');
     });
   }
 

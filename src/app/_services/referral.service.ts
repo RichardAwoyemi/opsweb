@@ -23,6 +23,7 @@ export class ReferralService {
   }
 
   getNoOfReferredUsers(referralId) {
+    this.logger.debug('Getting number of referred users');
     if (referralId) {
       return this.afs.collection('counters').doc('waitlist').valueChanges()
         .pipe(map(referrals => referrals[referralId]));
@@ -30,10 +31,12 @@ export class ReferralService {
   }
 
   generateReferralUrl(referralId) {
+    this.logger.debug('Generating referral link');
     return Observable.create((observer) => { observer.next(location.host + '/invite/' + referralId); });
   }
 
   addReferralPoints(userReferralId) {
+    this.logger.debug('Adding referral points');
     const ref = this.afs.firestore.collection('counters').doc('waitlist');
     return this.afs.firestore.runTransaction(async (transaction: any) => {
       const doc = await transaction.get(ref);
@@ -50,9 +53,9 @@ export class ReferralService {
   }
 
   getWaitlist() {
+    this.logger.debug('Getting waitlist');
     return this.afs.collection('counters').doc('waitlist').snapshotChanges().pipe(map(action => {
       const data = action.payload.data();
-      this.logger.debug('Waitlist:');
       this.logger.debug(data);
       return data;
     }));
@@ -89,6 +92,7 @@ export class ReferralService {
   }
 
   sortRanking(obj) {
+    this.logger.debug('Sorting ranking');
     const arr = [];
     let prop;
 
@@ -121,7 +125,7 @@ export class ReferralService {
         [referralId]: 0,
       }, { merge: true });
     }).then(() => {
-        this.logger.debug(`Transaction successfully committed.`);
+        this.logger.debug('Transaction successfully committed.');
     }).catch((error) => {
         this.logger.debug(`Transaction failed: ${error}`);
     });

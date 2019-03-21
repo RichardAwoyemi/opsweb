@@ -37,16 +37,19 @@ export class AuthService {
 
   facebookSignIn() {
     const provider = new auth.FacebookAuthProvider();
+    let firstName = null;
+    let lastName = null;
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['first_name'];
-      const lastName = result.additionalUserInfo.profile['last_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (firstName && lastName) {
+      if (result) {
+        firstName = result.additionalUserInfo.profile['first_name'];
+        lastName = result.additionalUserInfo.profile['last_name'];
+        const path = `/users/${result.user.uid}/`;
+        const doc = await this.firebaseService.docExists(path);
         if (!doc) {
           this.userService.processNewUser(result, firstName, lastName);
-        } else {
-          this.userService.processNewUser(result, null, null);
+        }
+        if (doc) {
+          this.logger.debug(`${firstName} ${lastName} is a returning desktop user`);
         }
       }
     }).catch((error) => {
@@ -56,16 +59,19 @@ export class AuthService {
 
   facebookSignInWithReferral(referredBy) {
     const provider = new auth.FacebookAuthProvider();
+    let firstName = null;
+    let lastName = null;
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['first_name'];
-      const lastName = result.additionalUserInfo.profile['last_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (firstName && lastName) {
+      if (result) {
+        firstName = result.additionalUserInfo.profile['first_name'];
+        lastName = result.additionalUserInfo.profile['last_name'];
+        const path = `/users/${result.user.uid}/`;
+        const doc = await this.firebaseService.docExists(path);
         if (!doc) {
           this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-        } else {
-          this.userService.processNewUserReferral(result, null, null, referredBy);
+        }
+        if (doc) {
+          this.logger.debug(`${firstName} ${lastName} is a returning desktop user`);
         }
       }
     }).catch((error) => {
@@ -74,12 +80,14 @@ export class AuthService {
   }
 
   mobileFacebookSignInWithReferral(referredBy) {
+    this.logger.debug(`Initialising mobile Facebook sign in referred by ${referredBy}`);
     const provider = new auth.FacebookAuthProvider();
     localStorage.setItem('referredBy', referredBy);
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   mobileFacebookSignIn() {
+    this.logger.debug(`Initialising mobile Facebook sign in`);
     const provider = new auth.FacebookAuthProvider();
     return this.afAuth.auth.signInWithRedirect(provider);
   }
@@ -87,16 +95,19 @@ export class AuthService {
   googleSignIn() {
     this.logger.debug('Initialising desktop Google sign in');
     const provider = new auth.GoogleAuthProvider();
+    let firstName = null;
+    let lastName = null;
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['given_name'];
-      const lastName = result.additionalUserInfo.profile['family_name'];
-      const doc = await this.firebaseService.docExists(path);
-      if (firstName && lastName) {
+      if (result) {
+        firstName = result.additionalUserInfo.profile['given_name'];
+        lastName = result.additionalUserInfo.profile['family_name'];
+        const path = `/users/${result.user.uid}/`;
+        const doc = await this.firebaseService.docExists(path);
         if (!doc) {
           this.userService.processNewUser(result, firstName, lastName);
-        } else {
-          this.userService.processNewUser(result, null, null);
+        }
+        if (doc) {
+          this.logger.debug(`${firstName} ${lastName} is a returning desktop user`);
         }
       }
     }).catch((error) => {
@@ -111,17 +122,20 @@ export class AuthService {
   }
 
   googleSignInWithReferral(referredBy) {
-    this.logger.debug(`Initialising desktop Google sign in with referral id ${referredBy}`);
+    this.logger.debug(`Initialising desktop Google sign in referred by ${referredBy}`);
     const provider = new auth.GoogleAuthProvider();
+    let firstName = null;
+    let lastName = null;
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      firstName = result.additionalUserInfo.profile['given_name'];
+      lastName = result.additionalUserInfo.profile['family_name'];
       const path = `/users/${result.user.uid}/`;
-      const firstName = result.additionalUserInfo.profile['given_name'];
-      const lastName = result.additionalUserInfo.profile['family_name'];
-      if (firstName && lastName) {
-        const doc = await this.firebaseService.docExists(path);
-        if (!doc) {
-          this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-        }
+      const doc = await this.firebaseService.docExists(path);
+      if (!doc) {
+        this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+      }
+      if (doc) {
+        this.logger.debug(`${firstName} ${lastName} is a returning desktop user`);
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -129,13 +143,14 @@ export class AuthService {
   }
 
   mobileGoogleSignInWithReferral(referredBy) {
-    this.logger.debug(`Initialising mobile Google sign in with referral id ${referredBy}`);
+    this.logger.debug(`Initialising mobile Google sign in referred by ${referredBy}`);
     const provider = new auth.GoogleAuthProvider();
     localStorage.setItem('referredBy', referredBy);
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   async processMobileLogin(result, uid) {
+    this.logger.debug('Initialising mobile login');
     const path = `/users/${uid}/`;
     const doc = await this.firebaseService.docExists(path);
     if (!doc) {
@@ -151,6 +166,7 @@ export class AuthService {
   }
 
   async processMobileReferralLogin(result, uid, referredBy) {
+    this.logger.debug(`Initialising mobile sign in referred by ${referredBy}`);
     const path = `/users/${uid}/`;
     const doc = await this.firebaseService.docExists(path);
     if (!doc) {
@@ -168,14 +184,16 @@ export class AuthService {
   register(email, password, firstName, lastName) {
     this.logger.debug('Initialising registration');
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      firstName = this.utilService.toTitleCase(firstName);
-      lastName = this.utilService.toTitleCase(lastName);
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        this.userService.processNewUser(result, firstName, lastName);
-        this.sendVerificationMail();
-        this.modalService.displayMessage('Yay!', 'Your registration was successful.');
+      if (result) {
+        const path = `/users/${result.user.uid}/`;
+        firstName = this.utilService.toTitleCase(firstName);
+        lastName = this.utilService.toTitleCase(lastName);
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewUser(result, firstName, lastName);
+          this.sendVerificationMail();
+          this.modalService.displayMessage('Yay!', 'Your registration was successful.');
+        }
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -185,14 +203,16 @@ export class AuthService {
   registerWithReferral(email, password, firstName, lastName, referredBy) {
     this.logger.debug(`Initialising registration with referral id ${referredBy}`);
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
-      const path = `/users/${result.user.uid}/`;
-      firstName = this.utilService.toTitleCase(firstName);
-      lastName = this.utilService.toTitleCase(lastName);
-      const doc = await this.firebaseService.docExists(path);
-      if (!doc) {
-        this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
-        this.sendVerificationMail();
-        this.modalService.displayMessage('Yay!', 'Your registration was successful.');
+      if (result) {
+        const path = `/users/${result.user.uid}/`;
+        firstName = this.utilService.toTitleCase(firstName);
+        lastName = this.utilService.toTitleCase(lastName);
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
+          this.sendVerificationMail();
+          this.modalService.displayMessage('Yay!', 'Your registration was successful.');
+        }
       }
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
@@ -235,8 +255,8 @@ export class AuthService {
   enableChangePasswordOption() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user != null) {
-      this.logger.debug('Disabling change password option');
       if (user.providerData[0].providerId === 'facebook.com' || user.providerData[0].providerId === 'google.com') {
+        this.logger.debug('Disabling change password option');
         return false;
       }
     } else {
