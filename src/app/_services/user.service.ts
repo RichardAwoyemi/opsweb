@@ -61,7 +61,7 @@ export class UserService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: true
     };
     return userRef.set(userData, {
       merge: true
