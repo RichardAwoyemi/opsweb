@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isMobile.subscribe(result => {
       if (result.matches && !this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
         result.matches && response && response.providerData[0].providerId === 'google.com') {
-        this.logger.debug(`Result is ${result.matches}, so mobile login`);
+        this.logger.debug(`Result is ${result.matches}, so processing mobile login`);
         this.authService.processMobileLogin(response.providerData[0], response.uid);
       }
     });
@@ -71,7 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isMobile.subscribe(result => {
       if (result.matches && this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
         result.matches && this.referredBy && response && response.providerData[0].providerId === 'google.com') {
-        this.logger.debug(`Result is ${result.matches}, so mobile referral login`);
+        this.logger.debug(`Result is ${result.matches}, so processing mobile referral login`);
         this.authService.processMobileReferralLogin(response.providerData[0], response.uid, this.referredBy);
       }
     });
