@@ -3,10 +3,10 @@ import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment.staging';
 import { UtilService } from './util.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable()
 export class ReferralService {
@@ -18,25 +18,25 @@ export class ReferralService {
     public router: Router,
     public utilService: UtilService,
     public http: HttpClient,
+    private logger: NGXLogger
   ) {
   }
 
-  generateReferralIdForUser(userId, referralId) {
-    const user = this.afs.firestore.collection('users').doc(userId);
-    user.update({ referralId: referralId });
-  }
-
-  generateReferralUrl(referralId) {
-    if (location.host === 'localhost:4200') {
-      return Observable.create((observer) => { observer.next('localhost:4200/invite/' + referralId); });
-    } else if (location.host === 'opsonion.herokuapp.com') {
-      return Observable.create((observer) => { observer.next('opsonion.herokuapp.com/invite/' + referralId); });
-    } else if (location.host === 'opsonion.com') {
-      return Observable.create((observer) => { observer.next('opsonion.com/invite/' + referralId); });
+  getNoOfReferredUsers(referralId) {
+    this.logger.debug('Getting number of referred users');
+    if (referralId) {
+      return this.afs.collection('counters').doc('waitlist').valueChanges()
+        .pipe(map(referrals => referrals[referralId]));
     }
   }
 
+  generateReferralUrl(referralId) {
+    this.logger.debug('Generating referral link');
+    return Observable.create((observer) => { observer.next(location.host + '/invite/' + referralId); });
+  }
+
   addReferralPoints(userReferralId) {
+    this.logger.debug('Adding referral points');
     const ref = this.afs.firestore.collection('counters').doc('waitlist');
     return this.afs.firestore.runTransaction(async (transaction: any) => {
       const doc = await transaction.get(ref);
@@ -46,44 +46,40 @@ export class ReferralService {
       const newCount = doc.data()[userReferralId] + 1;
       transaction.set(ref, { [userReferralId]: newCount }, { merge: true });
     }).then(() => {
-      if (environment.production === false) {
-        console.log(
-          'Transaction successfully committed.'
-        );
-      }
+        this.logger.debug('Transaction successfully committed.');
     }).catch((error) => {
-      if (environment.production === false) {
-        console.log('Transaction failed: ', error);
-      }
+        this.logger.debug(`Transaction failed: + ${error}`);
     });
   }
 
   getWaitlist() {
+    this.logger.debug('Getting waitlist');
     return this.afs.collection('counters').doc('waitlist').snapshotChanges().pipe(map(action => {
       const data = action.payload.data();
+      this.logger.debug(data);
       return data;
     }));
   }
 
   async calculateRanking(referralId, waitlist) {
-    if (!environment.production) {
-      console.log(referralId);
-      console.log(waitlist);
-    }
+    this.logger.debug('Referral id:');
+    this.logger.debug(referralId);
+    this.logger.debug('Waitlist:');
+    this.logger.debug(waitlist);
 
     if (waitlist && referralId) {
       if (!waitlist.hasOwnProperty(referralId)) {
+        this.logger.debug('Referral id not found, creating new one');
         this.addUserToWaitlist(referralId);
-      } else if (!environment.production) {
-        console.log('Referral id found!');
+      } else {
+        this.logger.debug('Referral id found!');
       }
 
       const waitlistSorted = await this.sortRanking(waitlist);
 
       if (waitlistSorted) {
-        if (!environment.production) {
-          console.log(waitlistSorted);
-        }
+        this.logger.debug('Waitlist sorted:');
+        this.logger.debug(waitlistSorted);
         const result = waitlistSorted.filter(obj => {
           return obj.referralId === referralId;
         });
@@ -96,6 +92,7 @@ export class ReferralService {
   }
 
   sortRanking(obj) {
+    this.logger.debug('Sorting ranking');
     const arr = [];
     let prop;
 
@@ -122,20 +119,15 @@ export class ReferralService {
 
   addUserToWaitlist(referralId) {
     const waitlistRef = this.afs.firestore.collection('counters').doc('waitlist');
+    this.logger.debug(`Adding ${referralId} to waitlist`);
     return this.afs.firestore.runTransaction(async (transaction: any) => {
       transaction.set(waitlistRef, {
         [referralId]: 0,
       }, { merge: true });
     }).then(() => {
-      if (environment.production === false) {
-        console.log(
-          `Transaction successfully committed.`
-        );
-      }
+        this.logger.debug('Transaction successfully committed.');
     }).catch((error) => {
-      if (environment.production === false) {
-        console.log('Transaction failed: ', error);
-      }
+        this.logger.debug(`Transaction failed: ${error}`);
     });
   }
 }

@@ -3,6 +3,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { UtilService } from 'src/app/_services/util.service';
 
 @Component({
   templateUrl: './payment-methods.component.html',
@@ -13,6 +14,7 @@ export class PaymentMethodsComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private utilService: UtilService,
     private activatedRoute: ActivatedRoute) {
   }
 
@@ -21,29 +23,6 @@ export class PaymentMethodsComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    if (!this.scrollExecuted) {
-      let routeFragmentSubscription: Subscription;
-
-      // Automatic scroll
-
-      routeFragmentSubscription = this.activatedRoute.fragment.subscribe(fragment => {
-        if (fragment) {
-          const element = document.getElementById(fragment);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            this.scrollExecuted = true;
-
-            // Free resources
-
-            setTimeout(() => {
-              if (environment.production === false) {
-                console.log('routeFragmentSubscription unsubscribe');
-              }
-              routeFragmentSubscription.unsubscribe();
-            }, 1000);
-          }
-        }
-      });
-    }
+    this.utilService.automaticScroll(this.scrollExecuted, this.activatedRoute);
   }
 }

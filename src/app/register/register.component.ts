@@ -3,6 +3,8 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
 import { environment } from 'src/environments/environment';
+import { UtilService } from '../_services/util.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   templateUrl: './register.component.html',
@@ -12,7 +14,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private authService: AuthService
+    private authService: AuthService,
+    private logger: NGXLogger
   ) {}
 
   model: any = {};
@@ -24,7 +27,7 @@ export class RegisterComponent implements OnInit {
 
   public resolved(captchaResponse: string) {
     if (environment.production === false) {
-      console.log(`Resolved captcha with response ${captchaResponse}:`);
+      this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
     }
   }
 

@@ -1,11 +1,18 @@
 import { UtilService } from './util.service';
 import { TestBed, inject } from '@angular/core/testing';
+import { NGXLogger, NGXLoggerHttpService, LoggerModule } from 'ngx-logger';
+import { environment } from 'src/environments/environment';
 
 describe('UtilService unit tests', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        LoggerModule.forRoot(environment.logging)
+      ],
       providers: [
-        UtilService
+        UtilService,
+        NGXLogger,
+        NGXLoggerHttpService
       ]
     });
   });

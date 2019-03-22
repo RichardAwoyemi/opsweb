@@ -20,7 +20,6 @@ import { ContactComponent } from './contact/contact.component';
 import { LegalComponent } from './legal/legal.component';
 import { LoginComponent } from './login/login.component';
 import { PressComponent } from './press/press.component';
-import { MarketsComponent } from './markets/markets.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { SupportComponent } from './support/support.component';
@@ -32,8 +31,6 @@ import { TransactionsComponent } from './support/transactions/transactions.compo
 import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
 import { ServicesComponent } from './services/services.component';
 
-import { MarketsService } from 'src/app/_services/markets.service';
-import { PriceComponent } from './markets/price/price.component';
 import { EnvService } from './_services/env.service';
 import { AuthService } from './_services/auth.service';
 import { AuthGuard } from './_guards/auth.guard';
@@ -66,7 +63,9 @@ import { InboxComponent } from './inbox/inbox.component';
 import { ReferralService } from './_services/referral.service';
 import { FirebaseService } from './_services/firebase.service';
 import { DataService } from './_services/data.service';
+import { ModalService } from './_services/modal.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -83,8 +82,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     LegalComponent,
     LoginComponent,
     PressComponent,
-    PriceComponent,
-    MarketsComponent,
     RegisterComponent,
     ServicesComponent,
     StatusComponent,
@@ -131,10 +128,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     QRCodeModule,
     QuillModule,
     Ng5SliderModule,
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    LoggerModule.forRoot(environment.logging),
   ],
   providers: [
-    MarketsService,
     EnvService,
     AuthService,
     UtilService,
@@ -147,6 +144,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AnonymousGuard,
     FirebaseService,
     DataService,
+    ModalService,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {

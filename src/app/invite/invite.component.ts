@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-invite',
@@ -24,7 +24,8 @@ export class InviteComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private userService: UserService,
-    public router: Router,
+    private logger: NGXLogger,
+    public router: Router
   ) {}
 
   model: any = {};
@@ -47,9 +48,7 @@ export class InviteComponent implements OnInit {
   }
 
   public resolved(captchaResponse: string) {
-    if (environment.production === false) {
-      console.log(`Resolved captcha with response ${captchaResponse}:`);
-    }
+    this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
   }
 
   registerWithReferral() {

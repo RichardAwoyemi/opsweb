@@ -7,6 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { UtilService } from './_services/util.service';
 import { environment } from 'src/environments/environment';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private logger: NGXLogger,
     public userService: UserService,
     public utilService: UtilService,
     public afAuth: AngularFireAuth,
@@ -41,11 +43,12 @@ export class AppComponent implements OnInit, OnDestroy {
       this.assignUserProfile(response);
       this.processMobileLogin(response);
       this.processMobileReferralLogin(response);
+      localStorage.removeItem('referredBy');
     });
   }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset ]);
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
     this.authSubscription = this.afAuth.authState.subscribe(user => {
       if (user) {
@@ -55,17 +58,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   processMobileLogin(response) {
-    if (this.isMobile && !this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
-        this.isMobile && !this.referredBy && response && response.providerData[0].providerId === 'google.com') {
-      this.authService.processMobileLogin(response.providerData[0], response.uid);
-    }
+    this.isMobile.subscribe(result => {
+      if (result.matches && !this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
+        result.matches && response && response.providerData[0].providerId === 'google.com') {
+        this.logger.debug(`Result is ${result.matches}, so processing mobile login`);
+        this.authService.processMobileLogin(response.providerData[0], response.uid);
+      }
+    });
   }
 
   processMobileReferralLogin(response) {
-    if (this.isMobile && this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
-        this.isMobile && this.referredBy && response && response.providerData[0].providerId === 'google.com') {
-      this.authService.processMobileReferralLogin(response.providerData[0], response.uid, this.referredBy);
-    }
+    this.isMobile.subscribe(result => {
+      if (result.matches && this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
+        result.matches && this.referredBy && response && response.providerData[0].providerId === 'google.com') {
+        this.logger.debug(`Result is ${result.matches}, so processing mobile referral login`);
+        this.authService.processMobileReferralLogin(response.providerData[0], response.uid, this.referredBy);
+      }
+    });
   }
 
   assignUserProfile(response) {
@@ -81,10 +90,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   cacheUserProfile(user) {
-    if (!environment.production) {
-      console.log(user);
-      console.log(user.photoURL);
-    }
+    this.logger.debug('Caching:');
+    this.logger.debug(user);
+    this.logger.debug('Caching: ' + user.photoURL);
+
     if (user.photoURL) {
       this.user = {
         photoURL: user.photoURL

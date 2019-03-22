@@ -33,8 +33,8 @@ exports.deleteUser = functions.firestore
     return admin.firestore().runTransaction(async (transaction: any) => {
       const doc = await transaction.get(ref);
       if (!doc.exists) {
-        transaction.set(ref, { counter: 100 });
-        return 100;
+        transaction.set(ref, { counter: 0 });
+        return 0;
       }
       const newCount = doc.data().counter - 1;
       transaction.update(ref, {

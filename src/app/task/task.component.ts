@@ -1,5 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UtilService } from '../_services/util.service';
+import { NGXLogger } from 'ngx-logger';
 
 declare var $;
 
@@ -13,7 +15,8 @@ export class TaskComponent implements OnInit {
   task: any;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private logger: NGXLogger
   ) { }
 
   @ViewChild('showReportModal') showReportModal: ElementRef;
@@ -36,7 +39,7 @@ export class TaskComponent implements OnInit {
   }
 
   showEditOptions() {
-    console.log('todo');
+    this.logger.debug('todo');
   }
 
   showApplyTask() {
