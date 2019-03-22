@@ -24,13 +24,13 @@
                     <strong>Change Picture</strong>
                     <br>
                     <small>
-                      Max file size is 1MB.
+                      Max file size is 5MB.
                     </small>
                     <br>
                   </div>
                   <div>
                     <label class="btn btn-xs btn-secondary btn-file">
-                      <input type="file" />
+                      <input type="file" accept="image/*" (change)="handleFileInput($event)"/>
                       <span>Upload</span>
                     </label>
                   </div>

@@ -8,6 +8,7 @@ import { UtilService } from '../_services/util.service';
 import { AuthService } from '../_services/auth.service';
 import { ModalService } from '../_services/modal.service';
 import { NGXLogger } from 'ngx-logger';
+import { ImgurService, ImgurResponse } from '../_services/imgur.service';
 
 declare var $;
 
@@ -56,12 +57,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private utilService: UtilService,
     private authService: AuthService,
+    private imgurService: ImgurService,
     private logger: NGXLogger
   ) { }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user'));
-    if(!this.user.photoURL) {
+    if (!this.user.photoURL) {
       this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
     }
 
@@ -202,6 +204,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
     return (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year');
   }
 
+  handleFileInput(e) {
+    const reader = new FileReader();
+    if (e.target.files && e.target.files.length) {
+      const [file] = e.target.files;
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imgurService.upload(reader.result).subscribe((imgurResponse: ImgurResponse) => {
+          this.logger.debug(imgurResponse);
+        });
+      };
+    }
+  }
+
   setUserPersonalDetails() {
     let messageDisplayed = false;
     if (this.userPersonalDetailsValid) {
@@ -209,7 +224,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
           if (result) {
             if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
-                (result[0]['uid'] !== this.user.uid)) {
+              (result[0]['uid'] !== this.user.uid)) {
               this.logger.debug('Username belongs to another user');
               this.modalService.displayMessage('Oops!', 'This username is already in use.');
             } else {
@@ -235,12 +250,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
                     messageDisplayed = true;
                   }
                 });
-              }
             }
-          });
-        }
-      } else {
-        this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
+          }
+        });
+      }
+    } else {
+      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
   }
 

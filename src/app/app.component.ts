@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
       };
     }
     localStorage.setItem('user', JSON.stringify(user));
-    this.router.navigate(['dashboard']);
+    //this.router.navigate(['dashboard']);
   }
 
   onActivate(_event) {
