@@ -8,13 +8,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UtilService } from './util.service';
 import { ReferralService } from './referral.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { NGXLogger, LoggerModule, NGXLoggerHttpService } from 'ngx-logger';
 
 describe('UserService unit tests', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        RouterTestingModule
+        RouterTestingModule,
+        LoggerModule.forRoot(environment.logging)
       ],
       providers: [
         UserService,
@@ -23,7 +25,9 @@ describe('UserService unit tests', () => {
         HttpHandler,
         ReferralService,
         AngularFirestore,
-        AngularFireAuth
+        AngularFireAuth,
+        NGXLogger,
+        NGXLoggerHttpService
       ]
     });
   });
