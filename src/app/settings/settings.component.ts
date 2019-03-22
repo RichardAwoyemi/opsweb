@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment.staging';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { DataService } from '../_services/data.service';
 import { UtilService } from '../_services/util.service';
@@ -16,7 +16,7 @@ declare var $;
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   userData: any;
   user: any;
   referralMode: boolean;
@@ -43,6 +43,9 @@ export class SettingsComponent implements OnInit {
   @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
   @ViewChild('showVerifyDocumentationModal') showVerifyDocumentationModal: ElementRef;
 
+  private datesSubscription: Subscription;
+  private usernameSubscription: Subscription;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
@@ -67,7 +70,7 @@ export class SettingsComponent implements OnInit {
         if (data['selectedTimezone']) {
           this.timezone = data['selectedTimezone'];
         } else {
-          this.timezone = 'Greenwich Median Time';
+          this.timezone = '(UTC) Edinburgh, London';
         }
 
         if (data['selectedCurrency']) {
@@ -132,7 +135,7 @@ export class SettingsComponent implements OnInit {
       }
     });
 
-    this.dataService.getAllDates().subscribe(data => {
+    this.datesSubscription = this.dataService.getAllDates().subscribe(data => {
       if (data) {
         if (environment.production === false) {
           this.logger.debug(Object.values(data));
@@ -175,19 +178,46 @@ export class SettingsComponent implements OnInit {
   }
 
   setUserPersonalDetails() {
-    if (this.user.uid && this.username && this.firstName && this.lastName && this.dobDay && this.dobMonth
-      && this.dobYear && this.streetAddress1 && this.streetAddress2 && this.city && this.postcode) {
-        if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
-          this.userService.setUserPersonalDetails(this.user.uid, this.username, this.firstName, this.lastName,
-            this.dobDay, this.dobMonth, this.dobYear, this.streetAddress1, this.streetAddress2, this.city,
-            this.postcode).then(() =>
-            this.modalService.displayMessage('Yay!', 'Your settings have been updated.')
-            ).catch((error) => {
-              this.modalService.displayMessage('Oops!', error);
-            });
-        }
+    let messageDisplayed = false;
+    if (this.user.uid && this.username && this.firstName && this.lastName &&
+      this.dobDay && this.dobMonth && this.dobYear && this.streetAddress1 &&
+      this.city && this.postcode) {
+      if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
+        this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase()).subscribe((result) => {
+          if (result) {
+            if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase()) && (result[0]['uid'] !== this.user.uid)) {
+              this.logger.debug('Username belongs to another user');
+              this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
+            } else {
+              this.userService.setUserPersonalDetails(this.user.uid, this.username.toLowerCase(), this.firstName, this.lastName,
+                this.dobDay, this.dobMonth, this.dobYear, this.streetAddress1, this.streetAddress2, this.city,
+                this.postcode).then(() => {
+                    if (!messageDisplayed) {
+                      this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
+                      messageDisplayed = true;
+                    }
+                  }
+                ).catch((error) => {
+                  if (!messageDisplayed) {
+                    this.modalService.displayMessage('Oops!', error);
+                    messageDisplayed = true;
+                  }
+                });
+            }
+          }
+        });
+      }
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.datesSubscription) {
+      this.datesSubscription.unsubscribe();
+    }
+    if (this.usernameSubscription) {
+      this.usernameSubscription.unsubscribe();
     }
   }
 }

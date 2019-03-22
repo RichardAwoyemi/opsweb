@@ -187,6 +187,13 @@ export class UserService {
     });
   }
 
+  getUserByUsername(username) {
+    this.logger.debug(`Getting user with username '${username}'`);
+    if (username) {
+      return this.afs.collection('users', ref => ref.where('username', '==', username).limit(1)).valueChanges();
+    }
+  }
+
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     this.logger.debug(`Setting personal details for ${uid}`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
