@@ -12,7 +12,7 @@ export const environment = {
   },
   referralMode: true,
   logging: {
-    level: NgxLoggerLevel.INFO,
+    level: NgxLoggerLevel.DEBUG,
   },
   firebaseApiUrl: 'https://us-central1-opsonion-dev.cloudfunctions.net'
 };

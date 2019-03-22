@@ -36,6 +36,7 @@ export class AuthService {
   }
 
   facebookSignIn() {
+    this.logger.debug(`Initialising desktop Facebook sign in`);
     const provider = new auth.FacebookAuthProvider();
     let firstName = null;
     let lastName = null;
@@ -58,6 +59,7 @@ export class AuthService {
   }
 
   facebookSignInWithReferral(referredBy) {
+    this.logger.debug(`Initialising desktop Facebook sign in referred by ${referredBy}`);
     const provider = new auth.FacebookAuthProvider();
     let firstName = null;
     let lastName = null;
