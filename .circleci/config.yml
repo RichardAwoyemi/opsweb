@@ -75,8 +75,8 @@ jobs:
             fi
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               cd /root/opsonion-web/src/app/_functions/
-              npm firebase use opsonion-live
-              npm firebase deploy --token=$FIREBASE_TOKEN --non-interactive
+              firebase use opsonion-live
+              firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
     branches:
       only: 
