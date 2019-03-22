@@ -1,6 +1,16 @@
+import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
+import { Injectable } from '@angular/core';
+
+@Injectable()
 export class UtilService {
   IOS_APP_URL = 'https://itunes.apple.com';
   ANDROID_APP_URL = 'https://play.google.com';
+
+  constructor(
+    private logger: NGXLogger
+  ) { }
 
   toTitleCase(str) {
     str = str.replace(/^\s+|\s+$/gm, '');
@@ -62,5 +72,28 @@ export class UtilService {
     document.execCommand('copy');
     document.body.removeChild(selectBox);
     return;
+  }
+
+  automaticScroll(scrollExecuted, activatedRoute) {
+    if (scrollExecuted) {
+      let routeFragmentSubscription: Subscription;
+
+      routeFragmentSubscription = activatedRoute.fragment.subscribe(fragment => {
+        if (fragment) {
+          const element = document.getElementById(fragment);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            scrollExecuted = true;
+
+            setTimeout(() => {
+              if (environment.production === false) {
+                this.logger.debug('routeFragmentSubscription unsubscribe');
+              }
+              routeFragmentSubscription.unsubscribe();
+            }, 1000);
+          }
+        }
+      });
+    }
   }
 }

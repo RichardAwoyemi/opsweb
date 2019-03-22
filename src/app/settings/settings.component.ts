@@ -4,10 +4,10 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 import { Observable } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { DataService } from '../_services/data.service';
-import { ModalComponent } from '../_modals/modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilService } from '../_services/util.service';
 import { AuthService } from '../_services/auth.service';
+import { ModalService } from '../_services/modal.service';
+import { NGXLogger } from 'ngx-logger';
 
 declare var $;
 
@@ -46,10 +46,11 @@ export class SettingsComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
-    private modalService: NgbModal,
+    private modalService: ModalService,
     private dataService: DataService,
     private utilService: UtilService,
-    private authService: AuthService
+    private authService: AuthService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
@@ -99,6 +100,8 @@ export class SettingsComponent implements OnInit {
 
         if (data['streetAddress2']) {
           this.streetAddress2 = data['streetAddress2'];
+        } else {
+          this.streetAddress2 = null;
         }
 
         if (data['city']) {
@@ -114,7 +117,7 @@ export class SettingsComponent implements OnInit {
     this.dataService.getAllTimezones().subscribe(data => {
       if (data) {
         if (environment.production === false) {
-          console.log(data);
+          this.logger.debug(data);
         }
         this.timezones = data;
       }
@@ -123,7 +126,7 @@ export class SettingsComponent implements OnInit {
     this.dataService.getAllCurrencies().subscribe(data => {
       if (data) {
         if (environment.production === false) {
-          console.log(data);
+          this.logger.debug(data);
         }
         this.currencies = data;
       }
@@ -132,7 +135,7 @@ export class SettingsComponent implements OnInit {
     this.dataService.getAllDates().subscribe(data => {
       if (data) {
         if (environment.production === false) {
-          console.log(Object.values(data));
+          this.logger.debug(Object.values(data));
         }
         this.dates = Object.values(data);
       }
@@ -151,18 +154,6 @@ export class SettingsComponent implements OnInit {
     return new Array(i);
   }
 
-  displayUpdateSuccess() {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Yay!';
-    modalReference.componentInstance.message = 'Your settings have been updated.';
-  }
-
-  displayGenericError(error) {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Oops!';
-    modalReference.componentInstance.message = error;
-  }
-
   showVerifyIdentity() {
     $(this.showVerifyIdentityModal.nativeElement).modal('show');
   }
@@ -174,29 +165,29 @@ export class SettingsComponent implements OnInit {
   setUserCurrencyAndTimezonePreferences() {
     if (this.user.uid && this.timezone && this.currency) {
       this.userService.setUserCurrencyAndTimezonePreferences(this.user.uid, this.timezone, this.currency).then(() =>
-        this.displayUpdateSuccess()
+        this.modalService.displayMessage('Yay!', 'Your settings have been updated.')
       ).catch((error) => {
-        this.displayGenericError(error);
+        this.modalService.displayMessage('Oops!', error);
       });
     } else {
-      this.displayGenericError('Please fill in all required fields.');
+      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
   }
 
   setUserPersonalDetails() {
     if (this.user.uid && this.username && this.firstName && this.lastName && this.dobDay && this.dobMonth
-      && this.dobYear && this.streetAddress1 && this.city && this.postcode) {
+      && this.dobYear && this.streetAddress1 && this.streetAddress2 && this.city && this.postcode) {
         if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
           this.userService.setUserPersonalDetails(this.user.uid, this.username, this.firstName, this.lastName,
             this.dobDay, this.dobMonth, this.dobYear, this.streetAddress1, this.streetAddress2, this.city,
             this.postcode).then(() =>
-              this.displayUpdateSuccess()
+            this.modalService.displayMessage('Yay!', 'Your settings have been updated.')
             ).catch((error) => {
-              this.displayGenericError(error);
+              this.modalService.displayMessage('Oops!', error);
             });
         }
     } else {
-      this.displayGenericError('Please fill in all required fields.');
+      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
   }
 }

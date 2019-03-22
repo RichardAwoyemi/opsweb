@@ -4,11 +4,11 @@ import { Observable, combineLatest, from, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../_services/user.service';
 import { ReferralService } from '../_services/referral.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from '../_modals/modal.component';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { UtilService } from '../_services/util.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ModalService } from '../_services/modal.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -29,20 +29,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
+  noOfReferredUsers: number;
   user$: Observable<any>;
   noOfUsers$: Observable<number>;
   ranking$: Observable<number>;
 
   private userSubscription: Subscription;
   private referredUserSubscription: Subscription;
+  private noOfReferredUserSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
     private referralService: ReferralService,
+    private modalService: ModalService,
     private utilService: UtilService,
-    private modalService: NgbModal,
-    private ngxLoader: NgxUiLoaderService
+    private ngxLoader: NgxUiLoaderService,
+    private logger: NGXLogger
   ) {
     this.userData = {
       firstName: null,
@@ -64,15 +67,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.calculateNoOfUsers();
         this.calculateRanking();
         this.getReferredUsers();
+        this.getNoOfReferredUsers();
         this.ngxLoader.stop();
       }
     });
   }
 
   setUser(result) {
-    if (!environment.production) {
-      console.log(result);
-    }
+    this.logger.debug('Setting user:');
+    this.logger.debug(result);
     this.userData = result;
   }
 
@@ -86,9 +89,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.twitterShareUrl = 'https://twitter.com/intent/tweet?text=' + this.campaignMessage;
       this.emailShareUrl = 'mailto:?subject=Hire and work from anywhere on Opsonion!&body=' + this.campaignMessage;
     }, (error) => {
-      if (!environment.production) {
-        console.log(error);
-      }
+      this.logger.debug(error);
     }
     );
   }
@@ -102,10 +103,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getReferredUsers() {
     if (this.userData.referralId) {
       this.referredUserSubscription = this.userService.getReferredUsers(this.userData.referralId).subscribe(result => {
-        if (!environment.production) {
-          console.log(result);
-        }
+        this.logger.debug('Getting referred users:');
+        this.logger.debug(result);
         this.invitees = result;
+      });
+    }
+  }
+
+  getNoOfReferredUsers() {
+    if (this.userData.referralId) {
+      this.noOfReferredUserSubscription = this.referralService.getNoOfReferredUsers(this.userData.referralId).subscribe(result => {
+        if (this.noOfReferredUsers) {
+          this.logger.debug('Getting number of referred users:');
+          this.logger.debug(result);
+        }
+        this.noOfReferredUsers = result;
       });
     }
   }
@@ -117,10 +129,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         from(this.referralService.calculateRanking(this.userData.referralId, waitlistResult)), this.noOfUsers$)),
       filter(combined => combined[0] != null && combined[1] != null),
       map(combined => {
-        if (!environment.production) {
-          console.log('User ranking: ' + combined[0]);
-          console.log('Number of users: ' + combined[1]);
-        }
+        this.logger.debug('User ranking: ' + combined[0]);
+        this.logger.debug('Number of users: ' + combined[1]);
         if (combined[0] > combined[1]) {
           return combined[1];
         } else {
@@ -132,18 +142,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   copyMessage() {
     this.utilService.copyMessage(this.referralUrl);
-  }
-
-  displayUpdateSuccess() {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Yay!';
-    modalReference.componentInstance.message = 'Your settings have been updated.';
-  }
-
-  displayGenericError(error) {
-    const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-    modalReference.componentInstance.header = 'Oops!';
-    modalReference.componentInstance.message = error;
+    this.modalService.displayMessage('Yay!', 'Your referral link has been copied.');
   }
 
   setUserLegalNameData() {
@@ -151,12 +150,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const firstName = this.utilService.toTitleCase(this.firstName).trim();
       const lastName = this.utilService.toTitleCase(this.lastName).trim();
       this.userService.setUserLegalNameData(this.user.uid, firstName, lastName).then(() => {
-        this.displayUpdateSuccess();
+        this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
       }).catch((error) => {
-        this.displayGenericError(error);
+        this.modalService.displayMessage('Oops!', error);
       });
     } else {
-      this.displayGenericError('Please fill in all required fields.');
+      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
   }
 
@@ -167,6 +166,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     if (this.referredUserSubscription) {
       this.referredUserSubscription.unsubscribe();
+    }
+
+    if (this.noOfReferredUserSubscription) {
+      this.noOfReferredUserSubscription.unsubscribe();
     }
   }
 }

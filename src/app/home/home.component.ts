@@ -42,4 +42,8 @@ export class HomeComponent implements OnInit {
   facebookSignIn() {
     this.authService.facebookSignIn();
   }
+
+  mobileFacebookSignIn() {
+    this.authService.mobileFacebookSignIn();
+  }
 }

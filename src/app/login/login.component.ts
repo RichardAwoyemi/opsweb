@@ -5,7 +5,8 @@ import { AuthService } from '../_services/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ModalComponent } from '../_modals/modal.component';
-import { environment } from 'src/environments/environment';
+import { UtilService } from '../_services/util.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   templateUrl: './login.component.html'
@@ -17,7 +18,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
+    private logger: NGXLogger,
     public modalService: NgbModal,
+    public utilService: UtilService,
     public ngZone: NgZone,
     public router: Router
   ) { }
@@ -32,9 +35,7 @@ export class LoginComponent implements OnInit {
     const email = this.model.email;
     const password = this.model.password;
     this.authService.signIn(email, password).then((result) => {
-      if (environment.production === false) {
-        console.log(JSON.stringify(result.user));
-      }
+      this.logger.debug(JSON.stringify(result.user));
       if (result.user.emailVerified !== false) {
         localStorage.setItem('user', JSON.stringify(result.user));
         this.ngZone.run(() => { this.router.navigate(['dashboard']); });

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../_modals/modal.component';
+import { UtilService } from '../_services/util.service';
+import { NGXLogger } from 'ngx-logger';
 
 declare var $;
 
@@ -25,6 +27,7 @@ export class ContactComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
+    private logger: NGXLogger,
     public modalService: NgbModal
   ) { }
 
@@ -59,12 +62,12 @@ export class ContactComponent implements OnInit {
     const formObject = document.forms['contactForm'];
 
     if (environment.production === false) {
-      console.log(new FormData(formObject));
+      this.logger.debug(new FormData(formObject));
     }
 
     fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
       if (environment.production === false) {
-        console.log('Success!', response);
+        this.logger.debug(`Success: ${response}`);
         this.submitted = true;
       }
     }).catch(

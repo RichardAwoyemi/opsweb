@@ -1,3 +1,5 @@
+import { NgxLoggerLevel } from 'ngx-logger';
+
 export const environment = {
   production: true,
   firebaseConfig : {
@@ -9,5 +11,8 @@ export const environment = {
     messagingSenderId: '994826852330'
   },
   referralMode: true,
+  logging: {
+    level: NgxLoggerLevel.DEBUG,
+  },
   firebaseApiUrl: 'https://us-central1-opsonion-dev.cloudfunctions.net'
 };

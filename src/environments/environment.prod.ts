@@ -1,3 +1,5 @@
+import { NgxLoggerLevel } from 'ngx-logger';
+
 export const environment = {
   production: true,
   firebaseConfig : {
@@ -7,6 +9,9 @@ export const environment = {
     projectId: 'opsonion-live',
     storageBucket: 'opsonion-live.appspot.com',
     messagingSenderId: '202919224596'
+  },
+  logging: {
+    level: NgxLoggerLevel.INFO,
   },
   referralMode: true
 };

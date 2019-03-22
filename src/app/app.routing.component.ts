@@ -25,8 +25,6 @@ const routes: Routes = [
   { path: 'legal', component: LegalComponent, canActivate: [AnonymousGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'press', component: PressComponent, canActivate: [AnonymousGuard] },
-  // { path: 'markets', component: MarketsComponent, canActivate: [AnonymousGuard] },
-  // { path: 'markets/:symbol', component: PriceComponent, canActivate: [AnonymousGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
   // { path: 'status', component: StatusComponent, canActivate: [AnonymousGuard] },
   // { path: 'services', component: ServicesComponent, canActivate: [AnonymousGuard] },
