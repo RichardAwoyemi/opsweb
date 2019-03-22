@@ -30,7 +30,7 @@
                   </div>
                   <div>
                     <label class="btn btn-xs btn-secondary btn-file">
-                      <input type="file"/>
+                      <input type="file" />
                       <span>Upload</span>
                     </label>
                   </div>
@@ -66,7 +66,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">@</span>
                   </div>
-                  <input type="text" class="form-control" [(ngModel)]="username">
+                  <input type="text" class="form-control" [(ngModel)]="username" (change)="username=username.trim()">
                 </div>
               </div>
             </div>
@@ -82,10 +82,12 @@
                   <label>Legal Name</label>
                   <div class="row">
                     <div class="col-md-6">
-                      <input class="form-control" placeholder="First Name" type="text" [(ngModel)]="firstName">
+                      <input class="form-control" (change)="firstName=firstName.trim()" placeholder="First Name"
+                        type="text" [(ngModel)]="firstName">
                     </div>
                     <div class="col-md-6">
-                      <input class="form-control" placeholder="Last Name" type="text" [(ngModel)]="lastName">
+                      <input class="form-control" (change)="lastName=lastName.trim()" placeholder="Last Name"
+                        type="text" [(ngModel)]="lastName">
                     </div>
                   </div>
                 </div>
@@ -163,7 +165,8 @@
                   <label>Street Address 1</label>
                   <div class="row">
                     <div class="col-md-12">
-                      <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress1">
+                      <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress1"
+                        (change)="streetAddress1=streetAddress1.trim()">
                     </div>
                   </div>
                 </div>
@@ -171,7 +174,8 @@
                   <label>Street Address 2</label>
                   <div class="row">
                     <div class="col-md-12">
-                      <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress2">
+                      <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress2"
+                        (change)="streetAddress2=streetAddress2.trim()">
                     </div>
                   </div>
                 </div>
@@ -179,7 +183,8 @@
                   <label>City</label>
                   <div class="row">
                     <div class="col-md-12">
-                      <input class="form-control" type="text" placeholder="City" [(ngModel)]="city">
+                      <input class="form-control" type="text" placeholder="City" [(ngModel)]="city"
+                        (change)="city=city.trim()">
                     </div>
                   </div>
                 </div>
@@ -187,7 +192,8 @@
                   <label>Postal Code</label>
                   <div class="row">
                     <div class="col-md-6">
-                      <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode">
+                      <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
+                        (change)="postcode=postcode.trim()">
                     </div>
                   </div>
                 </div>
@@ -274,16 +280,13 @@
               <div class="col-md-12 text-center" *ngIf="user.photoURL">
                 <img class="avatar avatar-xl" src="{{ user?.photoURL }}" alt="avatar">
               </div>
-              <div class="col-md-12 text-center" *ngIf="!user.photoURL">
-                <img class="avatar avatar-xl" src="{{ user?.photoURL }}" alt="avatar">
-              </div>
             </div>
             <div class="row" style="margin-top: 1em">
               <div class="col-md-12 text-center">
                 <strong>Change Picture</strong>
                 <br>
                 <small>
-                  Max file size is 500kb.
+                  Max file size is 1MB.
                 </small>
                 <div style="margin-top: 1em">
                   <button type="button" class="btn btn-xs btn-secondary">Upload</button>
@@ -304,7 +307,8 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">@</span>
                   </div>
-                  <input type="text" class="form-control" value="username">
+                  <input type="text" class="form-control" value="username" [(ngModel)]="username"
+                    (change)="username=username.trim()">
                 </div>
               </div>
             </div>
@@ -323,10 +327,12 @@
                   <label>Legal Name</label>
                   <div class="row">
                     <div class="col-md-12" style="margin-bottom: 0.5em">
-                      <input class="form-control" placeholder="First Name" type="text" value="userData.firstName">
+                      <input class="form-control" placeholder="First Name" type="text" [(ngModel)]="firstName"
+                        (change)="firstName=firstName.trim()">
                     </div>
                     <div class="col-md-12">
-                      <input class="form-control" placeholder="Last Name" type="text" value="userData.lastName">
+                      <input class="form-control" placeholder="Last Name" type="text" [(ngModel)]="lastName"
+                        (change)="lastName=lastName.trim()">
                     </div>
                   </div>
                 </div>
@@ -334,19 +340,69 @@
                 <div class="form-group">
                   <label>Date of Birth</label>
                   <div class="row">
-                    <div class="col-md-12" style="margin-bottom: 0.5em">
-                      <select class="form-control">
-                        <option>Month</option>
+                    <div class="col-md-12">
+                      <select class="form-control" [(ngModel)]="dobMonth">
+                        <option disabled>Month</option>
+                        <option *ngFor="let date of dates" [ngValue]="date.name"> {{ date.name }}</option>
                       </select>
                     </div>
-                    <div class="col-md-12" style="margin-bottom: 0.5em">
-                      <select class="form-control">
-                        <option>Day</option>
+                    <div class="col-md-12">
+                      <select class="form-control" [(ngModel)]="dobDay">
+                        <option disabled>Day</option>
+                        <ng-container *ngIf="dobMonth == 'January'">
+                          <option *ngFor="let date of counter(dates[0].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'February'">
+                          <option *ngFor="let date of counter(dates[1].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'March'">
+                          <option *ngFor="let date of counter(dates[2].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'April'">
+                          <option *ngFor="let date of counter(dates[3].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'May'">
+                          <option *ngFor="let date of counter(dates[4].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'June'">
+                          <option *ngFor="let date of counter(dates[5].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'July'">
+                          <option *ngFor="let date of counter(dates[6].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'August'">
+                          <option *ngFor="let date of counter(dates[7].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'September'">
+                          <option *ngFor="let date of counter(dates[8].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'October'">
+                          <option *ngFor="let date of counter(dates[9].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'November'">
+                          <option *ngFor="let date of counter(dates[10].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="dobMonth == 'December'">
+                          <option *ngFor="let date of counter(dates[11].days); let i = index" [ngValue]="i + 1">
+                            {{ i + 1 }}</option>
+                        </ng-container>
                       </select>
                     </div>
-                    <div class="col-md-12" style="margin-bottom: 0.5em">
-                      <select class="form-control">
-                        <option>Year</option>
+                    <div class="col-md-12">
+                      <select class="form-control" [(ngModel)]="dobYear">
+                        <option disabled>Year</option>
+                        <option *ngFor="let year of years" [ngValue]="year">{{ year }}</option>
                       </select>
                     </div>
                   </div>
@@ -355,7 +411,8 @@
                   <label>Street Address 1</label>
                   <div class="row">
                     <div class="col-md-12">
-                      <input class="form-control" type="text" placeholder="Street Address">
+                      <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress1"
+                        (change)="streetAddress1=streetAddress1.trim()">
                     </div>
                   </div>
                 </div>
@@ -363,7 +420,8 @@
                   <label>Street Address 2</label>
                   <div class="row">
                     <div class="col-md-12">
-                      <input class="form-control" type="text" placeholder="Street Address">
+                      <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress2"
+                        (change)="streetAddress2=streetAddress2.trim()">
                     </div>
                   </div>
                 </div>
@@ -371,7 +429,8 @@
                   <label>City</label>
                   <div class="row">
                     <div class="col-md-12">
-                      <input class="form-control" type="text" placeholder="City">
+                      <input class="form-control" type="text" placeholder="City" [(ngModel)]="city"
+                        (change)="city=city.trim()">
                     </div>
                   </div>
                 </div>
@@ -379,13 +438,14 @@
                   <label>Postal Code</label>
                   <div class="row">
                     <div class="col-md-6">
-                      <input class="form-control" type="text" placeholder="Postal Code">
+                      <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
+                        (change)="postcode=postcode.trim()">
                     </div>
                   </div>
                 </div>
                 <div class="form-group" style="padding-top: 1em">
-                  <button type="button" class="btn btn-lg btn-secondary">Save</button>
-                </div>
+                  <button type="button" class="btn btn-lg btn-secondary"
+                    (click)="setUserPersonalDetails()">Save</button> </div>
               </div>
             </div>
           </div>
@@ -418,8 +478,8 @@
               </div>
             </div>
             <div class="form-group" style="padding-top: 1em">
-              <button type="button" class="btn btn-lg btn-secondary">Save</button>
-            </div>
+              <button type="button" class="btn btn-lg btn-secondary"
+                (click)="setUserCurrencyAndTimezonePreferences()">Save</button> </div>
           </div>
         </div>
       </div>

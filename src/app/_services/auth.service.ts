@@ -260,10 +260,10 @@ export class AuthService {
       if (user.providerData[0].providerId === 'facebook.com' || user.providerData[0].providerId === 'google.com') {
         this.logger.debug('Disabling change password option');
         return false;
+      } else {
+        this.logger.debug('Enabling change password option');
+        return true;
       }
-    } else {
-      this.logger.debug('Enabling change password option');
-      return true;
     }
   }
 

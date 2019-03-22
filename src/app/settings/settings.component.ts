@@ -45,6 +45,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   private datesSubscription: Subscription;
   private usernameSubscription: Subscription;
+  private userSubscription: Subscription;
   private currenciesSubscription: Subscription;
   private timezonesSubscription: Subscription;
 
@@ -60,8 +61,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.userService.getUserById(this.user.uid).subscribe(data => {
+    if(!this.user.photoURL) {
+      this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
+    }
+
+    this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(data => {
       if (data) {
+        this.logger.debug('User data retrieved:');
+        this.logger.debug(data);
+
         this.firstName = data['firstName'];
         this.lastName = data['lastName'];
 
@@ -148,7 +156,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     this.isPasswordChangeEnabled = this.authService.enableChangePasswordOption();
     this.referralMode = environment.referralMode;
-    this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
     const lastYear = (new Date().getFullYear() - 18).toString();
@@ -199,42 +206,41 @@ export class SettingsComponent implements OnInit, OnDestroy {
     let messageDisplayed = false;
     if (this.userPersonalDetailsValid) {
       if (this.userDobValid) {
-        this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase()).subscribe((result) => {
+        this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
           if (result) {
-            if ((result.length > 0) &&
-              (result[0]['username'] === this.username.toLowerCase()) &&
-              (result[0]['uid'] !== this.user.uid)) {
+            if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
+                (result[0]['uid'] !== this.user.uid)) {
               this.logger.debug('Username belongs to another user');
-              this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
+              this.modalService.displayMessage('Oops!', 'This username is already in use.');
             } else {
-              this.userService.setUserPersonalDetails(this.user.uid,
+              this.userService.setUserPersonalDetails(
+                this.user.uid,
                 this.username.toLowerCase(),
-                this.firstName.trim(),
-                this.lastName.trim(),
+                this.firstName,
+                this.lastName,
                 this.dobDay,
                 this.dobMonth,
                 this.dobYear,
-                this.streetAddress1.trim(),
-                this.streetAddress2.trim(),
-                this.city.trim(),
-                this.postcode.trim()).then(() => {
+                this.streetAddress1,
+                this.streetAddress2,
+                this.city,
+                this.postcode).then(() => {
                   if (!messageDisplayed) {
                     this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
                     messageDisplayed = true;
                   }
-                }
-                ).catch((error) => {
+                }).catch((error) => {
                   if (!messageDisplayed) {
                     this.modalService.displayMessage('Oops!', error);
                     messageDisplayed = true;
                   }
                 });
+              }
             }
-          }
-        });
-      }
-    } else {
-      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
+          });
+        }
+      } else {
+        this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
   }
 
@@ -250,6 +256,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
     if (this.timezonesSubscription) {
       this.timezonesSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 }
