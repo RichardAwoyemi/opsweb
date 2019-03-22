@@ -45,6 +45,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   private datesSubscription: Subscription;
   private usernameSubscription: Subscription;
+  private currenciesSubscription: Subscription;
+  private timezonesSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -117,7 +119,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.dataService.getAllTimezones().subscribe(data => {
+    this.timezonesSubscription = this.dataService.getAllTimezones().subscribe(data => {
       if (data) {
         if (environment.production === false) {
           this.logger.debug(data);
@@ -126,7 +128,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.dataService.getAllCurrencies().subscribe(data => {
+    this.currenciesSubscription = this.dataService.getAllCurrencies().subscribe(data => {
       if (data) {
         if (environment.production === false) {
           this.logger.debug(data);
@@ -177,26 +179,50 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  userPersonalDetailsValid() {
+    return (this.user.uid &&
+      this.username &&
+      this.firstName &&
+      this.lastName &&
+      this.dobDay &&
+      this.dobMonth &&
+      this.dobYear &&
+      this.streetAddress1 &&
+      this.city && this.postcode);
+  }
+
+  userDobValid() {
+    return (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year');
+  }
+
   setUserPersonalDetails() {
     let messageDisplayed = false;
-    if (this.user.uid && this.username && this.firstName && this.lastName &&
-      this.dobDay && this.dobMonth && this.dobYear && this.streetAddress1 &&
-      this.city && this.postcode) {
-      if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
+    if (this.userPersonalDetailsValid) {
+      if (this.userDobValid) {
         this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase()).subscribe((result) => {
           if (result) {
-            if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase()) && (result[0]['uid'] !== this.user.uid)) {
+            if ((result.length > 0) &&
+              (result[0]['username'] === this.username.toLowerCase()) &&
+              (result[0]['uid'] !== this.user.uid)) {
               this.logger.debug('Username belongs to another user');
               this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
             } else {
-              this.userService.setUserPersonalDetails(this.user.uid, this.username.toLowerCase(), this.firstName, this.lastName,
-                this.dobDay, this.dobMonth, this.dobYear, this.streetAddress1, this.streetAddress2, this.city,
-                this.postcode).then(() => {
-                    if (!messageDisplayed) {
-                      this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
-                      messageDisplayed = true;
-                    }
+              this.userService.setUserPersonalDetails(this.user.uid,
+                this.username.toLowerCase(),
+                this.firstName.trim(),
+                this.lastName.trim(),
+                this.dobDay,
+                this.dobMonth,
+                this.dobYear,
+                this.streetAddress1.trim(),
+                this.streetAddress2.trim(),
+                this.city.trim(),
+                this.postcode.trim()).then(() => {
+                  if (!messageDisplayed) {
+                    this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
+                    messageDisplayed = true;
                   }
+                }
                 ).catch((error) => {
                   if (!messageDisplayed) {
                     this.modalService.displayMessage('Oops!', error);
@@ -218,6 +244,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
     if (this.usernameSubscription) {
       this.usernameSubscription.unsubscribe();
+    }
+    if (this.currenciesSubscription) {
+      this.currenciesSubscription.unsubscribe();
+    }
+    if (this.timezonesSubscription) {
+      this.timezonesSubscription.unsubscribe();
     }
   }
 }

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
 import { NGXLogger } from 'ngx-logger';
@@ -11,13 +11,14 @@ import { NGXLogger } from 'ngx-logger';
   templateUrl: './invite.component.html',
   styleUrls: ['./invite.component.css']
 })
-export class InviteComponent implements OnInit {
+export class InviteComponent implements OnInit, OnDestroy {
   referredById: String;
   referredByUserId: String;
-  referredBy: any;
   referredByUserData: any;
   currentRanking: any;
   isMobile: Observable<BreakpointState>;
+
+  private referredBySubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -33,7 +34,7 @@ export class InviteComponent implements OnInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
 
-    this.referredBy = this.route.params.subscribe(params => {
+    this.referredBySubscription = this.route.params.subscribe(params => {
       this.referredById = params['id'];
       if (this.referredById) {
         this.userService.getUserByReferralId(this.referredById).subscribe(data => {
@@ -73,5 +74,9 @@ export class InviteComponent implements OnInit {
 
   facebookSignInWithReferral() {
     this.authService.facebookSignInWithReferral(this.referredById);
+  }
+
+  ngOnDestroy() {
+    this.referredBySubscription.unsubscribe();
   }
 }
