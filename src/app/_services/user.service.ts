@@ -195,12 +195,12 @@ export class UserService {
   }
 
   setUserPhoto(uid, photoURL) {
-    this.logger.debug(`Setting personal details for ${uid}`);
+    this.logger.debug(`Setting user photo for ${uid}`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     let userPhotoData = {};
     userPhotoData = {
       photoURL: photoURL,
-    }
+    };
     return userRef.set(userPhotoData, {
       merge: true
     });
