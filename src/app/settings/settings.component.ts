@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { environment } from 'src/environments/environment.staging';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../_services/user.service';
@@ -13,6 +12,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { DatePipe } from '@angular/common';
 import { CsvService } from '../_services/csv.service';
+import { environment } from 'src/environments/environment';
 
 declare var $;
 

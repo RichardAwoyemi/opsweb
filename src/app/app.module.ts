@@ -65,8 +65,10 @@ import { FirebaseService } from './_services/firebase.service';
 import { DataService } from './_services/data.service';
 import { ModalService } from './_services/modal.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule } from 'ngx-logger';
 import { ImgurService } from './_services/imgur.service';
+import { OnboardingComponent } from './onboarding/onboarding.component';
+import { ArchwizardModule } from 'angular-archwizard';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -106,7 +108,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     TaskComponent,
     UserComponent,
     NewTaskComponent,
-    InboxComponent
+    InboxComponent,
+    OnboardingComponent
   ],
   entryComponents: [
     ModalComponent
@@ -131,6 +134,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     Ng5SliderModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
+    ArchwizardModule
   ],
   providers: [
     EnvService,
