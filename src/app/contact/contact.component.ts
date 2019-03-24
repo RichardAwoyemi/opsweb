@@ -67,7 +67,7 @@ export class ContactComponent implements OnInit {
       this.submitted = true;
     }).catch(
       error => {
-        console.error('Error!', error.message);
+        this.logger.debug('Error!', error.message);
         $(this.errorModal.nativeElement).modal('show');
         this.submitted = false;
 
