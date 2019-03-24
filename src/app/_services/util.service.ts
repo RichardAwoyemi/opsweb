@@ -86,9 +86,7 @@ export class UtilService {
             scrollExecuted = true;
 
             setTimeout(() => {
-              if (environment.production === false) {
-                this.logger.debug('routeFragmentSubscription unsubscribe');
-              }
+              this.logger.debug('routeFragmentSubscription unsubscribe');
               routeFragmentSubscription.unsubscribe();
             }, 1000);
           }
