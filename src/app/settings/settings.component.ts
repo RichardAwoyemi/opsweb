@@ -312,13 +312,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
                   }
                 });
             }
-            this.ngxLoader.stop();
           }
         });
       }
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
+    this.ngxLoader.stop();
   }
 
   changePassword() {
