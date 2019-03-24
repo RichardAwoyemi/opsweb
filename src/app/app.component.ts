@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   referredBy: string;
 
   private authSubscription: Subscription;
+  private userSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -93,16 +94,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.logger.debug('Caching:');
     this.logger.debug(user);
     this.logger.debug('Caching: ' + user.photoURL);
+    this.user = {
+      photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+    };
 
-    if (user.photoURL) {
-      this.user = {
-        photoURL: user.photoURL
-      };
-    } else {
-      this.user = {
-        photoURL: 'https://i.imgflip.com/1slnr0.jpg'
-      };
-    }
+    this.userSubscription = this.userService.getUserById(user.uid).subscribe(data => {
+      if (data) {
+        if (data['photoURL']) {
+          this.user = {
+            photoURL: data['photoURL']
+          };
+        }
+      }
+    });
+
     localStorage.setItem('user', JSON.stringify(user));
     this.router.navigate(['dashboard']);
   }
@@ -114,6 +119,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 }

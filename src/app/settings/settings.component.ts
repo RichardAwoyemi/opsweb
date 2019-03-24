@@ -9,6 +9,8 @@ import { AuthService } from '../_services/auth.service';
 import { ModalService } from '../_services/modal.service';
 import { NGXLogger } from 'ngx-logger';
 import { ImgurService, ImgurResponse } from '../_services/imgur.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 declare var $;
 
@@ -38,7 +40,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   timezones: any;
   dates: any;
   years: any;
-  isPasswordChangeEnabled: boolean;
+  isPasswordChangeEnabled = false;
   isMobile: Observable<BreakpointState>;
 
   @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
@@ -49,6 +51,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   private currenciesSubscription: Subscription;
   private timezonesSubscription: Subscription;
+  private passwordSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -56,16 +59,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private dataService: DataService,
     private utilService: UtilService,
-    private authService: AuthService,
+    public afAuth: AngularFireAuth,
     private imgurService: ImgurService,
+    private authService: AuthService,
+    private ngxLoader: NgxUiLoaderService,
     private logger: NGXLogger
   ) { }
 
   ngOnInit() {
+    this.ngxLoader.start();
+
     this.user = JSON.parse(localStorage.getItem('user'));
-    if (!this.user.photoURL) {
-      this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
-    }
+    this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
 
     this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(data => {
       if (data) {
@@ -126,6 +131,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
         if (data['postcode']) {
           this.postcode = data['postcode'];
         }
+
+        if (data['photoURL']) {
+          this.user.photoURL = data['photoURL'];
+        }
+
+        if (data['email']) {
+          this.user.email = data['email'];
+        }
       }
     });
 
@@ -156,7 +169,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.isPasswordChangeEnabled = this.authService.enableChangePasswordOption();
+    this.passwordSubscription = this.afAuth.authState.subscribe(response => {
+      if (response) {
+        if (response.providerData[0].providerId === 'facebook.com' || response.providerData[0].providerId === 'google.com') {
+          this.logger.debug('Disabling change password option');
+          this.isPasswordChangeEnabled = false;
+        } else {
+          this.logger.debug('Enabling change password option');
+          this.isPasswordChangeEnabled = true;
+        }
+        this.ngxLoader.stop();
+      }
+    });
+
     this.referralMode = environment.referralMode;
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
@@ -177,6 +202,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   setUserCurrencyAndTimezonePreferences() {
+    this.ngxLoader.start();
     if (this.user.uid && this.timezone && this.currency) {
       this.userService.setUserCurrencyAndTimezonePreferences(this.user.uid, this.timezone, this.currency).then(() =>
         this.modalService.displayMessage('Yay!', 'Your settings have been updated.')
@@ -186,10 +212,37 @@ export class SettingsComponent implements OnInit, OnDestroy {
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
+    this.ngxLoader.stop();
   }
 
-  userPersonalDetailsValid() {
-    return (this.user.uid &&
+  handleFileInput(e) {
+    this.ngxLoader.start();
+    const reader = new FileReader();
+    if (e.target.files && e.target.files.length) {
+      const [file] = e.target.files;
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imgurService.upload(reader.result.toString().split('base64,')[1], this.user.uid).subscribe((imgurResponse: ImgurResponse) => {
+          if (imgurResponse) {
+            this.logger.debug('Picture uploaded to imgur');
+            this.logger.debug(imgurResponse);
+            this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
+              this.modalService.displayMessage('Yay!', 'Your photo has been updated.')
+            ).catch((error) => {
+              this.modalService.displayMessage('Oops!', error);
+            });
+            this.ngxLoader.stop();
+          }
+        });
+      };
+    }
+  }
+
+  setUserPersonalDetails() {
+    this.ngxLoader.start();
+    let messageDisplayed = false;
+    if (
+      this.user.uid &&
       this.username &&
       this.firstName &&
       this.lastName &&
@@ -197,30 +250,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.dobMonth &&
       this.dobYear &&
       this.streetAddress1 &&
-      this.city && this.postcode);
-  }
-
-  userDobValid() {
-    return (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year');
-  }
-
-  handleFileInput(e) {
-    const reader = new FileReader();
-    if (e.target.files && e.target.files.length) {
-      const [file] = e.target.files;
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.imgurService.upload(reader.result).subscribe((imgurResponse: ImgurResponse) => {
-          this.logger.debug(imgurResponse);
-        });
-      };
-    }
-  }
-
-  setUserPersonalDetails() {
-    let messageDisplayed = false;
-    if (this.userPersonalDetailsValid) {
-      if (this.userDobValid) {
+      this.city &&
+      this.postcode
+    ) {
+      if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
         this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
           if (result) {
             if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
@@ -231,8 +264,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
               this.userService.setUserPersonalDetails(
                 this.user.uid,
                 this.username.toLowerCase(),
-                this.firstName,
-                this.lastName,
+                this.utilService.toTitleCase(this.firstName),
+                this.utilService.toTitleCase(this.lastName),
                 this.dobDay,
                 this.dobMonth,
                 this.dobYear,
@@ -251,11 +284,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
                   }
                 });
             }
+            this.ngxLoader.stop();
           }
         });
       }
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
+    }
+  }
+
+  changePassword() {
+    if (this.user.email) {
+      this.authService.forgotPassword(this.user.email);
     }
   }
 
@@ -274,6 +314,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.passwordSubscription) {
+      this.passwordSubscription.unsubscribe();
     }
   }
 }

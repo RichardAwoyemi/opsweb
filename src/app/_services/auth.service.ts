@@ -9,6 +9,7 @@ import { UtilService } from './util.service';
 import { User } from '../_models/user';
 import { ModalService } from './modal.service';
 import { NGXLogger } from 'ngx-logger';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -240,8 +241,8 @@ export class AuthService {
   forgotPassword(passwordResetEmail) {
     this.logger.debug('Sending password reset email');
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
-      this.modalService.displayMessage('Yay!', 'Password reset email sent, check your inbox.' +
-        ' If you do not receive this email, please check your spam or bulk email folder.');
+      this.modalService.displayMessage('Yay!', 'Password reset email sent, please check your inbox.' +
+        ' If you do not receive this email, check your spam or bulk email folder.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);
     });
@@ -252,19 +253,6 @@ export class AuthService {
     return (user !== null &&
       ((user.emailVerified === false && user.providerData[0].providerId === 'facebook.com') ||
         ((user.emailVerified !== false))) ? true : false);
-  }
-
-  enableChangePasswordOption() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user != null) {
-      if (user.providerData[0].providerId === 'facebook.com' || user.providerData[0].providerId === 'google.com') {
-        this.logger.debug('Disabling change password option');
-        return false;
-      } else {
-        this.logger.debug('Enabling change password option');
-        return true;
-      }
-    }
   }
 
   signOut() {
