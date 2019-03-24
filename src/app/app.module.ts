@@ -66,6 +66,7 @@ import { DataService } from './_services/data.service';
 import { ModalService } from './_services/modal.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { ImgurService } from './_services/imgur.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -145,6 +146,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     FirebaseService,
     DataService,
     ModalService,
+    ImgurService,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {
