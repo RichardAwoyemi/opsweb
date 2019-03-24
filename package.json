@@ -1,6 +1,6 @@
 {
   "name": "opsonion-web",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
@@ -32,6 +32,7 @@
     "@fortawesome/free-solid-svg-icons": "5.3.1",
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "@types/jquery": "^3.3.22",
+    "angular-archwizard": "^4.0.0",
     "angular-calendar": "^0.26.4",
     "angularx-qrcode": "^1.5.1",
     "body-parser": "^1.13.3",

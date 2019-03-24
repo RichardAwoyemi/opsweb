@@ -13,6 +13,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { InviteComponent } from './invite/invite.component';
 import { ContactComponent } from './contact/contact.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
@@ -39,7 +40,7 @@ const routes: Routes = [
   { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AnonymousGuard] },
   // { path: 'tools', component: ToolsComponent, canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
-  // { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   // { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
   // { path: 'task/:id', component: TaskComponent, canActivate: [AuthGuard] },
   // { path: 'tasks/new', component: NewTaskComponent, canActivate: [AuthGuard] },
