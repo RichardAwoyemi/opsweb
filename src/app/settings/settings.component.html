@@ -211,12 +211,11 @@
                 <small>Download a copy of your information to keep, or to transfer to another service.</small>
               </div>
               <div class="col-md-6">
-                <p>You can download a copy of your Opsonion information at any time. You can choose to receive your
-                  information in an PDF format that is easy to view, or a CSV format, which could allow another service
-                  to more easily import it.</p>
+                <p>You can download a copy of your Opsonion information at any time. Your information will be
+                  provided in a CSV format, which could allow another service to more easily import it.</p>
                 <div class="form-group" style="padding-top: 1em">
                   <button type="button" class="btn btn-lg btn-secondary"
-                    (click)="downloadUserInformation()">Download</button>
+                    (click)="downloadAsCsv()">Download</button>
                 </div>
               </div>
             </div>
@@ -279,18 +278,6 @@
             <div class="row">
               <div class="col-md-12 text-center" *ngIf="user.photoURL">
                 <img class="avatar avatar-xl" src="{{ user?.photoURL }}" alt="avatar">
-              </div>
-            </div>
-            <div class="row" style="margin-top: 1em">
-              <div class="col-md-12 text-center">
-                <strong>Change Picture</strong>
-                <br>
-                <small>
-                  Max file size is 5MB.
-                </small>
-                <div style="margin-top: 1em">
-                  <button type="button" class="btn btn-xs btn-secondary">Upload</button>
-                </div>
               </div>
             </div>
             <hr>

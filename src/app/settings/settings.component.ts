@@ -11,13 +11,16 @@ import { NGXLogger } from 'ngx-logger';
 import { ImgurService, ImgurResponse } from '../_services/imgur.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { DatePipe } from '@angular/common';
+import { CsvService } from '../_services/csv.service';
 
 declare var $;
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  styleUrls: ['./settings.component.css'],
+  providers: [DatePipe]
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   userData: any;
@@ -42,6 +45,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   years: any;
   isPasswordChangeEnabled = false;
   isMobile: Observable<BreakpointState>;
+  currentDate = new Date();
+  formattedCurrentDate = '';
 
   @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
   @ViewChild('showVerifyDocumentationModal') showVerifyDocumentationModal: ElementRef;
@@ -59,12 +64,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private dataService: DataService,
     private utilService: UtilService,
-    public afAuth: AngularFireAuth,
+    private afAuth: AngularFireAuth,
     private imgurService: ImgurService,
     private authService: AuthService,
     private ngxLoader: NgxUiLoaderService,
-    private logger: NGXLogger
-  ) { }
+    private logger: NGXLogger,
+    private datePipe: DatePipe,
+    private csvService: CsvService,
+  ) {
+    this.formattedCurrentDate = this.datePipe.transform(this.currentDate, 'yyyyMMdd');
+  }
 
   ngOnInit() {
     this.ngxLoader.start();
@@ -139,6 +148,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
         if (data['email']) {
           this.user.email = data['email'];
         }
+
+        this.userData = [
+          {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            username: this.username,
+            currency: this.currency,
+            dateOfBirth: `${this.dobYear}-${this.dobMonth}-${this.dobDay}`,
+            streetAddress: `${this.streetAddress1},${this.streetAddress2},${this.city},${this.postcode}`,
+            photoURL: this.user.photoURL,
+            email: this.user.email
+          }
+        ];
       }
     });
 
@@ -236,6 +258,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
         });
       };
     }
+  }
+
+  downloadAsCsv() {
+    this.logger.debug('Downloading personal data in CSV format');
+    this.logger.debug(this.userData);
+    this.csvService.exportAsCsvFile(this.userData, this.formattedCurrentDate + '_userInformation');
   }
 
   setUserPersonalDetails() {
