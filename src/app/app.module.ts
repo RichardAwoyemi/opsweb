@@ -31,7 +31,6 @@ import { TransactionsComponent } from './support/transactions/transactions.compo
 import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
 import { ServicesComponent } from './services/services.component';
 
-import { EnvService } from './_services/env.service';
 import { AuthService } from './_services/auth.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -65,7 +64,7 @@ import { FirebaseService } from './_services/firebase.service';
 import { DataService } from './_services/data.service';
 import { ModalService } from './_services/modal.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule } from 'ngx-logger';
 import { ImgurService } from './_services/imgur.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -133,7 +132,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     LoggerModule.forRoot(environment.logging),
   ],
   providers: [
-    EnvService,
     AuthService,
     UtilService,
     UserService,
