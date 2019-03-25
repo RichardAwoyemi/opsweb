@@ -31,7 +31,6 @@ import { TransactionsComponent } from './support/transactions/transactions.compo
 import { WalletServicesComponent } from './support/wallet-services/wallet-services.component';
 import { ServicesComponent } from './services/services.component';
 
-import { EnvService } from './_services/env.service';
 import { AuthService } from './_services/auth.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -137,7 +136,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ArchwizardModule
   ],
   providers: [
-    EnvService,
     AuthService,
     UtilService,
     UserService,

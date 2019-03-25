@@ -166,27 +166,21 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     this.timezonesSubscription = this.dataService.getAllTimezones().subscribe(data => {
       if (data) {
-        if (environment.production === false) {
-          this.logger.debug(data);
-        }
+        this.logger.debug(data);
         this.timezones = data;
       }
     });
 
     this.currenciesSubscription = this.dataService.getAllCurrencies().subscribe(data => {
       if (data) {
-        if (environment.production === false) {
-          this.logger.debug(data);
-        }
+        this.logger.debug(data);
         this.currencies = data;
       }
     });
 
     this.datesSubscription = this.dataService.getAllDates().subscribe(data => {
       if (data) {
-        if (environment.production === false) {
-          this.logger.debug(Object.values(data));
-        }
+        this.logger.debug(Object.values(data));
         this.dates = Object.values(data);
       }
     });

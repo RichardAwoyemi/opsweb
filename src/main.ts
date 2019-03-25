@@ -21,4 +21,3 @@ RecaptchaComponent.prototype.ngOnDestroy = function () {
     this.subscription.unsubscribe();
   }
 };
-
