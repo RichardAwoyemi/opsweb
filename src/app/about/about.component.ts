@@ -47,21 +47,14 @@ export class AboutComponent implements OnInit {
     }
 
     const formObject = document.forms['registerForm'];
-
-    if (environment.production === false) {
-      this.logger.debug(new FormData(formObject));
-    }
+    this.logger.debug(new FormData(formObject));
 
     fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
-      if (environment.production === false) {
-        this.logger.debug(`Success: ${response}`);
-      }
+      this.logger.debug(`Success: ${response}`);
       this.submitted = true;
     }).catch(
       error => {
-        if (environment.production === false) {
-          console.error('Error!', error.message);
-        }
+        this.logger.debug('Error!', error.message);
         $(this.errorModal.nativeElement).modal('show');
         this.submitted = false;
       }

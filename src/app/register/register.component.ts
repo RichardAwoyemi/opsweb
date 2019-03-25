@@ -26,9 +26,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public resolved(captchaResponse: string) {
-    if (environment.production === false) {
-      this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
-    }
+    this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
   }
 
   register() {
