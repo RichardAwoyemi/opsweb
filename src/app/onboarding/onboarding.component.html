@@ -185,14 +185,14 @@
                   <br>
                   <div class="row">
                     <div class="col-md-6" (click)="toggleHire()">
-                      <div class="{{ hireToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}">
+                      <div class="{{ hireToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}" style="width: 50%; float: right">
                         <div class="product-detail" style="padding: 2.5em;">
                           <h5>Hire</h5>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6" (click)="toggleWork()">
-                      <div class="{{ workToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}">
+                      <div class="{{ workToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}};" style="width: 50%; float: left">
                         <div class="product-detail" style="padding: 2.5em;">
                           <h5>Work</h5>
                         </div>
@@ -225,12 +225,18 @@
                     <strong>What is the main service you offer to clients?</strong>
                   </div>
                   <div class="col-6">
-                  <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
-                  </div>                 
+                    <select class="form-control">
+                      <option>Web, Mobile and Software Development</option>
+                      <option>Data Science and Analytics</option>
+                      <option>Design and Creative</option>
+                      <option>Writing</option>
+                      <option>Translation</option>
+                      <option>Legal</option>
+                      <option>Admin Support</option>
+                      <option>Sales and Marketing</option>
+                      <option>Accounting and Consulting</option>
+                    </select>
+                  </div>
                 </div>
                 <br>
                 <div class="row">
@@ -238,7 +244,7 @@
                     What is the main service you offer to clients?
                   </div>
                   <div class="col-6">
-                  </div>                 
+                  </div>
                 </div>
               </div>
               <div class="btn-group" style="padding-top: 3em">
