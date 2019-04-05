@@ -172,7 +172,8 @@
                   </div>
                 </div>
               </div>
-              <div class="btn-group" style="padding-top: 3em">
+              <hr>
+              <div class="btn-group">
                 <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
               </div>
             </div>
@@ -185,14 +186,16 @@
                   <br>
                   <div class="row">
                     <div class="col-md-6" (click)="toggleHire()">
-                      <div class="{{ hireToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}" style="width: 50%; float: right">
+                      <div class="{{ hireToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}"
+                        style="width: 50%; float: right">
                         <div class="product-detail" style="padding: 2.5em;">
                           <h5>Hire</h5>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6" (click)="toggleWork()">
-                      <div class="{{ workToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}" style="width: 50%; clear: both">
+                      <div class="{{ workToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}"
+                        style="width: 50%; clear: both">
                         <div class="product-detail" style="padding: 2.5em;">
                           <h5>Work</h5>
                         </div>
@@ -207,7 +210,8 @@
                   </div>
                 </div>
               </div>
-              <div class="btn-group" style="padding-top: 3em">
+              <hr>
+              <div class="btn-group">
                 <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
                 &nbsp;&nbsp;
                 <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
@@ -238,16 +242,9 @@
                     </select>
                   </div>
                 </div>
-                <br>
-                <div class="row">
-                  <div class="col-4">
-                    What is the main service you offer to clients?
-                  </div>
-                  <div class="col-6">
-                  </div>
-                </div>
               </div>
-              <div class="btn-group" style="padding-top: 3em">
+              <hr>
+              <div class="btn-group">
                 <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
                 &nbsp;&nbsp;
                 <button type="button" class="btn btn-secondary" (click)="finishFunction()">Complete</button>
@@ -259,3 +256,17 @@
     </div>
   </div>
 </section>
+
+<div id="popup-autoshow" class="popup col-6 col-md-4" data-animation="slide-up" data-autoshow="500"
+  data-autohide="10000">
+  <button type="button" class="close" data-dismiss="popup" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+  <div class="media">
+    <img class="avatar mr-5" src="../assets/img/logo.png" alt="avatar">
+    <div class="media-body">
+      <h5>Welcome!</h5>
+      <p class="mb-0">Thanks for signing up. To get started, please tell us a bit about yourself.</p>
+    </div>
+  </div>
+</div>

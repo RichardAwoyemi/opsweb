@@ -54,8 +54,6 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.modalService.displayMessage('Welcome', 'To get started, please tell us a bit more about yourself.');
-
     this.ngxLoader.start();
 
     this.user = JSON.parse(localStorage.getItem('user'));
