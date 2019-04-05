@@ -11,3 +11,9 @@
   padding-right: 1em;
   padding-bottom: 2rem;
 }
+
+.centered-content {
+  margin: auto;
+  text-align: center;
+  padding-top: 3em;
+}

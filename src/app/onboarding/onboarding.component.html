@@ -1,19 +1,57 @@
 <section ngxUiLoaderBlurred class="section-desktop" *ngIf="!(isMobile | async)?.matches">
-  <aw-wizard>
-    <aw-wizard-step stepTitle="Title of step 1">
-      Content of Step 1
-      <button type="button" awNextStep>Next Step</button>
-      <button type="button" [awGoToStep]="{stepIndex: 2}">Go directly to third Step</button>
-    </aw-wizard-step>
-    <aw-wizard-step stepTitle="Title of step 2" awOptionalStep>
-      Content of Step 2
-      <button type="button" awPreviousStep>Go to previous step</button>
-      <button type="button" awNextStep>Go to next step</button>
-    </aw-wizard-step>
-    <aw-wizard-step stepTitle="Title of step 3">
-      Content of Step 3
-      <button type="button" awPreviousStep>Previous Step</button>
-      <button type="button" (click)="finishFunction()">Finish</button>
-    </aw-wizard-step>
-  </aw-wizard>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <aw-wizard #wizard>
+          <aw-wizard-step [stepTitle]="'Personal Information'">
+            <div class="centered-content">
+              <div style="text-align: left">
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Username</strong>
+                    <br>
+                    <small>This name will be part of your Opsonion profile.</small>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                      </div>
+                      <input type="text" class="form-control" [(ngModel)]="username"
+                        (change)="username=username.trim()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="btn-group" style="padding-top: 3em">
+                <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step [stepTitle]="'Steptitle 2'">
+            <div class="centered-content">
+              <div>
+                Content: Step 2
+              </div>
+              <div class="btn-group">
+                <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+                <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step [stepTitle]="'Steptitle 3'">
+            <div class="centered-content">
+              <div>
+                Content: Step 3
+              </div>
+              <div class="btn-group">
+                <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+                <button type="button" class="btn btn-secondary" awResetWizard>Reset</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+        </aw-wizard>
+      </div>
+    </div>
+  </div>
 </section>

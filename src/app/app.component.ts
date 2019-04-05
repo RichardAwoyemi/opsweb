@@ -25,6 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   appStoreUrl: string;
   userAgentString: string;
   referredBy: string;
+  onboarding = true;
 
   private authSubscription: Subscription;
   private userSubscription: Subscription;
@@ -106,10 +107,13 @@ export class AppComponent implements OnInit, OnDestroy {
           };
         }
       }
+      localStorage.setItem('user', JSON.stringify(user));
+      if(this.onboarding) {
+        this.router.navigate(['onboarding']);
+      } else {
+        this.router.navigate(['dashboard']);
+      }
     });
-
-    localStorage.setItem('user', JSON.stringify(user));
-    this.router.navigate(['dashboard']);
   }
 
   onActivate(_event) {
