@@ -48,9 +48,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   currentDate = new Date();
   formattedCurrentDate = '';
 
-  @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
-  @ViewChild('showVerifyDocumentationModal') showVerifyDocumentationModal: ElementRef;
-
   private datesSubscription: Subscription;
   private usernameSubscription: Subscription;
   private userSubscription: Subscription;
@@ -207,14 +204,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   counter(i: number) {
     return new Array(i);
-  }
-
-  showVerifyIdentity() {
-    $(this.showVerifyIdentityModal.nativeElement).modal('show');
-  }
-
-  showVerifyDocumentation() {
-    $(this.showVerifyDocumentationModal.nativeElement).modal('show');
   }
 
   setUserCurrencyAndTimezonePreferences() {

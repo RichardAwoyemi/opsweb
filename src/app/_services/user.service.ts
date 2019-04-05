@@ -206,6 +206,18 @@ export class UserService {
     });
   }
 
+  setUserAccountType(uid, accountType) {
+    this.logger.debug(`Setting user account type for ${uid} to ${accountType}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = {};
+    userDetailData = {
+      accountType: accountType
+    };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     this.logger.debug(`Setting personal details for ${uid}`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);

@@ -17,3 +17,20 @@
   text-align: center;
   padding-top: 3em;
 }
+
+.product-detail {
+  cursor: pointer;
+}
+
+.btn-file input[type="file"] {
+  position: absolute;
+  top: -1000px;
+}
+
+.product-selected {
+  background-color: #7193F0 !important;
+}
+
+.product-selected h5 {
+  color: #fff !important;
+}
