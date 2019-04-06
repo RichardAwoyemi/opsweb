@@ -8,9 +8,9 @@
               <div style="text-align: left">
                 <div class="row">
                   <div class="col-md-4">
-                    <strong>Avatar</strong>
+                    <strong>Profile Picture</strong>
                     <br>
-                    <small>Max file size is 5MB.</small>
+                    <small>Use a high quality photo that clearly shows your face.</small>
                   </div>
                   <div class="col-md-6">
                     <div *ngIf="user.photoURL" style="padding-bottom: 1em; text-align: center">
@@ -226,19 +226,21 @@
               <div *ngIf="workToggle" style="text-align: left">
                 <div class="row">
                   <div class="col-4">
-                    <strong>What is the main service you offer to clients?</strong>
+                    <strong>Occupation</strong>
+                    <br>
+                    <small>What is the main service you offer to clients?</small>
                   </div>
                   <div class="col-6">
                     <select class="form-control">
-                      <option>Web, Mobile and Software Development</option>
+                      <option>Digital Marketing</option>
+                      <option>Admin Support</option>
                       <option>Data Science and Analytics</option>
                       <option>Design and Creative</option>
-                      <option>Writing</option>
-                      <option>Translation</option>
                       <option>Legal</option>
-                      <option>Admin Support</option>
                       <option>Sales and Marketing</option>
-                      <option>Accounting and Consulting</option>
+                      <option>Translation</option>
+                      <option>Web, Mobile and Software Development</option>
+                      <option>Writing</option>
                     </select>
                   </div>
                 </div>
