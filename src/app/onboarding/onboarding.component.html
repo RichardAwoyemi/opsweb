@@ -231,17 +231,96 @@
                     <small>What is the main service you offer to clients?</small>
                   </div>
                   <div class="col-6">
-                    <select class="form-control">
-                      <option>Digital Marketing</option>
-                      <option>Admin Support</option>
-                      <option>Data Science and Analytics</option>
-                      <option>Design and Creative</option>
-                      <option>Legal</option>
-                      <option>Sales and Marketing</option>
-                      <option>Translation</option>
-                      <option>Web, Mobile and Software Development</option>
-                      <option>Writing</option>
-                    </select>
+                    <form [formGroup]="occupationForm">
+                      <div formArrayName="occupationRows">
+                        <div *ngFor="let itemrow of occupationForm.controls.occupationRows.controls; let i=index"
+                          [formGroupName]="i">
+                          <div class="row" style="padding-bottom: 1em">
+                            <div class="col-8">
+                              <select class="form-control" formControlName="occupationName"
+                                (change)="updateOccupation($event.target.value, i)">
+                                <option>Select an occupation</option>
+                                <option *ngFor="let occupation of availableOccupations">{{ occupation }}</option>
+                              </select>
+                            </div>
+                            <div class="col-3">
+                              <button type="button" class="btn btn-sm btn-secondary"
+                                *ngIf="occupationForm.controls.occupationRows.controls.length > 1"
+                                (click)="deleteRow(i)">Remove</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <button type="button" [disabled]="occupationFormArray.value.length === 3"
+                        class="btn btn-sm btn-secondary" (click)="addNewRow()">Add
+                        Occupation</button>
+                    </form>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <strong>Bio</strong>
+                    <br>
+                    <small>Your elevator pitch.</small>
+                  </div>
+                  <div class="col-6">
+                    <textarea class="form-control" rows="4" minlength="150" maxlength="300"
+                      placeholder="Tell us bit about your work experience, cool projects you’ve completed, and your area of expertise."></textarea>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <strong>Social Profiles</strong>
+                    <br>
+                    <small>Add elsewhere links to your profile.</small>
+                  </div>
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-8">
+                        <i class="ti-linkedin" style="padding-right: 1em"></i>LinkedIn
+                      </div>
+                      <div class="col-3">
+                        <button type="button" class="btn btn-secondary">Connect</button>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-8">
+                        <i class="ti-dribbble" style="padding-right: 1em"></i>Dribble
+                      </div>
+                      <div class="col-3 pull-right">
+                        <button type="button" class="btn btn-secondary">Connect</button>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-8">
+                        <i class="ti-github" style="padding-right: 1em"></i>Github
+                      </div>
+                      <div class="col-3 pull-right">
+                        <button type="button" class="btn btn-secondary">Connect</button>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-8">
+                          <fa-icon [icon]="['fab', 'behance']" size="m" style="padding-right: 1em"></fa-icon>Behance
+                      </div>
+                      <div class="col-3 pull-right">
+                        <button type="button" class="btn btn-secondary">Connect</button>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-8">
+                        <fa-icon [icon]="['fab', 'medium-m']" size="m" style="padding-right: 1em"></fa-icon>Medium
+                      </div>
+                      <div class="col-3 pull-right">
+                        <button type="button" class="btn btn-secondary">Connect</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -249,7 +328,7 @@
               <div class="btn-group">
                 <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
                 &nbsp;&nbsp;
-                <button type="button" class="btn btn-secondary" (click)="finishFunction()">Complete</button>
+                <button type="button" class="btn btn-primary" (click)="completeOnboarding()">Complete</button>
               </div>
             </div>
           </aw-wizard-step>

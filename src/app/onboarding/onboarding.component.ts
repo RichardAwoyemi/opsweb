@@ -8,6 +8,9 @@ import { DataService } from '../_services/data.service';
 import { UtilService } from '../_services/util.service';
 import { ModalService } from '../_services/modal.service';
 import { ImgurService, ImgurResponse } from '../_services/imgur.service';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faBehance, faMediumM } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-onboarding',
@@ -37,10 +40,22 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   years: any;
   workToggle = false;
   hireToggle = false;
+  availableOccupations = [
+    'Admin Support',
+    'Data Science and Analytics',
+    'Design and Creative',
+    'Digital Marketing',
+    'Legal',
+    'Sales and Marketing',
+    'Translation',
+    'Web, Mobile and Software Development',
+    'Writing'
+  ];
 
   private userSubscription: Subscription;
   private usernameSubscription: Subscription;
   private datesSubscription: Subscription;
+  private occupationForm: FormGroup;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -50,11 +65,18 @@ export class OnboardingComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private utilService: UtilService,
     private modalService: ModalService,
-    private imgurService: ImgurService
+    private imgurService: ImgurService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
     this.ngxLoader.start();
+
+    library.add(faMediumM, faBehance);
+
+    this.occupationForm = this.fb.group({
+      occupationRows: this.fb.array([this.initOccupationRows()])
+    });
 
     this.user = JSON.parse(localStorage.getItem('user'));
     this.user.photoURL = 'https://i.imgflip.com/1slnr0.jpg';
@@ -143,6 +165,84 @@ export class OnboardingComponent implements OnInit, OnDestroy {
     this.years = this.utilService.createYearRange('1930', lastYear);
 
     this.ngxLoader.stop();
+  }
+
+  get occupationFormArray() {
+    return this.occupationForm.get('occupationRows') as FormArray;
+  }
+
+  initOccupationRows() {
+    return this.fb.group({
+      occupationName: []
+    });
+  }
+
+  addNewRow() {
+    const selectedOccupation = this.occupationFormArray.value[this.occupationFormArray.value.length - 1]['occupationName'];
+    this.logger.debug(`Current selection is: ${selectedOccupation}`);
+    let processRequest = true;
+
+    if (!selectedOccupation ||
+      selectedOccupation === 'Select an occupation' ||
+      selectedOccupation === null) {
+      this.modalService.displayMessage('Oops!', 'You have not selected an occupation.');
+      processRequest = false;
+    }
+
+    let count = 0;
+    for (let i = 0; i < this.occupationFormArray.value.length; i++) {
+      const currentOccupationInArray = this.occupationFormArray.value[i]['occupationName'];
+      this.logger.debug(`At ${i}, we have "${currentOccupationInArray}"`);
+      if (currentOccupationInArray === selectedOccupation) {
+        count++;
+      }
+    }
+    if (count > 1) {
+      this.modalService.displayMessage('Oops!', 'You cannot select an occupation more than once.');
+      processRequest = false;
+    }
+
+    if (processRequest === true) {
+      this.logger.debug(`Adding new occupation: ${selectedOccupation}`);
+      this.occupationFormArray.push(this.initOccupationRows());
+      this.logger.debug(this.occupationFormArray.value);
+    }
+  }
+
+  updateOccupation(selectedOccupation: string, index: number) {
+    this.logger.debug(`Current selection is: ${selectedOccupation} at index ${index}`);
+    let count = 0;
+    let processRequest = true;
+
+    if (!selectedOccupation ||
+      selectedOccupation === 'Select an occupation' ||
+      selectedOccupation === null) {
+      this.modalService.displayMessage('Oops!', 'You have not selected an occupation.');
+      processRequest = false;
+    }
+
+    for (let i = 0; i < this.occupationFormArray.value.length; i++) {
+      const currentOccupationInArray = this.occupationFormArray.value[i]['occupationName'];
+      this.logger.debug(`At ${i}, we have "${currentOccupationInArray}"`);
+      if (currentOccupationInArray === selectedOccupation) {
+        count++;
+      }
+    }
+    if (count > 1) {
+      this.modalService.displayMessage('Oops!', 'You cannot select an occupation more than once.');
+      processRequest = false;
+    }
+
+    if (processRequest === true) {
+      this.occupationFormArray.value[index]['occupationName'] = selectedOccupation;
+      this.logger.debug(this.occupationFormArray.value);
+    }
+  }
+
+  deleteRow(index: number) {
+    this.logger.debug(`Deleting occupation row at ${index}`);
+    this.occupationFormArray.removeAt(index);
+    this.logger.debug(this.occupationForm.value);
   }
 
   counter(i: number) {
@@ -285,6 +385,9 @@ export class OnboardingComponent implements OnInit, OnDestroy {
     });
 
     this.ngxLoader.stop();
+  }
+
+  completeOnboarding() {
   }
 
   ngOnDestroy() {
