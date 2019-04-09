@@ -220,8 +220,21 @@
           </aw-wizard-step>
           <aw-wizard-step [stepTitle]="'Step 3'" [canEnter]="canEnterStep3">
             <div class="centered-content">
-              <div *ngIf="hireToggle">
-                Hire
+              <div *ngIf="hireToggle" style="text-align: left">
+                <div class="row">
+                  <div class="col-4">
+                    <strong>How many employees does your company have?</strong>
+                    <br>
+                    <small>This will help us make more personalised recommendations.</small>
+                  </div>
+                  <div class="col-6">
+                    <select class="form-control">
+                      <option *ngFor="let noOfEmployees of noOfEmployeesList" [ngValue]="noOfEmployees">
+                        {{ noOfEmployees }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
               <div *ngIf="workToggle" style="text-align: left">
                 <div class="row">
@@ -288,7 +301,7 @@
                     <br>
                     <div class="row">
                       <div class="col-8">
-                        <i class="ti-dribbble" style="padding-right: 1em"></i>Dribble
+                        <i class="ti-dribbble" style="padding-right: 1em"></i>Dribbble
                       </div>
                       <div class="col-3 pull-right">
                         <button type="button" class="btn btn-secondary">Connect</button>
@@ -306,7 +319,7 @@
                     <br>
                     <div class="row">
                       <div class="col-8">
-                          <fa-icon [icon]="['fab', 'behance']" size="m" style="padding-right: 1em"></fa-icon>Behance
+                        <fa-icon [icon]="['fab', 'behance']" size="m" style="padding-right: 1em"></fa-icon>Behance
                       </div>
                       <div class="col-3 pull-right">
                         <button type="button" class="btn btn-secondary">Connect</button>

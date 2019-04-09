@@ -51,6 +51,14 @@ export class OnboardingComponent implements OnInit, OnDestroy {
     'Web, Mobile and Software Development',
     'Writing'
   ];
+  noOfEmployeesList = [
+    'It\'s just me',
+    '2 - 9 employees',
+    '10 - 99 employees',
+    '100 - 499 employees',
+    '500 - 1000 employees',
+    'More than 1000 employees'
+  ];
 
   private userSubscription: Subscription;
   private usernameSubscription: Subscription;
