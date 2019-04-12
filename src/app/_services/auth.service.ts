@@ -9,8 +9,6 @@ import { UtilService } from './util.service';
 import { User } from '../_models/user';
 import { ModalService } from './modal.service';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'

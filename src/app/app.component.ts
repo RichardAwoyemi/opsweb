@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   appStoreUrl: string;
   userAgentString: string;
   referredBy: string;
-  onboarding = true;
+  onboardingComplete: boolean;
 
   private authSubscription: Subscription;
   private userSubscription: Subscription;
@@ -106,9 +106,10 @@ export class AppComponent implements OnInit, OnDestroy {
             photoURL: data['photoURL']
           };
         }
+        this.onboardingComplete = data['onboardingComplete'];
       }
       localStorage.setItem('user', JSON.stringify(user));
-      if(this.onboarding) {
+      if(!this.onboardingComplete) {
         this.router.navigate(['onboarding']);
       } else {
         this.router.navigate(['dashboard']);

@@ -218,6 +218,18 @@ export class UserService {
     });
   }
 
+  setOnboardingAsComplete(uid) {
+    this.logger.debug(`Setting onboarding status for ${uid} to complete`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = {};
+    userDetailData = {
+      onboardingComplete: true
+    };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     this.logger.debug(`Setting personal details for ${uid}`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
