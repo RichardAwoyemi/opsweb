@@ -16,4 +16,3 @@ export class ModalService {
     modalReference.componentInstance.message = message;
   }
 }
-
