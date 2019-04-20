@@ -17,7 +17,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
+  { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AnonymousGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AnonymousGuard] },
   // { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
