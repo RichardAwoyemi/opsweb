@@ -69,6 +69,8 @@ import { ImgurService } from './_services/imgur.service';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
+import { OnboardingComponent } from './onboarding/onboarding.component';
+import { ArchwizardModule } from 'angular-archwizard';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -116,7 +118,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     TaskComponent,
     UserComponent,
     NewTaskComponent,
-    InboxComponent
+    InboxComponent,
+    OnboardingComponent
   ],
   entryComponents: [
     ModalComponent
@@ -141,7 +144,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     Ng5SliderModule,
     SwiperModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-    LoggerModule.forRoot(environment.logging)
+    LoggerModule.forRoot(environment.logging),
+    ArchwizardModule
   ],
   providers: [
     AuthService,

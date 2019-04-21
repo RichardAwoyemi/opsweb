@@ -18,7 +18,7 @@ quill-editor {
 
 /* Modal */
 
-.modal-holder{
+.modal-holder {
   animation-name: popup;
   animation-duration: 0.3s;
 }

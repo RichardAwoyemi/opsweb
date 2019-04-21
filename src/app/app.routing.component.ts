@@ -14,9 +14,10 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { InviteComponent } from './invite/invite.component';
 import { ContactComponent } from './contact/contact.component';
 import { SettingsComponent } from './settings/settings.component';
+import { OnboardingComponent } from './onboarding/onboarding.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AnonymousGuard]  },
+  { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AnonymousGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AnonymousGuard] },
   // { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'press', component: PressComponent, canActivate: [AnonymousGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
+  { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
   // { path: 'status', component: StatusComponent, canActivate: [AnonymousGuard] },
   // { path: 'services', component: ServicesComponent, canActivate: [AnonymousGuard] },
   // { path: 'support', component: SupportComponent, canActivate: [AnonymousGuard] },

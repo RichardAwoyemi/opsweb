@@ -1,37 +1,30 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { NGXLogger } from 'ngx-logger';
 import { UserService } from '../_services/user.service';
 import { DataService } from '../_services/data.service';
 import { UtilService } from '../_services/util.service';
-import { AuthService } from '../_services/auth.service';
 import { ModalService } from '../_services/modal.service';
-import { NGXLogger } from 'ngx-logger';
 import { ImgurService, ImgurResponse } from '../_services/imgur.service';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { DatePipe } from '@angular/common';
-import { CsvService } from '../_services/csv.service';
-import { environment } from 'src/environments/environment';
-
-declare var $;
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css'],
-  providers: [DatePipe]
+  selector: 'app-onboarding',
+  templateUrl: './onboarding.component.html',
+  styleUrls: ['./onboarding.component.css']
 })
-export class SettingsComponent implements OnInit, OnDestroy {
+export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   userData: any;
   user: any;
-  referralMode: boolean;
-  anonymousPhotoURL: string;
+  isMobile: Observable<BreakpointState>;
   firstName: string;
   lastName: string;
   timezone: string;
   currency: string;
   username: string;
+  accountType: string;
   dobDay: string;
   dobMonth: string;
   dobYear: string;
@@ -43,34 +36,24 @@ export class SettingsComponent implements OnInit, OnDestroy {
   timezones: any;
   dates: any;
   years: any;
-  isPasswordChangeEnabled = false;
-  isMobile: Observable<BreakpointState>;
-  currentDate = new Date();
-  formattedCurrentDate = '';
+  workToggle = false;
+  hireToggle = false;
 
-  private datesSubscription: Subscription;
-  private usernameSubscription: Subscription;
   private userSubscription: Subscription;
-  private currenciesSubscription: Subscription;
-  private timezonesSubscription: Subscription;
-  private passwordSubscription: Subscription;
+  private usernameSubscription: Subscription;
+  private datesSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private userService: UserService,
-    private modalService: ModalService,
-    private dataService: DataService,
-    private utilService: UtilService,
-    private afAuth: AngularFireAuth,
-    private imgurService: ImgurService,
-    private authService: AuthService,
     private ngxLoader: NgxUiLoaderService,
     private logger: NGXLogger,
-    private datePipe: DatePipe,
-    private csvService: CsvService,
-  ) {
-    this.formattedCurrentDate = this.datePipe.transform(this.currentDate, 'yyyyMMdd');
-  }
+    private dataService: DataService,
+    private userService: UserService,
+    private utilService: UtilService,
+    private modalService: ModalService,
+    private imgurService: ImgurService,
+    public router: Router
+  ) { }
 
   ngOnInit() {
     this.ngxLoader.start();
@@ -88,18 +71,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
         if (data['username']) {
           this.username = data['username'];
-        }
-
-        if (data['selectedTimezone']) {
-          this.timezone = data['selectedTimezone'];
-        } else {
-          this.timezone = '(UTC) Edinburgh, London';
-        }
-
-        if (data['selectedCurrency']) {
-          this.currency = data['selectedCurrency'];
-        } else {
-          this.currency = 'GBP';
         }
 
         if (data['dobYear']) {
@@ -161,20 +132,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.timezonesSubscription = this.dataService.getAllTimezones().subscribe(data => {
-      if (data) {
-        this.logger.debug(data);
-        this.timezones = data;
-      }
-    });
-
-    this.currenciesSubscription = this.dataService.getAllCurrencies().subscribe(data => {
-      if (data) {
-        this.logger.debug(data);
-        this.currencies = data;
-      }
-    });
-
     this.datesSubscription = this.dataService.getAllDates().subscribe(data => {
       if (data) {
         this.logger.debug(Object.values(data));
@@ -182,42 +139,20 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.passwordSubscription = this.afAuth.authState.subscribe(response => {
-      if (response) {
-        if (response.providerData[0].providerId === 'facebook.com' || response.providerData[0].providerId === 'google.com') {
-          this.logger.debug('Disabling change password option');
-          this.isPasswordChangeEnabled = false;
-        } else {
-          this.logger.debug('Enabling change password option');
-          this.isPasswordChangeEnabled = true;
-        }
-        this.ngxLoader.stop();
-      }
-    });
-
-    this.referralMode = environment.referralMode;
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
     const lastYear = (new Date().getFullYear() - 18).toString();
     this.years = this.utilService.createYearRange('1930', lastYear);
+
+    this.ngxLoader.stop();
+  }
+
+  ngAfterViewInit() {
+    this.modalService.displayMessage('Welcome!', 'Thanks for signing up. Before we get started, please tell us a bit about yourself..');
   }
 
   counter(i: number) {
     return new Array(i);
-  }
-
-  setUserCurrencyAndTimezonePreferences() {
-    this.ngxLoader.start();
-    if (this.user.uid && this.timezone && this.currency) {
-      this.userService.setUserCurrencyAndTimezonePreferences(this.user.uid, this.timezone, this.currency).then(() =>
-        this.modalService.displayMessage('Yay!', 'Your settings have been updated.')
-      ).catch((error) => {
-        this.modalService.displayMessage('Oops!', error);
-      });
-    } else {
-      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
-    }
-    this.ngxLoader.stop();
   }
 
   handleFileInput(e) {
@@ -243,10 +178,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  downloadAsCsv() {
-    this.logger.debug('Downloading personal data in CSV format');
-    this.logger.debug(this.userData);
-    this.csvService.exportAsCsvFile(this.userData, this.formattedCurrentDate + '_userInformation');
+  canEnterStep2: (MovingDirection) => boolean = () => {
+    if (this.username) {
+      this.logger.debug('All conditions met... moving to step 2');
+      this.setUserPersonalDetails();
+      return true;
+    } else {
+      this.logger.debug('Conditions not met... cannot move to step 2');
+      this.modalService.displayMessage('Oops!', 'Please fill in all required fields correctly.');
+      return false;
+    }
   }
 
   setUserPersonalDetails() {
@@ -283,12 +224,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 this.streetAddress1,
                 this.streetAddress2,
                 this.city,
-                this.postcode).then(() => {
-                  if (!messageDisplayed) {
-                    this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
-                    messageDisplayed = true;
-                  }
-                }).catch((error) => {
+                this.postcode).catch((error) => {
                   if (!messageDisplayed) {
                     this.modalService.displayMessage('Oops!', error);
                     messageDisplayed = true;
@@ -304,30 +240,80 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.ngxLoader.stop();
   }
 
-  changePassword() {
-    if (this.user.email) {
-      this.authService.forgotPassword(this.user.email);
+  toggleWork() {
+    this.logger.debug('Work button clicked on step 2');
+    if (!this.workToggle) {
+      this.workToggle = !this.workToggle;
+      this.hireToggle = !this.workToggle;
+      this.logger.debug(`Work set to ${this.workToggle}`);
+      this.logger.debug(`Hire set to ${this.hireToggle}`);
     }
   }
 
+  toggleHire() {
+    this.logger.debug('Hire button clicked on step 2');
+    if (!this.hireToggle) {
+      this.hireToggle = !this.hireToggle;
+      this.workToggle = !this.hireToggle;
+      this.logger.debug(`Work set to ${this.workToggle}`);
+      this.logger.debug(`Hire set to ${this.hireToggle}`);
+    }
+  }
+
+  completeOnboarding() {
+    if (this.hireToggle || this.workToggle) {
+      this.logger.debug('All conditions met... completing onboarding');
+      this.logger.debug('Redirecting user to dashboard');
+      this.setAccountType();
+      this.setOnboardingAsComplete();
+    } else {
+      this.logger.debug('Conditions not met... cannot complete onboarding');
+      this.modalService.displayMessage('Oops!', 'Please select a valid option.');
+    }
+  }
+
+  setAccountType() {
+    let messageDisplayed = false;
+    this.ngxLoader.start();
+
+    if (this.hireToggle) {
+      this.accountType = 'hire';
+    }
+    if (this.workToggle) {
+      this.accountType = 'work';
+    }
+
+    this.userService.setUserAccountType(this.user.uid, this.accountType).then().catch((error) => {
+      if (!messageDisplayed) {
+        this.modalService.displayMessage('Oops!', error);
+        messageDisplayed = true;
+      }
+    });
+
+    this.ngxLoader.stop();
+  }
+
+  setOnboardingAsComplete() {
+    let messageDisplayed = false;
+    this.userService.setOnboardingAsComplete(this.user.uid).then(() => {
+      this.router.navigate(['login']);
+    }).catch(() => {
+      if (!messageDisplayed) {
+        this.modalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+        messageDisplayed = true;
+      }
+    });
+  }
+
   ngOnDestroy() {
-    if (this.datesSubscription) {
-      this.datesSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
     if (this.usernameSubscription) {
       this.usernameSubscription.unsubscribe();
     }
-    if (this.currenciesSubscription) {
-      this.currenciesSubscription.unsubscribe();
-    }
-    if (this.timezonesSubscription) {
-      this.timezonesSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-    if (this.passwordSubscription) {
-      this.passwordSubscription.unsubscribe();
+    if (this.datesSubscription) {
+      this.datesSubscription.unsubscribe();
     }
   }
 }
