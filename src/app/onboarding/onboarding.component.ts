@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.css']
 })
-export class OnboardingComponent implements OnInit, OnDestroy {
+export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   userData: any;
   user: any;
   isMobile: Observable<BreakpointState>;
@@ -145,6 +145,10 @@ export class OnboardingComponent implements OnInit, OnDestroy {
     this.years = this.utilService.createYearRange('1930', lastYear);
 
     this.ngxLoader.stop();
+  }
+
+  ngAfterViewInit() {
+    this.modalService.displayMessage('Welcome!', 'Thanks for signing up. Before we get started, please tell us a bit about yourself..');
   }
 
   counter(i: number) {
