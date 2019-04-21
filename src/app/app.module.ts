@@ -68,6 +68,7 @@ import { LoggerModule } from 'ngx-logger';
 import { ImgurService } from './_services/imgur.service';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { ArchwizardModule } from 'angular-archwizard';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -131,6 +132,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     QRCodeModule,
     QuillModule,
     Ng5SliderModule,
+    ImageCropperModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
     ArchwizardModule
