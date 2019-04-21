@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -9,6 +9,9 @@ import { UtilService } from '../_services/util.service';
 import { ModalService } from '../_services/modal.service';
 import { ImgurService, ImgurResponse } from '../_services/imgur.service';
 import { Router } from '@angular/router';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+
+declare var $;
 
 @Component({
   selector: 'app-onboarding',
@@ -38,6 +41,10 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   years: any;
   workToggle = false;
   hireToggle = false;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+
+  @ViewChild('showImageCroppingModal') showImageCroppingModal: ElementRef;
 
   private userSubscription: Subscription;
   private usernameSubscription: Subscription;
@@ -303,6 +310,53 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         messageDisplayed = true;
       }
     });
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.logger.debug('Image cropped');
+    this.croppedImage = event.base64;
+    this.logger.debug(this.croppedImage);
+  }
+
+  imageLoaded() {
+    this.logger.debug('Image loaded');
+  }
+
+  cropperReady() {
+    this.logger.debug('Cropper ready');
+  }
+
+  loadImageFailed() {
+    this.logger.debug('Load image failed');
+  }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+    if (event.target.files && event.target.files.length) {
+      $(this.showImageCroppingModal.nativeElement).modal('show');
+    } else {
+      this.modalService.displayMessage('Oops!', 'Please select a photo to upload.');
+    }
+  }
+
+  savePicture() {
+    $(this.showImageCroppingModal.nativeElement).modal('hide');
+    this.logger.debug('Saving image');
+    if (this.croppedImage) {
+      this.ngxLoader.start();
+      this.imgurService.upload(this.croppedImage.split('base64,')[1], this.user.uid).subscribe((imgurResponse: ImgurResponse) => {
+        if (imgurResponse) {
+          this.logger.debug('Picture uploaded to imgur');
+          this.logger.debug(imgurResponse);
+          this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
+            this.modalService.displayMessage('Yay!', 'Your photo has been updated.')
+          ).catch((error) => {
+            this.modalService.displayMessage('Oops!', error);
+          });
+          this.ngxLoader.stop();
+        }
+      });
+    }
   }
 
   ngOnDestroy() {

@@ -19,7 +19,7 @@
                     <div style="text-align: center">
                       <label class="btn btn-xs btn-secondary btn-file">
                         <input type="file" accept="image/x-png,image/gif,image/jpeg"
-                          (change)="handleFileInput($event)" />
+                          (change)="fileChangeEvent($event)" />
                         <span>Upload</span>
                       </label>
                     </div>
@@ -223,3 +223,27 @@
     </div>
   </div>
 </section>
+
+<!-- Show image crop modal -->
+<div class="modal fade" #showImageCroppingModal id="showImageCroppingModal" tabindex="-1" role="dialog"
+  aria-labelledby="showImageCroppingModalLabel" aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showImageCroppingModalLabel">Change Picture</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <div style="height: 350px">
+            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
+            [resizeToWidth]="128" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+        </div>
+        <br>
+        <button type="button" class="btn btn-block btn-secondary" (click)="savePicture()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
