@@ -2,11 +2,10 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { ModalComponent } from '../_modals/modal.component';
 import { UtilService } from '../_services/util.service';
 import { NGXLogger } from 'ngx-logger';
+import { ModalService } from '../_services/modal.service';
 
 @Component({
   templateUrl: './login.component.html'
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
     private logger: NGXLogger,
-    public modalService: NgbModal,
+    public modalService: ModalService,
     public utilService: UtilService,
     public ngZone: NgZone,
     public router: Router
@@ -41,14 +40,10 @@ export class LoginComponent implements OnInit {
         this.ngZone.run(() => { this.router.navigate(['dashboard']); });
       } else {
         this.router.navigate(['verify-email']);
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Oops!';
-        modalReference.componentInstance.message = 'Your email account has not been verified yet.';
+        this.modalService.displayMessage('Oops!', 'Your email account has not been verified yet.');
       }
     }, error => {
-      const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-      modalReference.componentInstance.header = 'Oops!';
-      modalReference.componentInstance.message = error.message;
+      this.modalService.displayMessage('Oops!', error.message);
     });
   }
 
