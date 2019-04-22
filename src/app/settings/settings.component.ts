@@ -25,7 +25,6 @@ declare var $;
 export class SettingsComponent implements OnInit, OnDestroy {
   userData: any;
   user: any;
-  betaMode: boolean;
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
@@ -198,7 +197,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.betaMode = environment.betaMode;
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
     const lastYear = (new Date().getFullYear() - 18).toString();

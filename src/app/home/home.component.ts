@@ -16,8 +16,7 @@ import { AuthService } from '../_services/auth.service';
 export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   submitted = false;
-  betaMode: boolean;
-
+  
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
@@ -28,7 +27,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
-    this.betaMode = environment.betaMode;
   }
 
   googleSignIn() {
