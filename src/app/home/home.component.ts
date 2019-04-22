@@ -16,7 +16,7 @@ import { AuthService } from '../_services/auth.service';
 export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   submitted = false;
-  
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
