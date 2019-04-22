@@ -17,7 +17,6 @@ import { NGXLogger } from 'ngx-logger';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
-  betaMode: boolean;
   user: any = {
     photoURL: 'https://i.imgflip.com/1slnr0.jpg'
   };
@@ -26,6 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userAgentString: string;
   referredBy: string;
   onboardingComplete: boolean;
+  accountType: boolean;
 
   private authSubscription: Subscription;
   private userSubscription: Subscription;
@@ -39,7 +39,6 @@ export class AppComponent implements OnInit, OnDestroy {
     public router: Router,
     public authService: AuthService) {
     this.userAgentString = navigator.userAgent;
-    this.betaMode = environment.betaMode;
     this.afAuth.authState.subscribe(response => {
       this.referredBy = localStorage.getItem('referredBy');
       this.assignUserProfile(response);
@@ -107,9 +106,10 @@ export class AppComponent implements OnInit, OnDestroy {
           };
         }
         this.onboardingComplete = data['onboardingComplete'];
+        this.accountType = data['accountType'];
       }
       localStorage.setItem('user', JSON.stringify(user));
-      if(!this.onboardingComplete) {
+      if (!this.onboardingComplete || !this.accountType) {
         this.router.navigate(['onboarding']);
       } else {
         this.router.navigate(['dashboard']);
