@@ -20,9 +20,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
-  pricingCurrency = 'Currency';
-  projectLength = 1;
-  projectLengthCategory: string;
+  selectedCurrency = 'Currency';
+  selectedBudget = 'Budget';
+  selectedLength = 1;
+  selectedLengthCategory = 'day';
   selectedCategory: string;
   user$: Observable<any>;
   prices: any;
@@ -71,9 +72,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSelectedCategoryChange(value) {
-    this.onAdd.emit();
-    this.logger.debug(`${value}`);
+  onSelectedCategoryChange(event) {
+    this.logger.debug(`Category changed to: ${event.target.value}`);
+    this.selectedCategory = event.target.value;
   }
 
   setUser(result) {
@@ -91,18 +92,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   completeTaskPreScreening() {
-    this.logger.debug('Completing task pre-screening with values:');
+    if (this.selectedLength && this.selectedLengthCategory) {
+      this.logger.debug(`Project duration set as: ${this.selectedLength} ${this.selectedLengthCategory}`);
+      this.logger.debug('Completing task pre-screening!');
+    } else {
+      this.logger.debug('Conditions not met... cannot complete task pre-screening');
+    }
   }
 
   canEnterStep2: (MovingDirection) => boolean = () => {
     if (this.selectedCategory) {
-      this.logger.debug(`Category set as ${this.selectedCategory}`);
+      this.logger.debug(`Category set as: ${this.selectedCategory}`);
       this.logger.debug('All conditions met... moving to step 2');
       return true;
     } else {
       this.logger.debug('Conditions not met... cannot move to step 2');
     }
   }
+
+  canEnterStep3: (MovingDirection) => boolean = () => {
+    if (this.selectedCurrency) {
+      this.logger.debug(`Currency set as: ${this.selectedCurrency}`);
+      this.logger.debug(`Budget set as: ${this.selectedBudget}`);
+      return true;
+    } else {
+      this.logger.debug('Conditions not met... cannot move to step 3');
+    }
+  }
+
 
   ngOnDestroy() {
     if (this.userSubscription) {

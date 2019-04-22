@@ -49,20 +49,14 @@
             </div>
             <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
               <div class="col-md-12 text-left">
-                {{ selectedCategory }}
-                <div class="custom-controls-stacked">
-                  <div class="custom-control custom-radio">
-                    <input type="radio" class="custom-control-input" [value]="'Web, Software and Mobile Development'" name="step1" [(ngModel)]="selectedCategory" (ngModelChange)="onSelectedCategoryChange(selectedCategory)">
-                    <label class="custom-control-label">Web, Software and Mobile Development</label>
-                  </div>
-                  <div class="custom-control custom-radio">
-                    <input type="radio" class="custom-control-input" [value]="'Graphics Design'" name="step1" [(ngModel)]="selectedCategory" (ngModelChange)="onSelectedCategoryChange(selectedCategory)">
-                    <label class="custom-control-label">Graphics Design</label>
-                  </div>
-                  <div class="custom-control custom-radio">
-                    <input type="radio" class="custom-control-input" [value]="'Writing and Translation'" name="step1" [(ngModel)]="selectedCategory" (ngModelChange)="onSelectedCategoryChange(selectedCategory)">
-                    <label class="custom-control-label">Writing and Translation</label>
-                  </div>
+                <div class="radio">
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)" value="Web, Software and Mobile Development">&nbsp;  Web, Software and Mobile Development</label>
+                </div>
+                <div class="radio">               
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)" value="Graphics Design">&nbsp; Graphics Design</label>
+                </div>
+                <div class="radio">
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)" value="Writing and Translation">&nbsp; Writing and Translation</label>
                 </div>
               </div>
             </div>
@@ -79,7 +73,7 @@
             </div>
             <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
               <div class="col-md-4">
-                <select class="form-control" [(ngModel)]="pricingCurrency">
+                <select class="form-control" [(ngModel)]="selectedCurrency">
                   <option [disabled]="true" selected>Currency</option>
                   <option value="EUR">EUR</option>
                   <option value="GBP">GBP</option>
@@ -87,19 +81,19 @@
                 </select>
               </div>
               <div class="col-md-8">
-                <select class="form-control">
+                <select class="form-control" [(ngModel)]="selectedBudget">
                   <option disabled>Budget</option>
-                  <ng-container *ngIf="pricingCurrency === 'EUR'">
+                  <ng-container *ngIf="selectedCurrency === 'EUR'">
                     <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[0][i]">
                       {{ prices[0][i] }}
                     </option>
                   </ng-container>
-                  <ng-container *ngIf="pricingCurrency === 'GBP'">
+                  <ng-container *ngIf="selectedCurrency === 'GBP'">
                     <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[1][i]">
                       {{ prices[1][i] }}
                     </option>
                   </ng-container>
-                  <ng-container *ngIf="pricingCurrency === 'USD'">
+                  <ng-container *ngIf="selectedCurrency === 'USD'">
                     <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[2][i]">
                       {{ prices[2][i] }}
                     </option>
@@ -113,7 +107,7 @@
               <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
             </div>
           </aw-wizard-step>
-          <aw-wizard-step>
+          <aw-wizard-step [canEnter]="canEnterStep3">
             <h6>How soon would you like your service delivered?</h6>
             <div style="text-align: left; padding-top: 1em">
               <div class="alert alert-primary" role="alert">
@@ -122,21 +116,21 @@
             </div>
             <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
                 <div class="col-md-4">
-                  <select class="form-control" [(ngModel)]="projectLength">
+                  <select class="form-control" [(ngModel)]="selectedLength">
                     <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="i">{{ i }}</option>
                   </select>
                 </div>
                 <div class="col-md-8">
-                  <select class="form-control">
-                    <ng-container *ngIf="projectLength < 2">
-                      <option value="Day" selected>Day</option>
-                      <option value="Week">Week</option>
-                      <option value="Month">Month</option>
+                  <select class="form-control" [(ngModel)]="selectedLengthCategory">
+                    <ng-container *ngIf="selectedLength < 2">
+                      <option value="day" selected>day</option>
+                      <option value="week">week</option>
+                      <option value="month">month</option>
                     </ng-container>
-                  <ng-container *ngIf="projectLength > 1">
-                      <option value="Days" selected>Days</option>
-                      <option value="Week">Weeks</option>
-                      <option value="Months">Months</option>
+                  <ng-container *ngIf="selectedLength > 1">
+                      <option value="days" selected>days</option>
+                      <option value="weeks">weeks</option>
+                      <option value="months">months</option>
                     </ng-container>
                   </select>
                 </div>
