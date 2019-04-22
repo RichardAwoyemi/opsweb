@@ -1,0 +1,11 @@
+<section ngxUiLoaderBlurred class="section-desktop" *ngIf="!(isMobile | async)?.matches">
+  <p>
+    {{ task }}
+  </p>
+</section>
+
+<section ngxUiLoaderBlurred class="section-mobile" *ngIf="(isMobile | async)?.matches">
+  <p>
+    {{ task }}
+  </p>
+</section>

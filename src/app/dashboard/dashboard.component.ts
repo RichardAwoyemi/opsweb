@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   selectedCategory: string;
   user$: Observable<any>;
   prices: any;
+  task: any;
 
   private userSubscription: Subscription;
   private pricesSubscription: Subscription;
@@ -95,6 +96,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.selectedLength && this.selectedLengthCategory) {
       this.logger.debug(`Project duration set as: ${this.selectedLength} ${this.selectedLengthCategory}`);
       this.logger.debug('Completing task pre-screening!');
+
+      this.task = {
+        category: this.selectedCategory,
+        budget: this.selectedBudget,
+        currency: this.selectedCurrency,
+        duration: `${this.selectedLength} ${this.selectedLengthCategory}`,
+        status: 'incomplete'
+      };
+      this.logger.debug(this.task);
+      localStorage.setItem('new-task', JSON.stringify(this.task));
+
+      $(this.createTaskModal.nativeElement).modal('hide');
+      this.router.navigate(['new-task']);
     } else {
       this.logger.debug('Conditions not met... cannot complete task pre-screening');
     }
@@ -111,7 +125,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   canEnterStep3: (MovingDirection) => boolean = () => {
-    if (this.selectedCurrency) {
+    if (this.selectedCurrency && this.selectedCurrency !== 'Currency' &&
+        this.selectedBudget && this.selectedBudget !== 'Budget') {
       this.logger.debug(`Currency set as: ${this.selectedCurrency}`);
       this.logger.debug(`Budget set as: ${this.selectedBudget}`);
       return true;
@@ -119,7 +134,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.logger.debug('Conditions not met... cannot move to step 3');
     }
   }
-
 
   ngOnDestroy() {
     if (this.userSubscription) {
