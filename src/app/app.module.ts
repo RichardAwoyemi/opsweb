@@ -71,6 +71,7 @@ import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { ArchwizardModule } from 'angular-archwizard';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -143,6 +144,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     QuillModule,
     Ng5SliderModule,
     SwiperModule,
+    ImageCropperModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
     ArchwizardModule
