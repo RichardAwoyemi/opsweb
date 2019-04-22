@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -24,7 +25,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
     private ngxLoader: NgxUiLoaderService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private router: Router
   ) {
     this.userData = {
       firstName: null,
@@ -40,6 +42,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(result => {
       if (result) {
+        if (!result['onboardingComplete']) {
+          this.router.navigate(['dashboard']);
+        }
         this.setUser(result);
         this.ngxLoader.stop();
       }

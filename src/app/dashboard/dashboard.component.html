@@ -1,10 +1,16 @@
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && (userData?.firstName)">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType)">
   <div class="container">
     <div class="row">
-      <div class="col-md-12" *ngIf="userData">
-        <h2>Hi, {{ userData?.firstName }}.</h2>
-        <br>
+      <div class="col-md-12 text-center">
+        <img src="../assets/img/blank.svg" style="height: 15em">
+      </div>
+      <div class="col-md-12 text-center">
+        <div style="padding-top: 2em; padding-bottom: 1em">
+          <p>There doesn't seem to be anything going on here.</p>
+        </div>
+        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'hire'">Create a New Task</button>
+        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'work'">Create a New Application</button>
       </div>
     </div>
     <br>
@@ -15,10 +21,6 @@
   *ngIf="(isMobile | async)?.matches && (userData?.firstName)">
   <div class="container">
     <div class="row">
-      <div class="col-md-12" *ngIf="userData">
-        <h2>Hi, {{ userData?.firstName }}.</h2>
-        <br>
-      </div>
     </div>
   </div>
 </section>
