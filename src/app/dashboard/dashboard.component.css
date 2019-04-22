@@ -9,19 +9,3 @@
   padding-top: 6.5rem;
   padding-bottom: 2rem;
 }
-
-input[readonly]
-{
-  background-color:#fff;
-}
-
-.social-media-icon {
-  width: 24px; 
-  height: 24px; 
-  margin-right: 0.75em;
-}
-
-.social-media-icon:hover {
-  cursor: pointer;
-  opacity: 0.75;
-}

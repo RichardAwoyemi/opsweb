@@ -26,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userAgentString: string;
   referredBy: string;
   onboardingComplete: boolean;
+  accountType: boolean;
 
   private authSubscription: Subscription;
   private userSubscription: Subscription;
@@ -107,9 +108,10 @@ export class AppComponent implements OnInit, OnDestroy {
           };
         }
         this.onboardingComplete = data['onboardingComplete'];
+        this.accountType = data['accountType'];
       }
       localStorage.setItem('user', JSON.stringify(user));
-      if(!this.onboardingComplete) {
+      if (!this.onboardingComplete || !this.accountType) {
         this.router.navigate(['onboarding']);
       } else {
         this.router.navigate(['dashboard']);

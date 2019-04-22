@@ -3,24 +3,95 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 text-center">
-        <img src="../assets/img/blank.svg" style="height: 15em">
+        <img src="../assets/img/blank.svg" style="height: 10em">
       </div>
       <div class="col-md-12 text-center">
         <div style="padding-top: 2em; padding-bottom: 1em">
           <p>There doesn't seem to be anything going on here.</p>
         </div>
-        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'hire'">Create a New Task</button>
-        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'work'">Create a New Application</button>
+        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'hire'"
+          (click)="openCreateTaskModal()">Create Task</button>
+        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'work'"
+          (click)="apply()">Apply to Work</button>
       </div>
     </div>
     <br>
   </div>
 </section>
 
-<section ngxUiLoaderBlurred class="section-mobile"
-  *ngIf="(isMobile | async)?.matches && (userData?.firstName)">
+<section ngxUiLoaderBlurred class="section-mobile" *ngIf="(isMobile | async)?.matches && (userData?.firstName)">
   <div class="container">
     <div class="row">
     </div>
   </div>
 </section>
+
+<!-- Create task modal -->
+<div class="modal fade" #createTaskModal id="createTaskModal" tabindex="-1" role="dialog"
+  aria-labelledby="createTaskModalLabel" aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center hideWizardNavbar">
+        <aw-wizard>
+          <aw-wizard-step>
+            <h6>What type of work do you need done?</h6>
+            <div class="row" style="padding-top: 1em; padding-bottom: 2em">
+              <div class="col-md-12 text-left">
+                <div class="custom-controls-stacked">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" name="development">
+                    <label class="custom-control-label">Web, Software and Mobile Development</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" name="radio1">
+                    <label class="custom-control-label">Graphics Design</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" name="radio1">
+                    <label class="custom-control-label">Writing and Translation</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step>
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+              &nbsp;&nbsp;
+              <button type="button" class="btn btn-secondary" (click)="startTaskCreation()">Complete</button>
+            </div>
+          </aw-wizard-step>
+        </aw-wizard>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Apply to work modal -->
+<div class="modal fade" #applyModal id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="applyModalLabel">Apply to Work</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

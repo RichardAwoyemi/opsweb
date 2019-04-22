@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
+
+declare var $;
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -34,6 +36,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
   }
 
+  @ViewChild('createTaskModal') createTaskModal: ElementRef;
+
   ngOnInit() {
     this.ngxLoader.start();
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
@@ -55,6 +59,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.logger.debug('Setting user:');
     this.logger.debug(result);
     this.userData = result;
+  }
+
+  openCreateTaskModal() {
+    $(this.createTaskModal.nativeElement).modal('show');
+  }
+
+  closeCreateTaskModal() {
+    $(this.createTaskModal.nativeElement).modal('hide');
   }
 
   ngOnDestroy() {
