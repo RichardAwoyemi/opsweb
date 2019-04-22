@@ -18,12 +18,8 @@
         <span class="dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false" *ngIf="user.photoURL">
           <img class="avatar avatar-xs" src="{{ user?.photoURL }}" alt="user">
         </span>
-        <div class="dropdown-menu dropdown-menu-right" *ngIf="!referralMode">
-          <a class="dropdown-item" routerLink="/invite" style="padding: 0rem;">Invite Friends</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
-        </div>
-        <div class="dropdown-menu dropdown-menu-right" *ngIf="referralMode">
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" routerLink="/referral" style="padding: 0rem;">Invite Friends</a>
           <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>

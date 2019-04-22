@@ -1,186 +1,23 @@
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && referralMode && (userData?.firstName || userData?.lastName)">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em">You are in position <strong>
-            {{ ranking$ | async }}</strong> of
-          <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
       </div>
     </div>
     <br>
-    <div class="row gap-y" style="margin-left: 0.1em;" *ngIf="userData">
-      <div class="col-md-6" style="background-color: #fff; padding: 2em">
-        <h4>Current Task</h4>
-        <br>
-        <p style="font-size: 1em">Interested in early access? Improve your spot in line by inviting friends.
-          The more who join, the sooner you will get in.</p>
-        <div class="form-group input-group">
-          <input type="text" class="form-control" placeholder="" value="{{ referralUrl }}" readonly>
-          <div class="input-group-append">
-            <button class="btn btn-secondary" type="button" (click)="copyMessage()">Copy Link</button>
-          </div>
-        </div>
-        <div class="small mt-3 opacity-70">or share with:</div>
-        <div style="padding-top: 1em">
-          <a href="{{ facebookShareUrl }}" target="_blank" class="share-popup"><img src="../assets/img/facebook.png"
-              class="social-media-icon"></a>
-          <a href="{{ whatsappShareUrl }} " target="_blank"><img src="../assets/img/whatsapp.png"
-              class="social-media-icon"></a>
-          <a href="{{ twitterShareUrl }}" target="_blank"><img src="../assets/img/twitter.png"
-              class="social-media-icon"></a>
-          <a href="{{ emailShareUrl }}"><img src="../assets/img/mail.png" class="social-media-icon"></a>
-        </div>
-      </div>
-      <div class="col-md-6" style="padding-top: 0" *ngIf="invitees?.length > 0">
-        <div class="col-md-12" style="background-color: #fff; padding: 2em">
-          <h4>Invitees</h4>
-          <br>
-          <p style="font-size: 1em" *ngIf="noOfReferredUsers < 2">You have referred <strong>{{ noOfReferredUsers }}</strong> person so far. Below is a list of your most recent invitees.</p>
-          <p style="font-size: 1em" *ngIf="noOfReferredUsers > 1">You have referred <strong>{{ noOfReferredUsers }}</strong> people so far. Below is a list of your most recent invitees.</p>
-          <table class="table" style="border: none; padding: 0px; margin-top: 1.5em">
-            <tbody>
-              <tr style="border: none" *ngFor="let invitee of invitees">
-                <td style="padding-left: 0px; padding-top: 0px; border: none">
-                  <img *ngIf="invitee?.photoURL" class="avatar avatar-xs" src="{{ invitee?.photoURL }}" alt="avatar"
-                    style="margin-right: 0.5em">
-                  <img *ngIf="!invitee.photoURL" class="avatar avatar-xs" src="{{ anonymousPhotoURL }}" alt="avatar"
-                    style="margin-right: 0.5em">
-                  {{ invitee.firstName }} {{ invitee.lastName }}
-                </td>
-                <td style="text-align: right; padding-top: 5px; border: none;">
-                  <div *ngIf="invitee.emailVerified"><i class="ti-check text-success mr-2"></i></div>
-                  <div *ngIf="!invitee.emailVerified"><i class="ti-close text-danger mr-2"></i></div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && referralMode && (!userData?.firstName || !userData?.lastName)">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <p style="font-size: 1.25em">Please provide the following details to continue.</p>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Legal Name</label>
-          <div class="row">
-            <div class="col-md-6">
-              <input class="form-control" placeholder="First Name" type="text" [(ngModel)]="firstName">
-            </div>
-            <div class="col-md-6">
-              <input class="form-control" placeholder="Last Name" type="text" [(ngModel)]="lastName">
-            </div>
-          </div>
-        </div>
-        <div class="form-group" style="padding-top: 1em">
-          <button type="button" class="btn btn-lg btn-secondary" (click)="setUserLegalNameData()">Save</button>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
 <section ngxUiLoaderBlurred class="section-mobile"
-  *ngIf="(isMobile | async)?.matches && referralMode && (userData?.firstName || userData.lastName)">
+  *ngIf="(isMobile | async)?.matches && (userData?.firstName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
         <h2>Hi, {{ userData?.firstName }}.</h2>
         <br>
-        <p style="font-size: 1.25em">You are in position <strong>
-            {{ ranking$ | async }}</strong> of
-          <strong>{{ noOfUsers$ | async }}</strong> on the waitlist.</p>
-      </div>
-      <div style="padding: 1em">
-        <div class="col-md-12" style="background-color: #fff; padding: 2em">
-          <h4>Current Task</h4>
-          <br>
-          <p style="font-size: 1em">Interested in early access? Improve your spot in line by inviting friends.
-            The more who join, the sooner you will get in.</p>
-          <br>
-          <div class="form-group input-group">
-            <input type="text" class="form-control" placeholder="" value="{{ referralUrl }}" readonly>
-            <div class="input-group-append">
-              <button class="btn btn-secondary" type="button" (click)="copyMessage()"><i
-                  class="ti-clipboard"></i></button>
-            </div>
-          </div>
-          <div class="small mt-3 opacity-70">or share with:</div>
-          <div style="padding-top: 1em">
-            <a href="{{ facebookShareUrl }}" target="_blank" class="share-popup"><img src="../assets/img/facebook.png"
-                class="social-media-icon"></a>
-            <a href="{{ whatsappShareUrl }} " target="_blank"><img src="../assets/img/whatsapp.png"
-                class="social-media-icon"></a>
-            <a href="{{ twitterShareUrl }}" target="_blank"><img src="../assets/img/twitter.png"
-                class="social-media-icon"></a>
-            <a href="{{ emailShareUrl }}"><img src="../assets/img/mail.png" class="social-media-icon"></a>
-          </div>
-        </div>
-      </div>
-      <div style="padding: 1em" *ngIf="invitees?.length > 0">
-        <div class="col-md-12" style="background-color: #fff; padding: 2em">
-          <h4>Invitees</h4>
-          <br>
-          <p style="font-size: 1em">Below are the status of recent invitees who have signed up and confirmed their email
-            address.</p>
-          <table class="table" style="border: none; padding: 0px; margin-top: 1.5em">
-            <tbody valign="middle">
-              <tr style="border: none" *ngFor="let invitee of invitees">
-                <td style="padding-left: 0px; padding-top: 0px; border: none">
-                  <img *ngIf="invitee?.photoURL" class="avatar avatar-xs" src="{{ invitee?.photoURL }}" alt="avatar"
-                    style="margin-right: 0.5em">
-                  <img *ngIf="!invitee.photoURL" class="avatar avatar-xs" src="{{ anonymousPhotoURL }}" alt="avatar"
-                    style="margin-right: 0.5em">
-                  {{ invitee.firstName }} {{ invitee.lastName }}
-                </td>
-                <td style="text-align: right; padding-top: 5px; border: none;">
-                  <div *ngIf="invitee.emailVerified"><i class="ti-check text-success mr-2"></i></div>
-                  <div *ngIf="!invitee.emailVerified"><i class="ti-close text-danger mr-2"></i></div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section ngxUiLoaderBlurred class="section-mobile"
-  *ngIf="(isMobile | async)?.matches && referralMode && (!userData?.firstName || !userData?.lastName)">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <p style="font-size: 1.25em">Please provide the following details to continue.</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <br>
-        <div class="form-group">
-          <label>Legal Name</label>
-          <div class="row">
-            <div class="col-md-12" style="margin-bottom: 0.5em">
-              <input class="form-control" placeholder="First Name" type="text" [(ngModel)]="firstName">
-            </div>
-            <div class="col-md-12">
-              <input class="form-control" placeholder="Last Name" type="text" [(ngModel)]="lastName">
-            </div>
-          </div>
-        </div>
-        <div class="form-group" style="padding-top: 1em">
-          <button type="button" class="btn btn-lg btn-secondary" (click)="setUserLegalNameData()">Save</button>
-        </div>
       </div>
     </div>
   </div>

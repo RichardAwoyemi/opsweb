@@ -15,6 +15,7 @@ import { InviteComponent } from './invite/invite.component';
 import { ContactComponent } from './contact/contact.component';
 import { SettingsComponent } from './settings/settings.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
+import { ReferralComponent } from './referral/referral.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
@@ -43,10 +44,10 @@ const routes: Routes = [
   // { path: 'tools', component: ToolsComponent, canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'referral', component: ReferralComponent, canActivate: [AuthGuard] },
   // { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
   // { path: 'task/:id', component: TaskComponent, canActivate: [AuthGuard] },
   // { path: 'tasks/new', component: NewTaskComponent, canActivate: [AuthGuard] },
-  { path: 'invite', component: InviteComponent, canActivate: [AuthGuard] },
   { path: 'invite/:id', component: InviteComponent, canActivate: [AnonymousGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
