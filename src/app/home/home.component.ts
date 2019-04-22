@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   submitted = false;
   carouselBanner = {};
-  betaMode: boolean;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -30,7 +29,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
-    this.betaMode = environment.betaMode;
     this.carouselBanner = {
       grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
       slide: 1,
