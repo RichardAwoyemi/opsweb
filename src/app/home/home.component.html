@@ -114,25 +114,6 @@
         </button>
       </p>
     </div>
-    <div class="container" *ngIf="!betaMode">
-      <h3 class="text-center fw-200">Stay up to date</h3>
-      <br>
-      <div class="col-md-6 mx-auto">
-        <form [formGroup]="registerBottomForm" id="registerBottomForm" (ngSubmit)="onBottomSubmit()"
-          [hidden]="submitted">
-          <div class="form-group input-group">
-            <input type="text" class="form-control" placeholder="Your Email Address" formControlName="email"
-              name="email">
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="submit">Sign Up</button>
-            </div>
-          </div>
-        </form>
-        <div [hidden]="!submitted" class="text-center">
-          <small>Thanks for signing up. We'll be in touch.</small>
-        </div>
-      </div>
-    </div>
   </section>
 </div>
 
