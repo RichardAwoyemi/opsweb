@@ -33,14 +33,7 @@
       <div class="navbar-left">
       </div>
       <section>
-        <div class="nav nav-navbar mr-auto" *ngIf="!referralMode">
-          <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
-          <a class="nav-link" routerLink="/accounts">ACCOUNTS</a>
-          <a class="nav-link" routerLink="/accounts">EXCHANGE</a>
-          <a class="nav-link" routerLink="/tasks">TASKS</a>
-          <a class="nav-link" routerLink="/tools">TOOLS</a>
-        </div>
-        <div class="nav nav-navbar mr-auto" *ngIf="referralMode">
+        <div class="nav nav-navbar mr-auto">
           <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
         </div>
       </section>
@@ -59,7 +52,7 @@
         <img src="../assets/img/logo-white.svg" style="height: 35px; width: 35px;">
       </a>
     </div>
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && referralMode">
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link navbar-closer" style="text-align: right"><i class="ti-close mr-2"></i></a>
@@ -88,37 +81,14 @@
     </div>
     <!-- Desktop links -->
     <section class="navbar-mobile" *ngIf="!(isMobile | async)?.matches && !authService.isLoggedIn">
-      <span class="navbar-divider d-mobile-none" *ngIf="!referralMode"></span>
-      <nav class="nav nav-navbar mr-auto" *ngIf="!referralMode">
-        <a class="nav-link" routerLink="/about">About</a>
-        <a class="nav-link" routerLink="/services">Services</a>
-        <a class="nav-link" routerLink="/careers">Careers</a>
-        <a class="nav-link" routerLink="/markets">Markets</a>
-        <a class="nav-link" routerLink="/support">Support</a>
-        <a class="nav-link" routerLink="/login">Login</a>
-        <a class="nav-link" routerLink="/register">Register</a>
-      </nav>
-      <span class="navbar-divider d-mobile-none" *ngIf="referralMode"></span>
-      <nav class="nav nav-navbar mr-auto" *ngIf="referralMode">
-        <a class="nav-link" routerLink="/login">Login</a>
-        <a class="nav-link" routerLink="/register">Register</a>
-      </nav>
-      <button class="btn btn-xs btn-round btn-primary" style="color: #fff">BETA</button>
-    </section>
-    <!-- Mobile links -->
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && !referralMode && !authService.isLoggedIn">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
-        <a class="nav-link" routerLink="/">Home</a>
-        <a class="nav-link" routerLink="/about">About</a>
-        <a class="nav-link" routerLink="/services">Services</a>
-        <a class="nav-link" routerLink="/careers">Careers</a>
-        <a class="nav-link" routerLink="/markets">Markets</a>
-        <a class="nav-link" routerLink="/support">Support</a>
-        <a class="nav-link" href="{{ appStoreUrl }}">Download</a>
+        <a class="nav-link" routerLink="/login">Login</a>
+        <a class="nav-link" routerLink="/register">Register</a>
       </nav>
     </section>
-    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && referralMode && !authService.isLoggedIn">
+    <!-- Mobile links -->
+    <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches && !authService.isLoggedIn">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link navbar-closer" style="text-align: right"><i class="ti-close mr-2"></i></a>
@@ -135,42 +105,8 @@
 <ngx-ui-loader></ngx-ui-loader>
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 
-<!-- Not logged in footer -->
-<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && !referralMode">
-  <div class="container">
-    <div class="row gap-y">
-      <div class="col-xl-5">
-        <p>Opsonion is a platform which allows you to hire or work for digital currency.</p>
-        <hr class="d-xl-none">
-        <small class="opacity-70">&copy; 2018 Opsonion. All rights reserved.</small>
-      </div>
-      <div class="col-4 col-xl-2 offset-xl-1">
-        <div class="nav flex-column">
-          <a class="nav-link" routerLink="/about">About</a>
-          <a class="nav-link" routerLink="/services">Services</a>
-          <a class="nav-link" routerLink="/careers">Careers</a>
-        </div>
-      </div>
-      <div class="col-4 col-xl-2">
-        <div class="nav flex-column">
-          <a class="nav-link" routerLink="/markets">Markets</a>
-          <a class="nav-link" routerLink="/support">Support</a>
-          <a class="nav-link" routerLink="/status">Status</a>
-        </div>
-      </div>
-      <div class="col-4 col-xl-2">
-        <div class="nav flex-column">
-          <a class="nav-link" routerLink="/press">Press</a>
-          <a class="nav-link" routerLink="/legal">Legal</a>
-          <a class="nav-link" routerLink="/contact">Contact</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
 <!-- Landing page footer -->
-<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn && referralMode">
+<footer id="footer" class="footer py-7" *ngIf="!authService.isLoggedIn">
   <div class="container">
     <div class="row gap-y">
       <div class="col-xl-12 text-center">
