@@ -2,7 +2,6 @@ import { NgModule, OnInit } from '@angular/core';
 import { AuthGuard } from './_guards/auth.guard';
 import { AnonymousGuard } from './_guards/anonymous.guard';
 import { RouterModule, Routes } from '@angular/router';
-import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { LegalComponent } from './legal/legal.component';
 import { LoginComponent } from './login/login.component';
@@ -21,7 +20,6 @@ import { NewTaskComponent } from './new-task/new-task.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AnonymousGuard] },
-  { path: 'about', component: AboutComponent, canActivate: [AnonymousGuard] },
   { path: 'contact', component: ContactComponent, canActivate: [AnonymousGuard] },
   { path: 'legal', component: LegalComponent, canActivate: [AnonymousGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },

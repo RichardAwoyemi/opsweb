@@ -10,7 +10,7 @@ export const environment = {
     storageBucket: 'opsonion-live.appspot.com',
     messagingSenderId: '202919224596'
   },
-  referralMode: true,
+  betaMode: true,
   logging: {
     level: NgxLoggerLevel.INFO,
   }

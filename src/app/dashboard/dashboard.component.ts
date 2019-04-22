@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
 import { DataService } from '../_services/data.service';
+import { environment } from 'src/environments/environment';
 
 declare var $;
 
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user$: Observable<any>;
   prices: any;
   task: any;
+  betaMode: boolean;
 
   private userSubscription: Subscription;
   private pricesSubscription: Subscription;
@@ -52,6 +54,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxLoader.start();
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
+    this.betaMode = environment.betaMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
 

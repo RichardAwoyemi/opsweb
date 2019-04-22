@@ -13,7 +13,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { Ng5SliderModule } from 'ng5-slider';
 
-import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
 import { LegalComponent } from './legal/legal.component';
@@ -75,7 +74,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   declarations: [
     AppComponent,
     HomeComponent,
-    AboutComponent,
     ContactComponent,
     LegalComponent,
     LoginComponent,
