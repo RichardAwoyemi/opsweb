@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, EventEmitter } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
+import { DataService } from '../_services/data.service';
 
 declare var $;
 
@@ -19,13 +20,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
+  pricingCurrency = 'Currency';
+  projectLength = 1;
+  projectLengthCategory: string;
+  selectedCategory: string;
   user$: Observable<any>;
+  prices: any;
 
   private userSubscription: Subscription;
+  private pricesSubscription: Subscription;
+  onAdd = new EventEmitter();
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
+    private dataService: DataService,
     private ngxLoader: NgxUiLoaderService,
     private logger: NGXLogger,
     private router: Router
@@ -53,6 +62,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.ngxLoader.stop();
       }
     });
+
+    this.pricesSubscription = this.dataService.getAllPrices().subscribe(data => {
+      if (data) {
+        this.logger.debug(Object.values(data));
+        this.prices = Object.values(data);
+      }
+    });
+  }
+
+  onSelectedCategoryChange(value) {
+    this.onAdd.emit();
+    this.logger.debug(`${value}`);
   }
 
   setUser(result) {
@@ -69,9 +90,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     $(this.createTaskModal.nativeElement).modal('hide');
   }
 
+  completeTaskPreScreening() {
+    this.logger.debug('Completing task pre-screening with values:');
+  }
+
+  canEnterStep2: (MovingDirection) => boolean = () => {
+    if (this.selectedCategory) {
+      this.logger.debug(`Category set as ${this.selectedCategory}`);
+      this.logger.debug('All conditions met... moving to step 2');
+      return true;
+    } else {
+      this.logger.debug('Conditions not met... cannot move to step 2');
+    }
+  }
+
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+
+    if (this.pricesSubscription) {
+      this.pricesSubscription.unsubscribe();
     }
   }
 }

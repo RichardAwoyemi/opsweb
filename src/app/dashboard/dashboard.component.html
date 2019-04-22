@@ -41,19 +41,26 @@
         <aw-wizard>
           <aw-wizard-step>
             <h6>What type of work do you need done?</h6>
-            <div class="row" style="padding-top: 1em; padding-bottom: 2em">
+            <div style="text-align: left; padding-top: 1em">
+              <div class="alert alert-primary" role="alert">
+                <small>Choose the category that best fits your request. For example: if you are looking for a logo, you
+                  should choose the "Graphics & Design" category.</small>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
               <div class="col-md-12 text-left">
+                {{ selectedCategory }}
                 <div class="custom-controls-stacked">
                   <div class="custom-control custom-radio">
-                    <input type="radio" class="custom-control-input" name="development">
+                    <input type="radio" class="custom-control-input" [value]="'Web, Software and Mobile Development'" name="step1" [(ngModel)]="selectedCategory" (ngModelChange)="onSelectedCategoryChange(selectedCategory)">
                     <label class="custom-control-label">Web, Software and Mobile Development</label>
                   </div>
                   <div class="custom-control custom-radio">
-                    <input type="radio" class="custom-control-input" name="radio1">
+                    <input type="radio" class="custom-control-input" [value]="'Graphics Design'" name="step1" [(ngModel)]="selectedCategory" (ngModelChange)="onSelectedCategoryChange(selectedCategory)">
                     <label class="custom-control-label">Graphics Design</label>
                   </div>
                   <div class="custom-control custom-radio">
-                    <input type="radio" class="custom-control-input" name="radio1">
+                    <input type="radio" class="custom-control-input" [value]="'Writing and Translation'" name="step1" [(ngModel)]="selectedCategory" (ngModelChange)="onSelectedCategoryChange(selectedCategory)">
                     <label class="custom-control-label">Writing and Translation</label>
                   </div>
                 </div>
@@ -63,11 +70,81 @@
               <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
             </div>
           </aw-wizard-step>
-          <aw-wizard-step>
+          <aw-wizard-step [canEnter]="canEnterStep2">
+            <h6>What's your budget?</h6>
+            <div style="text-align: left; padding-top: 1em">
+              <div class="alert alert-primary" role="alert">
+                <small>Please select the amount you are willing to spend.</small>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
+              <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="pricingCurrency">
+                  <option [disabled]="true" selected>Currency</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                  <option value="USD">USD</option>
+                </select>
+              </div>
+              <div class="col-md-8">
+                <select class="form-control">
+                  <option disabled>Budget</option>
+                  <ng-container *ngIf="pricingCurrency === 'EUR'">
+                    <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[0][i]">
+                      {{ prices[0][i] }}
+                    </option>
+                  </ng-container>
+                  <ng-container *ngIf="pricingCurrency === 'GBP'">
+                    <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[1][i]">
+                      {{ prices[1][i] }}
+                    </option>
+                  </ng-container>
+                  <ng-container *ngIf="pricingCurrency === 'USD'">
+                    <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[2][i]">
+                      {{ prices[2][i] }}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
             <div class="btn-group">
               <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-secondary" (click)="startTaskCreation()">Complete</button>
+              <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step>
+            <h6>How soon would you like your service delivered?</h6>
+            <div style="text-align: left; padding-top: 1em">
+              <div class="alert alert-primary" role="alert">
+                <small>This is the amount of time the contractor has to work on your order. Please note that a request for faster delivery may impact the price.</small>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
+                <div class="col-md-4">
+                  <select class="form-control" [(ngModel)]="projectLength">
+                    <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="i">{{ i }}</option>
+                  </select>
+                </div>
+                <div class="col-md-8">
+                  <select class="form-control">
+                    <ng-container *ngIf="projectLength < 2">
+                      <option value="Day" selected>Day</option>
+                      <option value="Week">Week</option>
+                      <option value="Month">Month</option>
+                    </ng-container>
+                  <ng-container *ngIf="projectLength > 1">
+                      <option value="Days" selected>Days</option>
+                      <option value="Week">Weeks</option>
+                      <option value="Months">Months</option>
+                    </ng-container>
+                  </select>
+                </div>
+              </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+              &nbsp;&nbsp;
+              <button type="button" class="btn btn-secondary" (click)="completeTaskPreScreening()">Complete</button>
             </div>
           </aw-wizard-step>
         </aw-wizard>
