@@ -45,7 +45,7 @@
   style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0"
   *ngIf="(isMobile | async)?.matches && authService.isLoggedIn">
   <div class="container">
-    <div class="navbar-left mr-4" *ngIf="betaMode">
+    <div class="navbar-left mr-4">
       <button class="navbar-toggler" type="button" style="color: #F4F7FA">&#9776;</button>
       <a class="navbar-brand" routerLink="/">
         <img src="../assets/img/logo-white.svg" style="height: 35px; width: 35px;">
