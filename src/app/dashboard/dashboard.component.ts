@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user: any;
   userData: any;
   invitees: any;
-  referralMode: boolean;
+  betaMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
   whatsappShareUrl: string;
@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxLoader.start();
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.referralMode = environment.referralMode;
+    this.betaMode = environment.betaMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
 
