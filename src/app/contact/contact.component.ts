@@ -2,11 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from '../_modals/modal.component';
-import { UtilService } from '../_services/util.service';
 import { NGXLogger } from 'ngx-logger';
+import { ModalService } from '../_services/modal.service';
 
 declare var $;
 
@@ -28,7 +25,7 @@ export class ContactComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
     private logger: NGXLogger,
-    public modalService: NgbModal
+    public modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -73,9 +70,7 @@ export class ContactComponent implements OnInit {
 
         // Temporary fix
 
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Yay!';
-        modalReference.componentInstance.message = 'Thanks. We will be in touch.';
+        this.modalService.displayMessage('Yay!', 'Thanks. We will be in touch.');
         this.submitted = true;
       }
     );
