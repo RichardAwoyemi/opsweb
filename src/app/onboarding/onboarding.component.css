@@ -1,0 +1,40 @@
+.section-desktop {
+  background-color: #F4F7FA !important;
+  padding-top: 11rem;
+  padding-bottom: 4rem;
+}
+
+.section-mobile {
+  background-color: #f4f7fa !important;
+  padding-top: 6.5rem;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 2rem;
+}
+
+.centered-content {
+  margin: auto;
+  text-align: center;
+  padding-top: 3em;
+}
+
+.product-detail {
+  cursor: pointer;
+}
+
+.product-3.mb-3:hover {
+ transform: scale(1.1)
+}
+
+.btn-file input[type="file"] {
+  position: absolute;
+  top: -1000px;
+}
+
+.product-selected {
+  background-color: #2055EC !important;
+}
+
+.product-selected h5 {
+  color: #fff !important;
+}

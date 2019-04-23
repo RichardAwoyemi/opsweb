@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'src/environments/environment';
 import { UtilService } from '../_services/util.service';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons';
@@ -18,7 +17,6 @@ export class HomeComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   submitted = false;
   carouselBanner = {};
-  betaMode: boolean;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -30,7 +28,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
-    this.betaMode = environment.betaMode;
     this.carouselBanner = {
       grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
       slide: 1,

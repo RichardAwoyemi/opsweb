@@ -1,0 +1,468 @@
+<section ngxUiLoaderBlurred class="section-desktop" *ngIf="!(isMobile | async)?.matches">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <aw-wizard #wizard>
+          <aw-wizard-step [stepTitle]="'Step 1'">
+            <div class="centered-content">
+              <div style="text-align: left">
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Profile Picture</strong>
+                    <br>
+                    <small>Use a high quality photo that clearly shows your face.</small>
+                  </div>
+                  <div class="col-md-6">
+                    <div *ngIf="user.photoURL" style="padding-bottom: 1em; text-align: center">
+                      <img class="avatar avatar-xl" src="{{ user?.photoURL }}" alt="avatar">
+                    </div>
+                    <div style="text-align: center">
+                      <label class="btn btn-xs btn-secondary btn-file">
+                        <input type="file" accept="image/x-png,image/gif,image/jpeg"
+                          (change)="fileChangeEvent($event)" />
+                        <span>Upload</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Username</strong>
+                    <br>
+                    <small>This name will be part of your Opsonion profile.</small>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                      </div>
+                      <input type="text" class="form-control" [(ngModel)]="username"
+                        (change)="username=username.trim()">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Personal Details</strong>
+                    <br>
+                    <small>Your personal information is never shown to other users.</small>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Legal Name</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <input class="form-control" (change)="firstName=firstName.trim()" placeholder="First Name"
+                            type="text" [(ngModel)]="firstName">
+                        </div>
+                        <div class="col-md-6">
+                          <input class="form-control" (change)="lastName=lastName.trim()" placeholder="Last Name"
+                            type="text" [(ngModel)]="lastName">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" *ngIf="dates">
+                      <label>Date of Birth</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <select class="form-control" [(ngModel)]="dobMonth">
+                            <option disabled>Month</option>
+                            <option *ngFor="let date of dates" [ngValue]="date.name">{{ date.name }}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3">
+                          <select class="form-control" [(ngModel)]="dobDay">
+                            <option disabled>Day</option>
+                            <ng-container *ngIf="dobMonth == 'January'">
+                              <option *ngFor="let date of counter(dates[0].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'February'">
+                              <option *ngFor="let date of counter(dates[1].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'March'">
+                              <option *ngFor="let date of counter(dates[2].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'April'">
+                              <option *ngFor="let date of counter(dates[3].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'May'">
+                              <option *ngFor="let date of counter(dates[4].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'June'">
+                              <option *ngFor="let date of counter(dates[5].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'July'">
+                              <option *ngFor="let date of counter(dates[6].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'August'">
+                              <option *ngFor="let date of counter(dates[7].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'September'">
+                              <option *ngFor="let date of counter(dates[8].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'October'">
+                              <option *ngFor="let date of counter(dates[9].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'November'">
+                              <option *ngFor="let date of counter(dates[10].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'December'">
+                              <option *ngFor="let date of counter(dates[11].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                          </select>
+                        </div>
+                        <div class="col-md-3" *ngIf="dobYear">
+                          <select class="form-control" [(ngModel)]="dobYear">
+                            <option disabled>Year</option>
+                            <option *ngFor="let year of years" [ngValue]="year">{{ year }}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Street Address 1</label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input class="form-control" type="text" placeholder="Street Address"
+                            [(ngModel)]="streetAddress1" (change)="streetAddress1=streetAddress1.trim()">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Street Address 2</label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input class="form-control" type="text" placeholder="Street Address"
+                            [(ngModel)]="streetAddress2" (change)="streetAddress2=streetAddress2.trim()">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>City</label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input class="form-control" type="text" placeholder="City" [(ngModel)]="city"
+                            (change)="city=city.trim()">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Postal Code</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
+                            (change)="postcode=postcode.trim()">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="btn-group">
+                <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step [stepTitle]="'Step 2'" [canEnter]="canEnterStep2">
+            <div class="centered-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>I want to</h3>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-6" (click)="toggleHire()">
+                      <div class="{{ hireToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}"
+                        style="width: 50%; float: right">
+                        <div class="product-detail" style="padding: 2.5em;">
+                          <h5>Hire</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" (click)="toggleWork()">
+                      <div class="{{ workToggle ? 'product-3 mb-3 product-selected' : 'product-3 mb-3'}}"
+                        style="width: 50%; clear: both">
+                        <div class="product-detail" style="padding: 2.5em;">
+                          <h5>Work</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="text-align: left">
+                <div class="row">
+                  <div class="col-md-6">
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="btn-group">
+                <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-secondary" (click)="completeOnboarding()">Complete</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+        </aw-wizard>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section ngxUiLoaderBlurred class="section-mobile" *ngIf="(isMobile | async)?.matches">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <aw-wizard #wizard>
+          <aw-wizard-step [stepTitle]="'Step 1'">
+            <div class="centered-content">
+              <div style="text-align: left">
+                <div class="row">
+                  <div class="col-md-12 text-center" *ngIf="user.photoURL">
+                    <img class="avatar avatar-xl" src="{{ user?.photoURL }}" alt="avatar">
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Username</strong>
+                    <br>
+                    <small>This name will be part of your Opsonion profile.</small>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                      </div>
+                      <input type="text" class="form-control" [(ngModel)]="username"
+                        (change)="username=username.trim()">
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Personal Details</strong>
+                    <br>
+                    <small>Your personal information is never shown to other users.</small>
+                  </div>
+                  <div class="col-md-6">
+                    <br>
+                    <div class="form-group">
+                      <label>Legal Name</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <input class="form-control" (change)="firstName=firstName.trim()" placeholder="First Name"
+                            type="text" [(ngModel)]="firstName">
+                        </div>
+                        <div class="col-md-6">
+                          <input class="form-control" (change)="lastName=lastName.trim()" placeholder="Last Name"
+                            type="text" [(ngModel)]="lastName">
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group" *ngIf="dates">
+                      <label>Date of Birth</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <select class="form-control" [(ngModel)]="dobMonth">
+                            <option disabled>Month</option>
+                            <option *ngFor="let date of dates" [ngValue]="date.name">{{ date.name }}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3">
+                          <select class="form-control" [(ngModel)]="dobDay">
+                            <option disabled>Day</option>
+                            <ng-container *ngIf="dobMonth == 'January'">
+                              <option *ngFor="let date of counter(dates[0].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'February'">
+                              <option *ngFor="let date of counter(dates[1].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'March'">
+                              <option *ngFor="let date of counter(dates[2].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'April'">
+                              <option *ngFor="let date of counter(dates[3].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'May'">
+                              <option *ngFor="let date of counter(dates[4].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'June'">
+                              <option *ngFor="let date of counter(dates[5].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'July'">
+                              <option *ngFor="let date of counter(dates[6].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'August'">
+                              <option *ngFor="let date of counter(dates[7].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'September'">
+                              <option *ngFor="let date of counter(dates[8].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'October'">
+                              <option *ngFor="let date of counter(dates[9].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'November'">
+                              <option *ngFor="let date of counter(dates[10].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                            <ng-container *ngIf="dobMonth == 'December'">
+                              <option *ngFor="let date of counter(dates[11].days); let i = index" [ngValue]="i + 1">
+                                {{ i + 1 }}</option>
+                            </ng-container>
+                          </select>
+                        </div>
+                        <div class="col-md-3" *ngIf="dobYear">
+                          <select class="form-control" [(ngModel)]="dobYear">
+                            <option disabled>Year</option>
+                            <option *ngFor="let year of years" [ngValue]="year">{{ year }}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label>Street Address 1</label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input class="form-control" type="text" placeholder="Street Address"
+                            [(ngModel)]="streetAddress1" (change)="streetAddress1=streetAddress1.trim()">
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label>Street Address 2</label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input class="form-control" type="text" placeholder="Street Address"
+                            [(ngModel)]="streetAddress2" (change)="streetAddress2=streetAddress2.trim()">
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label>City</label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input class="form-control" type="text" placeholder="City" [(ngModel)]="city"
+                            (change)="city=city.trim()">
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <label>Postal Code</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
+                            (change)="postcode=postcode.trim()">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="btn-group">
+                <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step [stepTitle]="'Step 2'" [canEnter]="canEnterStep2">
+            <div class="centered-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>I want to</h3>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-12" (click)="toggleHire()">
+                      <div class="{{ hireToggle ? 'product-3 mb-2 product-selected' : 'product-3 mb-2'}}">
+                        <div class="product-detail" style="padding: 2.5em;">
+                          <h5>Hire</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-12" (click)="toggleWork()">
+                      <div class="{{ workToggle ? 'product-3 mb-2 product-selected' : 'product-3 mb-2'}}">
+                        <div class="product-detail" style="padding: 2.5em;">
+                          <h5>Work</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="text-align: left">
+                <div class="row">
+                  <div class="col-md-6">
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="btn-group">
+                <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-secondary" (click)="completeOnboarding()">Complete</button>
+              </div>
+            </div>
+          </aw-wizard-step>
+        </aw-wizard>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Show image crop modal -->
+<div class="modal fade" #showImageCroppingModal id="showImageCroppingModal" tabindex="-1" role="dialog"
+  aria-labelledby="showImageCroppingModalLabel" aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showImageCroppingModalLabel">Change Picture</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <div style="height: 350px">
+          <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
+            [resizeToWidth]="128" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+        </div>
+        <br>
+        <button type="button" class="btn btn-block btn-secondary" (click)="savePicture()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
