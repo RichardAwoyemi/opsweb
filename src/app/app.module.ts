@@ -112,9 +112,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     QuillModule,
     Ng5SliderModule,
     SwiperModule,
-    ImageCropperModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
+    ImageCropperModule,
     ArchwizardModule
   ],
   providers: [

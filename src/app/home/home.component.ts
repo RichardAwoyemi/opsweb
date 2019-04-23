@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'src/environments/environment';
 import { UtilService } from '../_services/util.service';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons';
