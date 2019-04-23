@@ -48,10 +48,24 @@ import { ModalService } from './_services/modal.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 import { LoggerModule } from 'ngx-logger';
 import { ImgurService } from './_services/imgur.service';
+import { SwiperModule } from 'ngx-swiper-wrapper';
+import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
+import { OnboardingComponent } from './onboarding/onboarding.component';
+import { ArchwizardModule } from 'angular-archwizard';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
   bgsOpacity: 0.7
+};
+
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+  direction: 'horizontal',
+  slidesPerView: 'auto',
+  autoplay: {
+    delay: 4000,
+  },
 };
 
 @NgModule({
@@ -69,7 +83,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ForgotPasswordComponent,
     SettingsComponent,
     InviteComponent,
-    InboxComponent
+    InboxComponent,
+    OnboardingComponent
   ],
   entryComponents: [
     ModalComponent
@@ -92,8 +107,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     QRCodeModule,
     QuillModule,
     Ng5SliderModule,
+    SwiperModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
+    ImageCropperModule,
+    ArchwizardModule
   ],
   providers: [
     AuthService,
@@ -114,6 +132,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
       useValue: {
         siteKey: '6LeAv3UUAAAAAPYLttDEohg_KgyNifLN0Cx6IlPc',
       } as RecaptchaSettings,
+    },
+    {
+      provide: SWIPER_CONFIG,
+      useValue: DEFAULT_SWIPER_CONFIG
     }
   ],
   bootstrap: [AppComponent]

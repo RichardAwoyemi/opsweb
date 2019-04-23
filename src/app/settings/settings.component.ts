@@ -13,6 +13,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { DatePipe } from '@angular/common';
 import { CsvService } from '../_services/csv.service';
 import { environment } from 'src/environments/environment';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 declare var $;
 
@@ -46,9 +47,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   isMobile: Observable<BreakpointState>;
   currentDate = new Date();
   formattedCurrentDate = '';
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
-  @ViewChild('showVerifyIdentityModal') showVerifyIdentityModal: ElementRef;
-  @ViewChild('showVerifyDocumentationModal') showVerifyDocumentationModal: ElementRef;
+  @ViewChild('showImageCroppingModal') showImageCroppingModal: ElementRef;
 
   private datesSubscription: Subscription;
   private usernameSubscription: Subscription;
@@ -207,14 +209,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     return new Array(i);
   }
 
-  showVerifyIdentity() {
-    $(this.showVerifyIdentityModal.nativeElement).modal('show');
-  }
-
-  showVerifyDocumentation() {
-    $(this.showVerifyDocumentationModal.nativeElement).modal('show');
-  }
-
   setUserCurrencyAndTimezonePreferences() {
     this.ngxLoader.start();
     if (this.user.uid && this.timezone && this.currency) {
@@ -229,26 +223,50 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.ngxLoader.stop();
   }
 
-  handleFileInput(e) {
-    this.ngxLoader.start();
-    const reader = new FileReader();
-    if (e.target.files && e.target.files.length) {
-      const [file] = e.target.files;
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.imgurService.upload(reader.result.toString().split('base64,')[1], this.user.uid).subscribe((imgurResponse: ImgurResponse) => {
-          if (imgurResponse) {
-            this.logger.debug('Picture uploaded to imgur');
-            this.logger.debug(imgurResponse);
-            this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
-              this.modalService.displayMessage('Yay!', 'Your photo has been updated.')
-            ).catch((error) => {
-              this.modalService.displayMessage('Oops!', error);
-            });
-            this.ngxLoader.stop();
-          }
-        });
-      };
+  imageCropped(event: ImageCroppedEvent) {
+    this.logger.debug('Image cropped');
+    this.croppedImage = event.base64;
+    this.logger.debug(this.croppedImage);
+  }
+
+  imageLoaded() {
+    this.logger.debug('Image loaded');
+  }
+
+  cropperReady() {
+    this.logger.debug('Cropper ready');
+  }
+
+  loadImageFailed() {
+    this.logger.debug('Load image failed');
+  }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+    if (event.target.files && event.target.files.length) {
+      $(this.showImageCroppingModal.nativeElement).modal('show');
+    } else {
+      this.modalService.displayMessage('Oops!', 'Please select a photo to upload.');
+    }
+  }
+
+  savePicture() {
+    $(this.showImageCroppingModal.nativeElement).modal('hide');
+    this.logger.debug('Saving image');
+    if (this.croppedImage) {
+      this.ngxLoader.start();
+      this.imgurService.upload(this.croppedImage.split('base64,')[1], this.user.uid).subscribe((imgurResponse: ImgurResponse) => {
+        if (imgurResponse) {
+          this.logger.debug('Picture uploaded to imgur');
+          this.logger.debug(imgurResponse);
+          this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
+            this.modalService.displayMessage('Yay!', 'Your photo has been updated.')
+          ).catch((error) => {
+            this.modalService.displayMessage('Oops!', error);
+          });
+          this.ngxLoader.stop();
+        }
+      });
     }
   }
 
