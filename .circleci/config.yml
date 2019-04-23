@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/opsonion-web
     docker:
-      - image: node:8.12.0
+      - image: node:10.12.0
         env:
           - DISPLAY=:99
           - CHROME_BIN=/usr/bin/google-chrome
@@ -18,14 +18,6 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run:
-          name: Apply jessie-backports Fix
-          command: |
-            echo "deb http://archive.debian.org/debian/ jessie-backports main" | tee -a /etc/apt/sources.list
-            echo "deb-src http://archive.debian.org/debian/ jessie-backports main" | tee -a /etc/apt/sources.list
-            echo "Acquire::Check-Valid-Until false;" | tee -a /etc/apt/apt.conf.d/10-nocheckvalid
-            echo 'Package: *\nPin: origin "archive.debian.org"\nPin-Priority: 500' | tee -a /etc/apt/preferences.d/10-archive-pin
-            apt-get update
       - run: 
           name: Install Dependencies
           command: |
