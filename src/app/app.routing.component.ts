@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'verify-email', component: VerifyEmailComponent, canActivate: [AnonymousGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard] },
   { path: 'invite/:id', component: InviteComponent, canActivate: [AnonymousGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
