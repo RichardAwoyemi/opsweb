@@ -19,6 +19,9 @@ export class NewTaskComponent implements OnInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.task = window.localStorage.getItem('new-task');
+    // if (this.task) {
+    // } else {
+    // }
     this.logger.debug(this.task);
   }
 }

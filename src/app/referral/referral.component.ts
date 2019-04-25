@@ -19,7 +19,6 @@ export class ReferralComponent implements OnInit, OnDestroy {
   user: any;
   userData: any;
   invitees: any;
-  referralMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
   whatsappShareUrl: string;
@@ -56,7 +55,6 @@ export class ReferralComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxLoader.start();
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.referralMode = environment.referralMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
 

@@ -29,7 +29,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user$: Observable<any>;
   prices: any;
   task: any;
-  betaMode: boolean;
 
   private userSubscription: Subscription;
   private pricesSubscription: Subscription;
