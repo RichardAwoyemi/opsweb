@@ -6,7 +6,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
 import { DataService } from '../_services/data.service';
-import { environment } from 'src/environments/environment';
+import { TaskService } from '../_services/task.service';
+import { DragulaService } from 'ng2-dragula';
 
 declare var $;
 
@@ -29,15 +30,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user$: Observable<any>;
   prices: any;
   task: any;
+  unsubmittedTaskExists: boolean;
+  BAG = 'DASHBOARD';
 
   private userSubscription: Subscription;
   private pricesSubscription: Subscription;
-  onAdd = new EventEmitter();
+  private dashboardSubscription = new Subscription();
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
     private dataService: DataService,
+    private taskService: TaskService,
+    private dragulaService: DragulaService,
     private ngxLoader: NgxUiLoaderService,
     private logger: NGXLogger,
     private router: Router
@@ -49,6 +54,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   @ViewChild('createTaskModal') createTaskModal: ElementRef;
+  @ViewChild('taskPendingModel') taskPendingModal: ElementRef;
 
   ngOnInit() {
     this.ngxLoader.start();
@@ -62,7 +68,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.router.navigate(['dashboard']);
         }
         this.setUser(result);
-        this.ngxLoader.stop();
       }
     });
 
@@ -72,6 +77,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.prices = Object.values(data);
       }
     });
+
+    this.unsubmittedTaskExists = this.taskService.checkIfUnsubmittedTaskExists();
+    this.ngxLoader.stop();
   }
 
   onSelectedCategoryChange(event) {

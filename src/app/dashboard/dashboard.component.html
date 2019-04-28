@@ -1,5 +1,5 @@
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType)">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && !unsubmittedTaskExists">
   <div class="container">
     <div class="row">
       <div class="col-md-12 text-center">
@@ -16,6 +16,56 @@
       </div>
     </div>
     <br>
+  </div>
+</section>
+
+<section ngxUiLoaderBlurred class="section-desktop"
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && unsubmittedTaskExists">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 project-column" dragula="DASHBOARD">
+        <div class="col-header">
+          <span class="badge badge-pill badge-primary">3</span>&nbsp;&nbsp;
+          <strong>BACKLOG</strong>
+        </div>
+        <div class="border rounded shadow-4 p-4 item">
+          <div class="row align-items-center">
+            <div class="col lh-5">
+              <div style="padding-bottom: 1em">
+                <span class="badge badge-pill badge-secondary">Incomplete</span>
+              </div>
+              Create landing page variations for new website
+            </div>
+          </div>
+        </div>
+        <div class="border rounded shadow-4 p-4 item">
+          <div class="row align-items-center">
+            <div class="col lh-5">
+              <div style="padding-bottom: 1em">
+                <span class="badge badge-pill badge-secondary">Unsubmitted</span>
+              </div>
+              New logo design
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div *ngIf="userData?.accountType == 'hire'">
+          <button class="btn btn-block btn-secondary" type="button" (click)="openCreateTaskModal()">Create Task</button>
+        </div>
+      </div>
+      <div class="col-md-4 project-column" dragula="DASHBOARD">
+        <div class="col-header">
+          <span class="badge badge-pill badge-primary">0</span>&nbsp;&nbsp;
+          <strong>IN PROGRESS</strong>
+        </div>
+      </div>
+      <div class="col-md-4 project-column" dragula="DASHBOARD">
+        <div class="col-header">
+          <span class="badge badge-pill badge-primary">0</span>&nbsp;&nbsp;
+          <strong>DONE</strong>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -50,13 +100,16 @@
             <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
               <div class="col-md-12 text-left">
                 <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)" value="Web, Software and Mobile Development">&nbsp;  Web, Software and Mobile Development</label>
-                </div>
-                <div class="radio">               
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)" value="Graphics Design">&nbsp; Graphics Design</label>
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                      value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
                 </div>
                 <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)" value="Writing and Translation">&nbsp; Writing and Translation</label>
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                      value="Graphics Design">&nbsp; Graphics Design</label>
+                </div>
+                <div class="radio">
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                      value="Writing and Translation">&nbsp; Writing and Translation</label>
                 </div>
               </div>
             </div>
@@ -111,30 +164,31 @@
             <h6>How soon would you like your service delivered?</h6>
             <div style="text-align: left; padding-top: 1em">
               <div class="alert alert-primary" role="alert">
-                <small>This is the amount of time the contractor has to work on your order. Please note that a request for faster delivery may impact the price.</small>
+                <small>This is the amount of time the contractor has to work on your order. Please note that a request
+                  for faster delivery may impact the price.</small>
               </div>
             </div>
             <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
-                <div class="col-md-4">
-                  <select class="form-control" [(ngModel)]="selectedLength">
-                    <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="i">{{ i }}</option>
-                  </select>
-                </div>
-                <div class="col-md-8">
-                  <select class="form-control" [(ngModel)]="selectedLengthCategory">
-                    <ng-container *ngIf="selectedLength < 2">
-                      <option value="day" selected>day</option>
-                      <option value="week">week</option>
-                      <option value="month">month</option>
-                    </ng-container>
-                  <ng-container *ngIf="selectedLength > 1">
-                      <option value="days" selected>days</option>
-                      <option value="weeks">weeks</option>
-                      <option value="months">months</option>
-                    </ng-container>
-                  </select>
-                </div>
+              <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="selectedLength">
+                  <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="i">{{ i }}</option>
+                </select>
               </div>
+              <div class="col-md-8">
+                <select class="form-control" [(ngModel)]="selectedLengthCategory">
+                  <ng-container *ngIf="selectedLength < 2">
+                    <option value="day" selected>day</option>
+                    <option value="week">week</option>
+                    <option value="month">month</option>
+                  </ng-container>
+                  <ng-container *ngIf="selectedLength > 1">
+                    <option value="days" selected>days</option>
+                    <option value="weeks">weeks</option>
+                    <option value="months">months</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
             <div class="btn-group">
               <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
               &nbsp;&nbsp;

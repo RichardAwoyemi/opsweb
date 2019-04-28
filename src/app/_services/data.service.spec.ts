@@ -9,6 +9,7 @@ describe('DataService testing', () => {
   const timeZonesDataPath = './assets/data/timezones.json';
   const currenciesDataPath = './assets/data/currencies.json';
   const datesDataPath = './assets/data/dates.json';
+  const pricesDataPath = './assets/data/prices.json';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -47,9 +48,21 @@ describe('DataService testing', () => {
     req.flush(testData);
   });
 
-  it('can test getDates() HttpClient.get request', () => {
+  it('can test getAllDates() HttpClient.get request', () => {
     const testData: Data = { name: 'Test Data' };
     httpClient.get<Data>(datesDataPath)
+      .subscribe(data =>
+        expect(data).toEqual(testData)
+      );
+
+    const req = httpTestingController.expectOne(datesDataPath);
+    expect(req.request.method).toEqual('GET');
+    req.flush(testData);
+  });
+
+  it('can test getAllPrices() HttpClient.get request', () => {
+    const testData: Data = { name: 'Test Data' };
+    httpClient.get<Data>(pricesDataPath)
       .subscribe(data =>
         expect(data).toEqual(testData)
       );

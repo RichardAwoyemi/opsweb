@@ -56,6 +56,8 @@ import { ArchwizardModule } from 'angular-archwizard';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ReferralComponent } from './referral/referral.component';
 import { NewTaskComponent } from './new-task/new-task.component';
+import { TaskService } from './_services/task.service';
+import { DragulaModule } from 'ng2-dragula';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -98,6 +100,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     BrowserModule,
     FontAwesomeModule,
     RecaptchaModule.forRoot(),
+    DragulaModule.forRoot(),
     RecaptchaFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -131,6 +134,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     DataService,
     ModalService,
     ImgurService,
+    TaskService,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {
