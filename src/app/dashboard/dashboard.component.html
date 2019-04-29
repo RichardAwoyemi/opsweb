@@ -1,5 +1,5 @@
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && !unsubmittedTaskExists">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && !tasksExist">
   <div class="container">
     <div class="row">
       <div class="col-md-12 text-center">
@@ -20,7 +20,7 @@
 </section>
 
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && unsubmittedTaskExists">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && tasksExist">
   <div class="container">
     <div class="row">
       <div class="col-md-4 project-column" dragula="DASHBOARD">
@@ -28,7 +28,7 @@
           <span class="badge badge-pill badge-primary">3</span>&nbsp;&nbsp;
           <strong>BACKLOG</strong>
         </div>
-        <div class="border rounded shadow-4 p-4 item">
+        <div class="border rounded shadow-4 p-4 item" (click)="openTaskModal()">
           <div class="row align-items-center">
             <div class="col lh-5">
               <div style="padding-bottom: 1em">
@@ -38,7 +38,7 @@
             </div>
           </div>
         </div>
-        <div class="border rounded shadow-4 p-4 item">
+        <div class="border rounded shadow-4 p-4 item" (click)="openTaskModal()">
           <div class="row align-items-center">
             <div class="col lh-5">
               <div style="padding-bottom: 1em">
@@ -216,6 +216,26 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Task modal -->
+<div class="modal fade" #taskModal id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskModalLabel">Task</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
       </div>
     </div>
   </div>

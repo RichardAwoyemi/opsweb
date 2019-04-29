@@ -29,3 +29,7 @@
 .item:hover {
   cursor: pointer;
 }
+
+#taskModal > .modal-dialog { 
+  max-width: 90% !important;
+}

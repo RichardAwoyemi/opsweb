@@ -8,15 +8,15 @@ export class TaskService {
   ) { }
   task: any;
 
-  public checkIfUnsubmittedTaskExists() {
-    this.logger.debug(`Checking to see if unsubmitted task exists`);
-    this.task = window.localStorage.getItem('new-task');
+  public checkIfTasksExist() {
+    this.logger.debug(`Checking to see if tasks exist`);
+    this.task = window.localStorage.getItem('tasks');
     if (this.task) {
-      this.logger.debug(`Unsubmitted task found:`);
+      this.logger.debug(`Task found:`);
       this.logger.debug(this.task);
       return true;
     } else {
-      this.logger.debug(`Unsubmitted task not found`);
+      this.logger.debug(`Task not found`);
       return false;
     }
   }

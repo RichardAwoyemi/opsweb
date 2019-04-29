@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user$: Observable<any>;
   prices: any;
   task: any;
-  unsubmittedTaskExists: boolean;
+  tasksExist: boolean;
   BAG = 'DASHBOARD';
 
   private userSubscription: Subscription;
@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   @ViewChild('createTaskModal') createTaskModal: ElementRef;
-  @ViewChild('taskPendingModel') taskPendingModal: ElementRef;
+  @ViewChild('taskModal') taskModal: ElementRef;
 
   ngOnInit() {
     this.ngxLoader.start();
@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.unsubmittedTaskExists = this.taskService.checkIfUnsubmittedTaskExists();
+    this.tasksExist = this.taskService.checkIfTasksExist();
     this.ngxLoader.stop();
   }
 
@@ -95,6 +95,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   openCreateTaskModal() {
     $(this.createTaskModal.nativeElement).modal('show');
+  }
+
+  openTaskModal() {
+    $(this.taskModal.nativeElement).modal('show', { size: 'lg' });
   }
 
   closeCreateTaskModal() {
@@ -114,10 +118,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         status: 'incomplete'
       };
       this.logger.debug(this.task);
-      localStorage.setItem('new-task', JSON.stringify(this.task));
+      localStorage.setItem('tasks', JSON.stringify(this.task));
 
       $(this.createTaskModal.nativeElement).modal('hide');
-      this.router.navigate(['new-task']);
+      this.router.navigate(['tasks']);
     } else {
       this.logger.debug('Conditions not met... cannot complete task pre-screening');
     }
