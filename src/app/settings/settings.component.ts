@@ -213,7 +213,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.ngxLoader.start();
     if (this.user.uid && this.timezone && this.currency) {
       this.userService.setUserCurrencyAndTimezonePreferences(this.user.uid, this.timezone, this.currency).then(() =>
-        this.modalService.displayMessage('Yay!', 'Your settings have been updated.')
+        this.modalService.displayMessage('Great!', 'Your settings have been updated.')
       ).catch((error) => {
         this.modalService.displayMessage('Oops!', error);
       });
@@ -260,7 +260,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           this.logger.debug('Picture uploaded to imgur');
           this.logger.debug(imgurResponse);
           this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
-            this.modalService.displayMessage('Yay!', 'Your photo has been updated.')
+            this.modalService.displayMessage('Great!', 'Your photo has been updated.')
           ).catch((error) => {
             this.modalService.displayMessage('Oops!', error);
           });
@@ -312,7 +312,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 this.city,
                 this.postcode).then(() => {
                   if (!messageDisplayed) {
-                    this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
+                    this.modalService.displayMessage('Great!', 'Your settings have been updated.');
                     messageDisplayed = true;
                   }
                 }).catch((error) => {

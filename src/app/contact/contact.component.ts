@@ -70,7 +70,7 @@ export class ContactComponent implements OnInit {
 
         // Temporary fix
 
-        this.modalService.displayMessage('Yay!', 'Thanks. We will be in touch.');
+        this.modalService.displayMessage('Great!', 'Thanks. We will be in touch.');
         this.submitted = true;
       }
     );
