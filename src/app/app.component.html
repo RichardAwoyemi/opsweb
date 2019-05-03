@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-4">
         <div class="nav nav-navbar">
-          <a class="navbar-brand" routerLink="/dashboard" *ngIf="this.onboardingComplete">
+          <a class="navbar-brand" routerLink="/dashboard">
             <img class="logo-dark" src="../assets/img/opsonion-cropped-white.png" alt="logo"
               style="height: 16px; width: 200px">
           </a>
@@ -27,7 +27,7 @@
     </div>
   </div>
   <hr class="my-0 w-100">
-  <div style="background-color: #fff; width: 100%">
+  <div style="background-color: #fff; width: 100%" *ngIf="this.onboardingComplete">
     <div class="container" style="padding-left: 0px">
       <div class="navbar-left">
       </div>
