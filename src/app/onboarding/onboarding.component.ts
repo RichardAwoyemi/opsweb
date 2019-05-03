@@ -157,7 +157,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     setTimeout(() => {
       this.modalService.displayMessage('Welcome!', 'Thanks for signing up. Before we get started, please tell us a bit about yourself.');
-    })
+    });
   }
 
   counter(i: number) {
