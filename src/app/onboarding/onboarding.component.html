@@ -409,7 +409,7 @@
                         <label>Street Address 2</label>
                         <div class="row">
                           <div class="col-md-12">
-                            <input class="form-control" type="text" placeholder="Street Address"
+                            <input class="form-control" type="text" name="streetAddress2" placeholder="Street Address"
                               [(ngModel)]="streetAddress2" (change)="streetAddress2=streetAddress2.trim()">
                           </div>
                         </div>
@@ -434,7 +434,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
-                              (change)="postcode=postcode.trim()">
+                              (change)="postcode=postcode.trim()" name="postcode">
                           </div>
                           <div class="col-md-12">
                             <div *ngIf="f.submitted && !postcode"><small class="text-danger">Postal Code is

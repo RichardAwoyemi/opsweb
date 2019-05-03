@@ -12,7 +12,6 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { DatePipe } from '@angular/common';
 import { CsvService } from '../_services/csv.service';
-import { environment } from 'src/environments/environment';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 declare var $;
@@ -195,7 +194,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
           this.logger.debug('Enabling change password option');
           this.isPasswordChangeEnabled = true;
         }
-        this.ngxLoader.stop();
       }
     });
 
@@ -203,6 +201,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     const lastYear = (new Date().getFullYear() - 18).toString();
     this.years = this.utilService.createYearRange('1930', lastYear);
+
+    this.ngxLoader.stop();
   }
 
   counter(i: number) {

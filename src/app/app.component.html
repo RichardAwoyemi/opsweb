@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-4">
         <div class="nav nav-navbar">
-          <a class="navbar-brand" routerLink="/dashboard">
+          <a class="navbar-brand" routerLink="/dashboard" *ngIf="this.onboardingComplete">
             <img class="logo-dark" src="../assets/img/opsonion-cropped-white.png" alt="logo"
               style="height: 16px; width: 200px">
           </a>
@@ -19,7 +19,7 @@
           <img class="avatar avatar-xs" src="{{ user?.photoURL }}" alt="user">
         </span>
         <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;">Settings</a>
+          <a class="dropdown-item" routerLink="/settings" style="padding: 0rem;" *ngIf="this.onboardingComplete">Settings</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="authService.signOut()" href="#" style="padding: 0rem;">Log Out</a>
         </div>
@@ -55,8 +55,8 @@
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link navbar-closer" style="text-align: right"><i class="ti-close mr-2"></i></a>
-        <a class="nav-link" routerLink="/dashboard">Dashboard</a>
-        <a class="nav-link" routerLink="/settings">Settings</a>
+        <a class="nav-link" routerLink="/dashboard" *ngIf="this.onboardingComplete">Dashboard</a>
+        <a class="nav-link" routerLink="/settings" *ngIf="this.onboardingComplete">Settings</a>
         <a class="nav-link" (click)="authService.signOut()">Logout</a>
       </nav>
     </section>
