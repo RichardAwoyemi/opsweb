@@ -195,7 +195,8 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.streetAddress1 &&
         this.city &&
         this.postcode) {
-        return this.setUserPersonalDetails();
+        this.setUserPersonalDetails();
+        return true;
     } else {
       this.logger.debug('Conditions not met... cannot move to step 2');
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields correctly.');
