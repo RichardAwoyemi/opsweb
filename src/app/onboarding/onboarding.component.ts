@@ -155,7 +155,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.modalService.displayMessage('Welcome!', 'Thanks for signing up. Before we get started, please tell us a bit about yourself..');
+    this.modalService.displayMessage('Welcome!', 'Thanks for signing up. Before we get started, please tell us a bit about yourself.');
   }
 
   counter(i: number) {
@@ -174,7 +174,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.debug('Picture uploaded to imgur');
             this.logger.debug(imgurResponse);
             this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
-              this.modalService.displayMessage('Yay!', 'Your photo has been updated.')
+              this.modalService.displayMessage('Great!', 'Your photo has been updated.')
             ).catch((error) => {
               this.modalService.displayMessage('Oops!', error);
             });
@@ -186,10 +186,17 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   canEnterStep2: (MovingDirection) => boolean = () => {
-    if (this.username) {
-      this.logger.debug('All conditions met... moving to step 2');
-      this.setUserPersonalDetails();
-      return true;
+    if (this.username &&
+        this.firstName &&
+        this.lastName &&
+        this.dobDay &&
+        this.dobMonth &&
+        this.dobYear &&
+        this.streetAddress1 &&
+        this.city &&
+        this.postcode) {
+        this.setUserPersonalDetails();
+        return true;
     } else {
       this.logger.debug('Conditions not met... cannot move to step 2');
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields correctly.');
@@ -219,6 +226,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
               (result[0]['uid'] !== this.user.uid)) {
               this.logger.debug('Username belongs to another user');
               this.modalService.displayMessage('Oops!', 'This username is already in use.');
+              return false;
             } else {
               this.userService.setUserPersonalDetails(
                 this.user.uid,
@@ -235,14 +243,18 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
                   if (!messageDisplayed) {
                     this.modalService.displayMessage('Oops!', error);
                     messageDisplayed = true;
+                    return false;
                   }
                 });
             }
+            this.logger.debug('All conditions met... moving to step 2');
+            return true;
           }
         });
       }
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
+      return false;
     }
     this.ngxLoader.stop();
   }
@@ -349,7 +361,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
           this.logger.debug('Picture uploaded to imgur');
           this.logger.debug(imgurResponse);
           this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
-            this.modalService.displayMessage('Yay!', 'Your photo has been updated.')
+            this.modalService.displayMessage('Great!', 'Your photo has been updated.')
           ).catch((error) => {
             this.modalService.displayMessage('Oops!', error);
           });
