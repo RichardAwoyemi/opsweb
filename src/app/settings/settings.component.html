@@ -68,7 +68,10 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text">@</span>
                     </div>
-                    <input type="text" class="form-control" [(ngModel)]="username" (change)="username=username.trim()" name="username">
+                    <input type="text" class="form-control" [(ngModel)]="username" (change)="username=username.trim()"
+                      name="username" blockSpecialCharacter>
+                  </div>
+                  <div class="col-md-12" style="padding-left: 0px">
                     <small *ngIf="f.submitted && !username" class="text-danger">Username is required</small>
                   </div>
                 </div>
@@ -108,7 +111,7 @@
                           <option *ngFor="let date of dates" [ngValue]="date.name">{{ date.name }}</option>
                         </select>
                       </div>
-                      <div class="col-md-3"> 
+                      <div class="col-md-3">
                         <select class="form-control" [(ngModel)]="dobDay" name="dobDay">
                           <option disabled>Day</option>
                           <ng-container *ngIf="dobMonth == 'January'">
@@ -173,8 +176,12 @@
                     <label>Street Address 1</label>
                     <div class="row">
                       <div class="col-md-12">
-                        <input class="form-control" name="streetAddress1" type="text" placeholder="Street Address" [(ngModel)]="streetAddress1"
-                          (change)="streetAddress1=streetAddress1.trim()">
+                        <input class="form-control" name="streetAddress1" type="text" placeholder="Street Address"
+                          [(ngModel)]="streetAddress1" (change)="streetAddress1=streetAddress1.trim()">
+                      </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && !streetAddress1"><small class="text-danger">Street Address is
+                            required</small></div>
                       </div>
                     </div>
                   </div>
@@ -182,8 +189,8 @@
                     <label>Street Address 2</label>
                     <div class="row">
                       <div class="col-md-12">
-                        <input class="form-control" name="streetAddress2" type="text" placeholder="Street Address" [(ngModel)]="streetAddress2"
-                          (change)="streetAddress2=streetAddress2.trim()">
+                        <input class="form-control" name="streetAddress2" type="text" placeholder="Street Address"
+                          [(ngModel)]="streetAddress2" (change)="streetAddress2=streetAddress2.trim()">
                       </div>
                     </div>
                   </div>
@@ -194,20 +201,30 @@
                         <input class="form-control" name="city" type="text" placeholder="City" [(ngModel)]="city"
                           (change)="city=city.trim()">
                       </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && !city"><small class="text-danger">City is
+                            required</small></div>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label>Postal Code</label>
                     <div class="row">
                       <div class="col-md-6">
-                        <input class="form-control" name="postcode" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
-                          (change)="postcode=postcode.trim()">
+                        <input class="form-control" name="postcode" type="text" placeholder="Postal Code"
+                          [(ngModel)]="postcode" (change)="postcode=postcode.trim()">
+                      </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && !postcode"><small class="text-danger">Postal Code is
+                            required</small></div>
                       </div>
                     </div>
                   </div>
                   <div class="form-group" style="padding-top: 1em">
                     <button type="submit" class="btn btn-lg btn-secondary"
                       (click)="setUserPersonalDetails()">Save</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-lg btn-secondary" routerLink="/dashboard">Cancel</button>
                   </div>
                 </div>
               </div>
@@ -303,9 +320,13 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text">@</span>
                     </div>
-                    <input type="text" class="form-control" value="username" [(ngModel)]="username"
-                      (change)="username=username.trim()" name="username">
+                    <input blockSpecialCharacter type="text" class="form-control" value="username"
+                      [(ngModel)]="username" (change)="username=username.trim()" name="username">
+                    <br>
                   </div>
+                </div>
+                <div class="col-md-12">
+                  <small *ngIf="f.submitted && !username" class="text-danger">Username is required</small>
                 </div>
               </div>
               <hr>
@@ -329,6 +350,11 @@
                       <div class="col-md-12">
                         <input class="form-control" placeholder="Last Name" type="text" [(ngModel)]="lastName"
                           (change)="lastName=lastName.trim()" name="lastName">
+                      </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && !firstName"><small class="text-danger">First Name is
+                            required</small><br></div>
+                        <small *ngIf="f.submitted && !lastName" class="text-danger">Last Name is required</small>
                       </div>
                     </div>
                   </div>
@@ -401,6 +427,14 @@
                           <option *ngFor="let year of years" [ngValue]="year">{{ year }}</option>
                         </select>
                       </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && dobMonth == 'Month'"><small class="text-danger">Month is
+                            required</small><br></div>
+                        <div *ngIf="f.submitted && dobDay == 'Day'"><small class="text-danger">Day is
+                            required</small><br></div>
+                        <div *ngIf="f.submitted && dobYear == 'Year'"><small class="text-danger">Year is
+                            required</small></div>
+                      </div>
                     </div>
                   </div>
                   <br>
@@ -408,8 +442,13 @@
                     <label>Street Address 1</label>
                     <div class="row">
                       <div class="col-md-12">
-                        <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress1"
-                          (change)="streetAddress1=streetAddress1.trim()" name="streetAddress1">
+                        <input class="form-control" type="text" placeholder="Street Address"
+                          [(ngModel)]="streetAddress1" (change)="streetAddress1=streetAddress1.trim()"
+                          name="streetAddress1">
+                      </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && !streetAddress1"><small class="text-danger">Street Address is
+                            required</small></div>
                       </div>
                     </div>
                   </div>
@@ -418,8 +457,9 @@
                     <label>Street Address 2</label>
                     <div class="row">
                       <div class="col-md-12">
-                        <input class="form-control" type="text" placeholder="Street Address" [(ngModel)]="streetAddress2"
-                          (change)="streetAddress2=streetAddress2.trim()" name="streetAddress2">
+                        <input class="form-control" type="text" placeholder="Street Address"
+                          [(ngModel)]="streetAddress2" (change)="streetAddress2=streetAddress2.trim()"
+                          name="streetAddress2">
                       </div>
                     </div>
                   </div>
@@ -431,6 +471,10 @@
                         <input class="form-control" type="text" placeholder="City" [(ngModel)]="city"
                           (change)="city=city.trim()" name="city">
                       </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && !city"><small class="text-danger">City is
+                            required</small></div>
+                      </div>
                     </div>
                   </div>
                   <br>
@@ -441,11 +485,17 @@
                         <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
                           (change)="postcode=postcode.trim()" name="postcode">
                       </div>
+                      <div class="col-md-12">
+                        <div *ngIf="f.submitted && !postcode"><small class="text-danger">Postal Code is
+                            required</small></div>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group" style="padding-top: 1em">
-                    <button type="button" class="btn btn-lg btn-secondary"
-                      (click)="setUserPersonalDetails()">Save</button> </div>
+                    <button type="submit" class="btn btn-lg btn-secondary"
+                      (click)="setUserPersonalDetails()">Save</button>&nbsp;
+                    <button type="button" class="btn btn-lg btn-secondary" routerLink="/dashboard">Cancel</button>
+                  </div>
                 </div>
               </div>
             </form>
@@ -501,7 +551,7 @@
       </div>
       <div class="modal-body text-center">
         <div style="height: 350px">
-            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
+          <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
             [resizeToWidth]="128" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
             (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
         </div>
