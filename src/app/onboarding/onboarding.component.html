@@ -246,7 +246,7 @@
                   </div>
                 </div>
               </div>
-              <hr>
+              <hr *ngIf="!usernameExists">
               <div class="btn-group">
                 <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
                 &nbsp;&nbsp;
@@ -461,7 +461,7 @@
                     </div>
                   </div>
                 </div>
-                <hr>
+                <hr *ngIf="!usernameExists">
                 <div class="btn-group">
                   <button type="submit" class="btn btn-secondary" [disabled]="usernameExists" awNextStep>Continue</button>
                 </div>

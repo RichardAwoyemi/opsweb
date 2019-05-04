@@ -242,6 +242,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   checkUsernameExists() {
+    this.ngxLoader.start();
     this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
       if (result) {
         if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
@@ -256,7 +257,12 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.debug(`Username exists variable set to: ${this.usernameExists}`);
             this.usernameExists = false;
           }
+        } else {
+          this.logger.debug('Username could not be determined');
+          this.modalService.displayMessage('Oops!', 'An error has occurred. Please try again.');
+          this.usernameExists = true;
         }
+        this.ngxLoader.stop();
       }
     )
   }
