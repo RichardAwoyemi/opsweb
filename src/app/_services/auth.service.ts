@@ -193,7 +193,7 @@ export class AuthService {
         if (!doc) {
           this.userService.processNewUser(result, firstName, lastName);
           this.sendVerificationMail();
-          this.modalService.displayMessage('Yay!', 'Your registration was successful.');
+          this.modalService.displayMessage('Great!', 'Your registration was successful.');
         }
       }
     }).catch((error) => {
@@ -212,7 +212,7 @@ export class AuthService {
         if (!doc) {
           this.userService.processNewUserReferral(result, firstName, lastName, referredBy);
           this.sendVerificationMail();
-          this.modalService.displayMessage('Yay!', 'Your registration was successful.');
+          this.modalService.displayMessage('Great!', 'Your registration was successful.');
         }
       }
     }).catch((error) => {
@@ -239,7 +239,7 @@ export class AuthService {
   forgotPassword(passwordResetEmail) {
     this.logger.debug('Sending password reset email');
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
-      this.modalService.displayMessage('Yay!', 'Password reset email sent, please check your inbox.' +
+      this.modalService.displayMessage('Great!', 'Password reset email sent, please check your inbox.' +
         ' If you do not receive this email, check your spam or bulk email folder.');
     }).catch((error) => {
       this.modalService.displayMessage('Oops', error.message);

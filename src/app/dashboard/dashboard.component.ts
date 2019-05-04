@@ -35,14 +35,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private userSubscription: Subscription;
   private pricesSubscription: Subscription;
-  private dashboardSubscription = new Subscription();
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
     private dataService: DataService,
     private taskService: TaskService,
-    private dragulaService: DragulaService,
     private ngxLoader: NgxUiLoaderService,
     private logger: NGXLogger,
     private router: Router
