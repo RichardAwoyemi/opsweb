@@ -458,7 +458,7 @@
                             required</small></div>
                       </div>
                       <div class="col-md-12">
-                        <div *ngIf="f.submitted && streetAddress1.length.trim() < 6"><small class="text-danger">Street
+                        <div *ngIf="f.submitted && streetAddress1.length < 6"><small class="text-danger">Street
                             Address needs to be greater
                             than 5 characters</small></div>
                       </div>
