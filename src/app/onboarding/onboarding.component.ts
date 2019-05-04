@@ -206,7 +206,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.streetAddress1 &&
         this.streetAddress1.length > 5 &&
         this.city &&
-        this.postcode) {  
+        this.postcode) {
         return this.setUserPersonalDetails();
     } else {
       this.logger.debug('Conditions not met... cannot move to step 2');
@@ -264,7 +264,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.ngxLoader.stop();
       }
-    )
+    );
   }
 
   toggleWork() {
