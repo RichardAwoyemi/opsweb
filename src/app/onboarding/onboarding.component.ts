@@ -195,19 +195,19 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   canEnterStep2: (MovingDirection) => boolean = () => {
     if (this.username &&
-        this.firstName &&
-        this.lastName &&
-        this.dobDay &&
-        this.dobDay !== 'Day' &&
-        this.dobMonth &&
-        this.dobMonth !== 'Month' &&
-        this.dobYear &&
-        this.dobYear !== 'Year' &&
-        this.streetAddress1 &&
-        this.streetAddress1.length > 5 &&
-        this.city &&
-        this.postcode) {
-        return this.setUserPersonalDetails();
+      this.firstName &&
+      this.lastName &&
+      this.dobDay &&
+      this.dobDay !== 'Day' &&
+      this.dobMonth &&
+      this.dobMonth !== 'Month' &&
+      this.dobYear &&
+      this.dobYear !== 'Year' &&
+      this.streetAddress1 &&
+      this.streetAddress1.length > 5 &&
+      this.city &&
+      this.postcode) {
+      return this.setUserPersonalDetails();
     } else {
       this.logger.debug('Conditions not met... cannot move to step 2');
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields correctly.');
@@ -237,34 +237,45 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
           return false;
         }
       });
-      this.ngxLoader.stop();
+    this.ngxLoader.stop();
     return true;
   }
 
   checkUsernameExists() {
     this.ngxLoader.start();
+    let messageDisplayed = false;
     this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
       if (result) {
         if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
           (result[0]['uid'] !== this.user.uid)) {
-            this.logger.debug('Username belongs to another user');
+          this.logger.debug('Username belongs to another user');
+          this.logger.debug(`Username exists variable set to: ${this.usernameExists}`);
+          this.usernameExists = true;
+          if (!messageDisplayed) {
             this.modalService.displayMessage('Oops!', 'This username is already in use.');
-            this.logger.debug(`Username exists variable set to: ${this.usernameExists}`);
-            this.usernameExists = true;
-          } else {
-            this.logger.debug('Username does not belong to another user');
-            this.modalService.displayMessage('Great!', 'This username is available to use.');
-            this.logger.debug(`Username exists variable set to: ${this.usernameExists}`);
-            this.usernameExists = false;
+            messageDisplayed = true;
+            this.ngxLoader.stop();
           }
         } else {
-          this.logger.debug('Username could not be determined');
-          this.modalService.displayMessage('Oops!', 'An error has occurred. Please try again.');
-          this.usernameExists = true;
+          this.logger.debug('Username does not belong to another user');
+          this.logger.debug(`Username exists variable set to: ${this.usernameExists}`);
+          this.usernameExists = false;
+          if (!messageDisplayed) {
+            this.modalService.displayMessage('Great!', 'This username is available to use.');
+            messageDisplayed = true;
+            this.ngxLoader.stop();
+          }
         }
-        this.ngxLoader.stop();
+      } else {
+        this.logger.debug('Username could not be determined');
+        this.usernameExists = true;
+        if (!messageDisplayed) {
+          this.modalService.displayMessage('Oops!', 'An error has occurred. Please try again.');
+          messageDisplayed = true;
+          this.ngxLoader.stop();
+        }
       }
-    );
+    });
   }
 
   toggleWork() {
