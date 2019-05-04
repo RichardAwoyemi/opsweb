@@ -54,6 +54,7 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { ArchwizardModule } from 'angular-archwizard';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { BlockSpecialCharacterDirective } from './_directives/block.special.character.directive';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -84,7 +85,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     SettingsComponent,
     InviteComponent,
     InboxComponent,
-    OnboardingComponent
+    OnboardingComponent,
+    BlockSpecialCharacterDirective,
   ],
   entryComponents: [
     ModalComponent
