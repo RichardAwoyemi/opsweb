@@ -29,7 +29,7 @@
                   <br>
                   <div class="row">
                     <div class="col-md-4">
-                      <strong>Username</strong>
+                      <strong>Username <span class="text-danger">*</span></strong>
                       <br>
                       <small>This name will be part of your Opsonion profile.</small>
                     </div>
@@ -38,14 +38,17 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text">@</span>
                         </div>
-                        <input type="text" class="form-control" [(ngModel)]="username"
-                          (change)="username=username.trim()" name="username" blockSpecialCharacter>
+                        <input type="text" class="form-control" [(ngModel)]="username" (keydown)="onUsernameKeydown()"
+                          (change)="username=username.trim();" name="username" blockSpecialCharacter>
+                      </div>
+                      <div style="padding-top: 1em; padding-bottom: 0.5em">
+                        <button type="button" class="btn btn-xs btn-secondary" (click)="checkUsernameExists()">Check Availability</button>
                       </div>
                       <small *ngIf="f.submitted && !username" class="text-danger">Username is required</small>
                     </div>
                   </div>
                   <br>
-                  <div class="row">
+                  <div class="row" *ngIf="!usernameExists">
                     <div class="col-md-4">
                       <strong>Personal Details</strong>
                       <br>
@@ -53,7 +56,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Legal Name</label>
+                        <label>Legal Name <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-6">
                             <input class="form-control" (change)="firstName=firstName.trim()" placeholder="First Name"
@@ -71,7 +74,7 @@
                         </div>
                       </div>
                       <div class="form-group" *ngIf="dates">
-                        <label>Date of Birth</label>
+                        <label>Date of Birth <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-6">
                             <select class="form-control" [(ngModel)]="dobMonth" name="dobMonth">
@@ -149,7 +152,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label>Street Address 1</label>
+                        <label>Street Address 1 <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-12">
                             <input class="form-control" name="streetAddress1" type="text" placeholder="Street Address"
@@ -158,6 +161,8 @@
                           <div class="col-md-12">
                             <div *ngIf="f.submitted && !streetAddress1"><small class="text-danger">Street Address is
                                 required</small></div>
+                            <div *ngIf="f.submitted && streetAddress1.length < 6"><small class="text-danger">Street Address needs to be greater 
+                                than 5 characters</small></div>
                           </div>
                         </div>
                       </div>
@@ -171,7 +176,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label>City</label>
+                        <label>City <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-12">
                             <input class="form-control" type="text" placeholder="City" [(ngModel)]="city"
@@ -184,7 +189,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label>Postal Code</label>
+                        <label>Postal Code <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-6">
                             <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
@@ -196,12 +201,15 @@
                           </div>
                         </div>
                       </div>
+                      <div class="form-group">
+                        <div><span class="text-danger">*</span> Indicates required field.</div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <hr>
                 <div class="btn-group">
-                  <button type="submit" class="btn btn-secondary" awNextStep>Continue</button>
+                  <button type="submit" class="btn btn-secondary" [disabled]="usernameExists" awNextStep>Continue</button>
                 </div>
               </div>
             </form>
@@ -238,7 +246,7 @@
                   </div>
                 </div>
               </div>
-              <hr>
+              <hr *ngIf="!usernameExists">
               <div class="btn-group">
                 <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
                 &nbsp;&nbsp;
@@ -269,7 +277,7 @@
                   <hr>
                   <div class="row">
                     <div class="col-md-4">
-                      <strong>Username</strong>
+                      <strong>Username <span class="text-danger">*</span></strong>
                       <br>
                       <small>This name will be part of your Opsonion profile.</small>
                     </div>
@@ -278,14 +286,17 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text">@</span>
                         </div>
-                        <input type="text" class="form-control" [(ngModel)]="username"
+                        <input type="text" class="form-control" [(ngModel)]="username" (keydown)="onUsernameKeydown()"
                           (change)="username=username.trim()" name="username" blockSpecialCharacter>
                       </div>
+                      <div style="padding-top: 1em; padding-bottom: 0.5em">
+                          <button type="button" class="btn btn-xs btn-secondary" (click)="checkUsernameExists()">Check Availability</button>
+                        </div>
                       <small *ngIf="f.submitted && !username" class="text-danger">Username is required</small>
                     </div>
                   </div>
                   <hr>
-                  <div class="row">
+                  <div class="row" *ngIf="!usernameExists">
                     <div class="col-md-4">
                       <strong>Personal Details</strong>
                       <br>
@@ -294,7 +305,7 @@
                     <div class="col-md-6">
                       <br>
                       <div class="form-group">
-                        <label>Legal Name</label>
+                        <label>Legal Name <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-6">
                             <input class="form-control" (change)="firstName=firstName.trim()" placeholder="First Name"
@@ -313,7 +324,7 @@
                       </div>
                       <br>
                       <div class="form-group" *ngIf="dates">
-                        <label>Date of Birth</label>
+                        <label>Date of Birth <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-6">
                             <select class="form-control" [(ngModel)]="dobMonth" name="dobMonth">
@@ -392,7 +403,7 @@
                       </div>
                       <br>
                       <div class="form-group">
-                        <label>Street Address 1</label>
+                        <label>Street Address 1 <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-12">
                             <input class="form-control" type="text" name="streetAddress1" placeholder="Street Address"
@@ -401,6 +412,8 @@
                           <div class="col-md-12">
                             <div *ngIf="f.submitted && !streetAddress1"><small class="text-danger">Street Address is
                                 required</small></div>
+                            <div *ngIf="f.submitted && streetAddress1.length < 6"><small class="text-danger">Street Address needs to be greater 
+                              than 5 characters</small></div>
                           </div>
                         </div>
                       </div>
@@ -416,7 +429,7 @@
                       </div>
                       <br>
                       <div class="form-group">
-                        <label>City</label>
+                        <label>City <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-12">
                             <input class="form-control" type="text" placeholder="City" [(ngModel)]="city"
@@ -430,7 +443,7 @@
                       </div>
                       <br>
                       <div class="form-group">
-                        <label>Postal Code</label>
+                        <label>Postal Code <span class="text-danger">*</span></label>
                         <div class="row">
                           <div class="col-md-6">
                             <input class="form-control" type="text" placeholder="Postal Code" [(ngModel)]="postcode"
@@ -442,12 +455,15 @@
                           </div>
                         </div>
                       </div>
+                      <div class="form-group">
+                        <div><span class="text-danger">*</span> Indicates required field.</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <hr>
+                <hr *ngIf="!usernameExists">
                 <div class="btn-group">
-                  <button type="submit" class="btn btn-secondary" awNextStep>Continue</button>
+                  <button type="submit" class="btn btn-secondary" [disabled]="usernameExists" awNextStep>Continue</button>
                 </div>
               </div>
             </form>

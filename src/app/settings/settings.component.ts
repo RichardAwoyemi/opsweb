@@ -285,13 +285,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.firstName &&
       this.lastName &&
       this.dobDay &&
+      this.dobDay !== 'Day' &&
       this.dobMonth &&
+      this.dobMonth !== 'Month' &&
       this.dobYear &&
+      this.dobYear !== 'Year' &&
       this.streetAddress1 &&
+      this.streetAddress1.length > 5 &&
       this.city &&
       this.postcode
     ) {
-      if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
         this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
           if (result) {
             if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
@@ -324,7 +327,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
             }
           }
         });
-      }
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
     }
