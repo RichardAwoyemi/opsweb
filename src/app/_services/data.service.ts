@@ -10,8 +10,6 @@ export class DataService {
   private currenciesDataPath = './assets/data/currencies.json';
   public dates: any;
   private datesDataPath = './assets/data/dates.json';
-  public prices: any;
-  private pricesDataPath = './assets/data/prices.json';
 
   constructor(
     public httpClient: HttpClient
@@ -19,7 +17,6 @@ export class DataService {
     this.timezones = this.httpClient.get(this.timeZonesDataPath);
     this.currencies = this.httpClient.get(this.currenciesDataPath);
     this.dates = this.httpClient.get(this.datesDataPath);
-    this.prices = this.httpClient.get(this.pricesDataPath);
   }
 
   public getAllTimezones(): Observable<any> {
@@ -32,9 +29,5 @@ export class DataService {
 
   public getAllDates(): Observable<any> {
     return this.dates;
-  }
-
-  public getAllPrices(): Observable<any> {
-    return this.prices;
   }
 }

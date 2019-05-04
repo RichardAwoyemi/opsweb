@@ -66,13 +66,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.pricesSubscription = this.dataService.getAllPrices().subscribe(data => {
-      if (data) {
-        this.logger.debug(Object.values(data));
-        this.prices = Object.values(data);
-      }
-    });
-
     this.tasksExist = this.taskService.checkIfTasksExist();
     this.ngxLoader.stop();
   }
@@ -81,6 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.logger.debug(`Category changed to: ${event.target.value}`);
     this.selectedCategory = event.target.value;
   }
+
   setUser(result) {
     this.logger.debug('Setting user:');
     this.logger.debug(result);
@@ -100,24 +94,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   completeTaskPreScreening() {
-    if (this.selectedLengthCategory) {
+    if (this.selectedCategory) {
+      this.closeCreateTaskModal();
+
       this.task = {
         category: this.selectedCategory,
         status: 'incomplete'
       };
 
-    this.logger.debug(this.task);
-    localStorage.setItem('tasks', JSON.stringify(this.task));
-    this.router.navigate(['tasks']);
+      this.logger.debug(this.task);
+      localStorage.setItem('tasks', JSON.stringify(this.task));
+      this.router.navigate(['new-task']);
     }
   }
+
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
-    }
-
-    if (this.pricesSubscription) {
-      this.pricesSubscription.unsubscribe();
     }
   }
 }

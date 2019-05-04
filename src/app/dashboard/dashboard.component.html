@@ -95,25 +95,31 @@
               should choose the "Graphics & Design" category.</small>
           </div>
         </div>
-        <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
-          <div class="col-md-12 text-left">
-            <div class="radio">
-              <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                  value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
-            </div>
-            <div class="radio">
-              <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                  value="Graphics Design">&nbsp; Graphics Design</label>
-            </div>
-            <div class="radio">
-              <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                  value="Writing and Translation">&nbsp; Writing and Translation</label>
-            </div>
+        <form name="taskPreScreeningForm" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+          <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
+              <div class="col-md-12 text-left">
+                <div class="radio">
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                      value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
+                </div>
+                <div class="radio">
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                      value="Graphics Design">&nbsp; Graphics Design</label>
+                </div>
+                <div class="radio">
+                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                      value="Writing and Translation">&nbsp; Writing and Translation</label>
+                </div>
+              </div>
+              <div class="col-md-12" style="text-align: left">
+                <div *ngIf="f.submitted && !selectedCategory"><small class="text-danger">Category is
+                    required</small></div>
+              </div>
           </div>
-        </div>
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary">Continue</button>
-        </div>
+          <div class="btn-group">
+            <button type="submit" class="btn btn-secondary" (click)="completeTaskPreScreening()">Continue</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
