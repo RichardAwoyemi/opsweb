@@ -204,6 +204,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dobYear &&
         this.dobYear !== 'Year' &&
         this.streetAddress1 &&
+        this.streetAddress1.length > 5 &&
         this.city &&
         this.postcode) {  
         return this.setUserPersonalDetails();
