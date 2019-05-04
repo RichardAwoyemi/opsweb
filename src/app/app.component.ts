@@ -112,7 +112,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (!this.onboardingComplete || !this.accountType) {
         this.router.navigate(['onboarding']);
       } else {
-        this.router.navigate(['dashboard']);
+        //this.router.navigate(['dashboard']);
       }
     });
   }

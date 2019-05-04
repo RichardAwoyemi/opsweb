@@ -1,7 +1,26 @@
 <section ngxUiLoaderBlurred class="section-desktop" *ngIf="!(isMobile | async)?.matches">
-  <p>
-    {{ task }}
-  </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>What would you like to do?</h3>
+        <p>Select the type of project you would like to create.</p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <drag-scroll scrollbar-hidden #dev>
+          <div drag-scroll-item class="product-box">test</div>
+          <div drag-scroll-item class="product-box">test</div>
+          <div drag-scroll-item class="product-box">test</div>
+          <div drag-scroll-item class="product-box">test</div>
+          <div drag-scroll-item class="product-box">test</div>
+        </drag-scroll>
+        <button (click)="moveDevLeft()" class="dragLeftArrow">Left</button>
+        <button (click)="moveDevRight()" class="dragRightArrow">Right</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section ngxUiLoaderBlurred class="section-mobile" *ngIf="(isMobile | async)?.matches">

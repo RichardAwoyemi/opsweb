@@ -5,7 +5,68 @@
 }
 
 .section-mobile {
-  background-color: #F4F7FA !important;
+  background-color: #f4f7fa !important;
   padding-top: 6.5rem;
+  padding-left: 1em;
+  padding-right: 1em;
   padding-bottom: 2rem;
+}
+
+drag-scroll {
+  height: 300px;
+}
+
+.product-box {
+  background: #00a0f6;
+  width: 238px;
+  height: 258px;
+  border-radius: 6px;
+  position: relative;
+  padding: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0 20px 0 0;
+  white-space: normal;
+  text-align: left;
+  vertical-align: top;
+}
+
+.product-box:hover {
+  opacity: 0.8;
+}
+
+.dragLeftArrow {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  z-index: 9;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 35px;
+  height: 35px;
+  font-size: 32px;
+  line-height: 1;
+  padding: 0;
+  background: 0 0;
+  border: none;
+  color: #212121;
+  opacity: .8;
+}
+
+.dragRightArrow {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  z-index: 9;
+  -webkit-transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
+  width: 35px;
+  height: 35px;
+  font-size: 32px;
+  line-height: 1;
+  padding: 0;
+  background: 0 0;
+  border: none;
+  color: #212121;
+  opacity: .8;
 }

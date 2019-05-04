@@ -59,6 +59,7 @@ import { NewTaskComponent } from './new-task/new-task.component';
 import { TaskService } from './_services/task.service';
 import { DragulaModule } from 'ng2-dragula';
 import { BlockSpecialCharacterDirective } from './_directives/block.special.character.directive';
+import { DragScrollModule } from 'ngx-drag-scroll';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -120,7 +121,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
     ImageCropperModule,
-    ArchwizardModule
+    ArchwizardModule,
+    DragScrollModule
   ],
   providers: [
     AuthService,
