@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, AfterContentChecked } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
@@ -22,7 +23,6 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   userData: any;
   user: any;
   isMobile: Observable<BreakpointState>;
-  usernameExists = false;
   firstName: string;
   lastName: string;
   timezone: string;
@@ -42,14 +42,15 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   years: any;
   workToggle = false;
   hireToggle = false;
+  usernameExists = true;
   imageChangedEvent: any = '';
   croppedImage: any = '';
 
   @ViewChild('showImageCroppingModal') showImageCroppingModal: ElementRef;
 
   private userSubscription: Subscription;
-  private usernameSubscription: Subscription;
   private datesSubscription: Subscription;
+  private usernameSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -161,6 +162,10 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  onUsernameKeydown() {
+    this.usernameExists = true;
+  }
+
   counter(i: number) {
     return new Array(i);
   }
@@ -189,11 +194,6 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   canEnterStep2: (MovingDirection) => boolean = () => {
-    if (this.usernameExists) {
-      this.modalService.displayMessage('Oops!', 'This username is already in use.');
-      return false;
-    }
-
     if (this.username &&
         this.firstName &&
         this.lastName &&
@@ -247,9 +247,13 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
           (result[0]['uid'] !== this.user.uid)) {
             this.logger.debug('Username belongs to another user');
+            this.modalService.displayMessage('Oops!', 'This username is already in use.');
+            this.logger.debug(`Username exists variable set to: ${this.usernameExists}`);
             this.usernameExists = true;
           } else {
             this.logger.debug('Username does not belong to another user');
+            this.modalService.displayMessage('Great!', 'This username is available to use.');
+            this.logger.debug(`Username exists variable set to: ${this.usernameExists}`);
             this.usernameExists = false;
           }
         }
@@ -373,11 +377,11 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
-    if (this.usernameSubscription) {
-      this.usernameSubscription.unsubscribe();
-    }
     if (this.datesSubscription) {
       this.datesSubscription.unsubscribe();
+    }
+    if (this.usernameSubscription) {
+      this.usernameSubscription.unsubscribe();
     }
   }
 }
