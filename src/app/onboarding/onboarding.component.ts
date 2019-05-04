@@ -22,6 +22,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   userData: any;
   user: any;
   isMobile: Observable<BreakpointState>;
+  usernameExists = false;
   firstName: string;
   lastName: string;
   timezone: string;
@@ -188,6 +189,11 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   canEnterStep2: (MovingDirection) => boolean = () => {
+    if (this.usernameExists) {
+      this.modalService.displayMessage('Oops!', 'This username is already in use.');
+      return false;
+    }
+
     if (this.username &&
         this.firstName &&
         this.lastName &&
@@ -199,7 +205,7 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dobYear !== 'Year' &&
         this.streetAddress1 &&
         this.city &&
-        this.postcode) {
+        this.postcode) {  
         return this.setUserPersonalDetails();
     } else {
       this.logger.debug('Conditions not met... cannot move to step 2');
@@ -211,56 +217,43 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   setUserPersonalDetails() {
     this.ngxLoader.start();
     let messageDisplayed = false;
-    if (
-      this.user.uid &&
-      this.username &&
-      this.firstName &&
-      this.lastName &&
-      this.dobDay !== 'Day' &&
-      this.dobMonth &&
-      this.dobMonth !== 'Month' &&
-      this.dobYear &&
-      this.dobYear !== 'Year' &&
-      this.streetAddress1 &&
-      this.city &&
-      this.postcode
-    ) {
-        this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
-          if (result) {
-            if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
-              (result[0]['uid'] !== this.user.uid)) {
-              this.logger.debug('Username belongs to another user');
-              this.modalService.displayMessage('Oops!', 'This username is already in use.');
-              return false;
-            } else {
-              this.userService.setUserPersonalDetails(
-                this.user.uid,
-                this.username.toLowerCase(),
-                this.utilService.toTitleCase(this.firstName),
-                this.utilService.toTitleCase(this.lastName),
-                this.dobDay,
-                this.dobMonth,
-                this.dobYear,
-                this.streetAddress1,
-                this.streetAddress2,
-                this.city,
-                this.postcode).catch((error) => {
-                  if (!messageDisplayed) {
-                    this.modalService.displayMessage('Oops!', error);
-                    messageDisplayed = true;
-                    return false;
-                  }
-                });
-            }
-            this.logger.debug('All conditions met... moving to step 2');
-            return true;
+    this.userService.setUserPersonalDetails(
+      this.user.uid,
+      this.username.toLowerCase(),
+      this.utilService.toTitleCase(this.firstName),
+      this.utilService.toTitleCase(this.lastName),
+      this.dobDay,
+      this.dobMonth,
+      this.dobYear,
+      this.streetAddress1,
+      this.streetAddress2,
+      this.city,
+      this.postcode).catch((error) => {
+        if (!messageDisplayed) {
+          this.modalService.displayMessage('Oops!', error);
+          messageDisplayed = true;
+          this.ngxLoader.stop();
+          return false;
+        }
+      });
+      this.ngxLoader.stop();
+    return true;
+  }
+
+  checkUsernameExists() {
+    this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
+      if (result) {
+        if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
+          (result[0]['uid'] !== this.user.uid)) {
+            this.logger.debug('Username belongs to another user');
+            this.usernameExists = true;
+          } else {
+            this.logger.debug('Username does not belong to another user');
+            this.usernameExists = false;
           }
-        });
-    } else {
-      this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
-      return false;
-    }
-    this.ngxLoader.stop();
+        }
+      }
+    )
   }
 
   toggleWork() {

@@ -39,7 +39,7 @@
                           <span class="input-group-text">@</span>
                         </div>
                         <input type="text" class="form-control" [(ngModel)]="username"
-                          (change)="username=username.trim()" name="username" blockSpecialCharacter>
+                          (change)="username=username.trim(); checkUsernameExists()" name="username" blockSpecialCharacter>
                       </div>
                       <small *ngIf="f.submitted && !username" class="text-danger">Username is required</small>
                     </div>
@@ -279,7 +279,7 @@
                           <span class="input-group-text">@</span>
                         </div>
                         <input type="text" class="form-control" [(ngModel)]="username"
-                          (change)="username=username.trim()" name="username" blockSpecialCharacter>
+                          (change)="username=username.trim(); checkUsernameExists()" name="username" blockSpecialCharacter>
                       </div>
                       <small *ngIf="f.submitted && !username" class="text-danger">Username is required</small>
                     </div>
