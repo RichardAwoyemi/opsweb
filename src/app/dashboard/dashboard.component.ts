@@ -22,9 +22,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
-  selectedCurrency = 'Currency';
-  selectedBudget = 'Budget';
-  selectedLength = 1;
   selectedLengthCategory = 'day';
   selectedCategory: string;
   user$: Observable<any>;
@@ -84,7 +81,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.logger.debug(`Category changed to: ${event.target.value}`);
     this.selectedCategory = event.target.value;
   }
-
   setUser(result) {
     this.logger.debug('Setting user:');
     this.logger.debug(result);
@@ -104,48 +100,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   completeTaskPreScreening() {
-    if (this.selectedLength && this.selectedLengthCategory) {
-      this.logger.debug(`Project duration set as: ${this.selectedLength} ${this.selectedLengthCategory}`);
-      this.logger.debug('Completing task pre-screening!');
-
+    if (this.selectedLengthCategory) {
       this.task = {
         category: this.selectedCategory,
-        budget: this.selectedBudget,
-        currency: this.selectedCurrency,
-        duration: `${this.selectedLength} ${this.selectedLengthCategory}`,
         status: 'incomplete'
       };
-      this.logger.debug(this.task);
-      localStorage.setItem('tasks', JSON.stringify(this.task));
 
-      $(this.createTaskModal.nativeElement).modal('hide');
-      this.router.navigate(['tasks']);
-    } else {
-      this.logger.debug('Conditions not met... cannot complete task pre-screening');
+    this.logger.debug(this.task);
+    localStorage.setItem('tasks', JSON.stringify(this.task));
+    this.router.navigate(['tasks']);
     }
   }
-
-  canEnterStep2: (MovingDirection) => boolean = () => {
-    if (this.selectedCategory) {
-      this.logger.debug(`Category set as: ${this.selectedCategory}`);
-      this.logger.debug('All conditions met... moving to step 2');
-      return true;
-    } else {
-      this.logger.debug('Conditions not met... cannot move to step 2');
-    }
-  }
-
-  canEnterStep3: (MovingDirection) => boolean = () => {
-    if (this.selectedCurrency && this.selectedCurrency !== 'Currency' &&
-        this.selectedBudget && this.selectedBudget !== 'Budget') {
-      this.logger.debug(`Currency set as: ${this.selectedCurrency}`);
-      this.logger.debug(`Budget set as: ${this.selectedBudget}`);
-      return true;
-    } else {
-      this.logger.debug('Conditions not met... cannot move to step 3');
-    }
-  }
-
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();

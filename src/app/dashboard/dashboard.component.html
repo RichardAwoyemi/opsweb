@@ -87,115 +87,33 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body text-center hideWizardNavbar">
-        <aw-wizard>
-          <aw-wizard-step>
-            <h6>What type of work do you need done?</h6>
-            <div style="text-align: left; padding-top: 1em">
-              <div class="alert alert-primary" role="alert">
-                <small>Choose the category that best fits your request. For example: if you are looking for a logo, you
-                  should choose the "Graphics & Design" category.</small>
-              </div>
+      <div class="modal-body text-center">
+        <h6>What type of work do you need done?</h6>
+        <div style="text-align: left; padding-top: 1em">
+          <div class="alert alert-primary" role="alert">
+            <small>Choose the category that best fits your request. For example: if you are looking for a logo, you
+              should choose the "Graphics & Design" category.</small>
+          </div>
+        </div>
+        <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
+          <div class="col-md-12 text-left">
+            <div class="radio">
+              <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                  value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
             </div>
-            <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
-              <div class="col-md-12 text-left">
-                <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                      value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
-                </div>
-                <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                      value="Graphics Design">&nbsp; Graphics Design</label>
-                </div>
-                <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                      value="Writing and Translation">&nbsp; Writing and Translation</label>
-                </div>
-              </div>
+            <div class="radio">
+              <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                  value="Graphics Design">&nbsp; Graphics Design</label>
             </div>
-            <div class="btn-group">
-              <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
+            <div class="radio">
+              <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                  value="Writing and Translation">&nbsp; Writing and Translation</label>
             </div>
-          </aw-wizard-step>
-          <aw-wizard-step [canEnter]="canEnterStep2">
-            <h6>What's your budget?</h6>
-            <div style="text-align: left; padding-top: 1em">
-              <div class="alert alert-primary" role="alert">
-                <small>Please select the amount you are willing to spend.</small>
-              </div>
-            </div>
-            <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
-              <div class="col-md-4">
-                <select class="form-control" [(ngModel)]="selectedCurrency">
-                  <option [disabled]="true" selected>Currency</option>
-                  <option value="EUR">EUR</option>
-                  <option value="GBP">GBP</option>
-                  <option value="USD">USD</option>
-                </select>
-              </div>
-              <div class="col-md-8">
-                <select class="form-control" [(ngModel)]="selectedBudget">
-                  <option disabled>Budget</option>
-                  <ng-container *ngIf="selectedCurrency === 'EUR'">
-                    <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[0][i]">
-                      {{ prices[0][i] }}
-                    </option>
-                  </ng-container>
-                  <ng-container *ngIf="selectedCurrency === 'GBP'">
-                    <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[1][i]">
-                      {{ prices[1][i] }}
-                    </option>
-                  </ng-container>
-                  <ng-container *ngIf="selectedCurrency === 'USD'">
-                    <option *ngFor="let price of prices[0]; let i = index" [ngValue]="prices[2][i]">
-                      {{ prices[2][i] }}
-                    </option>
-                  </ng-container>
-                </select>
-              </div>
-            </div>
-            <div class="btn-group">
-              <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-secondary" awNextStep>Continue</button>
-            </div>
-          </aw-wizard-step>
-          <aw-wizard-step [canEnter]="canEnterStep3">
-            <h6>How soon would you like your service delivered?</h6>
-            <div style="text-align: left; padding-top: 1em">
-              <div class="alert alert-primary" role="alert">
-                <small>This is the amount of time the contractor has to work on your order. Please note that a request
-                  for faster delivery may impact the price.</small>
-              </div>
-            </div>
-            <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
-              <div class="col-md-4">
-                <select class="form-control" [(ngModel)]="selectedLength">
-                  <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="i">{{ i }}</option>
-                </select>
-              </div>
-              <div class="col-md-8">
-                <select class="form-control" [(ngModel)]="selectedLengthCategory">
-                  <ng-container *ngIf="selectedLength < 2">
-                    <option value="day" selected>day</option>
-                    <option value="week">week</option>
-                    <option value="month">month</option>
-                  </ng-container>
-                  <ng-container *ngIf="selectedLength > 1">
-                    <option value="days" selected>days</option>
-                    <option value="weeks">weeks</option>
-                    <option value="months">months</option>
-                  </ng-container>
-                </select>
-              </div>
-            </div>
-            <div class="btn-group">
-              <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-secondary" (click)="completeTaskPreScreening()">Complete</button>
-            </div>
-          </aw-wizard-step>
-        </aw-wizard>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary">Continue</button>
+        </div>
       </div>
     </div>
   </div>
