@@ -17,10 +17,10 @@ drag-scroll {
 }
 
 .product-box {
-  background: #00a0f6;
+  background-image: linear-gradient(rgb(87, 34, 255), rgb(198, 3, 255));
+  border-radius: 8px;
   width: 238px;
   height: 258px;
-  border-radius: 6px;
   position: relative;
   padding: 18px;
   overflow: hidden;
@@ -29,6 +29,10 @@ drag-scroll {
   white-space: normal;
   text-align: left;
   vertical-align: top;
+  padding-bottom: 40px;
+  padding-top: 100px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .product-box:hover {
@@ -37,7 +41,7 @@ drag-scroll {
 
 .dragLeftArrow {
   position: absolute;
-  top: 50%;
+  top: 42.5%;
   left: 20px;
   z-index: 9;
   -webkit-transform: translateY(-50%);
@@ -49,13 +53,19 @@ drag-scroll {
   padding: 0;
   background: 0 0;
   border: none;
-  color: #212121;
+  color: #fff;
+  opacity: .2;
+}
+
+.dragLeftArrow:hover, .dragRightArrow:hover {
+  cursor: pointer;
   opacity: .8;
+  transition: opacity .6s;
 }
 
 .dragRightArrow {
   position: absolute;
-  top: 50%;
+  top: 42.5%;
   right: 20px;
   z-index: 9;
   -webkit-transform: translateY(-50%) rotate(180deg);
@@ -67,6 +77,24 @@ drag-scroll {
   padding: 0;
   background: 0 0;
   border: none;
-  color: #212121;
-  opacity: .8;
+  color: #fff;
+  opacity: .2;
+}
+
+.product-box h3 {
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  line-height: 1;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.product-box p {
+  color: #fff;
+  font-size: 13px;
+}
+
+drag-scroll {
+  margin-left: -10em
 }

@@ -9,15 +9,18 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <drag-scroll scrollbar-hidden #dev>
-          <div drag-scroll-item class="product-box">test</div>
-          <div drag-scroll-item class="product-box">test</div>
-          <div drag-scroll-item class="product-box">test</div>
-          <div drag-scroll-item class="product-box">test</div>
-          <div drag-scroll-item class="product-box">test</div>
+        <drag-scroll drag-scroll-y-disabled="true" scrollbar-hidden="true" reachesLeftBound="test()" #dev>
+          <div drag-scroll-item class="product-box" aos-init aos-animate data-aos="fade-up">
+            <h3>Test</h3>
+            <p>Ease your app-building experience by choosing from our list of common mobile features.</p>
+          </div>
+          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="500">test</div>
+          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="1000">test</div>
+          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="1500">test</div>
+          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="2000">test</div>
         </drag-scroll>
-        <button (click)="moveDevLeft()" class="dragLeftArrow">Left</button>
-        <button (click)="moveDevRight()" class="dragRightArrow">Right</button>
+        <button (click)="moveDevLeft()" class="dragLeftArrow"><i class="ti-arrow-circle-left"></i></button>
+        <button (click)="moveDevRight()" class="dragRightArrow"><i class="ti-arrow-circle-left"></i></button>
       </div>
     </div>
   </div>

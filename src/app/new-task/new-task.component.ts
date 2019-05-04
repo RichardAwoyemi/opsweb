@@ -28,11 +28,15 @@ export class NewTaskComponent implements OnInit {
     this.logger.debug(this.task);
   }
 
-  moveDevLeft() {
+  moveDevLeft(event) {
     this.ds.moveLeft();
   }
 
   moveDevRight() {
     this.ds.moveRight();
+  }
+
+  test() {
+    this.logger.debug('test');
   }
 }
