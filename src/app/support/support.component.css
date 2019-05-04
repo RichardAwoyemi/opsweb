@@ -1,8 +1,0 @@
-.support > li > a {
-  color: #757575;
-}
-
-.support > li > a:hover {
-  color: #2055EC;
-  transition: .2s linear;
-}

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
-import { environment } from 'src/environments/environment';
-import { UtilService } from '../_services/util.service';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
@@ -26,9 +24,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public resolved(captchaResponse: string) {
-    if (environment.production === false) {
-      this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
-    }
+    this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
   }
 
   register() {

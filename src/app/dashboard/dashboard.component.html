@@ -1,5 +1,5 @@
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && referralMode && (userData?.firstName || userData?.lastName)">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName || userData?.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
@@ -64,7 +64,7 @@
 </section>
 
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && referralMode && (!userData?.firstName || !userData?.lastName)">
+  *ngIf="!(isMobile | async)?.matches && (!userData?.firstName || !userData?.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -91,7 +91,7 @@
 </section>
 
 <section ngxUiLoaderBlurred class="section-mobile"
-  *ngIf="(isMobile | async)?.matches && referralMode && (userData?.firstName || userData.lastName)">
+  *ngIf="(isMobile | async)?.matches && (userData?.firstName || userData.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12" *ngIf="userData">
@@ -157,7 +157,7 @@
 </section>
 
 <section ngxUiLoaderBlurred class="section-mobile"
-  *ngIf="(isMobile | async)?.matches && referralMode && (!userData?.firstName || !userData?.lastName)">
+  *ngIf="(isMobile | async)?.matches && (!userData?.firstName || !userData?.lastName)">
   <div class="container">
     <div class="row">
       <div class="col-md-12">

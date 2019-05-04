@@ -187,6 +187,49 @@ export class UserService {
     });
   }
 
+  getUserByUsername(username) {
+    this.logger.debug(`Getting user with username '${username}'`);
+    if (username) {
+      return this.afs.collection('users', ref => ref.where('username', '==', username).limit(1)).valueChanges();
+    }
+  }
+
+  setUserPhoto(uid, photoURL) {
+    this.logger.debug(`Setting user photo for ${uid}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userPhotoData = {};
+    userPhotoData = {
+      photoURL: photoURL,
+    };
+    return userRef.set(userPhotoData, {
+      merge: true
+    });
+  }
+
+  setUserAccountType(uid, accountType) {
+    this.logger.debug(`Setting user account type for ${uid} to ${accountType}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = {};
+    userDetailData = {
+      accountType: accountType
+    };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
+  setOnboardingAsComplete(uid) {
+    this.logger.debug(`Setting onboarding status for ${uid} to complete`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = {};
+    userDetailData = {
+      onboardingComplete: true
+    };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     this.logger.debug(`Setting personal details for ${uid}`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);

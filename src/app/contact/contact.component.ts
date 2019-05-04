@@ -2,11 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from '../_modals/modal.component';
-import { UtilService } from '../_services/util.service';
 import { NGXLogger } from 'ngx-logger';
+import { ModalService } from '../_services/modal.service';
 
 declare var $;
 
@@ -28,7 +25,7 @@ export class ContactComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
     private logger: NGXLogger,
-    public modalService: NgbModal
+    public modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -60,29 +57,20 @@ export class ContactComponent implements OnInit {
     }
 
     const formObject = document.forms['contactForm'];
-
-    if (environment.production === false) {
-      this.logger.debug(new FormData(formObject));
-    }
+    this.logger.debug(new FormData(formObject));
 
     fetch(this.scriptURL, { method: 'POST', body: new FormData(formObject) }).then(response => {
-      if (environment.production === false) {
-        this.logger.debug(`Success: ${response}`);
-        this.submitted = true;
-      }
+      this.logger.debug(`Success: ${response}`);
+      this.submitted = true;
     }).catch(
       error => {
-        if (environment.production === false) {
-          console.error('Error!', error.message);
-          $(this.errorModal.nativeElement).modal('show');
-          this.submitted = false;
-        }
+        this.logger.debug('Error!', error.message);
+        $(this.errorModal.nativeElement).modal('show');
+        this.submitted = false;
 
         // Temporary fix
 
-        const modalReference = this.modalService.open(ModalComponent, { windowClass: 'modal-holder', centered: true });
-        modalReference.componentInstance.header = 'Yay!';
-        modalReference.componentInstance.message = 'Thanks. We will be in touch.';
+        this.modalService.displayMessage('Great!', 'Thanks. We will be in touch.');
         this.submitted = true;
       }
     );

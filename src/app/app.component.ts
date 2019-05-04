@@ -17,7 +17,6 @@ import { NGXLogger } from 'ngx-logger';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
-  referralMode: boolean;
   user: any = {
     photoURL: 'https://i.imgflip.com/1slnr0.jpg'
   };
@@ -25,8 +24,11 @@ export class AppComponent implements OnInit, OnDestroy {
   appStoreUrl: string;
   userAgentString: string;
   referredBy: string;
+  onboardingComplete: boolean;
+  accountType: boolean;
 
   private authSubscription: Subscription;
+  private userSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -37,7 +39,6 @@ export class AppComponent implements OnInit, OnDestroy {
     public router: Router,
     public authService: AuthService) {
     this.userAgentString = navigator.userAgent;
-    this.referralMode = environment.referralMode;
     this.afAuth.authState.subscribe(response => {
       this.referredBy = localStorage.getItem('referredBy');
       this.assignUserProfile(response);
@@ -93,18 +94,27 @@ export class AppComponent implements OnInit, OnDestroy {
     this.logger.debug('Caching:');
     this.logger.debug(user);
     this.logger.debug('Caching: ' + user.photoURL);
+    this.user = {
+      photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+    };
 
-    if (user.photoURL) {
-      this.user = {
-        photoURL: user.photoURL
-      };
-    } else {
-      this.user = {
-        photoURL: 'https://i.imgflip.com/1slnr0.jpg'
-      };
-    }
-    localStorage.setItem('user', JSON.stringify(user));
-    this.router.navigate(['dashboard']);
+    this.userSubscription = this.userService.getUserById(user.uid).subscribe(data => {
+      if (data) {
+        if (data['photoURL']) {
+          this.user = {
+            photoURL: data['photoURL']
+          };
+        }
+        this.onboardingComplete = data['onboardingComplete'];
+        this.accountType = data['accountType'];
+      }
+      localStorage.setItem('user', JSON.stringify(user));
+      if (!this.onboardingComplete || !this.accountType) {
+        this.router.navigate(['onboarding']);
+      } else {
+        this.router.navigate(['dashboard']);
+      }
+    });
   }
 
   onActivate(_event) {
@@ -114,6 +124,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 }

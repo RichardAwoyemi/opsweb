@@ -19,7 +19,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user: any;
   userData: any;
   invitees: any;
-  referralMode: boolean;
   campaignMessage: string;
   facebookShareUrl: string;
   whatsappShareUrl: string;
@@ -56,7 +55,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxLoader.start();
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.referralMode = environment.referralMode;
     this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
 
@@ -142,7 +140,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   copyMessage() {
     this.utilService.copyMessage(this.referralUrl);
-    this.modalService.displayMessage('Yay!', 'Your referral link has been copied.');
+    this.modalService.displayMessage('Great!', 'Your referral link has been copied.');
   }
 
   setUserLegalNameData() {
@@ -150,7 +148,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const firstName = this.utilService.toTitleCase(this.firstName).trim();
       const lastName = this.utilService.toTitleCase(this.lastName).trim();
       this.userService.setUserLegalNameData(this.user.uid, firstName, lastName).then(() => {
-        this.modalService.displayMessage('Yay!', 'Your settings have been updated.');
+        this.modalService.displayMessage('Great!', 'Your settings have been updated.');
       }).catch((error) => {
         this.modalService.displayMessage('Oops!', error);
       });
