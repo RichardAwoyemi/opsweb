@@ -30,7 +30,7 @@ jobs:
               apt-get -y -qq install software-properties-common
               add-apt-repository ppa:deadsnakes/ppa
               apt-get -y -qq update
-              apt-get -y -qq install python3.6-dev
+              apt-get -y -qq install python3.6
               curl -O https://bootstrap.pypa.io/get-pip.py
               python3.6 get-pip.py --user
               echo 'export PATH=/root/.local/bin:$PATH' >> ~/.bash_profile 
