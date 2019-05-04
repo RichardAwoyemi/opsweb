@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, AfterContentChecked } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -155,7 +155,9 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.modalService.displayMessage('Welcome!', 'Thanks for signing up. Before we get started, please tell us a bit about yourself.');
+    setTimeout(() => {
+      this.modalService.displayMessage('Welcome!', 'Thanks for signing up. Before we get started, please tell us a bit about yourself.');
+    });
   }
 
   counter(i: number) {
