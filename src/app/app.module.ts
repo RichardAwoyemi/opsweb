@@ -58,6 +58,7 @@ import { ReferralComponent } from './referral/referral.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { TaskService } from './_services/task.service';
 import { DragulaModule } from 'ng2-dragula';
+import { BlockSpecialCharacterDirective } from './_directives/block.special.character.directive';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -90,7 +91,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     InboxComponent,
     OnboardingComponent,
     ReferralComponent,
-    NewTaskComponent
+    NewTaskComponent,
+    BlockSpecialCharacterDirective
   ],
   entryComponents: [
     ModalComponent
