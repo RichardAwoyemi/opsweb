@@ -27,6 +27,7 @@ jobs:
             apt-get -y -qq update
             apt-get -y -qq install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+              apt-get -y -qq update
               curl -O https://bootstrap.pypa.io/get-pip.py
               python3 get-pip.py --user
               echo 'export PATH=/root/.local/bin:$PATH' >> ~/.bash_profile 
@@ -36,12 +37,7 @@ jobs:
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               ~/.local/bin/aws configure set default.s3.signature_version s3v4
             fi
-            if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              cd /root/opsonion-web/src/app/_functions/ && npm install
-            fi
-            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              cd /root/opsonion-web/src/app/_functions/ && npm install
-            fi
+            cd /root/opsonion-web/src/app/_functions/ && npm install
       - save_cache:
           paths:
             - node_modules
@@ -66,13 +62,12 @@ jobs:
       - run:
           name: Deploy to Firebase
           command: |
+            cd /root/opsonion-web/src/app/_functions/
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              cd /root/opsonion-web/src/app/_functions/
               firebase use opsonion-dev
               firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              cd /root/opsonion-web/src/app/_functions/
               firebase use opsonion-live
               firebase deploy --token=$FIREBASE_TOKEN --non-interactive
             fi
