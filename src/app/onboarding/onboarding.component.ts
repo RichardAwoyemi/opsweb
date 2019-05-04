@@ -192,11 +192,11 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.firstName &&
         this.lastName &&
         this.dobDay &&
-        this.dobDay != "Day" &&
-        this.dobDay != "Month" &&
-        this.dobDay != "Year" &&
+        this.dobDay !== 'Day' &&
         this.dobMonth &&
+        this.dobMonth !== 'Month' &&
         this.dobYear &&
+        this.dobYear !== 'Year' &&
         this.streetAddress1 &&
         this.city &&
         this.postcode) {
