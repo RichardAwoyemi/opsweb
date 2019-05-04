@@ -192,13 +192,15 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.firstName &&
         this.lastName &&
         this.dobDay &&
+        this.dobDay != "Day" &&
+        this.dobDay != "Month" &&
+        this.dobDay != "Year" &&
         this.dobMonth &&
         this.dobYear &&
         this.streetAddress1 &&
         this.city &&
         this.postcode) {
-        this.setUserPersonalDetails();
-        return true;
+        return this.setUserPersonalDetails();
     } else {
       this.logger.debug('Conditions not met... cannot move to step 2');
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields correctly.');
@@ -214,14 +216,15 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.username &&
       this.firstName &&
       this.lastName &&
-      this.dobDay &&
+      this.dobDay !== 'Day' &&
       this.dobMonth &&
+      this.dobMonth !== 'Month' &&
       this.dobYear &&
+      this.dobYear !== 'Year' &&
       this.streetAddress1 &&
       this.city &&
       this.postcode
     ) {
-      if (this.dobDay !== 'Day' || this.dobMonth !== 'Month' || this.dobYear !== 'Year') {
         this.usernameSubscription = this.userService.getUserByUsername(this.username.toLowerCase().trim()).subscribe((result) => {
           if (result) {
             if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
@@ -253,7 +256,6 @@ export class OnboardingComponent implements OnInit, AfterViewInit, OnDestroy {
             return true;
           }
         });
-      }
     } else {
       this.modalService.displayMessage('Oops!', 'Please fill in all required fields.');
       return false;
