@@ -28,21 +28,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
-    this.carouselBanner = {
-      grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
-      slide: 1,
-      speed: 400,
-      interval: {
-        timing: 3000,
-        initialDelay: 1000
-      },
-      point: {
-        visible: true
-      },
-      load: 2,
-      loop: true,
-      touch: true
-    };
   }
 
   googleSignIn() {

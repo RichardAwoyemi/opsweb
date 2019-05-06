@@ -1,7 +1,15 @@
+@import '~swiper/dist/css/swiper.min.css';
+
+/* General */
+
 .section-desktop {
   background-color: #F4F7FA !important;
   padding-top: 11rem;
   padding-bottom: 4rem;
+}
+
+.section-desktop-alternate {
+  background-color: #F4F7FA !important;
 }
 
 .section-mobile {
@@ -12,20 +20,35 @@
   padding-bottom: 2rem;
 }
 
-drag-scroll {
-  height: 300px;
+/* Step 1 */
+
+.swiper-container {
+  height: 260px;
+}
+
+.swiper-slide {
+  width: 250px !important;
+  height: 250px;
+}
+
+.step2-header-box {
+  padding-top: 1em; 
+  padding-bottom: 1em;
+}
+
+.step2-header-row {
+  margin-right: 0px; 
+  background-color: white; 
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .product-box {
-  background-image: linear-gradient(rgb(87, 34, 255), rgb(198, 3, 255));
   border-radius: 8px;
-  width: 238px;
-  height: 258px;
   position: relative;
   padding: 18px;
   overflow: hidden;
   cursor: pointer;
-  margin: 0 20px 0 0;
+  margin: 0 30px 0 0;
   white-space: normal;
   text-align: left;
   vertical-align: top;
@@ -33,58 +56,64 @@ drag-scroll {
   padding-top: 100px;
   padding-left: 40px;
   padding-right: 40px;
+  transform: scale(0.9);
+  transition: all .2s ease-in-out;
+}
+
+.box-0 {
+  background-image: linear-gradient(45deg, #8DB6FF 0%, #A48DFF 100%);
+}
+
+.box-1 {
+  background-image: linear-gradient(45deg, #A48DFF 0%, #FC8DFF 100%);
+}
+
+.box-2 {
+  background-image: linear-gradient(45deg, #FF8D8D 0%, #FFCC82 100%);
+}
+
+.box-3 {
+  background-image: linear-gradient(45deg, #8FE591 0%, #8DB6FF 100%);
+}
+
+.box-4 {
+  background-image: linear-gradient(45deg, #FF8D8D 0%, #8DB6FF 100%);
+}
+
+.box-5 {
+  background-image: linear-gradient(45deg, #A48DFF 0%, #FFE88E 100%);
+}
+
+.box-6 {
+  background-image: linear-gradient(45deg, #FC8DFF 0%, #8DB6FF 100%);
+}
+
+.box-7 {
+  background-image: linear-gradient(45deg, #8FE591 0%, #FFCC82 100%);
+}
+
+.swiper-button-next, .swiper-button-prev {
+  width: 27px;
+  height: 27px;
+  background-size: 27px 27px;
+  opacity: 0.2;
+}
+
+.swiper-button-next {
+  background-image: url('https://dls.tepapa.govt.nz/images/icons/png/icon-next-spot.png');
+}
+
+.swiper-button-prev {
+  background-image: url('https://dls.tepapa.govt.nz/images/icons/png/icon-previous-spot.png');
 }
 
 .product-box:hover {
   opacity: 0.8;
+  transform: scale(1.0);
 }
 
-.dragLeftArrow {
-  position: absolute;
-  top: 42.5%;
-  left: 20px;
-  z-index: 9;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-  width: 35px;
-  height: 35px;
-  font-size: 32px;
-  line-height: 1;
-  padding: 0;
-  background: 0 0;
-  border: none;
+.product-box h4 {
   color: #fff;
-  opacity: .2;
-}
-
-.dragLeftArrow:hover, .dragRightArrow:hover {
-  cursor: pointer;
-  opacity: .8;
-  transition: opacity .6s;
-}
-
-.dragRightArrow {
-  position: absolute;
-  top: 42.5%;
-  right: 20px;
-  z-index: 9;
-  -webkit-transform: translateY(-50%) rotate(180deg);
-  transform: translateY(-50%) rotate(180deg);
-  width: 35px;
-  height: 35px;
-  font-size: 32px;
-  line-height: 1;
-  padding: 0;
-  background: 0 0;
-  border: none;
-  color: #fff;
-  opacity: .2;
-}
-
-.product-box h3 {
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: -0.8px;
   line-height: 1;
   margin-bottom: 16px;
   text-align: left;
@@ -95,6 +124,59 @@ drag-scroll {
   font-size: 13px;
 }
 
-drag-scroll {
-  margin-left: -10em
+.product-icon {
+  width: 50px; 
+  height: 50px;
+}
+
+.product-icon-box {
+  top: 1.5em; 
+  position: absolute;
+}
+
+/* Step 2 */
+
+.card-category {
+  transform: scale(0.9);
+  transition: all .2s ease-in-out; 
+  height: 150px; 
+  width: 100%;
+  overflow: hidden; 
+  padding: 0.5em; 
+  background: #fff;
+}
+
+.card-category:hover {
+  transform: scale(1);
+  cursor: pointer;
+}
+
+.sidebar-scroll {
+  overflow-y: scroll; 
+  overflow-x: hidden;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #DDE2E8; 
+}
+
+.categories-header {
+  background: #fff; 
+  border-bottom: 1px solid #f0f0f0; 
+  padding: 1em; 
+  text-align: center; 
+  font-weight: bold;
+}
+
+.categories-column {
+  border-right: 1px solid #f0f0f0; 
+  padding-right: 0px;
+}
+
+.card {
+  margin-right: 0px;
 }

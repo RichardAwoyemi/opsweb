@@ -1,33 +1,113 @@
-<section ngxUiLoaderBlurred class="section-desktop" *ngIf="!(isMobile | async)?.matches">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h3>What would you like to do?</h3>
-        <p>Select the type of project you would like to create.</p>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-12">
-        <drag-scroll drag-scroll-y-disabled="true" scrollbar-hidden="true" reachesLeftBound="test()" #dev>
-          <div drag-scroll-item class="product-box" aos-init aos-animate data-aos="fade-up">
-            <h3>Test</h3>
-            <p>Ease your app-building experience by choosing from our list of common mobile features.</p>
+<ng-container ngxUiLoaderBlurred>
+  <section class="section-desktop" *ngIf="!(isMobile | async)?.matches">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9">
+          <h3>What would you like to do?</h3>
+          <p>Select the type of project you would like to create.</p>
+        </div>
+        <div class="col-md-3">
+          <div class="pull-right" style="padding-top: 1em; padding-right: 1em">
+            <button type="button" class="btn btn-secondary" (click)="resume()" *ngIf="productSelected">Resume</button>
           </div>
-          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="500">test</div>
-          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="1000">test</div>
-          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="1500">test</div>
-          <div drag-scroll-item class="product-box" aos-animate data-aos="fade-up" data-aos-delay="2000">test</div>
-        </drag-scroll>
-        <button (click)="moveDevLeft()" class="dragLeftArrow"><i class="ti-arrow-circle-left"></i></button>
-        <button (click)="moveDevRight()" class="dragRightArrow"><i class="ti-arrow-circle-left"></i></button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="swiper-container" fxFlex="auto" [swiper]="config" [(index)]="index"
+            (indexChange)="onIndexChange($event)" (swiperTransitionStart)="onSwiperEvent('transitionStart')"
+            (swiperTransitionEnd)="onSwiperEvent('transitionEnd')" *ngIf="programmingSlides">
+            <div class="swiper-wrapper">
+              <ng-container *ngFor="let slide of programmingSlides; let i = index;">
+                <div class="swiper-slide product-box box-{{ i }}" (click)="selectProduct(slide.id)">
+                  <div class="product-icon-box">
+                    <img src="assets/img/{{ slide.id }}.svg" class="product-icon">
+                  </div>
+                  <h4>{{ slide.name }}</h4>
+                  <p>{{ slide.description }}</p>
+                </div>
+              </ng-container>
+            </div>
+            <div class="swiper-button-prev" [hidden]="index === 0"></div>
+            <div class="swiper-button-next" [hidden]="index === 4"></div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+
+  <div id="step2">
+    <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && productSelected"
+      [ngStyle]="{ 'height': innerHeight + 'px' }">
+      <div class="row step2-header-row">
+        <div class="col-md-6">
+          <div class="step2-header-box" style="padding-left: 1em">
+            <img src="assets/img/logo.svg" style="height: 36px; width: 36px">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="pull-right step2-header-box" style="padding-right: 1em">
+            <button type="button" class="btn btn-secondary" (click)="showResetModal()">Reset</button>
+            &nbsp;
+            <button type="button" class="btn btn-secondary" (click)="resume()">Center Page</button>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-right: 0px;" [ngStyle]="{ 'height': innerColumnHeight + 'px' }">
+        <div class="col-md-3 categories-column">
+          <div class="categories-header">Categories</div>
+          <div class="sidebar-scroll" [ngStyle]="{ 'height': innerColumnSidebarHeight + 'px' }">
+            <div class="card shadow-4 card-category" *ngFor="let category of webCategories;">
+              <div class="card-body" (click)="selectCategory(category.id)">
+                <h5 class="card-title">{{ category.name }}</h5>
+                <div style="right: 1em; top: 0.75em; position: absolute">
+                  <img src="assets/img/{{ category.id }}.svg" style="height: 30px; width: 30px">
+                </div>
+                {{ category.description }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 categories-column" style="padding-left: 0px">
+          <div style="background: #fff; border-right: 1px solid #f0f0f0; padding: 1em; text-align: center; font-weight: bold">
+            Libraries</div>
+          <div class="sidebar-scroll" [ngStyle]="{ 'height': innerColumnSidebarHeight + 'px' }">
+            Category: {{ categorySelected }}
+          </div>
+        </div>
+        <div class="col-md-6">
+        </div>
+      </div>
+    </section>
   </div>
-</section>
+
+  <section class="section-desktop" *ngIf="!(isMobile | async)?.matches && something">
+  </section>
+</ng-container>
 
 <section ngxUiLoaderBlurred class="section-mobile" *ngIf="(isMobile | async)?.matches">
   <p>
     {{ task }}
   </p>
 </section>
+
+<!-- Show reset modal -->
+<div class="modal fade" #resetModal id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModal"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetModal">Reset</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Are you sure you want to start all over again?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="reset()">Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

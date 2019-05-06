@@ -7,7 +7,6 @@ import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
 import { DataService } from '../_services/data.service';
 import { TaskService } from '../_services/task.service';
-import { DragulaService } from 'ng2-dragula';
 
 declare var $;
 
@@ -31,12 +30,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   BAG = 'DASHBOARD';
 
   private userSubscription: Subscription;
-  private pricesSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private userService: UserService,
-    private dataService: DataService,
     private taskService: TaskService,
     private ngxLoader: NgxUiLoaderService,
     private logger: NGXLogger,

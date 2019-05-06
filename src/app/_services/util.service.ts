@@ -73,25 +73,4 @@ export class UtilService {
     document.body.removeChild(selectBox);
     return;
   }
-
-  automaticScroll(scrollExecuted, activatedRoute) {
-    if (scrollExecuted) {
-      let routeFragmentSubscription: Subscription;
-
-      routeFragmentSubscription = activatedRoute.fragment.subscribe(fragment => {
-        if (fragment) {
-          const element = document.getElementById(fragment);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            scrollExecuted = true;
-
-            setTimeout(() => {
-              this.logger.debug('routeFragmentSubscription unsubscribe');
-              routeFragmentSubscription.unsubscribe();
-            }, 1000);
-          }
-        }
-      });
-    }
-  }
 }
