@@ -139,7 +139,7 @@
 .card-category {
   transform: scale(0.9);
   transition: all .2s ease-in-out; 
-  height: 150px; 
+  height: 175px; 
   width: 100%;
   overflow: hidden; 
   padding: 0.5em; 
@@ -157,7 +157,7 @@
 }
 
 .sidebar-scroll::-webkit-scrollbar {
-  width: 5px;
+  width: 2px;
 }
  
 .sidebar-scroll::-webkit-scrollbar-thumb {
@@ -177,6 +177,36 @@
   padding-right: 0px;
 }
 
-.card {
-  margin-right: 0px;
+.libraries-title {
+  background: #fff; 
+  border-right: 1px solid #f0f0f0; 
+  border-bottom: 1px solid #f0f0f0;
+  padding: 1em; 
+  text-align: center;
+  font-weight: bold;
+}
+
+.accordion .card-title a {
+  font-weight: bold !important;
+  color: #757575 !important;
+  font-size: 1.1em !important;
+}
+
+.no-border {
+  border-left: 0px !important;
+  border-bottom: 0px !important;
+  border-right: 0px !important;
+}
+
+.card-highlight:hover {
+  background-color: #E8F0FE !important;
+  cursor: pointer !important;
+}
+
+.custom-control-label:hover {
+  cursor: pointer !important;
+}
+
+#requestFeatureModal > .modal-dialog { 
+  max-width: 90% !important;
 }
