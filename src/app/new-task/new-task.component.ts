@@ -166,7 +166,6 @@ export class NewTaskComponent implements OnInit {
     feature.in_basket = true;
     this.basket.push(feature);
     this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
-    this.modalService.displayMessage('Great!', `"${feature.name}" has been added to your basket.`);
   }
 
   removeFromBasket(feature) {
@@ -180,7 +179,6 @@ export class NewTaskComponent implements OnInit {
       }
     }
     feature.in_basket = false;
-    this.modalService.displayMessage('Great!', `"${feature.name}" has been removed from your basket.`);
     this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
   }
 
