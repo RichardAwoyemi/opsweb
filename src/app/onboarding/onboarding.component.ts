@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, AfterContentChecked } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';

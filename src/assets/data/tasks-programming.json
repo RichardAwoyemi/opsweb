@@ -1,0 +1,42 @@
+[
+  {
+    "id": "web",
+    "name": "Web",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "mobile",
+    "name": "Mobile",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "desktop",
+    "name": "Desktop",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "testing",
+    "name": "Testing",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "database",
+    "name": "Database",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "data-science",
+    "name": "Data Science",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "devops",
+    "name": "DevOps",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "other",
+    "name": "Other",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  }
+]

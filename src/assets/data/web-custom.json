@@ -1,0 +1,30 @@
+[
+  {
+    "id": "web-custom-alert",
+    "name": "Alerts"
+  },
+  {
+    "id": "web-custom-auth",
+    "name": "Authentication"
+  },
+  {
+    "id": "web-custom-ecommerce",
+    "name": "Ecommerce"
+  },
+  {
+    "id": "web-custom-finance",
+    "name": "Finance"
+  },
+  {
+    "id": "web-custom-game",
+    "name": "Gamification"
+  },
+  {
+    "id": "web-custom-multimedia",
+    "name": "Multimedia"
+  },
+  {
+    "id": "web-custom-social",
+    "name": "Social"
+  }
+]

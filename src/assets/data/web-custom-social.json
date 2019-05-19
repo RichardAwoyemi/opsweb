@@ -1,0 +1,42 @@
+[
+  {
+    "id": "activity-feed",
+    "name": "Activity Feed"
+  },
+  {
+    "id": "add-friends",
+    "name": "Add Friends/Followers"
+  },
+  {
+    "id": "chat",
+    "name": "Chat"
+  },
+  {
+    "id": "chat-backup",
+    "name": "Chat Backup/Restore"
+  },
+  {
+    "id": "comments",
+    "name": "Comments"
+  },
+  {
+    "id": "emojis",
+    "name": "Emojis"
+  },
+  {
+    "id": "event-registration",
+    "name": "Event Registration"
+  },
+  {
+    "id": "friend-list",
+    "name": "Friend/Follower List"
+  },
+  {
+    "id": "group-chat",
+    "name": "Group Chat"
+  },
+  {
+    "id": "hashtags",
+    "name": "Hashtags"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "invoice-billing",
+    "name": "Invoice Billing"
+  },
+  {
+    "id": "payments",
+    "name": "Payments"
+  },
+  {
+    "id": "multiple-currency-support",
+    "name": "Multiple Currency Support"
+  },
+  {
+    "id": "split-payments",
+    "name": "Split Payments"
+  },
+  {
+    "id": "subscription-billing",
+    "name": "Subscription Billing"
+  }
+]

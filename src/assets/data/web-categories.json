@@ -1,0 +1,32 @@
+[
+  {
+    "id": "custom",
+    "name": "Custom",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "chatbot",
+    "name": "Chatbots",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "shopify",
+    "name": "Shopify",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "squarespace",
+    "name": "Squarespace",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "wordpress",
+    "name": "Wordpress",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  },
+  {
+    "id": "wix",
+    "name": "Wix",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+  }
+]

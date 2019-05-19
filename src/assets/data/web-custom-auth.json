@@ -1,0 +1,26 @@
+[
+  {
+    "id": "email-login",
+    "name": "Email Login"
+  },
+  {
+    "id": "facebook-login",
+    "name": "Facebook Login"
+  },
+  {
+    "id": "google-login",
+    "name": "Google Login"
+  },
+  {
+    "id": "guest-login",
+    "name": "Guest Login"
+  },
+  {
+    "id": "twitter-login",
+    "name": "Twitter Login"
+  },
+  {
+    "id": "forgot-password",
+    "name": "Forgot Password"
+  }
+]

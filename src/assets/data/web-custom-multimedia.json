@@ -1,0 +1,26 @@
+[
+  {
+    "id": "archive",
+    "name": "Archive"
+  },
+  {
+    "id": "bookmark",
+    "name": "Bookmark"
+  },
+  {
+    "id": "gallery",
+    "name": "Gallery"
+  },
+  {
+    "id": "groups",
+    "name": "Groups"
+  },
+  {
+    "id": "voice-chat",
+    "name": "Voice Chat"
+  },  
+  {
+    "id": "video-chat",
+    "name": "Video Chat"
+  }
+]

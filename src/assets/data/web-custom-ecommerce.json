@@ -1,0 +1,26 @@
+[
+  {
+    "id": "affiliate-url",
+    "name": "Affiliate URL"
+  },
+  {
+    "id": "biding",
+    "name": "Bidding"
+  },
+  {
+    "id": "coupons",
+    "name": "Coupons"
+  },
+  {
+    "id": "discounts",
+    "name": "Discounts"
+  },
+  {
+    "id": "shopping-cart",
+    "name": "Shopping Cart"
+  },
+  {
+    "id": "wishlist",
+    "name": "Wishlist"
+  }
+]

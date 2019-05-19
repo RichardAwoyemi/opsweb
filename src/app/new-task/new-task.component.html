@@ -2,14 +2,9 @@
   <section class="section-desktop" *ngIf="!(isMobile | async)?.matches">
     <div class="container">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
           <h3>What would you like to do?</h3>
           <p>Select the type of project you would like to create.</p>
-        </div>
-        <div class="col-md-3">
-          <div class="pull-right" style="padding-top: 1em; padding-right: 1em">
-            <button type="button" class="btn btn-secondary" (click)="resume()" *ngIf="productSelected">Resume</button>
-          </div>
         </div>
       </div>
       <br>
@@ -17,15 +12,15 @@
         <div class="col-md-12">
           <div class="swiper-container" fxFlex="auto" [swiper]="config" [(index)]="index"
             (indexChange)="onIndexChange($event)" (swiperTransitionStart)="onSwiperEvent('transitionStart')"
-            (swiperTransitionEnd)="onSwiperEvent('transitionEnd')" *ngIf="programmingSlides">
+            (swiperTransitionEnd)="onSwiperEvent('transitionEnd')" *ngIf="programmingTasks">
             <div class="swiper-wrapper">
-              <ng-container *ngFor="let slide of programmingSlides; let i = index;">
-                <div class="swiper-slide product-box box-{{ i }}" (click)="selectProduct(slide.id)">
+              <ng-container *ngFor="let task of programmingTasks; let i = index;">
+                <div class="swiper-slide product-box box-{{ i }}" (click)="selectProduct(task.id)">
                   <div class="product-icon-box">
-                    <img src="assets/img/{{ slide.id }}.svg" class="product-icon">
+                    <img src="assets/img/{{ task.id }}.svg" class="product-icon">
                   </div>
-                  <h4>{{ slide.name }}</h4>
-                  <p>{{ slide.description }}</p>
+                  <h4>{{ task.name }}</h4>
+                  <p>{{ task.description }}</p>
                 </div>
               </ng-container>
             </div>
@@ -45,7 +40,7 @@
 </div>
 
 <div id="step2">
-  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches"
+  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && productSelected"
     [ngStyle]="{ 'height': innerHeight + 'px' }">
     <!-- Header -->
     <div class="row step2-header-row">
@@ -55,13 +50,18 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="pull-right step2-header-box" style="padding-right: 1em">
+        <div class="pull-right step2-header-box">
           <button type="button" class="btn btn-secondary" (click)="showResetModal()">Reset</button>
+          &nbsp;
+          <button type="button" class="btn btn-secondary cart" (click)="showBasketModal()">
+            <span><i class="ti-shopping-cart"></i></span>
+            <span style="padding-left: 0.75em" class="badge badge-pill badge-danger"
+              *ngIf="basket && basket.length > 0">{{ basket.length }}</span>
+          </button>
         </div>
       </div>
     </div>
-    <!-- Columns -->
-    <!-- Category Column -->
+    <!-- Category column -->
     <div class="row" style="margin-right: 0px;" [ngStyle]="{ 'height': innerColumnHeight + 'px' }">
       <div class="col-md-3 categories-column">
         <div class="categories-header">Categories</div>
@@ -77,165 +77,151 @@
           </div>
         </div>
       </div>
-      <!-- Features Column -->
-      <div class="col-md-3 categories-column" style="padding-left: 0px">
-        <div class="libraries-title">Features</div>
+      <!-- Features column -->
+      <div class="col-md-3 categories-column" style="padding-left: 0px;">
+        <div class="libraries-title" style="border-right: 0">Features</div>
         <div class="sidebar-scroll" [ngStyle]="{ 'height': innerColumnSidebarHeight + 'px' }">
-          <!-- Custom Libraries -->
+          <!-- If empty -->
+          <div *ngIf="!categorySelected" style="height: 100%">
+            <div class="container h-100">
+              <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-md-12 text-center">
+                  <span style="text-align: center; font-size: 10px;">
+                    There's nothing to see here.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Custom libraries -->
           <div *ngIf="categorySelected == 'custom'">
             <div style="padding: 1em">
-              <button class="btn btn-secondary btn-block" type="button" (click)="showRequestFeatureModal()">Request Feature</button>            
+              <button class="btn btn-secondary btn-block" type="button" (click)="showRequestFeatureModal()">Request
+                Feature</button>
             </div>
-            <!-- Alert -->
-            <div class="accordion accordion-light accordion-arrow-right" id="accordion-alerts">
-              <div class="card">
-                <span class="card-title" style="font-weight: strong">
-                  <a class="collapsed" data-toggle="collapse" href="#collapse-alerts">Alerts</a>
-                </span>
-                <div id="collapse-alerts" class="collapse" data-parent="#accordion-alerts">
-                  <div class="card-body" style="padding: 0" *ngFor="let library of alertLibraries;">
-                    <div class="col-md-12" style="padding: 0">
-                      <a class="card card-body no-border card-highlight">
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input">
-                          <label class="custom-control-label">{{ library.name }}</label>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Authentication -->
-            <div class="accordion accordion-light accordion-arrow-right" id="accordion-auth">
-              <div class="card">
-                <span class="card-title" style="font-weight: strong">
-                  <a class="collapsed" data-toggle="collapse" href="#collapse-auth">Authentication</a>
-                </span>
-                <div id="collapse-auth" class="collapse" data-parent="#accordion-auth">
-                  <div class="card-body" style="padding: 0" *ngFor="let library of authLibraries;">
-                    <div class="col-md-12" style="padding: 0">
-                      <a class="card card-body no-border card-highlight">
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input">
-                          <label class="custom-control-label">{{ library.name }}</label>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Ecommerce -->
-            <div class="accordion accordion-light accordion-arrow-right" id="accordion-ecommerce">
-              <div class="card">
-                <span class="card-title" style="font-weight: strong">
-                  <a class="collapsed" data-toggle="collapse" href="#collapse-ecommerce">Ecommerce</a>
-                </span>
-                <div id="collapse-ecommerce" class="collapse" data-parent="#accordion-ecommerce">
-                  <div class="card-body" style="padding: 0" *ngFor="let library of ecommerceLibraries;">
-                    <div class="col-md-12" style="padding: 0">
-                      <a class="card card-body no-border card-highlight">
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input">
-                          <label class="custom-control-label">{{ library.name }}</label>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Finance -->
-            <div class="accordion accordion-light accordion-arrow-right" id="accordion-finance">
-              <div class="card">
-                <span class="card-title" style="font-weight: strong">
-                  <a class="collapsed" data-toggle="collapse" href="#collapse-finance">Finance</a>
-                </span>
-                <div id="collapse-finance" class="collapse" data-parent="#accordion-finance">
-                  <div class="card-body" style="padding: 0" *ngFor="let library of financeLibraries;">
-                    <div class="col-md-12" style="padding: 0">
-                      <a class="card card-body no-border card-highlight">
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input">
-                          <label class="custom-control-label">{{ library.name }}</label>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Gamification -->
-            <div class="accordion accordion-light accordion-arrow-right" id="accordion-gamification">
-              <div class="card">
-                <span class="card-title" style="font-weight: strong">
-                  <a class="collapsed" data-toggle="collapse" href="#collapse-gamification">Gamification</a>
-                </span>
-                <div id="collapse-gamification" class="collapse" data-parent="#accordion-gamification">
-                  <div class="card-body" style="padding: 0" *ngFor="let library of gameLibraries;">
-                    <div class="col-md-12" style="padding: 0">
-                      <a class="card card-body no-border card-highlight">
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input">
-                          <label class="custom-control-label">{{ library.name }}</label>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Multimedia -->
-            <div class="accordion accordion-light accordion-arrow-right" id="accordion-multimedia">
+            <div *ngFor="let custom of webCustom">
+              <div class="accordion accordion-light accordion-arrow-right" [attr.id]="'accordion-' + custom.id">
                 <div class="card">
                   <span class="card-title" style="font-weight: strong">
-                    <a class="collapsed" data-toggle="collapse" href="#collapse-multimedia">Multimedia</a>
+                    <a class="collapsed" data-toggle="collapse" [href]="'#collapse-' + custom.id">{{ custom.name }}</a>
                   </span>
-                  <div id="collapse-multimedia" class="collapse" data-parent="#accordion-multimedia">
-                    <div class="card-body" style="padding: 0" *ngFor="let library of multimediaLibraries;">
+                  <div [attr.id]="'collapse-' + custom.id" class="collapse"
+                    [attr.data-parent]="'#accordion-' + custom.id">
+                    <div class="card-body" style="padding: 0" *ngFor="let custom of getFeatures(custom.id)">
                       <div class="col-md-12" style="padding: 0">
-                        <a class="card card-body no-border card-highlight">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label">{{ library.name }}</label>
-                          </div>
+                        <a class="card card-body no-border card-highlight" (click)="selectFeature(custom)">
+                          {{ custom.name }}
                         </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            <!-- Social -->
-            <div class="accordion accordion-light accordion-arrow-right" id="accordion-social">
-              <div class="card">
-                <span class="card-title" style="font-weight: strong">
-                  <a class="collapsed" data-toggle="collapse" href="#collapse-social">Social</a>
-                </span>
-                <div id="collapse-social" class="collapse" data-parent="#accordion-social">
-                  <div class="card-body" style="padding: 0" *ngFor="let library of socialLibraries;">
-                    <div class="col-md-12" style="padding: 0">
-                      <a class="card card-body no-border card-highlight">
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input">
-                          <label class="custom-control-label">{{ library.name }}</label>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
+            </div>
+          </div>
+          <!-- Chatbot libraries -->
+          <div *ngIf="categorySelected == 'chatbot'" style="height: 100%">
+            <div class="container h-100">
+              <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-md-12 text-center">
+                  <span style="text-align: center; font-size: 10px;">
+                    This feature is currently under construction.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Shopify libraries -->
+          <div *ngIf="categorySelected == 'shopify'" style="height: 100%">
+            <div class="container h-100">
+              <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-md-12 text-center">
+                  <span style="text-align: center; font-size: 10px;">
+                    This feature is currently under construction.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Squarespace libraries -->
+          <div *ngIf="categorySelected == 'squarespace'" style="height: 100%">
+            <div class="container h-100">
+              <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-md-12 text-center">
+                  <span style="text-align: center; font-size: 10px;">
+                    This feature is currently under construction.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Wordpress libraries -->
+          <div *ngIf="categorySelected == 'wordpress'" style="height: 100%">
+            <div class="container h-100">
+              <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-md-12 text-center">
+                  <span style="text-align: center; font-size: 10px;">
+                    This feature is currently under construction.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Wix libraries -->
+          <div *ngIf="categorySelected == 'wix'" style="height: 100%">
+            <div class="container h-100">
+              <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-md-12 text-center">
+                  <span style="text-align: center; font-size: 10px;">
+                    This feature is currently under construction.
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <!-- Information column -->
+      <div class="col-md-6" style="padding:0px">
+        <!-- If empty -->
+        <div *ngIf="!featureSelected" style="height: 100%">
+          <div class="container h-100">
+            <div class="row h-100 justify-content-center align-items-center">
+              <div class="col-md-12 text-center">
+                <span style="text-align: center; font-size: 10px;">
+                  There's nothing to see here.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- When a feature is selected -->
+        <div *ngIf="featureSelected">
+          <div class="details-title" style="border-left: 0">
+            <div class="row">
+              <div class="col-md-9">
+                <div style="font-size: 12px; font-weight: bold">{{ featureSelected.name }} -
+                  &pound;{{ featureSelected.price_gbp | number : '1.2-2' }}</div>
+                <div style="font-size: 10px">{{ featureSelected.description }}</div>
+              </div>
+              <div class="col-md-3" style="text-align: right; padding-top: 3px; padding-right: 28px;">
+                <button type="button" class="btn btn-success" (click)="addToBasket(featureSelected)"
+                  *ngIf="!featureSelected.in_basket">Add</button>
+                <button type="button" class="btn btn-danger" (click)="removeFromBasket(featureSelected)"
+                  *ngIf="featureSelected.in_basket">Remove</button>
+              </div>
+            </div>
+          </div>
+          <div class="browser-mockup" style="background-color: #fff">
+            <img src="assets/img/{{ featureSelected.id }}.png">
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </div>
 
-<!-- Show reset modal -->
+<!-- Reset modal -->
 <div class="modal fade" #resetModal id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModal"
   aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
@@ -256,8 +242,8 @@
 </div>
 
 <!-- Request Feature modal -->
-<div class="modal fade" #requestFeatureModal id="requestFeatureModal" tabindex="-1" role="dialog" aria-labelledby="requestFeatureModal"
-  aria-hidden="!submitted">
+<div class="modal fade" #requestFeatureModal id="requestFeatureModal" tabindex="-1" role="dialog"
+  aria-labelledby="requestFeatureModal" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -266,9 +252,63 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">Please provide the details of the feature you'd like to request.</div>
+      <div class="modal-body">
+        <small>Please note that pricing and development time may only be decided once the requirements of the project
+          have been fully understood.</small>
+        <div class="row" style="padding-top: 2em">
+          <div class="col-md-4">
+            <strong>Name your feature <span class="text-danger">*</span></strong>
+          </div>
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="customFeatureName" (change)="customFeatureName=customFeatureName.trim();">
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <strong>Describe your feature <span class="text-danger">*</span></strong>
+          </div>
+          <div class="col-md-8">
+            <div class="input-group">
+              <textarea class="form-control" [(ngModel)]="customFeatureDescription" (change)="customFeatureDescription=customFeatureDescription.trim();"></textarea>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <strong>Please list any apps with a similar feature</strong>
+          </div>
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="customFeatureSimilarApps" (change)="customFeatureSimilarApps=customFeatureSimilarApps.trim();">
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" disabled>Done</button>
+        <button type="button" class="btn btn-secondary" [disabled]="!customFeatureName || !customFeatureDescription || customFeatureName.length === 0 || customFeatureDescription.length === 0">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Show Basket modal -->
+<div class="modal fade" #basketModal id="basketModal" tabindex="-1" role="dialog" aria-labelledby="basketModal"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Basket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Basket stuff here.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary">Close</button>
       </div>
     </div>
   </div>
