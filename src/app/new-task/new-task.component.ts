@@ -74,6 +74,7 @@ export class NewTaskComponent implements OnInit {
   customFeatureSimilarApps: string;
 
   basket = [];
+  basketGbpTotal = 0;
 
   @ViewChild('resetModal') resetModal: ElementRef;
   @ViewChild('requestFeatureModal') requestFeatureModal: ElementRef;
@@ -165,6 +166,7 @@ export class NewTaskComponent implements OnInit {
     this.logger.debug(`Basket before feature added: ${JSON.stringify(this.basket)}`);
     feature.in_basket = true;
     this.basket.push(feature);
+    this.basketGbpTotal = this.calculateBasketTotal('gbp');
     this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
   }
 
@@ -179,7 +181,19 @@ export class NewTaskComponent implements OnInit {
       }
     }
     feature.in_basket = false;
+    this.basketGbpTotal = this.calculateBasketTotal('gbp');
     this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
+  }
+
+  calculateBasketTotal(currency) {
+    let total = 0;
+    for (let i = 0; i < this.basket.length; i++) {
+      if (currency = 'gbp') {
+        total = total + this.basket[i]['price_gbp'];
+      }
+    }
+    this.logger.debug(`Basket total: ${total}`);
+    return total;
   }
 
   resume() {

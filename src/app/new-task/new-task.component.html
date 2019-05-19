@@ -55,8 +55,8 @@
           &nbsp;
           <button type="button" class="btn btn-secondary cart" (click)="showBasketModal()">
             <span><i class="ti-shopping-cart"></i></span>
-            <span style="padding-left: 0.75em" class="badge badge-pill badge-danger"
-              *ngIf="basket && basket.length > 0">{{ basket.length }}</span>
+            <span *ngIf="basket && basket.length > 0">&nbsp;</span>
+            <span class="badge badge-pill badge-danger" *ngIf="basket && basket.length > 0">{{ basket.length }}</span>
           </button>
         </div>
       </div>
@@ -261,7 +261,8 @@
           </div>
           <div class="col-md-8">
             <div class="input-group">
-              <input type="text" class="form-control" [(ngModel)]="customFeatureName" (change)="customFeatureName=customFeatureName.trim();">
+              <input type="text" class="form-control" [(ngModel)]="customFeatureName"
+                (change)="customFeatureName=customFeatureName.trim();">
             </div>
           </div>
         </div>
@@ -272,7 +273,8 @@
           </div>
           <div class="col-md-8">
             <div class="input-group">
-              <textarea class="form-control" [(ngModel)]="customFeatureDescription" (change)="customFeatureDescription=customFeatureDescription.trim();"></textarea>
+              <textarea class="form-control" [(ngModel)]="customFeatureDescription"
+                (change)="customFeatureDescription=customFeatureDescription.trim();"></textarea>
             </div>
           </div>
         </div>
@@ -283,13 +285,15 @@
           </div>
           <div class="col-md-8">
             <div class="input-group">
-              <input type="text" class="form-control" [(ngModel)]="customFeatureSimilarApps" (change)="customFeatureSimilarApps=customFeatureSimilarApps.trim();">
+              <input type="text" class="form-control" [(ngModel)]="customFeatureSimilarApps"
+                (change)="customFeatureSimilarApps=customFeatureSimilarApps.trim();">
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" [disabled]="!customFeatureName || !customFeatureDescription || customFeatureName.length === 0 || customFeatureDescription.length === 0">Done</button>
+        <button type="button" class="btn btn-secondary"
+          [disabled]="!customFeatureName || !customFeatureDescription || customFeatureName.length === 0 || customFeatureDescription.length === 0">Done</button>
       </div>
     </div>
   </div>
@@ -301,15 +305,44 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Basket</h5>
+        <h5 class="modal-title" id="basketModal">Basket</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="height: 500px">Basket stuff here.</div>
+      <div class="modal-body" [ngStyle]="{ 'height': innerHeight - 200 + 'px' }" *ngIf="basket.length > 0" style="padding: 0">
+        <div style="overflow-x:hidden; height: 100%;" class="sidebar-scroll">
+          <table class="table table-cart" style="margin-bottom: 0">
+            <tbody valign="middle">
+              <tr *ngFor="let basketItem of basket">
+                <td>
+                  <a class="item-remove" href="#"><i class="ti-close"></i></a>
+                </td>
+                <td>
+                  <h5>{{ basketItem.name }}</h5>
+                  <small>{{ basketItem.description }}</small>
+                </td>
+                <td>
+                  <h5 class="price">&pound;{{ basketItem.price_gbp | number : '1.2-2' }}</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="cart-price" style="border-radius: 0; border-top: 0"> 
+            <div class="flexbox">
+              <div>
+                <p><strong>Total:</strong></p>
+              </div>
+              <div>
+                <h5 class="fw-600">&pound;{{ basketGbpTotal | number : '1.2-2' }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body" *ngIf="basket.length == 0">There's nothing to see here.</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-</div>
