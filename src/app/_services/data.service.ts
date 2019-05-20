@@ -18,6 +18,8 @@ export class DataService {
   private webCustomDataPath = './assets/data/web-custom.json';
   public webCustomAlert: any;
   private webCustomAlertDataPath = './assets/data/web-custom-alert.json';
+  public similarApps: any;
+  private similarAppsDataPath = './assets/data/similar-apps.json';
 
   constructor(
     public httpClient: HttpClient
@@ -29,6 +31,7 @@ export class DataService {
     this.webCategories = this.httpClient.get(this.webCategoriesDataPath);
     this.webCustom = this.httpClient.get(this.webCustomDataPath);
     this.webCustomAlert = this.httpClient.get(this.webCustomAlertDataPath);
+    this.similarApps = this.httpClient.get(this.similarAppsDataPath);
   }
 
   public getAllTimezones(): Observable<any> {
@@ -57,5 +60,9 @@ export class DataService {
 
   public getAllWebCustomAlert(): Observable<any> {
     return this.webCustomAlert;
+  }
+
+  public getAllSimilarApps(): Observable<any> {
+    return this.similarApps;
   }
 }

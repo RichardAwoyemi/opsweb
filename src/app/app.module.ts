@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { QuillModule } from 'ngx-quill';
+import { TagInputModule } from 'ngx-chips';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.component';
@@ -34,7 +34,6 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { UtilService } from './_services/util.service';
 import { UserService } from './_services/user.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { QRCodeModule } from 'angularx-qrcode';
 import { SettingsComponent } from './settings/settings.component';
 import { InviteComponent } from './invite/invite.component';
 import { ExcelService } from './_services/excel.service';
@@ -114,15 +113,14 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    QRCodeModule,
-    QuillModule,
     Ng5SliderModule,
     SwiperModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
     ScrollToModule.forRoot(),
     ImageCropperModule,
-    ArchwizardModule
+    ArchwizardModule,
+    TagInputModule
   ],
   providers: [
     AuthService,

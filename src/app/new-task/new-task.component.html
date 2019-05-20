@@ -15,7 +15,7 @@
             (swiperTransitionEnd)="onSwiperEvent('transitionEnd')" *ngIf="programmingTasks">
             <div class="swiper-wrapper">
               <ng-container *ngFor="let task of programmingTasks; let i = index;">
-                <div class="swiper-slide product-box box-{{ i }}" (click)="selectProduct(task.id)">
+                <div class="swiper-slide product-box box-{{ i }}" id="box-{{ i }}" (click)="selectProduct(task.id)">
                   <div class="product-icon-box">
                     <img src="assets/img/{{ task.id }}.svg" class="product-icon">
                   </div>
@@ -25,7 +25,7 @@
               </ng-container>
             </div>
             <div class="swiper-button-prev" [hidden]="index === 0"></div>
-            <div class="swiper-button-next" [hidden]="index === 4"></div>
+            <div class="swiper-button-next" [hidden]="lastIndex"></div>
           </div>
         </div>
       </div>
@@ -40,17 +40,62 @@
 </div>
 
 <div id="step2">
-  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && productSelected"
-    [ngStyle]="{ 'height': innerHeight + 'px' }">
+  <div *ngIf="!(isMobile | async)?.matches && productSelected">
     <!-- Header -->
-    <div class="row step2-header-row">
+    <div class="row step-header-row">
       <div class="col-md-6">
-        <div class="step2-header-box" style="padding-left: 1em">
+        <div class="step-header-box" style="padding-left: 5em">
           <img src="assets/img/logo.svg" style="height: 36px; width: 36px">
         </div>
       </div>
       <div class="col-md-6">
-        <div class="pull-right step2-header-box">
+        <div class="pull-right step-header-box">
+          <button type="button" class="btn btn-secondary" (click)="showResetModal()">Reset</button>
+        </div>
+      </div>
+    </div>
+    <section class="section-desktop-alternate" [ngStyle]="{ 'height': innerHeight + 'px' }">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12" style="padding-top: 3em">
+            <h3>Please tell us more about what you are building</h3>
+            <p>This will help us to understand your idea better.</p>
+            <div class="form-group">
+              <label>Enter a project name</label>
+              <input class="form-control form-control-sm" type="text">
+            </div>
+            <div class="form-group">
+              <label>Provide a description</label>
+              <textarea class="form-control form-control-sm"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Select any similar apps</label>
+              <tag-input [onlyFromAutocomplete]="true">
+                  <tag-input-dropdown
+                    [focusFirstElement]="true"
+                    [autocompleteItems]="similarApps"
+                    [dynamicUpdate]="false">
+                  </tag-input-dropdown>
+                </tag-input>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="step3">
+  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && productSelected" [ngStyle]="{ 'height': innerHeight + 'px' }">
+    <!-- Header -->
+    <div class="row step-header-row">
+      <div class="col-md-6">
+        <div class="step-header-box" style="padding-left: 1em">
+          <img src="assets/img/logo.svg" style="height: 36px; width: 36px">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="pull-right step-header-box">
           <button type="button" class="btn btn-secondary" (click)="showResetModal()">Reset</button>
           &nbsp;
           <button type="button" class="btn btn-secondary cart" (click)="showBasketModal()">
@@ -109,7 +154,8 @@
                     [attr.data-parent]="'#accordion-' + custom.id">
                     <div class="card-body" style="padding: 0" *ngFor="let custom of getFeatures(custom.id)">
                       <div class="col-md-12" style="padding: 0">
-                        <a class="card card-body no-border card-highlight" (click)="selectFeature(custom)" style="padding-top: 0.5rem; padding-bottom: 0.5rem">
+                        <a class="card card-body no-border card-highlight" (click)="selectFeature(custom)"
+                          style="padding-top: 0.5rem; padding-bottom: 0.5rem">
                           {{ custom.name }}
                         </a>
                       </div>
@@ -212,9 +258,13 @@
               </div>
             </div>
           </div>
-          <div class="browser-mockup" style="background-color: #fff">
-            <img src="assets/img/{{ featureSelected.id }}.png">
+          <div style="display: flex; align-items: center; justify-content: center;"
+            [ngStyle]="{ 'height': innerHeight - 200 + 'px' }">
+            <div class="browser-mockup" style="background-color: #fff">
+              <img src="assets/img/{{ featureSelected.id }}.png">
+            </div>
           </div>
+          <div style="bottom: 0; position: absolute">Test</div>
         </div>
       </div>
     </div>
@@ -310,7 +360,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" [ngStyle]="{ 'max-height': innerHeight - 200 + 'px' }" *ngIf="basket.length > 0" style="padding: 0">
+      <div class="modal-body" [ngStyle]="{ 'max-height': innerHeight - 200 + 'px' }" *ngIf="basket.length > 0"
+        style="padding: 0">
         <div style="overflow-x:hidden; height: 100%;" class="sidebar-scroll">
           <table class="table table-cart" style="margin-bottom: 0">
             <tbody valign="middle">
@@ -328,7 +379,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="cart-price" style="border-radius: 0; border-top: 0; border-bottom: 0; margin-bottom: 0"> 
+          <div class="cart-price" style="border-radius: 0; border-top: 0; border-bottom: 0; margin-bottom: 0">
             <div class="flexbox">
               <div>
                 <p><strong>Total:</strong></p>
@@ -346,3 +397,4 @@
       </div>
     </div>
   </div>
+</div>

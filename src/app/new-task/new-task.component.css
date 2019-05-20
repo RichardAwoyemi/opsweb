@@ -31,12 +31,12 @@
   height: 250px;
 }
 
-.step2-header-box {
+.step-header-box {
   padding-top: 1em; 
   padding-bottom: 1em;
 }
 
-.step2-header-row {
+.step-header-row {
   margin-right: 0px; 
   background-color: white; 
   border-bottom: 1px solid #f0f0f0;
@@ -223,7 +223,7 @@
   border-top: 2em solid rgba(230, 230, 230, 0.7);
   box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
   position: relative;
-  border-radius: 3px 3px 0 0
+  border-radius: 3px 3px 0 0;
 }
 
 .browser-mockup:before {
@@ -268,16 +268,11 @@
   display: block;
 }
 
-body {
-  background: linear-gradient(to right, #8e44ad, #c0392b);
-  display: flex;
-}
-
 .browser-mockup {
-  margin: 2em;
+  margin: 4em;
   flex: 1;
 }
 
-img {
+.browser-mockup > img {
   width: 100%;
 }

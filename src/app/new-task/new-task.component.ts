@@ -28,7 +28,7 @@ export class NewTaskComponent implements OnInit {
   public config: SwiperConfigInterface = {
     a11y: true,
     direction: 'horizontal',
-    slidesPerView: 4,
+    slidesPerView: 'auto',
     keyboard: true,
     mousewheel: true,
     navigation: true,
@@ -36,6 +36,7 @@ export class NewTaskComponent implements OnInit {
   };
 
   index = 0;
+  lastIndex = false;
   productSelected: string;
   categorySelected: string;
   featureSelected: string;
@@ -63,6 +64,9 @@ export class NewTaskComponent implements OnInit {
   webCustomSocial: any;
   webCustomSocialSubscription: Subscription;
 
+  similarApps: any;
+  similarAppsSubscription: Subscription;
+
   isMobile: Observable<BreakpointState>;
   task: any;
   innerHeight: number;
@@ -72,6 +76,10 @@ export class NewTaskComponent implements OnInit {
   customFeatureName: string;
   customFeatureDescription: string;
   customFeatureSimilarApps: string;
+
+  taskName: string;
+  taskDescripton: string;
+  taskSimilarApps: any;
 
   basket = [];
   basketGbpTotal = 0;
@@ -124,6 +132,14 @@ export class NewTaskComponent implements OnInit {
       }
     });
 
+    this.similarAppsSubscription = this.dataService.getAllSimilarApps().subscribe(response => {
+      if (response) {
+        this.logger.debug('Similar apps:');
+        this.logger.debug(response);
+        this.similarApps = response;
+      }
+    });
+
     this.ngxLoader.stop();
 
     // delete after testing
@@ -139,6 +155,7 @@ export class NewTaskComponent implements OnInit {
     this.innerHeight = window.innerWidth;
     this.innerColumnHeight = window.innerHeight - 67;
     this.innerColumnSidebarHeight = window.innerHeight - 125;
+    this.lastIndex = this.isScrolledIntoView('box-7');
   }
 
   selectProduct(productId) {
@@ -240,5 +257,27 @@ export class NewTaskComponent implements OnInit {
 
   public onSwiperEvent(event: string): void {
     this.logger.debug('Swiper event: ', event);
+    this.lastIndex = this.isScrolledIntoView('box-7');
+    this.logger.debug(`Last index visible: ${this.lastIndex}`);
+  }
+
+  isScrolledIntoView(e) {
+    const lastSlide = document.getElementById(e);
+    if (e) {
+      const bounding = lastSlide.getBoundingClientRect();
+      this.logger.debug(`Last slide position: ${JSON.stringify(bounding)}`);
+      if (
+        bounding.top >= 0 &&
+        bounding.left >= 0 &&
+        bounding.right <= (window.innerWidth - 100 || document.documentElement.clientWidth - 100) &&
+        bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+      ) {
+        this.logger.debug('Last slide is in the viewport');
+        return true;
+      } else {
+        this.logger.debug('Last slide is not in the viewport');
+        return false;
+      }
+    }
   }
 }
