@@ -182,6 +182,20 @@ export class NewTaskComponent implements OnInit {
     this.featureSelected = feature;
   }
 
+  setFeatureBgColor(feature) {
+    if (this.featureSelected) {
+      if ((feature['in_basket'] || !feature['in_basket']) && (feature['id'] === this.featureSelected['id'])) {
+        return '#E8F0FE';
+      }
+    }
+    if (feature['in_basket']) {
+      return '#E5FFE5';
+    }
+    if (!feature['in_basket']) {
+      return '#FFFFFF';
+    }
+  }
+
   addToBasket(feature) {
     this.logger.debug(`Basket before feature added: ${JSON.stringify(this.basket)}`);
     feature.in_basket = true;

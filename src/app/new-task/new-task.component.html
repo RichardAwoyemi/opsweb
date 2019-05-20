@@ -163,7 +163,7 @@
                     <div class="card-body" style="padding: 0" *ngFor="let custom of getFeatures(custom.id)">
                       <div class="col-md-12" style="padding: 0">
                         <div class="card card-body no-border card-highlight" (click)="selectFeature(custom)"
-                          style="padding-top: 0.5rem; padding-bottom: 0.5rem">
+                          style="padding-top: 0.5rem; padding-bottom: 0.5rem" [style.background-color]="setFeatureBgColor(custom)">
                           <div class="row">
                             <div class="col-md-8" style="font-size: 11px; padding-top: 5px">
                               {{ custom.name }}
