@@ -82,7 +82,7 @@
               <div class="form-group" style="padding-top: 1em">
                 <button type="button" class="btn btn-secondary">Previous</button>
                 &nbsp;
-                <button type="button" (click)="setTaskNameAndDescription()" class="btn btn-secondary"
+                <button type="button" (click)="setTaskNameAndDescription()" class="btn btn-primary"
                   [disabled]="!taskName || !taskDescription || taskName.length === 0 || taskDescription.length === 0">Continue</button>
               </div>
             </div>
@@ -162,10 +162,20 @@
                     [attr.data-parent]="'#accordion-' + custom.id">
                     <div class="card-body" style="padding: 0" *ngFor="let custom of getFeatures(custom.id)">
                       <div class="col-md-12" style="padding: 0">
-                        <a class="card card-body no-border card-highlight" (click)="selectFeature(custom)"
+                        <div class="card card-body no-border card-highlight" (click)="selectFeature(custom)"
                           style="padding-top: 0.5rem; padding-bottom: 0.5rem">
-                          {{ custom.name }}
-                        </a>
+                          <div class="row">
+                            <div class="col-md-8" style="font-size: 11px; padding-top: 5px">
+                              {{ custom.name }}
+                            </div>
+                            <div class="col-md-4" style="text-align: right;">
+                              <button class="btn btn-xs btn-success" (click)="addToBasket(custom)"
+                                *ngIf="!custom.in_basket" style="width: 78px">Add</button>
+                              <button class="btn btn-xs btn-danger" (click)="removeFromBasket(custom)"
+                                *ngIf="custom.in_basket" style="width: 78px">Remove</button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -253,16 +263,10 @@
         <div *ngIf="featureSelected">
           <div class="details-title" style="border-left: 0">
             <div class="row">
-              <div class="col-md-9">
+              <div class="col-md-12">
                 <div style="font-size: 12px; font-weight: bold">{{ featureSelected.name }} -
                   &pound;{{ featureSelected.price_gbp | number : '1.2-2' }}</div>
                 <div style="font-size: 10px">{{ featureSelected.description }}</div>
-              </div>
-              <div class="col-md-3" style="text-align: right; padding-top: 3px; padding-right: 28px;">
-                <button type="button" class="btn btn-success" (click)="addToBasket(featureSelected)"
-                  *ngIf="!featureSelected.in_basket">Add</button>
-                <button type="button" class="btn btn-danger" (click)="removeFromBasket(featureSelected)"
-                  *ngIf="featureSelected.in_basket">Remove</button>
               </div>
             </div>
           </div>
@@ -274,13 +278,10 @@
           </div>
         </div>
         <div class="builder-step-navigator">
-          <div class="row">
-            <div class="col-6" style="padding-right: 0">
-              <button type="button" class="btn btn-block btn-secondary">Previous</button>
-            </div>
-            <div class="col-6">
-              <button type="button" class="btn btn-block btn-secondary">Continue</button>
-            </div>
+          <div style="text-align: center">
+            <button type="button" class="btn btn-secondary">Previous</button>
+            &nbsp;
+            <button type="button" class="btn btn-primary" [disabled]="true">Continue</button>
           </div>
         </div>
       </div>
@@ -351,10 +352,7 @@
             <strong>Please list any apps with a similar feature</strong>
           </div>
           <div class="col-md-8">
-            <div class="input-group">
-              <input type="text" class="form-control" [(ngModel)]="customFeatureSimilarApps"
-                (change)="customFeatureSimilarApps=customFeatureSimilarApps.trim();">
-            </div>
+            <tag-input [onlyFromAutocomplete]="false" [maxItems]="3" [(ngModel)]="customFeatureSimilarApps"></tag-input>
           </div>
         </div>
       </div>
@@ -377,7 +375,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" [ngStyle]="{ 'max-height': innerHeight - 200 + 'px' }" *ngIf="basket.length > 0"
+      <div class="modal-body" [ngStyle]="{ 'max-height': innerHeight - 190 + 'px' }" *ngIf="basket.length > 0"
         style="padding: 0">
         <div style="overflow-x:hidden; height: 100%;" class="sidebar-scroll">
           <table class="table table-cart" style="margin-bottom: 0">

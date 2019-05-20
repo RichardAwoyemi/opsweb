@@ -143,14 +143,14 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
 
     // delete after testing
-    // const config: ScrollToConfigOptions = {
-    //   target: 'step3'
-    // };
-    // this.productSelected = 'test';
-    // this.taskName = 'test';
-    // this.taskDescription = 'test';
-    // this.scrollToService.scrollTo(config);
-    // document.body.style.overflow = 'hidden';
+    const config: ScrollToConfigOptions = {
+      target: 'step3'
+    };
+    this.productSelected = 'test';
+    this.taskName = 'test';
+    this.taskDescription = 'test';
+    this.scrollToService.scrollTo(config);
+    document.body.style.overflow = 'hidden';
   }
 
   @HostListener('window:resize', ['$event'])
@@ -191,11 +191,12 @@ export class NewTaskComponent implements OnInit {
   }
 
   removeFromBasket(feature) {
+    this.selectFeature(feature);
     this.logger.debug(`Basket before feature removed: ${JSON.stringify(this.basket)}`);
     this.logger.debug('Looping through basket items until item found');
     for (let i = 0; i < this.basket.length; i++) {
       this.logger.debug(this.basket[i]);
-      if (this.basket[i]['id'] = feature.id) {
+      if (this.basket[i]['id'] === feature.id) {
         this.logger.debug(`Found item to delete: ${JSON.stringify(this.basket[i])}`);
         this.basket.splice(i, 1);
       }
