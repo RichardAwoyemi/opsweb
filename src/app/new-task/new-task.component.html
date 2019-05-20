@@ -44,7 +44,7 @@
     <!-- Header -->
     <div class="row step-header-row">
       <div class="col-md-6">
-        <div class="step-header-box" style="padding-left: 5em">
+        <div class="step-header-box" style="padding-left: 1em">
           <img src="assets/img/logo.svg" style="height: 36px; width: 36px">
         </div>
       </div>
@@ -54,29 +54,37 @@
         </div>
       </div>
     </div>
-    <section class="section-desktop-alternate" [ngStyle]="{ 'height': innerHeight + 'px' }">
+    <section class="section-desktop-alternate">
       <div class="container">
-        <div class="row">
-          <div class="col-md-12" style="padding-top: 3em">
-            <h3>Please tell us more about what you are building</h3>
-            <p>This will help us to understand your idea better.</p>
-            <div class="form-group">
-              <label>Enter a project name</label>
-              <input class="form-control form-control-sm" type="text">
-            </div>
-            <div class="form-group">
-              <label>Provide a description</label>
-              <textarea class="form-control form-control-sm"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Select any similar apps</label>
-              <tag-input [onlyFromAutocomplete]="true">
-                  <tag-input-dropdown
-                    [focusFirstElement]="true"
-                    [autocompleteItems]="similarApps"
+        <div class="row" [ngStyle]="{ 'height': innerColumnHeight + 'px' }">
+          <div class="col-md-12" style="padding-top: 2em">
+            <h3>What are you building?</h3>
+            <p>Help us understand your project better.</p>
+            <div class="col-md-6" style="padding-left: 0">
+              <div class="form-group">
+                <label>Enter a project name <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="text" [(ngModel)]="taskName"
+                  (change)="taskName=taskName.trim();">
+              </div>
+              <div class="form-group">
+                <label>Provide a description <span class="text-danger">*</span></label>
+                <textarea class="form-control form-control-sm" [(ngModel)]="taskDescription"
+                  (change)="taskDescription=taskDescription.trim();"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Select any similar apps</label>
+                <tag-input [onlyFromAutocomplete]="true" [maxItems]="3" placeholder="" [(ngModel)]="taskSimilarApps">
+                  <tag-input-dropdown [focusFirstElement]="true" [autocompleteItems]="similarApps"
                     [dynamicUpdate]="false">
                   </tag-input-dropdown>
                 </tag-input>
+              </div>
+              <div class="form-group" style="padding-top: 1em">
+                <button type="button" class="btn btn-secondary">Previous</button>
+                &nbsp;
+                <button type="button" (click)="setTaskNameAndDescription()" class="btn btn-secondary"
+                  [disabled]="!taskName || !taskDescription || taskName.length === 0 || taskDescription.length === 0">Continue</button>
+              </div>
             </div>
           </div>
         </div>
@@ -86,7 +94,7 @@
 </div>
 
 <div id="step3">
-  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && productSelected" [ngStyle]="{ 'height': innerHeight + 'px' }">
+  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && taskName && taskDescription">
     <!-- Header -->
     <div class="row step-header-row">
       <div class="col-md-6">
@@ -96,13 +104,13 @@
       </div>
       <div class="col-md-6">
         <div class="pull-right step-header-box">
-          <button type="button" class="btn btn-secondary" (click)="showResetModal()">Reset</button>
-          &nbsp;
           <button type="button" class="btn btn-secondary cart" (click)="showBasketModal()">
             <span><i class="ti-shopping-cart"></i></span>
             <span *ngIf="basket && basket.length > 0">&nbsp;</span>
             <span class="badge badge-pill badge-danger" *ngIf="basket && basket.length > 0">{{ basket.length }}</span>
           </button>
+          &nbsp;
+          <button type="button" class="btn btn-secondary" (click)="showResetModal()">Reset</button>
         </div>
       </div>
     </div>
@@ -259,12 +267,21 @@
             </div>
           </div>
           <div style="display: flex; align-items: center; justify-content: center;"
-            [ngStyle]="{ 'height': innerHeight - 200 + 'px' }">
+            [ngStyle]="{ 'height': innerHeight - 190 + 'px' }">
             <div class="browser-mockup" style="background-color: #fff">
               <img src="assets/img/{{ featureSelected.id }}.png">
             </div>
           </div>
-          <div style="bottom: 0; position: absolute">Test</div>
+        </div>
+        <div class="builder-step-navigator">
+          <div class="row">
+            <div class="col-6" style="padding-right: 0">
+              <button type="button" class="btn btn-block btn-secondary">Previous</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="btn btn-block btn-secondary">Continue</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -349,7 +366,7 @@
   </div>
 </div>
 
-<!-- Show Basket modal -->
+<!-- Basket modal -->
 <div class="modal fade" #basketModal id="basketModal" tabindex="-1" role="dialog" aria-labelledby="basketModal"
   aria-hidden="!submitted">
   <div class="modal-dialog" role="document">

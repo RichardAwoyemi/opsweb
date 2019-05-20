@@ -78,7 +78,7 @@ export class NewTaskComponent implements OnInit {
   customFeatureSimilarApps: string;
 
   taskName: string;
-  taskDescripton: string;
+  taskDescription: string;
   taskSimilarApps: any;
 
   basket = [];
@@ -144,8 +144,11 @@ export class NewTaskComponent implements OnInit {
 
     // delete after testing
     // const config: ScrollToConfigOptions = {
-    //   target: 'step2'
+    //   target: 'step3'
     // };
+    // this.productSelected = 'test';
+    // this.taskName = 'test';
+    // this.taskDescription = 'test';
     // this.scrollToService.scrollTo(config);
     // document.body.style.overflow = 'hidden';
   }
@@ -234,6 +237,9 @@ export class NewTaskComponent implements OnInit {
     this.productSelected = null;
     this.categorySelected = null;
     this.featureSelected = null;
+    this.taskName = null;
+    this.taskDescription = null;
+    this.taskSimilarApps = null;
     document.body.style.overflow = '';
     window.scroll(0, 0);
   }
@@ -248,6 +254,17 @@ export class NewTaskComponent implements OnInit {
 
   showBasketModal() {
     $(this.basketModal.nativeElement).modal('show');
+  }
+
+  setTaskNameAndDescription() {
+    this.ngxLoader.start();
+    document.body.style.overflow = '';
+    const config: ScrollToConfigOptions = {
+      target: 'step3'
+    };
+    this.scrollToService.scrollTo(config);
+    document.body.style.overflow = 'hidden';
+    this.ngxLoader.stop();
   }
 
   public onIndexChange(index: number): void {
