@@ -284,3 +284,7 @@
   background-color: #fff; 
   width: 100%;
 }
+
+#basketModal > .modal-dialog { 
+  max-width: 70% !important;
+}

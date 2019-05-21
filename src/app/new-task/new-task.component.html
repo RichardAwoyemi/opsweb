@@ -40,7 +40,7 @@
 </div>
 
 <div id="step2">
-  <div *ngIf="!(isMobile | async)?.matches && productSelected">
+  <div *ngIf="!(isMobile | async)?.matches && productSelected && step2Active">
     <!-- Header -->
     <div class="row step-header-row">
       <div class="col-md-6">
@@ -80,7 +80,7 @@
                 </tag-input>
               </div>
               <div class="form-group" style="padding-top: 1em">
-                <button type="button" class="btn btn-secondary">Previous</button>
+                <button type="button" class="btn btn-secondary" (click)="prevStep1()">Previous</button>
                 &nbsp;
                 <button type="button" (click)="setTaskNameAndDescription()" class="btn btn-primary"
                   [disabled]="!taskName || !taskDescription || taskName.length === 0 || taskDescription.length === 0">Continue</button>
@@ -94,7 +94,7 @@
 </div>
 
 <div id="step3">
-  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && taskName && taskDescription">
+  <section class="section-desktop-alternate" *ngIf="!(isMobile | async)?.matches && taskName && taskDescription && step3Active">
     <!-- Header -->
     <div class="row step-header-row">
       <div class="col-md-6">
@@ -278,8 +278,8 @@
           </div>
         </div>
         <div class="builder-step-navigator">
-          <div style="text-align: center">
-            <button type="button" class="btn btn-secondary">Previous</button>
+          <div style="text-align: right">
+            <button type="button" class="btn btn-secondary" (click)="prevStep2()">Previous</button>
             &nbsp;
             <button type="button" class="btn btn-primary" [disabled]="true">Continue</button>
           </div>
@@ -381,7 +381,7 @@
           <table class="table table-cart" style="margin-bottom: 0">
             <tbody valign="middle">
               <tr *ngFor="let basketItem of basket">
-                <td>
+                <td width="65px">
                   <a class="item-remove" href="#"><i class="ti-close"></i></a>
                 </td>
                 <td>

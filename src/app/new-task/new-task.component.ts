@@ -84,6 +84,10 @@ export class NewTaskComponent implements OnInit {
   basket = [];
   basketGbpTotal = 0;
 
+  step2Active: boolean;
+  step3Active: boolean;
+  step4Active: boolean;
+
   @ViewChild('resetModal') resetModal: ElementRef;
   @ViewChild('requestFeatureModal') requestFeatureModal: ElementRef;
   @ViewChild('basketModal') basketModal: ElementRef;
@@ -143,14 +147,14 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
 
     // delete after testing
-    const config: ScrollToConfigOptions = {
-      target: 'step3'
-    };
-    this.productSelected = 'test';
-    this.taskName = 'test';
-    this.taskDescription = 'test';
-    this.scrollToService.scrollTo(config);
-    document.body.style.overflow = 'hidden';
+    // const config: ScrollToConfigOptions = {
+    //   target: 'step3'
+    // };
+    // this.productSelected = 'test';
+    // this.taskName = 'test';
+    // this.taskDescription = 'test';
+    // this.scrollToService.scrollTo(config);
+    // document.body.style.overflow = 'hidden';
   }
 
   @HostListener('window:resize', ['$event'])
@@ -163,6 +167,9 @@ export class NewTaskComponent implements OnInit {
 
   selectProduct(productId) {
     this.logger.debug(`Product selected: ${productId}`);
+    this.step2Active = true;
+    this.step3Active = true;
+    this.step4Active = true;
     this.productSelected = productId;
     const config: ScrollToConfigOptions = {
       target: 'step2'
@@ -231,16 +238,6 @@ export class NewTaskComponent implements OnInit {
     return total;
   }
 
-  resume() {
-    this.ngxLoader.start();
-    const config: ScrollToConfigOptions = {
-      target: 'step2'
-    };
-    this.scrollToService.scrollTo(config);
-    document.body.style.overflow = 'hidden';
-    this.ngxLoader.stop();
-  }
-
   getFeatures(id) {
     if (id === 'web-custom-alert') {
       return this.webCustomAlert;
@@ -278,6 +275,32 @@ export class NewTaskComponent implements OnInit {
       target: 'step3'
     };
     this.scrollToService.scrollTo(config);
+    document.body.style.overflow = 'hidden';
+    document.getElementById('intercom-css-container').style.display = 'none';
+    document.getElementById('intercom-container').style.display = 'none';
+    this.ngxLoader.stop();
+  }
+
+  prevStep1() {
+    this.ngxLoader.start();
+    document.body.style.overflow = '';
+    document.body.style['overflow-x'] = 'hidden';
+    this.step2Active = false;
+    this.step3Active = false;
+    this.step4Active = false;
+    window.scroll(0, 0);
+    this.ngxLoader.stop();
+  }
+
+  prevStep2() {
+    this.ngxLoader.start();
+    document.body.style.overflow = '';
+    const config: ScrollToConfigOptions = {
+      target: 'step2'
+    };
+    this.scrollToService.scrollTo(config);
+    document.getElementById('intercom-css-container').style.display = '';
+    document.getElementById('intercom-container').style.display = '';
     document.body.style.overflow = 'hidden';
     this.ngxLoader.stop();
   }
