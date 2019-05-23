@@ -48,7 +48,7 @@ export class ReferralService {
     }).then(() => {
         this.logger.debug('Transaction successfully committed.');
     }).catch((error) => {
-        this.logger.debug(`Transaction failed: + ${error}`);
+        this.logger.debug(`Transaction failed: ${error}`);
     });
   }
 
