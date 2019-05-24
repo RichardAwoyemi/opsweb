@@ -171,9 +171,9 @@
                             </div>
                             <div class="col-md-4" style="text-align: right;">
                               <button class="btn btn-xs btn-success" (click)="addToBasket(custom)"
-                                *ngIf="!custom.in_basket" style="width: 78px">Add</button>
+                                *ngIf="!checkBasket(custom)" style="width: 78px">Add</button>
                               <button class="btn btn-xs btn-danger" (click)="removeFromBasket(custom)"
-                                *ngIf="custom.in_basket" style="width: 78px">Remove</button>
+                                *ngIf="checkBasket(custom)" style="width: 78px">Remove</button>
                             </div>
                           </div>
                         </div>
@@ -412,7 +412,10 @@
             <div class="row">
               <div class="col-md-8">
                 <div [ngStyle]="{ 'height': innerHeight - 200 + 'px' }" class="sidebar-scroll">
-                  <table class="table table-cart" style="margin-bottom: 0">
+                  <div *ngIf="basket.length === 0">
+                    There's nothing to see here.
+                  </div>
+                  <table class="table table-cart" style="margin-bottom: 0" *ngIf="basket.length > 0">
                     <tbody valign="middle">
                       <tr *ngFor="let basketItem of basket; let i = index;">
                         <td width="65px">
@@ -448,11 +451,11 @@
                   <div class="flexbox">
                     <div>
                       <p><strong>Total:</strong></p>
-                      <p><strong>Opsonion Care:</strong></p>
+                      <p *ngIf="carePlanSelected === 'yes' && basket.length > 0"><strong>Opsonion Care:</strong></p>
                     </div>
                     <div>
                       <p class="fw-600">&pound;{{ basketGbpTotal | number : '1.2-2' }}</p>
-                      <p class="fw-600">&pound;{{ basketGbpTotal * carePlanMultiplier | number : '1.2-2' }}</p>
+                      <p *ngIf="carePlanSelected === 'yes' && basket.length > 0" class="fw-600">&pound;{{ basketGbpTotal * carePlanMultiplier | number : '1.2-2' }}</p>
                     </div>
                   </div>
                 </div>
@@ -502,8 +505,7 @@
           </div>
           <div class="modal-body">
             <small>Please note that pricing and development time may only be decided once the requirements of the
-              project
-              have been fully understood.</small>
+              project have been fully understood.</small>
             <div class="row" style="padding-top: 2em">
               <div class="col-md-4">
                 <strong>Name your feature <span class="text-danger">*</span></strong>
@@ -629,7 +631,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body" style="padding: 0">
+          <div class="modal-body" style="padding: 0" *ngIf="basket.length > 0">
             <div class="alert alert-success" role="alert" *ngIf="basketGbpTotalAdjustments < 0"
               style="margin-bottom: 0">
               Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>{{ differenceInDays }} days
@@ -652,6 +654,9 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="modal-body" *ngIf="basket.length === 0">
+            There's nothing to see here.
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

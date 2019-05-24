@@ -35,8 +35,6 @@ export class NewTaskComponent implements OnInit {
     autoplay: false
   };
 
-  handler: StripeCheckoutHandler;
-  stripeConfirmation: any;
   user: any;
 
   index = 0;
@@ -191,33 +189,19 @@ export class NewTaskComponent implements OnInit {
     this.productSelected = 'test';
     this.taskName = 'test';
     this.taskDescription = 'test';
-    this.basket = [{
-      'id': 'web-desktop-notifications', 'name': 'Desktop Notifications',
-      'description': 'Send desktop notifications and manage them.', 'price_gbp': 225, 'time_weeks': 0.25,
-      'in_basket': true
-    }, {
-      'id': 'web-email-notifications', 'name': 'Email Notifications', 'description':
-        'Send email notifications and manage them.', 'price_gbp': 225, 'time_weeks': 0.25, 'in_basket': true
-    }, {
-      'id':
-        'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
-    },
-    {
-      'id':
-        'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
-    },
-    {
-      'id':
-        'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
-    },
-    {
-      'id':
-        'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
-    }];
+    this.basket = [
+      {
+        'id': 'web-desktop-notifications', 'name': 'Desktop Notifications',
+        'description': 'Send desktop notifications and manage them.', 'price_gbp': 225, 'time_weeks': 0.25
+      }, {
+        'id': 'web-email-notifications', 'name': 'Email Notifications', 'description':
+          'Send email notifications and manage them.', 'price_gbp': 225, 'time_weeks': 0.25
+      }, {
+        'id':
+          'web-notification-page', 'name': 'Notification Page', 'description':
+          'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40
+      }
+    ];
     this.step2Active = true;
     this.step3Active = true;
     this.step4Active = true;
@@ -307,9 +291,13 @@ export class NewTaskComponent implements OnInit {
         this.basket.splice(i, 1);
       }
     }
-    feature.in_basket = false;
     this.basketGbpTotal = this.calculateBasketTotal('gbp');
     this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
+  }
+
+  checkBasket(feature) {
+    const found = this.basket.some(e => e['id'] === feature.id);
+    return found;
   }
 
   calculateBasketTotal(currency) {
@@ -478,16 +466,20 @@ export class NewTaskComponent implements OnInit {
   }
 
   prevStep4() {
-    this.ngxLoader.start();
-    document.body.style.overflow = '';
-    const config: ScrollToConfigOptions = {
-      target: 'step4'
-    };
-    this.scrollToService.scrollTo(config);
-    document.getElementById('intercom-css-container').style.display = '';
-    document.getElementById('intercom-container').style.display = '';
-    document.body.style.overflow = 'hidden';
-    this.ngxLoader.stop();
+    if (this.basket.length > 0) {
+      this.ngxLoader.start();
+      document.body.style.overflow = '';
+      const config: ScrollToConfigOptions = {
+        target: 'step4'
+      };
+      this.scrollToService.scrollTo(config);
+      document.getElementById('intercom-css-container').style.display = '';
+      document.getElementById('intercom-container').style.display = '';
+      document.body.style.overflow = 'hidden';
+      this.ngxLoader.stop();
+    } else {
+      this.prevStep3();
+    }
   }
 
   setDeliverySpeed(changeContext: ChangeContext): void {
