@@ -339,11 +339,11 @@
                     <small>Add Opsonion Care for &pound;{{ basketGbpTotal * carePlanMultiplier | number : '1.2-2' }} a month?</small>
                     <div class="row gap-y" style="padding-top: 1em">
                       <div class="col-md-4">
-                        <button type="button" class="btn btn-block" (click)="setCarePlan(true)"
+                        <button type="button" class="btn btn-block" (click)="setCarePlan('yes')"
                           [ngClass]="setCarePlanBtnColour('yes')">Yes</button>
                       </div>
                       <div class="col-md-4">
-                        <button type="button" class="btn btn-block" (click)="setCarePlan(false)"
+                        <button type="button" class="btn btn-block" (click)="setCarePlan('no')"
                           [ngClass]="setCarePlanBtnColour('no')">No</button>
                       </div>
                       <div class="col-md-4">
@@ -561,12 +561,12 @@
             style="padding: 0">
             <div class="alert alert-success" role="alert" *ngIf="basketGbpTotalAdjustments < 0"
               style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>3 days
+              Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>{{ differenceInDays }} days
                 earlier</strong> than expected.
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="basketGbpTotalAdjustments > 0"
               style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>3 days
+              Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>{{ differenceInDays }} days
                 later</strong> than expected.
             </div>
             <div [ngStyle]="{ 'height': innerHeight - 360 + 'px' }" class="sidebar-scroll">
@@ -574,7 +574,7 @@
                 <tbody valign="middle">
                   <tr *ngFor="let basketItem of basket">
                     <td width="65px">
-                      <a class="item-remove" href="#"><i class="ti-close"></i></a>
+                      <a class="item-remove" (click)="deleteItem(i, basketItem)" href="#"><i class="ti-close"></i></a>
                     </td>
                     <td>
                       <h5>{{ basketItem.name }}</h5>
@@ -632,12 +632,12 @@
           <div class="modal-body" style="padding: 0">
             <div class="alert alert-success" role="alert" *ngIf="basketGbpTotalAdjustments < 0"
               style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>3 days
+              Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>{{ differenceInDays }} days
                 earlier</strong> than expected.
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="basketGbpTotalAdjustments > 0"
               style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>3 days
+              Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>{{ differenceInDays }} days
                 later</strong> than expected.
             </div>
             <table class="table table-cart" style="margin-bottom: 0">

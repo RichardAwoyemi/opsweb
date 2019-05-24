@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
@@ -6,10 +6,8 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { DataService } from '../_services/data.service';
-import { ModalService } from '../_services/modal.service';
 import { Options } from 'ng5-slider/options';
 import { ChangeContext } from 'ng5-slider';
-import { environment } from 'src/environments/environment';
 
 declare var $;
 
@@ -24,8 +22,7 @@ export class NewTaskComponent implements OnInit {
     private scrollToService: ScrollToService,
     private ngxLoader: NgxUiLoaderService,
     private dataService: DataService,
-    private logger: NGXLogger,
-    private functions: AngularFireFunctions
+    private logger: NGXLogger
   ) { }
 
   public config: SwiperConfigInterface = {
@@ -40,6 +37,7 @@ export class NewTaskComponent implements OnInit {
 
   handler: StripeCheckoutHandler;
   stripeConfirmation: any;
+  user: any;
 
   index = 0;
   lastIndex = false;
@@ -91,10 +89,17 @@ export class NewTaskComponent implements OnInit {
   basketGbpTotal = 0;
   basketGbpTotalAdjustments = 0;
   completionDate: string;
-  carePlanSelected: boolean;
+  differenceInDays: number;
+  carePlanSelected: string;
   carePlanMultiplier = 0.025;
   costMultiplier = 1;
   speedMultiplier = 1;
+  relaxedCost = 0.75;
+  relaxedSpeed = 5;
+  standardCost = 1;
+  standardSpeed = 1;
+  primeCost = 1.5;
+  primeSpeed = 0.5;
 
   step2Active: boolean;
   step3Active: boolean;
@@ -174,8 +179,7 @@ export class NewTaskComponent implements OnInit {
     });
 
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.logger.debug(`Email address is: ${this.user.email}`)
-    this.stripeHandler();
+    this.logger.debug(`Email address is: ${this.user.email}`);
 
     this.ngxLoader.stop();
 
@@ -218,21 +222,15 @@ export class NewTaskComponent implements OnInit {
     this.step3Active = true;
     this.step4Active = true;
     this.step5Active = true;
-    this.costMultiplier = 2;
+    this.costMultiplier = 1.5;
+    this.speedMultiplier = 0.5;
     this.value = 2;
     this.basketGbpTotal = this.calculateBasketTotal('gbp');
     this.completionDate = this.calculateCompletionDate();
+    this.differenceInDays = this.calculateDateDifference();
     this.scrollToService.scrollTo(config);
-    this.carePlanSelected = true;
+    this.carePlanSelected = 'yes';
     document.body.style.overflow = 'hidden';
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(_event) {
-    this.innerHeight = window.innerWidth;
-    this.innerColumnHeight = window.innerHeight - 67;
-    this.innerColumnSidebarHeight = window.innerHeight - 125;
-    this.lastIndex = this.isScrolledIntoView('box-7');
   }
 
   selectProduct(productId) {
@@ -266,10 +264,10 @@ export class NewTaskComponent implements OnInit {
   }
 
   setCarePlanBtnColour(value) {
-    if (value === 'yes' && this.carePlanSelected === true) {
+    if (value === 'yes' && this.carePlanSelected === 'yes') {
       return 'btn-success';
     }
-    if (value === 'no' && this.carePlanSelected === false) {
+    if (value === 'no' && this.carePlanSelected === 'no') {
       return 'btn-success';
     }
     return 'btn-secondary';
@@ -334,12 +332,30 @@ export class NewTaskComponent implements OnInit {
       totalWeeks = totalWeeks + this.basket[i]['time_weeks'];
     }
     this.logger.debug(`Weeks total: ${totalWeeks}`);
-    const totalDays = totalWeeks * 7 * this.speedMultiplier;
+    const totalDays = Math.round(totalWeeks * 7 * this.speedMultiplier);
     const completionDate = new Date();
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
       'September', 'October', 'November', 'December'];
     completionDate.setDate(completionDate.getDate() + totalDays);
-    return `${completionDate.getDay()} ${monthNames[completionDate.getMonth() + 1]} ${completionDate.getFullYear()}`;
+    return `${completionDate.getDate()} ${monthNames[completionDate.getMonth() + 1]} ${completionDate.getFullYear()}`;
+  }
+
+  calculateDateDifference() {
+    let totalWeeks = 0;
+    for (let i = 0; i < this.basket.length; i++) {
+      totalWeeks = totalWeeks + this.basket[i]['time_weeks'];
+    }
+    this.logger.debug(`Weeks total: ${totalWeeks}`);
+    const expectedCompletionDate = new Date();
+    const adjustedCompletionDate = new Date();
+    const expectedTotalDays = Math.round(totalWeeks * 7);
+    const adjustedtotalDays = Math.round(totalWeeks * 7 * this.speedMultiplier);
+    expectedCompletionDate.setDate(expectedCompletionDate.getDate() + expectedTotalDays);
+    adjustedCompletionDate.setDate(adjustedCompletionDate.getDate() + adjustedtotalDays);
+    const diffTime = Math.abs(adjustedCompletionDate.getTime() - expectedCompletionDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    this.logger.debug(`Difference in days: ${diffDays}`);
+    return diffDays;
   }
 
   getFeatures(id) {
@@ -418,32 +434,6 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  stripeHandler() {
-    this.handler = StripeCheckout.configure({
-      key: environment.stripeKey,
-      image: '/assets/img/logo.png',
-      locale: 'auto',
-      source: async (source) => {
-        const fun = this.functions.httpsCallable('stripeCreateCharge');
-        this.stripeConfirmation = await fun({ source: source.id, uid: this.user.uid, amount: this.basketGbpTotal }).toPromise();
-      }
-    });
-  }
-
-  stripeCheckout() {
-    this.basketGbpTotal = this.calculateBasketTotal('gbp');
-    this.handler.open({
-      name: 'Opsonion',
-      amount: this.basketGbpTotal * 100,
-      email: this.user.email,
-    });
-  }
-
-  @HostListener('window:popstate')
-  onPopstate() {
-    this.handler.close();
-  }
-
   deleteItem(i, basketItem) {
     this.logger.debug(`Deleting item at index ${i}: ${JSON.stringify(basketItem)}`);
     this.basket.splice(i, 1);
@@ -503,19 +493,20 @@ export class NewTaskComponent implements OnInit {
   setDeliverySpeed(changeContext: ChangeContext): void {
     this.logger.debug(`Delivery speed set to: ${JSON.stringify(changeContext)}`);
     if (changeContext.value === 0) {
-      this.costMultiplier = 0.75;
-      this.speedMultiplier = 1.5;
+      this.costMultiplier = this.relaxedCost;
+      this.speedMultiplier = this.relaxedSpeed;
     }
     if (changeContext.value === 1) {
-      this.costMultiplier = 1;
-      this.speedMultiplier = 1;
+      this.costMultiplier = this.standardCost;
+      this.speedMultiplier = this.standardSpeed;
     }
     if (changeContext.value === 2) {
-      this.costMultiplier = 1.5;
-      this.speedMultiplier = 0.75;
+      this.costMultiplier = this.primeCost;
+      this.speedMultiplier = this.primeSpeed;
     }
     this.basketGbpTotal = this.calculateBasketTotal('gbp');
     this.completionDate = this.calculateCompletionDate();
+    this.differenceInDays = this.calculateDateDifference();
   }
 
   public onIndexChange(index: number): void {
