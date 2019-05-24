@@ -14,5 +14,6 @@ export const environment = {
   logging: {
     level: NgxLoggerLevel.DEBUG,
   },
+  stripeId: 'pk_test_ofSdYFbZUTS9ZMMrk8fZHwe800bq0UGijl',
   firebaseApiUrl: 'https://us-central1-opsonion-dev.cloudfunctions.net'
 };

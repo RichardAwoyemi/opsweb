@@ -336,7 +336,7 @@
                 <div class="card shadow-4" style="padding-left: 0;">
                   <div class="card-body" style="height: 200px">
                     <h5 class="card-title">Maintenance, Support and Upgrades</h5>
-                    <small>Add Opsonion Care for &pound;{{ basketGbpTotal * 0.025 | number : '1.2-2' }} a month?</small>
+                    <small>Add Opsonion Care for &pound;{{ basketGbpTotal * carePlanMultiplier | number : '1.2-2' }} a month?</small>
                     <div class="row gap-y" style="padding-top: 1em">
                       <div class="col-md-4">
                         <button type="button" class="btn btn-block" (click)="setCarePlan(true)"
@@ -400,30 +400,40 @@
       <div class="container">
         <div class="row" [ngStyle]="{ 'height': innerColumnHeight + 'px' }">
           <div class="col-md-12" style="padding-top: 2em">
-            <h4>Checkout</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Checkout</h4>
+              </div>
+              <div class="col-md-6" style="text-align: right">
+                <button type="button" class="btn btn-secondary" (click)="showBasketDetailModal()">View Details</button>
+              </div>
+            </div>
             <br>
             <div class="row">
               <div class="col-md-8">
-                <table class="table table-cart" style="margin-bottom: 0">
-                  <tbody valign="middle">
-                    <tr *ngFor="let basketItem of basket">
-                      <td width="65px">
-                        <a class="item-remove" href="#"><i class="ti-close"></i></a>
-                      </td>
-                      <td>
-                        <h5>{{ basketItem.name }}</h5>
-                        <small>{{ basketItem.description }}</small>
-                      </td>
-                      <td>
-                        <h5 class="price">&pound;{{ basketItem.price_gbp | number : '1.2-2' }}</h5>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div [ngStyle]="{ 'height': innerHeight - 200 + 'px' }" class="sidebar-scroll">
+                  <table class="table table-cart" style="margin-bottom: 0">
+                    <tbody valign="middle">
+                      <tr *ngFor="let basketItem of basket; let i = index;">
+                        <td width="65px">
+                          <a class="item-remove" (click)="deleteItem(i, basketItem)" href="#"><i
+                              class="ti-close"></i></a>
+                        </td>
+                        <td>
+                          <h5>{{ basketItem.name }}</h5>
+                          <small>{{ basketItem.description }}</small>
+                        </td>
+                        <td>
+                          <h5 class="price">&pound;{{ basketItem.price_gbp | number : '1.2-2' }}</h5>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <div class="col-md-4">
                 <div class="cart-price">
-                  <div class="flexbox">
+                  <div class="flexbox" *ngIf="!basketGbpTotalAdjustments == 0">
                     <div>
                       <p><strong>Adjustments:</strong></p>
                     </div>
@@ -434,13 +444,15 @@
                         &pound;{{ basketGbpTotalAdjustments | number : '1.2-2' }}</p>
                     </div>
                   </div>
-                  <hr>
+                  <hr *ngIf="!basketGbpTotalAdjustments == 0">
                   <div class="flexbox">
                     <div>
                       <p><strong>Total:</strong></p>
+                      <p><strong>Opsonion Care:</strong></p>
                     </div>
                     <div>
                       <p class="fw-600">&pound;{{ basketGbpTotal | number : '1.2-2' }}</p>
+                      <p class="fw-600">&pound;{{ basketGbpTotal * carePlanMultiplier | number : '1.2-2' }}</p>
                     </div>
                   </div>
                 </div>
@@ -448,7 +460,7 @@
                 <div style="text-align: right">
                   <button type="button" class="btn btn-secondary" (click)="prevStep4()">Previous</button>
                   &nbsp;
-                  <button type="button" (click)="initiatePayment()" class="btn btn-primary">Complete</button>
+                  <button type="button" (click)="stripeCheckout()" class="btn btn-primary">Complete</button>
                 </div>
               </div>
             </div>
@@ -599,6 +611,48 @@
             </div>
           </div>
           <div class="modal-body" *ngIf="basket.length == 0">There's nothing to see here.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Basket Detail modal -->
+    <div class="modal fade" #basketDetailModal id="basketDetailModal" tabindex="-1" role="dialog"
+      aria-labelledby="carePlanModal" aria-hidden="!submitted">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="basketDetailModal">Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="padding: 0">
+            <div class="alert alert-success" role="alert" *ngIf="basketGbpTotalAdjustments < 0"
+              style="margin-bottom: 0">
+              Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>3 days
+                earlier</strong> than expected.
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="basketGbpTotalAdjustments > 0"
+              style="margin-bottom: 0">
+              Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>3 days
+                later</strong> than expected.
+            </div>
+            <table class="table table-cart" style="margin-bottom: 0">
+              <tbody valign="middle">
+                <tr>
+                  <td>
+                    <p>Completion Date</p>
+                  </td>
+                  <td>
+                    <h5 class="price">{{  completionDate }}</h5>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>

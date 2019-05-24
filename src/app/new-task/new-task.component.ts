@@ -9,6 +9,7 @@ import { DataService } from '../_services/data.service';
 import { ModalService } from '../_services/modal.service';
 import { Options } from 'ng5-slider/options';
 import { ChangeContext } from 'ng5-slider';
+import { environment } from 'src/environments/environment';
 
 declare var $;
 
@@ -23,8 +24,8 @@ export class NewTaskComponent implements OnInit {
     private scrollToService: ScrollToService,
     private ngxLoader: NgxUiLoaderService,
     private dataService: DataService,
-    private modalService: ModalService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private functions: AngularFireFunctions
   ) { }
 
   public config: SwiperConfigInterface = {
@@ -36,6 +37,9 @@ export class NewTaskComponent implements OnInit {
     navigation: true,
     autoplay: false
   };
+
+  handler: StripeCheckoutHandler;
+  stripeConfirmation: any;
 
   index = 0;
   lastIndex = false;
@@ -83,21 +87,21 @@ export class NewTaskComponent implements OnInit {
   taskDescription: string;
   taskSimilarApps: any;
 
-  speedMultiplier = 1;
-  phaseMultiplier = 1;
-
   basket = [];
   basketGbpTotal = 0;
   basketGbpTotalAdjustments = 0;
   completionDate: string;
   carePlanSelected: boolean;
+  carePlanMultiplier = 0.025;
+  costMultiplier = 1;
+  speedMultiplier = 1;
 
   step2Active: boolean;
   step3Active: boolean;
   step4Active: boolean;
   step5Active: boolean;
 
-  value = this.speedMultiplier;
+  value = this.costMultiplier;
   speed = ['Relaxed', 'Standard', 'Prime'];
   options: Options = {
     stepsArray: [
@@ -114,6 +118,7 @@ export class NewTaskComponent implements OnInit {
   @ViewChild('resetModal') resetModal: ElementRef;
   @ViewChild('requestFeatureModal') requestFeatureModal: ElementRef;
   @ViewChild('basketModal') basketModal: ElementRef;
+  @ViewChild('basketDetailModal') basketDetailModal: ElementRef;
   @ViewChild('carePlanModal') carePlanModal: ElementRef;
 
   ngOnInit() {
@@ -168,6 +173,10 @@ export class NewTaskComponent implements OnInit {
       }
     });
 
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.logger.debug(`Email address is: ${this.user.email}`)
+    this.stripeHandler();
+
     this.ngxLoader.stop();
 
     // comment after testing
@@ -184,34 +193,35 @@ export class NewTaskComponent implements OnInit {
       'in_basket': true
     }, {
       'id': 'web-email-notifications', 'name': 'Email Notifications', 'description':
-        'Send email notifications and manage them.', 'price_gbp': 225, 'in_basket': true
+        'Send email notifications and manage them.', 'price_gbp': 225, 'time_weeks': 0.25, 'in_basket': true
     }, {
       'id':
         'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'in_basket': true
+        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
     },
     {
       'id':
         'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'in_basket': true
+        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
     },
     {
       'id':
         'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'in_basket': true
+        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
     },
     {
       'id':
         'web-notification-page', 'name': 'Notification Page', 'description':
-        'Display recent notifications on a single page.', 'price_gbp': 300, 'in_basket': true
+        'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40, 'in_basket': true
     }];
     this.step2Active = true;
     this.step3Active = true;
     this.step4Active = true;
     this.step5Active = true;
-    this.speedMultiplier = 2;
+    this.costMultiplier = 2;
     this.value = 2;
     this.basketGbpTotal = this.calculateBasketTotal('gbp');
+    this.completionDate = this.calculateCompletionDate();
     this.scrollToService.scrollTo(config);
     this.carePlanSelected = true;
     document.body.style.overflow = 'hidden';
@@ -284,6 +294,7 @@ export class NewTaskComponent implements OnInit {
     feature.in_basket = true;
     this.basket.push(feature);
     this.basketGbpTotal = this.calculateBasketTotal('gbp');
+    this.completionDate = this.calculateCompletionDate();
     this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
   }
 
@@ -310,11 +321,25 @@ export class NewTaskComponent implements OnInit {
         total = total + this.basket[i]['price_gbp'];
       }
     }
-    const basketTotal = total * this.speedMultiplier;
-    this.basketGbpTotalAdjustments = total - (total * this.speedMultiplier);
+    const basketTotal = total * this.costMultiplier;
+    this.basketGbpTotalAdjustments = total - (total * this.costMultiplier);
     this.logger.debug(`Basket total: ${basketTotal}`);
     this.logger.debug(`Basket total adjustments: ${this.basketGbpTotalAdjustments}`);
     return basketTotal;
+  }
+
+  calculateCompletionDate() {
+    let totalWeeks = 0;
+    for (let i = 0; i < this.basket.length; i++) {
+      totalWeeks = totalWeeks + this.basket[i]['time_weeks'];
+    }
+    this.logger.debug(`Weeks total: ${totalWeeks}`);
+    const totalDays = totalWeeks * 7 * this.speedMultiplier;
+    const completionDate = new Date();
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+      'September', 'October', 'November', 'December'];
+    completionDate.setDate(completionDate.getDate() + totalDays);
+    return `${completionDate.getDay()} ${monthNames[completionDate.getMonth() + 1]} ${completionDate.getFullYear()}`;
   }
 
   getFeatures(id) {
@@ -352,6 +377,10 @@ export class NewTaskComponent implements OnInit {
     $(this.carePlanModal.nativeElement).modal('show');
   }
 
+  showBasketDetailModal() {
+    $(this.basketDetailModal.nativeElement).modal('show');
+  }
+
   setTaskNameAndDescription() {
     this.ngxLoader.start();
     document.body.style.overflow = '';
@@ -387,6 +416,38 @@ export class NewTaskComponent implements OnInit {
     this.scrollToService.scrollTo(config);
     document.body.style.overflow = 'hidden';
     this.ngxLoader.stop();
+  }
+
+  stripeHandler() {
+    this.handler = StripeCheckout.configure({
+      key: environment.stripeKey,
+      image: '/assets/img/logo.png',
+      locale: 'auto',
+      source: async (source) => {
+        const fun = this.functions.httpsCallable('stripeCreateCharge');
+        this.stripeConfirmation = await fun({ source: source.id, uid: this.user.uid, amount: this.basketGbpTotal }).toPromise();
+      }
+    });
+  }
+
+  stripeCheckout() {
+    this.basketGbpTotal = this.calculateBasketTotal('gbp');
+    this.handler.open({
+      name: 'Opsonion',
+      amount: this.basketGbpTotal * 100,
+      email: this.user.email,
+    });
+  }
+
+  @HostListener('window:popstate')
+  onPopstate() {
+    this.handler.close();
+  }
+
+  deleteItem(i, basketItem) {
+    this.logger.debug(`Deleting item at index ${i}: ${JSON.stringify(basketItem)}`);
+    this.basket.splice(i, 1);
+    this.basketGbpTotal = this.calculateBasketTotal('gbp');
   }
 
   prevStep1() {
@@ -442,17 +503,19 @@ export class NewTaskComponent implements OnInit {
   setDeliverySpeed(changeContext: ChangeContext): void {
     this.logger.debug(`Delivery speed set to: ${JSON.stringify(changeContext)}`);
     if (changeContext.value === 0) {
-      this.speedMultiplier = 0.75;
-      this.basketGbpTotal = this.calculateBasketTotal('gbp');
+      this.costMultiplier = 0.75;
+      this.speedMultiplier = 1.5;
     }
     if (changeContext.value === 1) {
+      this.costMultiplier = 1;
       this.speedMultiplier = 1;
-      this.basketGbpTotal = this.calculateBasketTotal('gbp');
     }
     if (changeContext.value === 2) {
-      this.speedMultiplier = 1.5;
-      this.basketGbpTotal = this.calculateBasketTotal('gbp');
+      this.costMultiplier = 1.5;
+      this.speedMultiplier = 0.75;
     }
+    this.basketGbpTotal = this.calculateBasketTotal('gbp');
+    this.completionDate = this.calculateCompletionDate();
   }
 
   public onIndexChange(index: number): void {
