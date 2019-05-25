@@ -59,6 +59,7 @@ import { TaskService } from './_services/task.service';
 import { DragulaModule } from 'ng2-dragula';
 import { BlockSpecialCharacterDirective } from './_directives/block.special.character.directive';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -92,7 +93,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     OnboardingComponent,
     ReferralComponent,
     NewTaskComponent,
-    BlockSpecialCharacterDirective
+    BlockSpecialCharacterDirective,
+    CheckoutComponent
   ],
   entryComponents: [
     ModalComponent

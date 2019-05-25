@@ -16,6 +16,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { ReferralComponent } from './referral/referral.component';
 import { NewTaskComponent } from './new-task/new-task.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'referral', component: ReferralComponent, canActivate: [AuthGuard] },
   { path: 'new-task', component: NewTaskComponent, canActivate: [AuthGuard] },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard] },
   { path: 'invite/:id', component: InviteComponent, canActivate: [AnonymousGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

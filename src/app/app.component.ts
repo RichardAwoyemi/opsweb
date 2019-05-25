@@ -6,7 +6,6 @@ import { UserService } from './_services/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { UtilService } from './_services/util.service';
-import { environment } from 'src/environments/environment';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({

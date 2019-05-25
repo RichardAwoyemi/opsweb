@@ -415,7 +415,7 @@
                   <div *ngIf="basket.length === 0">
                     There's nothing to see here.
                   </div>
-                  <table class="table table-cart" style="margin-bottom: 0" *ngIf="basket.length > 0">
+                  <table class="table table-cart" style="margin-bottom: 0; background-color: #fff" *ngIf="basket.length > 0">
                     <tbody valign="middle">
                       <tr *ngFor="let basketItem of basket; let i = index;">
                         <td width="65px">
@@ -463,7 +463,7 @@
                 <div style="text-align: right">
                   <button type="button" class="btn btn-secondary" (click)="prevStep4()">Previous</button>
                   &nbsp;
-                  <button type="button" (click)="stripeCheckout()" class="btn btn-primary">Complete</button>
+                  <button type="button" (click)="complete()" class="btn btn-primary" [disabled]="!basket || !basket.length > 0 || !taskName || !taskDescription">Complete</button>
                 </div>
               </div>
             </div>
@@ -571,7 +571,7 @@
               Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>{{ differenceInDays }} days
                 later</strong> than expected.
             </div>
-            <div [ngStyle]="{ 'height': innerHeight - 360 + 'px' }" class="sidebar-scroll">
+            <div [ngStyle]="{ 'max-height': innerHeight - 360 + 'px' }" class="sidebar-scroll">
               <table class="table table-cart" style="margin-bottom: 0">
                 <tbody valign="middle">
                   <tr *ngFor="let basketItem of basket">

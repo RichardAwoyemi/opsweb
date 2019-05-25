@@ -8,6 +8,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { DataService } from '../_services/data.service';
 import { Options } from 'ng5-slider/options';
 import { ChangeContext } from 'ng5-slider';
+import { Router } from '@angular/router';
 
 declare var $;
 
@@ -22,7 +23,8 @@ export class NewTaskComponent implements OnInit {
     private scrollToService: ScrollToService,
     private ngxLoader: NgxUiLoaderService,
     private dataService: DataService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    public router: Router
   ) { }
 
   public config: SwiperConfigInterface = {
@@ -180,41 +182,6 @@ export class NewTaskComponent implements OnInit {
     this.logger.debug(`Email address is: ${this.user.email}`);
 
     this.ngxLoader.stop();
-
-    // comment after testing
-    document.body.style.overflow = '';
-    const config: ScrollToConfigOptions = {
-      target: 'step4'
-    };
-    this.productSelected = 'test';
-    this.taskName = 'test';
-    this.taskDescription = 'test';
-    this.basket = [
-      {
-        'id': 'web-desktop-notifications', 'name': 'Desktop Notifications',
-        'description': 'Send desktop notifications and manage them.', 'price_gbp': 225, 'time_weeks': 0.25
-      }, {
-        'id': 'web-email-notifications', 'name': 'Email Notifications', 'description':
-          'Send email notifications and manage them.', 'price_gbp': 225, 'time_weeks': 0.25
-      }, {
-        'id':
-          'web-notification-page', 'name': 'Notification Page', 'description':
-          'Display recent notifications on a single page.', 'price_gbp': 300, 'time_weeks': 0.40
-      }
-    ];
-    this.step2Active = true;
-    this.step3Active = true;
-    this.step4Active = true;
-    this.step5Active = true;
-    this.costMultiplier = 1.5;
-    this.speedMultiplier = 0.5;
-    this.value = 2;
-    this.basketGbpTotal = this.calculateBasketTotal('gbp');
-    this.completionDate = this.calculateCompletionDate();
-    this.differenceInDays = this.calculateDateDifference();
-    this.scrollToService.scrollTo(config);
-    this.carePlanSelected = 'yes';
-    document.body.style.overflow = 'hidden';
   }
 
   selectProduct(productId) {
@@ -435,6 +402,7 @@ export class NewTaskComponent implements OnInit {
     this.step2Active = false;
     this.step3Active = false;
     this.step4Active = false;
+    this.step5Active = false;
     window.scroll(0, 0);
     this.ngxLoader.stop();
   }
@@ -480,6 +448,10 @@ export class NewTaskComponent implements OnInit {
     } else {
       this.prevStep3();
     }
+  }
+
+  complete(): void {
+    this.router.navigate(['checkout']);
   }
 
   setDeliverySpeed(changeContext: ChangeContext): void {
