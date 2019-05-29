@@ -11,7 +11,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="swiper-container" fxFlex="auto" [swiper]="config" [(index)]="index"
-            (indexChange)="onProjectSelectIndexChange($event)" (swiperTransitionStart)="onProjectSelectSwiperEvent('transitionStart')"
+            (indexChange)="onProjectSelectIndexChange($event)"
+            (swiperTransitionStart)="onProjectSelectSwiperEvent('transitionStart')"
             (swiperTransitionEnd)="onProjectSelectSwiperEvent('transitionEnd')" *ngIf="programmingTasks">
             <div class="swiper-wrapper">
               <ng-container *ngFor="let task of programmingTasks; let i = index;">
@@ -81,7 +82,7 @@
               <div class="form-group" style="padding-top: 1em">
                 <button type="button" class="btn btn-secondary" (click)="onStep2PreviousButtonClick()">Previous</button>
                 &nbsp;
-                <button type="button" (click)="onStep3NextButtonClick()" class="btn btn-primary"
+                <button type="button" (click)="onStep2NextButtonClick()" class="btn btn-primary"
                   [disabled]="!taskName || !taskDescription || taskName.length === 0 || taskDescription.length === 0">Continue</button>
               </div>
             </div>
@@ -172,8 +173,9 @@
                             <div class="col-md-4" style="text-align: right;">
                               <button class="btn btn-xs btn-success" (click)="onAddFeatureToBasketButtonClick(custom)"
                                 *ngIf="!isFeatureInBasket(custom)" style="width: 78px">Add</button>
-                              <button class="btn btn-xs btn-danger" (click)="onRemoveFeatureFromBasketButtonClick(custom)"
-                                *ngIf="isFeatureInBasket(custom)" style="width: 78px">Remove</button>
+                              <button class="btn btn-xs btn-danger"
+                                (click)="onRemoveFeatureFromBasketButtonClick(custom)" *ngIf="isFeatureInBasket(custom)"
+                                style="width: 78px">Remove</button>
                             </div>
                           </div>
                         </div>
@@ -336,7 +338,8 @@
                 <div class="card shadow-4" style="padding-left: 0;">
                   <div class="card-body" style="height: 200px">
                     <h5 class="card-title">Maintenance, Support and Upgrades</h5>
-                    <small>Add Opsonion Care for &pound;{{ basketTotal * carePlanMultiplier | number : '1.2-2' }} a month?</small>
+                    <small>Add Opsonion Care for &pound;{{ basketTotal * carePlanMultiplier | number : '1.2-2' }} a
+                      month?</small>
                     <div class="row gap-y" style="padding-top: 1em">
                       <div class="col-md-4">
                         <button type="button" class="btn btn-block" (click)="setCarePlan('yes')"
@@ -415,7 +418,8 @@
                   <div *ngIf="basket.length === 0">
                     There's nothing to see here.
                   </div>
-                  <table class="table table-cart" style="margin-bottom: 0; background-color: #fff" *ngIf="basket.length > 0">
+                  <table class="table table-cart" style="margin-bottom: 0; background-color: #fff"
+                    *ngIf="basket.length > 0">
                     <tbody valign="middle">
                       <tr *ngFor="let basketItem of basket; let i = index;">
                         <td width="65px">
@@ -455,15 +459,18 @@
                     </div>
                     <div>
                       <p class="fw-600">&pound;{{ basketTotal | number : '1.2-2' }}</p>
-                      <p *ngIf="carePlanSelected === 'yes' && basket.length > 0" class="fw-600">&pound;{{ carePlanPrice | number : '1.2-2' }}</p>
+                      <p *ngIf="carePlanSelected === 'yes' && basket.length > 0" class="fw-600">
+                        &pound;{{ carePlanPrice | number : '1.2-2' }}</p>
                     </div>
                   </div>
                 </div>
                 <hr>
                 <div style="text-align: right">
-                  <button type="button" class="btn btn-secondary" (click)="onStep5PreviousButtonClick()">Previous</button>
+                  <button type="button" class="btn btn-secondary"
+                    (click)="onStep5PreviousButtonClick()">Previous</button>
                   &nbsp;
-                  <button type="button" (click)="onCompleteCheckoutClick()" class="btn btn-primary" [disabled]="!basket || !basket.length > 0 || !taskName || !taskDescription">Complete</button>
+                  <button type="button" (click)="onCompleteCheckoutClick()" class="btn btn-primary"
+                    [disabled]="!basket || !basket.length > 0 || !taskName || !taskDescription">Complete</button>
                 </div>
               </div>
             </div>
@@ -471,222 +478,225 @@
         </div>
       </div>
     </section>
+  </section>
+</div>
 
-    <!-- Reset modal -->
-    <div class="modal fade" #resetModal id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModal"
-      aria-hidden="!submitted">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="resetModal">Reset</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+<!-- Reset modal -->
+<div class="modal fade" #resetModal id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModal"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetModal">Reset</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Are you sure you want to start all over again?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="resetTaskProperties()">Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request Feature modal -->
+<div class="modal fade" #requestFeatureModal id="requestFeatureModal" tabindex="-1" role="dialog"
+  aria-labelledby="requestFeatureModal" aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Request Feature</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <small>Please note that pricing and development time may only be decided once the requirements of the
+          project have been fully understood.</small>
+        <div class="row" style="padding-top: 2em">
+          <div class="col-md-4">
+            <strong>Name your feature <span class="text-danger">*</span></strong>
           </div>
-          <div class="modal-body">Are you sure you want to start all over again?</div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="resetTaskProperties()">Yes</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="customFeatureName"
+                (change)="customFeatureName=customFeatureName.trim();">
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <strong>Describe your feature <span class="text-danger">*</span></strong>
+          </div>
+          <div class="col-md-8">
+            <div class="input-group">
+              <textarea class="form-control" [(ngModel)]="customFeatureDescription"
+                (change)="customFeatureDescription=customFeatureDescription.trim();"></textarea>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <strong>Please list any apps with a similar feature</strong>
+          </div>
+          <div class="col-md-8">
+            <tag-input [onlyFromAutocomplete]="false" [maxItems]="3" [(ngModel)]="customFeatureSimilarApps">
+            </tag-input>
           </div>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+          [disabled]="!customFeatureName || !customFeatureDescription || customFeatureName.length === 0 || customFeatureDescription.length === 0">Done</button>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- Request Feature modal -->
-    <div class="modal fade" #requestFeatureModal id="requestFeatureModal" tabindex="-1" role="dialog"
-      aria-labelledby="requestFeatureModal" aria-hidden="!submitted">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Request Feature</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+<!-- Basket modal -->
+<div class="modal fade" #basketModal id="basketModal" tabindex="-1" role="dialog" aria-labelledby="basketModal"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="basketModal">Basket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [ngStyle]="{ 'max-height': innerHeight - 190 + 'px' }" *ngIf="basket.length > 0"
+        style="padding: 0">
+        <div class="alert alert-success" role="alert" *ngIf="basketTotalAdjustments < 0" style="margin-bottom: 0">
+          Delivery speed has been set to <strong>Prime</strong>. You will receive your project
+          <strong>{{ differenceInDays }} days
+            earlier</strong> than expected.
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="basketTotalAdjustments > 0" style="margin-bottom: 0">
+          Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project
+          <strong>{{ differenceInDays }} days
+            later</strong> than expected.
+        </div>
+        <div [ngStyle]="{ 'max-height': innerHeight - 360 + 'px' }" class="sidebar-scroll">
+          <table class="table table-cart" style="margin-bottom: 0">
+            <tbody valign="middle">
+              <tr *ngFor="let basketItem of basket">
+                <td width="65px">
+                  <a class="item-remove" (click)="onBasketRemoveButtonClick(i, basketItem)" href="#"><i
+                      class="ti-close"></i></a>
+                </td>
+                <td>
+                  <h5>{{ basketItem.name }}</h5>
+                  <small>{{ basketItem.description }}</small>
+                </td>
+                <td>
+                  <h5 class="price">&pound;{{ basketItem.price_gbp | number : '1.2-2' }}</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cart-price" style="border-radius: 0; border-bottom: 0; margin-bottom: 0">
+          <div class="flexbox" *ngIf="!basketTotalAdjustments == 0">
+            <div>
+              <p><strong>Adjustments:</strong></p>
+            </div>
+            <div *ngIf="basketTotalAdjustments < 0">
+              <span class="fw-600 text-danger">+
+                &pound;{{ basketTotalAdjustments * -1 | number : '1.2-2' }}</span>
+            </div>
+            <div *ngIf="basketTotalAdjustments > 0">
+              <span class="fw-600 text-success">- &pound;{{ basketTotalAdjustments | number : '1.2-2' }}</span>
+            </div>
           </div>
-          <div class="modal-body">
-            <small>Please note that pricing and development time may only be decided once the requirements of the
-              project have been fully understood.</small>
-            <div class="row" style="padding-top: 2em">
-              <div class="col-md-4">
-                <strong>Name your feature <span class="text-danger">*</span></strong>
-              </div>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="customFeatureName"
-                    (change)="customFeatureName=customFeatureName.trim();">
-                </div>
-              </div>
+          <div class="flexbox">
+            <div>
+              <p><strong>Total:</strong></p>
             </div>
-            <br>
-            <div class="row">
-              <div class="col-md-4">
-                <strong>Describe your feature <span class="text-danger">*</span></strong>
-              </div>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <textarea class="form-control" [(ngModel)]="customFeatureDescription"
-                    (change)="customFeatureDescription=customFeatureDescription.trim();"></textarea>
-                </div>
-              </div>
+            <div>
+              <h5 class="fw-600">&pound;{{ basketTotal | number : '1.2-2' }}</h5>
             </div>
-            <br>
-            <div class="row">
-              <div class="col-md-4">
-                <strong>Please list any apps with a similar feature</strong>
-              </div>
-              <div class="col-md-8">
-                <tag-input [onlyFromAutocomplete]="false" [maxItems]="3" [(ngModel)]="customFeatureSimilarApps">
-                </tag-input>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary"
-              [disabled]="!customFeatureName || !customFeatureDescription || customFeatureName.length === 0 || customFeatureDescription.length === 0">Done</button>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Basket modal -->
-    <div class="modal fade" #basketModal id="basketModal" tabindex="-1" role="dialog" aria-labelledby="basketModal"
-      aria-hidden="!submitted">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="basketModal">Basket</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" [ngStyle]="{ 'max-height': innerHeight - 190 + 'px' }" *ngIf="basket.length > 0"
-            style="padding: 0">
-            <div class="alert alert-success" role="alert" *ngIf="basketTotalAdjustments < 0"
-              style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>{{ differenceInDays }} days
-                earlier</strong> than expected.
-            </div>
-            <div class="alert alert-warning" role="alert" *ngIf="basketTotalAdjustments > 0"
-              style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>{{ differenceInDays }} days
-                later</strong> than expected.
-            </div>
-            <div [ngStyle]="{ 'max-height': innerHeight - 360 + 'px' }" class="sidebar-scroll">
-              <table class="table table-cart" style="margin-bottom: 0">
-                <tbody valign="middle">
-                  <tr *ngFor="let basketItem of basket">
-                    <td width="65px">
-                      <a class="item-remove" (click)="onBasketRemoveButtonClick(i, basketItem)" href="#"><i class="ti-close"></i></a>
-                    </td>
-                    <td>
-                      <h5>{{ basketItem.name }}</h5>
-                      <small>{{ basketItem.description }}</small>
-                    </td>
-                    <td>
-                      <h5 class="price">&pound;{{ basketItem.price_gbp | number : '1.2-2' }}</h5>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="cart-price" style="border-radius: 0; border-bottom: 0; margin-bottom: 0">
-              <div class="flexbox" *ngIf="!basketTotalAdjustments == 0">
-                <div>
-                  <p><strong>Adjustments:</strong></p>
-                </div>
-                <div *ngIf="basketTotalAdjustments < 0">
-                  <span class="fw-600 text-danger">+
-                    &pound;{{ basketTotalAdjustments * -1 | number : '1.2-2' }}</span>
-                </div>
-                <div *ngIf="basketTotalAdjustments > 0">
-                  <span class="fw-600 text-success">- &pound;{{ basketTotalAdjustments | number : '1.2-2' }}</span>
-                </div>
-              </div>
-              <div class="flexbox">
-                <div>
-                  <p><strong>Total:</strong></p>
-                </div>
-                <div>
-                  <h5 class="fw-600">&pound;{{ basketTotal | number : '1.2-2' }}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-body" *ngIf="basket.length == 0">There's nothing to see here.</div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <div class="modal-body" *ngIf="basket.length == 0">There's nothing to see here.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Basket Detail modal -->
-    <div class="modal fade" #basketDetailModal id="basketDetailModal" tabindex="-1" role="dialog"
-      aria-labelledby="carePlanModal" aria-hidden="!submitted">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="basketDetailModal">Details</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" style="padding: 0" *ngIf="basket.length > 0">
-            <div class="alert alert-success" role="alert" *ngIf="basketTotalAdjustments < 0"
-              style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Prime</strong>. You will receive your project <strong>{{ differenceInDays }} days
-                earlier</strong> than expected.
-            </div>
-            <div class="alert alert-warning" role="alert" *ngIf="basketTotalAdjustments > 0"
-              style="margin-bottom: 0">
-              Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project <strong>{{ differenceInDays }} days
-                later</strong> than expected.
-            </div>
-            <table class="table table-cart" style="margin-bottom: 0">
-              <tbody valign="middle">
-                <tr>
-                  <td>
-                    <p>Completion Date</p>
-                  </td>
-                  <td>
-                    <h5 class="price">{{  completionDate }}</h5>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="modal-body" *ngIf="basket.length === 0">
-            There's nothing to see here.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+<!-- Basket Detail modal -->
+<div class="modal fade" #basketDetailModal id="basketDetailModal" tabindex="-1" role="dialog"
+  aria-labelledby="carePlanModal" aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="basketDetailModal">Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 0" *ngIf="basket.length > 0">
+        <div class="alert alert-success" role="alert" *ngIf="basketTotalAdjustments < 0" style="margin-bottom: 0">
+          Delivery speed has been set to <strong>Prime</strong>. You will receive your project
+          <strong>{{ differenceInDays }} days
+            earlier</strong> than expected.
         </div>
+        <div class="alert alert-warning" role="alert" *ngIf="basketTotalAdjustments > 0" style="margin-bottom: 0">
+          Delivery speed has been set to <strong>Relaxed</strong>. You will receive your project
+          <strong>{{ differenceInDays }} days
+            later</strong> than expected.
+        </div>
+        <table class="table table-cart" style="margin-bottom: 0">
+          <tbody valign="middle">
+            <tr>
+              <td>
+                <p>Completion Date</p>
+              </td>
+              <td>
+                <h5 class="price">{{  completionDate }}</h5>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-body" *ngIf="basket.length === 0">
+        There's nothing to see here.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Care Plan modal -->
-    <div class="modal fade" #carePlanModal id="carePlanModal" tabindex="-1" role="dialog"
-      aria-labelledby="carePlanModal" aria-hidden="!submitted">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="carePlanModal">Opsonion Care</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            With Opsonion Care, we provide aftercare of your project for as long as you want. Get support for:
-            <ul>
-              <li>Infrastucture setup, monitoring, scalability and migrations;</li>
-              <li>Third party integrations and component upgrades;</li>
-              <li>Unexpected bugs, crashes, and security issues.</li>
-            </ul>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+<!-- Care Plan modal -->
+<div class="modal fade" #carePlanModal id="carePlanModal" tabindex="-1" role="dialog" aria-labelledby="carePlanModal"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="carePlanModal">Opsonion Care</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        With Opsonion Care, we provide aftercare of your project for as long as you want. Get support for:
+        <ul>
+          <li>Infrastucture setup, monitoring, scalability and migrations;</li>
+          <li>Third party integrations and component upgrades;</li>
+          <li>Unexpected bugs, crashes, and security issues.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>
