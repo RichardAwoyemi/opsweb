@@ -9,6 +9,7 @@ import { DataService } from '../_services/data.service';
 import { Options } from 'ng5-slider/options';
 import { ChangeContext } from 'ng5-slider';
 import { Router } from '@angular/router';
+import { TaskService } from '../_services/task.service';
 
 declare var $;
 
@@ -23,6 +24,7 @@ export class NewTaskComponent implements OnInit {
     private scrollToService: ScrollToService,
     private ngxLoader: NgxUiLoaderService,
     private dataService: DataService,
+    private taskService: TaskService,
     private logger: NGXLogger,
     public router: Router
   ) { }
@@ -85,11 +87,13 @@ export class NewTaskComponent implements OnInit {
   taskDescription: string;
   taskSimilarApps: any;
 
+  currency = 'gbp';
   basket = [];
-  basketGbpTotal = 0;
-  basketGbpTotalAdjustments = 0;
+  basketTotal = 0;
+  basketTotalAdjustments = 0;
   completionDate: string;
   differenceInDays: number;
+  carePlanPrice = 0;
   carePlanSelected: string;
   carePlanMultiplier = 0.025;
   costMultiplier = 1;
@@ -184,27 +188,18 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  selectProduct(productId) {
+  setProduct(productId) {
     this.logger.debug(`Product selected: ${productId}`);
-    this.step2Active = true;
-    this.step3Active = true;
-    this.step4Active = true;
-    this.step5Active = true;
     this.productSelected = productId;
-    const config: ScrollToConfigOptions = {
-      target: 'step2'
-    };
-    this.scrollToService.scrollTo(config);
-    document.body.style.overflow = 'hidden';
   }
 
-  selectCategory(categoryId) {
+  setCategory(categoryId) {
     this.logger.debug(`Category selected: ${categoryId}`);
     this.categorySelected = categoryId;
     this.featureSelected = null;
   }
 
-  selectFeature(feature) {
+  setFeature(feature) {
     this.logger.debug(`Feature selected: ${JSON.stringify(feature)}`);
     this.featureSelected = feature;
   }
@@ -212,6 +207,8 @@ export class NewTaskComponent implements OnInit {
   setCarePlan(value) {
     this.logger.debug(`Care plan set to: ${value}`);
     this.carePlanSelected = value;
+    this.carePlanPrice = this.calculateCarePlanPrice();
+    this.logger.debug(`Care plan price set to: ${this.carePlanPrice}`);
   }
 
   setCarePlanBtnColour(value) {
@@ -238,36 +235,7 @@ export class NewTaskComponent implements OnInit {
     }
   }
 
-  addToBasket(feature) {
-    this.logger.debug(`Basket before feature added: ${JSON.stringify(this.basket)}`);
-    feature.in_basket = true;
-    this.basket.push(feature);
-    this.basketGbpTotal = this.calculateBasketTotal('gbp');
-    this.completionDate = this.calculateCompletionDate();
-    this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
-  }
-
-  removeFromBasket(feature) {
-    this.selectFeature(feature);
-    this.logger.debug(`Basket before feature removed: ${JSON.stringify(this.basket)}`);
-    this.logger.debug('Looping through basket items until item found');
-    for (let i = 0; i < this.basket.length; i++) {
-      this.logger.debug(this.basket[i]);
-      if (this.basket[i]['id'] === feature.id) {
-        this.logger.debug(`Found item to delete: ${JSON.stringify(this.basket[i])}`);
-        this.basket.splice(i, 1);
-      }
-    }
-    this.basketGbpTotal = this.calculateBasketTotal('gbp');
-    this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
-  }
-
-  checkBasket(feature) {
-    const found = this.basket.some(e => e['id'] === feature.id);
-    return found;
-  }
-
-  calculateBasketTotal(currency) {
+  calculateBasketTotal(currency): number{
     let total = 0;
     for (let i = 0; i < this.basket.length; i++) {
       if (currency = 'gbp') {
@@ -275,9 +243,9 @@ export class NewTaskComponent implements OnInit {
       }
     }
     const basketTotal = total * this.costMultiplier;
-    this.basketGbpTotalAdjustments = total - (total * this.costMultiplier);
+    this.basketTotalAdjustments = total - (total * this.costMultiplier);
     this.logger.debug(`Basket total: ${basketTotal}`);
-    this.logger.debug(`Basket total adjustments: ${this.basketGbpTotalAdjustments}`);
+    this.logger.debug(`Basket total adjustments: ${this.basketTotalAdjustments}`);
     return basketTotal;
   }
 
@@ -313,13 +281,21 @@ export class NewTaskComponent implements OnInit {
     return diffDays;
   }
 
+  calculateCarePlanPrice() {
+    if (this.carePlanSelected) {
+      return this.basketTotal * this.carePlanMultiplier;
+    } else {
+      return 0;
+    }
+  }
+
   getFeatures(id) {
     if (id === 'web-custom-alert') {
       return this.webCustomAlert;
     }
   }
 
-  reset() {
+  resetTaskProperties(): void {
     $(this.resetModal.nativeElement).modal('hide');
     this.productSelected = null;
     this.categorySelected = null;
@@ -332,27 +308,40 @@ export class NewTaskComponent implements OnInit {
     window.scroll(0, 0);
   }
 
-  showResetModal() {
+  showResetModal(): void {
     $(this.resetModal.nativeElement).modal('show');
   }
 
-  showRequestFeatureModal() {
+  showRequestFeatureModal(): void {
     $(this.requestFeatureModal.nativeElement).modal('show');
   }
 
-  showBasketModal() {
+  showBasketModal(): void {
     $(this.basketModal.nativeElement).modal('show');
   }
 
-  showCarePlanModal() {
+  showCarePlanModal(): void {
     $(this.carePlanModal.nativeElement).modal('show');
   }
 
-  showBasketDetailModal() {
+  showBasketDetailModal(): void {
     $(this.basketDetailModal.nativeElement).modal('show');
   }
 
-  setTaskNameAndDescription() {
+  onSetProduct(productId): void {
+    this.step2Active = true;
+    this.step3Active = true;
+    this.step4Active = true;
+    this.step5Active = true;
+    this.setProduct(productId);
+    const config: ScrollToConfigOptions = {
+      target: 'step2'
+    };
+    this.scrollToService.scrollTo(config);
+    document.body.style.overflow = 'hidden';
+  }
+
+  onStep2NextButtonClick(): void {
     this.ngxLoader.start();
     document.body.style.overflow = '';
     const config: ScrollToConfigOptions = {
@@ -365,7 +354,7 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  selectFeatures() {
+  onStep3NextButtonClick(): void {
     this.ngxLoader.start();
     document.body.style.overflow = '';
     const config: ScrollToConfigOptions = {
@@ -378,7 +367,7 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  setDeliveryAndCare() {
+  onStep4NextButtonClick(): void {
     this.ngxLoader.start();
     document.body.style.overflow = '';
     const config: ScrollToConfigOptions = {
@@ -389,13 +378,7 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  deleteItem(i, basketItem) {
-    this.logger.debug(`Deleting item at index ${i}: ${JSON.stringify(basketItem)}`);
-    this.basket.splice(i, 1);
-    this.basketGbpTotal = this.calculateBasketTotal('gbp');
-  }
-
-  prevStep1() {
+  onStep2PreviousButtonClick(): void {
     this.ngxLoader.start();
     document.body.style.overflow = '';
     document.body.style['overflow-x'] = 'hidden';
@@ -407,7 +390,7 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  prevStep2() {
+  onStep3PreviousButtonClick(): void {
     this.ngxLoader.start();
     document.body.style.overflow = '';
     const config: ScrollToConfigOptions = {
@@ -420,7 +403,7 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  prevStep3() {
+  onStep4PreviousButtonClick(): void {
     this.ngxLoader.start();
     document.body.style.overflow = '';
     const config: ScrollToConfigOptions = {
@@ -433,7 +416,7 @@ export class NewTaskComponent implements OnInit {
     this.ngxLoader.stop();
   }
 
-  prevStep4() {
+  onStep5PreviousButtonClick(): void {
     if (this.basket.length > 0) {
       this.ngxLoader.start();
       document.body.style.overflow = '';
@@ -446,15 +429,41 @@ export class NewTaskComponent implements OnInit {
       document.body.style.overflow = 'hidden';
       this.ngxLoader.stop();
     } else {
-      this.prevStep3();
+      this.onStep4PreviousButtonClick();
     }
   }
 
-  complete(): void {
-    this.router.navigate(['checkout']);
+  onAddFeatureToBasketButtonClick(feature) {
+    this.logger.debug(`Basket before feature added: ${JSON.stringify(this.basket)}`);
+    feature.in_basket = true;
+    this.basket.push(feature);
+    this.basketTotal = this.calculateBasketTotal('gbp');
+    this.completionDate = this.calculateCompletionDate();
+    this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
   }
 
-  setDeliverySpeed(changeContext: ChangeContext): void {
+  onRemoveFeatureFromBasketButtonClick(feature) {
+    this.setFeature(feature);
+    this.logger.debug(`Basket before feature removed: ${JSON.stringify(this.basket)}`);
+    this.logger.debug('Looping through basket items until item found');
+    for (let i = 0; i < this.basket.length; i++) {
+      this.logger.debug(this.basket[i]);
+      if (this.basket[i]['id'] === feature.id) {
+        this.logger.debug(`Found item to delete: ${JSON.stringify(this.basket[i])}`);
+        this.basket.splice(i, 1);
+      }
+    }
+    this.basketTotal = this.calculateBasketTotal(this.currency);
+    this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
+  }
+
+  onBasketRemoveButtonClick(i, basketItem): void {
+    this.logger.debug(`Deleting item at index ${i}: ${JSON.stringify(basketItem)}`);
+    this.basket.splice(i, 1);
+    this.basketTotal = this.calculateBasketTotal('gbp');
+  }
+
+  onChangeDeliverySpeed(changeContext: ChangeContext): void {
     this.logger.debug(`Delivery speed set to: ${JSON.stringify(changeContext)}`);
     if (changeContext.value === 0) {
       this.costMultiplier = this.relaxedCost;
@@ -468,23 +477,49 @@ export class NewTaskComponent implements OnInit {
       this.costMultiplier = this.primeCost;
       this.speedMultiplier = this.primeSpeed;
     }
-    this.basketGbpTotal = this.calculateBasketTotal('gbp');
+    this.basketTotal = this.calculateBasketTotal('gbp');
     this.completionDate = this.calculateCompletionDate();
     this.differenceInDays = this.calculateDateDifference();
+    this.carePlanPrice = this.calculateCarePlanPrice();
   }
 
-  public onIndexChange(index: number): void {
+  onCompleteCheckoutClick(): void {
+    if (!this.carePlanSelected) {
+      this.carePlanPrice = null;
+    }
+    this.taskService.createNewTask(
+      this.user,
+      this.productSelected,
+      this.taskName,
+      this.taskDescription,
+      this.taskSimilarApps,
+      this.categorySelected,
+      this.basket,
+      this.completionDate,
+      this.currency,
+      this.carePlanPrice,
+      this.basketTotal,
+      this.basketTotalAdjustments);
+    this.router.navigate(['checkout']);
+  }
+
+  onProjectSelectIndexChange(index: number): void {
     this.index = index;
     this.logger.debug('Swiper index: ', index);
   }
 
-  public onSwiperEvent(event: string): void {
+  onProjectSelectSwiperEvent(event: string): void {
     this.logger.debug('Swiper event: ', event);
     this.lastIndex = this.isScrolledIntoView('box-7');
     this.logger.debug(`Last index visible: ${this.lastIndex}`);
   }
 
-  isScrolledIntoView(e) {
+  isFeatureInBasket(feature): boolean {
+    const found = this.basket.some(e => e['id'] === feature.id);
+    return found;
+  }
+
+  isScrolledIntoView(e): boolean {
     const lastSlide = document.getElementById(e);
     if (e) {
       const bounding = lastSlide.getBoundingClientRect();
