@@ -235,7 +235,7 @@ export class NewTaskComponent implements OnInit {
     }
   }
 
-  calculateBasketTotal(currency): number{
+  calculateBasketTotal(currency): number {
     let total = 0;
     for (let i = 0; i < this.basket.length; i++) {
       if (currency = 'gbp') {
@@ -282,7 +282,7 @@ export class NewTaskComponent implements OnInit {
   }
 
   calculateCarePlanPrice() {
-    if (this.carePlanSelected) {
+    if (this.carePlanSelected === 'yes') {
       return this.basketTotal * this.carePlanMultiplier;
     } else {
       return 0;

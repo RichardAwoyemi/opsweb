@@ -27,6 +27,31 @@ exports.createUser = functions.firestore
       });
   });
 
+exports.createTask = functions.firestore
+  .document('tasks/{taskId}').onCreate(() => {
+    const ref = admin.firestore().collection('counters').doc('tasks');
+    return admin.firestore().runTransaction(async (transaction: any) => {
+      const doc = await transaction.get(ref);
+      if (!doc.exists) {
+        transaction.set(ref, { pending: 1 });
+        return 1;
+      }
+      const newCount = doc.data().pending + 1;
+      transaction.update(ref, {
+        pending: newCount,
+      });
+      return newCount;
+    })
+      .then((newCount: any) => {
+        console.log(
+          `Transaction successfully committed and new task count is '${newCount}'.`
+        );
+      })
+      .catch((error: any) => {
+        console.log('Transaction failed: ', error);
+      });
+  });
+
 exports.deleteUser = functions.firestore
   .document('users/{userId}').onDelete(() => {
     const ref = admin.firestore().collection('counters').doc('users');
@@ -45,6 +70,31 @@ exports.deleteUser = functions.firestore
       .then((newCount: any) => {
         console.log(
           `Transaction successfully committed and new user count is '${newCount}'.`
+        );
+      })
+      .catch((error: any) => {
+        console.log('Transaction failed: ', error);
+      });
+  });
+
+exports.deleteTask = functions.firestore
+  .document('tasks/{taskId}').onCreate(() => {
+    const ref = admin.firestore().collection('counters').doc('tasks');
+    return admin.firestore().runTransaction(async (transaction: any) => {
+      const doc = await transaction.get(ref);
+      if (!doc.exists) {
+        transaction.set(ref, { pending: 0 });
+        return 0;
+      }
+      const newCount = doc.data().pending - 1;
+      transaction.update(ref, {
+        pending: newCount,
+      });
+      return newCount;
+    })
+      .then((newCount: any) => {
+        console.log(
+          `Transaction successfully committed and new task count is '${newCount}'.`
         );
       })
       .catch((error: any) => {

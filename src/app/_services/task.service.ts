@@ -3,7 +3,6 @@ import { NGXLogger } from 'ngx-logger';
 import { FirebaseService } from '../_services/firebase.service';
 import { User } from '../_models/user';
 import { AngularFirestoreDocument } from '@angular/fire/firestore';
-import { constants } from 'http2';
 
 @Injectable()
 export class TaskService {
@@ -13,8 +12,7 @@ export class TaskService {
   ) { }
 
   task: any;
-  TASKS_ROOT: String = 'users/';
-  TASKS_PATH: String = '/tasks';
+  TASKS_ROOT = 'tasks';
 
   checkIfTasksExist() {
     this.logger.debug(`Checking to see if tasks exist`);
@@ -33,7 +31,7 @@ export class TaskService {
     category: String, basket: Array<any>, completionDate: String, currency: String, carePlanPrice: Number,
     basketTotal: Number, basketTotalAdjustments: Number) {
 
-    const collectionPath = this.TASKS_ROOT + user.uid + this.TASKS_PATH;
+    const collectionPath = this.TASKS_ROOT;
     const task = {
       name: name,
       description: description,
@@ -43,11 +41,12 @@ export class TaskService {
       currency: currency,
       carePlanPrice: carePlanPrice,
       basketTotal: basketTotal,
-      basketTotalAdjustments: basketTotalAdjustments
+      basketTotalAdjustments: basketTotalAdjustments,
+      createdBy: user.uid
     };
 
     const newTaskRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
-    this.logger.debug(`Creating new task with generated Id at: '/${newTaskRef.ref.path}'`);
+    this.logger.debug(`Creating new task with generated id at: '/${newTaskRef.ref.path}'`);
     this.logger.debug(task);
     newTaskRef.set(task);
 
