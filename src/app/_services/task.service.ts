@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { FirebaseService } from '../_services/firebase.service';
 import { User } from '../_models/user';
-import { AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable()
 export class TaskService {
   constructor(
+    private afs: AngularFirestore,
     private logger: NGXLogger,
     private firebaseService: FirebaseService
   ) { }
@@ -32,6 +33,7 @@ export class TaskService {
     basketTotal: Number, basketTotalAdjustments: Number) {
 
     const collectionPath = this.TASKS_ROOT;
+
     const task = {
       name: name,
       description: description,
@@ -40,9 +42,9 @@ export class TaskService {
       completionDate: completionDate,
       currency: currency,
       carePlanPrice: carePlanPrice,
-      basketTotal: basketTotal,
-      basketTotalAdjustments: basketTotalAdjustments,
-      createdBy: user.uid
+      price: basketTotal,
+      createdBy: user.uid,
+      createdAt: new Date()
     };
 
     const newTaskRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
@@ -51,41 +53,46 @@ export class TaskService {
     newTaskRef.set(task);
 
     if (basket) {
-      const basketPath = newTaskRef.ref.path + '/features';
-      this.addFeaturesToTask(basket, basketPath);
+      this.addFeaturesToTask(basket, newTaskRef.ref.path);
     }
 
     if (similarApps) {
-      const tagsPath = newTaskRef.ref.path + '/tags';
-      this.addSimilarAppsToTask(similarApps, tagsPath);
+      this.addSimilarAppsToTask(similarApps, newTaskRef.ref.path);
     }
   }
 
   addFeaturesToTask(features: Array<any>, collectionPath: string) {
+    const featureList = [];
+    const taskRef: AngularFirestoreDocument<any> = this.afs.doc(`${collectionPath}`);
     for (let i = 0; i < features.length; i++) {
-      const feature = {
-        name: features[i].name,
-        description: features[i].description,
-        price: features[i].price_gbp
-      };
-
-      const newFeatureRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
-      this.logger.debug(`Creating new feature with generated Id at: '/${newFeatureRef.ref.path}'`);
-      this.logger.debug(feature);
-      newFeatureRef.set(feature);
+      featureList.push(features[i].id);
     }
+    const featureData = {
+      features: featureList
+    };
+    this.logger.debug(`Creating new feature with generated id at: '/${collectionPath}'`);
+    this.logger.debug(JSON.stringify(featureData));
+    taskRef.set(featureData, { merge: true });
   }
 
   addSimilarAppsToTask(similarApps: Array<any>, collectionPath: string) {
+    const similarAppsList = [];
+    const taskRef: AngularFirestoreDocument<any> = this.afs.doc(`${collectionPath}`);
     for (let i = 0; i < similarApps.length; i++) {
-      const similarApp = {
-        name: similarApps[i].value
-      };
+      similarAppsList.push(similarApps[i].value);
+    }
+    const similarAppsData = {
+      similarApps: similarAppsList
+    };
+    this.logger.debug(`Creating new similar app with generated id at: '/${collectionPath}'`);
+    this.logger.debug(JSON.stringify(similarAppsData));
+    taskRef.set(similarAppsData, { merge: true });
+  }
 
-      const newSimilarAppRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
-      this.logger.debug(`Creating new similar app with generated Id at: '/${newSimilarAppRef.ref.path}'`);
-      this.logger.debug(similarApp);
-      newSimilarAppRef.set(similarApp);
+  getTasksByUserId(userId) {
+    this.logger.debug(`Getting tasks by user id ${userId}`);
+    if (userId) {
+      return this.afs.collection('tasks', ref => ref.where('createdBy', '==', userId)).valueChanges();
     }
   }
 }

@@ -33,12 +33,12 @@ exports.createTask = functions.firestore
     return admin.firestore().runTransaction(async (transaction: any) => {
       const doc = await transaction.get(ref);
       if (!doc.exists) {
-        transaction.set(ref, { pending: 1 });
+        transaction.set(ref, { backlog: 1 });
         return 1;
       }
-      const newCount = doc.data().pending + 1;
+      const newCount = doc.data().backlog + 1;
       transaction.update(ref, {
-        pending: newCount,
+        backlog: newCount,
       });
       return newCount;
     })
@@ -83,12 +83,12 @@ exports.deleteTask = functions.firestore
     return admin.firestore().runTransaction(async (transaction: any) => {
       const doc = await transaction.get(ref);
       if (!doc.exists) {
-        transaction.set(ref, { pending: 0 });
+        transaction.set(ref, { backlog: 0 });
         return 0;
       }
-      const newCount = doc.data().pending - 1;
+      const newCount = doc.data().backlog - 1;
       transaction.update(ref, {
-        pending: newCount,
+        backlog: newCount,
       });
       return newCount;
     })

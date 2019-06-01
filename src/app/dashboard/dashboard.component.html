@@ -25,26 +25,17 @@
     <div class="row">
       <div class="col-md-4 project-column" dragula="DASHBOARD">
         <div class="col-header">
-          <span class="badge badge-pill badge-primary">3</span>&nbsp;&nbsp;
+          <span class="badge badge-pill badge-primary">{{ backlogTasks?.length }}</span>&nbsp;&nbsp;
           <strong>BACKLOG</strong>
         </div>
-        <div class="border rounded shadow-4 p-4 item" (click)="openTaskModal()">
+        <div *ngFor="let task of backlogTasks;" class="border rounded shadow-4 p-4 item" (click)="openTaskModal(task)">
           <div class="row align-items-center">
             <div class="col lh-5">
               <div style="padding-bottom: 1em">
-                <span class="badge badge-pill badge-secondary">Incomplete</span>
+                {{ task.name }}
               </div>
-              Create landing page variations for new website
-            </div>
-          </div>
-        </div>
-        <div class="border rounded shadow-4 p-4 item" (click)="openTaskModal()">
-          <div class="row align-items-center">
-            <div class="col lh-5">
-              <div style="padding-bottom: 1em">
-                <span class="badge badge-pill badge-secondary">Unsubmitted</span>
-              </div>
-              New logo design
+              <span class="badge badge-pill badge-secondary" *ngIf="!task.invoice">Pending</span>&nbsp;
+              <span class="badge badge-pill badge-secondary" *ngIf="!task.assignedTo">Unassigned</span>
             </div>
           </div>
         </div>
@@ -97,24 +88,24 @@
         </div>
         <form name="taskPreScreeningForm" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
           <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
-              <div class="col-md-12 text-left">
-                <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                      value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
-                </div>
-                <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                      value="Graphics Design">&nbsp; Graphics Design</label>
-                </div>
-                <div class="radio">
-                  <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                      value="Writing and Translation">&nbsp; Writing and Translation</label>
-                </div>
+            <div class="col-md-12 text-left">
+              <div class="radio">
+                <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                    value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
               </div>
-              <div class="col-md-12" style="text-align: left">
-                <div *ngIf="f.submitted && !selectedCategory"><small class="text-danger">Category is
-                    required</small></div>
+              <div class="radio">
+                <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                    value="Graphics Design">&nbsp; Graphics Design</label>
               </div>
+              <div class="radio">
+                <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
+                    value="Writing and Translation">&nbsp; Writing and Translation</label>
+              </div>
+            </div>
+            <div class="col-md-12" style="text-align: left">
+              <div *ngIf="f.submitted && !selectedCategory"><small class="text-danger">Category is
+                  required</small></div>
+            </div>
           </div>
           <div class="btn-group">
             <button type="submit" class="btn btn-secondary" (click)="completeTaskPreScreening()">Continue</button>
@@ -139,8 +130,8 @@
       <div class="modal-body text-center">
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
-        </div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+      </div>
     </div>
   </div>
 </div>
@@ -151,12 +142,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="taskModalLabel">Task</h5>
+        <h5 class="modal-title" id="taskModalLabel">{{ selectedTask?.name }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body text-center">
+      <div class="modal-body text-left">
+        <div class="alert alert-danger" role="alert" style="margin-bottom: 0">
+          We have not received funds for this project. To complete payment, please click <a (click)="onCheckoutButtonClick()" href="#">here</a>.
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>

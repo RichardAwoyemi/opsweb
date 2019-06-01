@@ -100,11 +100,11 @@
 }
 
 .swiper-button-next {
-  background-image: url('https://dls.tepapa.govt.nz/images/icons/png/icon-next-spot.png');
+  background-image: url('/assets/img/icon-next-spot.png');
 }
 
 .swiper-button-prev {
-  background-image: url('https://dls.tepapa.govt.nz/images/icons/png/icon-previous-spot.png');
+  background-image: url('/assets/img/icon-previous-spot.png');
 }
 
 .product-box:hover {

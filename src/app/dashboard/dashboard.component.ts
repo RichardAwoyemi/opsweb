@@ -5,7 +5,6 @@ import { UserService } from '../_services/user.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
-import { DataService } from '../_services/data.service';
 import { TaskService } from '../_services/task.service';
 
 declare var $;
@@ -23,13 +22,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   lastName: string;
   selectedLengthCategory = 'day';
   selectedCategory: string;
+  selectedTask: any;
   user$: Observable<any>;
-  prices: any;
   task: any;
+  prices: any;
   tasksExist: boolean;
   BAG = 'DASHBOARD';
+  backlogTasks = [];
 
   private userSubscription: Subscription;
+  private taskSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -51,15 +53,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxLoader.start();
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.anonymousPhotoURL = 'https://i.imgflip.com/1slnr0.jpg';
+    this.anonymousPhotoURL = '/assets/img/anonymous.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
 
     this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(result => {
       if (result) {
-        if (!result['onboardingComplete']) {
-          this.router.navigate(['dashboard']);
-        }
         this.setUser(result);
+      }
+    });
+
+    this.taskSubscription = this.taskService.getTasksByUserId(this.user.uid).subscribe(result => {
+      if (result) {
+        this.setTask(result);
       }
     });
 
@@ -78,12 +83,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.userData = result;
   }
 
+  setTask(result) {
+    this.logger.debug(`Number of tasks: ${result.length}`);
+    this.logger.debug('Setting tasks:');
+    for (let i = 0; i < result.length; i++) {
+      this.logger.debug(result[i]);
+      if (result[i].invoice == null || !result[i].assignedTo == null) {
+        this.backlogTasks.push(result[i]);
+      }
+    }
+  }
+
   openCreateTaskModal() {
     $(this.createTaskModal.nativeElement).modal('show');
   }
 
-  openTaskModal() {
-    $(this.taskModal.nativeElement).modal('show', { size: 'lg' });
+  onCheckoutButtonClick() {
+    $(this.taskModal.nativeElement).modal('hide');
+  }
+
+  openTaskModal(task: any) {
+    this.selectedTask = task;
+    this.logger.debug(`Active task: ${JSON.stringify(this.selectedTask)}`);
+    $(this.taskModal.nativeElement).modal('show');
   }
 
   closeCreateTaskModal() {
@@ -108,6 +130,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.taskSubscription) {
+      this.taskSubscription.unsubscribe();
     }
   }
 }

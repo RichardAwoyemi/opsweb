@@ -1,5 +1,4 @@
 export interface Task {
-  uid?: string;
   name: string;
   description: string;
   product: string;
@@ -7,6 +6,7 @@ export interface Task {
   completionDate: string;
   currency: string;
   carePlanPrice: number;
-  basketTotal: number;
-  basketTotalAdjustments: number;
+  price: number;
+  createdAt: Date;
+  createdBy?: string;
 }
