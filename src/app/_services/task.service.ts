@@ -14,6 +14,14 @@ export class TaskService {
 
   task: any;
   TASKS_ROOT = 'tasks';
+  carePlanMultiplier = 0.025;
+  relaxedCost = 0.75;
+  relaxedSpeed = 5;
+  standardCost = 1;
+  standardSpeed = 1;
+  primeCost = 1.5;
+  primeSpeed = 0.5;
+  speedOptions = ['Relaxed', 'Standard', 'Prime'];
 
   checkIfTasksExist() {
     this.logger.debug(`Checking to see if tasks exist`);
@@ -30,7 +38,7 @@ export class TaskService {
 
   createNewTask(user: User, product: String, name: String, description: String, similarApps: Array<any>,
     category: String, basket: Array<any>, completionDate: String, currency: String, carePlanPrice: Number,
-    basketTotal: Number, basketTotalAdjustments: Number) {
+    basketTotal: Number, deliverySpeed: Number) {
 
     const collectionPath = this.TASKS_ROOT;
 
@@ -42,9 +50,10 @@ export class TaskService {
       completionDate: completionDate,
       currency: currency,
       carePlanPrice: carePlanPrice,
-      price: basketTotal,
+      basketTotal: basketTotal,
       createdBy: user.uid,
-      createdAt: new Date()
+      createdAt: new Date(),
+      deliverySpeed: deliverySpeed
     };
 
     const newTaskRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
@@ -93,6 +102,14 @@ export class TaskService {
     this.logger.debug(`Getting tasks by user id ${userId}`);
     if (userId) {
       return this.afs.collection('tasks', ref => ref.where('createdBy', '==', userId)).valueChanges();
+    }
+  }
+
+  calculateCarePlanPrice(carePlanSelected, basketTotal) {
+    if (carePlanSelected === 'yes') {
+      return basketTotal * this.carePlanMultiplier;
+    } else {
+      return 0;
     }
   }
 }

@@ -94,25 +94,12 @@ export class NewTaskComponent implements OnInit {
   completionDate: string;
   differenceInDays: number;
   carePlanPrice = 0;
+  deliverySpeed = 1;
   carePlanSelected: string;
-  carePlanMultiplier = 0.025;
   costMultiplier = 1;
   speedMultiplier = 1;
-  relaxedCost = 0.75;
-  relaxedSpeed = 5;
-  standardCost = 1;
-  standardSpeed = 1;
-  primeCost = 1.5;
-  primeSpeed = 0.5;
-
-  step2Active: boolean;
-  step3Active: boolean;
-  step4Active: boolean;
-  step5Active: boolean;
-
-  value = this.costMultiplier;
-  speed = ['Relaxed', 'Standard', 'Prime'];
-  options: Options = {
+  sliderValue = this.costMultiplier;
+  sliderOptions: Options = {
     stepsArray: [
       { value: 0 },
       { value: 1 },
@@ -120,9 +107,14 @@ export class NewTaskComponent implements OnInit {
     ],
     hideLimitLabels: true,
     translate: (value: number): string => {
-      return this.speed[value];
+      return this.taskService.speedOptions[value];
     }
   };
+
+  step2Active: boolean;
+  step3Active: boolean;
+  step4Active: boolean;
+  step5Active: boolean;
 
   @ViewChild('resetModal') resetModal: ElementRef;
   @ViewChild('requestFeatureModal') requestFeatureModal: ElementRef;
@@ -207,7 +199,7 @@ export class NewTaskComponent implements OnInit {
   setCarePlan(value) {
     this.logger.debug(`Care plan set to: ${value}`);
     this.carePlanSelected = value;
-    this.carePlanPrice = this.calculateCarePlanPrice();
+    this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.basketTotal);
     this.logger.debug(`Care plan price set to: ${this.carePlanPrice}`);
   }
 
@@ -279,14 +271,6 @@ export class NewTaskComponent implements OnInit {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     this.logger.debug(`Difference in days: ${diffDays}`);
     return diffDays;
-  }
-
-  calculateCarePlanPrice() {
-    if (this.carePlanSelected === 'yes') {
-      return this.basketTotal * this.carePlanMultiplier;
-    } else {
-      return 0;
-    }
   }
 
   getFeatures(id) {
@@ -466,21 +450,24 @@ export class NewTaskComponent implements OnInit {
   onChangeDeliverySpeed(changeContext: ChangeContext): void {
     this.logger.debug(`Delivery speed set to: ${JSON.stringify(changeContext)}`);
     if (changeContext.value === 0) {
-      this.costMultiplier = this.relaxedCost;
-      this.speedMultiplier = this.relaxedSpeed;
+      this.costMultiplier = this.taskService.relaxedCost;
+      this.speedMultiplier = this.taskService.relaxedSpeed;
+      this.deliverySpeed = changeContext.value;
     }
     if (changeContext.value === 1) {
-      this.costMultiplier = this.standardCost;
-      this.speedMultiplier = this.standardSpeed;
+      this.costMultiplier = this.taskService.standardCost;
+      this.speedMultiplier = this.taskService.standardSpeed;
+      this.deliverySpeed = changeContext.value;
     }
     if (changeContext.value === 2) {
-      this.costMultiplier = this.primeCost;
-      this.speedMultiplier = this.primeSpeed;
+      this.costMultiplier = this.taskService.primeCost;
+      this.speedMultiplier = this.taskService.primeSpeed;
+      this.deliverySpeed = changeContext.value;
     }
     this.basketTotal = this.calculateBasketTotal('gbp');
     this.completionDate = this.calculateCompletionDate();
     this.differenceInDays = this.calculateDateDifference();
-    this.carePlanPrice = this.calculateCarePlanPrice();
+    this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.basketTotal);
   }
 
   onCompleteCheckoutClick(): void {
@@ -499,7 +486,7 @@ export class NewTaskComponent implements OnInit {
       this.currency,
       this.carePlanPrice,
       this.basketTotal,
-      this.basketTotalAdjustments);
+      this.deliverySpeed);
     this.router.navigate(['checkout']);
   }
 

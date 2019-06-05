@@ -57,7 +57,8 @@ import { ReferralComponent } from './referral/referral.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { TaskService } from './_services/task.service';
 import { DragulaModule } from 'ng2-dragula';
-import { BlockSpecialCharacterDirective } from './_directives/block.special.character.directive';
+import { BlockSpecialCharacterDirective } from './_directives/block-special-character.directive';
+import { TruncatePipeDirective } from './_directives/truncate-pipe.directive';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { CheckoutComponent } from './checkout/checkout.component';
 
@@ -94,6 +95,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ReferralComponent,
     NewTaskComponent,
     BlockSpecialCharacterDirective,
+    TruncatePipeDirective,
     CheckoutComponent
   ],
   entryComponents: [

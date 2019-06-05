@@ -328,7 +328,7 @@
                     <h5 class="card-title">Project Speed</h5>
                     <small>Completion Date: {{ completionDate }}</small>
                     <p style="padding-top: 1.5em">
-                      <ng5-slider [(value)]="value" [options]="options" (userChange)="onChangeDeliverySpeed($event)">
+                      <ng5-slider [(value)]="sliderValue" [options]="sliderOptions" (userChange)="onChangeDeliverySpeed($event)">
                       </ng5-slider>
                     </p>
                   </div>

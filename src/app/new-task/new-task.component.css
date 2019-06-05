@@ -151,19 +151,6 @@
   cursor: pointer;
 }
 
-.sidebar-scroll {
-  overflow-y: scroll; 
-  overflow-x: hidden;
-}
-
-.sidebar-scroll::-webkit-scrollbar {
-  width: 2px;
-}
- 
-.sidebar-scroll::-webkit-scrollbar-thumb {
-  background: #DDE2E8; 
-}
-
 .categories-header {
   background: #fff; 
   border-bottom: 1px solid #f0f0f0; 

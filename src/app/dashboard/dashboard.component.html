@@ -32,10 +32,12 @@
           <div class="row align-items-center">
             <div class="col lh-5">
               <div style="padding-bottom: 1em">
-                {{ task.name }}
+                <strong>{{ task.name }}</strong>
               </div>
-              <span class="badge badge-pill badge-secondary" *ngIf="!task.invoice">Pending</span>&nbsp;
-              <span class="badge badge-pill badge-secondary" *ngIf="!task.assignedTo">Unassigned</span>
+              <span class="badge badge-pill badge-secondary"
+                *ngIf="!task?.invoice || !task?.assignedTo">pending</span>&nbsp;
+              <span class="badge badge-pill badge-primary" *ngIf="task.product">{{ task.product }}</span>&nbsp;
+              <span class="badge badge-pill badge-info" *ngIf="task.category">{{ task.category }}</span>
             </div>
           </div>
         </div>
@@ -141,18 +143,74 @@
   aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="taskModalLabel">{{ selectedTask?.name }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="modal-header" *ngIf="!selectedTask?.invoice || !selectedTask?.assignedTo">
+        <input class="form-control form-control-lg" type="text" placeholder="Enter a project name"
+          value="{{ selectedTask?.name }}">
       </div>
-      <div class="modal-body text-left">
-        <div class="alert alert-danger" role="alert" style="margin-bottom: 0">
-          We have not received funds for this project. To complete payment, please click <a (click)="onCheckoutButtonClick()" href="#">here</a>.
+      <div class="modal-body text-left" [ngStyle]="{ 'max-height': innerHeight - 190 + 'px' }"
+        style="padding-top: 0px; padding-bottom: 0px">
+        <!-- Backlog task -->
+        <div *ngIf="!selectedTask?.invoice || !selectedTask?.assignedTo"
+          [ngStyle]="{ 'max-height': innerHeight - 280 + 'px' }" class="sidebar-scroll">
+          <div style="padding-right: 1em;">
+            <div class="alert alert-danger" role="alert" style="margin-top: 1.5em; margin-bottom: 0">
+              We have not received funds for this project. To complete payment, please click <a
+                (click)="onCheckoutButtonClick()" href="#">here</a>.
+            </div>
+            <div style="padding-top: 1em; text-align: right">
+              <span class="badge badge-pill badge-secondary"
+                *ngIf="!selectedTask?.invoice || !selectedTask?.assignedTo">pending</span>&nbsp;
+              <span class="badge badge-pill badge-primary"
+                *ngIf="selectedTask.product">{{ selectedTask.product }}</span>&nbsp;
+              <span class="badge badge-pill badge-info" *ngIf="selectedTask.category">{{ selectedTask.category }}</span>
+            </div>
+            <div class="form-group" style="padding-top: 0.75em">
+              <strong>Description</strong>
+              <textarea class="form-control" placeholder="Provide a description"
+                rows="3">{{ selectedTask?.description }}</textarea>
+            </div>
+            <div class="form-group" style="padding-top: 0.75em">
+              <strong>Similar Apps</strong>
+              <tag-input [onlyFromAutocomplete]="true" [maxItems]="3" placeholder=""
+                [(ngModel)]="selectedTask.similarApps">
+                <tag-input-dropdown [zIndex]="99999" [focusFirstElement]="true" [autocompleteItems]="similarApps"
+                  [dynamicUpdate]="false">
+                </tag-input-dropdown>
+              </tag-input>
+            </div>
+            <div class="form-group" style="padding-top: 0.75em">
+              <div class="row">
+                <div class="col-md-6">
+                  <strong>Delivery Speed</strong>
+                  <div style="padding-top: 1em; padding-bottom: 0.5em">
+                    <ng5-slider [(value)]="sliderValue" [options]="sliderOptions" [manualRefresh]="manualRefresh">
+                    </ng5-slider>
+                  </div>
+                  <small>Completion Date: {{ selectedTask.completionDate }}</small>
+                </div>
+                <div class="col-md-6">
+                  <strong>Opsonion Care</strong>
+                  <p style="padding-top: 0.5em; font-size: 0.75em">Add Opsonion Care for
+                    &pound;{{ selectedTask.basketTotal * taskService.carePlanMultiplier | number : '1.2-2' }} a month?
+                  </p>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <button type="button" class="btn btn-block" (click)="setCarePlan('yes')"
+                        [ngClass]="setCarePlanBtnColour('yes')">Yes</button>
+                    </div>
+                    <div class="col-md-4">
+                      <button type="button" class="btn btn-block" (click)="setCarePlan('no')"
+                        [ngClass]="setCarePlanBtnColour('no')">No</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
       </div>
     </div>
