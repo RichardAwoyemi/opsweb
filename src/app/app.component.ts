@@ -94,7 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.logger.debug(user);
     this.logger.debug('Caching: ' + user.photoURL);
     this.user = {
-      photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+      photoURL: '/assets/img/anonymous.jpg'
     };
 
     this.userSubscription = this.userService.getUserById(user.uid).subscribe(data => {
@@ -111,7 +111,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (!this.onboardingComplete || !this.accountType) {
         this.router.navigate(['onboarding']);
       } else {
-        this.router.navigate(['dashboard']);
+        // this.router.navigate(['dashboard']);
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
@@ -18,7 +18,7 @@ declare var $;
   templateUrl: './new-task.component.html',
   styleUrls: ['./new-task.component.css']
 })
-export class NewTaskComponent implements OnInit {
+export class NewTaskComponent implements OnInit, OnDestroy {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private scrollToService: ScrollToService,
@@ -166,6 +166,14 @@ export class NewTaskComponent implements OnInit {
       }
     });
 
+    this.webCustomAuthSubcription = this.dataService.getAllWebCustomAuth().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom auth:');
+        this.logger.debug(response);
+        this.webCustomAuth = response;
+      }
+    });
+
     this.similarAppsSubscription = this.dataService.getAllSimilarApps().subscribe(response => {
       if (response) {
         this.logger.debug('Similar apps:');
@@ -227,55 +235,12 @@ export class NewTaskComponent implements OnInit {
     }
   }
 
-  calculateBasketTotal(currency): number {
-    let total = 0;
-    for (let i = 0; i < this.basket.length; i++) {
-      if (currency = 'gbp') {
-        total = total + this.basket[i]['price_gbp'];
-      }
-    }
-    const basketTotal = total * this.costMultiplier;
-    this.basketTotalAdjustments = total - (total * this.costMultiplier);
-    this.logger.debug(`Basket total: ${basketTotal}`);
-    this.logger.debug(`Basket total adjustments: ${this.basketTotalAdjustments}`);
-    return basketTotal;
-  }
-
-  calculateCompletionDate() {
-    let totalWeeks = 0;
-    for (let i = 0; i < this.basket.length; i++) {
-      totalWeeks = totalWeeks + this.basket[i]['time_weeks'];
-    }
-    this.logger.debug(`Weeks total: ${totalWeeks}`);
-    const totalDays = Math.round(totalWeeks * 7 * this.speedMultiplier);
-    const completionDate = new Date();
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-      'September', 'October', 'November', 'December'];
-    completionDate.setDate(completionDate.getDate() + totalDays);
-    return `${completionDate.getDate()} ${monthNames[completionDate.getMonth() + 1]} ${completionDate.getFullYear()}`;
-  }
-
-  calculateDateDifference() {
-    let totalWeeks = 0;
-    for (let i = 0; i < this.basket.length; i++) {
-      totalWeeks = totalWeeks + this.basket[i]['time_weeks'];
-    }
-    this.logger.debug(`Weeks total: ${totalWeeks}`);
-    const expectedCompletionDate = new Date();
-    const adjustedCompletionDate = new Date();
-    const expectedTotalDays = Math.round(totalWeeks * 7);
-    const adjustedtotalDays = Math.round(totalWeeks * 7 * this.speedMultiplier);
-    expectedCompletionDate.setDate(expectedCompletionDate.getDate() + expectedTotalDays);
-    adjustedCompletionDate.setDate(adjustedCompletionDate.getDate() + adjustedtotalDays);
-    const diffTime = Math.abs(adjustedCompletionDate.getTime() - expectedCompletionDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    this.logger.debug(`Difference in days: ${diffDays}`);
-    return diffDays;
-  }
-
   getFeatures(id) {
     if (id === 'web-custom-alert') {
       return this.webCustomAlert;
+    }
+    if (id === 'web-custom-auth') {
+      return this.webCustomAuth;
     }
   }
 
@@ -421,8 +386,8 @@ export class NewTaskComponent implements OnInit {
     this.logger.debug(`Basket before feature added: ${JSON.stringify(this.basket)}`);
     feature.in_basket = true;
     this.basket.push(feature);
-    this.basketTotal = this.calculateBasketTotal('gbp');
-    this.completionDate = this.calculateCompletionDate();
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
     this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
   }
 
@@ -437,14 +402,14 @@ export class NewTaskComponent implements OnInit {
         this.basket.splice(i, 1);
       }
     }
-    this.basketTotal = this.calculateBasketTotal(this.currency);
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
     this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
   }
 
   onBasketRemoveButtonClick(i, basketItem): void {
     this.logger.debug(`Deleting item at index ${i}: ${JSON.stringify(basketItem)}`);
     this.basket.splice(i, 1);
-    this.basketTotal = this.calculateBasketTotal('gbp');
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
   }
 
   onChangeDeliverySpeed(changeContext: ChangeContext): void {
@@ -464,9 +429,9 @@ export class NewTaskComponent implements OnInit {
       this.speedMultiplier = this.taskService.primeSpeed;
       this.deliverySpeed = changeContext.value;
     }
-    this.basketTotal = this.calculateBasketTotal('gbp');
-    this.completionDate = this.calculateCompletionDate();
-    this.differenceInDays = this.calculateDateDifference();
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
+    this.differenceInDays = this.taskService.calculateDateDifference(this.basket, this.speedMultiplier);
     this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.basketTotal);
   }
 
@@ -523,6 +488,24 @@ export class NewTaskComponent implements OnInit {
         this.logger.debug('Last slide is not in the viewport');
         return false;
       }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.webCategoriesSubscription) {
+      this.webCategoriesSubscription.unsubscribe();
+    }
+    if (this.webCustomSubscription) {
+      this.webCustomSubscription.unsubscribe();
+    }
+    if (this.webCustomAlertSubscription) {
+      this.webCustomAlertSubscription.unsubscribe();
+    }
+    if (this.webCustomAuthSubcription) {
+      this.webCustomAuthSubcription.unsubscribe();
+    }
+    if (this.similarAppsSubscription) {
+      this.similarAppsSubscription.unsubscribe();
     }
   }
 }

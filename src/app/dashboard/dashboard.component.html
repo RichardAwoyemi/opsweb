@@ -147,16 +147,16 @@
         <input class="form-control form-control-lg" type="text" placeholder="Enter a project name"
           value="{{ selectedTask?.name }}">
       </div>
-      <div class="modal-body text-left" [ngStyle]="{ 'max-height': innerHeight - 190 + 'px' }"
-        style="padding-top: 0px; padding-bottom: 0px">
-        <!-- Backlog task -->
-        <div *ngIf="!selectedTask?.invoice || !selectedTask?.assignedTo"
-          [ngStyle]="{ 'max-height': innerHeight - 280 + 'px' }" class="sidebar-scroll">
-          <div style="padding-right: 1em;">
-            <div class="alert alert-danger" role="alert" style="margin-top: 1.5em; margin-bottom: 0">
-              We have not received funds for this project. To complete payment, please click <a
-                (click)="onCheckoutButtonClick()" href="#">here</a>.
+      <div class="modal-body text-left" [ngStyle]="{ 'max-height': innerHeight + 'px' }"
+        style="padding-top: 0px; padding-bottom: 0px;">
+        <div class="row">
+          <div class="col-md-6">
+            <div style="padding-top: 1em; padding-bottom: 1em; text-align: left">
+              <small><span style="color: #000; font-weight: bold">Price:</span> &pound;{{ basketTotal | number : '1.2-2' }}<br>
+                <span style="color: #000; font-weight: bold">Delivery Date:</span> {{ completionDate }}</small>
             </div>
+          </div>
+          <div class="col-md-6">
             <div style="padding-top: 1em; text-align: right">
               <span class="badge badge-pill badge-secondary"
                 *ngIf="!selectedTask?.invoice || !selectedTask?.assignedTo">pending</span>&nbsp;
@@ -164,45 +164,139 @@
                 *ngIf="selectedTask.product">{{ selectedTask.product }}</span>&nbsp;
               <span class="badge badge-pill badge-info" *ngIf="selectedTask.category">{{ selectedTask.category }}</span>
             </div>
-            <div class="form-group" style="padding-top: 0.75em">
-              <strong>Description</strong>
-              <textarea class="form-control" placeholder="Provide a description"
-                rows="3">{{ selectedTask?.description }}</textarea>
+          </div>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tab-details">Details</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab-features">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab-extras">Extras</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab-checkout">Checkout</a>
+          </li>
+        </ul>
+        <div class="tab-content p-4 sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 350 + 'px' }">
+          <div class="tab-pane fade active show" id="tab-details">
+            <div class="row" style="margin-bottom: 1em;">
+              <div class="col-md-6" style="margin-bottom: 1em; padding-left: 0em">
+                <strong>Description</strong>
+                <textarea class="form-control" placeholder="Provide a description"
+                  rows="3">{{ selectedTask?.description }}</textarea>
+              </div>
+              <div class="col-md-6">
+                <strong>Similar Apps</strong>
+                <tag-input [onlyFromAutocomplete]="true" [maxItems]="3" placeholder=""
+                  [(ngModel)]="selectedTask.similarApps">
+                  <tag-input-dropdown [zIndex]="99999" [focusFirstElement]="true" [autocompleteItems]="similarApps"
+                    [dynamicUpdate]="false">
+                  </tag-input-dropdown>
+                </tag-input>
+              </div>
             </div>
-            <div class="form-group" style="padding-top: 0.75em">
-              <strong>Similar Apps</strong>
-              <tag-input [onlyFromAutocomplete]="true" [maxItems]="3" placeholder=""
-                [(ngModel)]="selectedTask.similarApps">
-                <tag-input-dropdown [zIndex]="99999" [focusFirstElement]="true" [autocompleteItems]="similarApps"
-                  [dynamicUpdate]="false">
-                </tag-input-dropdown>
-              </tag-input>
-            </div>
-            <div class="form-group" style="padding-top: 0.75em">
-              <div class="row">
-                <div class="col-md-6">
-                  <strong>Delivery Speed</strong>
-                  <div style="padding-top: 1em; padding-bottom: 0.5em">
-                    <ng5-slider [(value)]="sliderValue" [options]="sliderOptions" [manualRefresh]="manualRefresh">
-                    </ng5-slider>
+          </div>
+          <div class="tab-pane fade" id="tab-features">
+            <div class="row">
+              <div class="col-md-4" style="padding-left: 0em">
+                <div class="sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 390 + 'px' }"
+                  style="margin-top: -1rem; margin-bottom: -1rem">
+                  <div *ngIf="selectedTask.category == 'custom'">
+                    <div *ngFor="let custom of webCustomFeatures">
+                      <div class="card card-body card-highlight" (click)="setFeature(custom)"
+                        style="padding-top: 0.5rem; padding-bottom: 0.5rem;"
+                        [style.background-color]="setFeatureBgColor(custom)">
+                        <div class="row">
+                          <div class="col-md-8" style="font-size: 11px; padding-top: 5px;">
+                            {{ custom.name }}
+                          </div>
+                          <div class="col-md-4" style="text-align: right;">
+                            <button class="btn btn-xs btn-success" (click)="onAddFeatureToBasketButtonClick(custom)"
+                              style="width: 78px" *ngIf="!isFeatureInBasket(custom)">Add</button>
+                            <button class="btn btn-xs btn-danger" (click)="onRemoveFeatureFromBasketButtonClick(custom)"
+                              style="width: 78px" *ngIf="isFeatureInBasket(custom)">Remove</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <small>Completion Date: {{ selectedTask.completionDate }}</small>
                 </div>
-                <div class="col-md-6">
-                  <strong>Opsonion Care</strong>
-                  <p style="padding-top: 0.5em; font-size: 0.75em">Add Opsonion Care for
-                    &pound;{{ selectedTask.basketTotal * taskService.carePlanMultiplier | number : '1.2-2' }} a month?
-                  </p>
-                  <div class="row">
-                    <div class="col-md-4">
-                      <button type="button" class="btn btn-block" (click)="setCarePlan('yes')"
-                        [ngClass]="setCarePlanBtnColour('yes')">Yes</button>
-                    </div>
-                    <div class="col-md-4">
-                      <button type="button" class="btn btn-block" (click)="setCarePlan('no')"
-                        [ngClass]="setCarePlanBtnColour('no')">No</button>
+              </div>
+              <div class="col-md-8">
+                <!-- If empty -->
+                <div *ngIf="!featureSelected" style="height: 100%">
+                  <div class="container h-100">
+                    <div class="row h-100 justify-content-center align-items-center">
+                      <div class="col-md-12 text-center">
+                        <span style="text-align: center; font-size: 10px;">
+                          There's nothing to see here.
+                        </span>
+                      </div>
                     </div>
                   </div>
+                </div>
+                <!-- When a feature is selected -->
+                <div *ngIf="featureSelected" style="height: 100%">
+                  <div class="container h-100">
+                    <div class="row" style="padding-top: 0; padding-bottom: 0">
+                      <div class="col-md-6 text-center">
+                        <img src="assets/img/{{ featureSelected.id }}.png"
+                          [ngStyle]="{ 'max-height': innerHeight - 422 + 'px' }"><br>
+                      </div>
+                      <div class="col-md-6">
+                        <strong>{{ featureSelected.name }}</strong>
+                        <br>
+                        <small>&pound; {{ featureSelected.price_gbp | number : '1.2-2' }}</small>
+                        <hr style="margin-top: 0.5em; margin-bottom: 0.5em">
+                        <small>{{ featureSelected.description }}</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="tab-extras">
+            <div class="row">
+              <div class="col-md-6" style="padding-left: 0em">
+                <strong>Delivery Speed</strong>
+                <div style="padding-top: 1em; padding-bottom: 0.5em;">
+                  <select class="form-control" [(ngModel)]="deliverySpeed" name="deliverySpeed"
+                    (change)="onChangeDeliverySpeed($event.target.value)">
+                    <option *ngFor="let speed of this.taskService.speedOptions; let i = index" [ngValue]="i">
+                      {{ speed }}</option>
+                  </select>
+                </div>
+                <small>Completion Date: {{ completionDate }}</small>
+              </div>
+              <div class="col-md-6">
+                <strong>Opsonion Care</strong>
+                <p style="padding-top: 0.5em; font-size: 0.75em">Add Opsonion Care for
+                  &pound;{{ basketTotal * taskService.carePlanMultiplier | number : '1.2-2' }} a month?
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-block" (click)="setCarePlan('yes')"
+                      [ngClass]="setCarePlanBtnColour('yes')">Yes</button>
+                  </div>
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-block" (click)="setCarePlan('no')"
+                      [ngClass]="setCarePlanBtnColour('no')">No</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="tab-checkout">
+            <div class="row">
+              <div class="col-md-12" style="margin-bottom: 1em; padding-left: 0em">
+                <div class="alert alert-danger" role="alert"
+                  *ngIf="!selectedTask?.invoice || !selectedTask?.assignedTo">
+                  <small>We have not received funds for this project. To complete payment, please click <a
+                      (click)="onCheckoutButtonClick()" href="#">here</a></small>.
                 </div>
               </div>
             </div>
@@ -215,4 +309,3 @@
       </div>
     </div>
   </div>
-</div>

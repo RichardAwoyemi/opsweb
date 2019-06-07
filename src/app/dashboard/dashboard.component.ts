@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
 import { TaskService } from '../_services/task.service';
 import { DataService } from '../_services/data.service';
-import { Options } from 'ng5-slider';
 
 declare var $;
 
@@ -22,6 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
+  featureSelected: string;
   selectedLengthCategory = 'day';
   selectedCategory: string;
   selectedTask = {
@@ -31,32 +31,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
   };
   user$: Observable<any>;
   task: any;
+  webCustomFeatures: any;
   similarApps: any;
   tasksExist: boolean;
   BAG = 'DASHBOARD';
   backlogTasks = [];
+  basket = [];
+  basketTotal = 0;
+  basketTotalAdjustments = 0;
   innerHeight: number;
-  carePlanSelected: string;
+  completionDate: string;
   carePlanPrice = 0;
+  carePlanSelected: string;
+  differenceInDays: number;
+  deliverySpeed = 1;
   costMultiplier = 1;
   speedMultiplier = 1;
-  sliderValue: number;
-  sliderOptions: Options = {
-    stepsArray: [
-      { value: 0 },
-      { value: 1 },
-      { value: 2 },
-    ],
-    hideLimitLabels: true,
-    translate: (value: number): string => {
-      return this.taskService.speedOptions[value];
-    }
-  };
 
-  manualRefresh: EventEmitter<void> = new EventEmitter<void>();
   private userSubscription: Subscription;
   private taskSubscription: Subscription;
   private similarAppsSubscription: Subscription;
+  private webCustomFeaturesSubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -95,6 +90,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.webCustomFeaturesSubscription = this.dataService.getAllWebCustomFeatures().subscribe(response => {
+      if (response) {
+        const merged = [].concat.apply([], response);
+        this.logger.debug('Web custom features:');
+        this.logger.debug(merged);
+        this.webCustomFeatures = merged;
+      }
+    });
+
     this.similarAppsSubscription = this.dataService.getAllSimilarApps().subscribe(response => {
       if (response) {
         this.logger.debug('Similar apps:');
@@ -105,6 +109,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.tasksExist = this.taskService.checkIfTasksExist();
     this.ngxLoader.stop();
+  }
+
+  setFeature(feature) {
+    this.logger.debug(`Feature selected: ${JSON.stringify(feature)}`);
+    this.featureSelected = feature;
+  }
+
+  setFeatureBgColor(feature) {
+    if (this.featureSelected) {
+      if ((feature['in_basket'] || !feature['in_basket']) && (feature['id'] === this.featureSelected['id'])) {
+        return '#E8F0FE';
+      }
+    }
+    if (feature['in_basket']) {
+      return '#E5FFE5';
+    }
+    if (!feature['in_basket']) {
+      return '#FFFFFF';
+    }
+  }
+
+  isFeatureInBasket(feature): boolean {
+    const found = this.basket.some(e => e['id'] === feature.id);
+    return found;
   }
 
   onSelectedCategoryChange(event) {
@@ -143,10 +171,60 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.selectedTask['carePlanPrice'] > 0) {
       this.carePlanSelected = 'yes';
     }
-    this.sliderValue = this.selectedTask['deliverySpeed'];
-    this.manualRefresh.emit();
+
+    if (this.selectedTask['product'] === 'web' && this.selectedTask['category'] === 'custom') {
+      this.basket = this.taskService.setBasketItems(this.selectedTask['features'], this.webCustomFeatures);
+    }
+
+    this.deliverySpeed = this.selectedTask['deliverySpeed'];
+
+    if (this.deliverySpeed === 0) {
+      this.costMultiplier = this.taskService.relaxedCost;
+      this.speedMultiplier = this.taskService.relaxedSpeed;
+    }
+    if (this.deliverySpeed === 1) {
+      this.costMultiplier = this.taskService.standardCost;
+      this.speedMultiplier = this.taskService.standardSpeed;
+    }
+    if (this.deliverySpeed === 2) {
+      this.costMultiplier = this.taskService.primeCost;
+      this.speedMultiplier = this.taskService.primeSpeed;
+    }
+
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
+    this.differenceInDays = this.taskService.calculateDateDifference(this.basket, this.speedMultiplier);
+    this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.basketTotal);
+
     this.logger.debug(`Active task: ${JSON.stringify(this.selectedTask)}`);
+    this.logger.debug(`Completion date was ${this.selectedTask['completionDate']}, now ${this.completionDate}`);
+    this.logger.debug(`Care plan price was ${this.selectedTask['carePlanPrice']}, now ${this.carePlanPrice}`);
     $(this.taskModal.nativeElement).modal('show');
+  }
+
+  onChangeDeliverySpeed(e): void {
+    let value = e.slice(0, e.indexOf(':'));
+    value = parseInt(value, 10);
+    this.logger.debug(`Delivery speed set to: ${(value)}`);
+    if (value === 0) {
+      this.costMultiplier = this.taskService.relaxedCost;
+      this.speedMultiplier = this.taskService.relaxedSpeed;
+      this.deliverySpeed = value;
+    }
+    if (value === 1) {
+      this.costMultiplier = this.taskService.standardCost;
+      this.speedMultiplier = this.taskService.standardSpeed;
+      this.deliverySpeed = value;
+    }
+    if (value === 2) {
+      this.costMultiplier = this.taskService.primeCost;
+      this.speedMultiplier = this.taskService.primeSpeed;
+      this.deliverySpeed = value;
+    }
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
+    this.differenceInDays = this.taskService.calculateDateDifference(this.basket, this.speedMultiplier);
+    this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.basketTotal);
   }
 
   closeCreateTaskModal() {
@@ -156,12 +234,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completeTaskPreScreening() {
     if (this.selectedCategory) {
       this.closeCreateTaskModal();
-
       this.task = {
         category: this.selectedCategory,
-        status: 'incomplete'
       };
-
       this.logger.debug(this.task);
       localStorage.setItem('tasks', JSON.stringify(this.task));
       this.router.navigate(['new-task']);
@@ -194,6 +269,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     if (this.similarAppsSubscription) {
       this.similarAppsSubscription.unsubscribe();
+    }
+    if (this.webCustomFeaturesSubscription) {
+      this.webCustomFeaturesSubscription.unsubscribe();
     }
   }
 }

@@ -1,26 +1,44 @@
 [
   {
-    "id": "email-login",
-    "name": "Email Login"
+    "id": "web-email-login",
+    "name": "Email Login",
+    "description": "Login or register using an email address account.",
+    "price_gbp": 350,
+    "time_weeks": 0.25
   },
   {
-    "id": "facebook-login",
-    "name": "Facebook Login"
+    "id": "web-facebook-login",
+    "name": "Facebook Login",
+    "description": "Login or register using a Facebook account.",
+    "price_gbp": 150,
+    "time_weeks": 0.25
   },
   {
-    "id": "google-login",
-    "name": "Google Login"
+    "id": "web-google-login",
+    "name": "Google Login",
+    "description": "Login or register using a Google account.",
+    "price_gbp": 120,
+    "time_weeks": 0.25
   },
   {
-    "id": "guest-login",
-    "name": "Guest Login"
+    "id": "web-guest-login",
+    "name": "Guest Login",
+    "description": "A feature to allow users to gain limited access without registration.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
   },
   {
-    "id": "twitter-login",
-    "name": "Twitter Login"
+    "id": "web-twitter-login",
+    "name": "Twitter Login",
+    "description": "Login or register using a Twitter account.",
+    "price_gbp": 120,
+    "time_weeks": 0.25
   },
   {
-    "id": "forgot-password",
-    "name": "Forgot Password"
+    "id": "web-forgot-password",
+    "name": "Forgot Password",
+    "description": "A feature to reset lost or forgotten passwords.",
+    "price_gbp": 330,
+    "time_weeks": 0.5
   }
 ]

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 @Injectable()
 export class DataService {
@@ -16,8 +16,11 @@ export class DataService {
   private webCategoriesDataPath = './assets/data/web-categories.json';
   public webCustom: any;
   private webCustomDataPath = './assets/data/web-custom.json';
+  public webCustomFeatures: any;
   public webCustomAlert: any;
   private webCustomAlertDataPath = './assets/data/web-custom-alert.json';
+  public webCustomAuth: any;
+  private webCustomAuthDataPath = './assets/data/web-custom-auth.json';
   public similarApps: any;
   private similarAppsDataPath = './assets/data/similar-apps.json';
 
@@ -31,6 +34,7 @@ export class DataService {
     this.webCategories = this.httpClient.get(this.webCategoriesDataPath);
     this.webCustom = this.httpClient.get(this.webCustomDataPath);
     this.webCustomAlert = this.httpClient.get(this.webCustomAlertDataPath);
+    this.webCustomAuth = this.httpClient.get(this.webCustomAuthDataPath);
     this.similarApps = this.httpClient.get(this.similarAppsDataPath);
   }
 
@@ -60,6 +64,17 @@ export class DataService {
 
   public getAllWebCustomAlert(): Observable<any> {
     return this.webCustomAlert;
+  }
+
+  public getAllWebCustomAuth(): Observable<any> {
+    return this.webCustomAuth;
+  }
+
+  public getAllWebCustomFeatures(): Observable<any> {
+    const webCustomFeatures = [];
+    webCustomFeatures.push(this.webCustomAlert);
+    webCustomFeatures.push(this.webCustomAuth);
+    return combineLatest([this.webCustomAlert, this.webCustomAuth]);
   }
 
   public getAllSimilarApps(): Observable<any> {

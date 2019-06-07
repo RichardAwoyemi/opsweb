@@ -112,4 +112,64 @@ export class TaskService {
       return 0;
     }
   }
+
+  calculateDateDifference(basket, speedMultiplier) {
+    let totalWeeks = 0;
+    for (let i = 0; i < basket.length; i++) {
+      totalWeeks = totalWeeks + basket[i]['time_weeks'];
+    }
+    this.logger.debug(`Weeks total: ${totalWeeks}`);
+    const expectedCompletionDate = new Date();
+    const adjustedCompletionDate = new Date();
+    const expectedTotalDays = Math.round(totalWeeks * 7);
+    const adjustedtotalDays = Math.round(totalWeeks * 7 * speedMultiplier);
+    expectedCompletionDate.setDate(expectedCompletionDate.getDate() + expectedTotalDays);
+    adjustedCompletionDate.setDate(adjustedCompletionDate.getDate() + adjustedtotalDays);
+    const diffTime = Math.abs(adjustedCompletionDate.getTime() - expectedCompletionDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    this.logger.debug(`Difference in days: ${diffDays}`);
+    return diffDays;
+  }
+
+  calculateCompletionDate(basket, speedMultiplier) {
+    let totalWeeks = 0;
+    for (let i = 0; i < basket.length; i++) {
+      totalWeeks = totalWeeks + basket[i]['time_weeks'];
+    }
+    const totalDays = Math.round(totalWeeks * 7 * speedMultiplier);
+    const completionDate = new Date();
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+      'September', 'October', 'November', 'December'];
+    completionDate.setDate(completionDate.getDate() + totalDays);
+    return `${completionDate.getDate()} ${monthNames[completionDate.getMonth() + 1]} ${completionDate.getFullYear()}`;
+  }
+
+  calculateBasketTotal(currency, basket, costMultiplier): number {
+    let total = 0;
+    this.logger.debug(`Basket size: ${basket.length}`);
+    for (let i = 0; i < basket.length; i++) {
+      if (currency = 'gbp') {
+        total = total + basket[i]['price_gbp'];
+      }
+    }
+    const basketTotal = total * costMultiplier;
+    const basketTotalAdjustments = total - (total * costMultiplier);
+    this.logger.debug(`Basket total: ${basketTotal}`);
+    this.logger.debug(`Basket total adjustments: ${basketTotalAdjustments}`);
+    return basketTotal;
+  }
+
+  setBasketItems(features, webCustomFeatures) {
+    const basket = [];
+    for (let i = 0; i < features.length; i++) {
+      for (let j = 0; j < webCustomFeatures.length; j++) {
+        if (features[i] === webCustomFeatures[j].id) {
+          webCustomFeatures[j]['in_basket'] = true;
+          basket.push(webCustomFeatures[j]);
+        }
+      }
+    }
+    this.logger.debug(`Basket items: ${JSON.stringify(basket)}`);
+    return basket;
+  }
 }

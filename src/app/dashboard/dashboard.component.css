@@ -31,5 +31,14 @@
 }
 
 #taskModal > .modal-dialog { 
-  max-width: 80% !important;
+  max-width: 90% !important;
+}
+
+.card-highlight:hover {
+  background-color: #E8F0FE !important;
+  cursor: pointer !important;
+}
+
+.card-body {
+  border-radius: 0px;
 }
