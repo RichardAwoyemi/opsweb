@@ -190,6 +190,14 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.webCustomGamesSubscription = this.dataService.getAllWebCustomGames().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom games:');
+        this.logger.debug(response);
+        this.webCustomGames = response;
+      }
+    });
+
     this.similarAppsSubscription = this.dataService.getAllSimilarApps().subscribe(response => {
       if (response) {
         this.logger.debug('Similar apps:');
@@ -263,6 +271,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (id === 'web-custom-finance') {
       return this.webCustomFinance;
+    }
+    if (id === 'web-custom-games') {
+      return this.webCustomGames;
     }
   }
 
@@ -528,6 +539,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (this.webCustomFinanceSubscription) {
       this.webCustomFinanceSubscription.unsubscribe();
+    }
+    if (this.webCustomGamesSubscription) {
+      this.webCustomGamesSubscription.unsubscribe();
     }
     if (this.similarAppsSubscription) {
       this.similarAppsSubscription.unsubscribe();
