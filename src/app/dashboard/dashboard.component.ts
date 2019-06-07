@@ -116,6 +116,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.featureSelected = feature;
   }
 
+  onAddFeatureToBasketButtonClick(feature) {
+    this.logger.debug(`Basket before feature added: ${JSON.stringify(this.basket)}`);
+    feature.in_basket = true;
+    this.basket.push(feature);
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
+    this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
+  }
+
+  onRemoveFeatureFromBasketButtonClick(feature) {
+    this.setFeature(feature);
+    this.logger.debug(`Basket before feature removed: ${JSON.stringify(this.basket)}`);
+    this.logger.debug('Looping through basket items until item found');
+    for (let i = 0; i < this.basket.length; i++) {
+      this.logger.debug(this.basket[i]);
+      if (this.basket[i]['id'] === feature.id) {
+        this.logger.debug(`Found item to delete: ${JSON.stringify(this.basket[i])}`);
+        this.basket.splice(i, 1);
+      }
+    }
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
+    this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
+  }
+
   setFeatureBgColor(feature) {
     if (this.featureSelected) {
       if ((feature['in_basket'] || !feature['in_basket']) && (feature['id'] === this.featureSelected['id'])) {

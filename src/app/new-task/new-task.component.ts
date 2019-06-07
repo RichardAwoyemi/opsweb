@@ -436,6 +436,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       }
     }
     this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
     this.logger.debug(`Basket after feature removed: ${JSON.stringify(this.basket)}`);
   }
 
