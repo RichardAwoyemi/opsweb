@@ -23,6 +23,8 @@ export class DataService {
   private webCustomAuthDataPath = './assets/data/web-custom-auth.json';
   public webCustomEcommerce: any;
   private webCustomEcommerceDataPath = './assets/data/web-custom-ecommerce.json';
+  public webCustomFinance: any;
+  private webCustomFinanceDataPath = './assets/data/web-custom-finance.json';
   public similarApps: any;
   private similarAppsDataPath = './assets/data/similar-apps.json';
 
@@ -38,6 +40,7 @@ export class DataService {
     this.webCustomAlert = this.httpClient.get(this.webCustomAlertDataPath);
     this.webCustomAuth = this.httpClient.get(this.webCustomAuthDataPath);
     this.webCustomEcommerce = this.httpClient.get(this.webCustomEcommerceDataPath);
+    this.webCustomFinance = this.httpClient.get(this.webCustomFinanceDataPath);
     this.similarApps = this.httpClient.get(this.similarAppsDataPath);
   }
 
@@ -77,10 +80,15 @@ export class DataService {
     return this.webCustomEcommerce;
   }
 
+  public getAllWebCustomFinance(): Observable<any> {
+    return this.webCustomFinance;
+  }
+
   public getAllWebCustomFeatures(): Observable<any> {
     return combineLatest([this.webCustomAlert,
                           this.webCustomAuth,
-                          this.webCustomEcommerce]);
+                          this.webCustomEcommerce,
+                          this.webCustomFinance]);
   }
 
   public getAllSimilarApps(): Observable<any> {

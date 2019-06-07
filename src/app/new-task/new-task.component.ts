@@ -176,9 +176,17 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
     this.webCustomEcommerceSubscription = this.dataService.getAllWebCustomEcommerce().subscribe(response => {
       if (response) {
-        this.logger.debug('Web custom auth:');
+        this.logger.debug('Web custom ecommerce:');
         this.logger.debug(response);
         this.webCustomEcommerce = response;
+      }
+    });
+
+    this.webCustomFinanceSubscription = this.dataService.getAllWebCustomFinance().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom finance:');
+        this.logger.debug(response);
+        this.webCustomFinance = response;
       }
     });
 
@@ -252,6 +260,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (id === 'web-custom-ecommerce') {
       return this.webCustomEcommerce;
+    }
+    if (id === 'web-custom-finance') {
+      return this.webCustomFinance;
     }
   }
 
@@ -514,6 +525,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (this.webCustomAuthSubcription) {
       this.webCustomAuthSubcription.unsubscribe();
+    }
+    if (this.webCustomFinanceSubscription) {
+      this.webCustomFinanceSubscription.unsubscribe();
     }
     if (this.similarAppsSubscription) {
       this.similarAppsSubscription.unsubscribe();
