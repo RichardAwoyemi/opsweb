@@ -174,6 +174,14 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.webCustomEcommerceSubscription = this.dataService.getAllWebCustomEcommerce().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom auth:');
+        this.logger.debug(response);
+        this.webCustomEcommerce = response;
+      }
+    });
+
     this.similarAppsSubscription = this.dataService.getAllSimilarApps().subscribe(response => {
       if (response) {
         this.logger.debug('Similar apps:');
@@ -241,6 +249,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (id === 'web-custom-auth') {
       return this.webCustomAuth;
+    }
+    if (id === 'web-custom-ecommerce') {
+      return this.webCustomEcommerce;
     }
   }
 

@@ -21,6 +21,8 @@ export class DataService {
   private webCustomAlertDataPath = './assets/data/web-custom-alert.json';
   public webCustomAuth: any;
   private webCustomAuthDataPath = './assets/data/web-custom-auth.json';
+  public webCustomEcommerce: any;
+  private webCustomEcommerceDataPath = './assets/data/web-custom-ecommerce.json';
   public similarApps: any;
   private similarAppsDataPath = './assets/data/similar-apps.json';
 
@@ -35,6 +37,7 @@ export class DataService {
     this.webCustom = this.httpClient.get(this.webCustomDataPath);
     this.webCustomAlert = this.httpClient.get(this.webCustomAlertDataPath);
     this.webCustomAuth = this.httpClient.get(this.webCustomAuthDataPath);
+    this.webCustomEcommerce = this.httpClient.get(this.webCustomEcommerceDataPath);
     this.similarApps = this.httpClient.get(this.similarAppsDataPath);
   }
 
@@ -70,11 +73,14 @@ export class DataService {
     return this.webCustomAuth;
   }
 
+  public getAllWebCustomEcommerce(): Observable<any> {
+    return this.webCustomEcommerce;
+  }
+
   public getAllWebCustomFeatures(): Observable<any> {
-    const webCustomFeatures = [];
-    webCustomFeatures.push(this.webCustomAlert);
-    webCustomFeatures.push(this.webCustomAuth);
-    return combineLatest([this.webCustomAlert, this.webCustomAuth]);
+    return combineLatest([this.webCustomAlert,
+                          this.webCustomAuth,
+                          this.webCustomEcommerce]);
   }
 
   public getAllSimilarApps(): Observable<any> {

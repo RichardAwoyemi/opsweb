@@ -1,26 +1,44 @@
 [
   {
-    "id": "affiliate-url",
-    "name": "Affiliate URL"
+    "id": "web-bidding",
+    "name": "Bidding",
+    "description": "A feature that lets users take part in auctions.",
+    "price_gbp": 450,
+    "time_weeks": 0.5
   },
   {
-    "id": "biding",
-    "name": "Bidding"
+    "id": "web-discounts-offers",
+    "name": "Discounts and Offers",
+    "description": "The ability to apply discounts and offers across a set of items for a period of time.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
   },
   {
-    "id": "coupons",
-    "name": "Coupons"
+    "id": "web-gift-cards",
+    "name": "Gift Cards",
+    "description": "Allow customers to convert cash into credit for gifting.",
+    "price_gbp": 120,
+    "time_weeks": 0.25
   },
   {
-    "id": "discounts",
-    "name": "Discounts"
+    "id": "web-loyalty-points",
+    "name": "Loyalty Points",
+    "description": "A feature that offers discount or rewards to customers based on engagement.",
+    "price_gbp": 120,
+    "time_weeks": 0.10
   },
   {
-    "id": "shopping-cart",
-    "name": "Shopping Cart"
+    "id": "web-shopping-cart",
+    "name": "Shopping Cart",
+    "description": "Allow customers to accumalate a list of items prior to purchase.",
+    "price_gbp": 120,
+    "time_weeks": 0.60
   },
   {
-    "id": "wishlist",
-    "name": "Wishlist"
+    "id": "web-wishlist",
+    "name": "Wishlist",
+    "description": "Allows customers to add their favorite items for future purchase or sharing. ",
+    "price_gbp": 225,
+    "time_weeks": 0.25
   }
 ]
