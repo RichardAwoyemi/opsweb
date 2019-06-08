@@ -7,6 +7,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
 import { TaskService } from '../_services/task.service';
 import { DataService } from '../_services/data.service';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $;
 
@@ -62,6 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private userService: UserService,
     public taskService: TaskService,
     private ngxLoader: NgxUiLoaderService,
+    private toastr: ToastrService,
     private logger: NGXLogger,
     private router: Router,
   ) {
@@ -200,6 +202,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   onTaskModalSaveButtonClick() {
     $(this.taskModal.nativeElement).modal('hide');
     this.taskService.updateTask(this.selectedTask, this.basket);
+    this.toastr.success('Task updated', null,  {
+      timeOut: 2000
+    });
   }
 
   onTaskModalCloseButtonClick() {

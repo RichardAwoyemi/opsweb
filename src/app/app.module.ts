@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { Ng5SliderModule } from 'ng5-slider';
+import { ToastrModule } from 'ngx-toastr';
 
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
@@ -124,7 +125,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ScrollToModule.forRoot(),
     ImageCropperModule,
     ArchwizardModule,
-    TagInputModule
+    TagInputModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     AuthService,
