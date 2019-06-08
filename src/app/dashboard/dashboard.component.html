@@ -1,5 +1,5 @@
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && !tasksExist">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && noOfTasks === 0">
   <div class="container">
     <div class="row">
       <div class="col-md-12 text-center">
@@ -20,7 +20,7 @@
 </section>
 
 <section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && tasksExist">
+  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && noOfTasks > 0">
   <div class="container">
     <div class="row">
       <div class="col-md-4 project-column" dragula="DASHBOARD">
@@ -182,11 +182,11 @@
         </ul>
         <div class="tab-content p-4 sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 350 + 'px' }">
           <div class="tab-pane fade active show" id="tab-details">
-            <div class="row" style="margin-bottom: 1em;">
-              <div class="col-md-6" style="margin-bottom: 1em; padding-left: 0em">
+            <div class="row">
+              <div class="col-md-6" style="padding-left: 0em">
                 <strong>Description</strong>
                 <textarea class="form-control" placeholder="Provide a description"
-                  rows="3">{{ selectedTask?.description }}</textarea>
+                  rows="4">{{ selectedTask?.description }}</textarea>
               </div>
               <div class="col-md-6">
                 <strong>Similar Apps</strong>
@@ -241,7 +241,7 @@
                 <!-- When a feature is selected -->
                 <div *ngIf="featureSelected" style="height: 100%">
                   <div class="container h-100">
-                    <div class="row" style="padding-top: 0; padding-bottom: 0">
+                    <div class="row h-100 align-items-center" style="padding-top: 0; padding-bottom: 0">
                       <div class="col-md-6 text-center">
                         <img src="assets/img/{{ featureSelected.id }}.png"
                           [ngStyle]="{ 'max-height': innerHeight - 422 + 'px' }"><br>
@@ -304,7 +304,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="this.taskService.updateTask(task)">Save</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
       </div>
     </div>

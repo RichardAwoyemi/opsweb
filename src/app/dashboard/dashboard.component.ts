@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   deliverySpeed = 1;
   costMultiplier = 1;
   speedMultiplier = 1;
+  noOfTasks = 0;
 
   private userSubscription: Subscription;
   private taskSubscription: Subscription;
@@ -176,6 +177,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   setTasks(result) {
     this.backlogTasks = [];
     this.logger.debug(`Number of tasks: ${result.length}`);
+    this.noOfTasks = result.length;
     this.logger.debug('Setting tasks:');
     for (let i = 0; i < result.length; i++) {
       this.logger.debug(result[i]);
