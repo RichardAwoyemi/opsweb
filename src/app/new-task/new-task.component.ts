@@ -207,9 +207,17 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
     this.webCustomMultimediaSubscription = this.dataService.getAllWebCustomMultimedia().subscribe(response => {
       if (response) {
-        this.logger.debug('Web custom games:');
+        this.logger.debug('Web custom ultimedia:');
         this.logger.debug(response);
         this.webCustomMultimedia = response;
+      }
+    });
+
+    this.webCustomSocialSubscription = this.dataService.getAllWebCustomSocial().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom social:');
+        this.logger.debug(response);
+        this.webCustomSocial = response;
       }
     });
 
@@ -292,6 +300,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (id === 'web-custom-multimedia') {
       return this.webCustomMultimedia;
+    }
+    if (id === 'web-custom-social') {
+      return this.webCustomSocial;
     }
   }
 
@@ -445,6 +456,21 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     if (featureId === 'web-custom-auth') {
       return this.isAllWebCustomAuthSelected;
     }
+    if (featureId === 'web-custom-ecommerce') {
+      return this.isAllWebCustomEcommerceSelected;
+    }
+    if (featureId === 'web-custom-finance') {
+      return this.isAllWebCustomFinanceSelected;
+    }
+    if (featureId === 'web-custom-games') {
+      return this.isAllWebCustomGamesSelected;
+    }
+    if (featureId === 'web-custom-multimedia') {
+      return this.isAllWebCustomMultimediaSelected;
+    }
+    if (featureId === 'web-custom-social') {
+      return this.isAllWebCustomSocialSelected;
+    }
   }
 
   onSelectAllFeaturesButtonClick(featureId) {
@@ -458,12 +484,53 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       this.addFeaturesToBasket(this.webCustomAlert);
       this.isAllWebCustomAlertSelected = true;
     }
+
     if (featureId === 'web-custom-auth') {
       if (this.basket.length > 0) {
         this.removeFeaturesFromBasket(this.webCustomAuth);
       }
       this.addFeaturesToBasket(this.webCustomAuth);
       this.isAllWebCustomAuthSelected = true;
+    }
+
+    if (featureId === 'web-custom-ecommerce') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomEcommerce);
+      }
+      this.addFeaturesToBasket(this.webCustomEcommerce);
+      this.isAllWebCustomEcommerceSelected = true;
+    }
+
+    if (featureId === 'web-custom-finance') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomFinance);
+      }
+      this.addFeaturesToBasket(this.webCustomFinance);
+      this.isAllWebCustomFinanceSelected = true;
+    }
+
+    if (featureId === 'web-custom-games') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomGames);
+      }
+      this.addFeaturesToBasket(this.webCustomGames);
+      this.isAllWebCustomGamesSelected = true;
+    }
+
+    if (featureId === 'web-custom-multimedia') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomMultimedia);
+      }
+      this.addFeaturesToBasket(this.webCustomMultimedia);
+      this.isAllWebCustomMultimediaSelected = true;
+    }
+
+    if (featureId === 'web-custom-social') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomSocial);
+      }
+      this.addFeaturesToBasket(this.webCustomSocial);
+      this.isAllWebCustomSocialSelected = true;
     }
 
     this.calculateBasketTotalAndCompletionDate();
@@ -478,9 +545,35 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       this.removeFeaturesFromBasket(this.webCustomAlert);
       this.isAllWebCustomAlertSelected = false;
     }
+
     if (featureId === 'web-custom-auth') {
       this.removeFeaturesFromBasket(this.webCustomAuth);
       this.isAllWebCustomAuthSelected = false;
+    }
+
+    if (featureId === 'web-custom-ecommerce') {
+      this.removeFeaturesFromBasket(this.webCustomEcommerce);
+      this.isAllWebCustomEcommerceSelected = false;
+    }
+
+    if (featureId === 'web-custom-finance') {
+      this.removeFeaturesFromBasket(this.webCustomFinance);
+      this.isAllWebCustomFinanceSelected = false;
+    }
+
+    if (featureId === 'web-custom-games') {
+      this.removeFeaturesFromBasket(this.webCustomGames);
+      this.isAllWebCustomGamesSelected = false;
+    }
+
+    if (featureId === 'web-custom-multimedia') {
+      this.removeFeaturesFromBasket(this.webCustomMultimedia);
+      this.isAllWebCustomMultimediaSelected = false;
+    }
+
+    if (featureId === 'web-custom-social') {
+      this.removeFeaturesFromBasket(this.webCustomSocial);
+      this.isAllWebCustomSocialSelected = false;
     }
 
     this.calculateBasketTotalAndCompletionDate();
