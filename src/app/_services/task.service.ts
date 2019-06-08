@@ -53,6 +53,7 @@ export class TaskService {
       basketTotal: basketTotal,
       createdBy: user.uid,
       createdAt: new Date(),
+      done: false,
       deliverySpeed: deliverySpeed
     };
 
