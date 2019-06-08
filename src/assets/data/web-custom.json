@@ -8,6 +8,10 @@
     "name": "Authentication"
   },
   {
+    "id": "web-custom-business",
+    "name": "Business"
+  },
+  {
     "id": "web-custom-ecommerce",
     "name": "Ecommerce"
   },
