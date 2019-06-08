@@ -24,7 +24,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     private scrollToService: ScrollToService,
     private ngxLoader: NgxUiLoaderService,
     private dataService: DataService,
-    private taskService: TaskService,
+    public taskService: TaskService,
     private logger: NGXLogger,
     public router: Router
   ) { }
@@ -57,18 +57,25 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   webCustomSubscription: Subscription;
   webCustomAlert: any;
   webCustomAlertSubscription: Subscription;
+  isAllWebCustomAlertSelected: boolean;
   webCustomAuth: any;
   webCustomAuthSubcription: Subscription;
+  isAllWebCustomAuthSelected: boolean;
   webCustomEcommerce: any;
   webCustomEcommerceSubscription: Subscription;
+  isAllWebCustomEcommerceSelected: boolean;
   webCustomFinance: any;
   webCustomFinanceSubscription: Subscription;
+  isAllWebCustomFinanceSelected: boolean;
   webCustomGames: any;
   webCustomGamesSubscription: Subscription;
+  isAllWebCustomGamesSelected: boolean;
   webCustomMultimedia: any;
   webCustomMultimediaSubscription: Subscription;
+  isAllWebCustomMultimediaSelected: boolean;
   webCustomSocial: any;
   webCustomSocialSubscription: Subscription;
+  isAllWebCustomSocialSelected: boolean;
 
   similarApps: any;
   similarAppsSubscription: Subscription;
@@ -426,12 +433,83 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
   }
 
+  calculateBasketTotalAndCompletionDate() {
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
+  }
+
+  isAllFeaturesSelected(featureId): boolean {
+    if (featureId === 'web-custom-alert') {
+      return this.isAllWebCustomAlertSelected;
+    }
+    if (featureId === 'web-custom-auth') {
+      return this.isAllWebCustomAuthSelected;
+    }
+  }
+
+  onSelectAllFeaturesButtonClick(featureId) {
+    this.logger.debug(`Basket before features added: ${JSON.stringify(this.basket)}`);
+    this.logger.debug(`Selecting all features for id: ${featureId}`);
+
+    if (featureId === 'web-custom-alert') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomAlert);
+      }
+      this.addFeaturesToBasket(this.webCustomAlert);
+      this.isAllWebCustomAlertSelected = true;
+    }
+    if (featureId === 'web-custom-auth') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomAuth);
+      }
+      this.addFeaturesToBasket(this.webCustomAuth);
+      this.isAllWebCustomAuthSelected = true;
+    }
+
+    this.calculateBasketTotalAndCompletionDate();
+    this.logger.debug(`Basket after features added: ${JSON.stringify(this.basket)}`);
+  }
+
+  onDeselectAllFeaturesButtonClick(featureId) {
+    this.logger.debug(`Basket before features removed: ${JSON.stringify(this.basket)}`);
+    this.logger.debug(`Removing all features for id: ${featureId}`);
+
+    if (featureId === 'web-custom-alert') {
+      this.removeFeaturesFromBasket(this.webCustomAlert);
+      this.isAllWebCustomAlertSelected = false;
+    }
+    if (featureId === 'web-custom-auth') {
+      this.removeFeaturesFromBasket(this.webCustomAuth);
+      this.isAllWebCustomAuthSelected = false;
+    }
+
+    this.calculateBasketTotalAndCompletionDate();
+    this.logger.debug(`Basket after features removed: ${JSON.stringify(this.basket)}`);
+  }
+
+  addFeaturesToBasket(features) {
+    for (let i = 0; i < features.length; i++) {
+      features[i].in_basket = true;
+      this.basket.push(features[i]);
+    }
+  }
+
+  removeFeaturesFromBasket(features) {
+    for (let i = 0; i < features.length; i++) {
+      for (let j = 0; j < this.basket.length; j++) {
+        if (features[i].id === this.basket[j].id) {
+          features[i].in_basket = false;
+          this.basket.splice(j, 1);
+        }
+      }
+    }
+  }
+
   onAddFeatureToBasketButtonClick(feature) {
     this.logger.debug(`Basket before feature added: ${JSON.stringify(this.basket)}`);
     feature.in_basket = true;
     this.basket.push(feature);
-    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
-    this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
+    this.calculateBasketTotalAndCompletionDate();
     this.logger.debug(`Basket after feature added: ${JSON.stringify(this.basket)}`);
   }
 

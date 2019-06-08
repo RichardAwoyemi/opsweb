@@ -161,6 +161,24 @@
                   </span>
                   <div [attr.id]="'collapse-' + custom.id" class="collapse"
                     [attr.data-parent]="'#accordion-' + custom.id">
+                    <div class="card-body" style="padding: 0">
+                      <div class="col-md-12" style="padding: 0">
+                        <div class="card card-body no-border" style="padding-top: 0.5rem; padding-bottom: 0.5rem">
+                          <div class="row">
+                            <div class="col-md-6" style="font-size: 11px; padding-top: 5px">
+                            </div>
+                            <div class="col-md-6" style="text-align: right; padding-right: 10px">
+                              <button class="btn btn-secondary btn-xs"
+                                (click)="onSelectAllFeaturesButtonClick(custom.id)"
+                                *ngIf="!isAllFeaturesSelected(custom.id)">Select All</button>
+                              <button class="btn btn-secondary btn-xs"
+                                (click)="onDeselectAllFeaturesButtonClick(custom.id)"
+                                *ngIf="isAllFeaturesSelected(custom.id)">Deselect All</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="card-body" style="padding: 0" *ngFor="let custom of getFeatures(custom.id)">
                       <div class="col-md-12" style="padding: 0">
                         <div class="card card-body no-border card-highlight" (click)="setFeature(custom)"
@@ -328,7 +346,8 @@
                     <h5 class="card-title">Project Speed</h5>
                     <small>Completion Date: {{ completionDate }}</small>
                     <p style="padding-top: 1.5em">
-                      <ng5-slider [(value)]="sliderValue" [options]="sliderOptions" (userChange)="onChangeDeliverySpeed($event)">
+                      <ng5-slider [(value)]="sliderValue" [options]="sliderOptions"
+                        (userChange)="onChangeDeliverySpeed($event)">
                       </ng5-slider>
                     </p>
                   </div>
@@ -338,7 +357,7 @@
                 <div class="card shadow-4" style="padding-left: 0;">
                   <div class="card-body" style="height: 200px">
                     <h5 class="card-title">Support and Upgrades</h5>
-                    <small>Add Opsonion Care for &pound;{{ basketTotal * carePlanMultiplier | number : '1.2-2' }} a
+                    <small>Add Opsonion Care for &pound;{{ basketTotal * taskService.carePlanMultiplier | number : '1.2-2' }} a
                       month?</small>
                     <div class="row gap-y" style="padding-top: 1em">
                       <div class="col-md-4">
@@ -687,7 +706,7 @@
         </button>
       </div>
       <div class="modal-body">
-        With Opsonion Care, we provide aftercare of your project for as long as you want. Get support for 
+        With Opsonion Care, we provide aftercare of your project for as long as you want. Get support for
         unexpected bugs, crashes, and component upgrades.
       </div>
       <div class="modal-footer">

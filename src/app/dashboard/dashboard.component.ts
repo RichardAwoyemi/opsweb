@@ -27,6 +27,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   selectedTask = {
     similarApps: null,
     assignedTo: null,
+    category: null,
+    description: null,
     invoice: null
   };
   user$: Observable<any>;
@@ -57,7 +59,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private dataService: DataService,
     private userService: UserService,
-    private taskService: TaskService,
+    public taskService: TaskService,
     private ngxLoader: NgxUiLoaderService,
     private logger: NGXLogger,
     private router: Router,
