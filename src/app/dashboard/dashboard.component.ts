@@ -191,7 +191,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     $(this.createTaskModal.nativeElement).modal('show');
   }
 
-  onCheckoutButtonClick() {
+  onTaskModalCheckoutButtonClick() {
+    $(this.taskModal.nativeElement).modal('hide');
+    this.taskService.updateTask(this.selectedTask, this.basket);
+    this.router.navigate(['checkout']);
+  }
+
+  onTaskModalSaveButtonClick() {
+    $(this.taskModal.nativeElement).modal('hide');
+    this.taskService.updateTask(this.selectedTask, this.basket);
+  }
+
+  onTaskModalCloseButtonClick() {
     $(this.taskModal.nativeElement).modal('hide');
   }
 
@@ -235,6 +246,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     let value = e.slice(0, e.indexOf(':'));
     value = parseInt(value, 10);
     this.logger.debug(`Delivery speed set to: ${(value)}`);
+
     if (value === 0) {
       this.costMultiplier = this.taskService.relaxedCost;
       this.speedMultiplier = this.taskService.relaxedSpeed;
@@ -250,10 +262,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.speedMultiplier = this.taskService.primeSpeed;
       this.deliverySpeed = value;
     }
+
     this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
     this.completionDate = this.taskService.calculateCompletionDate(this.basket, this.speedMultiplier);
     this.differenceInDays = this.taskService.calculateDateDifference(this.basket, this.speedMultiplier);
     this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.basketTotal);
+
+    this.selectedTask['basketTotal'] = this.basketTotal;
+    this.selectedTask['completionDate'] = this.completionDate;
+    this.selectedTask['carePlanPrice'] = this.carePlanPrice;
+    this.selectedTask['deliverySpeed'] = this.deliverySpeed;
   }
 
   closeCreateTaskModal() {
@@ -272,11 +290,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  setCarePlanBtnColour(value) {
+  setCarePlanButtonColour(value) {
     if (value === 'yes' && this.carePlanSelected === 'yes') {
       return 'btn-success';
     }
-    if (value === 'no' && this.carePlanSelected === 'no') {
+    if (value === 'no' && (this.carePlanSelected === 'no' || this.selectedTask['carePlanPrice'] === 0)) {
       return 'btn-success';
     }
     return 'btn-secondary';
@@ -286,6 +304,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.logger.debug(`Care plan set to: ${value}`);
     this.carePlanSelected = value;
     this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.selectedTask['price']);
+    this.selectedTask['carePlanPrice'] = this.carePlanPrice;
     this.logger.debug(`Care plan price set to: ${this.carePlanPrice}`);
   }
 

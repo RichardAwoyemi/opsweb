@@ -3,28 +3,28 @@
     "id": "web-desktop-notifications",
     "name": "Desktop Notifications",
     "description": "Send desktop notifications and manage them.",
-    "price_gbp": 225.00,
+    "price_gbp": 225,
     "time_weeks": 0.25
   },
   {
     "id": "web-email-notifications",
     "name": "Email Notifications",
     "description": "Send email notifications and manage them.",
-    "price_gbp": 225.00,
+    "price_gbp": 225,
     "time_weeks": 0.25
   },
   {
     "id": "web-notification-page",
     "name": "Notification Page",
     "description": "Display recent notifications on a single page.",
-    "price_gbp": 300.00,
+    "price_gbp": 300,
     "time_weeks": 0.40
   },
   {
     "id": "web-notification-settings",
     "name": "Notification Settings",
     "description": "A feature to define notification actions from settings.",
-    "price_gbp": 330.00,
+    "price_gbp": 330,
     "time_weeks": 0.50
   }
 ]

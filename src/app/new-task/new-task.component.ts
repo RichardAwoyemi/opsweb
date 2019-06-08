@@ -258,7 +258,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     this.logger.debug(`Care plan price set to: ${this.carePlanPrice}`);
   }
 
-  setCarePlanBtnColour(value) {
+  setCarePlanButtonColour(value) {
     if (value === 'yes' && this.carePlanSelected === 'yes') {
       return 'btn-success';
     }

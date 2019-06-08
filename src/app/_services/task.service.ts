@@ -36,13 +36,52 @@ export class TaskService {
     }
   }
 
+  updateTask(task, basket) {
+    this.logger.debug(`Task:`);
+    this.logger.debug(`${JSON.stringify(task)}`);
+    this.logger.debug(`Basket:`);
+    this.logger.debug(`${JSON.stringify(basket)}`);
+    this.logger.debug(`Similar Apps:`);
+    this.logger.debug(`${JSON.stringify(task.similarApps)}`);
+
+    const taskRef: AngularFirestoreDocument<any> = this.afs.doc(`tasks/${task.id}`);
+    const taskData = {
+      name: task.name,
+      description: task.description,
+      product: task.product,
+      category: task.category,
+      completionDate: task.completionDate,
+      currency: task.currency,
+      carePlanPrice: task.carePlanPrice,
+      basketTotal: task.basketTotal,
+      deliverySpeed: task.deliverySpeed,
+      similarApps: task.similarApps
+    };
+
+    if (basket) {
+      this.addFeaturesToTask(basket, `tasks/${task.id}`);
+    }
+
+    if (basket) {
+      this.addFeaturesToTask(basket, `tasks/${task.id}`);
+    }
+
+    return taskRef.set(taskData, {
+      merge: true
+    });
+  }
+
   createNewTask(user: User, product: String, name: String, description: String, similarApps: Array<any>,
     category: String, basket: Array<any>, completionDate: String, currency: String, carePlanPrice: Number,
     basketTotal: Number, deliverySpeed: Number) {
 
     const collectionPath = this.TASKS_ROOT;
 
+    const newTaskRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
+    this.logger.debug(`Creating new task with generated id at: '/${newTaskRef.ref.path}'`);
+
     const task = {
+      id: newTaskRef.ref.id,
       name: name,
       description: description,
       product: product,
@@ -57,8 +96,6 @@ export class TaskService {
       deliverySpeed: deliverySpeed
     };
 
-    const newTaskRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
-    this.logger.debug(`Creating new task with generated id at: '/${newTaskRef.ref.path}'`);
     this.logger.debug(task);
     newTaskRef.set(task);
 
