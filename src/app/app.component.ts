@@ -17,7 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
   user: any = {
-    photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+    photoURL: '/assets/img/anonymous.jpg'
   };
   today: number = Date.now();
   appStoreUrl: string;

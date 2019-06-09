@@ -10,6 +10,8 @@ import { Options } from 'ng5-slider/options';
 import { ChangeContext } from 'ng5-slider';
 import { Router } from '@angular/router';
 import { TaskService } from '../_services/task.service';
+import * as introJs from 'intro.js/intro.js';
+import { ModalService } from '../_services/modal.service';
 
 declare var $;
 
@@ -24,6 +26,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     private scrollToService: ScrollToService,
     private ngxLoader: NgxUiLoaderService,
     private dataService: DataService,
+    private modalService: ModalService,
     public taskService: TaskService,
     private logger: NGXLogger,
     public router: Router
@@ -122,6 +125,8 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   step3Active: boolean;
   step4Active: boolean;
   step5Active: boolean;
+
+  introJs = introJs();
 
   @ViewChild('resetModal') resetModal: ElementRef;
   @ViewChild('requestFeatureModal') requestFeatureModal: ElementRef;
@@ -340,16 +345,21 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   }
 
   onSetProduct(productId): void {
-    this.step2Active = true;
-    this.step3Active = true;
-    this.step4Active = true;
-    this.step5Active = true;
-    this.setProduct(productId);
-    const config: ScrollToConfigOptions = {
-      target: 'step2'
-    };
-    this.scrollToService.scrollTo(config);
-    document.body.style.overflow = 'hidden';
+    if (productId === 'web' || productId === 'mobile') {
+      this.step2Active = true;
+      this.step3Active = true;
+      this.step4Active = true;
+      this.step5Active = true;
+      this.setProduct(productId);
+      const config: ScrollToConfigOptions = {
+        target: 'step2'
+      };
+      this.scrollToService.scrollTo(config);
+      document.body.style.overflow = 'hidden';
+    } else {
+      this.modalService.displayMessage('Coming soon', 'We are currently hard at work on this feature. Please ' +
+        'contact us at hello@opsonion.com for further details.');
+    }
   }
 
   onStep2NextButtonClick(): void {
@@ -363,6 +373,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     document.getElementById('intercom-css-container').style.display = 'none';
     document.getElementById('intercom-container').style.display = 'none';
     this.ngxLoader.stop();
+    this.startTour();
   }
 
   onStep3NextButtonClick(): void {
@@ -705,6 +716,36 @@ export class NewTaskComponent implements OnInit, OnDestroy {
         return false;
       }
     }
+  }
+
+  startTour() {
+    this.introJs.setOptions({
+      scrollToElement: false,
+      showStepNumbers: false,
+      steps: [
+        {
+          element: document.querySelector('#categories-column'),
+          intro: 'Some text about introduction and categories',
+          position: 'right'
+        },
+        {
+          element: document.querySelector('#features-column'),
+          intro: 'Some text about feature library',
+          position: 'right'
+        },
+        {
+          element: document.querySelector('#information-column'),
+          intro: 'Some text about information column',
+          position: 'left'
+        },
+        {
+          element: document.querySelector('#basket-button'),
+          intro: 'Some text about basket',
+          position: 'bottom'
+        }
+      ]
+    });
+    this.introJs.start();
   }
 
   ngOnDestroy() {

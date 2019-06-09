@@ -105,7 +105,7 @@
       </div>
       <div class="col-md-6">
         <div class="pull-right step-header-box">
-          <button type="button" class="btn btn-secondary cart" (click)="showBasketModal()">
+          <button type="button" class="btn btn-secondary cart" (click)="showBasketModal()" id="basket-button">
             <span><i class="ti-shopping-cart"></i></span>
             <span *ngIf="basket && basket.length > 0">&nbsp;</span>
             <span class="badge badge-pill badge-danger" *ngIf="basket && basket.length > 0">{{ basket.length }}</span>
@@ -115,9 +115,9 @@
         </div>
       </div>
     </div>
-    <!-- Category column -->
     <div class="row" style="margin-right: 0px;" [ngStyle]="{ 'height': innerColumnHeight + 'px' }">
-      <div class="col-md-3 categories-column">
+      <!-- Category column -->
+      <div class="col-md-3 categories-column" id="categories-column">
         <div class="categories-header">Categories</div>
         <div class="sidebar-scroll" [ngStyle]="{ 'height': innerColumnSidebarHeight + 'px' }">
           <div class="card shadow-4 card-category" *ngFor="let category of webCategories;">
@@ -132,7 +132,7 @@
         </div>
       </div>
       <!-- Features column -->
-      <div class="col-md-3 categories-column" style="padding-left: 0px;">
+      <div class="col-md-3 categories-column" style="padding-left: 0px;" id="features-column">
         <div class="libraries-title" style="border-right: 0">Features</div>
         <div class="sidebar-scroll" [ngStyle]="{ 'height': innerColumnSidebarHeight + 'px' }">
           <!-- If empty -->
@@ -269,7 +269,7 @@
       <!-- Information column -->
       <div class="col-md-6" style="padding:0px">
         <!-- If empty -->
-        <div *ngIf="!featureSelected" style="height: 100%">
+        <div *ngIf="!featureSelected" style="height: 100%" id="information-column">
           <div class="container h-100">
             <div class="row h-100 justify-content-center align-items-center">
               <div class="col-md-12 text-center">
