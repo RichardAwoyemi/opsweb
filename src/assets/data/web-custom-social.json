@@ -84,6 +84,13 @@
     "time_weeks": 0.25
   },
   {
+    "id": "web-gifs",
+    "name": "GIFs",
+    "description": "GIF integration within chat and posts.",
+    "price_gbp": 300,
+    "time_weeks": 0.4
+  },
+  {
     "id": "web-group-chat",
     "name": "Group Chat",
     "description": "Allows users to chat with up to 16 friend.",
@@ -98,9 +105,16 @@
     "time_weeks": 0.25
   },
   {
+    "id": "web-karma-points",
+    "name": "Karma Points",
+    "description": "A feature which alllows users to earn online points with good quality submissions and comments.",
+    "price_gbp": 120,
+    "time_weeks": 0.1
+  },
+  {
     "id": "web-likes",
     "name": "Likes",
-    "description": "A feature that allows you to like a photo, video, or post.",
+    "description": "A feature that allows users to like a photo, video or post.",
     "price_gbp": 465,
     "time_weeks": 0.5
   },
