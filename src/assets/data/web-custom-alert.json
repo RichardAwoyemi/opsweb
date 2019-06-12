@@ -16,7 +16,7 @@
   {
     "id": "web-location-alerts",
     "name": "Location Based Alerts",
-    "description": "Trigger location-based notifications",
+    "description": "Trigger location-based notifications.",
     "price_gbp": 450,
     "time_weeks": 0.5
   },
@@ -26,6 +26,13 @@
     "description": "Display recent notifications on a single page.",
     "price_gbp": 300,
     "time_weeks": 0.40
+  },
+  {
+    "id": "web-realtime-alerts",
+    "name": "Real Time Alerts",
+    "description": "Display real time updates.",
+    "price_gbp": 300,
+    "time_weeks": 0.4
   },
   {
     "id": "web-schedule-notifications",
