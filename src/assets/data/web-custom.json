@@ -24,6 +24,10 @@
     "name": "Gamification"
   },
   {
+    "id": "web-custom-integrations",
+    "name": "Integrations"
+  },
+  {
     "id": "web-custom-multimedia",
     "name": "Multimedia"
   },

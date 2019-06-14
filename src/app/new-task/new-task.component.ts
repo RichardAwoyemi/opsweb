@@ -79,6 +79,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   webCustomSocial: any;
   webCustomSocialSubscription: Subscription;
   isAllWebCustomSocialSelected: boolean;
+  webCustomIntegrations: any;
+  webCustomIntegrationsSubscription: Subscription;
+  isAllWebCustomIntegrationsSelected: boolean;
 
   similarApps: any;
   similarAppsSubscription: Subscription;
@@ -210,6 +213,14 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.webCustomIntegrationsSubscription = this.dataService.getAllWebCustomIntegrations().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom integrations:');
+        this.logger.debug(response);
+        this.webCustomIntegrations = response;
+      }
+    });
+  
     this.webCustomMultimediaSubscription = this.dataService.getAllWebCustomMultimedia().subscribe(response => {
       if (response) {
         this.logger.debug('Web custom ultimedia:');
@@ -238,6 +249,19 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     this.logger.debug(`Email address is: ${this.user.email}`);
 
     this.ngxLoader.stop();
+
+    // Step 3 - for testing purposes
+    this.step2Active = true;
+    this.step3Active = true;
+    this.step4Active = true;
+    this.step5Active = true;
+    this.taskName = 'Test Task';
+    this.taskDescription = 'Test Description';
+    const config: ScrollToConfigOptions = {
+      target: 'step3'
+    };
+    this.scrollToService.scrollTo(config);
+    document.body.style.overflow = 'hidden';
   }
 
   setProduct(productId) {
@@ -302,6 +326,9 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (id === 'web-custom-games') {
       return this.webCustomGames;
+    }
+    if (id === 'web-custom-integrations') {
+      return this.webCustomIntegrations;
     }
     if (id === 'web-custom-multimedia') {
       return this.webCustomMultimedia;

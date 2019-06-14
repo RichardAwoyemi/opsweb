@@ -27,6 +27,8 @@ export class DataService {
   private webCustomFinanceDataPath = './assets/data/web-custom-finance.json';
   public webCustomGames: any;
   private webCustomGamesDataPath = './assets/data/web-custom-games.json';
+  public webCustomIntegrations: any;
+  private webCustomIntegrationsDataPath = './assets/data/web-custom-integrations.json';
   public webCustomMultimedia: any;
   private webCustomMultimediaDataPath = './assets/data/web-custom-multimedia.json';
   public webCustomSocial: any;
@@ -48,6 +50,7 @@ export class DataService {
     this.webCustomEcommerce = this.httpClient.get(this.webCustomEcommerceDataPath);
     this.webCustomFinance = this.httpClient.get(this.webCustomFinanceDataPath);
     this.webCustomGames = this.httpClient.get(this.webCustomGamesDataPath);
+    this.webCustomIntegrations = this.httpClient.get(this.webCustomIntegrationsDataPath);
     this.webCustomMultimedia = this.httpClient.get(this.webCustomMultimediaDataPath);
     this.webCustomSocial = this.httpClient.get(this.webCustomSocialDataPath);
     this.similarApps = this.httpClient.get(this.similarAppsDataPath);
@@ -97,6 +100,10 @@ export class DataService {
     return this.webCustomGames;
   }
 
+  public getAllWebCustomIntegrations(): Observable<any> {
+    return this.webCustomIntegrations;
+  }
+
   public getAllWebCustomMultimedia(): Observable<any> {
     return this.webCustomMultimedia;
   }
@@ -111,6 +118,7 @@ export class DataService {
                           this.webCustomEcommerce,
                           this.webCustomFinance,
                           this.webCustomGames,
+                          this.webCustomIntegrations,
                           this.webCustomMultimedia,
                           this.webCustomSocial]);
   }
