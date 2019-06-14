@@ -28,13 +28,6 @@
     "time_weeks": 0.40
   },
   {
-    "id": "web-realtime-alerts",
-    "name": "Real Time Alerts",
-    "description": "Display real time updates.",
-    "price_gbp": 300,
-    "time_weeks": 0.4
-  },
-  {
     "id": "web-schedule-notifications",
     "name": "Schedule Notifications",
     "description": "Send notifications according to a predefined schedule.",
