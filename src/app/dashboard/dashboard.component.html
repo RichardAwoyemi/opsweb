@@ -172,9 +172,9 @@
             <a class="nav-link" data-toggle="tab" href="#tab-extras">Extras</a>
           </li>
         </ul>
-        <div class="tab-content p-4 sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 300 + 'px' }">
+        <div class="tab-content p-4">
           <div class="tab-pane fade active show" id="tab-details">
-            <div class="row">
+            <div class="row sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 300 + 'px' }">
               <div class="col-md-6" style="padding-left: 0em">
                 <strong>Description</strong>
                 <textarea class="form-control" placeholder="Provide a description" rows="4"
@@ -195,7 +195,7 @@
             <div class="row">
               <div class="col-md-4" style="padding-left: 0">
                 <div class="card card-body" style="padding-top: 0; margin: 0; padding-bottom: 1em">
-                  <div class="row">
+                  <div class="row" style="overflow: none">
                     <div class="col-md-12" style="font-size: 16px;">
                       <span style="font-weight: bold">Total Price:</span>
                       &pound;{{ basketTotal | number : '1.2-2' }}<br>
@@ -226,7 +226,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-8">
+              <div class="col-md-8" style="padding-right: 0;">
                 <!-- If empty -->
                 <div *ngIf="!featureSelected" style="height: 100%">
                   <div class="container h-100">
@@ -240,19 +240,18 @@
                   </div>
                 </div>
                 <!-- When a feature is selected -->
-                <div *ngIf="featureSelected" style="height: 100%">
-                  <div class="sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 335 + 'px' }">
-                    <div class="row" style="padding-top: 0; padding-bottom: 0">
-                      <div class="col-md-12" style="padding-bottom: 1em">
-                        <strong>{{ featureSelected.name }}</strong>
-                        <br>
-                        <small>&pound;{{ featureSelected.price_gbp | number : '1.2-2' }}</small>
-                        <hr style="margin-top: 0.5em; margin-bottom: 0.5em">
-                        <small>{{ featureSelected.description }}</small>
-                      </div>
-                      <div class="col-md-12 text-center" style="padding-left: 0">
-                        <img src="assets/img/{{ featureSelected.id }}.png"><br>
-                      </div>
+                <div *ngIf="featureSelected" style="width: 100%; margin-top: -1em; margin-bottom: -1rem" class="sidebar-scroll"
+                  [ngStyle]="{ 'max-height': innerHeight - 300 + 'px' }">
+                  <div class="row" style="padding-top: 0; padding-bottom: 0">
+                    <div class="col-md-12" style="padding-bottom: 1em; padding-top: 1em">
+                      <strong>{{ featureSelected.name }}</strong>
+                      <br>
+                      <small>&pound;{{ featureSelected.price_gbp | number : '1.2-2' }}</small>
+                      <hr style="margin-top: 0.5em; margin-bottom: 0.5em">
+                      <small>{{ featureSelected.description }}</small>
+                    </div>
+                    <div class="col-md-12 text-center" style="padding-left: 0; padding-bottom: 0">
+                      <img src="assets/img/{{ featureSelected.id }}.png"><br>
                     </div>
                   </div>
                 </div>
