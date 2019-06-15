@@ -35,6 +35,34 @@
     "time_weeks": 0.25    
   },
   {
+    "id": "web-billable-hours",
+    "name": "Billable Hours Tracking",
+    "description": "A feature to track billable hours.",
+    "price_gbp": 450,
+    "time_weeks": 0.5    
+  },
+  {
+    "id": "web-candidate-management",
+    "name": "Candidate Management",
+    "description": "Allow for the management of a candidate's profile and resume.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
+    "id": "web-clash-management",
+    "name": "Clash Management",
+    "description": "Allows users to detect and manage clashing schedules efficiently.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
+    "id": "web-order-status",
+    "name": "Customized Order Status",
+    "description": "Create custom status labels for customer orders.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
     "id": "web-customizable-subscriptions",
     "name": "Customizable Subscriptions",
     "description": "A feature which allows you to customize a user's subscription model.",
@@ -56,12 +84,33 @@
     "time_weeks": 0.5    
   },
   {
+    "id": "web-expense-tracking",
+    "name": "Expense Tracking",
+    "description": "A feature which allows you to customize a user's subscription model.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
+    "id": "web-kanban-board",
+    "name": "Kanban Board",
+    "description": "A list of lists to track a project and tasks.",
+    "price_gbp": 450,
+    "time_weeks": 0.5
+  },
+  {
     "id": "web-chat-summary",
     "name": "Live Chat Summary",
     "description": "A feature which provides you a bird's eye view of your live chat channel.",
     "price_gbp": 120,
     "time_weeks": 0.1 
   }, 
+  {
+    "id": "web-leave-tracker",
+    "name": "Leave Tracker",
+    "description": "A feature to help you track and manage all request leave from a central location.",
+    "price_gbp": 450,
+    "time_weeks": 0.5 
+  },
   {
     "id": "web-proposal-generation",
     "name": "Proposal Generation",
@@ -77,6 +126,13 @@
     "time_weeks": 0.4   
   },
   {
+    "id": "web-request-management",
+    "name": "Request Management",
+    "description": "A feature to help the teams manage incoming requests and queries.",
+    "price_gbp": 225,
+    "time_weeks": 0.25  
+  },
+  {
     "id": "web-roles-permissions",
     "name": "Roles and Permissions",
     "description": "A feature which allows you to manage systems and team remotely.",
@@ -84,10 +140,66 @@
     "time_weeks": 0.1   
   },
   {
+    "id": "web-settings",
+    "name": "Settings",
+    "description": "Basic account settings.",
+    "price_gbp": 400,
+    "time_weeks": 0.5 
+  },
+  {
+    "id": "web-scheduling",
+    "name": "Scheduling",
+    "description": "Ability to prioritise your tasks and schedule them as per your future plan.",
+    "price_gbp": 225,
+    "time_weeks": 0.25 
+  },
+  {
     "id": "web-service-settings",
     "name": "Service Specific Settings",
     "description": "A feature to enable tailored service settings for different users.",
     "price_gbp": 300,
     "time_weeks": 0.4     
+  },
+  {
+    "id": "web-task-allocator",
+    "name": "Task Allocator",
+    "description": "A feature to let  users quickly allocate tasks to their team members.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-task-blocker",
+    "name": "Task Blocker",
+    "description": "A feature which makes dependent tasks highly visible in order to drive whatever collaboration is necessary to get them resolved.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-task-list",
+    "name": "Task List",
+    "description": "Create, manage, and track a to-do list of tasks.",
+    "price_gbp": 300,
+    "time_weeks": 0.4
+  },
+  {
+    "id": "web-task-view",
+    "name": "Task Groups",
+    "description": "Organise project tasks in groups such milestones and progress stages.",
+    "price_gbp": 300,
+    "time_weeks": 0.4
+  },
+  {
+    "id": "web-team-builder",
+    "name": "Team Builder",
+    "description": "Timesheet management and prediction that looks at resource availability and makes billing suggestions.",
+    "price_gbp": 450,
+    "time_weeks": 0.5    
+  },
+  {
+    "id": "web-timesheet-management",
+    "name": "Timesheet Management",
+    "description": "Timesheet management and prediction that looks at resource availability and makes billing suggestions.",
+    "price_gbp": 450,
+    "time_weeks": 0.5     
   }
 ]

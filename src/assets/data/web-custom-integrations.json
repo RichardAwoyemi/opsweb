@@ -14,6 +14,13 @@
     "time_weeks": 0.5
   },
   {
+    "id": "web-barcode-scanner",
+    "name": "Barcode Scanner",
+    "description": "Ability to read, scan and display results with a barcode scanning feature.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
     "id": "web-adsense-integration",
     "name": "Google Adsense",
     "description": "Integrate Google Adsense account so that your application can show advertisements.",
@@ -28,6 +35,13 @@
     "time_weeks": 0.5
   },
   {
+    "id": "web-qr-codes",
+    "name": "QR Codes",
+    "description": "Ability to read, scan QR codes and display results.",
+    "price_gbp": 225,
+    "time_weeks": 0.25   
+  },
+  {
     "id": "web-mailchimp-integration",
     "name": "Mailchimp",
     "description": "Integrate MailChimp into your application so that you can send beautiful newsletters or announcements.",
@@ -35,10 +49,24 @@
     "time_weeks": 0.25
   },
   {
+    "id": "web-maps-integration",
+    "name": "Maps",
+    "description": "Integrate maps into your application.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
     "id": "web-intercom-integration",
     "name": "Intercom",
     "description": "Integrate Intercom for real-time customer support.",
     "price_gbp": 150,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-rfid",
+    "name": "RFID",
+    "description": "Ability to automatically identify and track tags attached to objects.",
+    "price_gbp": 225,
     "time_weeks": 0.25
   },
   {
