@@ -400,7 +400,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   }
 
   onSetProduct(productId): void {
-    if (productId === 'web' || productId === 'mobile') {
+    if (productId === 'web') {
       this.step2Active = true;
       this.step3Active = true;
       this.step4Active = true;
