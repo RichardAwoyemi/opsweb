@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { TaskService } from '../_services/task.service';
 import { DataService } from '../_services/data.service';
 import { ToastrService } from 'ngx-toastr';
+import { DragulaService } from 'ng2-dragula';
+import { switchMap } from 'rxjs/operators';
+import { ModalService } from '../_services/modal.service';
 
 declare var $;
 
@@ -37,7 +40,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   webCustomFeatures: any;
   similarApps: any;
   tasksExist: boolean;
-  BAG = 'DASHBOARD';
   backlogTasks = [];
   basket = [];
   basketTotal = 0;
@@ -50,6 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   deliverySpeed = 1;
   costMultiplier = 1;
   speedMultiplier = 1;
+  BAG = 'DASHBOARD';
   noOfTasks = 0;
 
   private userSubscription: Subscription;
@@ -57,6 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private similarAppsSubscription: Subscription;
   private webCustomFeaturesSubscription: Subscription;
   private resizeSubscription$: Subscription;
+  private dragulaSubscription = new Subscription();
   private resizeObservable$: Observable<Event>;
 
   constructor(
@@ -66,13 +70,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public taskService: TaskService,
     private ngxLoader: NgxUiLoaderService,
     private toastr: ToastrService,
+    private modalService: ModalService,
     private logger: NGXLogger,
     private router: Router,
+    public dragulaService: DragulaService
   ) {
     this.userData = {
       firstName: null,
       lastName: null
     };
+    this.dragulaService.destroy(this.BAG);
+    this.dragulaService.createGroup(this.BAG, {
+      revertOnSpill: true,
+      direction: 'horizontal'
+    });
+    this.dragulaSubscription.add(this.dragulaService.drop(this.BAG)
+      .subscribe(({ name, el }) => {
+        this.logger.debug(`Drag and drop event detected for ${name}!`);
+        this.logger.debug(el.innerHTML);
+        if (el.innerHTML.indexOf('taskstatus="pending"')) {
+          this.modalService.displayMessage('Oops!', 'This task cannot be promoted until it has been paid for.');
+          this.dragulaService.find(this.BAG).drake.cancel(true);
+        }
+    }));
   }
 
   @ViewChild('createTaskModal') createTaskModal: ElementRef;
@@ -85,8 +105,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.innerHeight = window.innerHeight;
 
-    this.resizeObservable$ = fromEvent(window, 'resize')
-    this.resizeSubscription$ = this.resizeObservable$.subscribe( evt => {
+    this.resizeObservable$ = fromEvent(window, 'resize');
+    this.resizeSubscription$ = this.resizeObservable$.subscribe(evt => {
       this.innerHeight = window.innerHeight;
       this.logger.debug('Window resized: ', evt);
     });
@@ -210,7 +230,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   onTaskModalSaveButtonClick() {
     $(this.taskModal.nativeElement).modal('hide');
     this.taskService.updateTask(this.selectedTask, this.basket);
-    this.toastr.success('Task updated', null,  {
+    this.toastr.success('Task updated', null, {
       timeOut: 2000
     });
   }
@@ -252,6 +272,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.logger.debug(`Active task: ${JSON.stringify(this.selectedTask)}`);
     this.logger.debug(`Completion date was ${this.selectedTask['completionDate']}, now ${this.completionDate}`);
     this.logger.debug(`Care plan price was ${this.selectedTask['carePlanPrice']}, now ${this.carePlanPrice}`);
+
+    this.selectedTask['basketTotal'] = this.basketTotal;
+    this.selectedTask['completionDate'] = this.completionDate;
+    this.selectedTask['carePlanPrice'] = this.carePlanPrice;
+    this.selectedTask['deliverySpeed'] = this.deliverySpeed;
+
     $(this.taskModal.nativeElement).modal('show');
   }
 
@@ -316,7 +342,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   setCarePlan(value) {
     this.logger.debug(`Care plan set to: ${value}`);
     this.carePlanSelected = value;
-    this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.selectedTask['price']);
+    if (this.carePlanSelected === 'yes') {
+      this.carePlanPrice = this.taskService.calculateCarePlanPrice(this.carePlanSelected, this.basketTotal);
+    } else {
+      this.carePlanPrice = 0;
+    }
     this.selectedTask['carePlanPrice'] = this.carePlanPrice;
     this.logger.debug(`Care plan price set to: ${this.carePlanPrice}`);
   }
@@ -337,5 +367,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.webCustomFeaturesSubscription) {
       this.webCustomFeaturesSubscription.unsubscribe();
     }
+    if (this.dragulaSubscription) {
+      this.dragulaSubscription.unsubscribe();
+    }
+    this.dragulaService.destroy(this.BAG);
   }
 }

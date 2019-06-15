@@ -751,7 +751,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   onCompleteCheckoutClick(): void {
     if (!this.carePlanSelected) {
-      this.carePlanPrice = null;
+      this.carePlanPrice = 0;
     }
     this.taskService.createNewTask(
       this.user,

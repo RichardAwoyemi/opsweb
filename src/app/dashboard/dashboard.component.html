@@ -23,21 +23,24 @@
   *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && noOfTasks > 0">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 project-column" dragula="DASHBOARD">
+      <div class="col-md-4 project-column">
         <div class="col-header">
           <span class="badge badge-pill badge-primary">{{ backlogTasks?.length }}</span>&nbsp;&nbsp;
           <strong>BACKLOG</strong>
         </div>
-        <div *ngFor="let task of backlogTasks;" class="border rounded shadow-4 p-4 item" (click)="openTaskModal(task)">
-          <div class="row align-items-center">
-            <div class="col lh-5">
-              <div style="padding-bottom: 1em">
-                <strong>{{ task.name }}</strong>
+        <div dragula="DASHBOARD" style="min-height: 7.3em">
+          <div *ngFor="let task of backlogTasks;" class="border rounded shadow-4 p-4 item"
+            (click)="openTaskModal(task)">
+            <div class="row align-items-center" taskStatus="pending">
+              <div class="col lh-5">
+                <div style="padding-bottom: 1em">
+                  <strong>{{ task.name }}</strong>
+                </div>
+                <span class="badge badge-pill badge-secondary"
+                  *ngIf="!task?.invoice || !task?.assignedTo">pending</span>&nbsp;
+                <span class="badge badge-pill badge-primary" *ngIf="task.product">{{ task.product }}</span>&nbsp;
+                <span class="badge badge-pill badge-info" *ngIf="task.category">{{ task.category }}</span>
               </div>
-              <span class="badge badge-pill badge-secondary"
-                *ngIf="!task?.invoice || !task?.assignedTo">pending</span>&nbsp;
-              <span class="badge badge-pill badge-primary" *ngIf="task.product">{{ task.product }}</span>&nbsp;
-              <span class="badge badge-pill badge-info" *ngIf="task.category">{{ task.category }}</span>
             </div>
           </div>
         </div>
@@ -46,16 +49,20 @@
           <button class="btn btn-block btn-secondary" type="button" (click)="openCreateTaskModal()">Create Task</button>
         </div>
       </div>
-      <div class="col-md-4 project-column" dragula="DASHBOARD">
+      <div class="col-md-4 project-column">
         <div class="col-header">
           <span class="badge badge-pill badge-primary">0</span>&nbsp;&nbsp;
           <strong>IN PROGRESS</strong>
         </div>
+        <div dragula="DASHBOARD" style="min-height: 7.3em">
+        </div>
       </div>
-      <div class="col-md-4 project-column" dragula="DASHBOARD">
+      <div class="col-md-4 project-column">
         <div class="col-header">
           <span class="badge badge-pill badge-primary">0</span>&nbsp;&nbsp;
           <strong>DONE</strong>
+        </div>
+        <div dragula="DASHBOARD" style="min-height: 7.2em">
         </div>
       </div>
     </div>
@@ -240,8 +247,9 @@
                   </div>
                 </div>
                 <!-- When a feature is selected -->
-                <div *ngIf="featureSelected" style="width: 100%; margin-top: -1em; margin-bottom: -1rem" class="sidebar-scroll"
-                  [ngStyle]="{ 'max-height': innerHeight - 300 + 'px' }">
+                <div *ngIf="featureSelected"
+                  style="width: 100%; margin-top: -1em; margin-bottom: -1rem; padding-right: 1.5em"
+                  class="sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 300 + 'px' }">
                   <div class="row" style="padding-top: 0; padding-bottom: 0">
                     <div class="col-md-12" style="padding-bottom: 1em; padding-top: 1em">
                       <strong>{{ featureSelected.name }}</strong>

@@ -3,13 +3,15 @@ import { NGXLogger } from 'ngx-logger';
 import { FirebaseService } from '../_services/firebase.service';
 import { User } from '../_models/user';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
+import { UtilService } from '../_services/util.service';
 
 @Injectable()
 export class TaskService {
   constructor(
     private afs: AngularFirestore,
     private logger: NGXLogger,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private utilService: UtilService
   ) { }
 
   task: any;
@@ -78,7 +80,7 @@ export class TaskService {
     const collectionPath = this.TASKS_ROOT;
 
     const newTaskRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
-    this.logger.debug(`Creating new task with generated id at: '/${newTaskRef.ref.path}'`);
+    this.logger.debug(`Updating task with generated id at: '/${newTaskRef.ref.path}'`);
 
     const task = {
       id: newTaskRef.ref.id,
@@ -145,7 +147,7 @@ export class TaskService {
 
   calculateCarePlanPrice(carePlanSelected, basketTotal) {
     if (carePlanSelected === 'yes') {
-      return basketTotal * this.carePlanMultiplier;
+      return this.utilService.roundNumber(basketTotal * this.carePlanMultiplier, 2);
     } else {
       return 0;
     }
@@ -190,8 +192,8 @@ export class TaskService {
         total = total + basket[i]['price_gbp'];
       }
     }
-    const basketTotal = total * costMultiplier;
-    const basketTotalAdjustments = total - (total * costMultiplier);
+    const basketTotal = this.utilService.roundNumber(total * costMultiplier, 2);
+    const basketTotalAdjustments = this.utilService.roundNumber(total - (total * costMultiplier), 2);
     this.logger.debug(`Basket total: ${basketTotal}`);
     this.logger.debug(`Basket total adjustments: ${basketTotalAdjustments}`);
     return basketTotal;
