@@ -1,5 +1,9 @@
 [
   {
+    "id": "web-custom-admin",
+    "name": "Admin"
+  },
+  {
     "id": "web-custom-alert",
     "name": "Alerts"
   },
@@ -10,6 +14,10 @@
   {
     "id": "web-custom-business",
     "name": "Business"
+  },
+  {
+    "id": "web-custom-content",
+    "name": "Content"
   },
   {
     "id": "web-custom-ecommerce",

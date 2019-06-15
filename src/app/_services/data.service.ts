@@ -17,10 +17,14 @@ export class DataService {
   public webCustom: any;
   private webCustomDataPath = './assets/data/web-custom.json';
   public webCustomFeatures: any;
+  public webCustomAdmin: any;
+  private webCustomAdminDataPath = './assets/data/web-custom-admin.json';
   public webCustomAlert: any;
   private webCustomAlertDataPath = './assets/data/web-custom-alert.json';
   public webCustomAuth: any;
   private webCustomAuthDataPath = './assets/data/web-custom-auth.json';
+  public webCustomContent: any;
+  private webCustomContentDataPath = './assets/data/web-custom-content.json';
   public webCustomEcommerce: any;
   private webCustomEcommerceDataPath = './assets/data/web-custom-ecommerce.json';
   public webCustomFinance: any;
@@ -46,7 +50,9 @@ export class DataService {
     this.webCategories = this.httpClient.get(this.webCategoriesDataPath);
     this.webCustom = this.httpClient.get(this.webCustomDataPath);
     this.webCustomAlert = this.httpClient.get(this.webCustomAlertDataPath);
+    this.webCustomAdmin = this.httpClient.get(this.webCustomAdminDataPath);
     this.webCustomAuth = this.httpClient.get(this.webCustomAuthDataPath);
+    this.webCustomContent = this.httpClient.get(this.webCustomContentDataPath);
     this.webCustomEcommerce = this.httpClient.get(this.webCustomEcommerceDataPath);
     this.webCustomFinance = this.httpClient.get(this.webCustomFinanceDataPath);
     this.webCustomGames = this.httpClient.get(this.webCustomGamesDataPath);
@@ -80,12 +86,20 @@ export class DataService {
     return this.webCustom;
   }
 
+  public getAllWebCustomAdmin(): Observable<any> {
+    return this.webCustomAdmin;
+  }
+
   public getAllWebCustomAlert(): Observable<any> {
     return this.webCustomAlert;
   }
 
   public getAllWebCustomAuth(): Observable<any> {
     return this.webCustomAuth;
+  }
+
+  public getAllWebCustomContent(): Observable<any> {
+    return this.webCustomContent;
   }
 
   public getAllWebCustomEcommerce(): Observable<any> {
@@ -113,8 +127,10 @@ export class DataService {
   }
 
   public getAllWebCustomFeatures(): Observable<any> {
-    return combineLatest([this.webCustomAlert,
+    return combineLatest([this.webCustomAdmin,
+                          this.webCustomAlert,
                           this.webCustomAuth,
+                          this.webCustomContent,
                           this.webCustomEcommerce,
                           this.webCustomFinance,
                           this.webCustomGames,

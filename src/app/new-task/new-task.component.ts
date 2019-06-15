@@ -82,6 +82,12 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   webCustomIntegrations: any;
   webCustomIntegrationsSubscription: Subscription;
   isAllWebCustomIntegrationsSelected: boolean;
+  webCustomAdmin: any;
+  webCustomAdminSubscription: Subscription;
+  isAllWebCustomAdminSelected: boolean;
+  webCustomContent: any;
+  webCustomContentSubscription: Subscription;
+  isAllWebCustomContentSelected: boolean;
 
   similarApps: any;
   similarAppsSubscription: Subscription;
@@ -173,6 +179,14 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.webCustomAdminSubscription = this.dataService.getAllWebCustomAdmin().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom admin:');
+        this.logger.debug(response);
+        this.webCustomAdmin = response;
+      }
+    });
+
     this.webCustomAlertSubscription = this.dataService.getAllWebCustomAlert().subscribe(response => {
       if (response) {
         this.logger.debug('Web custom alert:');
@@ -186,6 +200,14 @@ export class NewTaskComponent implements OnInit, OnDestroy {
         this.logger.debug('Web custom auth:');
         this.logger.debug(response);
         this.webCustomAuth = response;
+      }
+    });
+
+    this.webCustomContentSubscription = this.dataService.getAllWebCustomContent().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web custom content:');
+        this.logger.debug(response);
+        this.webCustomContent = response;
       }
     });
 
@@ -220,7 +242,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
         this.webCustomIntegrations = response;
       }
     });
-  
+
     this.webCustomMultimediaSubscription = this.dataService.getAllWebCustomMultimedia().subscribe(response => {
       if (response) {
         this.logger.debug('Web custom ultimedia:');
@@ -312,11 +334,17 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   }
 
   getFeatures(id) {
+    if (id === 'web-custom-admin') {
+      return this.webCustomAdmin;
+    }
     if (id === 'web-custom-alert') {
       return this.webCustomAlert;
     }
     if (id === 'web-custom-auth') {
       return this.webCustomAuth;
+    }
+    if (id === 'web-custom-content') {
+      return this.webCustomContent;
     }
     if (id === 'web-custom-ecommerce') {
       return this.webCustomEcommerce;
@@ -488,11 +516,17 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   }
 
   isAllFeaturesSelected(featureId): boolean {
+    if (featureId === 'web-custom-admin') {
+      return this.isAllWebCustomAdminSelected;
+    }
     if (featureId === 'web-custom-alert') {
       return this.isAllWebCustomAlertSelected;
     }
     if (featureId === 'web-custom-auth') {
       return this.isAllWebCustomAuthSelected;
+    }
+    if (featureId === 'web-custom-content') {
+      return this.isAllWebCustomContentSelected;
     }
     if (featureId === 'web-custom-ecommerce') {
       return this.isAllWebCustomEcommerceSelected;
@@ -515,6 +549,14 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     this.logger.debug(`Basket before features added: ${JSON.stringify(this.basket)}`);
     this.logger.debug(`Selecting all features for id: ${featureId}`);
 
+    if (featureId === 'web-custom-admin') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomAdmin);
+      }
+      this.addFeaturesToBasket(this.webCustomAdmin);
+      this.isAllWebCustomAdminSelected = true;
+    }
+
     if (featureId === 'web-custom-alert') {
       if (this.basket.length > 0) {
         this.removeFeaturesFromBasket(this.webCustomAlert);
@@ -529,6 +571,14 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       }
       this.addFeaturesToBasket(this.webCustomAuth);
       this.isAllWebCustomAuthSelected = true;
+    }
+
+    if (featureId === 'web-custom-content') {
+      if (this.basket.length > 0) {
+        this.removeFeaturesFromBasket(this.webCustomContent);
+      }
+      this.addFeaturesToBasket(this.webCustomContent);
+      this.isAllWebCustomContentSelected = true;
     }
 
     if (featureId === 'web-custom-ecommerce') {
@@ -579,6 +629,11 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     this.logger.debug(`Basket before features removed: ${JSON.stringify(this.basket)}`);
     this.logger.debug(`Removing all features for id: ${featureId}`);
 
+    if (featureId === 'web-custom-admin') {
+      this.removeFeaturesFromBasket(this.webCustomAdmin);
+      this.isAllWebCustomAdminSelected = false;
+    }
+
     if (featureId === 'web-custom-alert') {
       this.removeFeaturesFromBasket(this.webCustomAlert);
       this.isAllWebCustomAlertSelected = false;
@@ -587,6 +642,11 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     if (featureId === 'web-custom-auth') {
       this.removeFeaturesFromBasket(this.webCustomAuth);
       this.isAllWebCustomAuthSelected = false;
+    }
+
+    if (featureId === 'web-custom-content') {
+      this.removeFeaturesFromBasket(this.webCustomContent);
+      this.isAllWebCustomContentSelected = false;
     }
 
     if (featureId === 'web-custom-ecommerce') {
