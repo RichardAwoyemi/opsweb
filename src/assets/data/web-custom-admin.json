@@ -1,0 +1,93 @@
+[
+  {
+    "id": "web-account-score",
+    "name": "Account Score",
+    "description": "A feature which enables account scoring based on custom contact level attributes.",
+    "price_gbp": 450,
+    "time_weeks": 0.5
+  },
+  {
+    "id": "web-account-transfer",
+    "name": "Account Transfer Tool",
+    "description": "A feature which enables the transfer of an account from one user to another when responsibilities change.",
+    "price_gbp": 350,
+    "time_weeks": 0.5    
+  },
+  {
+    "id": "web-activity-log",
+    "name": "Activity Log",
+    "description": "A feature which allows you to view the list of actions performed by users.",
+    "price_gbp": 350,
+    "time_weeks": 0.5    
+  },
+  {
+    "id": "web-address-management",
+    "name": "Address Management",
+    "description": "A feature which allows you to add or edit addresses within the application.",
+    "price_gbp": 400,
+    "time_weeks": 0.5    
+  },
+  {
+    "id": "web-approval-control",
+    "name": "Approval Process Control",
+    "description": "A feature which provides visibility about an item's status.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
+    "id": "web-customizable-subscriptions",
+    "name": "Customizable Subscriptions",
+    "description": "A feature which allows you to customize a user's subscription model.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
+    "id": "web-daily-limit",
+    "name": "Daily Limit",
+    "description": "A feature to specify the maximum number of hours per day that you would like a team member to work on a given project or task.",
+    "price_gbp": 225,
+    "time_weeks": 0.25    
+  },
+  {
+    "id": "web-dashboard-guests",
+    "name": "Dashboard Guests",
+    "description": "A feature to invite people outside of your workspace to view real-time project information via an external dashboard.",
+    "price_gbp": 450,
+    "time_weeks": 0.5    
+  },
+  {
+    "id": "web-chat-summary",
+    "name": "Live Chat Summary",
+    "description": "A feature which provides you a bird's eye view of your live chat channel.",
+    "price_gbp": 120,
+    "time_weeks": 0.1 
+  }, 
+  {
+    "id": "web-proposal-generation",
+    "name": "Proposal Generation",
+    "description": "A feature for automating your proposal generation process and making it entirely customizable.",
+    "price_gbp": 300,
+    "time_weeks": 0.4
+  },
+  {
+    "id": "web-remote-administration",
+    "name": "Remote Administration",
+    "description": "A feature which allows you to manage systems and team remotely.",
+    "price_gbp": 300,
+    "time_weeks": 0.4   
+  },
+  {
+    "id": "web-roles-permissions",
+    "name": "Roles and Permissions",
+    "description": "A feature which allows you to manage systems and team remotely.",
+    "price_gbp": 120,
+    "time_weeks": 0.1   
+  },
+  {
+    "id": "web-service-settings",
+    "name": "Service Specific Settings",
+    "description": "A feature to enable tailored service settings for different users.",
+    "price_gbp": 300,
+    "time_weeks": 0.4     
+  }
+]
