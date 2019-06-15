@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 import { UserService } from '../_services/user.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
@@ -56,6 +56,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private taskSubscription: Subscription;
   private similarAppsSubscription: Subscription;
   private webCustomFeaturesSubscription: Subscription;
+  private resizeSubscription$: Subscription;
+  private resizeObservable$: Observable<Event>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -82,6 +84,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.anonymousPhotoURL = '/assets/img/anonymous.jpg';
     this.user = JSON.parse(localStorage.getItem('user'));
     this.innerHeight = window.innerHeight;
+
+    this.resizeObservable$ = fromEvent(window, 'resize')
+    this.resizeSubscription$ = this.resizeObservable$.subscribe( evt => {
+      this.innerHeight = window.innerHeight;
+      this.logger.debug('Window resized: ', evt);
+    });
 
     this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(result => {
       if (result) {
@@ -316,6 +324,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.resizeSubscription$) {
+      this.resizeSubscription$.unsubscribe();
     }
     if (this.taskSubscription) {
       this.taskSubscription.unsubscribe();
