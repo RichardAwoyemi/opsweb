@@ -2,16 +2,16 @@
   {
     "id": "custom",
     "name": "Custom",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Build your dream web application from scratch with help from our enterprise grade library."
   },
   {
     "id": "shopify",
     "name": "Shopify",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Our Shopify developers are experts in advanced storefront development and design."
   },
   {
     "id": "wordpress",
     "name": "Wordpress",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Hire experienced Wordpress developers with a good sense of the platform and community."
   }
 ]
