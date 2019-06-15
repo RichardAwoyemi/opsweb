@@ -273,17 +273,17 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     this.ngxLoader.stop();
 
     // Step 3 - for testing purposes
-    this.step2Active = true;
-    this.step3Active = true;
-    this.step4Active = true;
-    this.step5Active = true;
-    this.taskName = 'Test Task';
-    this.taskDescription = 'Test Description';
-    const config: ScrollToConfigOptions = {
-      target: 'step3'
-    };
-    this.scrollToService.scrollTo(config);
-    document.body.style.overflow = 'hidden';
+    // this.step2Active = true;
+    // this.step3Active = true;
+    // this.step4Active = true;
+    // this.step5Active = true;
+    // this.taskName = 'Test Task';
+    // this.taskDescription = 'Test Description';
+    // const config: ScrollToConfigOptions = {
+    //   target: 'step3'
+    // };
+    // this.scrollToService.scrollTo(config);
+    // document.body.style.overflow = 'hidden';
   }
 
   setProduct(productId) {
@@ -793,7 +793,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       if (
         bounding.top >= 0 &&
         bounding.left >= 0 &&
-        bounding.right <= (window.innerWidth - 100 || document.documentElement.clientWidth - 100) &&
+        bounding.right <= (window.innerWidth - 80 || document.documentElement.clientWidth - 80) &&
         bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
       ) {
         this.logger.debug('Last slide is in the viewport');
@@ -812,22 +812,24 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       steps: [
         {
           element: document.querySelector('#categories-column'),
-          intro: 'Some text about introduction and categories',
+          intro: 'Welcome to the Opsonion Builder. This is a quick tutorial to get you started.' +
+          ' Firstly, select the category your application best fits in.',
           position: 'right'
         },
         {
           element: document.querySelector('#features-column'),
-          intro: 'Some text about feature library',
+          intro: 'Secondly, select the features you want your application to have. You can add also comments ' +
+           'so that we can better understand how to customise the component.',
           position: 'right'
         },
         {
           element: document.querySelector('#information-column'),
-          intro: 'Some text about information column',
+          intro: 'Each time you select a feature, look here for more information on how it works and the cost of implementation.',
           position: 'left'
         },
         {
           element: document.querySelector('#basket-button'),
-          intro: 'Some text about basket',
+          intro: 'Lastly, make sure you track all of the features you\'ve selected in your basket. Enjoy building!',
           position: 'bottom'
         }
       ]

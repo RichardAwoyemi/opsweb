@@ -2,41 +2,41 @@
   {
     "id": "web",
     "name": "Web",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Create web application using a modern framework or a proven CMS solution."
   },
   {
     "id": "mobile",
     "name": "Mobile",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Create a Android, iOS or cross-platform mobile application."
   },
   {
     "id": "desktop",
     "name": "Desktop",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Create a Windows, Mac or cross-platform desktop application."
   },
   {
     "id": "testing",
     "name": "Testing",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Ensure that your application has been thoroughly tested for bugs and errors."
   },
   {
     "id": "database",
     "name": "Database",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Integrate MySQL, PostgreSQL or MongoDB with your application."
   },
   {
     "id": "data-science",
     "name": "Data Science",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Leverage big data and machine learning to unlock new insights and process."
   },
   {
     "id": "devops",
     "name": "DevOps",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "Create a automated, stable and agile environment for your application."
   },
   {
     "id": "other",
     "name": "Other",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    "description": "For the great ideas that cannot fit into a single category. We'd love to help."
   }
 ]
