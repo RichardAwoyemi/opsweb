@@ -92,10 +92,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.modalService.displayMessage('Oops!', 'This task cannot be promoted until it has been paid for.');
           this.dragulaService.find(this.BAG).drake.cancel(true);
         }
-    }));
+      }));
   }
 
   @ViewChild('createTaskModal') createTaskModal: ElementRef;
+  @ViewChild('deleteTaskModal') deleteTaskModal: ElementRef;
   @ViewChild('taskModal') taskModal: ElementRef;
 
   ngOnInit() {
@@ -217,6 +218,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  openDeleteTaskModal(task) {
+    this.selectedTask = task;
+    $(this.deleteTaskModal.nativeElement).modal('show');
+  }
+
+  deleteTask(task) {
+    $(this.deleteTaskModal.nativeElement).modal('hide');
+    if (task.id) {
+      this.taskService.deleteTask(task.id);
+      this.toastr.success('Task deleted!', null, {
+        timeOut: 2000
+      });
+    } else {
+      this.toastr.error('Task could not be deleted. Please try again!', null, {
+        timeOut: 2000
+      });
+    }
+  }
+
   openCreateTaskModal() {
     $(this.createTaskModal.nativeElement).modal('show');
   }
@@ -230,7 +250,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   onTaskModalSaveButtonClick() {
     $(this.taskModal.nativeElement).modal('hide');
     this.taskService.updateTask(this.selectedTask, this.basket);
-    this.toastr.success('Task updated', null, {
+    this.toastr.success('Task updated!', null, {
       timeOut: 2000
     });
   }
@@ -239,7 +259,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     $(this.taskModal.nativeElement).modal('hide');
   }
 
-  openTaskModal(task: any) {
+  openViewTaskModal(task: any) {
     this.selectedTask = task;
     if (this.selectedTask['carePlanPrice'] > 0) {
       this.carePlanSelected = 'yes';

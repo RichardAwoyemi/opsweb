@@ -29,17 +29,25 @@
           <strong>BACKLOG</strong>
         </div>
         <div dragula="DASHBOARD" style="min-height: 7.3em">
-          <div *ngFor="let task of backlogTasks;" class="border rounded shadow-4 p-4 item"
-            (click)="openTaskModal(task)">
+          <div *ngFor="let task of backlogTasks;" class="border rounded shadow-4 p-4 item">
             <div class="row align-items-center" taskStatus="pending">
               <div class="col lh-5">
-                <div style="padding-bottom: 1em">
-                  <strong>{{ task.name }}</strong>
+                <div class="row">
+                  <div style="padding-bottom: 1em" class="col-md-10" (click)="openViewTaskModal(task)">
+                    <strong>{{ task.name }}</strong>
+                  </div>
+                  <div class="col-md-2" style="margin-top: -0.2em">
+                    <button type="button" class="close" (click)="openDeleteTaskModal(task)">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
                 </div>
-                <span class="badge badge-pill badge-secondary"
-                  *ngIf="!task?.invoice || !task?.assignedTo">pending</span>&nbsp;
-                <span class="badge badge-pill badge-primary" *ngIf="task.product">{{ task.product }}</span>&nbsp;
-                <span class="badge badge-pill badge-info" *ngIf="task.category">{{ task.category }}</span>
+                <div (click)="openTaskModal(task)">
+                  <span class="badge badge-pill badge-secondary"
+                    *ngIf="!task?.invoice || !task?.assignedTo">pending</span>&nbsp;
+                  <span class="badge badge-pill badge-primary" *ngIf="task.product">{{ task.product }}</span>&nbsp;
+                  <span class="badge badge-pill badge-info" *ngIf="task.category">{{ task.category }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -140,6 +148,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete task modal -->
+<div class="modal fade" #deleteTaskModal id="deleteTaskModal" tabindex="-1" role="dialog" aria-labelledby="deleteTaskModalLabel"
+  aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteTaskModalLabel">{{ selectedTask?.name }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this task?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="deleteTask(selectedTask)">Yes</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
       </div>
     </div>
   </div>

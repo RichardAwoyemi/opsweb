@@ -4,6 +4,7 @@ import { FirebaseService } from '../_services/firebase.service';
 import { User } from '../_models/user';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { UtilService } from '../_services/util.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class TaskService {
@@ -11,6 +12,7 @@ export class TaskService {
     private afs: AngularFirestore,
     private logger: NGXLogger,
     private firebaseService: FirebaseService,
+    private toastr: ToastrService,
     private utilService: UtilService
   ) { }
 
@@ -211,5 +213,11 @@ export class TaskService {
     }
     this.logger.debug(`Basket items: ${JSON.stringify(basket)}`);
     return basket;
+  }
+
+  deleteTask(taskId) {
+    this.logger.debug(`Deleting task: ${taskId}`);
+    const taskRef: AngularFirestoreDocument<any> = this.afs.doc(`tasks/${taskId}`);
+    taskRef.delete();
   }
 }
