@@ -12,7 +12,6 @@ export class TaskService {
     private afs: AngularFirestore,
     private logger: NGXLogger,
     private firebaseService: FirebaseService,
-    private toastr: ToastrService,
     private utilService: UtilService
   ) { }
 

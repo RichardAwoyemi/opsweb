@@ -33,16 +33,16 @@
             <div class="row align-items-center" taskStatus="pending">
               <div class="col lh-5">
                 <div class="row">
-                  <div style="padding-bottom: 1em" class="col-md-10" (click)="openViewTaskModal(task)">
+                  <div style="padding-bottom: 1em" class="col-md-10" (click)="openTaskModal(task)">
                     <strong>{{ task.name }}</strong>
                   </div>
-                  <div class="col-md-2" style="margin-top: -0.2em">
+                  <div class="col-md-2" style="margin-top: -0.2em; padding-bottom: 0px; padding-left:0px">
                     <button type="button" class="close" (click)="openDeleteTaskModal(task)">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
                 </div>
-                <div (click)="openTaskModal(task)">
+                <div (click)="openTaskModal(task)" style="width: 100%">
                   <span class="badge badge-pill badge-secondary"
                     *ngIf="!task?.invoice || !task?.assignedTo">pending</span>&nbsp;
                   <span class="badge badge-pill badge-primary" *ngIf="task.product">{{ task.product }}</span>&nbsp;
@@ -53,7 +53,11 @@
           </div>
         </div>
         <hr>
-        <div *ngIf="userData?.accountType == 'hire'">
+        <div *ngIf="userData?.accountType == 'work'" style="padding-bottom: 1em">
+          <button class="btn btn-block btn-secondary" type="button" (click)="openApplyToWorkModal()">Apply to
+            Work</button>
+        </div>
+        <div>
           <button class="btn btn-block btn-secondary" type="button" (click)="openCreateTaskModal()">Create Task</button>
         </div>
       </div>
@@ -134,17 +138,19 @@
 </div>
 
 <!-- Apply to work modal -->
-<div class="modal fade" #applyModal id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel"
+<div class="modal fade" #applyToWork id="applyToWork" tabindex="-1" role="dialog" aria-labelledby="applyToWorkLabel"
   aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="applyModalLabel">Apply to Work</h5>
+        <h5 class="modal-title" id="applyToWorkLabel">Apply to Work</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body text-center">
+      <div class="modal-body text-left">
+        Thank you for your interest in joining Opsonion as a worker. Please fill out the application below and we
+        will be in touch.
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
@@ -154,8 +160,8 @@
 </div>
 
 <!-- Delete task modal -->
-<div class="modal fade" #deleteTaskModal id="deleteTaskModal" tabindex="-1" role="dialog" aria-labelledby="deleteTaskModalLabel"
-  aria-hidden="!submitted">
+<div class="modal fade" #deleteTaskModal id="deleteTaskModal" tabindex="-1" role="dialog"
+  aria-labelledby="deleteTaskModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

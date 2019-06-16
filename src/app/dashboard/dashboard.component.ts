@@ -9,7 +9,6 @@ import { TaskService } from '../_services/task.service';
 import { DataService } from '../_services/data.service';
 import { ToastrService } from 'ngx-toastr';
 import { DragulaService } from 'ng2-dragula';
-import { switchMap } from 'rxjs/operators';
 import { ModalService } from '../_services/modal.service';
 
 declare var $;
@@ -98,6 +97,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('createTaskModal') createTaskModal: ElementRef;
   @ViewChild('deleteTaskModal') deleteTaskModal: ElementRef;
   @ViewChild('taskModal') taskModal: ElementRef;
+  @ViewChild('applyToWork') applyToWorkModal: ElementRef;
 
   ngOnInit() {
     this.ngxLoader.start();
@@ -241,6 +241,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     $(this.createTaskModal.nativeElement).modal('show');
   }
 
+  openApplyToWorkModal() {
+    $(this.applyToWorkModal.nativeElement).modal('show');
+  }
+
   onTaskModalCheckoutButtonClick() {
     $(this.taskModal.nativeElement).modal('hide');
     this.taskService.updateTask(this.selectedTask, this.basket);
@@ -259,7 +263,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     $(this.taskModal.nativeElement).modal('hide');
   }
 
-  openViewTaskModal(task: any) {
+  openTaskModal(task: any) {
     this.selectedTask = task;
     if (this.selectedTask['carePlanPrice'] > 0) {
       this.carePlanSelected = 'yes';
