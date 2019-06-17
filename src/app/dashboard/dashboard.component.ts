@@ -10,6 +10,7 @@ import { DataService } from '../_services/data.service';
 import { ToastrService } from 'ngx-toastr';
 import { DragulaService } from 'ng2-dragula';
 import { ModalService } from '../_services/modal.service';
+import { ApplicationService } from '../_services/application.service';
 
 declare var $;
 
@@ -21,6 +22,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isMobile: Observable<BreakpointState>;
   user: any;
   userData: any;
+  applicationData: any;
   anonymousPhotoURL: string;
   firstName: string;
   lastName: string;
@@ -54,8 +56,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   BAG = 'DASHBOARD';
   noOfTasks = 0;
 
+  primaryService: String;
+  secondaryService: String;
+  experienceLevel: String;
+  portfolio: String;
+
   private userSubscription: Subscription;
   private taskSubscription: Subscription;
+  private applicationSubscription: Subscription;
   private similarAppsSubscription: Subscription;
   private webCustomFeaturesSubscription: Subscription;
   private resizeSubscription$: Subscription;
@@ -67,6 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private userService: UserService,
     public taskService: TaskService,
+    public applicationService: ApplicationService,
     private ngxLoader: NgxUiLoaderService,
     private toastr: ToastrService,
     private modalService: ModalService,
@@ -96,8 +105,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   @ViewChild('createTaskModal') createTaskModal: ElementRef;
   @ViewChild('deleteTaskModal') deleteTaskModal: ElementRef;
-  @ViewChild('taskModal') taskModal: ElementRef;
-  @ViewChild('applyToWork') applyToWorkModal: ElementRef;
+  @ViewChild('editTaskModal') editTaskModal: ElementRef;
+  @ViewChild('workApplicationModal') workApplicationModal: ElementRef;
+  @ViewChild('applicationStatusModal') applicationStatusModal: ElementRef;
 
   ngOnInit() {
     this.ngxLoader.start();
@@ -121,6 +131,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.taskSubscription = this.taskService.getTasksByUserId(this.user.uid).subscribe(result => {
       if (result) {
         this.setTasks(result);
+      }
+    });
+
+    this.applicationSubscription = this.applicationService.getApplicationByUserId(this.user.uid).subscribe(result => {
+      if (result) {
+        this.setApplication(result[0]);
       }
     });
 
@@ -205,6 +221,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.userData = result;
   }
 
+  setApplication(result) {
+    this.logger.debug('Setting application:');
+    this.logger.debug(result);
+    this.applicationData = result;
+  }
+
   setTasks(result) {
     this.backlogTasks = [];
     this.logger.debug(`Number of tasks: ${result.length}`);
@@ -242,17 +264,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   openApplyToWorkModal() {
-    $(this.applyToWorkModal.nativeElement).modal('show');
+    $(this.workApplicationModal.nativeElement).modal('show');
+  }
+
+  openApplicationStatusModal() {
+    $(this.applicationStatusModal.nativeElement).modal('show');
   }
 
   onTaskModalCheckoutButtonClick() {
-    $(this.taskModal.nativeElement).modal('hide');
+    $(this.editTaskModal.nativeElement).modal('hide');
     this.taskService.updateTask(this.selectedTask, this.basket);
     this.router.navigate(['checkout']);
   }
 
   onTaskModalSaveButtonClick() {
-    $(this.taskModal.nativeElement).modal('hide');
+    $(this.editTaskModal.nativeElement).modal('hide');
     this.taskService.updateTask(this.selectedTask, this.basket);
     this.toastr.success('Task updated!', null, {
       timeOut: 2000
@@ -260,7 +286,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   onTaskModalCloseButtonClick() {
-    $(this.taskModal.nativeElement).modal('hide');
+    $(this.editTaskModal.nativeElement).modal('hide');
   }
 
   openTaskModal(task: any) {
@@ -302,7 +328,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.selectedTask['carePlanPrice'] = this.carePlanPrice;
     this.selectedTask['deliverySpeed'] = this.deliverySpeed;
 
-    $(this.taskModal.nativeElement).modal('show');
+    $(this.editTaskModal.nativeElement).modal('show');
   }
 
   onChangeDeliverySpeed(e): void {
@@ -339,6 +365,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   closeCreateTaskModal() {
     $(this.createTaskModal.nativeElement).modal('hide');
+  }
+
+  completeWorkApplication() {
+    $(this.workApplicationModal.nativeElement).modal('hide');
+    this.applicationService.createNewApplication(this.user.uid, this.primaryService, this.secondaryService,
+      this.experienceLevel, this.portfolio);
+    this.toastr.success('Application submitted!', null, {
+      timeOut: 2000
+    });
   }
 
   completeTaskPreScreening() {
@@ -390,6 +425,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     if (this.webCustomFeaturesSubscription) {
       this.webCustomFeaturesSubscription.unsubscribe();
+    }
+    if (this.applicationSubscription) {
+      this.applicationSubscription.unsubscribe();
     }
     if (this.dragulaSubscription) {
       this.dragulaSubscription.unsubscribe();

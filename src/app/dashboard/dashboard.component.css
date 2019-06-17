@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 
-#taskModal > .modal-dialog { 
+#editTaskModal > .modal-dialog { 
   max-width: 90% !important;
 }
 

@@ -4,7 +4,6 @@ import { FirebaseService } from '../_services/firebase.service';
 import { User } from '../_models/user';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { UtilService } from '../_services/util.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class TaskService {
@@ -40,6 +39,7 @@ export class TaskService {
   }
 
   updateTask(task, basket) {
+    this.logger.debug(`Creating task with generated id at: '/$tasks/${task.id}'`);
     this.logger.debug(`Task:`);
     this.logger.debug(`${JSON.stringify(task)}`);
     this.logger.debug(`Basket:`);
@@ -81,7 +81,7 @@ export class TaskService {
     const collectionPath = this.TASKS_ROOT;
 
     const newTaskRef: AngularFirestoreDocument<any> = this.firebaseService.createDocumentRef(collectionPath);
-    this.logger.debug(`Updating task with generated id at: '/${newTaskRef.ref.path}'`);
+    this.logger.debug(`Creating task with generated id at: '/${newTaskRef.ref.path}'`);
 
     const task = {
       id: newTaskRef.ref.id,

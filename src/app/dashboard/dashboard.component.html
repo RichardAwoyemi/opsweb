@@ -12,7 +12,7 @@
         <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'hire'"
           (click)="openCreateTaskModal()">Create Task</button>
         <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'work'"
-          (click)="apply()">Apply to Work</button>
+          (click)="openApplyToWorkModal()">Apply to Work</button>
       </div>
     </div>
     <br>
@@ -53,9 +53,13 @@
           </div>
         </div>
         <hr>
-        <div *ngIf="userData?.accountType == 'work'" style="padding-bottom: 1em">
+        <div *ngIf="userData?.accountType == 'work' && !applicationData" style="padding-bottom: 1em">
           <button class="btn btn-block btn-secondary" type="button" (click)="openApplyToWorkModal()">Apply to
             Work</button>
+        </div>
+        <div *ngIf="userData?.accountType == 'work' && applicationData" style="padding-bottom: 1em">
+          <button class="btn btn-block btn-secondary" type="button" (click)="openApplicationStatusModal()">View
+            Application Status</button>
         </div>
         <div>
           <button class="btn btn-block btn-secondary" type="button" (click)="openCreateTaskModal()">Create Task</button>
@@ -138,19 +142,76 @@
 </div>
 
 <!-- Apply to work modal -->
-<div class="modal fade" #applyToWork id="applyToWork" tabindex="-1" role="dialog" aria-labelledby="applyToWorkLabel"
-  aria-hidden="!submitted">
+<div class="modal fade" #workApplicationModal id="workApplicationModal" tabindex="-1" role="dialog"
+  aria-labelledby="workApplicationModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="applyToWorkLabel">Apply to Work</h5>
+        <h5 class="modal-title" id="workApplicationModalLabel">Apply to Work</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-left sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 190 + 'px' }">
+        <h6 class="text-center">Thank you for your interest in joining Opsonion as a worker. Please fill out the
+          application below and we will be in touch.</h6>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>What service do you provide? <span class="text-danger">*</span></label>
+              <select class="form-control" [(ngModel)]="primaryService">
+                <option value="Web, Software and Mobile Development">Web, Software and Mobile Development</option>
+                <option value="Graphics Design">Graphics Design</option>
+                <option value="Writing and Translation">Writing and Translation</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Please tell us about your skills in this area <span class="text-danger">*</span></label>
+              <textarea class="form-control" [(ngModel)]="secondaryService"></textarea>
+            </div>
+            <div class="form-group">
+              <label>How would you rate your experience? <span class="text-danger">*</span></label>
+              <select class="form-control" [(ngModel)]="experienceLevel">
+                <option value="Beginner">Beginner (less than a years of experience)</option>
+                <option value="Intermediate">Intermediate (2 to 5 years experience)</option>
+                <option value="Advanced">Advanced (more than 5 years of experience)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Please provide us with a link to your portfolio <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="portfolio" [(ngModel)]="portfolio">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="completeWorkApplication()"
+          [disabled]="!primaryService || !secondaryService || !experienceLevel || !portfolio">Submit</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Application status modal -->
+<div class="modal fade" #applicationStatusModal id="applicationStatusModal" tabindex="-1" role="dialog"
+  aria-labelledby="applicationStatusModalLabel" aria-hidden="!submitted">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="applicationStatusModalLabel">Application Status</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body text-left">
-        Thank you for your interest in joining Opsonion as a worker. Please fill out the application below and we
-        will be in touch.
+        <div *ngIf="applicationData?.status === 'In Review'">Your application is currently under consideration.</div>
+        <div *ngIf="applicationData?.status === 'Accepted'">Your application has been successful. We will be in touch to discuss
+          next steps.</div>
+        <div *ngIf="applicationData?.status === 'Rejected'">Your application has been unsuccessful. We appreciate the effort and
+          interest you have shown with your application and wish you all the best in the future.</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
@@ -181,9 +242,9 @@
   </div>
 </div>
 
-<!-- Task modal -->
-<div class="modal fade" #taskModal id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel"
-  aria-hidden="!submitted">
+<!-- Edit task modal -->
+<div class="modal fade" #editTaskModal id="editTaskModal" tabindex="-1" role="dialog"
+  aria-labelledby="editTaskModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" *ngIf="!selectedTask?.invoice || !selectedTask?.assignedTo">

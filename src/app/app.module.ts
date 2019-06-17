@@ -62,6 +62,7 @@ import { BlockSpecialCharacterDirective } from './_directives/block-special-char
 import { TruncatePipeDirective } from './_directives/truncate-pipe.directive';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { ApplicationService } from './_services/application.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -143,6 +144,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ModalService,
     ImgurService,
     TaskService,
+    ApplicationService,
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {
