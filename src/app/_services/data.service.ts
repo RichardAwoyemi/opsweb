@@ -39,6 +39,8 @@ export class DataService {
   private webCustomSocialDataPath = './assets/data/web-custom-social.json';
   public similarApps: any;
   private similarAppsDataPath = './assets/data/similar-apps.json';
+  public webPages: any;
+  private webPagesDataPath = './assets/data/web-pages.json';
 
   constructor(
     public httpClient: HttpClient
@@ -59,6 +61,7 @@ export class DataService {
     this.webCustomIntegrations = this.httpClient.get(this.webCustomIntegrationsDataPath);
     this.webCustomMultimedia = this.httpClient.get(this.webCustomMultimediaDataPath);
     this.webCustomSocial = this.httpClient.get(this.webCustomSocialDataPath);
+    this.webPages = this.httpClient.get(this.webPagesDataPath);
     this.similarApps = this.httpClient.get(this.similarAppsDataPath);
   }
 
@@ -124,6 +127,10 @@ export class DataService {
 
   public getAllWebCustomSocial(): Observable<any> {
     return this.webCustomSocial;
+  }
+
+  public getAllWebPages(): Observable<any> {
+    return this.webPages;
   }
 
   public getAllWebCustomFeatures(): Observable<any> {

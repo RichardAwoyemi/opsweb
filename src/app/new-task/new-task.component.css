@@ -1,5 +1,5 @@
 @import '~swiper/dist/css/swiper.min.css';
-
+  
 /* General */
 
 .section-desktop {
@@ -278,4 +278,25 @@
 
 .item-remove:hover {
   color: #ff4954;
+}
+
+/* Wizard steps */
+
+.option-icon {
+  padding-right: 2em; 
+  display: inline;
+  opacity: 0.2;
+}
+
+.option-icon:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.checkbox-padding {
+  padding-bottom: 1em
+}
+
+aw-wizard-navigation-bar {
+	display: none !important;
 }

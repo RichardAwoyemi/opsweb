@@ -12,13 +12,24 @@ import { Router } from '@angular/router';
 import { TaskService } from '../_services/task.service';
 import * as introJs from 'intro.js/intro.js';
 import { ModalService } from '../_services/modal.service';
+import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 
 declare var $;
 
 @Component({
   selector: 'app-new-task',
   templateUrl: './new-task.component.html',
-  styleUrls: ['./new-task.component.css']
+  styleUrls: ['./new-task.component.css'],
+  animations: [
+    trigger('staggerLoad', [
+      transition(':enter', [
+        query('*', style({ opacity: 0, transform: 'translateY(-15%)' })),
+        query('*', stagger('300ms', [
+          animate('.3s ease-in', style({ opacity: 1, transform: 'translateY(0)' }))
+        ]))
+      ])
+    ])
+  ]
 })
 export class NewTaskComponent implements OnInit, OnDestroy {
   constructor(
@@ -49,6 +60,8 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   productSelected: string;
   categorySelected: string;
   featureSelected: string;
+  webLayoutSelected: string;
+  webFontSelected: string;
 
   programmingTasks: any;
   programmingTasksSubscription: Subscription;
@@ -91,6 +104,8 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   similarApps: any;
   similarAppsSubscription: Subscription;
+  webPages: any;
+  webPagesSubscription: Subscription;
 
   isMobile: Observable<BreakpointState>;
   task: any;
@@ -108,6 +123,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   currency = 'gbp';
   basket = [];
+  pages = [];
   basketTotal = 0;
   basketTotalAdjustments = 0;
   completionDate: string;
@@ -142,6 +158,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   @ViewChild('basketModal') basketModal: ElementRef;
   @ViewChild('basketDetailModal') basketDetailModal: ElementRef;
   @ViewChild('carePlanModal') carePlanModal: ElementRef;
+  @ViewChild('layoutModal') layoutModal: ElementRef;
 
   ngOnInit() {
     this.ngxLoader.start();
@@ -267,23 +284,50 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.webPagesSubscription = this.dataService.getAllWebPages().subscribe(response => {
+      if (response) {
+        this.logger.debug('Web pages:');
+        this.logger.debug(response);
+        this.webPages = response;
+      }
+    });
+
     this.user = JSON.parse(localStorage.getItem('user'));
     this.logger.debug(`Email address is: ${this.user.email}`);
 
     this.ngxLoader.stop();
 
     // Step 3 - for testing purposes
-    // this.step2Active = true;
-    // this.step3Active = true;
-    // this.step4Active = true;
-    // this.step5Active = true;
     // this.taskName = 'Test Task';
     // this.taskDescription = 'Test Description';
+    // this.productSelected = 'Web';
+    // this.step2Active = true;
     // const config: ScrollToConfigOptions = {
-    //   target: 'step3'
+    //   target: 'step2'
     // };
     // this.scrollToService.scrollTo(config);
-    // document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = '';
+  }
+
+  validateTaskNameAndDescription() {
+    if (this.taskName && this.taskDescription) {
+      return false;
+    }
+    return true;
+  }
+
+  validateWebLayoutSelection() {
+    if (this.webLayoutSelected) {
+      return false;
+    }
+    return true;
+  }
+
+  validateWebFontSelection() {
+    if (this.webFontSelected) {
+      return false;
+    }
+    return true;
   }
 
   setProduct(productId) {
@@ -330,6 +374,18 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
     if (!feature['in_basket']) {
       return '#FFFFFF';
+    }
+  }
+
+  setLayoutIconOpacity(layout) {
+    if (layout === this.webLayoutSelected) {
+      return '0.8';
+    }
+  }
+
+  setFontOpacity(font) {
+    if (font === this.webFontSelected) {
+      return '0.8';
     }
   }
 
@@ -813,13 +869,13 @@ export class NewTaskComponent implements OnInit, OnDestroy {
         {
           element: document.querySelector('#categories-column'),
           intro: 'Welcome to the Opsonion Builder. This is a quick tutorial to get you started.' +
-          ' Firstly, select the category your application best fits in.',
+            ' Firstly, select the category your application best fits in.',
           position: 'right'
         },
         {
           element: document.querySelector('#features-column'),
           intro: 'Secondly, select the features you want your application to have. You can add also comments ' +
-           'so that we can better understand how to customise the component.',
+            'so that we can better understand how to customise the component.',
           position: 'right'
         },
         {
@@ -835,6 +891,43 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       ]
     });
     this.introJs.start();
+  }
+
+  onClickShowLayoutModal(selectedWebLayout: string) {
+    this.webLayoutSelected = selectedWebLayout;
+    $(this.layoutModal.nativeElement).modal('show');
+  }
+
+  onClickSelectFontStyle(selectedWebFont: string) {
+    this.webFontSelected = selectedWebFont;
+  }
+
+  addPageToBasket(pageId: string) {
+    let pageFound = false;
+
+    if (this.basket.length > 0) {
+        for (let i = 0; i < this.basket.length; i++) {
+          if (this.basket[i]['id'] === pageId) {
+            this.logger.debug(`Found item to delete: ${pageId}`);
+            this.basket.splice(i, 1);
+            this.logger.debug(`Basket after page deleted: ${JSON.stringify(this.basket)}`);
+            pageFound = true;
+          }
+        }
+    }
+
+    if (pageFound === false) {
+      this.logger.debug(`Basket before page added: ${JSON.stringify(this.basket)}`);
+      for (let i = 0; i < this.webPages.length; i++) {
+        if (pageId === this.webPages[i].id) {
+          this.logger.debug(`Page found: ${this.webPages[i].id}`);
+          this.basket.push(this.webPages[i]);
+        }
+      }
+      this.logger.debug(`Basket after page added: ${JSON.stringify(this.basket)}`);
+    }
+
+    this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
   }
 
   ngOnDestroy() {
