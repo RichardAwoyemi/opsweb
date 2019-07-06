@@ -63,6 +63,17 @@ import { TruncatePipeDirective } from './_directives/truncate-pipe.directive';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ApplicationService } from './_services/application.service';
+import { SectionHeaderComponent } from './_components/shared/section-header/section-header.component';
+import { HomeNavbarComponent } from './_components/home/home-navbar/home-navbar.component';
+import { DashboardFooterComponent } from './_components/dashboard/dashboard-footer/dashboard-footer.component';
+import { DashboardNavbarComponent } from './_components/dashboard/dashboard-navbar/dashboard-navbar.component';
+import { HomeFooterComponent } from './_components/home/home-footer/home-footer.component';
+import { HomeHeaderComponent } from './_components/home/home-header/home-header.component';
+import { HomeFeaturesComponent } from './_components/home/home-features/home-features.component';
+import { HomeFeatureCardComponent } from './_components/home/home-feature-card/home-feature-card.component';
+import { HomeReviewsComponent } from './_components/home/home-reviews/home-reviews.component';
+import { HomeApplyComponent } from './_components/home/home-apply/home-apply.component';
+import { LoginButtonSetComponent } from './_components/shared/login-button-set/login-button-set.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -81,12 +92,21 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   declarations: [
     AppComponent,
     HomeComponent,
+    HomeNavbarComponent,
+    HomeFooterComponent,
+    HomeHeaderComponent,
+    HomeFeaturesComponent,
+    HomeFeatureCardComponent,
+    HomeReviewsComponent,
+    HomeApplyComponent,
+    DashboardComponent,
+    DashboardFooterComponent,
+    DashboardNavbarComponent,
     ContactComponent,
     LegalComponent,
     LoginComponent,
     PressComponent,
     RegisterComponent,
-    DashboardComponent,
     ModalComponent,
     VerifyEmailComponent,
     ForgotPasswordComponent,
@@ -98,7 +118,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NewTaskComponent,
     BlockSpecialCharacterDirective,
     TruncatePipeDirective,
-    CheckoutComponent
+    CheckoutComponent,
+    SectionHeaderComponent,
+    LoginButtonSetComponent
   ],
   entryComponents: [
     ModalComponent

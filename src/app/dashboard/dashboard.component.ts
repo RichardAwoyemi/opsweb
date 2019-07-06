@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(({ name, el }) => {
         this.logger.debug(`Drag and drop event detected for ${name}!`);
         this.logger.debug(el.innerHTML);
-        if (el.innerHTML.indexOf('taskstatus="pending"')) {
+        if (el.innerHTML.indexOf('status="pending"')) {
           this.modalService.displayMessage('Oops!', 'This task cannot be promoted until it has been paid for.');
           this.dragulaService.find(this.BAG).drake.cancel(true);
         }

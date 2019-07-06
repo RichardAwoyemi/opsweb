@@ -30,7 +30,7 @@
         </div>
         <div dragula="DASHBOARD" style="min-height: 7.3em">
           <div *ngFor="let task of backlogTasks;" class="border rounded shadow-4 p-4 item">
-            <div class="row align-items-center" taskStatus="pending">
+            <div class="row align-items-center" status="pending">
               <div class="col lh-5">
                 <div class="row">
                   <div style="padding-bottom: 1em" class="col-md-10" (click)="openTaskModal(task)">

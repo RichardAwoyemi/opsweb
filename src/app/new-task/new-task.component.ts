@@ -131,6 +131,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   carePlanPrice = 0;
   deliverySpeed = 1;
   carePlanSelected: string;
+  ndaSelected: string;
   costMultiplier = 1;
   speedMultiplier = 1;
   sliderValue = this.costMultiplier;
@@ -353,11 +354,26 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     this.logger.debug(`Care plan price set to: ${this.carePlanPrice}`);
   }
 
+  setNdaSignature(value) {
+    this.logger.debug(`NDA signature status set to: ${value}`);
+    this.ndaSelected = value;
+  }
+
   setCarePlanButtonColour(value) {
     if (value === 'yes' && this.carePlanSelected === 'yes') {
       return 'btn-success';
     }
     if (value === 'no' && this.carePlanSelected === 'no') {
+      return 'btn-success';
+    }
+    return 'btn-secondary';
+  }
+
+  setNdaSignatureButtonColour(value) {
+    if (value === 'yes' && this.ndaSelected === 'yes') {
+      return 'btn-success';
+    }
+    if (value === 'no' && this.ndaSelected === 'no') {
       return 'btn-success';
     }
     return 'btn-secondary';
@@ -484,7 +500,11 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     document.getElementById('intercom-css-container').style.display = 'none';
     document.getElementById('intercom-container').style.display = 'none';
     this.ngxLoader.stop();
-    this.startTour();
+    const isBuilderTourComplete = localStorage.getItem('builderTourComplete');
+    if (!isBuilderTourComplete) {
+      this.startTour();
+      localStorage.setItem('builderTourComplete', 'true');
+    }
   }
 
   onStep3NextButtonClick(): void {
@@ -526,6 +546,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
   onStep3PreviousButtonClick(): void {
     this.ngxLoader.start();
     document.body.style.overflow = '';
+    this.categorySelected = '';
     const config: ScrollToConfigOptions = {
       target: 'step2'
     };
@@ -819,9 +840,11 @@ export class NewTaskComponent implements OnInit, OnDestroy {
       this.basket,
       this.completionDate,
       this.currency,
-      this.carePlanPrice,
+      this.ndaSelected,
       this.basketTotal,
-      this.deliverySpeed);
+      this.deliverySpeed,
+      this.webLayoutSelected,
+      this.webFontSelected);
     this.router.navigate(['checkout']);
   }
 
@@ -895,25 +918,27 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   onClickShowLayoutModal(selectedWebLayout: string) {
     this.webLayoutSelected = selectedWebLayout;
+    this.logger.debug(`Layout selected: ${selectedWebLayout}`);
     $(this.layoutModal.nativeElement).modal('show');
   }
 
   onClickSelectFontStyle(selectedWebFont: string) {
     this.webFontSelected = selectedWebFont;
+    this.logger.debug(`Font selected: ${selectedWebFont}`);
   }
 
   addPageToBasket(pageId: string) {
     let pageFound = false;
 
     if (this.basket.length > 0) {
-        for (let i = 0; i < this.basket.length; i++) {
-          if (this.basket[i]['id'] === pageId) {
-            this.logger.debug(`Found item to delete: ${pageId}`);
-            this.basket.splice(i, 1);
-            this.logger.debug(`Basket after page deleted: ${JSON.stringify(this.basket)}`);
-            pageFound = true;
-          }
+      for (let i = 0; i < this.basket.length; i++) {
+        if (this.basket[i]['id'] === pageId) {
+          this.logger.debug(`Found item to delete: ${pageId}`);
+          this.basket.splice(i, 1);
+          this.logger.debug(`Basket after page deleted: ${JSON.stringify(this.basket)}`);
+          pageFound = true;
         }
+      }
     }
 
     if (pageFound === false) {
@@ -928,6 +953,21 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     }
 
     this.basketTotal = this.taskService.calculateBasketTotal('gbp', this.basket, this.costMultiplier);
+  }
+
+  isPageInBasket(pageId) {
+    let pageFound = false;
+
+    if (this.basket.length > 0) {
+      for (let i = 0; i < this.basket.length; i++) {
+        if (this.basket[i]['id'] === pageId) {
+          this.logger.debug(`Page found in basket: ${pageId}`);
+          pageFound = true;
+        }
+      }
+    }
+
+    return pageFound;
   }
 
   ngOnDestroy() {

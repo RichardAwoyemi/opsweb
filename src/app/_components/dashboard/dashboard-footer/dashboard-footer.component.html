@@ -1,0 +1,16 @@
+<!-- Desktop footer -->
+<footer id="footer" class="footer py-4" *ngIf="!(isMobile | async)?.matches && authService.isLoggedIn">
+  <div class="container">
+    <div class="col-xl-12">
+      <small class="opacity-70">&copy; {{ today | date: 'yyyy' }} Opsonion. All rights reserved.</small>
+    </div>
+  </div>
+</footer>
+<!-- Mobile footer -->
+<footer id="footer" class="footer py-4" *ngIf="(isMobile | async)?.matches && authService.isLoggedIn">
+  <div class="container">
+    <div class="col-xl-12" style="padding-left: 0px">
+      <small class="opacity-70">&copy; {{ today | date: 'yyyy' }} Opsonion. All rights reserved.</small>
+    </div>
+  </div>
+</footer>

@@ -1,15 +1,6 @@
 <section class="section">
   <div class="container">
-    <div *ngIf="!(isMobile | async)?.matches">
-      <h2 class="text-center">Contact</h2>
-      <p class="text-center">Get in touch with us today, whatever your query.</p>
-      <hr class="w-10">
-    </div>
-    <div *ngIf="(isMobile | async)?.matches" style="padding-top: 2.5em">
-      <h2 class="text-center">Contact</h2>
-      <p class="text-center">Get in touch with us today, whatever your query.</p>
-      <hr class="w-10">
-    </div>
+    <app-section-header title="Contact" subtitle="Get in touch with us today, whatever your query."></app-section-header>
     <form class="col-md-8 col-xl-8 mx-auto input-border" [formGroup]="contactForm" id="contactForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
       <div class="col-lg-12">
         <div class="form-row">

@@ -75,8 +75,8 @@ export class TaskService {
   }
 
   createNewTask(user: User, product: String, name: String, description: String, similarApps: Array<any>,
-    category: String, basket: Array<any>, completionDate: String, currency: String, carePlanPrice: Number,
-    basketTotal: Number, deliverySpeed: Number) {
+    category: String, basket: Array<any>, completionDate: String, currency: String, ndaSigned: String,
+    basketTotal: Number, deliverySpeed: Number, webLayout: String, webFont: String) {
 
     const collectionPath = this.TASKS_ROOT;
 
@@ -91,12 +91,14 @@ export class TaskService {
       category: category,
       completionDate: completionDate,
       currency: currency,
-      carePlanPrice: carePlanPrice,
+      ndaSigned: ndaSigned,
       basketTotal: basketTotal,
       createdBy: user.uid,
       createdAt: new Date(),
       done: false,
-      deliverySpeed: deliverySpeed
+      deliverySpeed: deliverySpeed,
+      webLayout: webLayout,
+      webFont: webFont
     };
 
     this.logger.debug(task);

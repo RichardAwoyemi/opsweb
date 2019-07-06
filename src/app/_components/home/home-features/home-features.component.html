@@ -1,0 +1,53 @@
+<section class="section bg-gray">
+  <div class="container">
+    <div class="row gap-y">
+      <ng-container *ngFor="let feature of features">
+        <div [ngClass]="featureCardColumnWidth$ | async" [attr.data-aos]="featureCardAosAnimate$ | async"
+          [attr.data-aos-delay]="feature.delay">
+          <app-home-feature-card title="{{ feature?.title }}" description="{{ feature?.description }}"
+            image="{{ feature?.image }}">
+          </app-home-feature-card>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>
+<!-- Desktop -->
+<section class="section" *ngIf="!(isMobile | async)?.matches">
+  <div class="container">
+    <div class="row gap-y align-items-center">
+      <div class="col-md-6 ml-auto">
+        <h3 style="font-weight: bold">{{ employerFeaturesHeading }}</h3>
+        <p>{{ employerFeaturesSubheading }}</p>
+        <ul class="list-unstyled" style="line-height: 2.5em">
+          <ng-container *ngFor="let feature of employerFeatures">
+            <li><i class="ti-check text-success mr-2"></i> {{ feature }}</li>
+          </ng-container>
+        </ul>
+        <br>
+        <button type="button" class="btn btn-xl btn-primary"
+          routerLink="login">{{ employeeFeaturesButtonText }}</button>
+      </div>
+      <div class="col-md-5 order-md-first">
+        <img src="{{ employeeFeaturesImage }}" aos-init aos-animate data-aos="fade-up">
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Mobile -->
+<section class="section overflow-hidden" *ngIf="(isMobile | async)?.matches">
+  <div class="container-fluid position-static">
+    <div class="row gap-y align-items-center">
+      <div class="col-md-12 mx-auto">
+        <h3 style="font-weight: bold">{{ employerFeaturesHeading }}</h3>
+        <img src="{{ employeeFeaturesImage }}" style="width: 100%; padding-bottom: 2em; padding-top: 2em">
+        <p>{{ employerFeaturesSubheading }}</p>
+        <ul class="list-unstyled" style="line-height: 2.5em">
+          <ng-container *ngFor="let feature of employerFeatures">
+            <li><i class="ti-check text-success mr-2"></i> {{ feature }}</li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

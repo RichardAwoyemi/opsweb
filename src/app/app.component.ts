@@ -19,7 +19,6 @@ export class AppComponent implements OnInit, OnDestroy {
   user: any = {
     photoURL: '/assets/img/anonymous.jpg'
   };
-  today: number = Date.now();
   appStoreUrl: string;
   userAgentString: string;
   referredBy: string;

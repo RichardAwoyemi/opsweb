@@ -16,8 +16,6 @@ export class ContactComponent implements OnInit {
   contactFormGroup: FormGroup;
   closeResult: string;
 
-  @ViewChild('errorModal') errorModal: ElementRef;
-
   private scriptURL = 'https://script.google.com/macros/s/AKfycbzeO_PLnm4HHAKlwPQ3PHN6j9TSVkxt0NJW0cy2NfRb1KZvLDA/exec';
   contactForm = document.forms['contactForm'];
 
@@ -25,7 +23,7 @@ export class ContactComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
     private logger: NGXLogger,
-    public modalService: ModalService
+    public modalService: ModalService,
   ) { }
 
   ngOnInit() {
@@ -52,7 +50,7 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     if (this.contactForm.invalid) {
-      $(this.errorModal.nativeElement).modal('show');
+      this.modalService.displayMessage('Oops!', ' There was something wrong with your submission. Please try again.');
       return;
     }
 
@@ -65,7 +63,7 @@ export class ContactComponent implements OnInit {
     }).catch(
       error => {
         this.logger.debug('Error!', error.message);
-        $(this.errorModal.nativeElement).modal('show');
+        this.modalService.displayMessage('Oops!', ' There was something wrong with your submission. Please try again.');
         this.submitted = false;
 
         // Temporary fix

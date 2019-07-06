@@ -98,7 +98,7 @@
                       <p>This will be your landing page layout. Choose your favourite and customise details later.</p>
                     </div>
                     <div class="row" style="margin-bottom: -1em">
-                      <div class="col-md-6">
+                      <div class="col-md-7">
                         <div class="option-icon" (click)="onClickShowLayoutModal('web-layout-1')"
                           [style.opacity]="setLayoutIconOpacity('web-layout-1')">
                           <svg width="95px" height="67px" viewBox="0 0 95 67" version="1.1">
@@ -140,7 +140,7 @@
                           </svg>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <div class="form-group">
                           <textarea class="form-control form-control-sm"
                             placeholder="Please enter any additional details here..." rows="3"></textarea>
@@ -151,7 +151,8 @@
                     <div class="btn-group">
                       <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
                       &nbsp;&nbsp;
-                      <button type="button" class="btn btn-secondary" [disabled]="validateWebLayoutSelection()" awNextStep>Continue</button>
+                      <button type="button" class="btn btn-secondary" [disabled]="validateWebLayoutSelection()"
+                        awNextStep>Continue</button>
                     </div>
                   </div>
                 </div>
@@ -164,8 +165,9 @@
                       <p>Pick a style that represents you. If you change your mind, you can easily edit this later.</p>
                     </div>
                     <div class="row" style="margin-bottom: -1em">
-                      <div class="col-md-6">
-                        <div class="option-icon" (click)="onClickSelectFontStyle('modern-font')" [style.opacity]="setFontOpacity('modern-font')">
+                      <div class="col-md-7">
+                        <div class="option-icon" (click)="onClickSelectFontStyle('modern-font')"
+                          [style.opacity]="setFontOpacity('modern-font')">
                           <svg width="71px" height="27px" viewBox="0 0 71 27" version="1.1">
                             <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                               <g id="modern-font-title" fill="#000000" fill-rule="nonzero">
@@ -176,7 +178,8 @@
                             </g>
                           </svg>
                         </div>
-                        <div class="option-icon" (click)="onClickSelectFontStyle('classic-font')" [style.opacity]="setFontOpacity('classic-font')">
+                        <div class="option-icon" (click)="onClickSelectFontStyle('classic-font')"
+                          [style.opacity]="setFontOpacity('classic-font')">
                           <svg width="85px" height="27px" viewBox="0 0 85 27" version="1.1">
                             <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                               <g id="classic-font-title" transform="translate(1.000000, 4.000000)" fill="#000000"
@@ -188,7 +191,8 @@
                             </g>
                           </svg>
                         </div>
-                        <div class="option-icon" (click)="onClickSelectFontStyle('bold-font')" [style.opacity]="setFontOpacity('bold-font')">
+                        <div class="option-icon" (click)="onClickSelectFontStyle('bold-font')"
+                          [style.opacity]="setFontOpacity('bold-font')">
                           <svg width="65px" height="27px" viewBox="0 0 65 27" version="1.1">
                             <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                               <g id="bold-font-title" transform="translate(1.000000, 4.000000)" fill="#000000"
@@ -200,7 +204,8 @@
                             </g>
                           </svg>
                         </div>
-                        <div class="option-icon" (click)="onClickSelectFontStyle('clean-font')" [style.opacity]="setFontOpacity('clean-font')">
+                        <div class="option-icon" (click)="onClickSelectFontStyle('clean-font')"
+                          [style.opacity]="setFontOpacity('clean-font')">
                           <svg width="96px" height="27px" viewBox="0 0 96 27" version="1.1">
                             <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                               <g id="clean-font-title" transform="translate(0.000000, 8.000000)" fill="#000000"
@@ -213,7 +218,7 @@
                           </svg>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <div class="form-group">
                           <textarea class="form-control form-control-sm"
                             placeholder="Please enter any additional details here..." rows="3"></textarea>
@@ -224,7 +229,8 @@
                     <div class="btn-group">
                       <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
                       &nbsp;&nbsp;
-                      <button type="button" class="btn btn-secondary" awNextStep [disabled]="validateWebFontSelection()">Continue</button>
+                      <button type="button" class="btn btn-secondary" awNextStep
+                        [disabled]="validateWebFontSelection()">Continue</button>
                     </div>
                   </div>
                 </div>
@@ -237,47 +243,59 @@
                       <p>You can add and remove pages later, so pick as many as you want to start with.</p>
                     </div>
                     <div class="row" style="margin-bottom: -1em">
-                      <div class="col-md-6">
+                      <div class="col-md-7">
                         <div class="row">
                           <div class="col-md-3">
                             <div class="custom-controls-stacked">
-                              <div class="custom-control custom-checkbox checkbox-padding" (click)="addPageToBasket('web-about-page')">
-                                <input type="checkbox" class="custom-control-input">
+                              <div class="custom-control custom-checkbox checkbox-padding"
+                                (click)="addPageToBasket('web-about-page')">
+                                <input type="checkbox" id="web-about-page" class="custom-control-input"
+                                  [attr.checked]="isPageInBasket('web-about-page') ? 'checked' : null">
                                 <label class="custom-control-label">About</label>
                               </div>
-                              <div class="custom-control custom-checkbox checkbox-padding" (click)="addPageToBasket('web-contact-page')">
-                                <input type="checkbox" class="custom-control-input">
+                              <div class="custom-control custom-checkbox checkbox-padding"
+                                (click)="addPageToBasket('web-contact-page')">
+                                <input type="checkbox" class="custom-control-input"
+                                  [attr.checked]="isPageInBasket('web-contact-page') ? 'checked' : null">
                                 <label class="custom-control-label">Contact</label>
                               </div>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="custom-controls-stacked">
-                              <div class="custom-control custom-checkbox checkbox-padding" (click)="addPageToBasket('web-faq-page')">
-                                <input type="checkbox" class="custom-control-input">
+                              <div class="custom-control custom-checkbox checkbox-padding"
+                                (click)="addPageToBasket('web-faq-page')">
+                                <input type="checkbox" class="custom-control-input"
+                                  [attr.checked]="isPageInBasket('web-faq-page') ? 'checked' : null">
                                 <label class="custom-control-label">FAQ</label>
                               </div>
-                              <div class="custom-control custom-checkbox checkbox-padding" (click)="addPageToBasket('web-press-page')">
-                                <input type="checkbox" class="custom-control-input">
+                              <div class="custom-control custom-checkbox checkbox-padding"
+                                (click)="addPageToBasket('web-press-page')">
+                                <input type="checkbox" class="custom-control-input"
+                                  [attr.checked]="isPageInBasket('web-press-page') ? 'checked' : null">
                                 <label class="custom-control-label">Press</label>
                               </div>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="custom-controls-stacked">
-                              <div class="custom-control custom-checkbox checkbox-padding" (click)="addPageToBasket('web-terms-page')">
-                                <input type="checkbox" class="custom-control-input">
+                              <div class="custom-control custom-checkbox checkbox-padding"
+                                (click)="addPageToBasket('web-terms-page')">
+                                <input type="checkbox" class="custom-control-input"
+                                  [attr.checked]="isPageInBasket('web-terms-page') ? 'checked' : null">
                                 <label class="custom-control-label">Terms</label>
                               </div>
-                              <div class="custom-control custom-checkbox checkbox-padding" (click)="addPageToBasket('web-testimonials-page')">
-                                <input type="checkbox" class="custom-control-input">
+                              <div class="custom-control custom-checkbox checkbox-padding"
+                                (click)="addPageToBasket('web-testimonials-page')">
+                                <input type="checkbox" class="custom-control-input"
+                                  [attr.checked]="isPageInBasket('web-testimonials-page') ? 'checked' : null">
                                 <label class="custom-control-label">Testimonials</label>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <div class="form-group">
                           <textarea class="form-control form-control-sm"
                             placeholder="Please enter any additional details here..." rows="3"></textarea>
@@ -418,8 +436,9 @@
             <div class="container h-100">
               <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-md-12 text-center">
-                  <span style="text-align: center; font-size: 10px;">
-                    This feature is currently under construction.
+                  <span style="text-align: center; font-size: 12px;">
+                    We are currently hard at work on this feature. Please get in touch with us at <a
+                      href="mailto:hello@opsonion.com">hello@opsonion.com</a> for more details.
                   </span>
                 </div>
               </div>
@@ -430,8 +449,9 @@
             <div class="container h-100">
               <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-md-12 text-center">
-                  <span style="text-align: center; font-size: 10px;">
-                    This feature is currently under construction.
+                  <span style="text-align: center; font-size: 12px;">
+                    We are currently hard at work on this feature. Please get in touch with us at <a
+                      href="mailto:hello@opsonion.com">hello@opsonion.com</a> for more details.
                   </span>
                 </div>
               </div>
@@ -442,8 +462,9 @@
             <div class="container h-100">
               <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-md-12 text-center">
-                  <span style="text-align: center; font-size: 10px;">
-                    This feature is currently under construction.
+                  <span style="text-align: center; font-size: 12px;">
+                    We are currently hard at work on this feature. Please get in touch with us at <a
+                      href="mailto:hello@opsonion.com">hello@opsonion.com</a> for more details.
                   </span>
                 </div>
               </div>
@@ -454,8 +475,9 @@
             <div class="container h-100">
               <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-md-12 text-center">
-                  <span style="text-align: center; font-size: 10px;">
-                    This feature is currently under construction.
+                  <span style="text-align: center; font-size: 12px;">
+                    We are currently hard at work on this feature. Please get in touch with us at <a
+                      href="mailto:hello@opsonion.com">hello@opsonion.com</a> for more details.
                   </span>
                 </div>
               </div>
@@ -466,8 +488,9 @@
             <div class="container h-100">
               <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-md-12 text-center">
-                  <span style="text-align: center; font-size: 10px;">
-                    This feature is currently under construction.
+                  <span style="text-align: center; font-size: 12px;">
+                    We are currently hard at work on this feature. Please get in touch with us at <a
+                      href="mailto:hello@opsonion.com">hello@opsonion.com</a> for more details.
                   </span>
                 </div>
               </div>
@@ -482,7 +505,7 @@
           <div class="container h-100">
             <div class="row h-100 justify-content-center align-items-center">
               <div class="col-md-12 text-center">
-                <span style="text-align: center; font-size: 10px;">
+                <span style="text-align: center; font-size: 12px;">
                   There's nothing to see here.
                 </span>
               </div>
@@ -546,7 +569,7 @@
       <div class="container">
         <div class="row" [ngStyle]="{ 'height': innerColumnHeight + 'px' }">
           <div class="col-md-12" style="padding-top: 2em">
-            <h4>Delivery and Care</h4>
+            <h4>Delivery</h4>
             <br>
             <div class="row">
               <div class="col-md-6">
@@ -562,11 +585,15 @@
                   </div>
                 </div>
               </div>
+              <!--
+              
+              *** DO NOT DELETE ***
+             
               <div class="col-md-6" style="padding-left: 0">
                 <div class="card shadow-4" style="padding-left: 0;">
                   <div class="card-body" style="height: 200px">
                     <h5 class="card-title">Support and Upgrades</h5>
-                    <small>Add Opsonion Care for
+                    <small>Would you be interested in Opsonion Care
                       &pound;{{ basketTotal * taskService.carePlanMultiplier | number : '1.2-2' }} a
                       month?</small>
                     <div class="row gap-y" style="padding-top: 1em">
@@ -585,6 +612,35 @@
                     <div style="padding-top: 1em">
                       <button type="button" class="btn btn-link" style="padding-left: 0"
                         (click)="showCarePlanModal()">Learn More <i class="ti-angle-right"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              *** DO NOT DELETE ***
+
+              -->
+              <div class="col-md-6" style="padding-left: 0">
+                <div class="card shadow-4" style="padding-left: 0;">
+                  <div class="card-body" style="height: 200px">
+                    <h5 class="card-title">Legal</h5>
+                    <small>Do you want to sign an non-disclosure agreement?</small>
+                    <div class="row gap-y" style="padding-top: 1em">
+                      <div class="col-md-4">
+                        <button type="button" class="btn btn-block" (click)="setNdaSignature('yes')"
+                          [ngClass]="setNdaSignatureButtonColour('yes')">Yes</button>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="button" class="btn btn-block" (click)="setNdaSignature('no')"
+                          [ngClass]="setNdaSignatureButtonColour('no')">No</button>
+                      </div>
+                      <div class="col-md-4">
+                        &nbsp;
+                      </div>
+                    </div>
+                    <div style="padding-top: 1em">
+                      <button type="button" class="btn btn-link" style="padding-left: 0"
+                        (click)="showNdaModal()">Learn More <i class="ti-angle-right"></i></button>
                     </div>
                   </div>
                 </div>
@@ -905,6 +961,7 @@
 </div>
 
 <!-- Care Plan modal -->
+<!-- 
 <div class="modal fade" #carePlanModal id="carePlanModal" tabindex="-1" role="dialog" aria-labelledby="carePlanModal"
   aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
@@ -917,7 +974,8 @@
       </div>
       <div class="modal-body">
         With Opsonion Care, we provide aftercare of your project for as long as you want. Get support for
-        unexpected bugs, crashes, and component upgrades.
+        unexpected bugs, crashes, and component upgrades. We are currently rolling it out across our platform,
+        so if you are interested then please let us know.
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -925,6 +983,7 @@
     </div>
   </div>
 </div>
+-->
 
 <!-- Show home page layout modal -->
 <div class="modal fade" #layoutModal id="layoutModal" tabindex="-1" role="dialog" aria-labelledby="layoutModal"
