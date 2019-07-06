@@ -8,7 +8,7 @@ import { ModalService } from '../../../shared/services/modal.service';
 declare var $;
 
 @Component({
-  templateUrl: './contact.component.html'
+  templateUrl: './contact.page.html'
 })
 export class ContactComponent implements OnInit {
   isMobile: Observable<BreakpointState>;

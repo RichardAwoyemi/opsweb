@@ -7,6 +7,7 @@ import { HomeFeaturesComponent } from './components/home-features/home-features.
 import { HomeFeatureCardComponent } from './components/home-feature-card/home-feature-card.component';
 import { HomeReviewsComponent } from './components/home-reviews/home-reviews.component';
 import { HomeApplyComponent } from './components/home-apply/home-apply.component';
+import { HomeSectionHeaderComponent } from './components/home-section-header/home-section-header.component';
 import { PressComponent } from './pages/press/press.page';
 import { LegalComponent } from './pages/legal/legal.page';
 import { LoginButtonGroupComponent } from '../shared/components/login-button-group/login-button-group.component';
@@ -34,6 +35,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     HomeFeatureCardComponent,
     HomeReviewsComponent,
     HomeApplyComponent,
+    HomeSectionHeaderComponent,
     PressComponent,
     LegalComponent,
     LoginButtonGroupComponent

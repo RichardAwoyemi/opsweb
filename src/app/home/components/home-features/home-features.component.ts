@@ -43,7 +43,7 @@ export class HomeFeaturesComponent implements OnInit {
   employeeFeaturesImage = '../assets/img/match.svg';
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
+    private breakpointObserver: BreakpointObserver
   ) { }
 
   ngOnInit() {
