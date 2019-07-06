@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
-import { AuthService } from './_services/auth.service';
-import { UserService } from './_services/user.service';
+import { AuthService } from './auth/services/auth.service';
+import { UserService } from './shared/services/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { UtilService } from './_services/util.service';
 import { NGXLogger } from 'ngx-logger';
+import { UtilService } from './shared/services/util.service';
 
 @Component({
   selector: 'app-root',
