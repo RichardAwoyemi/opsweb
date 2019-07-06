@@ -28,7 +28,7 @@ export class HomeHeaderComponent implements OnInit {
       map(isHandset => isHandset ? 'header h-fullscreen' : 'header')
     );
     this.rowAlignment$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
-      map(isHandset => isHandset ? '"row align-items-center h-100' : 'row')
+      map(isHandset => isHandset ? 'row align-items-center h-100' : 'row')
     );
     this.columnWidth$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
       map(isHandset => isHandset ? 'col-lg-6' : '')

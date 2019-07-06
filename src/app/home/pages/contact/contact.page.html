@@ -1,56 +1,6 @@
 <section class="section">
   <div class="container">
-    <app-section-header title="Contact" subtitle="Get in touch with us today, whatever your query."></app-section-header>
-    <form class="col-md-8 col-xl-8 mx-auto input-border" [formGroup]="contactForm" id="contactForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
-      <div class="col-lg-12">
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <input class="form-control form-control-lg" type="text" formControlName="firstName" name="firstName" placeholder="First Name">
-          </div>
-          <div class="form-group col-md-6">
-            <input class="form-control form-control-lg" type="text" formControlName="lastName" name="lastName" placeholder="Last Name">
-          </div>
-          <div class="form-group col-md-6">
-            <input class="form-control form-control-lg" type="email" formControlName="email" name="email" placeholder="Email">
-          </div>
-          <div class="form-group col-md-6">
-            <input class="form-control form-control-lg" type="tel" formControlName="phone" name="phone" placeholder="Phone">
-          </div>
-        </div>
-        <div class="form-group">
-          <textarea class="form-control form-control-lg" rows="4" formControlName="message" name="message" placeholder="What do you have in mind?" name="message"></textarea>
-        </div>
-        <div class="form-group" style="text-align: center">
-          <button class="btn btn-lg btn-primary" type="submit">Send message</button>
-        </div>
-      </div>
-    </form>
-    <div class="row gap-y align-items-center mt-7" [hidden]="!submitted">
-      <div class="col-md-7 mx-auto">
-        <p style="text-align:center">
-          Thanks. We will be in touch.
-        </p>
-      </div>
-    </div>
+    <app-home-section-header-group title="Contact" subtitle="Get in touch with us today, whatever your query."></app-home-section-header-group>
+    <app-contact-form></app-contact-form>
   </div>
 </section>
-
-<!-- Modal -->
-<div class="modal fade" #errorModal id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="!submitted">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="errorModalLabel">Oops!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        There was something wrong with your submission. Please try again.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
