@@ -4,7 +4,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { Observable, Subscription } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { UserService } from 'src/app/shared/services/user.service';
+import { UserService } from 'src/app/common/services/user.service';
 
 @Component({
   selector: 'app-invite',

@@ -6,13 +6,13 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { DatePipe } from '@angular/common';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { UserService } from 'src/app/shared/services/user.service';
-import { ModalService } from 'src/app/shared/services/modal.service';
-import { DataService } from 'src/app/shared/services/data.service';
-import { UtilService } from 'src/app/shared/services/util.service';
-import { ImgurService, ImgurResponse } from 'src/app/shared/services/imgur.service';
+import { UserService } from 'src/app/common/services/user.service';
+import { ModalService } from 'src/app/common/services/modal.service';
+import { DataService } from 'src/app/common/services/data.service';
+import { UtilService } from 'src/app/common/services/util.service';
+import { ImgurService, ImgurResponse } from 'src/app/common/services/imgur.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { CsvService } from 'src/app/shared/services/csv.service';
+import { CsvService } from 'src/app/common/services/csv.service';
 
 declare var $;
 

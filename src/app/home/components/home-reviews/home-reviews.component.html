@@ -3,10 +3,10 @@
     <swiper [config]="config" [(index)]="index">
       <div class="px-6" *ngFor="let review of reviews">
         <blockquote class="blockquote">
-          <p class="lead-4">{{ review.review }}</p>
+          <p class="lead-4 review">{{ review.review }}</p>
           <br>
-          <div><img class="avatar avatar-xl" src="{{ review.image }}"></div>
-          <footer>{{ review.author }}</footer>
+          <div><img class="avatar avatar-xl review-image" src="{{ review.image }}"></div>
+          <footer class="review-author">{{ review.author }}</footer>
         </blockquote>
       </div>
     </swiper>

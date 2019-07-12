@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable, Subscription, fromEvent } from 'rxjs';
-import { UserService } from '../shared/services/user.service';
+import { UserService } from '../common/services/user.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Router } from '@angular/router';
 import { TaskService } from '../task/services/task.service';
-import { DataService } from '../shared/services/data.service';
+import { DataService } from '../common/services/data.service';
 import { ToastrService } from 'ngx-toastr';
 import { DragulaService } from 'ng2-dragula';
-import { ModalService } from '../shared/services/modal.service';
-import { ApplicationService } from '../shared/services/application.service';
+import { ModalService } from '../common/services/modal.service';
+import { ApplicationService } from '../common/services/application.service';
 
 declare var $;
 

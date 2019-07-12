@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-import { UtilService } from '../../shared/services/util.service';
+import { UtilService } from '../../common/services/util.service';
 
 @Injectable()
 export class ReferralService {

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.page';
 import { PressComponent } from './pages/press/press.page';
 import { LegalComponent } from './pages/legal/legal.page';
-import { AnonymousGuard } from '../shared/guards/anonymous.guard';
+import { AnonymousGuard } from '../common/guards/anonymous.guard';
 import { ContactComponent } from './pages/contact/contact.page';
 
 const routes: Routes = [

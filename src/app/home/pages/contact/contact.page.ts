@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { ModalService } from '../../../shared/services/modal.service';
+import { ModalService } from '../../../common/services/modal.service';
 
 @Component({
   templateUrl: './contact.page.html'

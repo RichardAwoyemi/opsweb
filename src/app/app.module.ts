@@ -11,14 +11,14 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { UserService } from './shared/services/user.service';
+import { UserService } from './common/services/user.service';
 import { ReferralService } from './dashboard/services/referral.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 import { LoggerModule } from 'ngx-logger';
 import { HomeModule } from './home/home.module';
 import { DashboardFooterComponent } from './dashboard/components/dashboard-footer/dashboard-footer.component';
 import { DashboardNavbarComponent } from './dashboard/components/dashboard-navbar/dashboard-navbar.component';
-import { UtilService } from './shared/services/util.service';
+import { UtilService } from './common/services/util.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,

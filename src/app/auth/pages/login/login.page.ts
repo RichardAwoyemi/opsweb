@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { AuthService } from '../../services/auth.service';
-import { ModalService } from 'src/app/shared/services/modal.service';
-import { UtilService } from 'src/app/shared/services/util.service';
+import { ModalService } from 'src/app/common/services/modal.service';
+import { UtilService } from 'src/app/common/services/util.service';
 
 @Component({
   templateUrl: './login.component.html'

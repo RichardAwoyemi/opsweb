@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-home-reviews',
   templateUrl: './home-reviews.component.html'
 })
-export class HomeReviewsComponent implements OnInit {
+export class HomeReviewsComponent {
   reviews = [{
     review: 'Brilliant service! We were matched with a talented developer who put together our new company '
       + 'website within a couple of days.',
@@ -21,10 +21,4 @@ export class HomeReviewsComponent implements OnInit {
     author: 'Abigail Yemofio, Co-Founder @ AV Afrique',
     image: '../assets/img/abigail.jpg'
   }];
-
-  constructor(
-  ) { }
-
-  ngOnInit() {
-  }
 }

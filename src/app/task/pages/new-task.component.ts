@@ -5,13 +5,13 @@ import { NGXLogger } from 'ngx-logger';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { DataService } from '../../shared/services/data.service';
+import { DataService } from '../../common/services/data.service';
 import { Options } from 'ng5-slider/options';
 import { ChangeContext } from 'ng5-slider';
 import { Router } from '@angular/router';
 import { TaskService } from '../services/task.service';
 import * as introJs from 'intro.js/intro.js';
-import { ModalService } from '../../shared/services/modal.service';
+import { ModalService } from '../../common/services/modal.service';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 
 declare var $;
