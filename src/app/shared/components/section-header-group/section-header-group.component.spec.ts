@@ -1,17 +1,17 @@
 import { TestBed, async } from '@angular/core/testing';
-import { HomeSectionHeaderGroupComponent } from './home-section-header-group.component';
+import { SectionHeaderGroupComponent } from './section-header-group.component';
 
-describe('HomeSectionHeaderGroupComponent', () => {
+describe('SectionHeaderGroupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HomeSectionHeaderGroupComponent]
+      declarations: [SectionHeaderGroupComponent]
     }).compileComponents();
   }));
   describe(':', () => {
     let fixture, app;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(HomeSectionHeaderGroupComponent);
+      fixture = TestBed.createComponent(SectionHeaderGroupComponent);
       app = fixture.debugElement.componentInstance;
     });
 

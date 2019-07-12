@@ -4,10 +4,10 @@ import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/l
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-home-section-header-group',
-  templateUrl: './home-section-header-group.component.html'
+  selector: 'app-section-header-group',
+  templateUrl: './section-header-group.component.html'
 })
-export class HomeSectionHeaderGroupComponent implements OnInit {
+export class SectionHeaderGroupComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   headerTopPadding$: Observable<any>;
   @Input() title: string;

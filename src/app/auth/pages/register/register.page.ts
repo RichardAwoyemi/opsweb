@@ -5,7 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  templateUrl: './register.component.html',
+  templateUrl: './register.page.html',
 })
 export class RegisterComponent implements OnInit {
   isMobile: Observable<BreakpointState>;

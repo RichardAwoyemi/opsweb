@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html'
+  templateUrl: './forgot-password.page.html'
 })
 export class ForgotPasswordComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
@@ -20,5 +20,4 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
   }
-
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { FirebaseService } from '../../common/services/firebase.service';
-import { User } from '../../common/models/user';
+import { FirebaseService } from '../../shared/services/firebase.service';
+import { User } from '../../shared/models/user';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
-import { UtilService } from 'src/app/common/services/util.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Injectable()
 export class TaskService {

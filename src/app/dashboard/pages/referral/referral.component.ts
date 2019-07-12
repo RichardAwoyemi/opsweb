@@ -4,10 +4,10 @@ import { Observable, combineLatest, from, Subscription } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NGXLogger } from 'ngx-logger';
-import { UserService } from 'src/app/common/services/user.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { ReferralService } from '../../services/referral.service';
-import { ModalService } from 'src/app/common/services/modal.service';
-import { UtilService } from 'src/app/common/services/util.service';
+import { ModalService } from 'src/app/shared/services/modal.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   templateUrl: './referral.component.html',

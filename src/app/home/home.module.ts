@@ -11,14 +11,15 @@ import { PressComponent } from './pages/press/press.page';
 import { LegalComponent } from './pages/legal/legal.page';
 import { LoginButtonGroupComponent } from './components/login-button-group/login-button-group.component';
 import { AuthService } from '../auth/services/auth.service';
-import { CommonModule } from '@angular/common';
 import { SwiperConfigInterface, SWIPER_CONFIG, SwiperModule } from 'ngx-swiper-wrapper';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HomeRoutingModule } from './home.routing.component';
-import { HomeSectionHeaderGroupComponent } from './components/home-section-header-group/home-section-header-group.component';
 import { ContactComponent } from './pages/contact/contact.page';
 import { HomeSectionHeaderComponent } from './components/home-section-header/home-section-header.component';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
+import { AuthModule } from '../auth/auth.module';
+import { SharedModule } from '../shared/shared.module';
+import { CommonModule } from '@angular/common';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -43,8 +44,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     HomeReviewsComponent,
     HomeApplyComponent,
     HomeSectionHeaderComponent,
-    HomeSectionHeaderGroupComponent,
-    LoginButtonGroupComponent
+    LoginButtonGroupComponent,
   ],
   providers: [
     AuthService,
@@ -55,6 +55,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   ],
   imports: [
     HomeRoutingModule,
+    AuthModule,
+    SharedModule,
     CommonModule,
     SwiperModule,
     FontAwesomeModule

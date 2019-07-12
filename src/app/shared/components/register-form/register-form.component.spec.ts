@@ -1,22 +1,22 @@
 import { TestBed, async } from '@angular/core/testing';
-import { InviteFormComponent } from './invite-form.component';
+import { RegisterFormComponent } from './register-form.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-describe('InviteFormComponent', () => {
+describe('RegisterFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [FormsModule],
-      declarations: [InviteFormComponent]
+      declarations: [RegisterFormComponent]
     }).compileComponents();
   }));
   describe(':', () => {
     let fixture, app;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(InviteFormComponent);
+      fixture = TestBed.createComponent(RegisterFormComponent);
       app = fixture.debugElement.componentInstance;
     });
 

@@ -1,9 +1,9 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { UserService } from 'src/app/common/services/user.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { UtilService } from 'src/app/common/services/util.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 import { NGXLogger, NGXLoggerHttpService, LoggerModule } from 'ngx-logger';
 import { ReferralService } from 'src/app/dashboard/services/referral.service';
 import { AngularFireModule } from '@angular/fire';
