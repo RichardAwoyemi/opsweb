@@ -1,21 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { ModalService } from '../../../shared/services/modal.service';
+import { Component } from '@angular/core';
 
 @Component({
   templateUrl: './contact.page.html'
 })
-export class ContactComponent implements OnInit {
-  isMobile: Observable<BreakpointState>;
-  submitted = false;
-
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    public modalService: ModalService,
-  ) { }
-
-  ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
-  }
+export class ContactComponent {
 }

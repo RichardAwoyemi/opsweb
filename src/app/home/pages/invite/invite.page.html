@@ -1,28 +1,18 @@
-<header class="header" style="padding-bottom: 0px">
+<section class="section text-center">
   <div class="container">
-    <div *ngIf="referredByUserData">
-      <div class="row align-items-center h-100">
-        <div class="col-md-8 mx-auto text-center">
-          <h3>{{ referredByUserData?.firstName }} has invited you to join Opsonion!</h3>
-        </div>
+    <div class="row align-items-center h-100"  *ngIf="referredByUserData">
+      <div class="col-md-8 mx-auto text-center">
+        <h3>{{ referredByUserData?.firstName }} has invited you to join Opsonion!</h3>
       </div>
     </div>
+    <div class="row gap-y align-items-center" style="padding-bottom: 3em">
+      <div class="col-md-8 mx-auto">
+        <p class="lead" style="text-align: center">
+          With Opsonion, you can easily connect talent to opportunity. Don't miss your chance, sign up today
+          and start working or hiring from anywhere in the world.
+        </p>
+      </div>
+    </div>
+    <app-register-form referredById="referredById"></app-register-form>
   </div>
-</header>
-<main class="main-content">
-  <section class="section" style="padding-top: 3em;">
-    <div class="container">
-      <div class="row gap-y align-items-center">
-        <div class="col-md-8 mx-auto">
-          <p class="lead" style="text-align: center">
-            With Opsonion, you can easily connect talent to opportunity. Don't miss your chance, sign up today
-            and start working or hiring from anywhere in the world.
-          </p>
-        </div>
-      </div>
-      <div class="row" style="padding-top: 3em">
-        <app-register-form></app-register-form>
-      </div>
-    </div>
-  </section>
-</main>
+</section>

@@ -20,6 +20,7 @@ import { ContactFormComponent } from './components/contact-form/contact-form.com
 import { AuthModule } from '../auth/auth.module';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
+import { InviteComponent } from './pages/invite/invite.page';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -45,6 +46,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     HomeApplyComponent,
     HomeSectionHeaderComponent,
     LoginButtonGroupComponent,
+    InviteComponent
   ],
   providers: [
     AuthService,

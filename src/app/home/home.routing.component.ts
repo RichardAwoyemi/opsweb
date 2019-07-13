@@ -8,6 +8,7 @@ import { ContactComponent } from './pages/contact/contact.page';
 import { RegisterComponent } from '../auth/pages/register/register.page';
 import { LoginComponent } from '../auth/pages/login/login.page';
 import { ForgotPasswordComponent } from '../auth/pages/forgot-password/forgot-password.page';
+import { InviteComponent } from './pages/invite/invite.page';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] },
+  { path: 'invite/:id', component: InviteComponent, canActivate: [AnonymousGuard] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

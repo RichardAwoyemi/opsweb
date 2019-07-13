@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/shared/services/user.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-invite',
@@ -12,28 +11,24 @@ import { UserService } from 'src/app/shared/services/user.service';
   styleUrls: ['./invite.page.css']
 })
 export class InviteComponent implements OnInit, OnDestroy {
+  isMobile: Observable<BreakpointState>;
   referredById: String;
   referredByUserId: String;
   referredByUserData: any;
   currentRanking: any;
-  isMobile: Observable<BreakpointState>;
 
   private referredBySubscription: Subscription;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
-    private authService: AuthService,
     private userService: UserService,
-    private logger: NGXLogger,
     public router: Router
   ) {}
 
-  model: any = {};
-
   ngOnInit() {
+    localStorage.removeItem('user');
     this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
-
     this.referredBySubscription = this.route.params.subscribe(params => {
       this.referredById = params['id'];
       if (this.referredById) {
@@ -46,34 +41,6 @@ export class InviteComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  public resolved(captchaResponse: string) {
-    this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
-  }
-
-  registerWithReferral() {
-    const email = this.model.email;
-    const password = this.model.password;
-    const firstName = this.model.firstName;
-    const lastName = this.model.lastName;
-    this.authService.registerWithReferral(email, password, firstName, lastName, this.referredById);
-  }
-
-  mobileGoogleSignInWithReferral() {
-    this.authService.mobileGoogleSignInWithReferral(this.referredById);
-  }
-
-  googleSignInWithReferral() {
-    this.authService.googleSignInWithReferral(this.referredById);
-  }
-
-  mobileFacebookSignInWithReferral() {
-    this.authService.mobileFacebookSignInWithReferral(this.referredById);
-  }
-
-  facebookSignInWithReferral() {
-    this.authService.facebookSignInWithReferral(this.referredById);
   }
 
   ngOnDestroy() {

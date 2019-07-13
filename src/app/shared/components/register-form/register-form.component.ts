@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class RegisterFormComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   model: any = {};
+  @Input() referredUserBy: string;
 
   constructor(
     private breakpointObserver: BreakpointObserver

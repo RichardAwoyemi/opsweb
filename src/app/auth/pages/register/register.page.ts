@@ -1,38 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
+import { BreakpointState } from '@angular/cdk/layout';
+import { Observable, Subscription } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './register.page.html',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   isMobile: Observable<BreakpointState>;
+  referredBySubscription: Subscription;
+  referredById: String;
+  referredByUserId: String;
+  referredByUserData: any;
+  currentRanking: any;
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
-    private logger: NGXLogger
-  ) {}
+    private logger: NGXLogger,
+    public router: Router
+  ) { }
 
   model: any = {};
-
-  ngOnInit() {
-    localStorage.removeItem('user');
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset, Breakpoints.Tablet ]);
-  }
 
   public resolved(captchaResponse: string) {
     this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);
   }
 
   register() {
-    const email = this.model.email;
-    const password = this.model.password;
-    const firstName = this.model.firstName;
-    const lastName = this.model.lastName;
-    this.authService.register(email, password, firstName, lastName);
+    this.authService.register(this.model.email, this.model.password, this.model.firstName,
+      this.model.lastName);
   }
 
   googleSignIn() {
@@ -41,5 +39,26 @@ export class RegisterComponent implements OnInit {
 
   facebookSignIn() {
     this.authService.facebookSignIn();
+  }
+
+  registerWithReferral() {
+    this.authService.registerWithReferral(this.model.email, this.model.password, this.model.firstName,
+      this.model.lastName, this.referredById);
+  }
+
+  mobileGoogleSignInWithReferral() {
+    this.authService.mobileGoogleSignInWithReferral(this.referredById);
+  }
+
+  googleSignInWithReferral() {
+    this.authService.googleSignInWithReferral(this.referredById);
+  }
+
+  mobileFacebookSignInWithReferral() {
+    this.authService.mobileFacebookSignInWithReferral(this.referredById);
+  }
+
+  facebookSignInWithReferral() {
+    this.authService.facebookSignInWithReferral(this.referredById);
   }
 }
