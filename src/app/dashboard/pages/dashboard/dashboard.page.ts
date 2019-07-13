@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   lastName: string;
   featureSelected: string;
   selectedLengthCategory = 'day';
-  selectedCategory: string;
   selectedTask = {
     similarApps: null,
     assignedTo: null,
@@ -76,7 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // private userService: UserService,
     // //public taskService: TaskService,
     // public applicationService: ApplicationService,
-    // private ngxLoader: NgxUiLoaderService,
+    private ngxLoader: NgxUiLoaderService,
     // private toastr: ToastrService,
     // private modalService: ModalService,
     // private logger: NGXLogger,
@@ -103,13 +102,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     //   }));
   }
 
-  @ViewChild('createTaskModal') createTaskModal: ElementRef;
-  @ViewChild('deleteTaskModal') deleteTaskModal: ElementRef;
-  @ViewChild('editTaskModal') editTaskModal: ElementRef;
-  @ViewChild('workApplicationModal') workApplicationModal: ElementRef;
-  @ViewChild('applicationStatusModal') applicationStatusModal: ElementRef;
-
   ngOnInit() {
+    this.ngxLoader.start();
+    this.ngxLoader.stop();
   }
 
   // ngOnInit() {
@@ -260,10 +255,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //       timeOut: 2000
   //     });
   //   }
-  // }
-
-  // openCreateTaskModal() {
-  //   $(this.createTaskModal.nativeElement).modal('show');
   // }
 
   // openApplyToWorkModal() {

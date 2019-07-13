@@ -1,32 +1,10 @@
 <section ngxUiLoaderBlurred class="section-desktop">
   <div class="container">
-    <div class="row">
-      Logged in
-    </div>
+    <app-dashboard-empty-state accountType="userData?.accountType"></app-dashboard-empty-state>
   </div>
 </section>
 
 <!--
-<section ngxUiLoaderBlurred class="section-desktop"
-  *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && noOfTasks === 0">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <img src="../assets/img/blank.svg" style="height: 10em">
-      </div>
-      <div class="col-md-12 text-center">
-        <div style="padding-top: 2em; padding-bottom: 1em">
-          <p>There doesn't seem to be anything going on here.</p>
-        </div>
-        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'hire'"
-          (click)="openCreateTaskModal()">Create Task</button>
-        <button class="btn btn-sm btn-primary" type="button" *ngIf="userData?.accountType == 'work'"
-          (click)="openApplyToWorkModal()">Apply to Work</button>
-      </div>
-    </div>
-    <br>
-  </div>
-</section>
 
 <section ngxUiLoaderBlurred class="section-desktop"
   *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && noOfTasks > 0">
@@ -101,53 +79,6 @@
   </div>
 </section>
 
-<div class="modal fade" #createTaskModal id="createTaskModal" tabindex="-1" role="dialog"
-  aria-labelledby="createTaskModalLabel" aria-hidden="!submitted">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-center">
-        <h6>What type of work do you need done?</h6>
-        <div style="text-align: left; padding-top: 1em">
-          <div class="alert alert-primary" role="alert">
-            <small>Choose the category that best fits your request. For example: if you are looking for a logo, you
-              should choose the "Graphics & Design" category.</small>
-          </div>
-        </div>
-        <form name="taskPreScreeningForm" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
-          <div class="row" style="padding-top: 0.5em; padding-bottom: 2em">
-            <div class="col-md-12 text-left">
-              <div class="radio">
-                <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                    value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
-              </div>
-              <div class="radio">
-                <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                    value="Graphics Design">&nbsp; Graphics Design</label>
-              </div>
-              <div class="radio">
-                <label><input type="radio" name="step1" (change)="onSelectedCategoryChange($event)"
-                    value="Writing and Translation">&nbsp; Writing and Translation</label>
-              </div>
-            </div>
-            <div class="col-md-12" style="text-align: left">
-              <div *ngIf="f.submitted && !selectedCategory"><small class="text-danger">Category is
-                  required</small></div>
-            </div>
-          </div>
-          <div class="btn-group">
-            <button type="submit" class="btn btn-secondary" (click)="completeTaskPreScreening()">Continue</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="modal fade" #workApplicationModal id="workApplicationModal" tabindex="-1" role="dialog"
   aria-labelledby="workApplicationModalLabel" aria-hidden="!submitted">

@@ -1,0 +1,13 @@
+<div class="row" *ngIf="accountType && !noOfTasks">
+  <div class="col-md-12 text-center">
+    <img src="../assets/img/blank.svg" style="height: 10em">
+  </div>
+  <div class="col-md-12 text-center">
+    <div style="padding-top: 2em; padding-bottom: 1em">
+      <p>There doesn't seem to be anything going on here.</p>
+    </div>
+    <button class="btn btn-sm btn-primary" type="button" (click)="openCreateTaskModal()">Create Task</button>
+    <button class="btn btn-sm btn-primary" style="margin-left: 1em" type="button" *ngIf="accountType == 'work'" 
+      (click)="openApplicationModal()">Apply to Work</button>
+  </div>
+</div>

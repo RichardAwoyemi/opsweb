@@ -15,7 +15,6 @@ export class InviteComponent implements OnInit, OnDestroy {
   referredById: String;
   referredByUserId: String;
   referredByUserData: any;
-  currentRanking: any;
 
   private referredBySubscription: Subscription;
 
