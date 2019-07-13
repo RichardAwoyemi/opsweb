@@ -7,15 +7,10 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   selector: 'app-dashboard-footer',
   templateUrl: './dashboard-footer.component.html'
 })
-export class DashboardFooterComponent implements OnInit {
-  isMobile: Observable<BreakpointState>;
+export class DashboardFooterComponent {
+  today: number = Date.now();
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
     public authService: AuthService
   ) { }
-
-  ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-  }
 }

@@ -11,13 +11,15 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { DashboardModule } from '../dashboard/dashboard.module';
+import { ForgotPasswordFormComponent } from './components/forgot-password-form/forgot-password-form.component';
 
 @NgModule({
   declarations: [
     RegisterComponent,
     LoginComponent,
     LoginFormComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ForgotPasswordFormComponent
   ],
   imports: [
     BrowserModule,
