@@ -14,7 +14,7 @@
       <div class="col-4 text-center">
       </div>
       <div class="col-4 text-right">
-        <span class="dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false" *ngIf="user.photoURL">
+        <span class="dropdown-toggle no-caret" data-toggle="dropdown" aria-expanded="false" *ngIf="user?.photoURL">
           <img class="avatar avatar-xs" src="{{ user?.photoURL }}" alt="user">
         </span>
         <div class="dropdown-menu dropdown-menu-right">

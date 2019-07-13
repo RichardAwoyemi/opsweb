@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -21,7 +21,6 @@ export class DashboardNavbarComponent implements OnInit {
   ) {
     this.afAuth.authState.subscribe(response => {
       this.assignUserProfile(response);
-      localStorage.removeItem('referredBy');
     });
   }
 
