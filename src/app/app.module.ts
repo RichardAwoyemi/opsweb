@@ -13,10 +13,8 @@ import { ReferralService } from './dashboard/services/referral.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 import { LoggerModule } from 'ngx-logger';
 import { HomeModule } from './home/home.module';
-import { DashboardFooterComponent } from './dashboard/components/dashboard-footer/dashboard-footer.component';
-import { DashboardNavbarComponent } from './dashboard/components/dashboard-navbar/dashboard-navbar.component';
 import { UtilService } from './shared/services/util.service';
-import { CommonModule } from '@angular/common';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -25,13 +23,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DashboardFooterComponent,
-    DashboardNavbarComponent
+    AppComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
+    DashboardModule,
     HomeModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,

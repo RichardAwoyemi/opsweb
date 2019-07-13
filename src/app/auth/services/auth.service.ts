@@ -3,12 +3,12 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { auth } from 'firebase/app';
-import { FirebaseService } from '../../shared/services/firebase.service';
-import { UserService } from '../../shared/services/user.service';
-import { User } from '../../shared/models/user';
-import { ModalService } from '../../shared/services/modal.service';
 import { NGXLogger } from 'ngx-logger';
 import { UtilService } from 'src/app/shared/services/util.service';
+import { User } from '../../shared/models/user';
+import { FirebaseService } from '../../shared/services/firebase.service';
+import { ModalService } from '../../shared/services/modal.service';
+import { UserService } from '../../shared/services/user.service';
 
 @Injectable({
   providedIn: 'root'

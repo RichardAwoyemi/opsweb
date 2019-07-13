@@ -1,7 +1,7 @@
 <!-- app-home-navbar is displayed when user is not authenticated, 
      app-dashboard-navbar is displayed when user is authenticated --> 
 <app-home-navbar></app-home-navbar>
-<app-dashboard-navbar></app-dashboard-navbar>
+<app-dashboard-navbar onboardingComplete="{{ onboardingComplete }}"></app-dashboard-navbar>
 
 <ngx-ui-loader></ngx-ui-loader>
 <router-outlet (activate)="onActivate($event)"></router-outlet>

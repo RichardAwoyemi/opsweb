@@ -1,6 +1,5 @@
 <!-- Desktop navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark flex-column"
-  style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0"
+<nav class="navbar navbar-expand-lg navbar-dark flex-column custom-navbar"
   *ngIf="!(isMobile | async)?.matches && authService.isLoggedIn">
   <div class="container d-stick-none" style="padding-top: 1.5em; padding-bottom: 1.5em">
     <div class="row">
@@ -42,17 +41,22 @@
   </div>
 </nav>
 <!-- Mobile navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark"
-  style="background-color: #2055EC; top: 0px; padding-left: 0; padding-right: 0"
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar"
   *ngIf="(isMobile | async)?.matches && authService.isLoggedIn">
   <div class="container">
+    <div class="navbar-left mr-4">
+      <button class="navbar-toggler" type="button" style="color: #F4F7FA">&#9776;</button>
+      <a class="navbar-brand" routerLink="/">
+        <img src="../assets/img/logo-white.svg" style="height: 35px; width: 35px;">
+      </a>
+    </div>
     <section class="navbar-mobile" *ngIf="(isMobile | async)?.matches">
       <span class="navbar-divider d-mobile-none"></span>
       <nav class="nav nav-navbar mr-auto">
         <a class="nav-link navbar-closer" style="text-align: right"><i class="ti-close mr-2"></i></a>
         <a class="nav-link" routerLink="/dashboard" *ngIf="this.onboardingComplete">Dashboard</a>
         <a class="nav-link" routerLink="/settings" *ngIf="this.onboardingComplete">Settings</a>
-        <a class="nav-link" routerLink="/referral">Invite Friends</a>
+        <a class="nav-link" routerLink="/referral" *ngIf="this.onboardingComplete">Invite Friends</a>
         <a class="nav-link" (click)="authService.signOut()">Logout</a>
       </nav>
     </section>

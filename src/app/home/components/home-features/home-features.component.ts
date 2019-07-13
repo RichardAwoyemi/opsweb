@@ -9,7 +9,6 @@ import { map } from 'rxjs/operators';
 })
 export class HomeFeaturesComponent implements OnInit {
   featureCardColumnWidth$: Observable<string>;
-  featureCardAosAnimate$: Observable<string>;
   columnWidth$: Observable<string>;
   isMobile: Observable<BreakpointState>;
   features = [
@@ -50,9 +49,6 @@ export class HomeFeaturesComponent implements OnInit {
   ngOnInit() {
     this.featureCardColumnWidth$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
       map(isHandset => isHandset ? 'col-lg-4' : 'col-md-12')
-    );
-    this.featureCardAosAnimate$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
-      map(isHandset => isHandset ? 'fade-up' : null)
     );
     this.columnWidth$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
       map(isHandset => isHandset ? 'col-md-6 ml-auto' : 'col-md-12 mx-auto')

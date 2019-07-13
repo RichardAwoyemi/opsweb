@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row gap-y">
       <ng-container *ngFor="let feature of features">
-        <div class="feature-card" [ngClass]="featureCardColumnWidth$ | async" [attr.data-aos]="featureCardAosAnimate$ | async"
+        <div class="feature-card" [ngClass]="featureCardColumnWidth$ | async" [attr.data-aos]="fade-up"
           [attr.data-aos-delay]="feature.delay">
           <app-home-feature-card title="{{ feature?.title }}" description="{{ feature?.description }}"
             image="{{ feature?.image }}">

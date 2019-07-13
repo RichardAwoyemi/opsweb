@@ -6,12 +6,14 @@ import { RegisterFormComponent } from './components/register-form/register-form.
 import { FormsModule } from '@angular/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+import { SocialLoginButtonGroupComponent } from './components/social-login-button-group/social-login-button-group.component';
 
 @NgModule({
   declarations: [
     SectionHeaderGroupComponent,
     ModalComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    SocialLoginButtonGroupComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,8 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
   exports: [
     SectionHeaderGroupComponent,
     ModalComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    SocialLoginButtonGroupComponent
   ]
 })
 

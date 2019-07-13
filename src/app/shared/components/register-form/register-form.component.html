@@ -48,13 +48,6 @@
     </div>
     <button class="btn btn-lg btn-block btn-primary" type="submit">Create Account</button>
     <hr class="w-10">
-    <button *ngIf="!(isMobile | async)?.matches" class="btn btn-lg btn-block btn-google"
-      (click)="googleSignInWithReferral()">Continue with Google</button>
-    <button *ngIf="(isMobile | async)?.matches" class="btn btn-lg btn-block btn-google"
-      (click)="mobileGoogleSignInWithReferral()">Continue with Google</button>
-    <button *ngIf="!(isMobile | async)?.matches" class="btn btn-lg btn-block btn-facebook"
-      (click)="facebookSignInWithReferral()" type="button">Continue with Facebook</button>
-    <button *ngIf="(isMobile | async)?.matches" class="btn btn-lg btn-block btn-facebook"
-      (click)="mobileFacebookSignInWithReferral()" type="button">Continue with Facebook</button>
+    <app-social-login-button-group referredById="{{ referredById }}"></app-social-login-button-group>
   </form>
 </div>

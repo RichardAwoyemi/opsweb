@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
+import { DashboardModule } from '../dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     RouterModule,
     SharedModule,
+    DashboardModule,
     CommonModule,
     ReactiveFormsModule,
     RecaptchaModule.forRoot(),

@@ -45,20 +45,4 @@ export class LoginFormComponent implements OnInit {
       this.modalService.displayMessage('Oops!', error.message);
     });
   }
-
-  googleSignIn() {
-    this.authService.googleSignIn();
-  }
-
-  mobileGoogleSignIn() {
-    this.authService.mobileGoogleSignIn();
-  }
-
-  facebookSignIn() {
-    this.authService.facebookSignIn();
-  }
-
-  mobileFacebookSignIn() {
-    this.authService.mobileFacebookSignIn();
-  }
 }

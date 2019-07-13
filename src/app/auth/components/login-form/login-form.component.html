@@ -22,17 +22,6 @@
     <p class="small-2 text-left mt-5 mb-0 text-center">Don't have an account? <a routerLink="/register">Create
         one</a>.</p>
     <hr class="w-10">
-    <button *ngIf="!(isMobile | async)?.matches" class="btn btn-lg btn-block btn-google" (click)="googleSignIn()"
-      type="button">
-      Continue with Google
-    </button>
-    <button *ngIf="(isMobile | async)?.matches" class="btn btn-lg btn-block btn-google" (click)="mobileGoogleSignIn()"
-      type="button">
-      Continue with Google
-    </button>
-    <button *ngIf="!(isMobile | async)?.matches" class="btn btn-lg btn-block btn-facebook" (click)="facebookSignIn()"
-      type="button">Continue with Facebook</button>
-    <button *ngIf="(isMobile | async)?.matches" class="btn btn-lg btn-block btn-facebook"
-      (click)="mobileFacebookSignIn()" type="button">Continue with Facebook</button>
+    <app-social-login-button-group></app-social-login-button-group>
   </form>
 </div>

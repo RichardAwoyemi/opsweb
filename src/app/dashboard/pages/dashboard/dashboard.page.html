@@ -1,3 +1,12 @@
+<section ngxUiLoaderBlurred class="section-desktop">
+  <div class="container">
+    <div class="row">
+      Logged in
+    </div>
+  </div>
+</section>
+
+<!--
 <section ngxUiLoaderBlurred class="section-desktop"
   *ngIf="!(isMobile | async)?.matches && (userData?.firstName) && (userData?.accountType) && noOfTasks === 0">
   <div class="container">
@@ -92,7 +101,6 @@
   </div>
 </section>
 
-<!-- Create task modal -->
 <div class="modal fade" #createTaskModal id="createTaskModal" tabindex="-1" role="dialog"
   aria-labelledby="createTaskModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
@@ -141,7 +149,6 @@
   </div>
 </div>
 
-<!-- Apply to work modal -->
 <div class="modal fade" #workApplicationModal id="workApplicationModal" tabindex="-1" role="dialog"
   aria-labelledby="workApplicationModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
@@ -193,10 +200,10 @@
       </div>
     </div>
   </div>
-</div>
+</div>  
+-->
 
-<!-- Application status modal -->
-<div class="modal fade" #applicationStatusModal id="applicationStatusModal" tabindex="-1" role="dialog"
+<!-- <div class="modal fade" #applicationStatusModal id="applicationStatusModal" tabindex="-1" role="dialog"
   aria-labelledby="applicationStatusModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -220,7 +227,6 @@
   </div>
 </div>
 
-<!-- Delete task modal -->
 <div class="modal fade" #deleteTaskModal id="deleteTaskModal" tabindex="-1" role="dialog"
   aria-labelledby="deleteTaskModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
@@ -242,7 +248,6 @@
   </div>
 </div>
 
-<!-- Edit task modal -->
 <div class="modal fade" #editTaskModal id="editTaskModal" tabindex="-1" role="dialog"
   aria-labelledby="editTaskModalLabel" aria-hidden="!submitted">
   <div class="modal-dialog" role="document">
@@ -331,7 +336,6 @@
                 </div>
               </div>
               <div class="col-md-8" style="padding-right: 0;">
-                <!-- If empty -->
                 <div *ngIf="!featureSelected" style="height: 100%">
                   <div class="container h-100">
                     <div class="row h-100 justify-content-center align-items-center">
@@ -343,7 +347,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- When a feature is selected -->
                 <div *ngIf="featureSelected"
                   style="width: 100%; margin-top: -1em; margin-bottom: -1rem; padding-right: 1.5em"
                   class="sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 300 + 'px' }">
@@ -405,4 +408,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

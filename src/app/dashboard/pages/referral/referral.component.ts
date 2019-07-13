@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable, combineLatest, from, Subscription } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { UserService } from 'src/app/shared/services/user.service';
-import { ReferralService } from '../../services/referral.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { combineLatest, from, Observable, Subscription } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { ModalService } from 'src/app/shared/services/modal.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { UtilService } from 'src/app/shared/services/util.service';
+import { ReferralService } from '../../services/referral.service';
 
 @Component({
   templateUrl: './referral.component.html',

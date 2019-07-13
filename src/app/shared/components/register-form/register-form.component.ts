@@ -1,21 +1,25 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html'
 })
 export class RegisterFormComponent implements OnInit {
-  isMobile: Observable<BreakpointState>;
+  @Input() referredByUser: string;
+  @Input() referredById: string;
   model: any = {};
-  @Input() referredUserBy: string;
 
   constructor(
-    private breakpointObserver: BreakpointObserver
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
+    localStorage.removeItem('user');
+  }
+
+  registerWithReferral() {
+    this.authService.registerWithReferral(this.model.email, this.model.password, this.model.firstName,
+      this.model.lastName, this.referredById);
   }
 }

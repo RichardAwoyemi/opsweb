@@ -32,33 +32,4 @@ export class RegisterComponent {
     this.authService.register(this.model.email, this.model.password, this.model.firstName,
       this.model.lastName);
   }
-
-  googleSignIn() {
-    this.authService.googleSignIn();
-  }
-
-  facebookSignIn() {
-    this.authService.facebookSignIn();
-  }
-
-  registerWithReferral() {
-    this.authService.registerWithReferral(this.model.email, this.model.password, this.model.firstName,
-      this.model.lastName, this.referredById);
-  }
-
-  mobileGoogleSignInWithReferral() {
-    this.authService.mobileGoogleSignInWithReferral(this.referredById);
-  }
-
-  googleSignInWithReferral() {
-    this.authService.googleSignInWithReferral(this.referredById);
-  }
-
-  mobileFacebookSignInWithReferral() {
-    this.authService.mobileFacebookSignInWithReferral(this.referredById);
-  }
-
-  facebookSignInWithReferral() {
-    this.authService.facebookSignInWithReferral(this.referredById);
-  }
 }
