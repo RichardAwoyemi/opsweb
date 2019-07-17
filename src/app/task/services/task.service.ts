@@ -24,6 +24,7 @@ export class TaskService {
   primeCost = 1.5;
   primeSpeed = 0.5;
   speedOptions = ['Relaxed', 'Standard', 'Prime'];
+  categoryOptions = ['Web, Software and Mobile Development', 'Graphics Design', 'Writing and Translation'];
 
   checkIfTasksExist() {
     this.logger.debug(`Checking to see if tasks exist`);

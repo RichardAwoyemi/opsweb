@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-application-modal',
-  templateUrl: './application-modal.component.html'
+  selector: 'app-create-application-modal',
+  templateUrl: './create-application-modal.component.html'
 })
-export class ApplicationModalComponent  implements OnInit {
+export class CreateApplicationModalComponent  implements OnInit {
   innerHeight: number;
 
   constructor(public activeModal: NgbActiveModal) { }

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateTaskModalComponent } from '../create-task-modal/create-task-modal.component';
-import { ApplicationModalComponent } from '../application-modal/application-modal.component';
+import { CreateApplicationModalComponent } from '../create-application-modal/create-application-modal.component';
 
 @Component({
   selector: 'app-dashboard-empty-state',
@@ -19,6 +19,6 @@ export class DashboardEmptyStateComponent {
   }
 
   openApplicationModal() {
-    this.modalService.open(ApplicationModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(CreateApplicationModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 }

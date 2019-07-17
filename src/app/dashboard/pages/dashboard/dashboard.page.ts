@@ -72,13 +72,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     // private breakpointObserver: BreakpointObserver,
     // private dataService: DataService,
-    // private userService: UserService,
+    private userService: UserService,
     // //public taskService: TaskService,
     // public applicationService: ApplicationService,
     private ngxLoader: NgxUiLoaderService,
     // private toastr: ToastrService,
     // private modalService: ModalService,
-    // private logger: NGXLogger,
+    private logger: NGXLogger,
     // private router: Router,
     // public dragulaService: DragulaService
   ) {
@@ -104,26 +104,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ngxLoader.start();
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(result => {
+      if (result) {
+        this.setUser(result);
+      }
+    });
     this.ngxLoader.stop();
+  }
+
+  setUser(result) {
+    this.logger.debug('Setting user:');
+    this.logger.debug(result);
+    this.userData = result;
   }
 
   // ngOnInit() {
   //   this.ngxLoader.start();
   //   this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
   //   this.anonymousPhotoURL = '/assets/img/anonymous.jpg';
-  //   this.user = JSON.parse(localStorage.getItem('user'));
   //   this.innerHeight = window.innerHeight;
 
   //   this.resizeObservable$ = fromEvent(window, 'resize');
   //   this.resizeSubscription$ = this.resizeObservable$.subscribe(evt => {
   //     this.innerHeight = window.innerHeight;
   //     this.logger.debug('Window resized: ', evt);
-  //   });
-
-  //   this.userSubscription = this.userService.getUserById(this.user.uid).subscribe(result => {
-  //     if (result) {
-  //       this.setUser(result);
-  //     }
   //   });
 
   //   this.taskSubscription = this.taskService.getTasksByUserId(this.user.uid).subscribe(result => {
@@ -211,12 +216,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // onSelectedCategoryChange(event) {
   //   this.logger.debug(`Category changed to: ${event.target.value}`);
   //   this.selectedCategory = event.target.value;
-  // }
-
-  // setUser(result) {
-  //   this.logger.debug('Setting user:');
-  //   this.logger.debug(result);
-  //   this.userData = result;
   // }
 
   // setApplication(result) {

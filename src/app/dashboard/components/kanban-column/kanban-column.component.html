@@ -1,0 +1,15 @@
+<div dragula="DASHBOARD" style="min-height: 7.5em">
+  <div class="col-md-4 project-column">
+    <div class="col-header">
+      <span class="badge badge-pill badge-primary">{{ tasks?.length }}</span>&nbsp;&nbsp;
+      <strong>{{ columnTitle }}</strong>
+    </div>
+    <div dragula="DASHBOARD" style="min-height: 7.3em">
+      <app-kanban-card></app-kanban-card>
+    </div>
+    <ng-container>
+      <hr>
+      <app-kanban-column-button-group></app-kanban-column-button-group>
+    </ng-container>
+  </div>
+</div>

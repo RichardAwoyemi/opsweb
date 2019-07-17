@@ -1,0 +1,11 @@
+<div *ngIf="userData?.accountType == 'work' && !applicationData" style="padding-bottom: 1em">
+  <button class="btn btn-block btn-secondary" type="button" (click)="openApplyToWorkModal()">Apply to
+    Work</button>
+</div>
+<div *ngIf="userData?.accountType == 'work' && applicationData" style="padding-bottom: 1em">
+  <button class="btn btn-block btn-secondary" type="button" (click)="openApplicationStatusModal()">View
+    Application Status</button>
+</div>
+<div>
+  <button class="btn btn-block btn-secondary" type="button" (click)="openCreateTaskModal()">Create Task</button>
+</div>

@@ -15,23 +15,12 @@
     </div>
     <div class="row">
       <div class="col-md-12 text-left">
-        <div class="radio">
-          <label><input type="radio" name="category" (change)="onSelectedCategoryChange($event)"
-              value="Web, Software and Mobile Development">&nbsp; Web, Software and Mobile Development</label>
-        </div>
-        <div class="radio">
-          <label><input type="radio" name="category" (change)="onSelectedCategoryChange($event)"
-              value="Graphics Design">&nbsp; Graphics Design</label>
-        </div>
-        <div class="radio">
-          <label><input type="radio" name="category" (change)="onSelectedCategoryChange($event)"
-              value="Writing and Translation">&nbsp; Writing and Translation</label>
-        </div>
+        <app-task-category-option *ngFor="let option of taskService.categoryOptions" categoryOption="{{ option }}">
+        </app-task-category-option>
       </div>
       <div class="col-md-12" style="text-align: left">
         <div *ngIf="f.submitted && !selectedCategory" style="padding-top: 0.75em"><small class="text-danger">Category
-            is
-            required!</small></div>
+            is required!</small></div>
       </div>
     </div>
   </div>
