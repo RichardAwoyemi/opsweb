@@ -2,16 +2,17 @@
   <div class="container">
     <div [ngClass]="rowAlignment$ | async">
       <div [ngClass]="columnWidth$ | async">
-        <div class="col-md-12" style="padding-bottom: 2em" *ngIf="(isMobile | async)?.matches"> 
+        <div class="col-md-12" style="padding-bottom: 2em;" *ngIf="(isMobile | async)?.matches"> 
           <img src="{{ headerImage }}">
         </div>
         <h1 class="fw-600">{{ title }}</h1>
         <p class="lead mt-5">{{ subtitle }}</p>
         <hr class="w-10 ml-0 my-7">
-        <app-login-button-group position="left"></app-login-button-group>
+        <!-- <app-login-button-group position="left"></app-login-button-group> -->
+        <app-register-interest-button position="left"></app-register-interest-button>
       </div>
-      <div class="col-lg-6 ml-auto" aos-init aos-animate data-aos="fade-up" *ngIf="!(isMobile | async)?.matches">
-        <img src="{{ headerImage }}">
+      <div class="col-lg-6 ml-auto text-center" aos-init aos-animate data-aos="fade-up" *ngIf="!(isMobile | async)?.matches">
+        <img src="{{ headerImage }}" style="width: 75%">
       </div>
     </div>
   </div>

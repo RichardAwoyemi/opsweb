@@ -22,6 +22,8 @@ import { HomeComponent } from './pages/home/home.page';
 import { InviteComponent } from './pages/invite/invite.page';
 import { LegalComponent } from './pages/legal/legal.page';
 import { PressComponent } from './pages/press/press.page';
+import { RegisterInterestButtonComponent } from './components/register-interest-button/register-interest-button';
+import { UtilService } from '../shared/services/util.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -47,6 +49,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     HomeApplyComponent,
     HomeSectionHeaderComponent,
     LoginButtonGroupComponent,
+    RegisterInterestButtonComponent,
     InviteComponent
   ],
   providers: [
@@ -54,7 +57,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG
-    }
+    },
+    UtilService
   ],
   imports: [
     HomeRoutingModule,

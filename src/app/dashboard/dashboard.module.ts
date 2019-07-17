@@ -14,6 +14,9 @@ import { DashboardNavbarComponent } from './components/dashboard-navbar/dashboar
 import { TaskCategoryOptionComponent } from './components/task-category-option/task-category-option.component';
 import { DashboardRoutingModule } from './dashboard.routing.module';
 import { DashboardComponent } from './pages/dashboard/dashboard.page';
+import { KanbanColumnButtonComponent } from './components/kanban-column-button-group/kanban-column-button-group';
+import { KanbanColumnComponent } from './components/kanban-column/kanban-column.component';
+import { KanbanCardComponent } from './components/kanban-card/kanban-card.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { DashboardComponent } from './pages/dashboard/dashboard.page';
     CreateTaskModalComponent,
     CreateApplicationModalComponent,
     DashboardKanbanComponent,
-    TaskCategoryOptionComponent
+    TaskCategoryOptionComponent,
+    KanbanColumnButtonComponent,
+    KanbanColumnComponent,
+    KanbanCardComponent
   ],
   providers: [
     DataService,
@@ -40,7 +46,10 @@ import { DashboardComponent } from './pages/dashboard/dashboard.page';
   exports: [
     DashboardComponent,
     DashboardNavbarComponent,
-    DashboardFooterComponent
+    DashboardFooterComponent,
+    KanbanColumnButtonComponent,
+    KanbanColumnComponent,
+    KanbanCardComponent
   ],
   entryComponents: [
     CreateTaskModalComponent,

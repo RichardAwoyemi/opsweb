@@ -1,12 +1,11 @@
-import { environment } from 'src/environments/environment';
-import { Subscription } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
 import { Injectable } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable()
 export class UtilService {
   IOS_APP_URL = 'https://itunes.apple.com';
   ANDROID_APP_URL = 'https://play.google.com';
+  AIRTABLE_FORM_URL = 'https://airtable.com/shrRf5gBoMn300PBp';
 
   constructor(
     private logger: NGXLogger
@@ -75,6 +74,19 @@ export class UtilService {
       n = (n * -1).toFixed(2);
     }
     return n;
+  }
+
+  setButtonAlignment(position) {
+    if (position === 'center') {
+      return 'gap-xy text-center';
+    }
+    if (position === 'left') {
+      return 'gap-xy';
+    }
+  }
+
+  openAirtableForm() {
+    window.open(this.AIRTABLE_FORM_URL, '_blank');
   }
 
   copyMessage(referralUrl) {

@@ -10,8 +10,8 @@ import { map } from 'rxjs/operators';
 })
 export class HomeHeaderComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
-  title = 'The marketplace for services.';
-  subtitle = 'Opsonion is a marketplace for specialist skills, connecting clients to vetted talent who deliver high-quality work.';
+  title = 'We can help bring your ideas to life.';
+  subtitle = 'Opsonion helps early stage startups and top tier brands create first class digital products and experiences.';
   headerImage = '/assets/img/home.svg';
   headerHeight$: Observable<string>;
   rowAlignment$: Observable<string>;

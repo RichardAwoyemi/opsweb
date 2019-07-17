@@ -4,6 +4,7 @@ import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/l
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   selector: 'app-login-button-group',
@@ -15,19 +16,11 @@ export class LoginButtonGroupComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    public utilService: UtilService,
   ) { }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     library.add(faFacebookF, faGoogle, faLongArrowAltRight);
-  }
-
-  setButtonAlignment(position) {
-    if (position === 'center') {
-      return 'gap-xy text-center';
-    }
-    if (position === 'left') {
-      return 'gap-xy';
-    }
   }
 }

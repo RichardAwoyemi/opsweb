@@ -1,4 +1,4 @@
-<p [ngClass]="setButtonAlignment(position)">
+<p [ngClass]="utilService.setButtonAlignment(position)">
   <button type="button" class="btn btn-label btn-google" (click)="googleSignIn()" id="googleLogin"
     *ngIf="!(isMobile | async)?.matches">
     <label>
@@ -24,7 +24,7 @@
     </label> Sign in with Facebook
   </button>
 </p>
-<p [ngClass]="setButtonAlignment(position)">
+<p [ngClass]="utilService.setButtonAlignment(position)">
   <small>
     <a class="text-muted small-2" routerLink="/register" id="emailLogin">or use your email address&nbsp;&nbsp;<fa-icon
         [icon]="['fas', 'long-arrow-alt-right']" size="xs"></fa-icon></a>
