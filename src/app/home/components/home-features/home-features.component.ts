@@ -21,13 +21,13 @@ export class HomeFeaturesComponent implements OnInit {
     },
     {
       'title': 'Efficiency',
-      'description': 'Our automated pipeline reduces core development time from months to weeks.',
+      'description': 'We reduce developement times for quality products using automated pipelines.',
       'image': 'assets/img/efficiency.svg',
       'delay': 1000
     },
     {
       'title': 'Affordability',
-      'description': 'As a result of our streamlined processes, we can pass on any cost savings to you.',
+      'description': 'We maintain reasonable prices by leveraging the benefits of our streamlined processes.',
       'image': 'assets/img/affordability.svg',
       'delay': 2000
     }
@@ -37,7 +37,7 @@ export class HomeFeaturesComponent implements OnInit {
   employerFeatures = [
     'Use our library components to speed up product creation;',
     'Chat with us to get constant progress updates; and',
-    'Pay upon completion when you\'re 100% satisfied.'
+    'Work out a payment schedule that suits you.'
   ];
   employeeFeaturesButtonText = 'Get started';
   employeeFeaturesImage = '../assets/img/support.svg';
