@@ -2,13 +2,24 @@ import { LoginButtonGroupComponent } from './login-button-group.component';
 import { FormsModule } from '@angular/forms';
 import { TestBed, async } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { UtilService } from 'src/app/shared/services/util.service';
+import { NGXLogger, NGXLoggerHttpService, LoggerModule } from 'ngx-logger';
+import { environment } from 'src/environments/environment';
 
 describe('LoginButtonGroupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
-      declarations: [LoginButtonGroupComponent]
+      imports: [
+        FormsModule,
+        LoggerModule.forRoot(environment.logging)
+      ],
+      declarations: [LoginButtonGroupComponent],
+      providers: [
+        UtilService,
+        NGXLogger,
+        NGXLoggerHttpService
+      ]
     }).compileComponents();
   }));
   describe(':', () => {
@@ -29,15 +40,18 @@ describe('LoginButtonGroupComponent', () => {
     }));
 
     it('should have option to sign in with Google', async(() => {
-      expect(document.getElementById('googleLogin').innerText).toBe('Sign in with Google');
+      fixture.detectChanges();
+      expect(document.getElementById('googleLogin').innerText).toContain('Sign in with Google');
     }));
 
     it('should have option to sign in with Facebook', async(() => {
-      expect(document.getElementById('facebookLogin').innerText).toBe('Sign in with Facebook');
+      fixture.detectChanges();
+      expect(document.getElementById('facebookLogin').innerText).toContain('Sign in with Facebook');
     }));
 
     it('should have option to sign in with email address', async(() => {
-      expect(document.getElementById('emailLogin').innerText.trim()).toBe('or use your email address');
+      fixture.detectChanges();
+      expect(document.getElementById('emailLogin').innerText).toContain('or use your email address');
     }));
   });
 });
