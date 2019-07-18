@@ -11,7 +11,7 @@ export class HomeReviewsComponent {
     author: 'Fred Obiosa, Co-Founder @ Ovents',
     image: '../assets/img/fred.jpg'
   }, {
-    review: 'There\'s nothing out there like it. They engaged with our ideas and created, ' +
+    review: 'There\'s nothing out there like it. They engaged with our ideas and created ' +
       'something beautiful, really happy I found Opsonion.',
     author: 'Yinka Akomolafe, Co-Founder @ Marquess London',
     image: '../assets/img/jermaine.jpg'
