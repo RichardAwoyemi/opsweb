@@ -1,0 +1,44 @@
+.section-desktop {
+  background-color: #F4F7FA !important;
+  padding-top: 11rem;
+  padding-bottom: 4rem;
+}
+
+.section-mobile {
+  background-color: #F4F7FA !important;
+  padding-top: 6.5rem;
+  padding-bottom: 2rem;
+}
+
+.project-column {
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  border-width: 1px !important;
+  padding: 1em;
+}
+
+.col-header {
+  padding-bottom: 2em;
+}
+
+.item {
+  margin-bottom: 1em;
+  font-size: 12px !important;
+}
+
+.item:hover {
+  cursor: pointer;
+}
+
+#editTaskModal > .modal-dialog { 
+  max-width: 90% !important;
+}
+
+.card-highlight:hover {
+  background-color: #E8F0FE !important;
+  cursor: pointer !important;
+}
+
+.card-body {
+  border-radius: 0px;
+}

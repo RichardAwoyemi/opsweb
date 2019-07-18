@@ -1,0 +1,6 @@
+<section ngxUiLoaderBlurred class="section-desktop">
+  <div class="container">
+    <app-dashboard-empty-state accountType="userData?.accountType" *ngIf="accountType && noOfTasks === 0"></app-dashboard-empty-state>
+    <app-dashboard-kanban *ngIf="userData?.accountType"></app-dashboard-kanban>
+  </div>
+</section>

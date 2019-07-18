@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create Task</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form name="taskPreScreeningForm" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+  <div class="modal-body text-center">
+    <h6>What type of work do you need done?</h6>
+    <div style="text-align: left; padding-top: 1em">
+      <div class="alert alert-primary" role="alert">
+        <small>Choose the category that best fits your request. For example: if you are looking for a logo, you
+          should choose the "Graphics & Design" category.</small>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-left">
+        <app-task-category-option *ngFor="let option of taskService.categoryOptions" categoryOption="{{ option }}">
+        </app-task-category-option>
+      </div>
+      <div class="col-md-12" style="text-align: left">
+        <div *ngIf="f.submitted && !selectedCategory" style="padding-top: 0.75em"><small class="text-danger">Category
+            is required!</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="completeTaskPreScreening()">Continue</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close"
+      (click)="activeModal.dismiss()">Close</button>
+  </div>
+</form>

@@ -1,12 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~quill/dist/quill.snow.css";
-@import "../node_modules/angular-calendar/css/angular-calendar.css";
-
-quill-editor {
-  display: block;
-}
-
 .ng5-slider .ng5-slider-pointer {
   background-color: #451AFF !important;
   outline: none !important;
@@ -68,4 +61,59 @@ body, div {
 
 h1, h1, h2, h3, h4, h5, h6 {
   font-family: 'Avenir Next Medium', Helvetica, sans-serif !important;
+}
+
+.fw-200 {
+  font-weight: bold !important;
+}
+
+/* Wizard */
+
+.hideWizardNavbar aw-wizard-navigation-bar {
+	display: none !important;
+}
+
+/* Sidebar */
+
+.sidebar-scroll {
+  overflow-y: scroll; 
+  overflow-x: hidden;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 2px;
+}
+ 
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #DDE2E8; 
+}
+
+/* Dragula */
+
+/* in-flight clone */
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  pointer-events: none;
+}
+/* high-performance display:none; helper */
+.gu-hide {
+  left: -9999px !important;
+}
+/* added to mirrorContainer (default = body) while dragging */
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* added to the source element while its mirror is dragged */
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
 }

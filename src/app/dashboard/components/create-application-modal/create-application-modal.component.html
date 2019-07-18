@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="workApplicationModalLabel">Apply to Work</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-left sidebar-scroll" [ngStyle]="{ 'max-height': innerHeight - 190 + 'px' }">
+  <h6 class="text-center">Thank you for your interest in joining Opsonion as a worker. Please fill out the
+    application below and we will be in touch.</h6>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>What service do you provide? <span class="text-danger">*</span></label>
+        <select class="form-control" [(ngModel)]="primaryService">
+          <option value="Web, Software and Mobile Development">Web, Software and Mobile Development</option>
+          <option value="Graphics Design">Graphics Design</option>
+          <option value="Writing and Translation">Writing and Translation</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Please tell us about your skills in this area <span class="text-danger">*</span></label>
+        <textarea class="form-control" [(ngModel)]="secondaryService"></textarea>
+      </div>
+      <div class="form-group">
+        <label>How would you rate your experience? <span class="text-danger">*</span></label>
+        <select class="form-control" [(ngModel)]="experienceLevel">
+          <option value="Beginner">Beginner (less than a years of experience)</option>
+          <option value="Intermediate">Intermediate (2 to 5 years experience)</option>
+          <option value="Advanced">Advanced (more than 5 years of experience)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Please provide us with a link to your portfolio <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="portfolio" [(ngModel)]="portfolio">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="completeWorkApplication()"
+    [disabled]="!primaryService || !secondaryService || !experienceLevel || !portfolio">Submit</button>&nbsp;
+  <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">Close</button>
+</div>

@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { Observable, Subscription } from 'rxjs';
-import { AuthService } from './_services/auth.service';
-import { UserService } from './_services/user.service';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { UtilService } from './_services/util.service';
-import { environment } from 'src/environments/environment';
 import { NGXLogger } from 'ngx-logger';
+import { Observable, Subscription } from 'rxjs';
+import { AuthService } from './auth/services/auth.service';
+import { UserService } from './shared/services/user.service';
+import { UtilService } from './shared/services/util.service';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +17,8 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Opsonion';
   isMobile: Observable<BreakpointState>;
   user: any = {
-    photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+    photoURL: '/assets/img/anonymous.jpg'
   };
-  today: number = Date.now();
-  appStoreUrl: string;
-  userAgentString: string;
   referredBy: string;
   onboardingComplete: boolean;
   accountType: boolean;
@@ -38,10 +34,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public afAuth: AngularFireAuth,
     public router: Router,
     public authService: AuthService) {
-    this.userAgentString = navigator.userAgent;
     this.afAuth.authState.subscribe(response => {
       this.referredBy = localStorage.getItem('referredBy');
-      this.assignUserProfile(response);
       this.processMobileLogin(response);
       this.processMobileReferralLogin(response);
       localStorage.removeItem('referredBy');
@@ -50,7 +44,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.appStoreUrl = this.utilService.getAppStoreLink(this.userAgentString);
     this.authSubscription = this.afAuth.authState.subscribe(user => {
       if (user) {
         this.cacheUserProfile(user);
@@ -62,7 +55,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isMobile.subscribe(result => {
       if (result.matches && !this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
         result.matches && response && response.providerData[0].providerId === 'google.com') {
-        this.logger.debug(`Result is ${result.matches}, so processing mobile login`);
         this.authService.processMobileLogin(response.providerData[0], response.uid);
       }
     });
@@ -72,39 +64,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isMobile.subscribe(result => {
       if (result.matches && this.referredBy && response && response.providerData[0].providerId === 'facebook.com' ||
         result.matches && this.referredBy && response && response.providerData[0].providerId === 'google.com') {
-        this.logger.debug(`Result is ${result.matches}, so processing mobile referral login`);
         this.authService.processMobileReferralLogin(response.providerData[0], response.uid, this.referredBy);
       }
     });
   }
 
-  assignUserProfile(response) {
-    if (response && this.authService.isLoggedIn) {
-      this.user = {
-        firstName: response['firstName'],
-        lastName: response['lastName'],
-        email: response['email'],
-        photoURL: response['photoURL'],
-        username: response['username']
-      };
-    }
-  }
-
   cacheUserProfile(user) {
-    this.logger.debug('Caching:');
+    this.logger.debug(`Caching: ${JSON.stringify(user)})`);
     this.logger.debug(user);
-    this.logger.debug('Caching: ' + user.photoURL);
+    this.logger.debug(`Caching: ${user.photoURL}`);
     this.user = {
-      photoURL: 'https://i.imgflip.com/1slnr0.jpg'
+      photoURL: '/assets/img/anonymous.jpg'
     };
 
     this.userSubscription = this.userService.getUserById(user.uid).subscribe(data => {
       if (data) {
-        if (data['photoURL']) {
-          this.user = {
-            photoURL: data['photoURL']
-          };
-        }
         this.onboardingComplete = data['onboardingComplete'];
         this.accountType = data['accountType'];
       }

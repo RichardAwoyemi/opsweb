@@ -1,0 +1,10 @@
+<section class="section text-center">
+  <div class="container">
+    <div class="col-md-8 mx-auto text-center">
+      <app-section-header-group title="{{ referredByUserData?.firstName }} has invited you to join Opsonion!"
+        subtitle="With Opsonion, you can easily find vetted talent which deliver high-quality work. Don't miss your chance, sign up today.">
+      </app-section-header-group>
+    </div>
+    <app-register-form referredById="{{ referredById }}" referredByUser="{{ referredByUserData?.uid }}"></app-register-form>
+  </div>
+</section>

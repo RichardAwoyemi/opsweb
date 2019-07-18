@@ -1,0 +1,32 @@
+<p [ngClass]="utilService.setButtonAlignment(position)">
+  <button type="button" class="btn btn-label btn-google" (click)="googleSignIn()" id="googleLogin"
+    *ngIf="!(isMobile | async)?.matches">
+    <label>
+      <fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon>
+    </label> Sign in with Google
+  </button>
+  <button type="button" class="btn btn-label btn-google" (click)="mobileGoogleLogin()" id="mobileGoogleLogin"
+    *ngIf="(isMobile | async)?.matches">
+    <label>
+      <fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon>
+    </label> Sign in with Google
+  </button>
+  <button type="button" class="btn btn-label btn-facebook" (click)="facebookSignIn()" id="facebookLogin" 
+  *ngIf="!(isMobile | async)?.matches">
+    <label>
+      <fa-icon [icon]="['fab', 'facebook-f']" size="xs"></fa-icon>
+    </label> Sign in with Facebook
+  </button>
+  <button type="button" class="btn btn-label btn-facebook" (click)="mobileFacebookLogin()" id="mobileFacebookLogin" 
+  *ngIf="(isMobile | async)?.matches">
+    <label>
+      <fa-icon [icon]="['fab', 'facebook-f']" size="xs"></fa-icon>
+    </label> Sign in with Facebook
+  </button>
+</p>
+<p [ngClass]="utilService.setButtonAlignment(position)">
+  <small>
+    <a class="text-muted small-2" routerLink="/register" id="emailLogin">or use your email address&nbsp;&nbsp;<fa-icon
+        [icon]="['fas', 'long-arrow-alt-right']" size="xs"></fa-icon></a>
+  </small>
+</p>

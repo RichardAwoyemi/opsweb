@@ -1,144 +1,47 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { QuillModule } from 'ngx-quill';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
-import { Ng5SliderModule } from 'ng5-slider';
-
-import { HomeComponent } from './home/home.component';
-import { ContactComponent } from './contact/contact.component';
-import { LegalComponent } from './legal/legal.component';
-import { LoginComponent } from './login/login.component';
-import { PressComponent } from './press/press.component';
-import { RegisterComponent } from './register/register.component';
-
-import { AuthService } from './_services/auth.service';
-import { AuthGuard } from './_guards/auth.guard';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { AnonymousGuard } from './_guards/anonymous.guard';
-import { ModalComponent } from './_modals/modal.component';
+import { AuthService } from './auth/services/auth.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { VerifyEmailComponent } from './verify-email/verify-email.component';
-import { UtilService } from './_services/util.service';
-import { UserService } from './_services/user.service';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { QRCodeModule } from 'angularx-qrcode';
-import { SettingsComponent } from './settings/settings.component';
-import { InviteComponent } from './invite/invite.component';
-import { ExcelService } from './_services/excel.service';
-import { CsvService } from './_services/csv.service';
-import { PdfService } from './_services/pdf.service';
-import { InboxComponent } from './inbox/inbox.component';
-import { ReferralService } from './_services/referral.service';
-import { FirebaseService } from './_services/firebase.service';
-import { DataService } from './_services/data.service';
-import { ModalService } from './_services/modal.service';
+import { UserService } from './shared/services/user.service';
+import { ReferralService } from './dashboard/services/referral.service';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 import { LoggerModule } from 'ngx-logger';
-import { ImgurService } from './_services/imgur.service';
-import { SwiperModule } from 'ngx-swiper-wrapper';
-import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
-import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
-import { OnboardingComponent } from './onboarding/onboarding.component';
-import { ArchwizardModule } from 'angular-archwizard';
-import { ImageCropperModule } from 'ngx-image-cropper';
-import { BlockSpecialCharacterDirective } from './_directives/block.special.character.directive';
+import { HomeModule } from './home/home.module';
+import { UtilService } from './shared/services/util.service';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
   bgsOpacity: 0.7
 };
 
-const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
-  direction: 'horizontal',
-  slidesPerView: 'auto',
-  autoplay: {
-    delay: 4000,
-  },
-};
-
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeComponent,
-    ContactComponent,
-    LegalComponent,
-    LoginComponent,
-    PressComponent,
-    RegisterComponent,
-    DashboardComponent,
-    ModalComponent,
-    VerifyEmailComponent,
-    ForgotPasswordComponent,
-    SettingsComponent,
-    InviteComponent,
-    InboxComponent,
-    OnboardingComponent,
-    BlockSpecialCharacterDirective,
-  ],
-  entryComponents: [
-    ModalComponent
+    AppComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
-    FontAwesomeModule,
-    RecaptchaModule.forRoot(),
-    RecaptchaFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule,
+    DashboardModule,
+    HomeModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    QRCodeModule,
-    QuillModule,
-    Ng5SliderModule,
-    SwiperModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoggerModule.forRoot(environment.logging),
-    ImageCropperModule,
-    ArchwizardModule
   ],
   providers: [
     AuthService,
     UtilService,
     UserService,
-    ExcelService,
-    CsvService,
-    PdfService,
-    ReferralService,
-    AuthGuard,
-    AnonymousGuard,
-    FirebaseService,
-    DataService,
-    ModalService,
-    ImgurService,
-    {
-      provide: RECAPTCHA_SETTINGS,
-      useValue: {
-        siteKey: '6LeAv3UUAAAAAPYLttDEohg_KgyNifLN0Cx6IlPc',
-      } as RecaptchaSettings,
-    },
-    {
-      provide: SWIPER_CONFIG,
-      useValue: DEFAULT_SWIPER_CONFIG
-    }
+    ReferralService
   ],
   bootstrap: [AppComponent]
 })
