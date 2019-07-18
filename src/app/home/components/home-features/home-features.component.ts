@@ -27,7 +27,7 @@ export class HomeFeaturesComponent implements OnInit {
     },
     {
       'title': 'Affordability',
-      'description': 'We make projects affordable by leveraging the benefits of our streamlined processes.',
+      'description': 'We maintain reasonable prices by leveraging the benefits of our streamlined processes.',
       'image': 'assets/img/affordability.svg',
       'delay': 2000
     }
