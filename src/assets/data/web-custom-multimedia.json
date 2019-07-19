@@ -1,0 +1,72 @@
+[
+  {
+    "id": "web-archive",
+    "name": "Archive",
+    "description": "Allows users to hide their photos, videos and documents without deleting them.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-audio-call",
+    "name": "Audio Call",
+    "description": "Allow users to communicate with each other via audio call.",
+    "price_gbp": 330,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-audio-library",
+    "name": "Audio Library",
+    "description": "Allow users to maintain a library of audio files.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-audio-playback",
+    "name": "Audio Playback",
+    "description": "Support for the playback of audio files.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-audio-slideshow",
+    "name": "Audio Slideshow",
+    "description": "A feature to present a series of pictures, presented one at a time, with accompanying audio.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-audio-video-messaging",
+    "name": "Audio and Video Messaging",
+    "description": "Allow users to send audio and video messages to each other on chat.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-bookmark",
+    "name": "Bookmark",
+    "description": "A feature to allow users to bookmark links, articles, images on your platform.",
+    "price_gbp": 225,
+    "time_weeks": 0.25
+  },
+  {
+    "id": "web-conference-call",
+    "name": "Conference Call",
+    "description": "Allow users to have a video or audio call with several people at the same time.",
+    "price_gbp": 300,
+    "time_weeks": 0.4
+  },
+  {
+    "id": "web-playlist",
+    "name": "Playlist",
+    "description": "Allow users playlist and maintain a library.",
+    "price_gbp": 120,
+    "time_weeks": 0.1
+  },
+  {
+    "id": "web-video-call",
+    "name": "Video Call",
+    "description": "Allow users to communicate with each other via video call.",
+    "price_gbp": 330,
+    "time_weeks": 0.5
+  }
+]
