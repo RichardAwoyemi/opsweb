@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const stripe = require('stripe')(functions.config().stripe.token);
 admin.initializeApp(functions.config().firebase);
 
 exports.createUser = functions.firestore
@@ -121,4 +122,39 @@ exports.countAllUsers = functions.https.onRequest((req: any, res: any) => {
     res.end(count);
     console.log('Request successful!');
   }).catch((error: any) => console.log('Request failed: ', error));
+})
+
+// When a user is created, register them with Stripe
+exports.createStripeCustomer = functions.firestore
+  .document('users/{userId}').onCreate(async (snap: any) => {  
+    const user = snap.data();
+    const customer = await stripe.customers.create({email: user.email});
+    return snap.ref.set({stripeId: customer.id}, {merge: true});
+});
+
+// Charge the Stripe customer whenever an amount is written to the Realtime database
+exports.createStripeCharge = functions.firestore
+  .document('users/{userId}/payments/{id}').onCreate(async (snap: any , context: any) => {
+    const chargeData = snap.data();
+    try {
+      // Look up the Stripe customer id written in createStripeCustomer
+      const customerSnapshot = await admin.firestore().collection('users').doc(context.params.userId).get()
+      const customer = customerSnapshot.data().stripeId;
+      
+      // Create a charge using the pushId as the idempotency key
+      // protecting against double charges
+      const idempotencyKey = context.params.id;
+      const amount = chargeData.amount;
+      const currency = chargeData.currency;
+      const source = chargeData.source;
+      const charge = {amount, currency, source, customer};
+
+      console.log(charge);
+
+      const response = await stripe.charges.create(charge, {idempotency_key: idempotencyKey});
+      // If the result is successful, write it back to the database
+      return snap.ref.set(response, { merge: true });
+    } catch(error) {
+      console.log(error);
+  }
 });
