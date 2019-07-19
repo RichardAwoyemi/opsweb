@@ -1,0 +1,95 @@
+<!-- Home navbar -->
+<ng-container *ngIf="currentRoute !== '/'">
+<nav *ngIf="!isLoggedIn" class="navbar navbar-expand-lg navbar-dark" data-navbar="smart">
+  <div class="container">
+    <div class="navbar-left mr-4">
+      <button class="navbar-toggler" type="button">&#9776;</button>
+      <a class="navbar-brand" routerLink="/">
+        <img alt="logo" src="/../assets/img/logo.svg" style="height: 42px; width: 42px;">
+      </a>
+    </div>
+    <section class="navbar-mobile">
+      <span class="navbar-divider d-mobile-none"></span>
+      <nav class="nav nav-navbar mr-auto">
+        <ng-container *ngIf="(isMobile | async)?.matches">
+          <a class="nav-link navbar-closer" style="text-align: right"><i class="ti-close mr-2"></i></a>
+          <a class="nav-link" routerLink="/">Home</a>
+        </ng-container>
+        <a class="nav-link" routerLink="login">Login</a>
+        <a class="nav-link" routerLink="register">Register</a>
+      </nav>
+    </section>
+    <button class="btn btn-xs btn-round btn-primary" style="color: #fff">BETA</button>
+  </div>
+</nav>
+</ng-container>
+<!-- Dashboard desktop navbar -->
+<ng-container *ngIf="currentRoute !== '/'">
+<nav *ngIf="!(isMobile | async)?.matches && isLoggedIn"
+     class="navbar navbar-expand-lg navbar-dark flex-column custom-navbar">
+  <div class="container d-stick-none" style="padding-top: 1.5em; padding-bottom: 1.5em">
+    <div class="row">
+      <div class="col-4">
+        <div class="nav nav-navbar">
+          <a class="navbar-brand" routerLink="/dashboard">
+            <img alt="logo" class="logo-dark" src="/../assets/img/opsonion-cropped-white.png"
+                 style="height: 16px; width: 200px">
+          </a>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+      </div>
+      <div class="col-4 text-right">
+        <span *ngIf="this.user.photoURL" aria-expanded="false" class="dropdown-toggle no-caret"
+              data-toggle="dropdown">
+          <img alt="user" class="avatar avatar-xs" src="{{ this.user.photoURL }}">
+        </span>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a *ngIf="this.user.onboardingComplete" class="dropdown-item" routerLink="/settings"
+             style="padding: 0;">Settings</a>
+          <a *ngIf="this.user.onboardingComplete" class="dropdown-item" routerLink="/referral"
+             style="padding: 0;">Invite Friends</a>
+          <div *ngIf="this.user.onboardingComplete" class="dropdown-divider"></div>
+          <a (click)="signOut()" class="dropdown-item" href="#" style="padding: 0;">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="my-0 w-100">
+  <div *ngIf="this.user.onboardingComplete" style="background-color: #fff; width: 100%">
+    <div class="container" style="padding-left: 0">
+      <div class="navbar-left">
+      </div>
+      <section>
+        <div class="nav nav-navbar mr-auto">
+          <a class="nav-link" routerLink="/dashboard">DASHBOARD</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</nav>
+</ng-container>
+<!-- Dashboard mobile navbar -->
+<ng-container *ngIf="currentRoute !== '/builder' || currentRoute !== '/preview'">
+<nav *ngIf="(isMobile | async)?.matches && isLoggedIn"
+     class="navbar navbar-expand-lg navbar-dark custom-navbar">
+  <div class="container">
+    <div class="navbar-left mr-4">
+      <button class="navbar-toggler" style="color: #F4F7FA" type="button">&#9776;</button>
+      <a class="navbar-brand" routerLink="/">
+        <img alt="logo" src="/../assets/img/logo-white.svg" style="height: 35px; width: 35px;">
+      </a>
+    </div>
+    <section *ngIf="(isMobile | async)?.matches" class="navbar-mobile">
+      <span class="navbar-divider d-mobile-none"></span>
+      <nav class="nav nav-navbar mr-auto">
+        <a class="nav-link navbar-closer" style="text-align: right"><i class="ti-close mr-2"></i></a>
+        <a *ngIf="this.user.onboardingComplete" class="nav-link" routerLink="/dashboard">Dashboard</a>
+        <a *ngIf="this.user.onboardingComplete" class="nav-link" routerLink="/settings">Settings</a>
+        <a *ngIf="this.user.onboardingComplete" class="nav-link" routerLink="/referral">Invite Friends</a>
+        <a (click)="signOut()" class="nav-link">Logout</a>
+      </nav>
+    </section>
+  </div>
+</nav>
+</ng-container>

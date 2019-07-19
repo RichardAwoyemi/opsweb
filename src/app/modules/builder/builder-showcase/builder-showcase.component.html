@@ -1,0 +1,13 @@
+<app-builder-toolbar></app-builder-toolbar>
+<div [ngStyle]="{ 'height': innerHeight - showcaseHeight + 'px' }" class="showcase-backdrop">
+  <div style="width: 100%">
+    <app-builder-showcase-toolbar></app-builder-showcase-toolbar>
+  </div>
+  <div style="display: flex; justify-content: center;">
+    <div [ngClass]="activeShowcaseOrientation" [ngStyle]="{ 'height': innerHeight - iframeHolderHeight + 'px' }"
+         class="showcase-holder">
+      <iframe #iframe [ngStyle]="{ 'height': innerHeight - iframeHeight + 'px' }" id="builder-showcase"
+              onload="builderShowcaseLoaded()" style="width: 100%; height: 100%; border: 0; display: block"></iframe>
+    </div>
+  </div>
+</div>

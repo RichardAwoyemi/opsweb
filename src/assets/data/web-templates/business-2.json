@@ -1,0 +1,55 @@
+{
+  "id": "business-2",
+  "name": "Front",
+  "navbarStyle": {
+    "background-color": "#FFFFFF",
+    "display": "flex",
+    "font-family": "'Poppins', sans-serif",
+    "padding": "2em"
+  },
+  "navbarLinkStyle": {
+    "color": "rgb(119, 131, 143)",
+    "padding-bottom": "24px",
+    "padding-left": "14px",
+    "padding-right": "14px",
+    "padding-top": "24px",
+    "font-size": "16px",
+    "font-weight": "400",
+    "line-height": "24px",
+    "font-family": "'Poppins', sans-serif",
+    "display": "block"
+  },
+  "navbarBrandStyle": {
+    "color": "#377DFF",
+    "margin-right": "1rem",
+    "font-size": "1.25rem",
+    "line-height": "inherit",
+    "white-space": "nowrap"
+  },
+  "heroHeadingStyle": {
+    "font-family": "'Poppins', Helvetica, Arial, sans-serif",
+    "color": "#1e2022",
+    "font-weight": "300",
+    "line-height": "1.2",
+    "font-size": "3.5rem"
+  },
+  "heroButtonStyle": {
+    "color": "#377dff",
+    "font-family": "'Poppins', Helvetica, Arial, sans-serif",
+    "min-width": "9.6875rem",
+    "background": "rgba(55, 125, 255, 0.1)",
+    "border-color": "transparent",
+    "text-transform": "none",
+    "text-align": "center",
+    "font-size": "16px",
+    "font-weight": "500",
+    "border-radius": "0.3125rem"
+  },
+  "footerStyle": {
+    "font-family": "'Poppins', sans-serif",
+    "padding": "1em",
+    "display": "block",
+    "font-size": "1em",
+    "color": "#8c98a4"
+  }
+}

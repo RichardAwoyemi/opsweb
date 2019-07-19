@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Default"
+  },
+  {
+    "name": "Stanley",
+    "navbarStyle": {
+      "background-color": "#108EC8"
+    },
+    "navbarLinkStyle": {
+      "color": "#FFFFFF"
+    },
+    "navbarBrandStyle": {
+      "color": "#FFFFFF"
+    }
+  }
+]

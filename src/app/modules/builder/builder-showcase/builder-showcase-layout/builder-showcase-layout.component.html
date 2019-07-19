@@ -1,0 +1,7 @@
+<div *ngIf="reload" [sortablejsOptions]="options" [sortablejs]="builderComponents">
+  <div *ngFor="let component of builderComponents; let i = index">
+    <builder-dynamic-html (click)="builderComponentSelected(i)" (drag)="builderComponentSelected(i)"
+                          [content]="component"
+                          id="{{ 'component-' + i }}"></builder-dynamic-html>
+  </div>
+</div>

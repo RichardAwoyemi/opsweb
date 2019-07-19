@@ -1,0 +1,19 @@
+<app-builder-component-toolbar *ngIf="!previewMode" [componentName]="componentName"></app-builder-component-toolbar>
+<div [ngClass]="setContextMenu()">
+  <div (click)="setActiveEditComponent()" [ngClass]="setComponentClass()">
+    <div class="row" style="padding: 1em">
+      <div class="col-md-4">
+        <h5>Responsive</h5>
+        <p>Donec id elit non mi porta gravida at eget metus.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Customisable</h5>
+        <p>Donec id elit non mi porta gravida at eget metus.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Clean</h5>
+        <p>Donec id elit non mi porta gravida at eget metus.</p>
+      </div>
+    </div>
+  </div>
+</div>

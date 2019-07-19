@@ -1,11 +1,12 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { SectionHeaderGroupComponent } from './section-header-group.component';
 
 describe('SectionHeaderGroupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SectionHeaderGroupComponent]
-    }).compileComponents();
+    }).compileComponents().then(() => {
+    });
   }));
   describe(':', () => {
     let fixture, app;

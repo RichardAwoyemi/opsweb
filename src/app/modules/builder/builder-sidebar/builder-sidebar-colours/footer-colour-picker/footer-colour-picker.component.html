@@ -1,0 +1,13 @@
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 0.65);">Theme</label>
+  <label style="width: 100%">
+    <select (change)="onThemeChange()" [(ngModel)]="footerTheme" class="form-control form-control-lg">
+      <option *ngFor="let theme of footerThemes"
+              [attr.selected]="theme['name'] == footerThemes ? true : null">{{ theme['name'] }}</option>
+    </select>
+  </label>
+</div>
+<hr style="background-color: rgba(255, 255, 255, 0.1)">
+<div style="padding-bottom: 1em">
+  <button (click)="resetToDefault()" class="btn btn-xl btn-block btn-secondary" type="button">Reset to Default</button>
+</div>

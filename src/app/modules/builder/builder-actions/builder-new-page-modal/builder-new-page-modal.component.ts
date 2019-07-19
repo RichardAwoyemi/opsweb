@@ -1,0 +1,24 @@
+import { Component, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { IModalComponent } from '../../../../shared/models/modal';
+
+@Component({
+  selector: 'app-builder-delete-page-modal',
+  templateUrl: './builder-new-page-modal.component.html'
+})
+export class BuilderNewPageModalComponent implements IModalComponent {
+  @Input() activePage;
+
+  constructor(
+    private activeModal: NgbActiveModal
+  ) {
+  }
+
+  onCloseButtonClick() {
+    this.activeModal.dismiss();
+  }
+
+  onConfirmButtonClick(): void {
+    this.activeModal.dismiss();
+  }
+}

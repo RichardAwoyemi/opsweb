@@ -1,0 +1,24 @@
+<div class="form-group input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i class="ti-search"></i></span>
+  </div>
+  <label for="search-components"></label>
+  <input (keyup)="searchText.trim();" [(ngModel)]="searchText" class="form-control" id="search-components"
+         placeholder="Search Components" type="text">
+</div>
+<div class="row">
+  <ng-container *ngFor="let components of webComponents | filter: searchText | sort: 'name'">
+    <div class="col-md-12">
+      <div [style.backgroundImage]="'url(' + '../assets/img/default.png' + ')'"
+           class="card text-white bg-img justify-content-center component-icon"
+           [attr.data-insert-html]="components.selector" [attr.data-src]="'../assets/img/component-icon.png'"
+           data-overlay="6" draggable="true"
+           (click)="clearActiveComponent()" (drag)="clearActiveComponent()"
+           style="min-height: 200px; margin-bottom: 1em">
+        <div class="card-body text-center flex-grow-0">
+          <h5 class="card-title mb-0">{{ components.name }}</h5>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

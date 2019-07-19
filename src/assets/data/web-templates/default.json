@@ -1,0 +1,18 @@
+{
+  "id": "default",
+  "navbarStyle": {
+    "background-color": "#FFFFFF"
+  },
+  "navbarLinkStyle": {
+    "color": "#000"
+  },
+  "navbarBrandStyle": {
+    "color": "#757575"
+  },
+  "heroHeadingStyle": {},
+  "heroSubheadingStyle": {},
+  "heroButtonStyle": {},
+  "footerStyle": {
+    "padding": "1em"
+  }
+}

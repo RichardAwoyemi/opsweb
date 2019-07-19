@@ -1,0 +1,13 @@
+.bg-light, .navbar-light {
+  background: #2055EC !important;
+}
+
+.navbar-divider {
+  display: inline-block;
+  height: 20px;
+  width: 1px;
+  background-color: #fff;
+  margin: 0 1rem;
+  padding-top: 1em;
+  opacity: 0.3;
+}

@@ -14,11 +14,11 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-            keys:
+          keys:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run: 
+      - run:
           name: Install Dependencies
           command: |
             npm install -g @angular/cli
@@ -36,14 +36,14 @@ jobs:
               pip install awscli --upgrade --user
               ~/.local/bin/aws configure set default.s3.signature_version s3v4
             fi
-            cd /root/opsonion-web/src/app/_functions/ && npm install
+            cd /root/opsonion-web/src/app/functions/ && npm install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: 
+      - run:
           name: Run Tests
-          command: 
+          command:
             npm run test-headless
       - run:
           name: Deploy to AWS
@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Deploy to Firebase
           command: |
-            cd /root/opsonion-web/src/app/_functions/
+            cd /root/opsonion-web/src/app/functions/
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
               firebase use opsonion-dev
             fi
@@ -64,6 +64,6 @@ jobs:
             fi
             firebase deploy --token=$FIREBASE_TOKEN --non-interactive
     branches:
-      only: 
-      - develop
-      - master
+      only:
+        - develop
+        - master

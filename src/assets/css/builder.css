@@ -1,0 +1,224 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"');
+
+/* General */
+
+@font-face {
+  font-family: 'et-line';
+  src: url('../fonts/et-line/et-line.eot');
+  src: url('../fonts/et-line/et-line.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/et-line/et-line.woff') format('woff'),
+  url('../fonts/et-line/et-line.ttf') format('truetype'),
+  url('../fonts/et-line/et-line.svg#et-line') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next Regular';
+  src: url('../fonts/avenir-next/regular.eot'),
+  url('../fonts/avenir-next/regular.woff') format('woff'),
+  url('../fonts/avenir-next/regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Avenir Next Medium';
+  src: url('../fonts/avenir-next/medium.eot'),
+  url('../fonts/avenir-next/medium.woff') format('woff'),
+  url('../fonts/avenir-next/medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Avenir Next Regular';
+  src: url('../fonts/avenir-next/regular.eot'),
+  url('../fonts/avenir-next/regular.woff') format('woff'),
+  url('../fonts/avenir-next/regular.ttf') format('truetype');
+}
+
+body, div {
+  font-family: 'Avenir Next Regular', Helvetica, sans-serif !important;
+}
+
+div {
+  display: block;
+}
+
+body, html {
+  overflow-x: hidden;
+  margin-top: 0;
+  background-color: #FFFFFF !important;
+}
+
+body::-webkit-scrollbar {
+  width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #DDE2E8;
+}
+
+h1, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Avenir Next Medium', Helvetica, sans-serif !important;
+}
+
+.fw-200 {
+  font-weight: bold !important;
+}
+
+/* Component */
+
+.component-border {
+  border: 1px solid transparent;
+  transform: scale(0.95, 0.95) translate3d(0, 0, 0);
+}
+
+.component-border-placeholder {
+  transform: scale(0.95, 0.95) translate3d(0, 0, 0);
+}
+
+.component-border:hover {
+  cursor: pointer !important;
+  border: 1px solid #00d9e1;
+  transition: all .5s ease;
+  transform: scale(1, 1) translate3d(0, 0, 0);
+}
+
+.component-border-placeholder:hover {
+  transform: scale(1, 1) translate3d(0, 0, 0);
+}
+
+.component-border-active {
+  border: 1px solid #4285F4;
+  transition: all .5s ease;
+  transform: scale(1, 1) translate3d(0, 0, 0);
+}
+
+/* Dragula */
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  pointer-events: none;
+}
+
+.gu-hide {
+  left: -9999px !important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.gu-transit {
+  opacity: 0.2;
+  cursor: grabbing;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+/* Forms */
+
+.form-input-background-image {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: 16px 18px;
+  background-position: 98% 50%;
+}
+
+/* Navbar */
+
+.navbar {
+  top: 0;
+  position: unset;
+}
+
+.navbar-toggler {
+  margin-right: 0;
+}
+
+/* Jumbotron */
+
+.jumbotron {
+  background-color: unset;
+  border-radius: 0;
+}
+
+/* No select */
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Drop box */
+
+.drop-box {
+  height: 10px;
+  background-color: #ffffff;
+}
+
+.drop-box-active {
+  height: 50px;
+  background-color: #CCCCCC;
+}
+
+/* Component toolbar */
+
+.component-toolbar {
+  display: inline-block;
+}
+
+.component-toolbar > div > button {
+  background-color: #4285F4 !important;
+  border-color: #4285F4 !important;
+  border-bottom: 0 !important;
+  color: #FFFFFF !important;
+  margin-right: 0 !important;
+}
+
+.component-toolbar > div {
+  margin-right: 0 !important;
+}
+
+.component-toolbar > div > button:hover {
+  box-shadow: none;
+  opacity: 0.8;
+}
+
+.component-toolbar > div > .btn {
+  border-radius: 0 !important;
+  padding: 0.25em 1em !important;
+}
+
+.component-toolbar-text {
+  font-size: 11px;
+  background-color: #4285F4;
+  color: #FFFFFF;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Context menu */
+
+.context-menu-item:hover {
+  background-color: #4285F4 !important;
+}
+
+/* Footer */
+
+footer > div {
+  font-family: unset !important;
+}
+

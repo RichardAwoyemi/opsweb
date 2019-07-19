@@ -1,0 +1,29 @@
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 0.65)">Menu</label>
+</div>
+<div (click)="setNavbarLayoutClass('navbar-nav mr-auto')"
+     class="row row-options justify-content-center align-items-center" style="margin-top: -7px">
+  <div class="col-md-3" style="padding: 0.5em">
+    <button class="btn btn-square btn-options btn-block btn-xl" type="button">
+      <i class="ti-align-left"></i>
+    </button>
+  </div>
+  <div class="col-md-9 row-color h-100 d-table">
+    <div class="align-items-center d-table-cell align-middle">
+      Align Left
+    </div>
+  </div>
+</div>
+<div (click)="setNavbarLayoutClass('navbar-nav ml-auto')"
+     class="row row-options justify-content-center align-items-center">
+  <div class="col-md-3" style="padding: 0.5em">
+    <button class="btn btn-square btn-options btn-block btn-xl" type="button">
+      <i class="ti-align-right"></i>
+    </button>
+  </div>
+  <div class="col-md-9 row-color h-100 d-table">
+    <div class="align-items-center d-table-cell align-middle">
+      Align Right
+    </div>
+  </div>
+</div>

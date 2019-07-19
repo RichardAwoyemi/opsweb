@@ -1,0 +1,4 @@
+.component-icon:hover {
+  cursor: move;
+  opacity: 0.8;
+}

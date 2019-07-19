@@ -1,0 +1,43 @@
+.nav-item .active {
+  background-color: #29303A !important;
+}
+
+.nav-item .active .nav-icon {
+  fill: #FFFFFF !important;
+}
+
+.nav-item .nav-icon {
+  fill: #757575 !important;
+}
+
+.nav-item .nav-title {
+  padding-top: 0.5em;
+}
+
+.nav-title {
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.nav-item .active .nav-title {
+  color: #FFFFFF;
+}
+
+.nav-item:hover {
+  cursor: pointer;
+}
+
+.nav-item > a {
+  padding-top: 0.75em !important;
+  padding-bottom: 0.75em !important;
+  padding-right: 0 !important;
+  text-align: center;
+}
+
+.nav-item > a:hover {
+  color: #FFFFFF;
+}
+
+.nav-pills .nav-link {
+  border-radius: 0;
+}

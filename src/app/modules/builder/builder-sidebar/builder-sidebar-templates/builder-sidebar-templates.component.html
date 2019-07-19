@@ -1,0 +1,22 @@
+<div class="form-group input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i class="ti-search"></i></span>
+  </div>
+  <label for="search-templates"></label>
+  <input (keyup)="searchText.trim();" [(ngModel)]="searchText" class="form-control" id="search-templates"
+         placeholder="Search Templates" type="text">
+</div>
+<div class="row">
+  <ng-container *ngFor="let template of selectedTemplates | filter: searchText | sort: 'name'">
+    <div class="col-md-12">
+      <div (click)="setTemplate(template.id)"
+           [style.backgroundImage]="'url(' + '../assets/img/default.png' + ')'"
+           class="card text-white bg-img justify-content-center template-icon"
+           data-overlay="6" style="min-height: 200px; margin-bottom: 1em">
+        <div class="card-body text-center flex-grow-0">
+          <h5 class="card-title mb-0">{{ template.name }}</h5>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

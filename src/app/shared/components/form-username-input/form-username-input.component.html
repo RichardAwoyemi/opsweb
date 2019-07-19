@@ -1,0 +1,12 @@
+<div class="input-group">
+  <label style="width: 100%">
+    <input (change)="username=username.trim();" (keydown)="onKeydownCheckUsername()" [(ngModel)]="username"
+           blockSpecialCharacter
+           class="form-control" name="username" type="text">
+  </label>
+</div>
+<div style="padding-top: 1em; padding-bottom: 0.5em">
+  <button type="button" class="btn btn-xs btn-secondary" (click)="onClickCheckUsernameAvailability()">Check
+    Availability</button>
+</div>
+<small *ngIf="showUsernameError" class="text-danger">Username is required</small>

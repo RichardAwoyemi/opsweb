@@ -1,0 +1,39 @@
+<section class="section bg-gray">
+  <div class="container">
+    <div class="row gap-y">
+      <ng-container *ngFor="let feature of features">
+        <div class="feature-card" [ngClass]="featureCardColumnWidth$ | async" data-aos="fade-up"
+             [attr.data-aos-delay]="feature.delay">
+          <app-home-feature-card title="{{ feature?.title }}" description="{{ feature?.description }}"
+                                 image="{{ feature?.image }}">
+          </app-home-feature-card>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>
+<section class="section" id="secondaryFeatures">
+  <div class="container">
+    <div class="row gap-y align-items-center">
+      <div [ngClass]="columnWidth$ | async">
+        <h3 id="secondaryFeaturesHeading" style="font-weight: bold">{{ secondaryFeaturesHeading }}</h3>
+        <div *ngIf="(isMobile | async)?.matches" style="width: 100%; padding-bottom: 2em; padding-top: 2em">
+          <app-home-browser-mockup img="../../../../assets/img/feature-1.png"></app-home-browser-mockup>
+        </div>
+        <p id="secondaryFeaturesSubheading">{{ secondaryFeaturesSubheading }}</p>
+        <ul class="list-unstyled" style="line-height: 2.5em">
+          <ng-container *ngFor="let feature of secondaryFeatures">
+            <li><i class="ti-check text-success mr-2 employee-feature"></i> {{ feature }}</li>
+          </ng-container>
+        </ul>
+        <hr class="w-10 ml-0 my-7">
+        <app-login-button-group *ngIf="!(isMobile | async)?.matches" position="left"></app-login-button-group>
+      </div>
+      <div *ngIf="!(isMobile | async)?.matches" class="col-md-5 order-md-first" data-aos="fade-in"
+           data-aos-anchor="#secondaryFeatures">
+        <app-home-browser-mockup
+          img="../../../../assets/img/feature-1.png"></app-home-browser-mockup>
+      </div>
+    </div>
+  </div>
+</section>

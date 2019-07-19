@@ -1,0 +1,50 @@
+{
+  "id": "business-1",
+  "name": "Quick",
+  "navbarStyle": {
+    "background-color": "#FFFFFF",
+    "display": "flex",
+    "font-family": "'Nunito Sans', sans-serif",
+    "padding": "2em"
+  },
+  "navbarLinkStyle": {
+    "color": "rgba(31,45,61,.7)",
+    "padding": ".25rem 1rem",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "27.2px",
+    "font-family": "'Nunito Sans', sans-serif",
+    "display": "block"
+  },
+  "navbarBrandStyle": {
+    "color": "#0c66ff",
+    "display": "inline-block",
+    "margin-right": "1rem"
+  },
+  "heroHeadingStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "48px"
+  },
+  "heroSubheadingStyle": {
+    "color": "#8492a6",
+    "font-family": "'Nunito Sans', sans-serif",
+    "line-height": "34px",
+    "font-weight": "300",
+    "font-size": "20px"
+  },
+  "heroButtonStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "16px",
+    "box-shadow": "inset 0 1px 0 rgba(255,255,255,.15)",
+    "font-weight": "600",
+    "color": "#273444",
+    "background-color": "#ffbe3d",
+    "border-color": "#ffbe3d",
+    "text-transform": "none"
+  },
+  "footerStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "color": "rgb(132, 146, 166)",
+    "padding": "1em"
+  }
+}

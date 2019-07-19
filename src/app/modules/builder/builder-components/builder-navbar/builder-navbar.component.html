@@ -1,0 +1,23 @@
+<app-builder-component-toolbar *ngIf="!previewMode" [componentName]="componentName"></app-builder-component-toolbar>
+<div [ngClass]="setContextMenu()">
+  <nav (click)="setActiveEditComponent()"
+       [ngClass]="setComponentClass()"
+       [ngStyle]="navbarStyle"
+       class="navbar navbar-expand-md navbar-showcase">
+    <span [ngStyle]="navbarBrandStyle" class="navbar-brand">
+      Logo
+    </span>
+    <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler collapsed"
+            data-target="#navbarNav" data-toggle="collapse" type="button">
+      <i [ngStyle]="navbarBrandStyle" class="ti-menu"></i>
+    </button>
+    <div class="navbar-collapse collapse" id="navbarNav">
+      <ul [ngClass]="navbarLayoutClass">
+        <li *ngFor="let navbarMenuOption of navbarMenuOptions" class="nav-item">
+          <a [ngStyle]="navbarLinkStyle" class="nav-link">{{ navbarMenuOption }}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

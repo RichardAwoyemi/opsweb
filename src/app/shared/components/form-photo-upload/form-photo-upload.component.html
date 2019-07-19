@@ -1,0 +1,9 @@
+<div *ngIf="user.photoURL" style="padding-bottom: 1em; text-align: center">
+  <img alt="avatar" class="avatar avatar-xl" src="{{ user.photoURL }}">
+</div>
+<div style="text-align: center">
+  <label class="btn btn-xs btn-secondary btn-file">
+    <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="fileChangeEvent($event)" />
+    <span>Upload</span>
+  </label>
+</div>

@@ -1,0 +1,8 @@
+<app-builder-component-toolbar *ngIf="!previewMode" [componentName]="componentName"></app-builder-component-toolbar>
+<div [ngClass]="setContextMenu()">
+  <footer (click)="setActiveEditComponent()" [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
+    <div class="container text-center" style="height: auto">
+      Copyright &copy; {{ today | date: 'yyyy' }}
+    </div>
+  </footer>
+</div>
