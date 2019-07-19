@@ -1,6 +1,6 @@
 <section class="section bg-gray">
   <div class="container">
-    <swiper [config]="config" [(index)]="index">
+    <swiper>
       <div class="px-6" *ngFor="let review of reviews">
         <blockquote class="blockquote">
           <p class="lead-4 review">{{ review.review }}</p>

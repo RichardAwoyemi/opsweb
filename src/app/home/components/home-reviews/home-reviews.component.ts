@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home-reviews',
   templateUrl: './home-reviews.component.html'
 })
 export class HomeReviewsComponent {
+  index = 0;
   reviews = [{
     review: 'Brilliant service! Their talented developer who put together our new company '
       + 'website within a couple of days.',

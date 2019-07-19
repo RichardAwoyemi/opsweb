@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AuthService } from 'src/app/auth/services/auth.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -18,8 +17,7 @@ export class HomeHeaderComponent implements OnInit {
   columnWidth$: Observable<string>;
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
-    public authService: AuthService
+    private breakpointObserver: BreakpointObserver
   ) { }
 
   ngOnInit() {
@@ -33,21 +31,5 @@ export class HomeHeaderComponent implements OnInit {
     this.columnWidth$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
       map(isHandset => isHandset ? 'col-lg-6' : '')
     );
-  }
-
-  googleSignIn() {
-    this.authService.googleSignIn();
-  }
-
-  mobileGoogleSignIn() {
-    this.authService.mobileGoogleSignIn();
-  }
-
-  facebookSignIn() {
-    this.authService.facebookSignIn();
-  }
-
-  mobileFacebookSignIn() {
-    this.authService.mobileFacebookSignIn();
   }
 }

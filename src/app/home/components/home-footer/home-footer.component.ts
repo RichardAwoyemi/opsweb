@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-home-footer',
@@ -14,7 +13,6 @@ export class HomeFooterComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    public authService: AuthService
   ) { }
 
   ngOnInit() {

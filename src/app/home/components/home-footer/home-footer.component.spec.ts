@@ -1,32 +1,21 @@
-import { TestBed, async } from '@angular/core/testing';
-import { HomeFooterComponent } from './home-footer.component';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { UserService } from 'src/app/shared/services/user.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { UtilService } from 'src/app/shared/services/util.service';
-import { NGXLogger, NGXLoggerHttpService, LoggerModule } from 'ngx-logger';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ReferralService } from 'src/app/dashboard/services/referral.service';
-import { AngularFireModule } from '@angular/fire';
-import { environment } from 'src/environments/environment';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { LoggerModule, NGXLogger, NGXLoggerHttpService } from 'ngx-logger';
+import { UtilService } from 'src/app/shared/services/util.service';
+import { environment } from 'src/environments/environment';
+import { HomeFooterComponent } from './home-footer.component';
 
 describe('HomeFooterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [HomeFooterComponent],
       providers: [
-        UserService,
         UtilService,
-        ReferralService,
-        AngularFirestore,
-        AngularFireAuth,
         NGXLogger,
         NGXLoggerHttpService
       ],
       imports: [
-        AngularFireModule.initializeApp(environment.firebaseConfig),
         RouterTestingModule,
         LoggerModule.forRoot(environment.logging),
         HttpClientTestingModule
