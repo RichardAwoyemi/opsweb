@@ -11,12 +11,12 @@ import { DashboardEmptyStateComponent } from './components/dashboard-empty-state
 import { DashboardFooterComponent } from './components/dashboard-footer/dashboard-footer.component';
 import { DashboardKanbanComponent } from './components/dashboard-kanban/dashboard-kanban.component';
 import { DashboardNavbarComponent } from './components/dashboard-navbar/dashboard-navbar.component';
+import { KanbanCardComponent } from './components/kanban-card/kanban-card.component';
+import { KanbanColumnButtonComponent } from './components/kanban-column-button-group/kanban-column-button-group';
+import { KanbanColumnComponent } from './components/kanban-column/kanban-column.component';
 import { TaskCategoryOptionComponent } from './components/task-category-option/task-category-option.component';
 import { DashboardRoutingModule } from './dashboard.routing.module';
 import { DashboardComponent } from './pages/dashboard/dashboard.page';
-import { KanbanColumnButtonComponent } from './components/kanban-column-button-group/kanban-column-button-group';
-import { KanbanColumnComponent } from './components/kanban-column/kanban-column.component';
-import { KanbanCardComponent } from './components/kanban-card/kanban-card.component';
 
 @NgModule({
   declarations: [
