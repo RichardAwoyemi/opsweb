@@ -156,5 +156,4 @@ exports.createStripeCharge = functions.firestore
       return snap.ref.set(response, { merge: true });
     } catch(error) {
       console.log(error);
-  }
-});
+  }});
