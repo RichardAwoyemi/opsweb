@@ -34,8 +34,6 @@ jobs:
               echo 'export PATH=/root/.local/bin:$PATH' >> ~/.bash_profile 
               source ~/.bash_profile
               pip install awscli --upgrade --user
-            fi
-            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               ~/.local/bin/aws configure set default.s3.signature_version s3v4
             fi
             cd /root/opsonion-web/src/app/_functions/ && npm install
