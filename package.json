@@ -34,11 +34,12 @@
     "@types/jquery": "^3.3.29",
     "body-parser": "^1.19.0",
     "core-js": "^2.6.9",
+    "express": "^4.17.1",
+    "ngx-logger": "^3.3.12",
+    "ngx-swiper-wrapper": "^7.2.1",
     "rxjs": "~6.3.3",
     "rxjs-compat": "^6.5.2",
     "typescript": "~3.1.6",
-    "ngx-logger": "^3.3.12",
-    "ngx-swiper-wrapper": "^7.2.1",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
