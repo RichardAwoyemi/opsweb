@@ -117,7 +117,7 @@ exports.countAllUsers = functions.https.onRequest((req: any, res: any) => {
   return admin.auth().listUsers().then((userRecords: any) => {
     userRecords.users.forEach((user: any) => (users.push(user)));
     const count: String = `{ "count": ${users.length} }`;
-    res.set('Access-Control-Allow-Origin', "*")
+    res.set('Access-Control-Allow-Origin', "*");
     res.end(count);
     console.log('Request successful!');
   }).catch((error: any) => console.log('Request failed: ', error));

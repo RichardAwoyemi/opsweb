@@ -1,28 +1,28 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RegisterFormComponent } from './register-form.component';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, TestBed } from '@angular/core/testing';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { RouterTestingModule } from '@angular/router/testing';
+import { LoggerModule, NGXLogger, NGXLoggerHttpService } from 'ngx-logger';
+import { ReferralService } from 'src/app/dashboard/services/referral.service';
+import { environment } from 'src/environments/environment';
 import { UserService } from '../../services/user.service';
 import { UtilService } from '../../services/util.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ReferralService } from 'src/app/dashboard/services/referral.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { NGXLogger, NGXLoggerHttpService, LoggerModule } from 'ngx-logger';
-import { RouterTestingModule } from '@angular/router/testing';
-import { environment } from 'src/environments/environment';
-import { AngularFireModule } from '@angular/fire';
+import { RegisterFormComponent } from './register-form.component';
 
 describe('RegisterFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
-        FormsModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        RouterTestingModule,
-        LoggerModule.forRoot(environment.logging)
+        FormsModule,
+        LoggerModule.forRoot(environment.logging),
+        RouterTestingModule
       ],
       declarations: [
         RegisterFormComponent,
