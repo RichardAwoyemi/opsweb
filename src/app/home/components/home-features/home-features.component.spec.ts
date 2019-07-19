@@ -2,11 +2,22 @@ import { TestBed, async } from '@angular/core/testing';
 import { HomeFeaturesComponent } from './home-features.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { UtilService } from 'src/app/shared/services/util.service';
+import { NGXLogger, NGXLoggerHttpService, LoggerModule } from 'ngx-logger';
+import { environment } from 'src/environments/environment';
 
 describe('HomeFeaturesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [HomeFeaturesComponent],
+      imports: [
+        LoggerModule.forRoot(environment.logging)
+      ],
+      providers: [
+        UtilService,
+        NGXLogger,
+        NGXLoggerHttpService
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
