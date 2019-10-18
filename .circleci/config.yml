@@ -34,8 +34,6 @@ jobs:
               echo 'export PATH=/root/.local/bin:$PATH' >> ~/.bash_profile 
               source ~/.bash_profile
               pip install awscli --upgrade --user
-            fi
-            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               ~/.local/bin/aws configure set default.s3.signature_version s3v4
             fi
             cd /root/opsonion-web/src/app/_functions/ && npm install
@@ -47,12 +45,6 @@ jobs:
           name: Run Tests
           command: 
             npm run test-headless
-      - run: 
-          name: Deploy to Heroku
-          command: |
-            if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
-            fi
       - run:
           name: Deploy to AWS
           command: |
