@@ -14,33 +14,32 @@ export class HomeFeaturesComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   features = [
     {
-      'title': 'Quality',
-      'description': 'We blend research, design and technology to create enterprise grade products.',
-      'image': 'assets/img/quality.svg',
+      'title': 'Build',
+      'description': 'Create production-ready experiences without writing a single line of code.',
+      'image': 'assets/img/build.svg',
       'delay': 0
     },
     {
-      'title': 'Efficiency',
-      'description': 'We reduce developement times for quality products using automated pipelines.',
-      'image': 'assets/img/efficiency.svg',
+      'title': 'Deploy',
+      'description': 'Get your application published with a single click onto our fast hosting network.',
+      'image': 'assets/img/deploy.svg',
       'delay': 1000
     },
     {
-      'title': 'Affordability',
-      'description': 'We maintain reasonable prices by leveraging the benefits of our streamlined processes.',
-      'image': 'assets/img/affordability.svg',
+      'title': 'Scale',
+      'description': 'Quickly grow your audience without worrying about maintenance.',
+      'image': 'assets/img/scale.svg',
       'delay': 2000
     }
   ];
-  employerFeaturesHeading = 'Need something done?';
-  employerFeaturesSubheading = 'Simply post a task and we will help you build, run and scale your idea:';
-  employerFeatures = [
-    'Use our library components to speed up product creation;',
-    'Chat with us to get constant progress updates; and',
-    'Work out a payment schedule that suits you.'
+  secondaryFeaturesHeading = 'Bring your ideas to life';
+  secondaryFeaturesSubheading = 'Our platform gives you what you need, right out of the box:';
+  secondaryFeatures = [
+    'Tools made with the non-coder in mind;',
+    'Templates designed to fast-track workflow;',
+    'Data and external integrations made easy.',
   ];
-  employeeFeaturesButtonText = 'Get started';
-  employeeFeaturesImage = '../assets/img/support.svg';
+  secondaryFeaturesButtonText = 'Get Started';
 
   constructor(
     private breakpointObserver: BreakpointObserver,

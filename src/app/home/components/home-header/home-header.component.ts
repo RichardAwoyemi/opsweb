@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -9,12 +9,11 @@ import { map } from 'rxjs/operators';
 })
 export class HomeHeaderComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
-  title = 'We bring your ideas to life.';
-  subtitle = 'Opsonion helps companies and top-tier brands create first class digital products and experiences.';
-  headerImage = '/assets/img/home.svg';
+  mobileTitle = 'No designers.<br>No coders.<br>No barriers.';
+  desktopTitle = 'No designers. No coders. No barriers.';
+  subtitle = 'Opsonion is a no-code platform for creating, customising and deploying amazing web applications.';
   headerHeight$: Observable<string>;
   rowAlignment$: Observable<string>;
-  columnWidth$: Observable<string>;
 
   constructor(
     private breakpointObserver: BreakpointObserver
@@ -23,13 +22,10 @@ export class HomeHeaderComponent implements OnInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.headerHeight$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
-      map(isHandset => isHandset ? 'header h-fullscreen' : 'header')
+      map(isHandset => isHandset ? 'header' : 'header h-fullscreen')
     );
     this.rowAlignment$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
-      map(isHandset => isHandset ? 'row align-items-center h-100' : 'row')
-    );
-    this.columnWidth$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
-      map(isHandset => isHandset ? 'col-lg-6' : '')
+      map(isHandset => isHandset ? 'row align-items-center h-100' : 'row align-items-center h-100')
     );
   }
 }
