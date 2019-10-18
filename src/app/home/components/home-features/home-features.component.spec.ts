@@ -1,9 +1,9 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { HomeFeaturesComponent } from './home-features.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { UtilService } from 'src/app/shared/services/util.service';
-import { NGXLogger, NGXLoggerHttpService, LoggerModule } from 'ngx-logger';
+import { LoggerModule, NGXLogger, NGXLoggerHttpService } from 'ngx-logger';
 import { environment } from 'src/environments/environment';
 
 describe('HomeFeaturesComponent', () => {
@@ -71,8 +71,8 @@ describe('HomeFeaturesComponent', () => {
       app.employerFeaturesHeading = 'Test employer features heading';
       app.employerFeaturesSubheading = 'Test employer features subheading';
       fixture.detectChanges();
-      expect(document.getElementById('employerFeaturesHeading').innerText).toBe(app.employerFeaturesHeading);
-      expect(document.getElementById('employerFeaturesSubheading').innerText).toBe(app.employerFeaturesSubheading);
+      expect(document.getElementById('secondaryFeaturesHeading').innerText).toBe(app.employerFeaturesHeading);
+      expect(document.getElementById('secondaryFeaturesSubheading').innerText).toBe(app.employerFeaturesSubheading);
     }));
   });
 });
