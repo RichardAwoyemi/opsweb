@@ -27,7 +27,7 @@ export class HomeFeaturesComponent implements OnInit {
     },
     {
       'title': 'Scale',
-      'description': 'Quickly iterate to meet demand without worrying about maintenance.',
+      'description': 'Quickly grow your audience without worrying about maintenance.',
       'image': 'assets/img/scale.svg',
       'delay': 2000
     }
