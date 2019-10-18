@@ -1,9 +1,0 @@
-[
-  {
-    "id": "web-leaderboard",
-    "name": "Leaderboard",
-    "description": "Show leaderboard for all the users on the application.",
-    "price_gbp": 225,
-    "time_weeks": 0.25
-  }
-]

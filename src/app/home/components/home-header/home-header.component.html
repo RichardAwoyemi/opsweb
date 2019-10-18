@@ -1,18 +1,26 @@
-<header id="home" [ngClass]="headerHeight$ | async">
-  <div class="container">
+<header [ngClass]="headerHeight$ | async">
+  <div class="container text-center">
     <div [ngClass]="rowAlignment$ | async">
-      <div [ngClass]="columnWidth$ | async">
-        <div class="col-md-12" style="padding-bottom: 2em;" *ngIf="(isMobile | async)?.matches"> 
-          <img src="{{ headerImage }}">
+      <div class="col-md-12 mx-auto">
+        <h1 *ngIf="(isMobile | async)?.matches" [innerHTML]="mobileTitle" class="fw-600 text-center"></h1>
+        <h1 *ngIf="!(isMobile | async)?.matches" [innerHTML]="desktopTitle" class="fw-600 text-center"></h1>
+        <div *ngIf="(isMobile | async)?.matches" style="padding-top: 3em; padding-bottom: 3em">
+          <app-home-browser-mockup img="../../../../assets/img/feature-2.png"></app-home-browser-mockup>
         </div>
-        <h1 class="fw-600">{{ title }}</h1>
-        <p class="lead mt-5">{{ subtitle }}</p>
-        <hr class="w-10 ml-0 my-7">
-        <app-register-interest-button position="left"></app-register-interest-button>
-      </div>
-      <div class="col-lg-6 ml-auto text-center" aos-init aos-animate data-aos="fade-up" *ngIf="!(isMobile | async)?.matches">
-        <img src="{{ headerImage }}" style="width: 75%">
+        <p class="lead mt-5 mb-8">{{ subtitle }}</p>
+        <p class="gap-xy">
+          <app-register-interest-button position="center"></app-register-interest-button>
+        </p>
       </div>
     </div>
   </div>
 </header>
+<section *ngIf="!(isMobile | async)?.matches" class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <app-home-browser-mockup img="../../../../assets/img/feature-2.png"></app-home-browser-mockup>
+      </div>
+    </div>
+  </div>
+</section>
