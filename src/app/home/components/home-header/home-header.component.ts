@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 })
 export class HomeHeaderComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
-  mobileTitle = 'No designers.<br>No coders.<br>No barriers.';
-  desktopTitle = 'No designers. No coders. No barriers.';
+  mobileTitle = 'No coders.<br>No designers.<br>No barriers.';
+  desktopTitle = 'No coders. No designers. No barriers.';
   subtitle = 'Opsonion is a no-code platform for creating, customising and deploying amazing web applications.';
   headerHeight$: Observable<string>;
   rowAlignment$: Observable<string>;
