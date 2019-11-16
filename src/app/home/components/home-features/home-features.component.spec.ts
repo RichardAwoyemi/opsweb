@@ -67,12 +67,12 @@ describe('HomeFeaturesComponent', () => {
       expect(featureCards[2].nativeElement.innerHTML).toContain(app.features[2].title);
     }));
 
-    it('should display employee features heading', async(() => {
-      app.employerFeaturesHeading = 'Test employer features heading';
-      app.employerFeaturesSubheading = 'Test employer features subheading';
+    it('should display secondary features heading', async(() => {
+      app.secondaryFeaturesSubheading = 'Test secondary features heading';
+      app.secondaryFeaturesSubheading = 'Test secondary features subheading';
       fixture.detectChanges();
-      expect(document.getElementById('secondaryFeaturesHeading').innerText).toBe(app.employerFeaturesHeading);
-      expect(document.getElementById('secondaryFeaturesSubheading').innerText).toBe(app.employerFeaturesSubheading);
+      expect(document.getElementById('secondaryFeaturesHeading').innerText).toBe(app.secondaryFeaturesHeading);
+      expect(document.getElementById('secondaryFeaturesSubheading').innerText).toBe(app.secondaryFeaturesSubheading);
     }));
   });
 });
