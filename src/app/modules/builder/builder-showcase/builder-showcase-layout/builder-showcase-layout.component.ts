@@ -6,6 +6,8 @@ import { SimpleModalService } from '../../../../shared/components/simple-modal/s
 import { SessionStorageService } from '../../../../shared/services/session-storage.service';
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { BuilderService } from '../../builder.service';
+import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-builder-showcase-layout',
@@ -20,13 +22,16 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
     `${ ActiveComponentsFullSelector.Footer }`,
     `${ ActiveComponentsFullSelector.Placeholder }`,
   ];
-  private componentSubscription: Subscription;
   options: SortablejsOptions;
   reload: boolean = true;
+  activeEditComponent: string;
+  private activeEditComponentSubscription: Subscription;
+  private componentSubscription: Subscription;
 
   constructor(
     private builderComponentService: BuilderComponentService,
-    private modalService: SimpleModalService,
+    private simpleModalService: SimpleModalService,
+    private modalService: NgbModal,
     private builderService: BuilderService,
     private sessionStorageService: SessionStorageService
   ) {
@@ -57,6 +62,12 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
         this.sessionStorageService.setItem('components', JSON.stringify(response));
       }
     }));
+
+    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
+      if (response) {
+        this.activeEditComponent = response;
+      }
+    });
   }
 
   builderComponentSelected(componentIndex) {
@@ -74,8 +85,12 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
         setTimeout(() => this.reload = true);
       }
       if (e.data.action == 'component-exists') {
-        this.modalService.displayMessage('Oops!', 'This component cannot be added twice to a single page.');
+        this.simpleModalService.displayMessage('Oops!', 'This component cannot be added twice to a single page.');
       }
+      if (e.data.action == 'delete-component') {
+        this.modalService.open(BuilderDeleteComponentModalComponent, { windowClass: 'modal-holder', centered: true });
+      }
+      this.builderService.processIncomingMessages(e, this.activeEditComponent);
     }
   }
 }

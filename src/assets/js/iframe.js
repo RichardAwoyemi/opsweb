@@ -20,8 +20,7 @@ function setupNavbarContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
+        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
       },
       items: navbarItems
     });
@@ -33,8 +32,7 @@ function setupNavbarContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
+        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
       },
       items: navbarItems
     });

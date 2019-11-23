@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ActiveOrientations } from './builder';
+import { ActiveComponents, ActiveOrientations } from './builder';
 
 @Injectable()
 export class BuilderService {
@@ -148,11 +148,29 @@ export class BuilderService {
     }
   }
 
-  static setContextMenu(previewMode: boolean, componentName: string) {
-    if (!previewMode) {
+  static setContextMenu(previewMode: boolean, activeEditComponent: string, componentName: string) {
+    if (!previewMode && activeEditComponent == componentName) {
       return `${ componentName }-edit-component no-select`;
     } else {
       return 'no-select';
+    }
+  }
+
+  processIncomingMessages(e: any, activeEditComponent: string) {
+    if (activeEditComponent == ActiveComponents.Navbar) {
+      this.processIncomingNavbarMessages(e);
+    }
+  }
+
+  processIncomingNavbarMessages(e: any) {
+    if (e.data.action == 'edit-logo' || e.data.action == 'manage-menu') {
+      this.setSidebarOptionsSetting();
+    }
+    if (e.data.action == 'set-design') {
+      this.setSidebarColoursSetting();
+    }
+    if (e.data.action == 'set-layout') {
+      this.setSidebarLayoutSetting();
     }
   }
 }

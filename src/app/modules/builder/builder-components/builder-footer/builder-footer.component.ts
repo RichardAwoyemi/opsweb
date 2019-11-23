@@ -60,6 +60,6 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   }
 
   setContextMenu() {
-    return BuilderService.setContextMenu(this.previewMode, this.componentName);
+    return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
   }
 }

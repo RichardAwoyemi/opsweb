@@ -89,7 +89,7 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   }
 
   setContextMenu() {
-    return BuilderService.setContextMenu(this.previewMode, this.componentName);
+    return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
   }
 
   @HostListener('window:resize', ['$event'])
