@@ -12,6 +12,8 @@ import { TemplateService } from '../../shared/services/template.service';
 import { BuilderActionsModule } from './builder-actions/builder-actions.module';
 import { BuilderShowcaseModule } from './builder-showcase/builder-showcase.module';
 import { BuilderSidebarModule } from './builder-sidebar/builder-sidebar.module';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: '', component: BuilderComponent }
@@ -30,6 +32,8 @@ const routes: Routes = [
     BuilderSidebarModule,
     BuilderShowcaseModule,
     BuilderActionsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     NgbModule
   ],
   providers: [

@@ -20,6 +20,7 @@ import { RouterModule } from '@angular/router';
 import { BuilderFeaturesComponent } from '../builder-components/builder-features/builder-features.component';
 import { SortablejsModule } from 'ngx-sortablejs';
 import { BuilderDynamicHtmlComponent } from '../builder-components/builder-dynamic-html/builder-dynamic-html.component';
+import { SimpleModalModule } from '../../../shared/components/simple-modal/simple-modal.module';
 
 @NgModule({
   declarations: [
@@ -27,13 +28,13 @@ import { BuilderDynamicHtmlComponent } from '../builder-components/builder-dynam
     BuilderShowcaseComponent,
     BuilderShowcaseToolbarComponent,
     BuilderToolbarComponent,
-    SimpleModalComponent
   ],
   imports: [
     CommonModule,
     BuilderComponentModule,
     NgbPopoverModule,
     BuilderComponentModule,
+    SimpleModalModule,
     SortablejsModule.forRoot({ animation: 500 }),
     BuilderDynamicHtmlModule.forRoot({
       components: [

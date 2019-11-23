@@ -2,13 +2,14 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
   // tslint:disable-next-line: directive-selector
-  selector: '[blockSpecialCharacter]'
+  selector: '[pageNameSpecialCharacterDirective]'
 })
-export class BlockSpecialCharacterDirective {
-  regexStr = '^[a-zA-Z0-9_]*$';
+export class PageNameSpecialCharacterDirective {
+  regexStr = '^[a-zA-Z_ ]*$';
   @Input() isAlphaNumeric: boolean;
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef) {
+  }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);

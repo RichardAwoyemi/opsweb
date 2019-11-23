@@ -5,6 +5,9 @@ import { BuilderNewPageModalComponent } from './builder-new-page-modal/builder-n
 import { BuilderComponentToolbarComponent } from './builder-component-toolbar/builder-component-toolbar.component';
 import { BuilderDeleteComponentModalComponent } from './builder-delete-component-modal/builder-delete-component-modal.component';
 import { BuilderChangeTemplateModalComponent } from './builder-change-template-modal/builder-change-template-modal.component';
+import { FormsModule } from '@angular/forms';
+import { SimpleModalModule } from '../../../shared/components/simple-modal/simple-modal.module';
+import { PageNameSpecialCharacterDirective } from '../../../shared/directives/page-name-special-character.directive';
 
 @NgModule({
   declarations: [
@@ -13,9 +16,12 @@ import { BuilderChangeTemplateModalComponent } from './builder-change-template-m
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
+    PageNameSpecialCharacterDirective
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    SimpleModalModule
   ],
   exports: [
     BuilderDeletePageModalComponent,
