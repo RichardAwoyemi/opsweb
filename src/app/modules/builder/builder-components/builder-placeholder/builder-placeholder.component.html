@@ -1,4 +1,4 @@
-<div (click)="setActiveEditComponent()" *ngIf="!previewMode">
+<div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" *ngIf="!previewMode">
   <div class="component-border-placeholder no-select">
     <div (dragexit)="onDragExit($event)" (dragleave)="onDragLeave($event)" (dragover)="onDragOver($event);"
          (drop)="onDropEvent($event)" [attr.id]="componentId" class="drop-box">

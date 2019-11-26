@@ -1,6 +1,6 @@
 <app-builder-component-toolbar *ngIf="!previewMode" [componentName]="componentName"></app-builder-component-toolbar>
 <div [ngClass]="setContextMenu()">
-  <div (click)="setActiveEditComponent()" [ngClass]="setComponentClass()">
+  <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
     <div class="row" style="padding: 1em">
       <div class="col-md-4">
         <h5>Responsive</h5>

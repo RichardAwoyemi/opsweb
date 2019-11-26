@@ -1,6 +1,7 @@
 <app-builder-component-toolbar *ngIf="!previewMode" [componentName]="componentName"></app-builder-component-toolbar>
 <div [ngClass]="setContextMenu()">
   <nav (click)="setActiveEditComponent()"
+       (dblclick)="clearActiveEditComponent()"
        [ngClass]="setComponentClass()"
        [ngStyle]="navbarStyle"
        class="navbar navbar-expand-md navbar-showcase">

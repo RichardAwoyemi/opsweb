@@ -47,4 +47,9 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
   setContextMenu() {
     return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
   }
+
+  clearActiveEditComponent() {
+    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.setSidebarComponentsSetting();
+  }
 }

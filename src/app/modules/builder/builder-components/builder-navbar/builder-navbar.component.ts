@@ -96,4 +96,9 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   onResize() {
     this.innerHeight = window.innerHeight;
   }
+
+  clearActiveEditComponent() {
+    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.setSidebarComponentsSetting();
+  }
 }

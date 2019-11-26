@@ -53,4 +53,9 @@ export class BuilderPlaceholderComponent implements OnInit {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();
   }
+
+  clearActiveEditComponent() {
+    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.setSidebarComponentsSetting();
+  }
 }
