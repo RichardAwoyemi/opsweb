@@ -20,6 +20,7 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   activeEditComponent: string;
   previewMode: boolean = false;
   componentName: string = ActiveComponents.Hero;
+
   private activeEditTaskComponentSubscription: Subscription;
   private heroButtonStyleSubscription: Subscription;
   private heroHeadingStyleSubscription: Subscription;
@@ -73,8 +74,12 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   }
 
   setActiveEditComponent() {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero);
-    this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    if (this.activeEditComponent == ActiveComponents.Hero) {
+      this.clearActiveEditComponent();
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Hero);
+      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    }
   }
 
   setComponentClass() {

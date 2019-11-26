@@ -36,8 +36,12 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
   }
 
   setActiveEditComponent() {
-    this.builderService.setActiveEditComponent(ActiveComponents.Features);
-    this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    if (this.activeEditComponent == ActiveComponents.Features) {
+      this.clearActiveEditComponent();
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Features);
+      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    }
   }
 
   setComponentClass() {

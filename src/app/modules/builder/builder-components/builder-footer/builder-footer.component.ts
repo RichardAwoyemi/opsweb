@@ -51,8 +51,12 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   }
 
   setActiveEditComponent() {
-    this.builderService.setActiveEditComponent(ActiveComponents.Footer);
-    this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    if (this.activeEditComponent == ActiveComponents.Footer) {
+      this.clearActiveEditComponent();
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Footer);
+      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    }
   }
 
   setComponentClass() {

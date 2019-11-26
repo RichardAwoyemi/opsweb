@@ -80,8 +80,12 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   }
 
   setActiveEditComponent() {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
-    this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    if (this.activeEditComponent == ActiveComponents.Navbar) {
+      this.clearActiveEditComponent();
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    }
   }
 
   setComponentClass() {
