@@ -1,5 +1,6 @@
 <app-builder-toolbar></app-builder-toolbar>
-<div [ngStyle]="{ 'height': innerHeight - showcaseHeight + 'px' }" class="showcase-backdrop">
+<div (click)="clearActiveEditComponent()" [ngStyle]="{ 'height': innerHeight - showcaseHeight + 'px' }"
+     class="showcase-backdrop">
   <div style="width: 100%">
     <app-builder-showcase-toolbar></app-builder-showcase-toolbar>
   </div>

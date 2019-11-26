@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { BuilderService } from '../builder.service';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
 import { BuilderShowcaseService } from './builder-showcase.service';
+import { ActiveComponents } from '../builder';
 
 @Component({
   selector: 'app-builder-showcase',
@@ -72,5 +73,11 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
+  }
+
+  clearActiveEditComponent() {
+    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.setSidebarComponentsSetting();
+
   }
 }
