@@ -6,6 +6,7 @@ import { BuilderNavbarService } from '../../builder-components/builder-navbar/bu
 import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
+import { ActiveComponents, ActiveElements } from '../../builder';
 
 @Component({
   selector: 'app-builder-showcase-toolbar',
@@ -83,6 +84,9 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   }
 
   togglePreview() {
+    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.activeElement.next(ActiveElements.Default);
+    this.builderService.setSidebarComponentsSetting();
     this.builderService.previewMode.next(!this.previewMode);
   }
 }

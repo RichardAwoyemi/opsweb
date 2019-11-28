@@ -8,6 +8,10 @@ export enum ActiveSettings {
   Data = 'data'
 }
 
+export enum ActiveElements {
+  Default = 'none'
+}
+
 export enum ActiveComponents {
   Navbar = 'navbar',
   Hero = 'hero',

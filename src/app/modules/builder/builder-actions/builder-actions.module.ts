@@ -7,7 +7,7 @@ import { BuilderDeleteComponentModalComponent } from './builder-delete-component
 import { BuilderChangeTemplateModalComponent } from './builder-change-template-modal/builder-change-template-modal.component';
 import { FormsModule } from '@angular/forms';
 import { SimpleModalModule } from '../../../shared/components/simple-modal/simple-modal.module';
-import { PageNameSpecialCharacterDirective } from '../../../shared/directives/page-name-special-character.directive';
+import { BlockNonAlphabetCharactersDirective } from '../../../shared/directives/block-non-alphabet-characters.directive';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { PageNameSpecialCharacterDirective } from '../../../shared/directives/pa
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
-    PageNameSpecialCharacterDirective
+    BlockNonAlphabetCharactersDirective
   ],
   imports: [
     CommonModule,

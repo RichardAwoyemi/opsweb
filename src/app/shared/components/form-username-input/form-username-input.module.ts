@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { FormUsernameInputComponent } from './form-username-input.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BlockAllSpecialCharacterDirective } from '../../directives/block-all-special-character.directive';
+import { BlockNonAlphanumericCharactersDirective } from '../../directives/block-non-alphanumeric-characters.directive';
 import { FormUsernameInputService } from './form-username-input.service';
 import { SimpleModalModule } from '../simple-modal/simple-modal.module';
 
 @NgModule({
   exports: [
     FormUsernameInputComponent,
-    BlockAllSpecialCharacterDirective
+    BlockNonAlphanumericCharactersDirective
   ],
   imports: [
     FormsModule,
@@ -18,7 +18,7 @@ import { SimpleModalModule } from '../simple-modal/simple-modal.module';
   ],
   declarations: [
     FormUsernameInputComponent,
-    BlockAllSpecialCharacterDirective
+    BlockNonAlphanumericCharactersDirective
   ],
   providers: [
     FormUsernameInputService

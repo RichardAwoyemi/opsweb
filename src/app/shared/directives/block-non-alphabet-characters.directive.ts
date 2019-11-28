@@ -2,9 +2,9 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
   // tslint:disable-next-line: directive-selector
-  selector: '[pageNameSpecialCharacterDirective]'
+  selector: '[blockNonAlphabetCharacters]'
 })
-export class PageNameSpecialCharacterDirective {
+export class BlockNonAlphabetCharactersDirective {
   regexStr = '^[a-zA-Z_ ]*$';
   @Input() isAlphaNumeric: boolean;
 

@@ -145,6 +145,18 @@ h1, h1, h2, h3, h4, h5, h6 {
   margin-right: 0;
 }
 
+.nav-item {
+  margin: 0.25em;
+}
+
+.nav-link-preview, .nav-link-active {
+  border: 1px solid transparent;
+}
+
+.nav-link-active:hover, .nav-link-edit {
+  border: 1px solid #00d9e1;
+}
+
 /* Jumbotron */
 
 .jumbotron {

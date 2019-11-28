@@ -1,7 +1,10 @@
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65)">Logo</label>
 </div>
-<button (click)="uploadLogo()" class="btn btn-xl btn-block btn-secondary" type="button">Upload an Image</button>
+<label class="btn btn-xl btn-block btn-secondary">
+  <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
+  <span>Upload</span>
+</label>
 <br>
 <div class="form-group" style="padding-top: 1px">
   <label style="color: rgba(255, 255, 255, 0.65)">Menu</label>

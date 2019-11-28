@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderHeroService } from './builder-hero.service';
-import { ActiveComponents, ActiveSettings } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
 
 @Component({
@@ -74,6 +74,7 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   }
 
   setActiveEditComponent() {
+    this.builderService.activeElement.next(ActiveElements.Default);
     if (this.activeEditComponent == ActiveComponents.Hero) {
       this.clearActiveEditComponent();
     } else {

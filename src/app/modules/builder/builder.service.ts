@@ -7,6 +7,7 @@ export class BuilderService {
   activeEditComponent = new BehaviorSubject<string>(null);
   activeEditSetting = new BehaviorSubject<string>(null);
   activePageSetting = new BehaviorSubject<string>('Home');
+  activeElement = new BehaviorSubject<string>(null);
   activeOrientation = new BehaviorSubject<string>(ActiveOrientations.Desktop);
 
   SIDEBAR_INACTIVE_TAB: string = 'tab-pane fade tab-padding';
@@ -160,6 +161,11 @@ export class BuilderService {
     if (activeEditComponent == ActiveComponents.Navbar) {
       this.processIncomingNavbarMessages(e);
     }
+  }
+
+  static removeLineBreaks(e: any) {
+    let element = e.target;
+    element.innerText = element.innerText.replace(/\n/g, '').trim();
   }
 
   processIncomingNavbarMessages(e: any) {

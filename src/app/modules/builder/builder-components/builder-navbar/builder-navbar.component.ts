@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderNavbarService } from './builder-navbar.service';
-import { ActiveComponents, ActiveSettings } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
 
 @Component({
@@ -19,8 +19,9 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   navbarLayoutClass: any = 'navbar-nav ml-auto';
   activeEditComponent: string;
   componentName: string = ActiveComponents.Navbar;
+  activeElement: string;
   previewMode: boolean = false;
-
+  navbarInputStyle: any;
   private activeEditComponentSubscription: Subscription;
   private navbarStyleSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
@@ -28,6 +29,7 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   private navbarLayoutClassSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private previewModeSubscription: Subscription;
+  private activeElementSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -77,9 +79,16 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
         this.navbarMenuOptions = response;
       }
     });
+
+    this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
+      if (response) {
+        this.activeElement = response;
+      }
+    });
   }
 
   setActiveEditComponent() {
+    this.builderService.activeElement.next(ActiveElements.Default);
     if (this.activeEditComponent == ActiveComponents.Navbar) {
       this.clearActiveEditComponent();
     } else {
@@ -96,6 +105,15 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
   }
 
+  setNavbarLinkClass() {
+    if (this.previewMode) {
+      return 'nav-link nav-link-preview';
+    }
+    if (!this.previewMode) {
+      return 'nav-link nav-link-active';
+    }
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
@@ -104,5 +122,37 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   clearActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();
+  }
+
+  selectNavbarLink(event: any, elementId: string) {
+    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+    this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    this.builderService.activeElement.next(elementId);
+    event.stopPropagation();
+  }
+
+  removeLineBreaks(event: any) {
+    BuilderService.removeLineBreaks(event);
+  }
+
+  setActiveElementStyle(activeElement, element) {
+    if (activeElement == element && !this.previewMode) {
+      return 'nav-link-edit';
+    }
+  }
+
+  setContentEditable() {
+    return !this.previewMode;
+  }
+
+  saveNavbarMenuOption(menuOptionIndex: number, newMenuOptionName: string) {
+    for (let i = 0; i < this.navbarMenuOptions.length; i++) {
+      if (menuOptionIndex === i) {
+        this.navbarMenuOptions[i] = newMenuOptionName;
+      }
+    }
+    this.builderService.activeElement.next(ActiveElements.Default);
+    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
+    this.clearActiveEditComponent();
   }
 }
