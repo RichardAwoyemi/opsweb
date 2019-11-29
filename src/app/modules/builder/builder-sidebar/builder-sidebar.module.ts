@@ -12,6 +12,8 @@ import { FilterPipe } from '../../../shared/pipes/filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { BuilderSidebarPagesComponent } from './builder-sidebar-pages/builder-sidebar-pages.component';
 import { BuilderSidebarDataComponent } from './builder-sidebar-data/builder-sidebar-data.component';
+import { SortablejsModule } from 'ngx-sortablejs';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { BuilderSidebarDataComponent } from './builder-sidebar-data/builder-side
     BuilderSidebarOptionsModule,
     BuilderSidebarLayoutModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    SortablejsModule,
+    NgbDropdownModule
   ],
   exports: [
     BuilderSidebarComponent

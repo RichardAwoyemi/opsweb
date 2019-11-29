@@ -1,15 +1,15 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title">Delete page</h5>
+    <h5 class="modal-title">{{ activePage }}</h5>
     <button (click)="onCloseButtonClick()" class="close" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    Are you sure you want to delete the {{ activePage }} page?
+    Are you sure you want to delete this page?
   </div>
   <div class="modal-footer">
-    <button class="btn btn-secondary" type="button">Yes</button>&nbsp;
+    <button (click)="onConfirmButtonClick()" class="btn btn-secondary" type="button">Yes</button>&nbsp;
     <button (click)="onCloseButtonClick()" class="btn btn-secondary" type="button">No</button>
   </div>
 </div>

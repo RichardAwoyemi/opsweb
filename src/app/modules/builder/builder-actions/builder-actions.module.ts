@@ -8,6 +8,8 @@ import { BuilderChangeTemplateModalComponent } from './builder-change-template-m
 import { FormsModule } from '@angular/forms';
 import { SimpleModalModule } from '../../../shared/components/simple-modal/simple-modal.module';
 import { BlockNonAlphabetCharactersDirective } from '../../../shared/directives/block-non-alphabet-characters.directive';
+import { BuilderRenamePageModalComponent } from './builder-rename-page-modal/builder-rename-page-modal.component';
+import { BuilderActionsService } from './builder-actions.service';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,7 @@ import { BlockNonAlphabetCharactersDirective } from '../../../shared/directives/
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
+    BuilderRenamePageModalComponent,
     BlockNonAlphabetCharactersDirective
   ],
   imports: [
@@ -30,12 +33,15 @@ import { BlockNonAlphabetCharactersDirective } from '../../../shared/directives/
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent
   ],
-  providers: [],
+  providers: [
+    BuilderActionsService
+  ],
   entryComponents: [
     BuilderDeletePageModalComponent,
     BuilderNewPageModalComponent,
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
+    BuilderRenamePageModalComponent,
     BuilderComponentToolbarComponent
   ]
 })

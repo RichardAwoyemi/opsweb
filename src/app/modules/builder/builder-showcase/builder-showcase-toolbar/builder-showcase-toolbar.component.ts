@@ -19,8 +19,10 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   previewButtonIcon: string = 'btn-icon';
   navbarMenuOptions = Array<String>();
   previewMode: boolean;
+  activePageIndex: number;
   private navbarMenuOptionsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
+  private activePageIndexSubscription: Subscription;
 
   activeToolbarOrientation: string;
   private activeOrientationSubscription: Subscription;
@@ -58,6 +60,12 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
       }
     }));
 
+    this.activePageIndexSubscription = this.builderService.activePageIndex.subscribe((response => {
+      if (response) {
+        this.activePageIndex = response;
+      }
+    }));
+
     this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe((response => {
       if (response) {
         this.navbarMenuOptions = response.filter(e => e !== this.activePage);
@@ -69,6 +77,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
     if (this.activePage !== 'Home') {
       const modal = this.modalService.open(BuilderDeletePageModalComponent, { windowClass: 'modal-holder', centered: true });
       modal.componentInstance.activePage = this.activePage;
+      modal.componentInstance.activePageIndex = this.activePageIndex;
     } else {
       this.simpleModalService.displayMessage('Oops!', `You cannot delete the ${ this.activePage } page.`);
     }

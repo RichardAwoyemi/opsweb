@@ -1,23 +1,4 @@
-.row:hover {
-  background-color: #21282F;
-  cursor: pointer;
-}
-
-.row-color {
-  color: #CECFD1;
-}
-
-.row-options {
-  margin-left: -0.5em;
-  margin-right: -0.5em;
-}
-
-.btn-options {
-  background-color: #383E44;
-  color: #CECFD1;
-}
-
-.btn-add {
-  border: 2px dashed hsla(0, 0%, 100%, .4);
-  background-color: unset;
+.btn-file input[type="file"] {
+  position: absolute;
+  top: -1000px;
 }

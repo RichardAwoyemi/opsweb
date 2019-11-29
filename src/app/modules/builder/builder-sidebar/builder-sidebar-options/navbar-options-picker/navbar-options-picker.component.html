@@ -1,40 +1,26 @@
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65)">Logo</label>
 </div>
-<label class="btn btn-xl btn-block btn-secondary">
+<label class="btn btn-xl btn-block btn-secondary btn-file">
   <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
-  <span>Upload</span>
+  <span>Upload Image</span>
 </label>
 <br>
 <div class="form-group" style="padding-top: 1px">
   <label style="color: rgba(255, 255, 255, 0.65)">Menu</label>
 </div>
 <div [sortablejsOptions]="options" [sortablejs]="navbarMenuOptions">
-<div *ngFor="let navbarMenuOption of navbarMenuOptions"
-     class="row row-options justify-content-center align-items-center">
-  <div class="col-md-3" style="padding: 0.5em">
-    <button class="btn btn-square btn-options btn-block btn-xl" type="button">
-      <i class="ti-file"></i>
-    </button>
-  </div>
-  <div class="col-md-9 row-color h-100 d-table">
-    <div class="align-items-center d-table-cell align-middle">
-      {{ navbarMenuOption }}
+  <div *ngFor="let navbarMenuOption of navbarMenuOptions"
+       class="row page-row-color page-row-option justify-content-center align-items-center">
+    <div class="col-md-3" style="padding: 0.5em">
+      <button class="btn btn-square btn-options btn-block btn-xl btn-drag-menu" type="button">
+        <i class="ti-menu"></i>
+      </button>
+    </div>
+    <div class="col-md-9 row-color h-100 d-table">
+      <div class="align-items-center d-table-cell align-middle">
+        {{ navbarMenuOption }}
+      </div>
     </div>
   </div>
 </div>
-</div>
-<div (click)="openNewPageModal()" class="row row-options justify-content-center align-items-center">
-  <div class="col-md-3" style="padding: 0.5em">
-    <button class="btn btn-square btn-add btn-block btn-xl" type="button">
-      <i class="ti-plus" style="color: #CECFD1"></i>
-    </button>
-  </div>
-  <div class="col-md-9 row-color h-100 d-table">
-    <div class="align-items-center d-table-cell align-middle">
-      Create Page
-    </div>
-  </div>
-</div>
-
-

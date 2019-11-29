@@ -1,18 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
+import { BuilderActionsService } from '../builder-actions.service';
 import { Subscription } from 'rxjs';
+import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
-import { BuilderActionsService } from '../builder-actions.service';
 
 @Component({
-  selector: 'app-builder-delete-page-modal',
-  templateUrl: './builder-new-page-modal.component.html'
+  selector: 'app-builder-rename-page-modal',
+  templateUrl: './builder-rename-page-modal.component.html'
 })
-export class BuilderNewPageModalComponent implements IModalComponent, OnInit {
-  @Input() activePage;
+export class BuilderRenamePageModalComponent implements IModalComponent {
+  @Input() activePage: string;
+  @Input() activePageIndex: number;
   pageName: string;
   displayError: boolean = false;
   disableSaveButton: boolean = false;
@@ -20,10 +21,9 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit {
   private navbarMenuOptionsSubscription: Subscription;
 
   constructor(
-    private builderNavbarService: BuilderNavbarService,
-    private builderActionsService: BuilderActionsService,
+    private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private activeModal: NgbActiveModal
+    private builderNavbarService: BuilderNavbarService
   ) {
   }
 
@@ -41,15 +41,21 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit {
     this.activeModal.dismiss();
   }
 
-  onConfirmButtonClick(): void {
+  onConfirmButtonClick() {
     this.activeModal.dismiss();
-    this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
+    for (let i = 0; i < this.navbarMenuOptions.length; i++) {
+      if (i === this.activePageIndex) {
+        this.navbarMenuOptions[i] = UtilService.toTitleCase(this.pageName);
+      }
+    }
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-    this.toastrService.success('Your new page has been created.', 'Great!');
+    this.toastrService.success('Your page has been renamed.', 'Great!');
   }
 
   validatePageName() {
-    this.displayError = BuilderActionsService.togglePageModalErrorMessage(this.pageName, this.navbarMenuOptions);
+    if (this.pageName.toLowerCase().trim() !== this.activePage.toLowerCase().trim()) {
+      this.displayError = BuilderActionsService.togglePageModalErrorMessage(this.pageName, this.navbarMenuOptions);
+    }
     this.disableSaveButton = BuilderActionsService.togglePageModalSaveButton(this.pageName, this.navbarMenuOptions);
   }
 }

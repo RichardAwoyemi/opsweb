@@ -7,7 +7,6 @@ import { BuilderHeaderComponent } from './builder-header/builder-header.componen
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../shared/services/data.service';
 import { BuilderComponentModule } from './builder-components/builder-component.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TemplateService } from '../../shared/services/template.service';
 import { BuilderActionsModule } from './builder-actions/builder-actions.module';
 import { BuilderShowcaseModule } from './builder-showcase/builder-showcase.module';
@@ -34,7 +33,6 @@ const routes: Routes = [
     BuilderActionsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgbModule
   ],
   providers: [
     BuilderService,

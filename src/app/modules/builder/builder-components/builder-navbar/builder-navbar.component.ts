@@ -126,7 +126,7 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
 
   selectNavbarLink(event: any, elementId: string) {
     this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
-    this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     event.stopPropagation();
   }
@@ -153,6 +153,5 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     }
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-    this.clearActiveEditComponent();
   }
 }

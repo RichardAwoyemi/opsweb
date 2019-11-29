@@ -147,3 +147,25 @@ iframe {
   -ms-user-select: none;
   user-select: none;
 }
+
+/* Pages */
+
+.page-row-color {
+  color: #CECFD1;
+  background-color: #21282F;
+}
+
+.page-row-option {
+  margin-left: -0.5em;
+  margin-right: -0.5em;
+  margin-bottom: 0.5em
+}
+
+.page-row-option:hover, .btn-drag-menu:hover {
+  cursor: move !important;
+}
+
+.btn-options {
+  background-color: #383E44;
+  color: #CECFD1;
+}

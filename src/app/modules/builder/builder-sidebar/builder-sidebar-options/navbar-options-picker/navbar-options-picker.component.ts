@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderNewPageModalComponent } from '../../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { SimpleModalService } from '../../../../../shared/components/simple-modal/simple-modal.service';
@@ -41,10 +40,6 @@ export class NavbarOptionsPickerComponent implements OnInit {
         this.navbarMenuOptions = response;
       }
     });
-  }
-
-  openNewPageModal() {
-    this.modalService.open(BuilderNewPageModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 
   fileChangeEvent(event: any): void {

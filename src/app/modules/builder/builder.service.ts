@@ -7,6 +7,7 @@ export class BuilderService {
   activeEditComponent = new BehaviorSubject<string>(null);
   activeEditSetting = new BehaviorSubject<string>(null);
   activePageSetting = new BehaviorSubject<string>('Home');
+  activePageIndex = new BehaviorSubject<number>(0);
   activeElement = new BehaviorSubject<string>(null);
   activeOrientation = new BehaviorSubject<string>(ActiveOrientations.Desktop);
 
