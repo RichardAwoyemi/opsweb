@@ -44,10 +44,14 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
   }
 
   setComponentClass() {
-    if (this.componentActive) {
-      return 'component-border-active';
+    if (!this.previewMode) {
+      if (this.componentActive) {
+        return 'component-border-active';
+      } else {
+        return 'component-border';
+      }
     } else {
-      return 'component-border';
+      return '';
     }
   }
 

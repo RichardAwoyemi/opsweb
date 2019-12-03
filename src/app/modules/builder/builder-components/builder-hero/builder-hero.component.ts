@@ -7,12 +7,11 @@ import { IComponent } from '../../../../shared/models/component';
 
 @Component({
   selector: 'app-builder-hero',
-  templateUrl: './builder-hero.component.html',
-  styleUrls: ['./builder-hero.component.css']
+  templateUrl: './builder-hero.component.html'
 })
 export class BuilderHeroComponent implements OnInit, IComponent {
   innerHeight: number;
-  heroHeadingStyle: any;
+  heroHeadingStyle: any = { 'font-family': '\'Avenir Next Medium\', Helvetica, Arial, sans-serif' };
   heroImage: string;
   heroImageUrl: string;
   heroSubheadingStyle: any;

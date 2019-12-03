@@ -9,7 +9,9 @@
   "navbarBrandStyle": {
     "color": "#757575"
   },
-  "heroHeadingStyle": {},
+  "heroHeadingStyle": {
+    "font-family": "'Avenir Next Medium', Helvetica, Arial, sans-serif"
+  },
   "heroSubheadingStyle": {},
   "heroButtonStyle": {},
   "footerStyle": {

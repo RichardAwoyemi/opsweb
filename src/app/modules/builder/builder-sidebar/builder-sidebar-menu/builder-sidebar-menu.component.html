@@ -1,6 +1,7 @@
 <ul class="nav nav-pills flex-column" role="tablist">
   <li class="nav-item">
-    <a (click)="setActiveEditSetting(ACTIVE_TEMPLATES_SETTING)" [ngClass]="sidebarTemplatesMenu" data-toggle="tab">
+    <a (click)="setActiveEditSetting(ACTIVE_TEMPLATES_SETTING)" [ngClass]="sidebarTemplatesMenu" data-toggle="tab"
+       ngbPopover="Templates" triggers="mouseenter:mouseleave">
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path class="nav-icon"
               d="M13.557.736a1 1 0 0 0-1.23-.701L.749 3.137A1 1 0 0 0 .034 4.36l2.332 8.701a1 1 0 0 0 1.23.701L4 13.654V6.003A2 2 0 0 1 5.994 4h8.437L13.557.736zM7.007 6h11.986A1 1 0 0 1 20 6.996v10.008a1 1 0 0 1-1.007.996H7.007A1 1 0 0 1 6 17.004V6.996A1 1 0 0 1 7.007 6zM18 9.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zM8 12l3.5-3 7 7H8v-4z"></path>
@@ -8,7 +9,8 @@
     </a>
   </li>
   <li class="nav-item">
-    <a (click)="setActiveEditSetting(ACTIVE_COLOURS_SETTING)" *ngIf="validateActiveEditComponent()"
+    <a (click)="setActiveEditSetting(ACTIVE_COLOURS_SETTING)" *ngIf="validateActiveEditComponent()" ngbPopover="Colours"
+       triggers="mouseenter:mouseleave"
        [ngClass]="sidebarColoursMenu"
        data-toggle="tab">
       <svg height="24" viewBox="0 0 488.48 488.48" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +20,8 @@
     </a>
   </li>
   <li class="nav-item">
-    <a (click)="setActiveEditSetting(ACTIVE_COMPONENTS_SETTING)" [ngClass]="sidebarComponentsMenu" data-toggle="tab">
+    <a (click)="setActiveEditSetting(ACTIVE_COMPONENTS_SETTING)" [ngClass]="sidebarComponentsMenu" data-toggle="tab"
+       ngbPopover="Components" triggers="mouseenter:mouseleave">
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path class="nav-icon"
               d="M12 0l-11 6v12.131l11 5.869 11-5.869v-12.066l-11-6.065zm7.91 6.646l-7.905 4.218-7.872-4.294 7.862-4.289 7.915 4.365zm-16.91 1.584l8 4.363v8.607l-8-4.268v-8.702zm10 12.97v-8.6l8-4.269v8.6l-8 4.269z"></path>
@@ -26,7 +29,8 @@
     </a>
   </li>
   <li class="nav-item">
-    <a (click)="setActiveEditSetting(ACTIVE_LAYOUT_SETTING)" *ngIf="validateActiveEditComponent()"
+    <a (click)="setActiveEditSetting(ACTIVE_LAYOUT_SETTING)" *ngIf="validateActiveEditComponent()" ngbPopover="Layout"
+       triggers="mouseenter:mouseleave"
        [ngClass]="sidebarLayoutMenu"
        data-toggle="tab">
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +40,8 @@
     </a>
   </li>
   <li class="nav-item" style="padding-left: 5px">
-    <a (click)="setActiveEditSetting(ACTIVE_OPTIONS_SETTING)" *ngIf="validateActiveEditComponent()"
+    <a (click)="setActiveEditSetting(ACTIVE_OPTIONS_SETTING)" *ngIf="validateActiveEditComponent()" ngbPopover="Options"
+       triggers="mouseenter:mouseleave"
        [ngClass]="sidebarOptionsMenu"
        data-toggle="tab">
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -47,14 +52,16 @@
     </a>
   </li>
   <li class="nav-item">
-    <a (click)="setActiveEditSetting(ACTIVE_PAGES_SETTING)" [ngClass]="sidebarPagesMenu" data-toggle="tab">
+    <a (click)="setActiveEditSetting(ACTIVE_PAGES_SETTING)" [ngClass]="sidebarPagesMenu" data-toggle="tab"
+       ngbPopover="Pages" triggers="mouseenter:mouseleave">
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path class="nav-icon" d="M15 2v5h5v15h-16v-20h11zm1-2h-14v24h20v-18l-6-6z"></path>
       </svg>
     </a>
   </li>
   <li class="nav-item">
-    <a (click)="setActiveEditSetting(ACTIVE_DATA_SETTING)" [ngClass]="sidebarDataMenu" data-toggle="tab">
+    <a (click)="setActiveEditSetting(ACTIVE_DATA_SETTING)" [ngClass]="sidebarDataMenu" data-toggle="tab"
+       ngbPopover="Data" triggers="mouseenter:mouseleave">
       <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path class="nav-icon"
               d="M22 18.055v2.458c0 1.925-4.655 3.487-10 3.487-5.344 0-10-1.562-10-3.487v-2.458c2.418 1.738 7.005 2.256 10 2.256 3.006 0 7.588-.523 10-2.256zm-10-3.409c-3.006 0-7.588-.523-10-2.256v2.434c0 1.926 4.656 3.487 10 3.487 5.345 0 10-1.562 10-3.487v-2.434c-2.418 1.738-7.005 2.256-10 2.256zm0-14.646c-5.344 0-10 1.562-10 3.488s4.656 3.487 10 3.487c5.345 0 10-1.562 10-3.487 0-1.926-4.655-3.488-10-3.488zm0 8.975c-3.006 0-7.588-.523-10-2.256v2.44c0 1.926 4.656 3.487 10 3.487 5.345 0 10-1.562 10-3.487v-2.44c-2.418 1.738-7.005 2.256-10 2.256z"></path>
