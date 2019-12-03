@@ -70,6 +70,7 @@ export class BuilderService {
   }
 
   setActiveEditComponent(componentName: string) {
+    window.postMessage({ 'for': 'opsonion', 'action': 'unique-component-selected' }, '*');
     this.activeEditComponent.next(componentName);
     this.setSidebarColoursSetting();
   }

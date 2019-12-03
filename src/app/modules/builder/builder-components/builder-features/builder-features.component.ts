@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveSettings } from '../../builder';
+import { ActiveComponents } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-features',
@@ -10,14 +11,16 @@ import { IComponent } from '../../../../shared/models/component';
 })
 export class BuilderFeaturesComponent implements OnInit, IComponent {
   componentName: string = ActiveComponents.Features;
+  componentId: string = `${ ActiveComponents.Features }-${ UtilService.generateRandomString(8) }`;
   innerHeight: number;
   activeEditComponent: string;
   previewMode: boolean;
+  componentActive: boolean = false;
   private activeEditComponentSubscription: Subscription;
   private previewModeSubscription: Subscription;
 
   constructor(
-    private builderService: BuilderService,
+    private builderService: BuilderService
   ) {
   }
 
@@ -36,24 +39,39 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
   }
 
   setActiveEditComponent() {
-    if (this.activeEditComponent == ActiveComponents.Features) {
-      this.clearActiveEditComponent();
-    } else {
-      this.builderService.setActiveEditComponent(ActiveComponents.Features);
-      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
-    }
+    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-selected', 'message': this.componentId }, '*');
+    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
   }
 
   setComponentClass() {
-    return BuilderService.setComponentClass(this.previewMode, this.activeEditComponent, this.componentName);
+    if (this.componentActive) {
+      return 'component-border-active';
+    } else {
+      return 'component-border';
+    }
   }
 
   setContextMenu() {
-    return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
+    if (!this.previewMode && this.componentActive) {
+      return `${ this.componentName }-edit-component no-select`;
+    } else {
+      return 'no-select';
+    }
   }
 
   clearActiveEditComponent() {
-    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
+    this.componentActive = false;
+  }
+
+  @HostListener('window:message', ['$event'])
+  onMessage(e) {
+    if (e.data.for == 'opsonion') {
+      if (e.data.action == 'unique-component-selected') {
+        this.componentActive = false;
+      }
+      if (e.data.action == 'duplicate-component-selected') {
+        this.componentActive = e.data.message == this.componentId;
+      }
+    }
   }
 }

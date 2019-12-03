@@ -1,5 +1,5 @@
 <div class="component-toolbar-holder" style="display: flex; align-items: flex-start; justify-content: flex-end;">
-  <div *ngIf="activeEditComponent === componentName && activeRoute != '/preview'" class="component-toolbar">
+  <div *ngIf="toggleComponentToolbarVisibility()" class="component-toolbar">
     <div aria-label="First group" class="btn-group mr-2" role="group">
       <div class="component-toolbar-text">
         <div style="display: inline-block">

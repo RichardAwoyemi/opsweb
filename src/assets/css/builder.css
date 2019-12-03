@@ -151,6 +151,7 @@ h1, h1, h2, h3, h4, h5, h6 {
 
 .nav-link-preview, .nav-link-active {
   border: 1px solid transparent;
+  transition: none !important;
 }
 
 .nav-link-active:hover, .nav-link-edit {

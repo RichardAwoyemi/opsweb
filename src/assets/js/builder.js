@@ -2,6 +2,12 @@ let builderShowcaseId, componentIconClass, builderShowcase, currentElement, curr
   elementRectangle, countdown, dragOverQueueProcessTimer, htmlToInsert, components;
 let pageStructure = [];
 
+let singleUseComponents = [
+  '<app-builder-navbar></app-builder-navbar>',
+  '<app-builder-hero></app-builder-hero>',
+  '<app-builder-footer></app-builder-footer>'
+];
+
 let container = document.querySelector('body');
 
 let observer = new MutationObserver(function () {
@@ -132,10 +138,13 @@ function addComponent(e) {
       components = JSON.parse(sessionStorage.getItem('components'));
       for (let i = 0; i < components.length; i++) {
         if (components[i] === htmlToInsert) {
-          componentExists = true;
+          if (isInArray(components[i], singleUseComponents))
+            componentExists = true;
         }
         if (i === componentIndex) {
-          components[i] = htmlToInsert;
+          if (components[i] === "<app-builder-placeholder></app-builder-placeholder>") {
+            components[i] = htmlToInsert;
+          }
         }
       }
 
@@ -152,6 +161,10 @@ function addComponent(e) {
       htmlToInsert = null;
     }
   }
+}
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
 }
 
 function dedupeAdjacent(a, targets) {

@@ -11,7 +11,7 @@ export class BuilderDynamicHtmlComponent implements DoCheck, OnChanges, OnDestro
 
   constructor(
     private renderer: BuilderDynamicHtmlService,
-    private elementRef: ElementRef,
+    private elementRef: ElementRef
   ) {
   }
 
