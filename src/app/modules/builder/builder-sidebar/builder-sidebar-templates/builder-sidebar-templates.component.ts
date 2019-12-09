@@ -2,11 +2,10 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Template } from '../../../../shared/models/template';
 import { DataService } from '../../../../shared/services/data.service';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
-import { ActiveNavbarThemes, ActiveTemplates } from '../../builder';
+import { ActiveTemplates } from '../../builder';
 import { TemplateService } from '../../../../shared/services/template.service';
-import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BuilderChangeTemplateModalComponent } from '../../builder-actions/builder-change-template-modal/builder-change-template-modal.component';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -27,9 +26,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private templateService: TemplateService,
-    private builderNavbarService: BuilderNavbarService,
-    private builderHeroService: BuilderHeroService,
-    private builderFooterService: BuilderFooterService
+    private modalService: NgbModal
   ) {
   }
 
@@ -123,14 +120,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   }
 
   setTemplate(templateId: string) {
-    this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
-    this.builderNavbarService.navbarTemplate.next(templateId);
-    this.builderNavbarService.setNavbarTemplate(templateId);
-
-    this.builderHeroService.setHeroTemplate(templateId);
-
-    this.builderFooterService.footerTheme.next(ActiveNavbarThemes.Default);
-    this.builderFooterService.footerTemplate.next(templateId);
-    this.builderFooterService.setFooterTemplate(templateId);
+    const modal = this.modalService.open(BuilderChangeTemplateModalComponent, { windowClass: 'modal-holder', centered: true });
+    modal.componentInstance.templateId = templateId;
   }
 }
