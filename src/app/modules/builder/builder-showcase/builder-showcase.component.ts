@@ -78,6 +78,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
   clearActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeElement.next(ActiveElements.Default);
+    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected' }, '*');
     this.builderService.setSidebarComponentsSetting();
   }
 }

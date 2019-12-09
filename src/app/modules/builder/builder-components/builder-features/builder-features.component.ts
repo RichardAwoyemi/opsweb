@@ -70,7 +70,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
   @HostListener('window:message', ['$event'])
   onMessage(e) {
     if (e.data.for == 'opsonion') {
-      if (e.data.action == 'unique-component-selected') {
+      if (e.data.action == 'unique-component-selected' || e.data.action == 'duplicate-component-deselected') {
         this.componentActive = false;
       }
       if (e.data.action == 'duplicate-component-selected') {

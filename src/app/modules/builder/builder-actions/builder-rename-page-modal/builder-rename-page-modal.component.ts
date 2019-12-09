@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
+import { BuilderService } from '../../builder.service';
+import { BuilderComponentService } from '../../builder-components/builder.component.service';
 
 @Component({
   selector: 'app-builder-rename-page-modal',
@@ -18,11 +20,15 @@ export class BuilderRenamePageModalComponent implements IModalComponent {
   displayError: boolean = false;
   disableSaveButton: boolean = false;
   navbarMenuOptions: any;
+  pageComponents: any;
   private navbarMenuOptionsSubscription: Subscription;
+  private pageComponentsSubscription: Subscription;
 
   constructor(
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
+    private builderService: BuilderService,
+    private builderComponentService: BuilderComponentService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }
@@ -30,11 +36,18 @@ export class BuilderRenamePageModalComponent implements IModalComponent {
   ngOnInit() {
     this.displayError = false;
     this.disableSaveButton = true;
+
     this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
       if (response) {
         this.navbarMenuOptions = response;
       }
     });
+
+    this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    }));
   }
 
   onCloseButtonClick() {
@@ -43,12 +56,23 @@ export class BuilderRenamePageModalComponent implements IModalComponent {
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
+
+    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+      if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+        this.pageComponents['pages'][i]['name'] = UtilService.toTitleCase(this.pageName);
+      }
+    }
+    this.builderComponentService.pageComponents.next(this.pageComponents);
+
     for (let i = 0; i < this.navbarMenuOptions.length; i++) {
       if (i === this.activePageIndex) {
         this.navbarMenuOptions[i] = UtilService.toTitleCase(this.pageName);
       }
     }
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
+
+    this.builderService.activePageSetting.next(UtilService.toTitleCase(this.pageName));
+
     this.toastrService.success('Your page has been renamed.', 'Great!');
   }
 

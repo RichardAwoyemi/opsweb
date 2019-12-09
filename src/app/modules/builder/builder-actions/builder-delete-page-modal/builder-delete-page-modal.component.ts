@@ -4,6 +4,8 @@ import { IModalComponent } from '../../../../shared/models/modal';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { ToastrService } from 'ngx-toastr';
+import { BuilderService } from '../../builder.service';
+import { BuilderComponentService } from '../../builder-components/builder.component.service';
 
 @Component({
   selector: 'app-builder-delete-page-modal',
@@ -13,11 +15,15 @@ export class BuilderDeletePageModalComponent implements IModalComponent {
   @Input() activePage;
   @Input() activePageIndex;
   navbarMenuOptions: any;
+  pageComponents: any;
   private navbarMenuOptionsSubscription: Subscription;
+  private pageComponentsSubscription: Subscription;
 
   constructor(
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
+    private builderService: BuilderService,
+    private builderComponentService: BuilderComponentService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }
@@ -28,6 +34,12 @@ export class BuilderDeletePageModalComponent implements IModalComponent {
         this.navbarMenuOptions = response;
       }
     });
+
+    this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    }));
   }
 
   onCloseButtonClick() {
@@ -36,8 +48,19 @@ export class BuilderDeletePageModalComponent implements IModalComponent {
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
+
+    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+      if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+        this.pageComponents['pages'].splice(i, 1);
+      }
+    }
+    this.builderComponentService.pageComponents.next(this.pageComponents);
+
     this.navbarMenuOptions.splice(this.activePageIndex, 1);
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
+
+    this.builderService.activePageSetting.next('Home');
+
     this.toastrService.success('Your page has been deleted.', 'Great!');
   }
 }

@@ -14,8 +14,12 @@ import { BuilderService } from '../../builder.service';
 })
 export class BuilderDeleteComponentModalComponent implements IModalComponent, OnInit {
   private activeComponentIndexSubscription: Subscription;
+  activePage: string;
+  pageComponents: any;
   private activeComponentIndex: number = 0;
   private components: Array<string>;
+  private activePageSettingSubscription: Subscription;
+  private pageComponentsSubscription: Subscription;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -26,10 +30,25 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   }
 
   ngOnInit() {
-    this.components = JSON.parse(SessionStorageService.getItem('components'));
     this.activeComponentIndexSubscription = this.builderComponentService.activeComponentIndex.subscribe((response => {
       if (response) {
         this.activeComponentIndex = response;
+      }
+    }));
+
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((response => {
+      if (response) {
+        this.activePage = response;
+        this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+          if (response) {
+            this.pageComponents = response;
+            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+              if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+                this.components = response['pages'][i]['components'];
+              }
+            }
+          }
+        }));
       }
     }));
   }
@@ -38,10 +57,14 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     this.components.splice(this.activeComponentIndex, 1);
     this.components = UtilService.dedupeAdjacent(this.components, ActiveComponentsFullSelector.Placeholder);
     this.sessionStorageService.setItem('components', JSON.stringify(this.components));
-    this.builderComponentService.builderComponents.next(this.components);
+    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+      if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+        this.pageComponents['pages'][i]['components'] = this.components;
+      }
+    }
+    this.builderComponentService.pageComponents.next(this.pageComponents);
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();
-    window.postMessage({ 'for': 'opsonion', 'action': 'recycle-dom' }, '*');
     this.activeModal.dismiss();
   }
 

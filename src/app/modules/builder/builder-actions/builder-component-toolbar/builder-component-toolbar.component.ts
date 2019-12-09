@@ -49,7 +49,7 @@ export class BuilderComponentToolbarComponent implements OnInit {
   @HostListener('window:message', ['$event'])
   onMessage(e) {
     if (e.data.for == 'opsonion') {
-      if (e.data.action == 'unique-component-selected') {
+      if (e.data.action == 'unique-component-selected' || e.data.action == 'duplicate-component-deselected') {
         this.activeEditComponentId = null;
       }
       if (e.data.action == 'duplicate-component-selected') {

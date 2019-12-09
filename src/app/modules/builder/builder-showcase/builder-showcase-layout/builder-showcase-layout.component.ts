@@ -25,8 +25,11 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
   options: SortablejsOptions;
   reload: boolean = true;
   activeEditComponent: string;
+  pageComponents: any;
+  activePage: string = 'Home';
   private activeEditComponentSubscription: Subscription;
-  private componentSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+  private pageComponentsSubscription: Subscription;
 
   constructor(
     private builderComponentService: BuilderComponentService,
@@ -48,18 +51,27 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
           }
         }
         let componentArray = tempComponentArrayWithoutPlaceholders.reduce((r, a) => r.concat(a, '<app-builder-placeholder></app-builder-placeholder>'), ['<app-builder-placeholder></app-builder-placeholder>']);
-        builderComponentService.builderComponents.next(componentArray);
-        sessionStorageService.setItem('components', JSON.stringify(componentArray));
-        window.postMessage({ 'for': 'opsonion', 'action': 'recycle-dom' }, '*');
+        console.log(componentArray);
+        window.postMessage({ 'for': 'opsonion', 'action': 'recycle-showcase-dom', 'data': componentArray }, '*');
       }
     };
   }
 
   ngOnInit() {
-    this.componentSubscription = this.builderComponentService.builderComponents.subscribe((response => {
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((response => {
       if (response) {
-        this.builderComponents = response;
-        this.sessionStorageService.setItem('components', JSON.stringify(response));
+        this.activePage = response;
+        this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+          if (response) {
+            this.pageComponents = response;
+            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+              if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+                this.builderComponents = this.pageComponents['pages'][i]['components'];
+                this.sessionStorageService.setItem('components', JSON.stringify(response['pages'][i]['components']));
+              }
+            }
+          }
+        }));
       }
     }));
 
@@ -78,9 +90,20 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
   onMessage(e) {
     if (e.data.for == 'opsonion') {
       if (e.data.action == 'component-added') {
-        this.builderComponentService.builderComponents.next(e.data.data);
+        for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+          if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+            this.pageComponents['pages'][i]['components'] = e.data.data;
+          }
+        }
+        this.builderComponentService.pageComponents.next(this.pageComponents);
       }
-      if (e.data.action == 'recycle-dom') {
+      if (e.data.action == 'recycle-showcase-dom') {
+        for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+          if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+            this.pageComponents['pages'][i]['components'] = e.data.data;
+            this.sessionStorageService.setItem('components', JSON.stringify(e.message));
+          }
+        }
         setTimeout(() => this.reload = false);
         setTimeout(() => this.reload = true);
       }

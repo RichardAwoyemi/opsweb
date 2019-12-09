@@ -7,6 +7,7 @@ import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-d
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { ActiveComponents, ActiveElements } from '../../builder';
+import { BuilderComponentService } from '../../builder-components/builder.component.service';
 
 @Component({
   selector: 'app-builder-showcase-toolbar',
@@ -15,7 +16,7 @@ import { ActiveComponents, ActiveElements } from '../../builder';
 })
 export class BuilderShowcaseToolbarComponent implements OnInit {
   innerHeight: number;
-  activePage: string;
+  activePage: string = 'Home';
   previewButtonIcon: string = 'btn-icon';
   navbarMenuOptions = Array<String>();
   previewMode: boolean;
@@ -30,6 +31,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
 
   constructor(
     private builderService: BuilderService,
+    private builderComponentService: BuilderComponentService,
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService,
     private builderNavbarService: BuilderNavbarService
@@ -68,7 +70,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
 
     this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe((response => {
       if (response) {
-        this.navbarMenuOptions = response.filter(e => e !== this.activePage);
+        this.navbarMenuOptions = response;
       }
     }));
   }
@@ -97,6 +99,10 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.setSidebarComponentsSetting();
     this.builderService.previewMode.next(!this.previewMode);
+  }
+
+  setActivePage(navbarMenuOption: string) {
+    this.builderService.activePageSetting.next(navbarMenuOption);
   }
 }
 
