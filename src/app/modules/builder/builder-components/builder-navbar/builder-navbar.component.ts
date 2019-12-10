@@ -15,6 +15,8 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   navbarStyle: any;
   navbarLinkStyle: any;
   navbarBrandStyle: any;
+  navbarLogoImage: string;
+  navbarLogoText: string;
   navbarMenuOptions: any;
   navbarLayoutClass: any = 'navbar-nav ml-auto';
   activeEditComponent: string;
@@ -22,6 +24,7 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   activeElement: string;
   previewMode: boolean = false;
   navbarInputStyle: any;
+  navbarLogoImageStyle: any;
   private activeEditComponentSubscription: Subscription;
   private navbarStyleSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
@@ -30,6 +33,9 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   private navbarMenuOptionsSubscription: Subscription;
   private previewModeSubscription: Subscription;
   private activeElementSubscription: Subscription;
+  private navbarLogoImageSubscription: Subscription;
+  private navbarLogoTextSubscription: Subscription;
+  private navbarLogoImageStyleSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -49,6 +55,19 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
         this.activeEditComponent = response;
       }
     });
+
+    this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
+      if (response) {
+        this.navbarLogoImage = response;
+      }
+    });
+
+    this.navbarLogoTextSubscription = this.builderNavbarService.navbarLogoText.subscribe(response => {
+      if (response) {
+        this.navbarLogoText = response;
+      }
+    });
+
 
     this.navbarStyleSubscription = this.builderNavbarService.navbarStyle.subscribe(response => {
       if (response) {
@@ -80,6 +99,12 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
       }
     });
 
+    this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
+      if (response) {
+        this.navbarLogoImageStyle = response;
+      }
+    });
+
     this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
       if (response) {
         this.activeElement = response;
@@ -105,18 +130,35 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
   }
 
-  setNavbarLinkClass() {
-    if (this.previewMode) {
-      return 'nav-link nav-link-preview';
+  removeLineBreaks(event: any) {
+    BuilderService.removeLineBreaks(event);
+  }
+
+  setActiveElementStyle(activeElement, element) {
+    if (activeElement == element && !this.previewMode) {
+      if (element.indexOf('navbar-logo-text') > -1) {
+        return 'nav-text-edit';
+      }
+      if (element.indexOf('navbar-link') > -1) {
+        return 'nav-link-edit';
+      }
+      if (element.indexOf('navbar-logo-image') > -1) {
+        return 'nav-image-edit';
+      }
     }
-    if (!this.previewMode) {
-      return 'nav-link nav-link-active';
-    }
+  }
+
+  setContentEditable() {
+    return !this.previewMode;
   }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
+  }
+
+  isNavbarLogoImageNull() {
+    return !this.navbarLogoImage || this.navbarLogoImage == 'navbarLogoImage';
   }
 
   clearActiveEditComponent() {
@@ -131,20 +173,6 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     event.stopPropagation();
   }
 
-  removeLineBreaks(event: any) {
-    BuilderService.removeLineBreaks(event);
-  }
-
-  setActiveElementStyle(activeElement, element) {
-    if (activeElement == element && !this.previewMode) {
-      return 'nav-link-edit';
-    }
-  }
-
-  setContentEditable() {
-    return !this.previewMode;
-  }
-
   saveNavbarMenuOption(menuOptionIndex: number, newMenuOptionName: string) {
     for (let i = 0; i < this.navbarMenuOptions.length; i++) {
       if (menuOptionIndex === i) {
@@ -153,5 +181,51 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     }
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
+  }
+
+  setNavbarLinkClass() {
+    if (this.previewMode) {
+      return 'nav-link nav-link-preview';
+    }
+    if (!this.previewMode) {
+      return 'nav-link nav-link-active';
+    }
+  }
+
+  selectNavbarLogoText(event: any, elementId: string) {
+    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+    this.builderService.setSidebarOptionsSetting();
+    this.builderService.activeElement.next(elementId);
+    event.stopPropagation();
+  }
+
+  saveNavbarLogoTextOption() {
+    this.builderService.activeElement.next(ActiveElements.Default);
+    this.builderNavbarService.navbarLogoText.next(this.navbarLogoText);
+  }
+
+  setNavbarLogoTextClass() {
+    if (this.previewMode) {
+      return 'nav-logo-text-preview';
+    }
+    if (!this.previewMode) {
+      return 'nav-logo-text-active';
+    }
+  }
+
+  setNavbarLogoImageClass() {
+    if (this.previewMode) {
+      return 'nav-logo-image-preview';
+    }
+    if (!this.previewMode) {
+      return 'nav-logo-image-active';
+    }
+  }
+
+  selectNavbarLogoImage(event: any, elementId: string) {
+    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+    this.builderService.setSidebarOptionsSetting();
+    this.builderService.activeElement.next(elementId);
+    event.stopPropagation();
   }
 }

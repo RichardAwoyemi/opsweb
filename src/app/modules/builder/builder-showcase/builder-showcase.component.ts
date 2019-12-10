@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { BuilderService } from '../builder.service';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
 import { BuilderShowcaseService } from './builder-showcase.service';
-import { ActiveComponents, ActiveElements } from '../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings } from '../builder';
 
 @Component({
   selector: 'app-builder-showcase',
@@ -77,6 +77,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
 
   clearActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.activeEditSetting.next(ActiveSettings.Components);
     this.builderService.activeElement.next(ActiveElements.Default);
     window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected' }, '*');
     this.builderService.setSidebarComponentsSetting();

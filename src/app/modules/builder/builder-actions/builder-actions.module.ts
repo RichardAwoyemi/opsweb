@@ -10,12 +10,14 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
 import { BlockNonAlphabetCharactersDirective } from '../../../shared/directives/block-non-alphabet-characters.directive';
 import { BuilderRenamePageModalComponent } from './builder-rename-page-modal/builder-rename-page-modal.component';
 import { BuilderActionsService } from './builder-actions.service';
+import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/builder-delete-image-modal.component';
 
 @NgModule({
   declarations: [
     BuilderDeletePageModalComponent,
     BuilderNewPageModalComponent,
     BuilderDeleteComponentModalComponent,
+    BuilderDeleteImageModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
     BuilderRenamePageModalComponent,
@@ -29,6 +31,7 @@ import { BuilderActionsService } from './builder-actions.service';
   exports: [
     BuilderDeletePageModalComponent,
     BuilderNewPageModalComponent,
+    BuilderDeleteImageModalComponent,
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent
@@ -38,6 +41,7 @@ import { BuilderActionsService } from './builder-actions.service';
   ],
   entryComponents: [
     BuilderDeletePageModalComponent,
+    BuilderDeleteImageModalComponent,
     BuilderNewPageModalComponent,
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,

@@ -2,3 +2,11 @@
   position: absolute;
   top: -1000px;
 }
+
+.fw-600 {
+  color: red;
+}
+
+.fw-600:hover {
+  text-decoration: underline;
+}

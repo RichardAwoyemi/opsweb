@@ -6,7 +6,24 @@
        [ngStyle]="navbarStyle"
        class="navbar navbar-expand-md navbar-showcase">
     <span [ngStyle]="navbarBrandStyle" class="navbar-brand">
-      Logo
+      <ng-container *ngIf="isNavbarLogoImageNull() == true">
+        <span (blur)="removeLineBreaks($event); saveNavbarLogoTextOption();"
+              (click)="selectNavbarLogoText($event, 'navbar-logo-text')"
+              (keydown.enter)="saveNavbarLogoTextOption(); $event.preventDefault()"
+              [attr.contenteditable]="setContentEditable()"
+              [class]="setActiveElementStyle(activeElement, 'navbar-logo-text')"
+              [ngClass]="setNavbarLogoTextClass()"
+              id="'navbar-logo-text'" style="padding: .5rem">{{ navbarLogoText }}</span>
+      </ng-container>
+      <ng-container *ngIf="isNavbarLogoImageNull() == false">
+        <img (click)="selectNavbarLogoImage($event, 'navbar-logo-image')"
+             [attr.src]="navbarLogoImage"
+             [class]="setActiveElementStyle(activeElement, 'navbar-logo-image')"
+             [ngClass]="setNavbarLogoImageClass()"
+             [ngStyle]="navbarLogoImageStyle"
+             alt="navbarLogoImage"
+             style="padding: .5rem"/>
+      </ng-container>
     </span>
     <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
@@ -18,9 +35,10 @@
         <li *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index" class="nav-item">
           <a (blur)="removeLineBreaks($event); saveNavbarMenuOption(i, $event.target['innerText']);"
              (click)="selectNavbarLink($event, 'navbar-' + i)"
-             (keydown.enter)="saveNavbarMenuOption(i, $event.target.innerText); $event.preventDefault()"
+             (keydown.enter)="saveNavbarMenuOption(i, $event.target.innerText); $event.preventDefault(); $event.target.blur()"
              [attr.contenteditable]="setContentEditable()"
-             [class]="setActiveElementStyle(activeElement, 'navbar-'+i)" [ngClass]="setNavbarLinkClass()"
+             [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
+             [ngClass]="setNavbarLinkClass()"
              [ngStyle]="navbarLinkStyle"
              id="{{ 'navbar-' + i }}">{{ navbarMenuOption }}</a>
         </li>

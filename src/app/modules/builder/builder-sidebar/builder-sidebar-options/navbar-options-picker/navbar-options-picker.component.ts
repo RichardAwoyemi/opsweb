@@ -4,7 +4,8 @@ import { BuilderNavbarService } from '../../../builder-components/builder-navbar
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { SimpleModalService } from '../../../../../shared/components/simple-modal/simple-modal.service';
-import { NavbarOptionsPickerService } from './navbar-options-picker.service';
+import { BuilderUploadImageModalComponent } from '../../../builder-actions/builder-upload-image-modal/builder-upload-image-modal.component';
+import { BuilderDeleteImageModalComponent } from '../../../builder-actions/builder-delete-image-modal/builder-delete-image-modal.component';
 
 @Component({
   selector: 'app-navbar-options-picker',
@@ -13,13 +14,14 @@ import { NavbarOptionsPickerService } from './navbar-options-picker.service';
 })
 export class NavbarOptionsPickerComponent implements OnInit {
   navbarMenuOptions: any;
+  navbarLogoImage: any;
   options: SortablejsOptions;
   private navbarMenuOptionsSubscription: Subscription;
+  private navbarLogoImageSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
     private modalService: NgbModal,
-    private navbarOptionsPickerService: NavbarOptionsPickerService,
     private simpleModalService: SimpleModalService
   ) {
     this.options = {
@@ -40,17 +42,33 @@ export class NavbarOptionsPickerComponent implements OnInit {
         this.navbarMenuOptions = response;
       }
     });
+
+    this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
+      if (response) {
+        this.navbarLogoImage = response;
+      }
+    });
   }
 
   fileChangeEvent(event: any): void {
-    this.navbarOptionsPickerService.fileChangeEvent = event;
     if (event.target.files && event.target.files.length) {
-      this.openCropImageModal();
+      this.openCropImageModal(event);
     } else {
       this.simpleModalService.displayMessage('Oops!', 'Please select a photo to upload.');
     }
   }
 
-  openCropImageModal() {
+  isNavbarLogoImageNull() {
+    return !this.navbarLogoImage || this.navbarLogoImage == 'navbarLogoImage';
+  }
+
+
+  openCropImageModal(event: any) {
+    const modal = this.modalService.open(BuilderUploadImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    modal.componentInstance.imageChangedEvent = event;
+  }
+
+  openDeleteImageModal() {
+    this.modalService.open(BuilderDeleteImageModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 }

@@ -16,6 +16,9 @@
     "font-family": "'Nunito Sans', sans-serif",
     "display": "block"
   },
+  "navbarLogoImageStyle": {
+    "height": "55px"
+  },
   "navbarBrandStyle": {
     "color": "#0c66ff",
     "display": "inline-block",

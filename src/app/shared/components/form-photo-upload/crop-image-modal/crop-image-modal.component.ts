@@ -52,7 +52,7 @@ export class CropImageModalComponent implements OnInit {
     this.activeModal.dismiss();
     this.logger.debug('Saving image');
     if (this.croppedImage) {
-      this.imgurService.upload(this.croppedImage.split('base64,')[1], this.user.uid).subscribe((imgurResponse: ImgurResponse) => {
+      this.imgurService.upload(this.croppedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
         if (imgurResponse) {
           this.logger.debug('Picture uploaded to imgur');
           this.logger.debug(imgurResponse);

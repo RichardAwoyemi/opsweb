@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UtilService {
-  static toTitleCase(str) {
+  static toTitleCase(str: string) {
     str = str.replace(/^\s+|\s+$/gm, '');
     return str.replace(
       /\w\S*/g,
@@ -56,9 +56,9 @@ export class UtilService {
       negative = true;
       n = n * -1;
     }
-    const multiplicator = Math.pow(10, digits);
-    n = parseFloat((n * multiplicator).toFixed(11));
-    n = (Math.round(n) / multiplicator).toFixed(2);
+    const multiplier = Math.pow(10, digits);
+    n = parseFloat((n * multiplier).toFixed(11));
+    n = (Math.round(n) / multiplier).toFixed(2);
     if (negative) {
       n = (n * -1).toFixed(2);
     }

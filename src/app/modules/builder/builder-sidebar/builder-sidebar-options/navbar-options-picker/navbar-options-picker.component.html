@@ -1,10 +1,30 @@
 <div class="form-group">
-  <label style="color: rgba(255, 255, 255, 0.65)">Logo</label>
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65)">Logo</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <ng-container *ngIf="isNavbarLogoImageNull() == false">
+        <a (click)="openDeleteImageModal()" class="fw-600 fs-12" href="#">Delete</a>
+      </ng-container>
+    </div>
+  </div>
 </div>
-<label class="btn btn-xl btn-block btn-secondary btn-file">
-  <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
-  <span>Upload Image</span>
-</label>
+<ng-container *ngIf="isNavbarLogoImageNull() == true">
+  <label class="btn btn-xl btn-block btn-secondary btn-file">
+    <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
+    <span>Upload Image</span>
+  </label>
+</ng-container>
+<ng-container *ngIf="isNavbarLogoImageNull() == false">
+  <div class="image-preview" style="margin-bottom: 1em; height: 150px;">
+    <img [attr.src]="navbarLogoImage" alt="navbarLogoImage" class="navbar-logo-image"/>
+  </div>
+  <label class="btn btn-xl btn-block btn-secondary btn-file">
+    <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
+    <span>Replace Image</span>
+  </label>
+</ng-container>
 <br>
 <div class="form-group" style="padding-top: 1px">
   <label style="color: rgba(255, 255, 255, 0.65)">Menu</label>

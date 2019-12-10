@@ -1,10 +1,14 @@
 {
   "id": "default",
   "navbarStyle": {
-    "background-color": "#FFFFFF"
+    "background-color": "#FFFFFF",
+    "padding": "2em"
   },
   "navbarLinkStyle": {
     "color": "#000"
+  },
+  "navbarLogoImageStyle": {
+    "height": "50px"
   },
   "navbarBrandStyle": {
     "color": "#757575"

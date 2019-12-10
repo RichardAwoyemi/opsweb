@@ -5,9 +5,12 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class BuilderNavbarService {
+  navbarLogoImage = new BehaviorSubject<string>(null);
+  navbarLogoText = new BehaviorSubject<string>('Logo');
+  navbarLogoImageStyle = new BehaviorSubject<Object>({ 'height': '50px' });
   navbarTemplate = new BehaviorSubject<string>(ActiveTemplates.Default);
   navbarTheme = new BehaviorSubject<string>(null);
-  navbarStyle = new BehaviorSubject<Object>(null);
+  navbarStyle = new BehaviorSubject<Object>({ 'padding': '1em' });
   navbarLinkStyle = new BehaviorSubject<Object>(null);
   navbarBrandStyle = new BehaviorSubject<Object>(null);
   navbarLayoutClass = new BehaviorSubject<Object>(null);
@@ -72,6 +75,7 @@ export class BuilderNavbarService {
     let navbarStyle = this.navbarStyle.getValue();
     let navbarLinkStyle = this.navbarLinkStyle.getValue();
     let navbarBrandStyle = this.navbarBrandStyle.getValue();
+    let navbarLogoImageStyle = this.navbarLogoImageStyle.getValue();
 
     if (navbarStyle) {
       navbarStyle['background-color'] = theme['navbarStyle']['background-color'];
@@ -91,14 +95,20 @@ export class BuilderNavbarService {
       navbarBrandStyle = theme['navbarBrandStyle'];
     }
 
+    if (navbarLogoImageStyle) {
+      navbarLogoImageStyle['height'] = theme['navbarHeightStyle']['height'];
+    }
+
     this.navbarStyle.next(navbarStyle);
     this.navbarLinkStyle.next(navbarLinkStyle);
     this.navbarBrandStyle.next(navbarBrandStyle);
+    this.navbarLogoImageStyle.next(navbarLogoImageStyle);
   }
 
   setNavbarTemplateStyle(template: any) {
     this.navbarStyle.next(template['navbarStyle']);
     this.navbarLinkStyle.next(template['navbarLinkStyle']);
     this.navbarBrandStyle.next(template['navbarBrandStyle']);
+    this.navbarLogoImageStyle.next(template['navbarLogoImageStyle']);
   }
 }

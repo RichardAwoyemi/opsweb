@@ -19,6 +19,9 @@
     "font-family": "'Poppins', sans-serif",
     "display": "block"
   },
+  "navbarLogoImageStyle": {
+    "height": "55px"
+  },
   "navbarBrandStyle": {
     "color": "#377DFF",
     "margin-right": "1rem",
