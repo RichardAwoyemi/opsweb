@@ -66,4 +66,8 @@ export class BuilderSidebarPagesComponent {
       this.simpleModalService.displayMessage('Oops!', `You cannot delete the ${ pageName } page.`);
     }
   }
+
+  viewPage(navbarMenuOption) {
+    this.builderService.activePageSetting.next(navbarMenuOption);
+  }
 }

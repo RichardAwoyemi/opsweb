@@ -28,6 +28,7 @@
                     ngbDropdownToggle style="margin-left: -15px; background-color: transparent" type="button"><i
               class="ti-more-alt"></i></button>
             <div aria-labelledby="pagesDropdown" ngbDropdownMenu>
+              <button (click)="viewPage(navbarMenuOption)" ngbDropdownItem>View</button>
               <button (click)="openRenamePageModal(navbarMenuOption, i)" ngbDropdownItem>Rename</button>
               <button (click)="openDeletePageModal(navbarMenuOption, i)" ngbDropdownItem>Delete</button>
             </div>
