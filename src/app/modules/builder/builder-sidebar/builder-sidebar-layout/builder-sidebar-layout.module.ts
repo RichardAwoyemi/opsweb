@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BuilderSidebarLayoutComponent } from './builder-sidebar-layout.component';
 import { NavbarLayoutPickerComponent } from './navbar-layout-picker/navbar-layout-picker.component';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { NavbarLayoutPickerComponent } from './navbar-layout-picker/navbar-layou
     NavbarLayoutPickerComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    Ng5SliderModule
   ],
   exports: [
     BuilderSidebarLayoutComponent,
