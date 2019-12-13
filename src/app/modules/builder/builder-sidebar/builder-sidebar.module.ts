@@ -7,13 +7,13 @@ import { BuilderSidebarComponentsComponent } from './builder-sidebar-components/
 import { BuilderSidebarTemplatesComponent } from './builder-sidebar-templates/builder-sidebar-templates.component';
 import { BuilderSidebarComponent } from './builder-sidebar.component';
 import { BuilderSidebarOptionsModule } from './builder-sidebar-options/builder-sidebar-options.module';
-import { ArraySortPipe } from '../../../shared/pipes/array-sort.pipe';
 import { FilterPipe } from '../../../shared/pipes/filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { BuilderSidebarPagesComponent } from './builder-sidebar-pages/builder-sidebar-pages.component';
 import { BuilderSidebarDataComponent } from './builder-sidebar-data/builder-sidebar-data.component';
 import { SortablejsModule } from 'ngx-sortablejs';
 import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.module';
 
 @NgModule({
   declarations: [
@@ -23,8 +23,7 @@ import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap'
     BuilderSidebarTemplatesComponent,
     BuilderSidebarPagesComponent,
     BuilderSidebarDataComponent,
-    ArraySortPipe,
-    FilterPipe
+    FilterPipe,
   ],
   imports: [
     BuilderSidebarColoursModule,
@@ -34,10 +33,11 @@ import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap'
     FormsModule,
     SortablejsModule,
     NgbDropdownModule,
-    NgbPopoverModule
+    NgbPopoverModule,
+    ArraySortModule,
   ],
   exports: [
-    BuilderSidebarComponent
+    BuilderSidebarComponent,
   ]
 })
 

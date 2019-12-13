@@ -6,21 +6,32 @@ import { SortablejsOptions } from 'ngx-sortablejs';
 import { SimpleModalService } from '../../../../../shared/components/simple-modal/simple-modal.service';
 import { BuilderUploadImageModalComponent } from '../../../builder-actions/builder-upload-image-modal/builder-upload-image-modal.component';
 import { BuilderDeleteImageModalComponent } from '../../../builder-actions/builder-delete-image-modal/builder-delete-image-modal.component';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-navbar-options-picker',
   templateUrl: './navbar-options-picker.component.html',
-  styleUrls: ['./navbar-options-picker.component.css']
+  styleUrls: ['./navbar-options-picker.component.css'],
 })
 export class NavbarOptionsPickerComponent implements OnInit {
   navbarMenuOptions: any;
   navbarLogoImage: any;
+  fonts: any;
+  navbarBrandFont: string = 'Avenir Next Regular';
+  navbarLinkFont: string = 'Avenir Next Regular';
+  navbarLinkStyle: any;
+  navbarBrandStyle: any;
+
   options: SortablejsOptions;
   private navbarMenuOptionsSubscription: Subscription;
   private navbarLogoImageSubscription: Subscription;
+  private fontsSubscription: Subscription;
+  private navbarBrandStyleSubscription: Subscription;
+  private navbarLinkStyleSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
+    private builderService: BuilderService,
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService
   ) {
@@ -48,6 +59,24 @@ export class NavbarOptionsPickerComponent implements OnInit {
         this.navbarLogoImage = response;
       }
     });
+
+    this.navbarBrandStyleSubscription = this.builderNavbarService.navbarBrandStyle.subscribe(response => {
+      if (response) {
+        this.navbarBrandStyle = response;
+      }
+    });
+
+    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
+      if (response) {
+        this.navbarLinkStyle = response;
+      }
+    });
+
+    this.fontsSubscription = this.builderService.fonts.subscribe(response => {
+      if (response) {
+        this.fonts = response;
+      }
+    });
   }
 
   fileChangeEvent(event: any): void {
@@ -70,5 +99,15 @@ export class NavbarOptionsPickerComponent implements OnInit {
 
   openDeleteImageModal() {
     this.modalService.open(BuilderDeleteImageModalComponent, { windowClass: 'modal-holder', centered: true });
+  }
+
+  onBrandFontChange() {
+    this.navbarBrandStyle['font-family'] = this.navbarBrandFont;
+    this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
+  }
+
+  onLinkFontChange() {
+    this.navbarLinkStyle['font-family'] = this.navbarLinkFont;
+    this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 }

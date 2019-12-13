@@ -15,6 +15,16 @@
     <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
     <span>Upload Image</span>
   </label>
+  <div class="form-group" style="padding-top: 1em">
+    <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    <label style="width: 100%">
+      <select (change)="onBrandFontChange()" [(ngModel)]="navbarBrandFont" class="form-control form-control-lg">
+        <option *ngFor="let font of fonts | ssort"
+                [attr.selected]="font == navbarBrandFont ? true : null"
+                [ngStyle]="{ 'font-family': font }">{{ font }}</option>
+      </select>
+    </label>
+  </div>
 </ng-container>
 <ng-container *ngIf="isNavbarLogoImageNull() == false">
   <div class="image-preview" style="margin-bottom: 1em; height: 150px;">
@@ -43,4 +53,14 @@
       </div>
     </div>
   </div>
+</div>
+<div class="form-group" style="padding-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+  <label style="width: 100%">
+    <select (change)="onLinkFontChange()" [(ngModel)]="navbarLinkFont" class="form-control form-control-lg">
+      <option *ngFor="let font of fonts | ssort"
+              [attr.selected]="font == navbarLinkFont ? true : null"
+              [ngStyle]="{ 'font-family': font }">{{ font }}</option>
+    </select>
+  </label>
 </div>

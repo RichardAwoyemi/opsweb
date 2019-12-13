@@ -6,6 +6,8 @@ import { SortablejsModule } from 'ngx-sortablejs';
 import { BuilderUploadImageModalComponent } from '../../builder-actions/builder-upload-image-modal/builder-upload-image-modal.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImgurService } from '../../../../shared/services/imgur.service';
+import { FormsModule } from '@angular/forms';
+import { ArraySortModule } from '../../../../shared/pipes/array-sort/array-sort.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { ImgurService } from '../../../../shared/services/imgur.service';
   imports: [
     CommonModule,
     SortablejsModule,
-    ImageCropperModule
+    ImageCropperModule,
+    FormsModule,
+    ArraySortModule
   ],
   exports: [
     BuilderSidebarOptionsComponent,

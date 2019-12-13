@@ -41,6 +41,7 @@ export class BuilderService {
   toolbarMobileOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
 
   previewMode = new BehaviorSubject<boolean>(false);
+  fonts = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
 
   resetMenu() {
     this.sidebarTemplatesMenu.next(this.SIDEBAR_INACTIVE_MENU);
