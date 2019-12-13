@@ -71,6 +71,19 @@ export class BuilderNavbarService {
     }
   }
 
+  getDefaultNavbarStyle(templateId): Observable<any> {
+    switch (templateId) {
+      case ActiveTemplates.Default:
+        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
+      case ActiveTemplates.Quick:
+        return this.httpClient.get(this.QUICK_TEMPLATE_PATH);
+      case ActiveTemplates.Front:
+        return this.httpClient.get(this.FRONT_TEMPLATE_PATH);
+      default:
+        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
+    }
+  }
+
   setNavbarThemeStyle(theme: any) {
     let navbarStyle = this.navbarStyle.getValue();
     let navbarLinkStyle = this.navbarLinkStyle.getValue();

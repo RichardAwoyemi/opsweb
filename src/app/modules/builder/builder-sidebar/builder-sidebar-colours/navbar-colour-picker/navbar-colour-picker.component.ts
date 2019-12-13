@@ -20,12 +20,14 @@ export class NavbarColourPickerComponent implements OnInit {
   };
   navbarTemplate: string = ActiveTemplates.Default;
   navbarTheme: string = ActiveNavbarThemes.Default;
+  defaultNavbarStyle: any;
   private navbarStyleSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
   private navbarLinkStyleSubscription: Subscription;
   private navbarTemplateSubscription: Subscription;
   private navbarThemeSubscription: Subscription;
   private navbarThemesSubscription: Subscription;
+  private defaultNavbarStyleSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService
@@ -54,6 +56,12 @@ export class NavbarColourPickerComponent implements OnInit {
     this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
       if (response) {
         this.navbarTemplate = response;
+
+        this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
+          if (response) {
+            this.defaultNavbarStyle = response;
+          }
+        });
       }
     });
 
@@ -88,8 +96,13 @@ export class NavbarColourPickerComponent implements OnInit {
   }
 
   resetToDefault() {
-    this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
-    this.builderNavbarService.navbarTemplate.next(this.navbarTemplate);
-    this.builderNavbarService.setNavbarTemplate(this.navbarTemplate);
+    this.navbarStyle['background-color'] = this.defaultNavbarStyle['navbarStyle']['background-color'];
+    this.builderNavbarService.navbarStyle.next(this.navbarStyle);
+
+    this.navbarBrandStyle['color'] = this.defaultNavbarStyle['navbarBrandStyle']['color'];
+    this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
+
+    this.navbarLinkStyle['color'] = this.defaultNavbarStyle['navbarLinkStyle']['color'];
+    this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 }

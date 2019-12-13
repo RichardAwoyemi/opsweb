@@ -1,19 +1,107 @@
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 1)">Logo</label>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <div class="form-group" style="margin-bottom: .3em;">
-      <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
-    </div>
-    <ng5-slider [(value)]="navbarLogoValue" [options]="navbarLogoOptions"></ng5-slider>
-  </div>
+<div class="form-group" style="margin-bottom: .3em; margin-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
 </div>
-
+<div class="row">
+  <ng-container *ngIf="isNavbarLogoImageNull() != true">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Top</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarLogoImagePaddingTop()" [(ngModel)]="navbarLogoImagePaddingTop"
+                 autocomplete="off"
+                 class="form-control" max="300" min="0" name="number" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Left</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarLogoImagePaddingLeft()" [(ngModel)]="navbarLogoImagePaddingLeft"
+                 autocomplete="off" class="form-control" max="300" min="0" name="number"
+                 style="width: 100%" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Right</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarLogoImagePaddingRight()" [(ngModel)]="navbarLogoImagePaddingRight"
+                 autocomplete="off" class="form-control" max="300" min="0" name="number"
+                 style="width: 100%" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Bottom</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarLogoImagePaddingBottom()" [(ngModel)]="navbarLogoImagePaddingBottom"
+                 autocomplete="off" class="form-control" max="300" min="0" name="number"
+                 style="width: 100%" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 1em;">
+      <label (click)="resetNavbarLogoImageStyle()" class="btn btn-xl btn-block btn-secondary">
+        <span>Reset To Default</span>
+      </label>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isNavbarLogoImageNull() == true">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Top</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarBrandPaddingTop()" [(ngModel)]="navbarBrandPaddingTop" autocomplete="off"
+                 class="form-control" max="300" min="0" name="number" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Left</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarBrandPaddingLeft()" [(ngModel)]="navbarBrandPaddingLeft" autocomplete="off"
+                 class="form-control" max="300" min="0" name="number" style="width: 100%" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Right</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarBrandPaddingRight()" [(ngModel)]="navbarBrandPaddingRight" autocomplete="off"
+                 class="form-control" max="300" min="0" name="number" style="width: 100%" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Bottom</label>
+        <label style="width: 100%">
+          <input (ngModelChange)="setNavbarBrandPaddingBottom()" [(ngModel)]="navbarBrandPaddingBottom"
+                 autocomplete="off"
+                 class="form-control" max="300" min="0" name="number" style="width: 100%" type="number">
+        </label>
+      </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 1em;">
+      <label (click)="resetNavbarBrandStyle()" class="btn btn-xl btn-block btn-secondary">
+        <span>Reset To Default</span>
+      </label>
+    </div>
+  </ng-container>
+</div>
+<hr>
 <div class="form-group" style="margin-top: 1.5em">
   <label style="color: rgba(255, 255, 255, 1)">Menu</label>
 </div>
-<div class="form-group" style="margin-bottom: 0">
+<div class="form-group" style="margin-bottom: 0.4em">
   <label style="color: rgba(255, 255, 255, 0.65)">Position</label>
 </div>
 <div class="row">
@@ -26,9 +114,55 @@
       <button (click)="setNavbarLayoutClass('navbar-nav ml-auto')" class="btn btn-secondary" type="button"><i
         class="ti-align-right"></i></button>
     </div>
-    <div class="form-group" style="margin-bottom: .3em; margin-top: 1em">
+    <div class="form-group" style="margin-bottom: .3em; margin-top: 1.5em">
       <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
     </div>
-    <ng5-slider [(value)]="navbarMenuValue" [options]="navbarMenuOptions"></ng5-slider>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Top</label>
+          <label style="width: 100%">
+            <input (ngModelChange)="setNavbarLinkPaddingTop()" [(ngModel)]="navbarLinkPaddingTop" class="form-control"
+                   max="300" min="0" name="number"
+                   type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Left</label>
+          <label style="width: 100%">
+            <input (ngModelChange)="setNavbarLinkPaddingLeft()" [(ngModel)]="navbarLinkPaddingLeft" class="form-control"
+                   max="300" min="0" name="number"
+                   style="width: 100%" type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Right</label>
+          <label style="width: 100%">
+            <input (ngModelChange)="setNavbarLinkPaddingRight()" [(ngModel)]="navbarLinkPaddingRight"
+                   class="form-control" max="300" min="0" name="number"
+                   style="width: 100%" type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Bottom</label>
+          <label style="width: 100%">
+            <input (ngModelChange)="setNavbarLinkPaddingBottom()" [(ngModel)]="navbarLinkPaddingBottom"
+                   class="form-control" max="300" min="0" name="number"
+                   style="width: 100%" type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-top: 1em;">
+        <label (click)="resetNavbarLinkStyle()" class="btn btn-xl btn-block btn-secondary">
+          <span>Reset To Default</span>
+        </label>
+      </div>
+    </div>
   </div>
 </div>

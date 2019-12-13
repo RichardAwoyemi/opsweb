@@ -1,7 +1,7 @@
 <div class="form-group">
   <div class="row">
     <div class="col-md-6">
-      <label style="color: rgba(255, 255, 255, 0.65)">Logo</label>
+      <label style="color: rgba(255, 255, 255, 1)">Logo</label>
     </div>
     <div class="col-md-6 text-right">
       <ng-container *ngIf="isNavbarLogoImageNull() == false">
@@ -25,9 +25,9 @@
     <span>Replace Image</span>
   </label>
 </ng-container>
-<br>
+<hr>
 <div class="form-group" style="padding-top: 1px">
-  <label style="color: rgba(255, 255, 255, 0.65)">Menu</label>
+  <label style="color: rgba(255, 255, 255, 1)">Menu</label>
 </div>
 <div [sortablejsOptions]="options" [sortablejs]="navbarMenuOptions">
   <div *ngFor="let navbarMenuOption of navbarMenuOptions"

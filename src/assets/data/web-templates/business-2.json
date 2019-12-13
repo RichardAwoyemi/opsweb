@@ -20,14 +20,22 @@
     "display": "block"
   },
   "navbarLogoImageStyle": {
-    "height": "55px"
+    "height": "55px",
+    "padding-top": "4px",
+    "padding-left": "4px",
+    "padding-right": "4px",
+    "padding-bottom": "4px"
   },
   "navbarBrandStyle": {
     "color": "#377DFF",
     "margin-right": "1rem",
     "font-size": "1.25rem",
     "line-height": "inherit",
-    "white-space": "nowrap"
+    "white-space": "nowrap",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px"
   },
   "heroHeadingStyle": {
     "font-family": "'Poppins', Helvetica, Arial, sans-serif",

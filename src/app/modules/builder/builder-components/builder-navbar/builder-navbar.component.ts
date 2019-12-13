@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderNavbarService } from './builder-navbar.service';
-import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveNavbarThemes, ActiveSettings, ActiveTemplates } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
 
 @Component({
@@ -46,6 +46,10 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
+    this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
+    this.builderNavbarService.navbarTemplate.next(ActiveTemplates.Default);
+    this.builderNavbarService.setNavbarTemplate(ActiveTemplates.Default);
+
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
       this.previewMode = response;
     });
@@ -67,7 +71,6 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
         this.navbarLogoText = response;
       }
     });
-
 
     this.navbarStyleSubscription = this.builderNavbarService.navbarStyle.subscribe(response => {
       if (response) {
@@ -136,8 +139,8 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
 
   setActiveElementStyle(activeElement, element) {
     if (activeElement == element && !this.previewMode) {
-      if (element.indexOf('navbar-logo-text') > -1) {
-        return 'nav-text-edit';
+      if (element.indexOf('navbar-logo-brand') > -1) {
+        return 'nav-brand-edit';
       }
       if (element.indexOf('navbar-link') > -1) {
         return 'nav-link-edit';
@@ -192,24 +195,24 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     }
   }
 
-  selectNavbarLogoText(event: any, elementId: string) {
+  selectNavbarLogoBrand(event: any, elementId: string) {
     this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     event.stopPropagation();
   }
 
-  saveNavbarLogoTextOption() {
+  saveNavbarLogoBrandOption() {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderNavbarService.navbarLogoText.next(this.navbarLogoText);
   }
 
-  setNavbarLogoTextClass() {
+  setNavbarLogoBrandClass() {
     if (this.previewMode) {
-      return 'nav-logo-text-preview';
+      return 'nav-logo-brand-preview';
     }
     if (!this.previewMode) {
-      return 'nav-logo-text-active';
+      return 'nav-logo-brand-active';
     }
   }
 

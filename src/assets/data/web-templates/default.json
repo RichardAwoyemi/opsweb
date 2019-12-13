@@ -2,16 +2,28 @@
   "id": "default",
   "navbarStyle": {
     "background-color": "#FFFFFF",
-    "padding": "2em"
+    "padding": "24px"
   },
   "navbarLinkStyle": {
-    "color": "#000"
+    "color": "#000",
+    "padding-top": "4px",
+    "padding-left": "4px",
+    "padding-right": "4px",
+    "padding-bottom": "4px"
   },
   "navbarLogoImageStyle": {
-    "height": "50px"
+    "height": "50px",
+    "padding-top": "4px",
+    "padding-left": "4px",
+    "padding-right": "4px",
+    "padding-bottom": "4px"
   },
   "navbarBrandStyle": {
-    "color": "#757575"
+    "color": "#757575",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px"
   },
   "heroHeadingStyle": {
     "font-family": "'Avenir Next Medium', Helvetica, Arial, sans-serif"
@@ -19,6 +31,6 @@
   "heroSubheadingStyle": {},
   "heroButtonStyle": {},
   "footerStyle": {
-    "padding": "1em"
+    "padding": "16px"
   }
 }
