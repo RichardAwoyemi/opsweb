@@ -29,7 +29,7 @@
   "navbarBrandStyle": {
     "color": "#377DFF",
     "margin-right": "1rem",
-    "font-size": "1.25rem",
+    "font-size": "20px",
     "line-height": "inherit",
     "white-space": "nowrap",
     "padding-top": "0px",

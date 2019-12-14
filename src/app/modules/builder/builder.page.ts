@@ -22,7 +22,6 @@ export class BuilderComponent implements OnInit {
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    console.log(window.innerWidth);
 
     this.ngxLoader.start();
     this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {
@@ -31,10 +30,7 @@ export class BuilderComponent implements OnInit {
         this.showcaseClass = 'col-md-12';
       } else {
         this.previewMode = false;
-        if (this.innerWidth > 1900) {
-          this.showcaseClass = 'col-md-10';
-          this.sidebarClass = 'col-md-2';
-        }
+        this.setBuilderPanelSizes();
       }
     }));
     this.ngxLoader.stop();
@@ -43,6 +39,10 @@ export class BuilderComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerWidth = window.innerWidth;
+    this.setBuilderPanelSizes();
+  }
+
+  setBuilderPanelSizes() {
     if (this.innerWidth > 1900) {
       this.showcaseClass = 'col-md-10';
       this.sidebarClass = 'col-md-2';

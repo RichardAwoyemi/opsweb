@@ -10,7 +10,8 @@
     "padding-left": "4px",
     "padding-right": "4px",
     "padding-bottom": "4px",
-    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif"
+    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif",
+    "font-size": "15px"
   },
   "navbarLogoImageStyle": {
     "height": "50px",
@@ -26,7 +27,8 @@
     "padding-left": "0px",
     "padding-right": "0px",
     "padding-bottom": "0px",
-    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif"
+    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif",
+    "font-size": "17px"
   },
   "heroHeadingStyle": {
     "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif"

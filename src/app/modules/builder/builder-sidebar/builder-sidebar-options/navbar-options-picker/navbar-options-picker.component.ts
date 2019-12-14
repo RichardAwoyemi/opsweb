@@ -16,16 +16,23 @@ import { BuilderService } from '../../../builder.service';
 export class NavbarOptionsPickerComponent implements OnInit {
   navbarMenuOptions: any;
   navbarLogoImage: any;
-  fonts: any;
-  navbarBrandFont: string = 'Avenir Next Regular';
-  navbarLinkFont: string = 'Avenir Next Regular';
+  fontNames: any;
+  fontSizes: any;
+  fontUnits: any;
+  navbarBrandFontName: string = 'Avenir Next Regular';
+  navbarLinkFontName: string = 'Avenir Next Regular';
+  navbarBrandFontUnit: string = 'px';
+  navbarLinkFontUnit: string = 'px';
   navbarLinkStyle: any;
   navbarBrandStyle: any;
+  navbarBrandFontSize: number;
+  navbarLinkFontSize: number;
 
   options: SortablejsOptions;
   private navbarMenuOptionsSubscription: Subscription;
   private navbarLogoImageSubscription: Subscription;
-  private fontsSubscription: Subscription;
+  private fontNamesSubscription: Subscription;
+  private fontUnitsSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
   private navbarLinkStyleSubscription: Subscription;
 
@@ -63,18 +70,42 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.navbarBrandStyleSubscription = this.builderNavbarService.navbarBrandStyle.subscribe(response => {
       if (response) {
         this.navbarBrandStyle = response;
+
+        if (this.navbarBrandStyle['font-size']) {
+          if (this.navbarBrandStyle['font-size'].indexOf('px') > -1) {
+            this.navbarBrandFontSize = this.navbarBrandStyle['font-size'].replace('px', '');
+          }
+          if (this.navbarBrandStyle['font-size'].indexOf('em') > -1) {
+            this.navbarBrandFontSize = this.navbarBrandStyle['font-size'].replace('em', '');
+          }
+        }
       }
     });
 
     this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
       if (response) {
         this.navbarLinkStyle = response;
+
+        if (this.navbarLinkStyle['font-size']) {
+          if (this.navbarLinkStyle['font-size'].indexOf('px') > -1) {
+            this.navbarLinkFontSize = this.navbarLinkStyle['font-size'].replace('px', '');
+          }
+          if (this.navbarLinkStyle['font-size'].indexOf('em') > -1) {
+            this.navbarLinkFontSize = this.navbarLinkStyle['font-size'].replace('em', '');
+          }
+        }
       }
     });
 
-    this.fontsSubscription = this.builderService.fonts.subscribe(response => {
+    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
       if (response) {
-        this.fonts = response;
+        this.fontNames = response;
+      }
+    });
+
+    this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
+      if (response) {
+        this.fontUnits = response;
       }
     });
   }
@@ -101,13 +132,51 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.modalService.open(BuilderDeleteImageModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 
-  onBrandFontChange() {
-    this.navbarBrandStyle['font-family'] = this.navbarBrandFont;
+  onNavbarBrandFontNameChange() {
+    this.navbarBrandStyle['font-family'] = this.navbarBrandFontName;
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
-  onLinkFontChange() {
-    this.navbarLinkStyle['font-family'] = this.navbarLinkFont;
+  setNavbarBrandFontSize() {
+    this.navbarBrandStyle['font-size'] = this.navbarBrandFontSize + this.navbarBrandFontUnit;
+    this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
+  }
+
+  onNavbarBrandFontUnitChange() {
+    if (this.navbarBrandFontUnit == 'em') {
+      if (this.navbarBrandFontSize < 16) {
+        this.navbarBrandFontSize = 16;
+      }
+      this.navbarBrandFontSize = Math.round(this.navbarBrandFontSize / 16);
+    }
+    if (this.navbarBrandFontUnit == 'px') {
+      this.navbarBrandFontSize = Math.round(this.navbarBrandFontSize * 16);
+    }
+    this.navbarBrandStyle['font-size'] = this.navbarBrandFontSize + this.navbarBrandFontUnit;
+    this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
+  }
+
+  onNavbarLinkFontNameChange() {
+    this.navbarLinkStyle['font-family'] = this.navbarLinkFontName;
+    this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
+  }
+
+  setNavbarLinkFontSize() {
+    this.navbarLinkStyle['font-size'] = this.navbarLinkFontSize + this.navbarLinkFontUnit;
+    this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
+  }
+
+  onNavbarLinkFontUnitChange() {
+    if (this.navbarLinkFontUnit == 'em') {
+      if (this.navbarLinkFontSize < 16) {
+        this.navbarLinkFontSize = 16;
+      }
+      this.navbarLinkFontSize = Math.round(this.navbarLinkFontSize / 16);
+    }
+    if (this.navbarLinkFontUnit == 'px') {
+      this.navbarLinkFontSize = Math.round(this.navbarLinkFontSize * 16);
+    }
+    this.navbarLinkStyle['font-size'] = this.navbarLinkFontSize + this.navbarLinkFontUnit;
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 }
