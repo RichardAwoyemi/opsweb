@@ -3,10 +3,16 @@
   top: -1000px;
 }
 
-.fw-600 {
+.fw-delete {
   color: red;
+  font-weight: normal !important;
 }
 
-.fw-600:hover {
+.fw-600:hover, .fw-delete:hover {
   text-decoration: underline;
+}
+
+.fw-600 {
+  color: #7193F0;
+  font-weight: normal !important;
 }

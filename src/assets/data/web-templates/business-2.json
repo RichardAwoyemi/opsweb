@@ -39,7 +39,7 @@
     "font-family": "'Poppins', sans-serif"
   },
   "heroHeadingStyle": {
-    "font-family": "'Poppins', Helvetica, Arial, sans-serif",
+    "font-family": "'Poppins', sans-serif",
     "color": "#1e2022",
     "font-weight": "300",
     "line-height": "1.2",
@@ -47,7 +47,7 @@
   },
   "heroButtonStyle": {
     "color": "#377dff",
-    "font-family": "'Poppins', Helvetica, Arial, sans-serif",
+    "font-family": "'Poppins', sans-serif",
     "min-width": "9.6875rem",
     "background": "rgba(55, 125, 255, 0.1)",
     "border-color": "transparent",

@@ -1,5 +1,6 @@
 .fw-600 {
   color: #7193F0;
+  font-weight: normal !important;
 }
 
 .fw-600:hover {

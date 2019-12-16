@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-6 text-right">
       <ng-container *ngIf="isNavbarLogoImageNull() == false">
-        <a (click)="openDeleteImageModal()" class="fw-600 fs-12" href="#">Delete</a>
+        <a (click)="openDeleteImageModal()" class="fw-delete fs-12" href="#">Delete</a>
       </ng-container>
     </div>
   </div>
@@ -16,7 +16,14 @@
     <span>Upload Image</span>
   </label>
   <div class="form-group" style="padding-top: 1em">
-    <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetNavbarBrandFontName()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
     <label style="width: 100%">
       <select (change)="onNavbarBrandFontNameChange()" [(ngModel)]="navbarBrandFontName"
               class="form-control form-control-lg">
@@ -27,7 +34,14 @@
     </label>
   </div>
   <div class="form-group">
-    <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetNavbarBrandFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-6">
         <label style="width: 100%">
@@ -78,7 +92,14 @@
   </div>
 </div>
 <div class="form-group" style="padding-top: 1em">
-  <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetNavbarLinkFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
   <label style="width: 100%">
     <select (change)="onNavbarLinkFontNameChange()" [(ngModel)]="navbarLinkFontName"
             class="form-control form-control-lg">
@@ -89,7 +110,14 @@
   </label>
 </div>
 <div class="form-group">
-  <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetNavbarLinkFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-6">
       <label style="width: 100%">

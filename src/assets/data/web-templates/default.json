@@ -10,7 +10,7 @@
     "padding-left": "4px",
     "padding-right": "4px",
     "padding-bottom": "4px",
-    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif",
+    "font-family": "'Avenir Next Regular', sans-serif",
     "font-size": "15px"
   },
   "navbarLogoImageStyle": {
@@ -19,7 +19,7 @@
     "padding-left": "4px",
     "padding-right": "4px",
     "padding-bottom": "4px",
-    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif"
+    "font-family": "'Avenir Next Regular', sans-serif"
   },
   "navbarBrandStyle": {
     "color": "#757575",
@@ -27,11 +27,11 @@
     "padding-left": "0px",
     "padding-right": "0px",
     "padding-bottom": "0px",
-    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif",
+    "font-family": "'Avenir Next Regular', sans-serif",
     "font-size": "17px"
   },
   "heroHeadingStyle": {
-    "font-family": "'Avenir Next Regular', Helvetica, Arial, sans-serif"
+    "font-family": "'Avenir Next Regular', sans-serif"
   },
   "heroSubheadingStyle": {},
   "heroButtonStyle": {},
