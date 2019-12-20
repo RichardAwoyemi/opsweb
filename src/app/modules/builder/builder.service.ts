@@ -41,6 +41,8 @@ export class BuilderService {
   toolbarMobileOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
 
   previewMode = new BehaviorSubject<boolean>(false);
+  fullScreenMode = new BehaviorSubject<boolean>(false);
+
   fontNames = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
 

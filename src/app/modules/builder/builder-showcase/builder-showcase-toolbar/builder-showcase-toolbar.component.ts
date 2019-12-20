@@ -18,11 +18,14 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   innerHeight: number;
   activePage: string = 'Home';
   previewButtonIcon: string = 'btn-icon';
+  fullScreenButtonIcon: string = 'btn-icon';
   navbarMenuOptions = Array<String>();
   previewMode: boolean;
+  fullScreenMode: boolean;
   activePageIndex: number;
   private navbarMenuOptionsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
+  private fullScreenModeSubscription: Subscription;
   private activePageIndexSubscription: Subscription;
 
   activeToolbarOrientation: string;
@@ -47,6 +50,15 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
         this.previewButtonIcon = 'btn-icon-active';
       } else {
         this.previewButtonIcon = 'btn-icon';
+      }
+    }));
+
+    this.fullScreenModeSubscription = this.builderService.fullScreenMode.subscribe((response => {
+      this.fullScreenMode = response;
+      if (this.fullScreenMode) {
+        this.fullScreenButtonIcon = 'btn-icon-active';
+      } else {
+        this.fullScreenButtonIcon = 'btn-icon';
       }
     }));
 
@@ -104,5 +116,39 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   setActivePage(navbarMenuOption: string) {
     this.builderService.activePageSetting.next(navbarMenuOption);
   }
-}
 
+  toggleFullScreen() {
+    this.builderService.fullScreenMode.next(!this.fullScreenMode);
+    if (this.fullScreenMode) {
+      this.openFullScreen();
+    } else {
+      this.closeFullScreen();
+    }
+  }
+
+  openFullScreen() {
+    let element = document.documentElement;
+    let methodToBeInvoked = element['requestFullscreen'] || element['webkitRequestFullScreen'] || element['mozRequestFullscreen'] || element['msRequestFullscreen'];
+    if (methodToBeInvoked) {
+      methodToBeInvoked.call(element);
+    }
+  }
+
+  closeFullScreen() {
+    let methodToBeInvoked = document['exitFullscreen'] || document['webkitExitFullscreen'] || document['mozCancelFullScreen'];
+    if (methodToBeInvoked) {
+      methodToBeInvoked.call(document);
+    }
+  }
+
+  @HostListener('document:fullscreenchange')
+  @HostListener('document:webkitfullscreenchange')
+  @HostListener('document:mozfullscreenchange')
+  @HostListener('document:MSFullscreenChange')
+  onFullScreenChange() {
+    let fullscreenElement = document.fullscreenElement || document['mozFullScreenElement'] || document['webkitFullscreenElement'];
+    if (!fullscreenElement) {
+      this.builderService.fullScreenMode.next(false);
+    }
+  }
+}
