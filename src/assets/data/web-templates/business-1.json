@@ -24,7 +24,8 @@
     "padding-top": "4px",
     "padding-left": "4px",
     "padding-right": "4px",
-    "padding-bottom": "4px"
+    "padding-bottom": "4px",
+    "width": "50%"
   },
   "navbarBrandStyle": {
     "color": "#0c66ff",
@@ -34,7 +35,8 @@
     "padding-left": "0px",
     "padding-right": "0px",
     "padding-bottom": "0px",
-    "font-family": "'Nunito Sans', sans-serif"
+    "font-family": "'Nunito Sans', sans-serif",
+    "width": "75%"
   },
   "heroHeadingStyle": {
     "font-family": "'Nunito Sans', sans-serif",

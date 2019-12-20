@@ -20,14 +20,18 @@ export class NavbarOptionsPickerComponent implements OnInit {
   fontNames: any;
   fontSizes: any;
   fontUnits: any;
+  imageUnits: any;
   navbarBrandFontName: string = 'Avenir Next Regular';
   navbarLinkFontName: string = 'Avenir Next Regular';
   navbarBrandFontUnit: string = 'px';
   navbarLinkFontUnit: string = 'px';
+  navbarLogoImageUnit: string = '%';
   navbarLinkStyle: any;
   navbarBrandStyle: any;
+  navbarLogoImageStyle: any;
   navbarBrandFontSize: number;
   navbarLinkFontSize: number;
+  navbarLogoImageSize: number;
   navbarTemplate: string = ActiveTemplates.Default;
   defaultNavbarStyle: any;
 
@@ -37,6 +41,7 @@ export class NavbarOptionsPickerComponent implements OnInit {
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
+  private navbarLogoImageStyleSubscription: Subscription;
   private navbarLinkStyleSubscription: Subscription;
   private navbarTemplateSubscription: Subscription;
   private defaultNavbarStyleSubscription: Subscription;
@@ -69,6 +74,24 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
       if (response) {
         this.navbarLogoImage = response;
+      }
+    });
+
+    this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
+      if (response) {
+        this.navbarLogoImageStyle = response;
+
+        if (this.navbarLogoImageStyle['width']) {
+          if (this.navbarLogoImageStyle['width'].indexOf('px') > -1) {
+            this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('px', '');
+          }
+          if (this.navbarLogoImageStyle['width'].indexOf('em') > -1) {
+            this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('em', '');
+          }
+          if (this.navbarLogoImageStyle['width'].indexOf('%') > -1) {
+            this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('%', '');
+          }
+        }
       }
     });
 
@@ -190,9 +213,11 @@ export class NavbarOptionsPickerComponent implements OnInit {
       }
       this.navbarLinkFontSize = Math.round(this.navbarLinkFontSize / 16);
     }
+
     if (this.navbarLinkFontUnit == 'px') {
       this.navbarLinkFontSize = Math.round(this.navbarLinkFontSize * 16);
     }
+
     this.navbarLinkStyle['font-size'] = this.navbarLinkFontSize + this.navbarLinkFontUnit;
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
@@ -206,7 +231,6 @@ export class NavbarOptionsPickerComponent implements OnInit {
 
   resetNavbarBrandFontSize() {
     this.navbarBrandStyle['font-size'] = this.defaultNavbarStyle['navbarBrandStyle']['font-size'];
-    this.navbarBrandFontUnit = 'px';
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
@@ -221,5 +245,15 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.navbarLinkStyle['font-size'] = this.defaultNavbarStyle['navbarLinkStyle']['font-size'];
     this.navbarLinkFontUnit = 'px';
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
+  }
+
+  resetNavbarLogoImageSize() {
+    this.navbarLogoImageStyle['width'] = this.defaultNavbarStyle['navbarLogoImageStyle']['width'];
+    this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
+  }
+
+  setNavbarLogoImageSize() {
+    this.navbarLogoImageStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
+    this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
   }
 }
