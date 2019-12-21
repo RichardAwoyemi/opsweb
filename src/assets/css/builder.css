@@ -135,6 +135,12 @@ body::-webkit-scrollbar-thumb {
   outline: none;
 }
 
+@media (max-width: 576px) {
+  .navbar-brand {
+    width: 70% !important;
+  }
+}
+
 /* Jumbotron */
 
 .jumbotron {

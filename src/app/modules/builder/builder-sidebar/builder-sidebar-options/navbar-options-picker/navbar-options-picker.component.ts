@@ -25,7 +25,7 @@ export class NavbarOptionsPickerComponent implements OnInit {
   navbarLinkFontName: string = 'Avenir Next Regular';
   navbarBrandFontUnit: string = 'px';
   navbarLinkFontUnit: string = 'px';
-  navbarLogoImageUnit: string = '%';
+  navbarLogoImageUnit: string = 'px';
   navbarLinkStyle: any;
   navbarBrandStyle: any;
   navbarLogoImageStyle: any;
@@ -80,16 +80,9 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
       if (response) {
         this.navbarLogoImageStyle = response;
-
         if (this.navbarLogoImageStyle['width']) {
           if (this.navbarLogoImageStyle['width'].indexOf('px') > -1) {
             this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('px', '');
-          }
-          if (this.navbarLogoImageStyle['width'].indexOf('em') > -1) {
-            this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('em', '');
-          }
-          if (this.navbarLogoImageStyle['width'].indexOf('%') > -1) {
-            this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('%', '');
           }
         }
       }
@@ -249,11 +242,15 @@ export class NavbarOptionsPickerComponent implements OnInit {
 
   resetNavbarLogoImageSize() {
     this.navbarLogoImageStyle['width'] = this.defaultNavbarStyle['navbarLogoImageStyle']['width'];
+    this.navbarBrandStyle['width'] = this.defaultNavbarStyle['navbarLogoImageStyle']['width'];
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
+    this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarLogoImageSize() {
     this.navbarLogoImageStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
+    this.navbarBrandStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
+    this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 }

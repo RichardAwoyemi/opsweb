@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 export class BuilderNavbarService {
   navbarLogoImage = new BehaviorSubject<string>(null);
   navbarLogoText = new BehaviorSubject<string>('Logo');
-  navbarLogoImageStyle = new BehaviorSubject<Object>({ 'height': '50px' });
+  navbarLogoImageStyle = new BehaviorSubject<Object>({ 'width': '200px' });
   navbarTemplate = new BehaviorSubject<string>(ActiveTemplates.Default);
   navbarTheme = new BehaviorSubject<string>(null);
   navbarStyle = new BehaviorSubject<Object>({ 'padding': '1em' });

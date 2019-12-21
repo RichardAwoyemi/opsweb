@@ -23,15 +23,13 @@
              [ngClass]="setNavbarLogoImageClass()"
              [ngStyle]="navbarLogoImageStyle"
              alt="navbarLogoImage"
-             class="img-responsive"
              id="navbar-logo-image"
              style="padding: .5rem"/>
       </ng-container>
     </span>
-    <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
-            class="navbar-toggler collapsed"
+    <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-target="#navbarNav" data-toggle="collapse" type="button">
-      <i class="ti-menu"></i>
+      <span class="navbar-toggler-icon"><i class="ti-menu"></i></span>
     </button>
     <div class="navbar-collapse collapse" id="navbarNav">
       <ul [ngClass]="navbarLayoutClass">

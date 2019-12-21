@@ -18,19 +18,18 @@
     "padding-left": "4px",
     "padding-right": "4px",
     "padding-bottom": "4px",
-    "width": "50%",
+    "width": "100px",
     "font-family": "'Avenir Next Regular', sans-serif"
   },
   "navbarBrandStyle": {
     "color": "#757575",
-    "display": "inline-block",
     "padding-top": "0px",
     "padding-left": "0px",
     "padding-right": "0px",
     "padding-bottom": "0px",
     "font-family": "'Avenir Next Regular', sans-serif",
     "font-size": "17px",
-    "width": "75%"
+    "width": "100px"
   },
   "heroHeadingStyle": {
     "font-family": "'Avenir Next Regular', sans-serif"
