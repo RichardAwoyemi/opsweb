@@ -9,15 +9,16 @@ import { Subscription } from 'rxjs';
 })
 export class FooterColourPickerComponent implements OnInit {
   footerThemes: any;
-  footerStyle: any = {
-    'padding': '1em'
-  };
+  defaultFooterStyle: any;
+  footerStyle: any;
   footerTemplate: string = ActiveTemplates.Default;
   footerTheme: string = ActiveFooterThemes.Default;
 
   private footerStyleSubscription: Subscription;
-  private footerThemesSubscription: Subscription;
   private footerThemeSubscription: Subscription;
+  private footerThemesSubscription: Subscription;
+  private footerTemplateSubscription: Subscription;
+  private defaultFooterStyleSubscription: Subscription;
 
   constructor(
     private builderFooterService: BuilderFooterService
@@ -34,12 +35,24 @@ export class FooterColourPickerComponent implements OnInit {
     this.footerThemeSubscription = this.builderFooterService.footerTheme.subscribe(response => {
       if (response) {
         this.footerTheme = response;
+
+        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTheme).subscribe(response => {
+          if (response) {
+            this.defaultFooterStyle = response;
+          }
+        });
       }
     });
 
     this.footerThemesSubscription = this.builderFooterService.getFooterThemes().subscribe(response => {
       if (response) {
         this.footerThemes = response;
+      }
+    });
+
+    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
+      if (response) {
+        this.footerTemplate = response;
       }
     });
   }
@@ -55,7 +68,9 @@ export class FooterColourPickerComponent implements OnInit {
 
   resetToDefault() {
     this.builderFooterService.footerTheme.next(ActiveFooterThemes.Default);
-    this.builderFooterService.footerTemplate.next(this.footerTemplate);
-    this.builderFooterService.setFooterTemplate(this.footerTemplate);
+
+    this.footerStyle['background-color'] = this.defaultFooterStyle['footerStyle']['background-color'];
+    this.footerStyle['color'] = this.defaultFooterStyle['footerStyle']['color'];
+    this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 }

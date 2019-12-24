@@ -2,7 +2,7 @@
 <div [ngClass]="setContextMenu()">
   <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
           [ngStyle]="footerStyle">
-    <div class="container text-center" style="height: auto">
+    <div class="container text-center" style="padding: 1em">
       Copyright &copy; {{ today | date: 'yyyy' }}
     </div>
   </footer>

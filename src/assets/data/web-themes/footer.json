@@ -6,8 +6,7 @@
     "name": "Stanley",
     "footerStyle": {
       "background-color": "#108EC8",
-      "color": "#FFFFFF",
-      "padding": "1em"
+      "color": "#FFFFFF"
     }
   }
 ]

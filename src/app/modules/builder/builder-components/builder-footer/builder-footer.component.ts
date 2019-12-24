@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
+import { ActiveComponents, ActiveFooterThemes, ActiveSettings, ActiveTemplates } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
@@ -16,13 +16,13 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   activeEditComponent: string;
   today: number = Date.now();
   previewMode: boolean;
-  footerStyle: any = {
-    'padding': '1em'
-  };
+  footerStyle: any;
 
   private footerStyleSubscription: Subscription;
   private activeEditComponentSubscription: Subscription;
   private previewModeSubscription: Subscription;
+  private footerThemeSubscription: Subscription;
+  private footerTemplateSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -48,10 +48,22 @@ export class BuilderFooterComponent implements OnInit, IComponent {
         this.activeEditComponent = response;
       }
     });
+
+    this.footerThemeSubscription = this.builderFooterService.footerTheme.subscribe(response => {
+      if (!response) {
+        this.builderFooterService.footerTheme.next(ActiveFooterThemes.Default);
+        this.builderFooterService.setFooterTemplate(ActiveTemplates.Default);
+      }
+    });
+
+    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
+      if (!response) {
+        this.builderFooterService.footerTemplate.next(ActiveFooterThemes.Default);
+      }
+    });
   }
 
   setActiveEditComponent() {
-    this.builderService.activeElement.next(ActiveElements.Default);
     if (this.activeEditComponent == ActiveComponents.Footer) {
       this.clearActiveEditComponent();
     } else {

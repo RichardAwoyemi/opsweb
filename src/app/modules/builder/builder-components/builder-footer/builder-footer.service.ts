@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class BuilderFooterService {
-  footerTemplate = new BehaviorSubject<string>(ActiveTemplates.Default);
+  footerTemplate = new BehaviorSubject<string>(null);
   footerTheme = new BehaviorSubject<string>(null);
   footerStyle = new BehaviorSubject<Object>(null);
 
@@ -56,7 +56,7 @@ export class BuilderFooterService {
           response = themes.filter(theme => {
             return theme.name == ActiveFooterThemes.Stanley;
           });
-          this.setFooterTemplateStyle(response[0]);
+          this.setFooterThemeStyle(response[0]);
         });
         break;
       default:
@@ -66,13 +66,36 @@ export class BuilderFooterService {
 
   setFooterThemeStyle(theme: any) {
     let footerStyle = this.footerStyle.getValue();
-    if (footerStyle) {
+
+    if (footerStyle && theme['footerStyle']['background-color']) {
+      footerStyle['background-color'] = theme['footerStyle']['background-color'];
+    } else {
       footerStyle = theme['footerStyle'];
     }
+
+    if (footerStyle && theme['footerStyle']['color']) {
+      footerStyle['color'] = theme['footerStyle']['color'];
+    } else {
+      footerStyle = theme['footerStyle'];
+    }
+
     this.footerStyle.next(footerStyle);
   }
 
   setFooterTemplateStyle(template: any) {
     this.footerStyle.next(template['footerStyle']);
+  }
+
+  getDefaultFooterStyle(templateId): Observable<any> {
+    switch (templateId) {
+      case ActiveTemplates.Default:
+        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
+      case ActiveTemplates.Quick:
+        return this.httpClient.get(this.QUICK_TEMPLATE_PATH);
+      case ActiveTemplates.Front:
+        return this.httpClient.get(this.FRONT_TEMPLATE_PATH);
+      default:
+        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
+    }
   }
 }

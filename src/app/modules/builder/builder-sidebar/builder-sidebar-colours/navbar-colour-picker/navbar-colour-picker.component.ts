@@ -96,7 +96,7 @@ export class NavbarColourPickerComponent implements OnInit {
   }
 
   resetToDefault() {
-    this.builderNavbarService.navbarTemplate.next(ActiveTemplates.Default);
+    this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
 
     this.navbarStyle['background-color'] = this.defaultNavbarStyle['navbarStyle']['background-color'];
     this.builderNavbarService.navbarStyle.next(this.navbarStyle);

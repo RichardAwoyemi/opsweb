@@ -37,6 +37,7 @@
   "heroSubheadingStyle": {},
   "heroButtonStyle": {},
   "footerStyle": {
+    "color": "#757575",
     "padding": "16px"
   }
 }
