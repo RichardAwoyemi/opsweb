@@ -36,6 +36,8 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   private navbarLogoImageSubscription: Subscription;
   private navbarLogoTextSubscription: Subscription;
   private navbarLogoImageStyleSubscription: Subscription;
+  private navbarThemeSubscription: Subscription;
+  private navbarTemplateSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -46,12 +48,27 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
-    this.builderNavbarService.navbarTemplate.next(ActiveTemplates.Default);
-    this.builderNavbarService.setNavbarTemplate(ActiveTemplates.Default);
-
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
       this.previewMode = response;
+    });
+
+    this.navbarThemeSubscription = this.builderNavbarService.navbarTheme.subscribe(response => {
+      if (!response) {
+        this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
+      }
+    });
+
+    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
+      if (!response) {
+        this.builderNavbarService.navbarTemplate.next(ActiveNavbarThemes.Default);
+        this.builderNavbarService.setNavbarTemplate(ActiveTemplates.Default);
+      }
+    });
+
+    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
+      if (!response) {
+        this.builderNavbarService.navbarTemplate.next(ActiveNavbarThemes.Default);
+      }
     });
 
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {

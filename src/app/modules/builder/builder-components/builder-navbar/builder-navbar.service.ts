@@ -7,10 +7,10 @@ import { HttpClient } from '@angular/common/http';
 export class BuilderNavbarService {
   navbarLogoImage = new BehaviorSubject<string>(null);
   navbarLogoText = new BehaviorSubject<string>('Logo');
-  navbarLogoImageStyle = new BehaviorSubject<Object>({ 'width': '200px' });
-  navbarTemplate = new BehaviorSubject<string>(ActiveTemplates.Default);
+  navbarLogoImageStyle = new BehaviorSubject<Object>(null);
+  navbarTemplate = new BehaviorSubject<string>(null);
   navbarTheme = new BehaviorSubject<string>(null);
-  navbarStyle = new BehaviorSubject<Object>({ 'padding': '1em' });
+  navbarStyle = new BehaviorSubject<Object>(null);
   navbarLinkStyle = new BehaviorSubject<Object>(null);
   navbarBrandStyle = new BehaviorSubject<Object>(null);
   navbarLayoutClass = new BehaviorSubject<Object>(null);
@@ -88,34 +88,28 @@ export class BuilderNavbarService {
     let navbarStyle = this.navbarStyle.getValue();
     let navbarLinkStyle = this.navbarLinkStyle.getValue();
     let navbarBrandStyle = this.navbarBrandStyle.getValue();
-    let navbarLogoImageStyle = this.navbarLogoImageStyle.getValue();
 
-    if (navbarStyle) {
+    if (navbarStyle && theme['navbarStyle']['background-color']) {
       navbarStyle['background-color'] = theme['navbarStyle']['background-color'];
     } else {
       navbarStyle = theme['navbarStyle'];
     }
 
-    if (navbarLinkStyle) {
+    if (navbarLinkStyle && theme['navbarLinkStyle']['color']) {
       navbarLinkStyle['color'] = theme['navbarLinkStyle']['color'];
     } else {
       navbarLinkStyle = theme['navbarLinkStyle'];
     }
 
-    if (navbarBrandStyle) {
+    if (navbarBrandStyle && theme['navbarBrandStyle']['color']) {
       navbarBrandStyle['color'] = theme['navbarBrandStyle']['color'];
     } else {
       navbarBrandStyle = theme['navbarBrandStyle'];
     }
 
-    if (navbarLogoImageStyle) {
-      navbarLogoImageStyle['height'] = theme['navbarHeightStyle']['height'];
-    }
-
     this.navbarStyle.next(navbarStyle);
     this.navbarLinkStyle.next(navbarLinkStyle);
     this.navbarBrandStyle.next(navbarBrandStyle);
-    this.navbarLogoImageStyle.next(navbarLogoImageStyle);
   }
 
   setNavbarTemplateStyle(template: any) {
