@@ -51,7 +51,6 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
           }
         }
         let componentArray = tempComponentArrayWithoutPlaceholders.reduce((r, a) => r.concat(a, '<app-builder-placeholder></app-builder-placeholder>'), ['<app-builder-placeholder></app-builder-placeholder>']);
-        console.log(componentArray);
         window.postMessage({ 'for': 'opsonion', 'action': 'recycle-showcase-dom', 'data': componentArray }, '*');
       }
     };
@@ -101,7 +100,8 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
         for (let i = 0; i < this.pageComponents['pages'].length; i++) {
           if (this.pageComponents['pages'][i]['name'] == this.activePage) {
             this.pageComponents['pages'][i]['components'] = e.data.data;
-            this.sessionStorageService.setItem('components', JSON.stringify(e.message));
+            this.sessionStorageService.setItem('components', JSON.stringify(e.data.data));
+            this.builderComponentService.pageComponents.next(this.pageComponents);
           }
         }
         setTimeout(() => this.reload = false);
