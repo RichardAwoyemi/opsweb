@@ -1,0 +1,50 @@
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 1)">Copyright</label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetFooterFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="onFooterFontNameChange()" [(ngModel)]="footerFontName"
+            class="form-control form-control-lg">
+      <option *ngFor="let fontName of fontNames | ssort"
+              [attr.selected]="fontName == footerFontName ? true : null"
+              [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+    </select>
+  </label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetFooterFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setFooterFontSize()" (ngModelChange)="setFooterFontSize()" [(ngModel)]="footerFontSize"
+               class="form-control form-control-lg"
+               max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <select (change)="onFooterFontUnitChange()" [(ngModel)]="footerFontUnit"
+                class="form-control form-control-lg">
+          <option *ngFor="let fontUnit of fontUnits | ssort"
+                  [attr.selected]="fontUnit == footerFontUnit ? true : null">{{ fontUnit }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</div>

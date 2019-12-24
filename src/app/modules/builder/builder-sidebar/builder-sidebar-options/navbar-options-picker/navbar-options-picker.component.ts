@@ -18,7 +18,6 @@ export class NavbarOptionsPickerComponent implements OnInit {
   navbarMenuOptions: any;
   navbarLogoImage: any;
   fontNames: any;
-  fontSizes: any;
   fontUnits: any;
   imageUnits: any;
   navbarBrandFontName: string = 'Avenir Next Regular';

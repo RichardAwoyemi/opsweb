@@ -8,12 +8,16 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImgurService } from '../../../../shared/services/imgur.service';
 import { FormsModule } from '@angular/forms';
 import { ArraySortModule } from '../../../../shared/pipes/array-sort/array-sort.module';
+import { HeroOptionsPickerComponent } from './hero-options-picker/hero-options-picker.component';
+import { FooterOptionsPickerComponent } from './footer-options-picker/footer-options-picker.component';
 
 @NgModule({
   declarations: [
     BuilderSidebarOptionsComponent,
     BuilderUploadImageModalComponent,
-    NavbarOptionsPickerComponent
+    NavbarOptionsPickerComponent,
+    FooterOptionsPickerComponent,
+    HeroOptionsPickerComponent
   ],
   imports: [
     CommonModule,

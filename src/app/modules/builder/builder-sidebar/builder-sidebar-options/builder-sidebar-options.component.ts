@@ -8,7 +8,8 @@ import { BuilderService } from '../../builder.service';
   templateUrl: './builder-sidebar-options.component.html'
 })
 export class BuilderSidebarOptionsComponent implements OnInit {
-  componentName: string = ActiveComponents.Navbar;
+  navbarComponent: string = ActiveComponents.Navbar;
+  footerComponent: string = ActiveComponents.Footer;
   activeEditComponent: string;
   private activeEditComponentSubscription: Subscription;
 

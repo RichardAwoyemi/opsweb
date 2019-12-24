@@ -45,7 +45,8 @@
     <div class="row">
       <div class="col-md-6">
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarBrandFontSize()" [(ngModel)]="navbarBrandFontSize"
+          <input (keyup)="setNavbarBrandFontSize()" (ngModelChange)="setNavbarBrandFontSize()"
+                 [(ngModel)]="navbarBrandFontSize"
                  class="form-control form-control-lg"
                  max="300" min="0" name="number"
                  style="width: 100%" type="number">
@@ -80,7 +81,8 @@
     </div>
     <div class="col-md-6">
       <label style="width: 100%">
-        <input (ngModelChange)="setNavbarLogoImageSize()" [(ngModel)]="navbarLogoImageSize"
+        <input (keyup)="setNavbarLogoImageSize()" (ngModelChange)="setNavbarLogoImageSize()"
+               [(ngModel)]="navbarLogoImageSize"
                class="form-control form-control-lg"
                max="300" min="0" name="number"
                style="width: 100%" type="number">
@@ -142,7 +144,8 @@
   <div class="row">
     <div class="col-md-6">
       <label style="width: 100%">
-        <input (ngModelChange)="setNavbarLinkFontSize()" [(ngModel)]="navbarLinkFontSize"
+        <input (keyup)="setNavbarLinkFontSize()" (ngModelChange)="setNavbarLinkFontSize()"
+               [(ngModel)]="navbarLinkFontSize"
                class="form-control form-control-lg"
                max="300" min="0" name="number"
                style="width: 100%" type="number">

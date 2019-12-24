@@ -38,6 +38,8 @@
   "heroButtonStyle": {},
   "footerStyle": {
     "color": "#757575",
-    "padding": "16px"
+    "padding": "16px",
+    "font-family": "'Avenir Next Regular', sans-serif",
+    "font-size": "14px"
   }
 }
