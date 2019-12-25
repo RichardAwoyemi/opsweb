@@ -22,8 +22,13 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "scripts": [
+              "src/assets/js/script.js",
+              "src/assets/js/builder.js"
+            ],
             "styles": [
               "src/styles.css",
+              "src/assets/css/themify.css",
               "node_modules/ngx-toastr/toastr.css"
             ]
           },

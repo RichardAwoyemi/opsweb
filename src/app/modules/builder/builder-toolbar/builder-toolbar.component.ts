@@ -34,7 +34,7 @@ export class BuilderToolbarComponent implements OnInit {
   toolbarButtonDesktopOrientation: string = this.builderService.TOOLBAR_ACTIVE_BUTTON;
   toolbarButtonMobileOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   toolbarButtonTabletOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  private toolbarClass: string = 'toolbar no-select';
+  toolbarClass: string = 'toolbar no-select';
 
   constructor(
     private builderService: BuilderService

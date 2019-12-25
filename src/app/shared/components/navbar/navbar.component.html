@@ -69,27 +69,3 @@
   </div>
 </nav>
 </ng-container>
-<!-- Dashboard mobile navbar -->
-<ng-container *ngIf="currentRoute !== '/builder' || currentRoute !== '/preview'">
-<nav *ngIf="(isMobile | async)?.matches && isLoggedIn"
-     class="navbar navbar-expand-lg navbar-dark custom-navbar">
-  <div class="container">
-    <div class="navbar-left mr-4">
-      <button class="navbar-toggler" style="color: #F4F7FA" type="button">&#9776;</button>
-      <a class="navbar-brand" routerLink="/">
-        <img alt="logo" src="/../assets/img/logo-white.svg" style="height: 35px; width: 35px;">
-      </a>
-    </div>
-    <section *ngIf="(isMobile | async)?.matches" class="navbar-mobile">
-      <span class="navbar-divider d-mobile-none"></span>
-      <nav class="nav nav-navbar mr-auto">
-        <a class="nav-link navbar-closer" style="text-align: right"><i class="ti-close mr-2"></i></a>
-        <a *ngIf="this.user.onboardingComplete" class="nav-link" routerLink="/dashboard">Dashboard</a>
-        <a *ngIf="this.user.onboardingComplete" class="nav-link" routerLink="/settings">Settings</a>
-        <a *ngIf="this.user.onboardingComplete" class="nav-link" routerLink="/referral">Invite Friends</a>
-        <a (click)="signOut()" class="nav-link">Logout</a>
-      </nav>
-    </section>
-  </div>
-</nav>
-</ng-container>

@@ -4,11 +4,11 @@ import { ActiveComponents, ActiveFooterThemes, ActiveSettings, ActiveTemplates }
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
+import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
 
 @Component({
   selector: 'app-builder-hero',
-  templateUrl: './builder-footer.component.html',
-  styleUrls: ['./builder-footer.component.css']
+  templateUrl: './builder-footer.component.html'
 })
 export class BuilderFooterComponent implements OnInit, IComponent {
   componentName: string = ActiveComponents.Footer;
@@ -17,15 +17,18 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   today: number = Date.now();
   previewMode: boolean;
   footerStyle: any;
+  footerMenuOptions: any;
 
   private footerStyleSubscription: Subscription;
   private activeEditComponentSubscription: Subscription;
   private previewModeSubscription: Subscription;
   private footerThemeSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
+  private footerMenuOptionsSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
+    private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService
   ) {
   }
@@ -40,6 +43,12 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
       if (response) {
         this.footerStyle = response;
+      }
+    });
+
+    this.footerMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+      if (response) {
+        this.footerMenuOptions = response;
       }
     });
 

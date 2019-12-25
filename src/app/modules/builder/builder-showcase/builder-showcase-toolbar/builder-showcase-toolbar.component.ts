@@ -31,6 +31,9 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   activeToolbarOrientation: string;
   private activeOrientationSubscription: Subscription;
   private previewModeSubscription: Subscription;
+  dropdownClass: string = 'dropdown';
+  dropdownMenuClass: string = 'dropdown-menu';
+  ariaExpandedAttribute: string = 'false';
 
   constructor(
     private builderService: BuilderService,
@@ -113,7 +116,16 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
     this.builderService.previewMode.next(!this.previewMode);
   }
 
+  test() {
+    this.dropdownClass = 'dropdown show';
+    this.dropdownMenuClass = 'dropdown-menu show';
+    this.ariaExpandedAttribute = 'true';
+  }
+
   setActivePage(navbarMenuOption: string) {
+    this.dropdownClass = 'dropdown';
+    this.dropdownMenuClass = 'dropdown-menu';
+    this.ariaExpandedAttribute = 'false';
     this.builderService.activePageSetting.next(navbarMenuOption);
   }
 
