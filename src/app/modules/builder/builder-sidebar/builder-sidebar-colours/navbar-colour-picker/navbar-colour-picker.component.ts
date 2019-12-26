@@ -79,8 +79,12 @@ export class NavbarColourPickerComponent implements OnInit {
   }
 
   onThemeChange() {
-    this.builderNavbarService.navbarTheme.next(this.navbarTheme);
-    this.builderNavbarService.setNavbarTheme(this.navbarTheme);
+    if (this.navbarTheme === ActiveNavbarThemes.Default) {
+      this.resetToDefault();
+    } else {
+      this.builderNavbarService.navbarTheme.next(this.navbarTheme);
+      this.builderNavbarService.setNavbarTheme(this.navbarTheme);
+    }
   }
 
   setNavbarStyle() {

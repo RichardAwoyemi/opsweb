@@ -6,3 +6,16 @@
   color: #7193F0;
   font-weight: normal !important;
 }
+
+.page-row-option:hover {
+  cursor: pointer !important;
+}
+
+[class^="ti-"], [class*=" ti-"] {
+  font-size: 12px;
+  margin-right: 3px;
+}
+
+.form-control {
+  font-size: .935rem
+}

@@ -10,7 +10,8 @@
       <div class="form-group">
         <label>Top</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarLogoImagePaddingTop()" [(ngModel)]="navbarLogoImagePaddingTop"
+          <input (keyup)="setNavbarLogoImagePaddingTop()" (ngModelChange)="setNavbarLogoImagePaddingTop()"
+                 [(ngModel)]="navbarLogoImagePaddingTop"
                  autocomplete="off"
                  class="form-control" max="300" min="0" name="number" type="number">
         </label>
@@ -20,7 +21,8 @@
       <div class="form-group">
         <label>Left</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarLogoImagePaddingLeft()" [(ngModel)]="navbarLogoImagePaddingLeft"
+          <input (keyup)="setNavbarLogoImagePaddingLeft()" (ngModelChange)="setNavbarLogoImagePaddingLeft()"
+                 [(ngModel)]="navbarLogoImagePaddingLeft"
                  autocomplete="off" class="form-control" max="300" min="0" name="number"
                  style="width: 100%" type="number">
         </label>
@@ -30,7 +32,8 @@
       <div class="form-group">
         <label>Right</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarLogoImagePaddingRight()" [(ngModel)]="navbarLogoImagePaddingRight"
+          <input (keyup)="setNavbarLogoImagePaddingRight()" (ngModelChange)="setNavbarLogoImagePaddingRight()"
+                 [(ngModel)]="navbarLogoImagePaddingRight"
                  autocomplete="off" class="form-control" max="300" min="0" name="number"
                  style="width: 100%" type="number">
         </label>
@@ -40,7 +43,8 @@
       <div class="form-group">
         <label>Bottom</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarLogoImagePaddingBottom()" [(ngModel)]="navbarLogoImagePaddingBottom"
+          <input (keyup)="setNavbarLogoImagePaddingBottom()" (ngModelChange)="setNavbarLogoImagePaddingBottom()"
+                 [(ngModel)]="navbarLogoImagePaddingBottom"
                  autocomplete="off" class="form-control" max="300" min="0" name="number"
                  style="width: 100%" type="number">
         </label>
@@ -57,7 +61,8 @@
       <div class="form-group">
         <label>Top</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarBrandPaddingTop()" [(ngModel)]="navbarBrandPaddingTop" autocomplete="off"
+          <input (keyup)="setNavbarBrandPaddingTop()" (ngModelChange)="setNavbarBrandPaddingTop()"
+                 [(ngModel)]="navbarBrandPaddingTop" autocomplete="off"
                  class="form-control" max="300" min="0" name="number" type="number">
         </label>
       </div>
@@ -66,7 +71,8 @@
       <div class="form-group">
         <label>Left</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarBrandPaddingLeft()" [(ngModel)]="navbarBrandPaddingLeft" autocomplete="off"
+          <input (keyup)="setNavbarBrandPaddingLeft()" (ngModelChange)="setNavbarBrandPaddingLeft()"
+                 [(ngModel)]="navbarBrandPaddingLeft" autocomplete="off"
                  class="form-control" max="300" min="0" name="number" style="width: 100%" type="number">
         </label>
       </div>
@@ -75,7 +81,8 @@
       <div class="form-group">
         <label>Right</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarBrandPaddingRight()" [(ngModel)]="navbarBrandPaddingRight" autocomplete="off"
+          <input (keyup)="setNavbarBrandPaddingRight()" (ngModelChange)="setNavbarBrandPaddingRight()"
+                 [(ngModel)]="navbarBrandPaddingRight" autocomplete="off"
                  class="form-control" max="300" min="0" name="number" style="width: 100%" type="number">
         </label>
       </div>
@@ -84,7 +91,8 @@
       <div class="form-group">
         <label>Bottom</label>
         <label style="width: 100%">
-          <input (ngModelChange)="setNavbarBrandPaddingBottom()" [(ngModel)]="navbarBrandPaddingBottom"
+          <input (keyup)="setNavbarBrandPaddingBottom()" (ngModelChange)="setNavbarBrandPaddingBottom()"
+                 [(ngModel)]="navbarBrandPaddingBottom"
                  autocomplete="off"
                  class="form-control" max="300" min="0" name="number" style="width: 100%" type="number">
         </label>
@@ -122,7 +130,8 @@
         <div class="form-group">
           <label>Top</label>
           <label style="width: 100%">
-            <input (ngModelChange)="setNavbarLinkPaddingTop()" [(ngModel)]="navbarLinkPaddingTop" class="form-control"
+            <input (keyup)="setNavbarLinkPaddingTop()" (ngModelChange)="setNavbarLinkPaddingTop()"
+                   [(ngModel)]="navbarLinkPaddingTop" class="form-control"
                    max="300" min="0" name="number"
                    type="number">
           </label>
@@ -132,7 +141,8 @@
         <div class="form-group">
           <label>Left</label>
           <label style="width: 100%">
-            <input (ngModelChange)="setNavbarLinkPaddingLeft()" [(ngModel)]="navbarLinkPaddingLeft" class="form-control"
+            <input (keyup)="setNavbarLinkPaddingLeft()" (ngModelChange)="setNavbarLinkPaddingLeft()"
+                   [(ngModel)]="navbarLinkPaddingLeft" class="form-control"
                    max="300" min="0" name="number"
                    style="width: 100%" type="number">
           </label>
@@ -142,7 +152,8 @@
         <div class="form-group">
           <label>Right</label>
           <label style="width: 100%">
-            <input (ngModelChange)="setNavbarLinkPaddingRight()" [(ngModel)]="navbarLinkPaddingRight"
+            <input (keyup)="setNavbarLinkPaddingRight()" (ngModelChange)="setNavbarLinkPaddingRight()"
+                   [(ngModel)]="navbarLinkPaddingRight"
                    class="form-control" max="300" min="0" name="number"
                    style="width: 100%" type="number">
           </label>
@@ -152,7 +163,8 @@
         <div class="form-group">
           <label>Bottom</label>
           <label style="width: 100%">
-            <input (ngModelChange)="setNavbarLinkPaddingBottom()" [(ngModel)]="navbarLinkPaddingBottom"
+            <input (keyup)="setNavbarLinkPaddingBottom()" (ngModelChange)="setNavbarLinkPaddingBottom()"
+                   [(ngModel)]="navbarLinkPaddingBottom"
                    class="form-control" max="300" min="0" name="number"
                    style="width: 100%" type="number">
           </label>

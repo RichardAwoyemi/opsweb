@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { BuilderSidebarLayoutComponent } from './builder-sidebar-layout.component';
 import { NavbarLayoutPickerComponent } from './navbar-layout-picker/navbar-layout-picker.component';
 import { FormsModule } from '@angular/forms';
+import { FooterLayoutPickerComponent } from './footer-layout-picker/footer-layout-picker.component';
 
 @NgModule({
   declarations: [
     BuilderSidebarLayoutComponent,
-    NavbarLayoutPickerComponent
+    NavbarLayoutPickerComponent,
+    FooterLayoutPickerComponent
   ],
   imports: [
     CommonModule,
@@ -15,7 +17,8 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
     BuilderSidebarLayoutComponent,
-    NavbarLayoutPickerComponent
+    NavbarLayoutPickerComponent,
+    FooterLayoutPickerComponent
   ],
   providers: []
 })

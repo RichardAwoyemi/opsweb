@@ -1,9 +1,68 @@
 <app-builder-component-toolbar *ngIf="!previewMode" [componentName]="componentName"></app-builder-component-toolbar>
 <div [ngClass]="setContextMenu()">
+  <!-- Default --->
   <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
-          [ngStyle]="footerStyle">
-    <div class="container text-center" style="padding: 1em">
-      Copyright &copy; {{ today | date: 'yyyy' }}
+          *ngIf="footerComponentLayout === 0" [ngStyle]="footerStyle">
+    <div *ngIf="facebookUrl || twitterUrl || instagramUrl || youtubeUrl || githubUrl || linkedinUrl"
+         [ngClass]="footerAlignmentClass">
+      <div [ngStyle]="footerSocialLinksContainerStyle" class="footer-social-links">
+        <span *ngIf="facebookUrl" [attr.data-href]="facebookUrl" [ngStyle]="footerSocialLinksStyle"><i
+          class="ti-facebook"></i></span>
+        <span *ngIf="twitterUrl" [attr.data-href]="twitterUrl" [ngStyle]="footerSocialLinksStyle"><i
+          class="ti-twitter-alt"></i></span>
+        <span *ngIf="instagramUrl" [attr.data-href]="instagramUrl" [ngStyle]="footerSocialLinksStyle"><i
+          class="ti-instagram"></i></span>
+        <span *ngIf="youtubeUrl" [attr.data-href]="youtubeUrl" [ngStyle]="footerSocialLinksStyle"><i
+          class="ti-youtube"></i></span>
+        <span *ngIf="githubUrl" [attr.data-href]="githubUrl" [ngStyle]="footerSocialLinksStyle"><i
+          class="ti-github"></i></span>
+        <span *ngIf="linkedinUrl" [attr.data-href]="linkedinUrl" [ngStyle]="footerSocialLinksStyle"><i
+          class="ti-linkedin"></i></span>
+      </div>
+    </div>
+    <div *ngIf="footerMenuOptions.length > 0" [ngClass]="footerAlignmentClass">
+      <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
+        <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index"
+              [ngStyle]="footerPageLinksListStyle">{{ footerMenuOption }}</span>
+      </div>
+    </div>
+    <div [ngClass]="footerAlignmentClass">
+      <span [ngStyle]="footerCopyrightStyle">Copyright &copy; {{ today | date: 'yyyy' }}</span>
+    </div>
+  </footer>
+  <!-- Layout 1 --->
+  <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" *ngIf="footerComponentLayout === 1"
+          [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
+    <div class="row">
+      <div class="col-md-4 text-left">
+        <span [ngStyle]="footerCopyrightStyle">Copyright &copy; {{ today | date: 'yyyy' }}</span>
+      </div>
+      <div class="col-md-4 text-center">
+        <div *ngIf="footerMenuOptions.length > 0">
+          <div class="footer-page-links">
+        <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index"
+              [ngStyle]="footerPageLinksListStyle">{{ footerMenuOption }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 text-right">
+        <div *ngIf="facebookUrl || twitterUrl || instagramUrl || youtubeUrl || githubUrl || linkedinUrl">
+          <div [ngStyle]="footerSocialLinksContainerStyle" class="footer-social-links">
+            <span *ngIf="facebookUrl" [attr.data-href]="facebookUrl" [ngStyle]="footerSocialLinksStyle"><i
+              class="ti-facebook"></i></span>
+            <span *ngIf="twitterUrl" [attr.data-href]="twitterUrl" [ngStyle]="footerSocialLinksStyle"><i
+              class="ti-twitter-alt"></i></span>
+            <span *ngIf="instagramUrl" [attr.data-href]="instagramUrl" [ngStyle]="footerSocialLinksStyle"><i
+              class="ti-instagram"></i></span>
+            <span *ngIf="youtubeUrl" [attr.data-href]="youtubeUrl" [ngStyle]="footerSocialLinksStyle"><i
+              class="ti-youtube"></i></span>
+            <span *ngIf="githubUrl" [attr.data-href]="githubUrl" [ngStyle]="footerSocialLinksStyle"><i
+              class="ti-github"></i></span>
+            <span *ngIf="linkedinUrl" [attr.data-href]="linkedinUrl" [ngStyle]="footerSocialLinksStyle"><i
+              class="ti-linkedin"></i></span>
+          </div>
+        </div>
+      </div>
     </div>
   </footer>
 </div>

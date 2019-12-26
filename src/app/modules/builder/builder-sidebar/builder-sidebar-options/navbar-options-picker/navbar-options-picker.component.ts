@@ -8,6 +8,7 @@ import { BuilderUploadImageModalComponent } from '../../../builder-actions/build
 import { BuilderDeleteImageModalComponent } from '../../../builder-actions/builder-delete-image-modal/builder-delete-image-modal.component';
 import { BuilderService } from '../../../builder.service';
 import { ActiveTemplates } from '../../../builder';
+import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 
 @Component({
   selector: 'app-navbar-options-picker',
@@ -47,6 +48,7 @@ export class NavbarOptionsPickerComponent implements OnInit {
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
+    private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService
@@ -59,6 +61,8 @@ export class NavbarOptionsPickerComponent implements OnInit {
         navbarMenuOptions[e.newIndex] = oldIndexNavbarMenuOption;
         navbarMenuOptions[e.newIndex] = newIndexNavbarMenuOption;
         builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
+        const footerMenuOptions = builderFooterService.sortFooterMenuOptions(builderFooterService.footerMenuOptions.getValue(), navbarMenuOptions);
+        builderFooterService.footerMenuOptions.next(footerMenuOptions);
       }
     };
   }
@@ -111,6 +115,9 @@ export class NavbarOptionsPickerComponent implements OnInit {
             this.navbarBrandFontSize = this.navbarBrandStyle['font-size'].replace('em', '');
           }
         }
+
+        const footerFontNames = this.navbarBrandStyle['font-family'].split(',');
+        this.navbarBrandFontName = footerFontNames[0].replace(/'/g, '');
       }
     });
 
@@ -126,6 +133,9 @@ export class NavbarOptionsPickerComponent implements OnInit {
             this.navbarLinkFontSize = this.navbarLinkStyle['font-size'].replace('em', '');
           }
         }
+
+        const footerFontNames = this.navbarLinkStyle['font-family'].split(',');
+        this.navbarLinkFontName = footerFontNames[0].replace(/'/g, '');
       }
     });
 

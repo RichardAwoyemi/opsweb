@@ -8,6 +8,19 @@ export class BuilderFooterService {
   footerTemplate = new BehaviorSubject<string>(null);
   footerTheme = new BehaviorSubject<string>(null);
   footerStyle = new BehaviorSubject<Object>(null);
+  footerAlignmentClass = new BehaviorSubject<string>('text-center');
+  footerSocialLinksContainerStyle = new BehaviorSubject<Object>(null);
+  footerSocialLinksStyle = new BehaviorSubject<Object>(null);
+  footerPageLinksStyle = new BehaviorSubject<Object>(null);
+  footerCopyrightStyle = new BehaviorSubject<Object>(null);
+  footerMenuOptions = new BehaviorSubject<Object>(null);
+  footerComponentLayout = new BehaviorSubject<number>(0);
+  facebookUrl = new BehaviorSubject<string>(null);
+  twitterUrl = new BehaviorSubject<string>(null);
+  instagramUrl = new BehaviorSubject<string>(null);
+  youtubeUrl = new BehaviorSubject<string>(null);
+  githubUrl = new BehaviorSubject<string>(null);
+  linkedinUrl = new BehaviorSubject<string>(null);
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -49,7 +62,7 @@ export class BuilderFooterService {
     let response: any;
     switch (themeId) {
       case ActiveFooterThemes.Default:
-        this.setFooterTemplate(this.footerTemplate.getValue());
+        this.setFooterThemeStyle(this.footerTemplate.getValue());
         break;
       case ActiveFooterThemes.Stanley:
         this.httpClient.get(this.FOOTER_THEME_PATH).subscribe((themes: Array<any>) => {
@@ -84,6 +97,10 @@ export class BuilderFooterService {
 
   setFooterTemplateStyle(template: any) {
     this.footerStyle.next(template['footerStyle']);
+    this.footerSocialLinksStyle.next(template['footerSocialLinksStyle']);
+    this.footerPageLinksStyle.next(template['footerPageLinksStyle']);
+    this.footerCopyrightStyle.next(template['footerCopyrightStyle']);
+    this.footerSocialLinksContainerStyle.next(template['footerSocialLinksContainerStyle']);
   }
 
   getDefaultFooterStyle(templateId): Observable<any> {
@@ -97,5 +114,16 @@ export class BuilderFooterService {
       default:
         return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
     }
+  }
+
+  sortFooterMenuOptions(unsortedFooterMenuOptions, navbarMenuOptions) {
+    const sortedFooterMenuOptions = {};
+    if (unsortedFooterMenuOptions && navbarMenuOptions) {
+      Object.keys(unsortedFooterMenuOptions)
+        .sort((a, b) => {
+          return navbarMenuOptions.indexOf(a) - navbarMenuOptions.indexOf(b);
+        }).forEach(r => sortedFooterMenuOptions[r] = unsortedFooterMenuOptions[r]);
+    }
+    return sortedFooterMenuOptions;
   }
 }

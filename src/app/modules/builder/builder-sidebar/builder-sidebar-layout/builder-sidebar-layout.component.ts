@@ -5,11 +5,11 @@ import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-sidebar-layout',
-  templateUrl: './builder-sidebar-layout.component.html',
-  styleUrls: ['./builder-sidebar-layout.component.css']
+  templateUrl: './builder-sidebar-layout.component.html'
 })
 export class BuilderSidebarLayoutComponent implements OnInit {
-  componentName: string = ActiveComponents.Navbar;
+  navbarComponent: string = ActiveComponents.Navbar;
+  footerComponent: string = ActiveComponents.Footer;
   activeEditComponent: string;
   private activeEditComponentSubscription: Subscription;
 

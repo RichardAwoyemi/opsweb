@@ -17,14 +17,44 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   today: number = Date.now();
   previewMode: boolean;
   footerStyle: any;
-  footerMenuOptions: any;
+  navbarMenuOptions: any;
+  footerMenuOptions: string[];
+  facebookUrl: string;
+  twitterUrl: string;
+  instagramUrl: string;
+  youtubeUrl: string;
+  githubUrl: string;
+  linkedinUrl: string;
+  footerSocialLinksStyle: any;
+  footerPageLinksStyle: any;
+  footerPageLinksContainerStyle: any;
+  footerPageLinksListStyle: any;
+  footerCopyrightStyle: any;
+  footerAlignmentClass: string;
+  footerSocialLinksContainerStyle: any;
+  footerComponentLayout: any;
 
   private footerStyleSubscription: Subscription;
-  private activeEditComponentSubscription: Subscription;
-  private previewModeSubscription: Subscription;
+  private footerPageLinksStyleSubscription: Subscription;
+  private footerSocialLinksStyleSubscription: Subscription;
+  private footerSocialLinksContainerStyleSubscription: Subscription;
   private footerThemeSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
+  private footerCopyrightStyleSubscription: Subscription;
   private footerMenuOptionsSubscription: Subscription;
+  private footerAlignmentClassSubscription: Subscription;
+  private footerComponentLayoutSubscription: Subscription;
+
+  private activeEditComponentSubscription: Subscription;
+  private previewModeSubscription: Subscription;
+  private navbarMenuOptionsSubscription: Subscription;
+
+  private facebookUrlSubscription: Subscription;
+  private twitterUrlSubscription: Subscription;
+  private instagramUrlSubscription: Subscription;
+  private youtubeUrlSubscription: Subscription;
+  private githubUrlSubscription: Subscription;
+  private linkedinUrlSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -36,8 +66,44 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
+    this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
+      this.footerComponentLayout = response;
+    });
+
+    this.footerSocialLinksContainerStyleSubscription = this.builderFooterService.footerSocialLinksContainerStyle.subscribe(response => {
+      this.footerSocialLinksContainerStyle = response;
+    });
+
+    this.footerAlignmentClassSubscription = this.builderFooterService.footerAlignmentClass.subscribe(response => {
+      this.footerAlignmentClass = response;
+    });
+
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
       this.previewMode = response;
+    });
+
+    this.twitterUrlSubscription = this.builderFooterService.twitterUrl.subscribe(response => {
+      this.twitterUrl = response;
+    });
+
+    this.instagramUrlSubscription = this.builderFooterService.instagramUrl.subscribe(response => {
+      this.instagramUrl = response;
+    });
+
+    this.youtubeUrlSubscription = this.builderFooterService.youtubeUrl.subscribe(response => {
+      this.youtubeUrl = response;
+    });
+
+    this.githubUrlSubscription = this.builderFooterService.githubUrl.subscribe(response => {
+      this.githubUrl = response;
+    });
+
+    this.facebookUrlSubscription = this.builderFooterService.facebookUrl.subscribe(response => {
+      this.facebookUrl = response;
+    });
+
+    this.linkedinUrlSubscription = this.builderFooterService.linkedinUrl.subscribe(response => {
+      this.linkedinUrl = response;
     });
 
     this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
@@ -46,9 +112,52 @@ export class BuilderFooterComponent implements OnInit, IComponent {
       }
     });
 
-    this.footerMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+    this.footerPageLinksStyleSubscription = this.builderFooterService.footerPageLinksStyle.subscribe(response => {
       if (response) {
-        this.footerMenuOptions = response;
+        this.footerPageLinksStyle = response;
+        this.footerPageLinksContainerStyle = {
+          'padding-top': this.footerPageLinksStyle['padding-top'],
+          'padding-bottom': this.footerPageLinksStyle['padding-bottom']
+        };
+        this.footerPageLinksListStyle = {
+          'font-family': this.footerPageLinksStyle['font-family'],
+          'font-size': this.footerPageLinksStyle['font-size'],
+          'padding-left': this.footerPageLinksStyle['padding-left'],
+          'padding-right': this.footerPageLinksStyle['padding-right']
+        };
+      }
+    });
+
+    this.footerSocialLinksStyleSubscription = this.builderFooterService.footerSocialLinksStyle.subscribe(response => {
+      if (response) {
+        this.footerSocialLinksStyle = response;
+      }
+    });
+
+    this.footerCopyrightStyleSubscription = this.builderFooterService.footerCopyrightStyle.subscribe(response => {
+      if (response) {
+        this.footerCopyrightStyle = response;
+      }
+    });
+
+    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+      if (response) {
+        this.navbarMenuOptions = response;
+
+        this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+          if (response) {
+            let footerMenuOptions = [];
+            Object.keys(response).forEach(function (key) {
+              if (response[key] !== false) {
+                footerMenuOptions.push(key);
+              }
+            });
+            this.footerMenuOptions = footerMenuOptions;
+          }
+          if (!response) {
+            this.footerMenuOptions = [];
+          }
+        });
       }
     });
 

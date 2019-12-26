@@ -2,7 +2,7 @@
   <div [ngClass]="activeToolbarOrientation" class="row">
     <div class="col-md-6" style="padding-left: 0;">
       <div [attr.class]="dropdownClass" style="margin-top: 5px">
-        <span (click)="test()" [attr.aria-expanded]="ariaExpandedAttribute"
+        <span (click)="setDropdownClass()" [attr.aria-expanded]="ariaExpandedAttribute"
               class="dropdown-toggle">{{ activePage }}</span>
         <div [attr.class]="dropdownMenuClass"
              style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0; left: 0; will-change: transform;"

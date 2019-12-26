@@ -61,7 +61,31 @@
   },
   "footerStyle": {
     "font-family": "'Nunito Sans', sans-serif",
-    "color": "rgb(132, 146, 166)",
-    "padding": "1em"
+    "color": "#757575",
+    "padding-top": "16px",
+    "padding-left": "16px",
+    "padding-right": "16px",
+    "padding-bottom": "16px",
+    "background-color": "#FFFFFF"
+  },
+  "footerSocialLinksContainerStyle": {
+    "margin-left": "0px"
+  },
+  "footerSocialLinksStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "14px"
+  },
+  "footerPageLinksStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "14px",
+    "padding-left": "0px",
+    "padding-bottom": "16px",
+    "padding-top": "4px",
+    "padding-right": "16px"
+  },
+  "footerCopyrightStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "padding-top": "12px",
+    "font-size": "14px"
   }
 }

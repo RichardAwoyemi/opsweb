@@ -38,8 +38,38 @@
   "heroButtonStyle": {},
   "footerStyle": {
     "color": "#757575",
-    "padding": "16px",
+    "padding-top": "16px",
+    "padding-left": "32px",
+    "padding-right": "32px",
+    "padding-bottom": "12px",
+    "display": "block",
+    "background-color": "#FFFFFF"
+  },
+  "footerSocialLinksContainerStyle": {
+    "margin-left": "0px"
+  },
+  "footerSocialLinksStyle": {
     "font-family": "'Avenir Next Regular', sans-serif",
-    "font-size": "14px"
+    "font-size": "14px",
+    "margin-right": "4px",
+    "margin-bottom": "4px",
+    "margin-top": "0px",
+    "margin-left": "0px"
+  },
+  "footerPageLinksStyle": {
+    "font-family": "'Avenir Next Regular', sans-serif",
+    "font-size": "14px",
+    "padding-left": "0px",
+    "padding-bottom": "16px",
+    "padding-top": "4px",
+    "padding-right": "16px"
+  },
+  "footerCopyrightStyle": {
+    "font-family": "'Avenir Next Regular', sans-serif",
+    "padding-top": "12px",
+    "font-size": "14px",
+    "padding-left": "0px",
+    "padding-bottom": "0px",
+    "padding-right": "0px"
   }
 }

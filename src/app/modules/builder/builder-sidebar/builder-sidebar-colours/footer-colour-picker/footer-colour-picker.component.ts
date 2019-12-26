@@ -35,12 +35,6 @@ export class FooterColourPickerComponent implements OnInit {
     this.footerThemeSubscription = this.builderFooterService.footerTheme.subscribe(response => {
       if (response) {
         this.footerTheme = response;
-
-        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTheme).subscribe(response => {
-          if (response) {
-            this.defaultFooterStyle = response;
-          }
-        });
       }
     });
 
@@ -53,13 +47,23 @@ export class FooterColourPickerComponent implements OnInit {
     this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
       if (response) {
         this.footerTemplate = response;
+
+        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
+          if (response) {
+            this.defaultFooterStyle = response;
+          }
+        });
       }
     });
   }
 
   onThemeChange() {
-    this.builderFooterService.footerTheme.next(this.footerTheme);
-    this.builderFooterService.setFooterTheme(this.footerTheme);
+    if (this.footerTheme === ActiveFooterThemes.Default) {
+      this.resetToDefault();
+    } else {
+      this.builderFooterService.footerTheme.next(this.footerTheme);
+      this.builderFooterService.setFooterTheme(this.footerTheme);
+    }
   }
 
   setFooterStyle() {

@@ -1,50 +1,226 @@
-<div class="form-group">
-  <label style="color: rgba(255, 255, 255, 1)">Copyright</label>
-</div>
-<div class="form-group">
-  <div class="row">
-    <div class="col-md-6">
-      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+<ng-container>
+  <div class="form-group">
+    <label style="color: rgba(255, 255, 255, 1)">Social</label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetFooterSocialLinksFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
     </div>
-    <div class="col-md-6 text-right">
-      <a (click)="resetFooterFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input (keyup)="setFooterSocialLinksFontSize()" (ngModelChange)="setFooterSocialLinksFontSize()"
+                 [(ngModel)]="footerSocialLinksFontSize"
+                 class="form-control form-control-lg"
+                 max="300" min="0" name="number"
+                 style="width: 100%" type="number">
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <select (change)="onFooterSocialLinksFontUnitChange()" [(ngModel)]="footerSocialLinksFontUnit"
+                  class="form-control form-control-lg">
+            <option *ngFor="let fontUnit of fontUnits | ssort"
+                    [attr.selected]="fontUnit == footerSocialLinksFontUnit ? true : null">{{ fontUnit }}</option>
+          </select>
+        </label>
+      </div>
     </div>
   </div>
-  <label style="width: 100%">
-    <select (change)="onFooterFontNameChange()" [(ngModel)]="footerFontName"
-            class="form-control form-control-lg">
-      <option *ngFor="let fontName of fontNames | ssort"
-              [attr.selected]="fontName == footerFontName ? true : null"
-              [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
-    </select>
-  </label>
-</div>
-<div class="form-group">
-  <div class="row">
-    <div class="col-md-6">
-      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
-    </div>
-    <div class="col-md-6 text-right">
-      <a (click)="resetFooterFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+  <div class="form-group" style="padding-bottom: 0; margin-bottom: 0">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Links</label>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <label style="width: 100%">
-        <input (keyup)="setFooterFontSize()" (ngModelChange)="setFooterFontSize()" [(ngModel)]="footerFontSize"
-               class="form-control form-control-lg"
-               max="300" min="0" name="number"
-               style="width: 100%" type="number">
-      </label>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="ti-facebook"></i></span>
     </div>
-    <div class="col-md-6">
-      <label style="width: 100%">
-        <select (change)="onFooterFontUnitChange()" [(ngModel)]="footerFontUnit"
-                class="form-control form-control-lg">
-          <option *ngFor="let fontUnit of fontUnits | ssort"
-                  [attr.selected]="fontUnit == footerFontUnit ? true : null">{{ fontUnit }}</option>
-        </select>
-      </label>
+    <label style="margin-bottom: 0; border-right: .300rem white solid">
+      <input (keyup)="onSocialLinkChange('facebook')" (ngModelChange)="onSocialLinkChange('facebook')"
+             [(ngModel)]="facebookUrl" class="form-control" placeholder="Facebook" type="text">
+    </label>
+  </div>
+  <div class="input-group" style="margin-top: 1em">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="ti-twitter-alt"></i></span>
+    </div>
+    <label style="margin-bottom: 0; border-right: .300rem white solid">
+      <input (keyup)="onSocialLinkChange('twitter')" (ngModelChange)="onSocialLinkChange('twitter')"
+             [(ngModel)]="twitterUrl" class="form-control" placeholder="Twitter" type="text">
+    </label>
+  </div>
+  <div class="input-group" style="margin-top: 1em">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="ti-instagram"></i></span>
+    </div>
+    <label style="margin-bottom: 0; border-right: .300rem white solid">
+      <input (keyup)="onSocialLinkChange('instagram')" (ngModelChange)="onSocialLinkChange('instagram')"
+             [(ngModel)]="instagramUrl" class="form-control" placeholder="Instagram" type="text">
+    </label>
+  </div>
+  <div class="input-group" style="margin-top: 1em">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="ti-youtube"></i></span>
+    </div>
+    <label style="margin-bottom: 0; border-right: .300rem white solid">
+      <input (keyup)="onSocialLinkChange('youtube')" (ngModelChange)="onSocialLinkChange('youtube')"
+             [(ngModel)]="youtubeUrl" class="form-control" placeholder="YouTube" type="text">
+    </label>
+  </div>
+  <div class="input-group" style="margin-top: 1em">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="ti-github"></i></span>
+    </div>
+    <label style="margin-bottom: 0; border-right: .300rem white solid">
+      <input (keyup)="onSocialLinkChange('github')" (ngModelChange)="onSocialLinkChange('github')"
+             [(ngModel)]="githubUrl" class="form-control" placeholder="GitHub" type="text">
+    </label>
+  </div>
+  <div class="input-group" style="margin-top: 1em">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="ti-linkedin"></i></span>
+    </div>
+    <label style="margin-bottom: 0; border-right: .300rem white solid">
+      <input (keyup)="onSocialLinkChange('linkedin')" (ngModelChange)="onSocialLinkChange('linkedin')"
+             [(ngModel)]="linkedinUrl" class="form-control" placeholder="LinkedIn" type="text">
+    </label>
+  </div>
+</ng-container>
+<hr>
+<ng-container>
+  <div class="form-group">
+    <label style="color: rgba(255, 255, 255, 1)">Pages</label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetFooterPageLinksFontName()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <label style="width: 100%">
+      <select (change)="onFooterPageLinksFontNameChange()" [(ngModel)]="footerPageLinkFontName"
+              class="form-control form-control-lg">
+        <option *ngFor="let fontName of fontNames | ssort"
+                [attr.selected]="footerPageLinkFontName == fontName ? true : null"
+                [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+      </select>
+    </label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetFooterPagesLinkFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input (keyup)="setFooterPageLinksFontSize()" (ngModelChange)="setFooterPageLinksFontSize()"
+                 [(ngModel)]="footerPageLinksFontSize"
+                 class="form-control form-control-lg"
+                 max="300" min="0" name="number"
+                 style="width: 100%" type="number">
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <select (change)="onFooterPageLinksFontUnitChange()" [(ngModel)]="footerPageLinksFontUnit"
+                  class="form-control form-control-lg">
+            <option *ngFor="let fontUnit of fontUnits | ssort"
+                    [attr.selected]="fontUnit == footerPageLinksFontUnit ? true : null">{{ fontUnit }}</option>
+          </select>
+        </label>
+      </div>
     </div>
   </div>
-</div>
+  <div class="form-group" style="padding-bottom: 0; margin-bottom: 0">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Links</label>
+      </div>
+    </div>
+  </div>
+  <div (click)="toggleFooterMenuOptionVisibility(i)"
+       *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index"
+       class="row page-row-color page-row-option justify-content-center align-items-center" style="font-size: 0.8em">
+    <div class="col-md-2" style="padding: 0.5em;">
+      <button class="btn btn-square btn-options btn-block btn-lg" style="padding-left: 10px" type="button">
+        <i *ngIf="checkIfFooterMenuOptionIsVisible(navbarMenuOption) === false" class="ti-close"></i>
+        <i *ngIf="checkIfFooterMenuOptionIsVisible(navbarMenuOption) === true" class="ti-check"></i>
+      </button>
+    </div>
+    <div class="col-md-10 row-color h-100 d-table">
+      <div class="align-items-center d-table-cell align-middle" style="padding-left: 5px">
+        {{ navbarMenuOption }}
+      </div>
+    </div>
+  </div>
+</ng-container>
+<hr>
+<ng-container>
+  <div class="form-group">
+    <label style="color: rgba(255, 255, 255, 1)">Copyright</label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetFooterCopyrightFontName()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <label style="width: 100%">
+      <select (change)="onFooterCopyrightFontNameChange()" [(ngModel)]="footerCopyrightFontName"
+              class="form-control form-control-lg">
+        <option *ngFor="let fontName of fontNames | ssort"
+                [attr.selected]="fontName == footerCopyrightFontName ? true : null"
+                [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+      </select>
+    </label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetFooterCopyrightFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input (keyup)="setFooterCopyrightFontSize()" (ngModelChange)="setFooterCopyrightFontSize()"
+                 [(ngModel)]="footerCopyrightFontSize"
+                 class="form-control form-control-lg"
+                 max="300" min="0" name="number"
+                 style="width: 100%" type="number">
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <select (change)="onFooterCopyrightFontUnitChange()" [(ngModel)]="footerCopyrightFontUnit"
+                  class="form-control form-control-lg">
+            <option *ngFor="let fontUnit of fontUnits | ssort"
+                    [attr.selected]="fontUnit == footerCopyrightFontUnit ? true : null">{{ fontUnit }}</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>
+</ng-container>

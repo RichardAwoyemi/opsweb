@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
+import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 
 @Component({
   selector: 'app-footer-options-picker',
@@ -9,28 +10,84 @@ import { BuilderFooterService } from '../../../builder-components/builder-footer
   styleUrls: ['./footer-options-picker.component.css'],
 })
 export class FooterOptionsPickerComponent implements OnInit {
-  footerFontName: string = 'Avenir Next Regular';
   fontNames: any;
   fontUnits: any;
   footerStyle: any;
-  footerFontSize: number;
+  navbarMenuOptions: any;
+  footerCopyrightStyle: any;
+  footerSocialLinksStyle: any;
+  footerPageLinksStyle: any;
+  footerCopyrightFontSize: number;
   defaultFooterStyle: any;
   footerTemplate: string;
-  footerFontUnit: string = 'px';
+  footerCopyrightFontUnit: string = 'px';
+  footerSocialLinksFontSize: number;
+  footerSocialLinksFontUnit: string = 'px';
+  footerPageLinksFontSize: number;
+  footerPageLinksFontUnit: string = 'px';
+  footerPageLinkFontName: string = 'Avenir Next Regular';
+  footerCopyrightFontName: string = 'Avenir Next Regular';
+  facebookUrl: string;
+  twitterUrl: string;
+  instagramUrl: string;
+  youtubeUrl: string;
+  githubUrl: string;
+  linkedinUrl: string;
 
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
   private footerStyleSubscription: Subscription;
+  private footerCopyrightStyleSubscription: Subscription;
+  private footerSocialLinksStyleSubscription: Subscription;
+  private footerPageLinksStyleSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
   private defaultFooterStyleSubscription: Subscription;
+  private facebookUrlSubscription: Subscription;
+  private twitterUrlSubscription: Subscription;
+  private instagramUrlSubscription: Subscription;
+  private youtubeUrlSubscription: Subscription;
+  private githubUrlSubscription: Subscription;
+  private linkedinUrlSubscription: Subscription;
+  private navbarMenuOptionsSubscription: Subscription;
 
   constructor(
     private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
+    private builderNavbarService: BuilderNavbarService,
   ) {
   }
 
   ngOnInit() {
+    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+      if (response) {
+        this.navbarMenuOptions = response;
+      }
+    });
+
+    this.twitterUrlSubscription = this.builderFooterService.twitterUrl.subscribe(response => {
+      this.twitterUrl = response;
+    });
+
+    this.instagramUrlSubscription = this.builderFooterService.instagramUrl.subscribe(response => {
+      this.instagramUrl = response;
+    });
+
+    this.youtubeUrlSubscription = this.builderFooterService.youtubeUrl.subscribe(response => {
+      this.youtubeUrl = response;
+    });
+
+    this.githubUrlSubscription = this.builderFooterService.githubUrl.subscribe(response => {
+      this.githubUrl = response;
+    });
+
+    this.facebookUrlSubscription = this.builderFooterService.facebookUrl.subscribe(response => {
+      this.facebookUrl = response;
+    });
+
+    this.linkedinUrlSubscription = this.builderFooterService.linkedinUrl.subscribe(response => {
+      this.linkedinUrl = response;
+    });
+
     this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
       if (response) {
         this.fontNames = response;
@@ -55,58 +112,212 @@ export class FooterOptionsPickerComponent implements OnInit {
       }
     });
 
-    this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
+    this.footerCopyrightStyleSubscription = this.builderFooterService.footerCopyrightStyle.subscribe(response => {
       if (response) {
-        this.footerStyle = response;
+        this.footerCopyrightStyle = response;
 
-        if (this.footerStyle['font-size']) {
-          if (this.footerStyle['font-size'].indexOf('px') > -1) {
-            this.footerFontSize = this.footerStyle['font-size'].replace('px', '');
+        if (this.footerCopyrightStyle['font-size']) {
+          if (this.footerCopyrightStyle['font-size'].indexOf('px') > -1) {
+            this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('px', '');
           }
-          if (this.footerStyle['font-size'].indexOf('em') > -1) {
-            this.footerFontSize = this.footerStyle['font-size'].replace('em', '');
+          if (this.footerCopyrightStyle['font-size'].indexOf('em') > -1) {
+            this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('em', '');
+          }
+        }
+
+        const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
+        this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
+      }
+    });
+
+    this.footerPageLinksStyleSubscription = this.builderFooterService.footerPageLinksStyle.subscribe(response => {
+      if (response) {
+        this.footerPageLinksStyle = response;
+
+        if (this.footerPageLinksStyle['font-size']) {
+          if (this.footerPageLinksStyle['font-size'].indexOf('px') > -1) {
+            this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('px', '');
+          }
+          if (this.footerPageLinksStyle['font-size'].indexOf('em') > -1) {
+            this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('em', '');
+          }
+        }
+
+        const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
+        this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
+      }
+    });
+
+    this.footerSocialLinksStyleSubscription = this.builderFooterService.footerSocialLinksStyle.subscribe(response => {
+      if (response) {
+        this.footerSocialLinksStyle = response;
+
+        if (this.footerSocialLinksStyle['font-size']) {
+          if (this.footerSocialLinksStyle['font-size'].indexOf('px') > -1) {
+            this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('px', '');
+          }
+          if (this.footerSocialLinksStyle['font-size'].indexOf('em') > -1) {
+            this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('em', '');
           }
         }
       }
     });
-  }
 
-  resetFooterFontName() {
-    this.footerStyle['font-family'] = this.defaultFooterStyle['footerStyle']['font-family'];
-    const footerFontNames = this.footerStyle['font-family'].split(',');
-    this.footerFontName = footerFontNames[0].replace(/'/g, '');
-    this.builderFooterService.footerStyle.next(this.footerStyle);
-  }
-
-  onFooterFontNameChange() {
-    this.footerStyle['font-family'] = this.footerFontName;
-    this.builderFooterService.footerStyle.next(this.footerStyle);
-  }
-
-  resetFooterFontSize() {
-    this.footerStyle['font-size'] = this.defaultFooterStyle['footerStyle']['font-size'];
-    this.footerFontUnit = 'px';
-    this.builderFooterService.footerStyle.next(this.footerStyle);
-  }
-
-  setFooterFontSize() {
-    this.footerStyle['font-size'] = this.footerFontSize + this.footerFontUnit;
-    this.builderFooterService.footerStyle.next(this.footerStyle);
-  }
-
-  onFooterFontUnitChange() {
-    if (this.footerFontUnit == 'em') {
-      if (this.footerFontSize < 16) {
-        this.footerFontSize = 16;
+    this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
+      if (response) {
+        this.footerStyle = response;
       }
-      this.footerFontSize = Math.round(this.footerFontSize / 16);
+    });
+  }
+
+  resetFooterCopyrightFontName() {
+    this.footerCopyrightStyle['font-family'] = this.defaultFooterStyle['footerCopyrightStyle']['font-family'];
+    const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
+    this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
+    this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
+  }
+
+  onFooterCopyrightFontNameChange() {
+    this.footerCopyrightStyle['font-family'] = this.footerCopyrightFontName;
+    this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
+  }
+
+  resetFooterCopyrightFontSize() {
+    this.footerCopyrightStyle['font-size'] = this.defaultFooterStyle['footerCopyrightStyle']['font-size'];
+    this.footerCopyrightFontUnit = 'px';
+    this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
+  }
+
+  setFooterCopyrightFontSize() {
+    this.footerCopyrightStyle['font-size'] = this.footerCopyrightFontSize + this.footerCopyrightFontUnit;
+    this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
+  }
+
+  onFooterCopyrightFontUnitChange() {
+    if (this.footerCopyrightFontUnit == 'em') {
+      if (this.footerCopyrightFontSize < 16) {
+        this.footerCopyrightFontSize = 16;
+      }
+      this.footerCopyrightFontSize = Math.round(this.footerCopyrightFontSize / 16);
     }
 
-    if (this.footerFontUnit == 'px') {
-      this.footerFontSize = Math.round(this.footerFontSize * 16);
+    if (this.footerCopyrightFontUnit == 'px') {
+      this.footerCopyrightFontSize = Math.round(this.footerCopyrightFontSize * 16);
     }
 
-    this.footerStyle['font-size'] = this.footerFontSize + this.footerFontUnit;
-    this.builderFooterService.footerStyle.next(this.footerStyle);
+    this.footerCopyrightStyle['font-size'] = this.footerCopyrightFontSize + this.footerCopyrightFontUnit;
+    this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
+  }
+
+  resetFooterSocialLinksFontSize() {
+    this.footerSocialLinksFontSize['font-size'] = this.defaultFooterStyle['footerSocialLinksFontSize']['font-size'];
+    this.footerSocialLinksFontUnit = 'px';
+    this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
+  }
+
+  setFooterSocialLinksFontSize() {
+    this.footerSocialLinksStyle['font-size'] = this.footerSocialLinksFontSize + this.footerSocialLinksFontUnit;
+    this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
+  }
+
+  onFooterSocialLinksFontUnitChange() {
+    if (this.footerSocialLinksFontUnit == 'em') {
+      if (this.footerSocialLinksFontSize < 16) {
+        this.footerSocialLinksFontSize = 16;
+      }
+      this.footerSocialLinksFontSize = Math.round(this.footerSocialLinksFontSize / 16);
+    }
+
+    if (this.footerSocialLinksFontUnit == 'px') {
+      this.footerSocialLinksFontSize = Math.round(this.footerSocialLinksFontSize * 16);
+    }
+
+    this.footerSocialLinksStyle['font-size'] = this.footerSocialLinksFontSize + this.footerSocialLinksFontUnit;
+    this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
+  }
+
+  resetFooterPageLinksFontName() {
+    this.footerPageLinksStyle['font-family'] = this.defaultFooterStyle['footerPageLinksStyle']['font-family'];
+    const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
+    this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
+    this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
+  }
+
+  onFooterPageLinksFontNameChange() {
+    this.footerPageLinksStyle['font-family'] = this.footerPageLinkFontName;
+    this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
+  }
+
+  resetFooterPagesLinkFontSize() {
+    this.footerPageLinksStyle['font-size'] = this.defaultFooterStyle['footerPageLinksStyle']['font-size'];
+    this.footerPageLinksFontUnit = 'px';
+    this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
+  }
+
+  setFooterPageLinksFontSize() {
+    this.footerPageLinksStyle['font-size'] = this.footerPageLinksFontSize + this.footerPageLinksFontUnit;
+    this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
+  }
+
+  onFooterPageLinksFontUnitChange() {
+    if (this.footerPageLinksFontUnit == 'em') {
+      if (this.footerPageLinksFontSize < 16) {
+        this.footerPageLinksFontSize = 16;
+      }
+      this.footerPageLinksFontSize = Math.round(this.footerPageLinksFontSize / 16);
+    }
+
+    if (this.footerPageLinksFontUnit == 'px') {
+      this.footerPageLinksFontSize = Math.round(this.footerPageLinksFontSize * 16);
+    }
+
+    this.footerPageLinksStyle['font-size'] = this.footerPageLinksFontSize + this.footerPageLinksFontUnit;
+    this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
+  }
+
+  onSocialLinkChange(platform: string) {
+    if (platform == 'facebook') {
+      this.builderFooterService.facebookUrl.next(this.facebookUrl);
+    } else if (platform == 'twitter') {
+      this.builderFooterService.twitterUrl.next(this.twitterUrl);
+    } else if (platform == 'instagram') {
+      this.builderFooterService.instagramUrl.next(this.instagramUrl);
+    } else if (platform == 'youtube') {
+      this.builderFooterService.youtubeUrl.next(this.youtubeUrl);
+    } else if (platform == 'github') {
+      this.builderFooterService.githubUrl.next(this.githubUrl);
+    } else if (platform == 'linkedin') {
+      this.builderFooterService.linkedinUrl.next(this.linkedinUrl);
+    }
+  }
+
+  toggleFooterMenuOptionVisibility(index: number) {
+    let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
+    let selectedNavbarMenuOption = this.navbarMenuOptions[index];
+
+    if (footerMenuOptions == null) {
+      footerMenuOptions = [];
+      for (let i = 0; i < this.navbarMenuOptions.length; i++) {
+        footerMenuOptions[this.navbarMenuOptions[i]] = this.navbarMenuOptions[i] == selectedNavbarMenuOption;
+      }
+    } else {
+      Object.keys(footerMenuOptions).forEach(function (key) {
+        if (key === selectedNavbarMenuOption) {
+          footerMenuOptions[selectedNavbarMenuOption] = !footerMenuOptions[key];
+        }
+      });
+      footerMenuOptions = this.builderFooterService.sortFooterMenuOptions(footerMenuOptions, this.navbarMenuOptions);
+    }
+
+    this.builderFooterService.footerMenuOptions.next(footerMenuOptions);
+  }
+
+  checkIfFooterMenuOptionIsVisible(menuOption: string): boolean {
+    let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
+    if (footerMenuOptions && footerMenuOptions[menuOption]) {
+      return footerMenuOptions[menuOption];
+    } else {
+      return false;
+    }
   }
 }

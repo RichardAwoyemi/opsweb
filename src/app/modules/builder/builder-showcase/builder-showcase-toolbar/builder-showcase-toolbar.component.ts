@@ -116,7 +116,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
     this.builderService.previewMode.next(!this.previewMode);
   }
 
-  test() {
+  setDropdownClass() {
     this.dropdownClass = 'dropdown show';
     this.dropdownMenuClass = 'dropdown-menu show';
     this.ariaExpandedAttribute = 'true';
