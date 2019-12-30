@@ -32,7 +32,7 @@
     "width": "100px"
   },
   "heroHeadingStyle": {
-    "font-family": "'Avenir Next Regular', sans-serif"
+    "font-family": "'Avenir Next Medium', sans-serif"
   },
   "heroSubheadingStyle": {},
   "heroButtonStyle": {},
@@ -41,7 +41,7 @@
     "padding-top": "16px",
     "padding-left": "32px",
     "padding-right": "32px",
-    "padding-bottom": "12px",
+    "padding-bottom": "16px",
     "display": "block",
     "background-color": "#FFFFFF"
   },

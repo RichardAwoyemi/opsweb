@@ -78,4 +78,9 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
       }
     }
   }
+
+  ngOnDestroy() {
+    this.previewModeSubscription.unsubscribe();
+    this.activeEditComponentSubscription.unsubscribe();
+  }
 }

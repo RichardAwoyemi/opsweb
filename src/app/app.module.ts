@@ -7,15 +7,11 @@ import { CoreModule } from 'src/app/modules/core/core.module';
 import { NavbarModule } from 'src/app/shared/components/navbar/navbar.module';
 import { FooterModule } from 'src/app/shared/components/footer/footer.module';
 import { RouterModule, Routes } from '@angular/router';
-import { AnonymousGuard } from './modules/core/guards/anonymous.guard';
 import { HomeModule } from './modules/main/home/home.module';
-import { BuilderComponent } from './modules/builder/builder.page';
 import { BuilderModule } from './modules/builder/builder.module';
 
 const routes: Routes = [
-  // { path: '', component: HomeComponent, canActivate: [AnonymousGuard] },
-  { path: '', component: BuilderComponent, canActivate: [AnonymousGuard] },
-  { path: '', loadChildren: './modules/main/main.module#MainModule' },
+  { path: '', loadChildren: './modules/main/main.module#MainModule' }
 ];
 
 @NgModule({
@@ -26,7 +22,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     NavbarModule,
     FooterModule,
-    CoreModule,
     HomeModule,
     BuilderModule,
     CoreModule

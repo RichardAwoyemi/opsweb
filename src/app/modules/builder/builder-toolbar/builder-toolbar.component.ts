@@ -14,11 +14,6 @@ export class BuilderToolbarComponent implements OnInit {
   ACTIVE_COMPONENTS_SETTING: string = ActiveSettings.Components;
   ACTIVE_LAYOUT_SETTING: string = ActiveSettings.Layout;
   ACTIVE_OPTIONS_SETTING: string = ActiveSettings.Options;
-  private activeEditComponentSubscription: Subscription;
-  private toolbarButtonColourSubscription: Subscription;
-  private toolbarButtonComponentsSubscription: Subscription;
-  private toolbarButtonLayoutSubscription: Subscription;
-  private toolbarButtonOptionsSubscription: Subscription;
   ACTIVE_DESKTOP_ORIENTATION: string = ActiveOrientations.Desktop;
   ACTIVE_TABLET_ORIENTATION: string = ActiveOrientations.Tablet;
   ACTIVE_MOBILE_ORIENTATION: string = ActiveOrientations.Mobile;
@@ -26,15 +21,21 @@ export class BuilderToolbarComponent implements OnInit {
   private toolbarButtonComponentsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   private toolbarButtonLayoutStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   private toolbarButtonOptionsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  private toolbarButtonDesktopOrientationSubscription: Subscription;
-  private toolbarButtonTabletOrientationSubscription: Subscription;
-  private toolbarButtonMobileOrientationSubscription: Subscription;
   previewMode: boolean = false;
-  private previewModeSubscription: Subscription;
   toolbarButtonDesktopOrientation: string = this.builderService.TOOLBAR_ACTIVE_BUTTON;
   toolbarButtonMobileOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   toolbarButtonTabletOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   toolbarClass: string = 'toolbar no-select';
+
+  private activeEditComponentSubscription: Subscription;
+  private previewModeSubscription: Subscription;
+  private toolbarButtonColourSubscription: Subscription;
+  private toolbarButtonComponentsSubscription: Subscription;
+  private toolbarButtonLayoutSubscription: Subscription;
+  private toolbarButtonOptionsSubscription: Subscription;
+  private toolbarButtonDesktopOrientationSubscription: Subscription;
+  private toolbarButtonTabletOrientationSubscription: Subscription;
+  private toolbarButtonMobileOrientationSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService
@@ -105,18 +106,22 @@ export class BuilderToolbarComponent implements OnInit {
     if (settingName == ActiveSettings.Colours) {
       this.builderService.setSidebarColoursSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Colours);
+      this.builderService.triggerScrollTo(`${ this.activeEditComponent }-colours}`);
     }
     if (settingName == ActiveSettings.Components) {
       this.builderService.setSidebarComponentsSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Components);
+      this.builderService.triggerScrollTo('components');
     }
     if (settingName == ActiveSettings.Layout) {
       this.builderService.setSidebarLayoutSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Layout);
+      this.builderService.triggerScrollTo(`${ this.activeEditComponent }-layout}`);
     }
     if (settingName == ActiveSettings.Options) {
       this.builderService.setSidebarOptionsSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Options);
+      this.builderService.triggerScrollTo(`${ this.activeEditComponent }-options}`);
     }
   }
 
@@ -180,5 +185,17 @@ export class BuilderToolbarComponent implements OnInit {
 
   togglePreview() {
     this.builderService.previewMode.next(!this.previewMode);
+  }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+    this.previewModeSubscription.unsubscribe();
+    this.toolbarButtonColourSubscription.unsubscribe();
+    this.toolbarButtonComponentsSubscription.unsubscribe();
+    this.toolbarButtonLayoutSubscription.unsubscribe();
+    this.toolbarButtonOptionsSubscription.unsubscribe();
+    this.toolbarButtonDesktopOrientationSubscription.unsubscribe();
+    this.toolbarButtonTabletOrientationSubscription.unsubscribe();
+    this.toolbarButtonMobileOrientationSubscription.unsubscribe();
   }
 }

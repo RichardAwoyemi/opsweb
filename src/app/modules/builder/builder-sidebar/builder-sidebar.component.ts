@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { BuilderService } from '../builder.service';
+import { debounce } from '../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-builder-sidebar',
@@ -77,11 +78,18 @@ export class BuilderSidebarComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
+  @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
   }
 
-  @HostListener('window:beforeunload')
   ngOnDestroy() {
+    this.sidebarDetailsTemplatesSubscription.unsubscribe();
+    this.sidebarDetailsComponentsSubscription.unsubscribe();
+    this.sidebarDetailsColoursSubscription.unsubscribe();
+    this.sidebarDetailsLayoutSubscription.unsubscribe();
+    this.sidebarDetailsOptionsSubscription.unsubscribe();
+    this.sidebarDetailsPagesSubscription.unsubscribe();
+    this.sidebarDetailsDataSubscription.unsubscribe();
   }
 }

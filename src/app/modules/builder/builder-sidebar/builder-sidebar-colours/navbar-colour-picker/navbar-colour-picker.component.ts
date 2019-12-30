@@ -111,4 +111,14 @@ export class NavbarColourPickerComponent implements OnInit {
     this.navbarLinkStyle['color'] = this.defaultNavbarStyle['navbarLinkStyle']['color'];
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
+
+  ngOnDestroy() {
+    this.navbarStyleSubscription.unsubscribe();
+    this.navbarBrandStyleSubscription.unsubscribe();
+    this.navbarLinkStyleSubscription.unsubscribe();
+    this.navbarTemplateSubscription.unsubscribe();
+    this.navbarThemeSubscription.unsubscribe();
+    this.navbarThemesSubscription.unsubscribe();
+    this.defaultNavbarStyleSubscription.unsubscribe();
+  }
 }

@@ -81,4 +81,9 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit {
     this.displayError = BuilderActionsService.togglePageModalErrorMessage(this.pageName, this.navbarMenuOptions);
     this.disableSaveButton = BuilderActionsService.togglePageModalSaveButton(this.pageName, this.navbarMenuOptions);
   }
+
+  ngOnDestroy() {
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
+  }
 }

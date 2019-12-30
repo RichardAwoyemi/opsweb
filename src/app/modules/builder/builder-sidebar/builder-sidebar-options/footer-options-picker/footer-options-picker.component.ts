@@ -320,4 +320,22 @@ export class FooterOptionsPickerComponent implements OnInit {
       return false;
     }
   }
+
+  ngOnDestroy() {
+    this.fontNamesSubscription.unsubscribe();
+    this.fontUnitsSubscription.unsubscribe();
+    this.footerStyleSubscription.unsubscribe();
+    this.footerCopyrightStyleSubscription.unsubscribe();
+    this.footerSocialLinksStyleSubscription.unsubscribe();
+    this.footerPageLinksStyleSubscription.unsubscribe();
+    this.footerTemplateSubscription.unsubscribe();
+    this.defaultFooterStyleSubscription.unsubscribe();
+    this.facebookUrlSubscription.unsubscribe();
+    this.twitterUrlSubscription.unsubscribe();
+    this.instagramUrlSubscription.unsubscribe();
+    this.youtubeUrlSubscription.unsubscribe();
+    this.githubUrlSubscription.unsubscribe();
+    this.linkedinUrlSubscription.unsubscribe();
+    this.navbarMenuOptionsSubscription.unsubscribe();
+  }
 }

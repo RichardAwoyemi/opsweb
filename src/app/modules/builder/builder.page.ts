@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderService } from './builder.service';
 import { Subscription } from 'rxjs';
+import { RouterService } from '../../shared/services/router.service';
 
 @Component({
   selector: 'app-builder',
@@ -16,12 +17,14 @@ export class BuilderComponent implements OnInit {
 
   constructor(
     private ngxLoader: NgxUiLoaderService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private routerService: RouterService
   ) {
   }
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
+    this.routerService.currentRoute.next(window.location.pathname);
 
     this.ngxLoader.start();
     this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {
@@ -39,7 +42,9 @@ export class BuilderComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerWidth = window.innerWidth;
-    this.setBuilderPanelSizes();
+    if (!this.previewMode) {
+      this.setBuilderPanelSizes();
+    }
   }
 
   setBuilderPanelSizes() {

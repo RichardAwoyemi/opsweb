@@ -212,4 +212,13 @@ export class NavbarLayoutPickerComponent implements OnInit {
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
     this.setNavbarLayoutClass('navbar-nav ml-auto');
   }
+
+  ngOnDestroy() {
+    this.navbarLinkStyleSubscription.unsubscribe();
+    this.navbarBrandStyleSubscription.unsubscribe();
+    this.navbarLogoImageStyleSubscription.unsubscribe();
+    this.navbarLogoImageSubscription.unsubscribe();
+    this.navbarTemplateSubscription.unsubscribe();
+    this.defaultNavbarStyleSubscription.unsubscribe();
+  }
 }

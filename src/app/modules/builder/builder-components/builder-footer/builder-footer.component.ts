@@ -202,4 +202,26 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();
   }
+
+  ngOnDestroy() {
+    this.footerStyleSubscription.unsubscribe();
+    this.footerPageLinksStyleSubscription.unsubscribe();
+    this.footerSocialLinksStyleSubscription.unsubscribe();
+    this.footerSocialLinksContainerStyleSubscription.unsubscribe();
+    this.footerThemeSubscription.unsubscribe();
+    this.footerTemplateSubscription.unsubscribe();
+    this.footerCopyrightStyleSubscription.unsubscribe();
+    this.footerMenuOptionsSubscription.unsubscribe();
+    this.footerAlignmentClassSubscription.unsubscribe();
+    this.footerComponentLayoutSubscription.unsubscribe();
+    this.activeEditComponentSubscription.unsubscribe();
+    this.previewModeSubscription.unsubscribe();
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.facebookUrlSubscription.unsubscribe();
+    this.twitterUrlSubscription.unsubscribe();
+    this.instagramUrlSubscription.unsubscribe();
+    this.youtubeUrlSubscription.unsubscribe();
+    this.githubUrlSubscription.unsubscribe();
+    this.linkedinUrlSubscription.unsubscribe();
+  }
 }

@@ -82,4 +82,9 @@ export class BuilderRenamePageModalComponent implements IModalComponent {
     }
     this.disableSaveButton = BuilderActionsService.togglePageModalSaveButton(this.pageName, this.navbarMenuOptions);
   }
+
+  ngOnDestroy() {
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
+  }
 }

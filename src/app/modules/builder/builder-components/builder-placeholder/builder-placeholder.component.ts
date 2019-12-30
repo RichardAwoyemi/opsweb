@@ -32,9 +32,7 @@ export class BuilderPlaceholderComponent implements OnInit {
   }
 
   onDragOver(e) {
-    if (this.activeEditComponent == ActiveComponents.Placeholder) {
-      e.target.className = 'drop-box-active';
-    }
+    e.target.className = 'drop-box-active';
   }
 
   onDragLeave(e) {
@@ -57,5 +55,10 @@ export class BuilderPlaceholderComponent implements OnInit {
   clearActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();
+  }
+
+  ngOnDestroy() {
+    this.previewModeSubscription.unsubscribe();
+    this.activeEditComponentSubscription.unsubscribe();
   }
 }

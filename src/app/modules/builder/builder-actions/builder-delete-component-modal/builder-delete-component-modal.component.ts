@@ -13,13 +13,13 @@ import { BuilderService } from '../../builder.service';
   templateUrl: './builder-delete-component-modal.component.html'
 })
 export class BuilderDeleteComponentModalComponent implements IModalComponent, OnInit {
-  private activeComponentIndexSubscription: Subscription;
   activePage: string;
   pageComponents: any;
   private activeComponentIndex: number = 0;
   private components: Array<string>;
   private activePageSettingSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
+  private activeComponentIndexSubscription: Subscription;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -70,5 +70,11 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
 
   onCloseButtonClick() {
     this.activeModal.dismiss();
+  }
+
+  ngOnDestroy() {
+    this.activePageSettingSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
+    this.activeComponentIndexSubscription.unsubscribe();
   }
 }

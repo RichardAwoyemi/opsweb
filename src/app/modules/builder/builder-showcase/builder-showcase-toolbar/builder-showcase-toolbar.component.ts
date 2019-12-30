@@ -8,6 +8,7 @@ import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { ActiveComponents, ActiveElements } from '../../builder';
 import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { debounce } from '../../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-builder-showcase-toolbar',
@@ -23,17 +24,17 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   previewMode: boolean;
   fullScreenMode: boolean;
   activePageIndex: number;
+  activeToolbarOrientation: string;
+  dropdownClass: string = 'dropdown';
+  dropdownMenuClass: string = 'dropdown-menu';
+  ariaExpandedAttribute: string = 'false';
+
   private navbarMenuOptionsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private fullScreenModeSubscription: Subscription;
   private activePageIndexSubscription: Subscription;
-
-  activeToolbarOrientation: string;
   private activeOrientationSubscription: Subscription;
   private previewModeSubscription: Subscription;
-  dropdownClass: string = 'dropdown';
-  dropdownMenuClass: string = 'dropdown-menu';
-  ariaExpandedAttribute: string = 'false';
 
   constructor(
     private builderService: BuilderService,
@@ -105,6 +106,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
+  @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
   }
@@ -157,10 +159,31 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   @HostListener('document:webkitfullscreenchange')
   @HostListener('document:mozfullscreenchange')
   @HostListener('document:MSFullscreenChange')
+  @debounce()
   onFullScreenChange() {
     let fullscreenElement = document.fullscreenElement || document['mozFullScreenElement'] || document['webkitFullscreenElement'];
     if (!fullscreenElement) {
       this.builderService.fullScreenMode.next(false);
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  documentClick(e) {
+    if (e.target.id != 'pages-dropdown') {
+      if (this.dropdownClass == 'dropdown show') {
+        this.dropdownClass = 'dropdown';
+        this.dropdownMenuClass = 'dropdown-menu';
+        this.ariaExpandedAttribute = 'false';
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.activePageSettingSubscription.unsubscribe();
+    this.fullScreenModeSubscription.unsubscribe();
+    this.activePageIndexSubscription.unsubscribe();
+    this.activeOrientationSubscription.unsubscribe();
+    this.previewModeSubscription.unsubscribe();
   }
 }

@@ -13,7 +13,6 @@ export class FooterColourPickerComponent implements OnInit {
   footerStyle: any;
   footerTemplate: string = ActiveTemplates.Default;
   footerTheme: string = ActiveFooterThemes.Default;
-
   private footerStyleSubscription: Subscription;
   private footerThemeSubscription: Subscription;
   private footerThemesSubscription: Subscription;
@@ -72,9 +71,16 @@ export class FooterColourPickerComponent implements OnInit {
 
   resetToDefault() {
     this.builderFooterService.footerTheme.next(ActiveFooterThemes.Default);
-
     this.footerStyle['background-color'] = this.defaultFooterStyle['footerStyle']['background-color'];
     this.footerStyle['color'] = this.defaultFooterStyle['footerStyle']['color'];
     this.builderFooterService.footerStyle.next(this.footerStyle);
+  }
+
+  ngOnDestroy() {
+    this.footerStyleSubscription.unsubscribe();
+    this.footerThemeSubscription.unsubscribe();
+    this.footerThemesSubscription.unsubscribe();
+    this.footerTemplateSubscription.unsubscribe();
+    this.defaultFooterStyleSubscription.unsubscribe();
   }
 }

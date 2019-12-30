@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { NavbarComponent } from './navbar.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterService } from '../../services/router.service';
 
 @NgModule({
   declarations: [
@@ -10,11 +10,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     RouterModule
   ],
   exports: [
     NavbarComponent
+  ],
+  providers: [
+    RouterService
   ]
 })
 

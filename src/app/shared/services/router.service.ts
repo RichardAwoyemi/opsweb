@@ -3,5 +3,5 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class RouterService {
-  static currentRoute = new BehaviorSubject<string>('/');
+  currentRoute = new BehaviorSubject<string>('/');
 }

@@ -49,4 +49,8 @@ export class BuilderSidebarComponentsComponent implements OnInit {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();
   }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+  }
 }

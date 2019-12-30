@@ -3,7 +3,6 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { RouterService } from '../../services/router.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -19,14 +18,13 @@ export class FooterComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     public authService: AuthService,
-    private router: Router
+    private routerService: RouterService,
   ) {
   }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.currentRoute = this.router.url;
-    this.footerSubscription = RouterService.currentRoute.subscribe(result => {
+    this.footerSubscription = this.routerService.currentRoute.subscribe(result => {
       if (result) {
         this.currentRoute = result;
       }

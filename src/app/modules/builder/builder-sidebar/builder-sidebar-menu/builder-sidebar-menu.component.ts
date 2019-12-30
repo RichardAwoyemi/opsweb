@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { ActiveComponents, ActiveSettings } from '../../builder';
+import { debounce } from '../../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-builder-sidebar-menu',
@@ -94,6 +95,7 @@ export class BuilderSidebarMenuComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
+  @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
   }
@@ -125,5 +127,16 @@ export class BuilderSidebarMenuComponent implements OnInit {
 
   validateActiveEditComponent() {
     return !(this.activeEditComponent == ActiveComponents.Placeholder || !this.activeEditComponent);
+  }
+
+  ngOnDestroy() {
+    this.sidebarTemplatesMenuSubscription.unsubscribe();
+    this.sidebarComponentsMenuSubscription.unsubscribe();
+    this.sidebarColoursMenuSubscription.unsubscribe();
+    this.sidebarLayoutMenuSubscription.unsubscribe();
+    this.sidebarOptionsMenuSubscription.unsubscribe();
+    this.sidebarPagesMenuSubscription.unsubscribe();
+    this.sidebarDataMenuSubscription.unsubscribe();
+    this.activeEditComponentSubscription.unsubscribe();
   }
 }

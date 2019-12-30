@@ -26,4 +26,8 @@ export class BuilderSidebarColoursComponent implements OnInit {
       }
     });
   }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+  }
 }

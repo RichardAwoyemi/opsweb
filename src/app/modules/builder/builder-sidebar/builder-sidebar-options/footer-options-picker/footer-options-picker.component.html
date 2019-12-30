@@ -1,3 +1,4 @@
+<div id="footer-options" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
 <ng-container>
   <div class="form-group">
     <label style="color: rgba(255, 255, 255, 1)">Social</label>
@@ -43,7 +44,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="ti-facebook"></i></span>
     </div>
-    <label style="margin-bottom: 0; border-right: .300rem white solid">
+    <label style="margin-bottom: 0;">
       <input (keyup)="onSocialLinkChange('facebook')" (ngModelChange)="onSocialLinkChange('facebook')"
              [(ngModel)]="facebookUrl" class="form-control" placeholder="Facebook" type="text">
     </label>
@@ -52,7 +53,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="ti-twitter-alt"></i></span>
     </div>
-    <label style="margin-bottom: 0; border-right: .300rem white solid">
+    <label style="margin-bottom: 0;">
       <input (keyup)="onSocialLinkChange('twitter')" (ngModelChange)="onSocialLinkChange('twitter')"
              [(ngModel)]="twitterUrl" class="form-control" placeholder="Twitter" type="text">
     </label>
@@ -61,7 +62,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="ti-instagram"></i></span>
     </div>
-    <label style="margin-bottom: 0; border-right: .300rem white solid">
+    <label style="margin-bottom: 0;">
       <input (keyup)="onSocialLinkChange('instagram')" (ngModelChange)="onSocialLinkChange('instagram')"
              [(ngModel)]="instagramUrl" class="form-control" placeholder="Instagram" type="text">
     </label>
@@ -70,7 +71,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="ti-youtube"></i></span>
     </div>
-    <label style="margin-bottom: 0; border-right: .300rem white solid">
+    <label style="margin-bottom: 0;">
       <input (keyup)="onSocialLinkChange('youtube')" (ngModelChange)="onSocialLinkChange('youtube')"
              [(ngModel)]="youtubeUrl" class="form-control" placeholder="YouTube" type="text">
     </label>
@@ -79,7 +80,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="ti-github"></i></span>
     </div>
-    <label style="margin-bottom: 0; border-right: .300rem white solid">
+    <label style="margin-bottom: 0;">
       <input (keyup)="onSocialLinkChange('github')" (ngModelChange)="onSocialLinkChange('github')"
              [(ngModel)]="githubUrl" class="form-control" placeholder="GitHub" type="text">
     </label>
@@ -88,7 +89,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="ti-linkedin"></i></span>
     </div>
-    <label style="margin-bottom: 0; border-right: .300rem white solid">
+    <label style="margin-bottom: 0;">
       <input (keyup)="onSocialLinkChange('linkedin')" (ngModelChange)="onSocialLinkChange('linkedin')"
              [(ngModel)]="linkedinUrl" class="form-control" placeholder="LinkedIn" type="text">
     </label>
@@ -96,7 +97,7 @@
 </ng-container>
 <hr>
 <ng-container>
-  <div class="form-group">
+  <div class="form-group" id="footer-options-menu">
     <label style="color: rgba(255, 255, 255, 1)">Pages</label>
   </div>
   <div class="form-group">
@@ -172,7 +173,7 @@
 </ng-container>
 <hr>
 <ng-container>
-  <div class="form-group">
+  <div class="form-group" id="footer-options-copyright">
     <label style="color: rgba(255, 255, 255, 1)">Copyright</label>
   </div>
   <div class="form-group">

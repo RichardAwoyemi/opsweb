@@ -115,10 +115,8 @@ export class BuilderSidebarPagesComponent {
   }
 
   openNewComponentModal() {
-
   }
 
   deleteComponent() {
-
   }
 }

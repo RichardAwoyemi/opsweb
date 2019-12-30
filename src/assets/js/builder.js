@@ -1,6 +1,5 @@
 let builderShowcaseId, componentIconClass, builderShowcase, currentElement, currentElementChangeFlag,
   elementRectangle, countdown, dragOverQueueProcessTimer, htmlToInsert, components;
-let pageStructure = [];
 
 let singleUseComponents = [
   '<app-builder-navbar></app-builder-navbar>',
@@ -28,18 +27,7 @@ function builderShowcaseLoaded() {
   componentIconClass = '.component-icon';
   builderShowcase = $(builderShowcaseId).get(0).contentWindow;
 
-  // Generate an array of the visible components on page load. This only needs to be run once. After the
-  // array is created, write it to session storage. Over the course of the application, update session storage.
-
   $(document).ready(function () {
-    const iframe = document.getElementById('builder-showcase');
-    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-    const iframeContent = iframeDocument.getElementsByTagName('body')[0].children;
-    for (let i = 0; i < iframeContent[0].children.length; i++) {
-      let tempTagName = iframeContent[0].children[i].children[0].children[0].localName;
-      let tagName = `<${tempTagName}></${tempTagName}>`;
-      pageStructure.push(tagName)
-    }
     preloadDragFeedbackImages();
   });
 
@@ -131,34 +119,36 @@ function addComponent(e) {
   if (htmlToInsert) {
     if (htmlToInsert !== '<app-builder-placeholder></app-builder-placeholder>') {
       const componentId = $(e.target).parent().parent().parent().parent().attr("id");
-      const tempComponentIndex = componentId.split('-');
-      const componentIndex = parseInt(tempComponentIndex[1]);
-      let componentExists = false;
+      if (componentId) {
+        const tempComponentIndex = componentId.split('-');
+        const componentIndex = parseInt(tempComponentIndex[1]);
+        let componentExists = false;
 
-      components = JSON.parse(sessionStorage.getItem('components'));
-      for (let i = 0; i < components.length; i++) {
-        if (components[i] === htmlToInsert) {
-          if (isInArray(components[i], singleUseComponents))
-            componentExists = true;
-        }
-        if (i === componentIndex) {
-          if (components[i] === "<app-builder-placeholder></app-builder-placeholder>") {
-            components[i] = htmlToInsert;
+        components = JSON.parse(sessionStorage.getItem('components'));
+        for (let i = 0; i < components.length; i++) {
+          if (components[i] === htmlToInsert) {
+            if (isInArray(components[i], singleUseComponents))
+              componentExists = true;
+          }
+          if (i === componentIndex) {
+            if (components[i] === "<app-builder-placeholder></app-builder-placeholder>") {
+              components[i] = htmlToInsert;
+            }
           }
         }
-      }
 
-      if (componentExists === false) {
-        components.splice(componentIndex, 0, "<app-builder-placeholder></app-builder-placeholder>");
-        components.splice(componentIndex + 2, 0, "<app-builder-placeholder></app-builder-placeholder>");
-        components = dedupeAdjacent(components, '<app-builder-placeholder></app-builder-placeholder>');
-        sessionStorage.setItem('components', JSON.stringify(components));
-        window.parent.window.postMessage({"for": "opsonion", "action": "component-added", "data": components}, '*')
-      } else {
-        window.parent.window.postMessage({"for": "opsonion", "action": "component-exists"}, '*')
-      }
+        if (componentExists === false) {
+          components.splice(componentIndex, 0, "<app-builder-placeholder></app-builder-placeholder>");
+          components.splice(componentIndex + 2, 0, "<app-builder-placeholder></app-builder-placeholder>");
+          components = dedupeAdjacent(components, '<app-builder-placeholder></app-builder-placeholder>');
+          sessionStorage.setItem('components', JSON.stringify(components));
+          window.parent.window.postMessage({"for": "opsonion", "action": "component-added", "data": components}, '*')
+        } else {
+          window.parent.window.postMessage({"for": "opsonion", "action": "component-exists"}, '*')
+        }
 
-      htmlToInsert = null;
+        htmlToInsert = null;
+      }
     }
   }
 }

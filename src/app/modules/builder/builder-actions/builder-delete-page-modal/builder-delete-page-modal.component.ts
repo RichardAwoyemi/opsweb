@@ -63,4 +63,9 @@ export class BuilderDeletePageModalComponent implements IModalComponent {
 
     this.toastrService.success('Your page has been deleted.', 'Great!');
   }
+
+  ngOnDestroy() {
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
+  }
 }

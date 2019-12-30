@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ActiveComponents, ActiveOrientations } from './builder';
+import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 
 @Injectable()
 export class BuilderService {
+  constructor(
+    private scrollToService: ScrollToService
+  ) {
+  }
+
   activeEditComponent = new BehaviorSubject<string>(null);
   activeEditSetting = new BehaviorSubject<string>(null);
   activePageSetting = new BehaviorSubject<string>('Home');
@@ -89,6 +95,7 @@ export class BuilderService {
     this.resetToolbar();
     this.sidebarTemplatesMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarTemplatesTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this.triggerScrollTo('templates');
   }
 
   setSidebarComponentsSetting() {
@@ -98,6 +105,7 @@ export class BuilderService {
     this.toolbarComponentsButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarComponentsMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarComponentsTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this.triggerScrollTo('components');
   }
 
   setSidebarColoursSetting() {
@@ -107,6 +115,7 @@ export class BuilderService {
     this.toolbarColoursButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarColoursMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarColoursTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this.triggerScrollTo(`${ this.activeEditComponent.getValue() }-colours`);
   }
 
   setSidebarLayoutSetting() {
@@ -116,6 +125,7 @@ export class BuilderService {
     this.toolbarLayoutButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarLayoutMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarLayoutTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this.triggerScrollTo(`${ this.activeEditComponent.getValue() }-layout`);
   }
 
   setSidebarOptionsSetting() {
@@ -125,6 +135,7 @@ export class BuilderService {
     this.toolbarOptionsButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarOptionsMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarOptionsTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this.triggerScrollTo(`${ this.activeEditComponent.getValue() }-options`);
   }
 
   setSidebarPagesSetting() {
@@ -133,6 +144,7 @@ export class BuilderService {
     this.resetToolbar();
     this.sidebarPagesMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarPagesTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this.triggerScrollTo('pages');
   }
 
   setSidebarDataSetting() {
@@ -167,6 +179,9 @@ export class BuilderService {
     if (activeEditComponent == ActiveComponents.Navbar) {
       this.processIncomingNavbarMessages(e);
     }
+    if (activeEditComponent == ActiveComponents.Footer) {
+      this.processIncomingFooterMessages(e);
+    }
   }
 
   static removeLineBreaks(e: any) {
@@ -175,14 +190,67 @@ export class BuilderService {
   }
 
   processIncomingNavbarMessages(e: any) {
-    if (e.data.action == 'edit-logo' || e.data.action == 'manage-menu') {
+    if (e.data.action == 'navbar-options-logo') {
       this.setSidebarOptionsSetting();
+      this.triggerScrollTo('navbar-options-logo');
     }
-    if (e.data.action == 'set-design') {
-      this.setSidebarColoursSetting();
+    if (e.data.action == 'navbar-options-menu') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('navbar-options-menu');
     }
-    if (e.data.action == 'set-layout') {
+    if (e.data.action == 'navbar-layout-logo') {
       this.setSidebarLayoutSetting();
+      this.triggerScrollTo('navbar-layout-logo');
     }
+    if (e.data.action == 'navbar-layout-menu') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('navbar-layout-menu');
+    }
+    if (e.data.action == 'navbar-colours') {
+      this.setSidebarColoursSetting();
+      this.triggerScrollTo('navbar-colours');
+    }
+  }
+
+  processIncomingFooterMessages(e: any) {
+    if (e.data.action == 'footer-options-copyright') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('footer-options-copyright');
+    }
+    if (e.data.action == 'footer-layout-copyright') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('footer-layout-copyright');
+    }
+    if (e.data.action == 'footer-options-social') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('footer-options-social');
+    }
+    if (e.data.action == 'footer-layout-social') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('footer-layout-social');
+    }
+    if (e.data.action == 'footer-options-menu') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('footer-options-menu');
+    }
+    if (e.data.action == 'footer-layout-menu') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('footer-layout-menu');
+    }
+    if (e.data.action == 'footer-position') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('footer-layout');
+    }
+    if (e.data.action == 'footer-colours') {
+      this.setSidebarColoursSetting();
+      this.triggerScrollTo('footer-colours');
+    }
+  }
+
+  triggerScrollTo(elementId: string) {
+    const config: ScrollToConfigOptions = {
+      target: elementId
+    };
+    this.scrollToService.scrollTo(config);
   }
 }

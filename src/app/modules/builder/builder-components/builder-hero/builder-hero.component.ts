@@ -94,4 +94,13 @@ export class BuilderHeroComponent implements OnInit, IComponent {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();
   }
+
+  ngOnDestroy() {
+    this.activeEditTaskComponentSubscription.unsubscribe();
+    this.heroButtonStyleSubscription.unsubscribe();
+    this.heroHeadingStyleSubscription.unsubscribe();
+    this.heroSubheadingStyleSubscription.unsubscribe();
+    this.heroImageSubscription.unsubscribe();
+    this.previewModeSubscription.unsubscribe();
+  }
 }

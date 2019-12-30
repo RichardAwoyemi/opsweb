@@ -25,4 +25,8 @@ export class BuilderSidebarLayoutComponent implements OnInit {
       }
     });
   }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+  }
 }

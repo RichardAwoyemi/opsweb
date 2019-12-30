@@ -4,6 +4,7 @@ import { BuilderService } from '../builder.service';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
 import { BuilderShowcaseService } from './builder-showcase.service';
 import { ActiveComponents, ActiveElements, ActiveSettings } from '../builder';
+import { debounce } from '../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-builder-showcase',
@@ -71,6 +72,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('window:resize', ['$event'])
+  @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
   }

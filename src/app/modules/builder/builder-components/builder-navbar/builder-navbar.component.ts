@@ -4,6 +4,7 @@ import { BuilderService } from '../../builder.service';
 import { BuilderNavbarService } from './builder-navbar.service';
 import { ActiveComponents, ActiveElements, ActiveNavbarThemes, ActiveSettings, ActiveTemplates } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
+import { debounce } from '../../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-builder-navbar',
@@ -173,6 +174,7 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   }
 
   @HostListener('window:resize', ['$event'])
+  @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
   }
@@ -190,6 +192,8 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
+    this.builderService.setActiveEditSetting(ActiveSettings.Options);
+    this.builderService.triggerScrollTo('navbar-options-menu');
     event.stopPropagation();
   }
 
@@ -216,6 +220,8 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
+    this.builderService.setActiveEditSetting(ActiveSettings.Options);
+    this.builderService.triggerScrollTo('navbar-options');
     event.stopPropagation();
   }
 
@@ -246,6 +252,21 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
-    event.stopPropagation();
+    this.builderService.triggerScrollTo('navbar-options-logo');
+  }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+    this.navbarStyleSubscription.unsubscribe();
+    this.navbarBrandStyleSubscription.unsubscribe();
+    this.navbarLinkStyleSubscription.unsubscribe();
+    this.navbarLayoutClassSubscription.unsubscribe();
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.previewModeSubscription.unsubscribe();
+    this.navbarLogoImageSubscription.unsubscribe();
+    this.navbarLogoTextSubscription.unsubscribe();
+    this.navbarLogoImageStyleSubscription.unsubscribe();
+    this.navbarThemeSubscription.unsubscribe();
+    this.navbarTemplateSubscription.unsubscribe();
   }
 }

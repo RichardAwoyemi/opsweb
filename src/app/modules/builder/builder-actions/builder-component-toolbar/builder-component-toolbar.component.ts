@@ -57,4 +57,8 @@ export class BuilderComponentToolbarComponent implements OnInit {
       }
     }
   }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+  }
 }

@@ -34,8 +34,8 @@ export class NavbarOptionsPickerComponent implements OnInit {
   navbarLogoImageSize: number;
   navbarTemplate: string = ActiveTemplates.Default;
   defaultNavbarStyle: any;
-
   options: SortablejsOptions;
+
   private navbarMenuOptionsSubscription: Subscription;
   private navbarLogoImageSubscription: Subscription;
   private fontNamesSubscription: Subscription;
@@ -261,5 +261,17 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.navbarBrandStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
+  }
+
+  ngOnDestroy() {
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.navbarLogoImageSubscription.unsubscribe();
+    this.fontNamesSubscription.unsubscribe();
+    this.fontUnitsSubscription.unsubscribe();
+    this.navbarBrandStyleSubscription.unsubscribe();
+    this.navbarLogoImageStyleSubscription.unsubscribe();
+    this.navbarLinkStyleSubscription.unsubscribe();
+    this.navbarTemplateSubscription.unsubscribe();
+    this.defaultNavbarStyleSubscription.unsubscribe();
   }
 }

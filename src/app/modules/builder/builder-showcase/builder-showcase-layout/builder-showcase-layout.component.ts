@@ -116,4 +116,10 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
       this.builderService.processIncomingMessages(e, this.activeEditComponent);
     }
   }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+    this.activePageSettingSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
+  }
 }

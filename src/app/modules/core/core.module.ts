@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { StoreModule } from '@ngrx/store';
 import { metaReducers, reducers } from './core.state';
@@ -13,6 +12,7 @@ import { LoggerModule } from 'ngx-logger';
 import { HttpClientModule } from '@angular/common/http';
 import { UserEffects } from './store/user/user.effects';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
+import { BrowserModule } from '@angular/platform-browser';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -25,8 +25,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    BrowserModule,
     HttpClientModule,
+    BrowserModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     StoreModule.forRoot(reducers, {
       metaReducers,

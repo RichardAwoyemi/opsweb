@@ -6,6 +6,8 @@ import { ActiveTemplates } from '../../builder';
 import { TemplateService } from '../../../../shared/services/template.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderChangeTemplateModalComponent } from '../../builder-actions/builder-change-template-modal/builder-change-template-modal.component';
+import { BuilderService } from '../../builder.service';
+import { debounce } from '../../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -26,6 +28,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private templateService: TemplateService,
+    private builderService: BuilderService,
     private modalService: NgbModal
   ) {
   }
@@ -115,6 +118,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
+  @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
   }

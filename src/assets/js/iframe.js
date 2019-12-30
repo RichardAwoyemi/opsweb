@@ -1,17 +1,30 @@
 $(document).ready(function () {
   setupNavbarContextMenu();
   setupHeroContextMenu();
-  setupGenericContextMenu();
+  setupFooterContextMenu();
 });
 
 function setupNavbarContextMenu() {
   let navbarItems = {
-    "edit-logo": {name: "Edit Logo"},
-    "manage-menu": {name: "Manage Menu"},
-    "set-design": {name: "Set Design"},
-    "set-layout": {name: "Set Layout"},
-    "sep1": "---------",
-    "delete-component": {name: "Delete Component"},
+    "navbar-colours": {
+      "name": "Colours"
+    },
+    "navbar-logo": {
+      "name": "Logo",
+      "items": {
+        "navbar-options-logo": {"name": "Edit Design"},
+        "navbar-layout-logo": {"name": "Set Position"}
+      },
+    },
+    "navbar-menu": {
+      "name": "Menu",
+      "items": {
+        "navbar-options-menu": {"name": "Manage Items"},
+        "navbar-layout-menu": {"name": "Set Position"},
+      },
+    },
+    "sep": "---------",
+    "delete-component": {name: "Delete"}
   };
 
   $(function () {
@@ -41,7 +54,6 @@ function setupNavbarContextMenu() {
 
 function setupHeroContextMenu() {
   let heroItems = {
-    "edit-logo": {name: "Edit Text"},
     "manage-menu": {name: "Edit Image"},
     "set-design": {name: "Set Design"},
     "set-layout": {name: "Set Layout"},
@@ -55,8 +67,6 @@ function setupHeroContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
       },
       items: heroItems
     });
@@ -68,54 +78,47 @@ function setupHeroContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
       },
       items: heroItems
     });
   });
 }
 
-function setupGenericContextMenu() {
-  /*
-   Generic components:
-   - Features
-   - Footer
-  */
-
-  let genericItems = {
-    "edit-text": {name: "Edit Text"},
-    "set-design": {name: "Set Design"},
-    "set-layout": {name: "Set Layout"},
-    "sep1": "---------",
-    "delete-component": {name: "Delete Component"},
+function setupFooterContextMenu() {
+  let footerItems = {
+    "footer-colours": {
+      "name": "Colours"
+    },
+    "footer": {
+      "name": "Footer",
+      "items": {
+        "footer-position": {"name": "Set Position"},
+      },
+    },
+    "footer-copyright": {
+      "name": "Copyright",
+      "items": {
+        "footer-options-copyright": {"name": "Edit Design"},
+        "footer-layout-copyright": {"name": "Set Position"}
+      },
+    },
+    "footer-social": {
+      "name": "Social",
+      "items": {
+        "footer-options-social": {"name": "Manage Items"},
+        "footer-layout-social": {"name": "Set Position"},
+      },
+    },
+    "footer-menu": {
+      "name": "Menu",
+      "items": {
+        "footer-options-menu": {"name": "Manage Items"},
+        "footer-layout-menu": {"name": "Set Position"},
+      },
+    },
+    "sep": "---------",
+    "delete-component": {name: "Delete"}
   };
-
-  $(function () {
-    $.contextMenu({
-      selector: '.features-edit-component',
-      trigger: 'right',
-      autoHide: true,
-      callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
-      },
-      items: genericItems
-    });
-  });
-
-  $(function () {
-    $.contextMenu({
-      selector: '.features-edit-button',
-      trigger: 'left',
-      autoHide: true,
-      callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
-      },
-      items: genericItems
-    });
-  });
 
   $(function () {
     $.contextMenu({
@@ -123,10 +126,9 @@ function setupGenericContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
+        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
       },
-      items: genericItems
+      items: footerItems
     });
   });
 
@@ -136,10 +138,9 @@ function setupGenericContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        let m = "clicked: " + key;
-        console.log(m);
+        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
       },
-      items: genericItems
+      items: footerItems
     });
   });
 }

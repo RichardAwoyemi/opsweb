@@ -34,6 +34,7 @@
     "@ngrx/effects": "^8.4.0",
     "@ngrx/router-store": "^8.4.0",
     "@ngrx/store": "^8.4.0",
+    "@nicky-lenaers/ngx-scroll-to": "^3.0.1",
     "@types/uuid": "^3.4.5",
     "body-parser": "^1.19.0",
     "core-js": "^3.3.2",
@@ -56,7 +57,7 @@
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.12",
+    "@angular-devkit/build-angular": "^0.803.21",
     "@angular/cli": "^8.3.12",
     "@angular/compiler-cli": "^8.2.11",
     "@angular/language-service": "^8.2.11",

@@ -12,7 +12,7 @@ import { BuilderActionsModule } from './builder-actions/builder-actions.module';
 import { BuilderShowcaseModule } from './builder-showcase/builder-showcase.module';
 import { BuilderSidebarModule } from './builder-sidebar/builder-sidebar.module';
 import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 const routes: Routes = [
   { path: '', component: BuilderComponent }
@@ -31,8 +31,8 @@ const routes: Routes = [
     BuilderSidebarModule,
     BuilderShowcaseModule,
     BuilderActionsModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ScrollToModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   providers: [
     BuilderService,

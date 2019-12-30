@@ -354,4 +354,23 @@ export class FooterLayoutPickerComponent implements OnInit {
       return 'layout-spacer';
     }
   }
+
+  ngOnDestroy() {
+    this.footerStyleSubscription.unsubscribe();
+    this.footerCopyrightStyleSubscription.unsubscribe();
+    this.footerSocialLinksStyleSubscription.unsubscribe();
+    this.footerPageLinksStyleSubscription.unsubscribe();
+    this.footerAlignmentClassSubscription.unsubscribe();
+    this.footerSocialLinksContainerStyleSubscription.unsubscribe();
+    this.footerTemplateSubscription.unsubscribe();
+    this.defaultFooterStyleSubscription.unsubscribe();
+    this.footerComponentLayoutSubscription.unsubscribe();
+    this.facebookUrlSubscription.unsubscribe();
+    this.twitterUrlSubscription.unsubscribe();
+    this.instagramUrlSubscription.unsubscribe();
+    this.youtubeUrlSubscription.unsubscribe();
+    this.githubUrlSubscription.unsubscribe();
+    this.linkedinUrlSubscription.unsubscribe();
+    this.footerMenuOptionsSubscription.unsubscribe();
+  }
 }
