@@ -12,7 +12,6 @@ import { LoggerModule } from 'ngx-logger';
 import { HttpClientModule } from '@angular/common/http';
 import { UserEffects } from './store/user/user.effects';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
-import { BrowserModule } from '@angular/platform-browser';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpin,
@@ -26,7 +25,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     HttpClientModule,
-    BrowserModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     StoreModule.forRoot(reducers, {
       metaReducers,

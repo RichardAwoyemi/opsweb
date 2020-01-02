@@ -11,6 +11,8 @@ import { BlockNonAlphabetCharactersDirective } from '../../../shared/directives/
 import { BuilderRenamePageModalComponent } from './builder-rename-page-modal/builder-rename-page-modal.component';
 import { BuilderActionsService } from './builder-actions.service';
 import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/builder-delete-image-modal.component';
+import { BuilderCreateAccountModalComponent } from './builder-create-account-modal/builder-create-account-modal.component';
+import { BuilderAddComponentModalComponent } from './builder-add-component-modal/builder-add-component-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/b
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
     BuilderRenamePageModalComponent,
+    BuilderCreateAccountModalComponent,
+    BuilderAddComponentModalComponent,
     BlockNonAlphabetCharactersDirective
   ],
   imports: [
@@ -34,7 +38,9 @@ import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/b
     BuilderDeleteImageModalComponent,
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
-    BuilderComponentToolbarComponent
+    BuilderComponentToolbarComponent,
+    BuilderAddComponentModalComponent,
+    BuilderCreateAccountModalComponent
   ],
   providers: [
     BuilderActionsService
@@ -46,7 +52,9 @@ import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/b
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderRenamePageModalComponent,
-    BuilderComponentToolbarComponent
+    BuilderComponentToolbarComponent,
+    BuilderAddComponentModalComponent,
+    BuilderCreateAccountModalComponent
   ]
 })
 

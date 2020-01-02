@@ -7,6 +7,7 @@ import { SessionStorageService } from '../../../../shared/services/session-stora
 import { ActiveComponents, ActiveComponentsFullSelector } from '../../builder';
 import { UtilService } from '../../../../shared/services/util.service';
 import { BuilderService } from '../../builder.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-builder-delete-component-modal',
@@ -25,6 +26,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     private activeModal: NgbActiveModal,
     private builderComponentService: BuilderComponentService,
     private builderService: BuilderService,
+    private toastrService: ToastrService,
     private sessionStorageService: SessionStorageService
   ) {
   }
@@ -64,7 +66,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     }
     this.builderComponentService.pageComponents.next(this.pageComponents);
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
+    this.toastrService.success('Your component has been deleted.', 'Great!');
     this.activeModal.dismiss();
   }
 

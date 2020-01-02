@@ -10,6 +10,8 @@ import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-d
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { BuilderComponentService } from '../../builder-components/builder.component.service';
 import { SortablejsOptions } from 'ngx-sortablejs';
+import { BuilderAddComponentModalComponent } from '../../builder-actions/builder-add-component-modal/builder-add-component-modal.component';
+import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
 
 @Component({
   selector: 'app-builder-sidebar-pages',
@@ -114,9 +116,11 @@ export class BuilderSidebarPagesComponent {
     this.builderService.activePageSetting.next(navbarMenuOption);
   }
 
-  openNewComponentModal() {
+  openAddComponentModal() {
+    this.modalService.open(BuilderAddComponentModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
   }
 
-  deleteComponent() {
+  openDeleteComponentModal() {
+    this.modalService.open(BuilderDeleteComponentModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 }

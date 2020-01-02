@@ -44,7 +44,7 @@
         <label style="color: rgba(255, 255, 255, 0.65)">Components</label>
       </div>
       <div class="col-md-6 text-right">
-        <a (click)="openNewComponentModal()" class="fw-600 fs-12" href="#">Add</a>
+        <a (click)="openAddComponentModal()" class="fw-600 fs-12" href="#">Add</a>
       </div>
     </div>
     <div [sortablejsOptions]="options" [sortablejs]="componentListOptions" style="padding-top: 1em">
@@ -68,7 +68,7 @@
                     ngbDropdownToggle style="margin-left: -15px; background-color: transparent" type="button"><i
               class="ti-more-alt"></i></button>
             <div aria-labelledby="pagesDropdown" ngbDropdownMenu>
-              <button (click)="deleteComponent()" ngbDropdownItem>Delete</button>
+              <button (click)="openDeleteComponentModal()" ngbDropdownItem>Delete</button>
             </div>
           </div>
         </div>

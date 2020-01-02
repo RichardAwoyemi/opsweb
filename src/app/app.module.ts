@@ -9,6 +9,7 @@ import { FooterModule } from 'src/app/shared/components/footer/footer.module';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeModule } from './modules/main/home/home.module';
 import { BuilderModule } from './modules/builder/builder.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: '', loadChildren: './modules/main/main.module#MainModule' }
@@ -23,6 +24,7 @@ const routes: Routes = [
     NavbarModule,
     FooterModule,
     HomeModule,
+    BrowserAnimationsModule,
     BuilderModule,
     CoreModule
   ],

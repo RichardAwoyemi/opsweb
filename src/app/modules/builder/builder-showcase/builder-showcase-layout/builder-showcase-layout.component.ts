@@ -36,7 +36,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
     private simpleModalService: SimpleModalService,
     private modalService: NgbModal,
     private builderService: BuilderService,
-    private sessionStorageService: SessionStorageService
+    private sessionStorageService: SessionStorageService,
   ) {
     this.options = {
       onUpdate: function (e: any) {
