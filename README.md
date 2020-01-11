@@ -14,6 +14,44 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+## Firebase
+1. Ensure that your config matches that in your firebase settings. Go to: 
+```
+<FIREBASE_PORJECT> --> Settings Cog --> Project Settings
+```
+
+Scroll down to the "Your apps" section and copy these settinges to your local environment.ts file at:
+```
+src/environments/environment.ts
+```
+
+2. Build the project:
+```
+npm install
+```
+
+3. First off, make sure you have the latest Firebase CLI tools:
+```
+npm install -g firebase-tools
+```
+
+4. Next, authenticate the Firebase CLI with an existing user (You will be auto-redirected):
+```
+firebase login
+```
+
+5. Ensure you are in the correct folder for firebase `src/app` and then use the desired firebase project:
+```
+firebase use <PROJECT_NAME>
+```
+
+### Deploying functions
+
+To deploy or update a function, run:
+```
+firebase deploy --only functions 
+```
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
