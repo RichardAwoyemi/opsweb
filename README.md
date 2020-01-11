@@ -45,6 +45,13 @@ firebase login
 firebase use <PROJECT_NAME>
 ```
 
+### Publish Stipe API KEY
+
+To be able to use Firebase as the server side engine for payment, we must configure it with the API KEY via the Firebase CLI:
+```
+firebase functions:config:set stripe.token=<YOUR STRIPE API KEY>
+```
+
 ### Deploying functions
 
 To deploy or update a function, run:
