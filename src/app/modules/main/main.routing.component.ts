@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'register', loadChildren: '../auth/register/register.module#RegisterModule', canActivate: [AnonymousGuard] },
   { path: 'forgot-password', loadChildren: '../auth/forgot-password/forgot-password.module#ForgotPasswordModule', canActivate: [AnonymousGuard] },
   { path: 'verify-email', loadChildren: '../auth/verify-email/verify-email.module#VerifyEmailModule', canActivate: [AnonymousGuard] },
+  { path: 'test', loadChildren: '../auth/test/test.module#TestModule' },
   { path: 'builder', loadChildren: '../builder/builder.module#BuilderModule' },
   { path: '', loadChildren: './home/home.module#HomeModule' },
   { path: '**', redirectTo: '' }

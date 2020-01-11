@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 import 'firebase/firestore';
 
@@ -52,11 +52,11 @@ export class FirebaseService {
   //   documentRef.update(data).then(() => {});
   // }
 
-  // createDocumentRef(collectionPath: string) {
-  //   const documentId = this.afs.createId();
-  //   const documentPath = `${ collectionPath }/${ documentId }`;
-  //   return this.afs.doc(documentPath);
-  // }
+  createDocumentRef(collectionPath: string) {
+    const documentId = this.afs.createId();
+    const documentPath = `${ collectionPath }/${ documentId }`;
+    return this.afs.doc(documentPath);
+  }
 
   // createDocumentWithId(collectionPath: string, documentId: string) {
   //   const documentPath = `${ collectionPath }/${ documentId }`;
@@ -65,6 +65,7 @@ export class FirebaseService {
   //   return documentRef.set({}, { merge: true });
   // }
   //
+
   // getDataInDocument(collectionName: string, documentName: string) {
   //   this.logger.debug(`Getting data in document '/${ collectionName }/${ documentName }'`);
   //   return this.afs.collection(collectionName).doc(documentName).snapshotChanges().pipe(map(action => {
