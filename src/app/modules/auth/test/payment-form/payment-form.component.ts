@@ -263,6 +263,7 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
       }
     };
 
+    // TODO: replace with the authenticated user Id
     const id = '1';
 
     const { source, error } = await this.stripe.createSource(this.cardNumber, additionalData);
@@ -277,9 +278,9 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
           this.paymentService.addNewUserPaymentMethods(id, setupIntent);
           // Stop loading!
           this.checkout.nativeElement.classList.add('submitted');
-          //this.confirmation = this.paymentService.submitStripeCharge(source, this.amount, this.currency);
+          // this.confirmation = this.paymentService.submitStripeCharge(source, this.amount, this.currency);
           localStorage.removeItem('newTaskDocRef');
-          //setTimeout(() => { this.router.navigate(['dashboard']); }, 5000);
+          setTimeout(() => { this.router.navigate(['dashboard']); }, 5000);
         } else {
           this.logger.error('There was an error confirming card setup', error2);
           this.onFailedPaymentMethod();

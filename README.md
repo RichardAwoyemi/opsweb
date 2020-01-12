@@ -14,19 +14,52 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+## Firebase
+1. Ensure that your config matches that in your firebase settings. Go to: 
+```
+<FIREBASE_PORJECT> --> Settings Cog --> Project Settings
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Scroll down to the "Your apps" section and copy these settinges to your local environment.ts file at:
+```
+src/environments/environment.ts
+```
 
-## Running end-to-end tests
+2. Build the project:
+```
+npm install
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+3. First off, make sure you have the latest Firebase CLI tools:
+```
+npm install -g firebase-tools
+```
 
-## Further help
+4. Next, authenticate the Firebase CLI with an existing user (You will be auto-redirected):
+```
+firebase login
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+5. Ensure you are in the correct folder for firebase `src/app` and then use the desired firebase project:
+```
+firebase use <PROJECT_NAME>
+```
 
-## Deleting all users from Firebase authentication console
+### Publish Stipe API KEY
+
+To be able to use Firebase as the server side engine for payment, we must configure it with the API KEY via the Firebase CLI:
+```
+firebase functions:config:set stripe.token=<YOUR STRIPE API KEY>
+```
+
+### Deploying functions
+
+To deploy or update a function, run:
+```
+firebase deploy --only functions 
+```
+
+### Deleting all users from Firebase authentication console
 
 Browse to the Firebase authentication console page, and then run the following in Developer Tools, on the Console tab. 
 
@@ -47,3 +80,14 @@ var clearFunction = function() {
 
 intervalId = setInterval(clearFunction, 3000)
 ```
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
