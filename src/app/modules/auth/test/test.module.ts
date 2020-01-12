@@ -7,6 +7,7 @@ import { PaymentFormComponent } from './payment-form/payment-form.component';
 import { SectionHeaderGroupModule } from 'src/app/shared/components/section-header-group/section-header-group.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PaymentService } from 'src/app/shared/services/payment.service';
 
 const routes: Routes = [
   { path: '', component: TestComponent }
@@ -24,7 +25,8 @@ const routes: Routes = [
     CommonModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    PaymentService
   ]
 })
 

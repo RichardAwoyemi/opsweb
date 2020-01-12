@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { first, map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 import 'firebase/firestore';
 
@@ -45,35 +45,35 @@ export class FirebaseService {
   //   return documentRef.set({}, { merge: true });
   // }
   //
-  // updateDocument(documentPath: string, data: any) {
-  //   this.logger.debug(`Updating a document with id at: '/${ documentPath }' with data:`);
-  //   this.logger.debug(data);
-  //   const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-  //   documentRef.update(data).then(() => {});
-  // }
-
-  createDocumentRef(collectionPath: string) {
-    const documentId = this.afs.createId();
-    const documentPath = `${ collectionPath }/${ documentId }`;
-    return this.afs.doc(documentPath);
+  updateDocument(collectionName: string, documentName: string, data: any) {
+    this.logger.debug(`Updating a document with id at: '/${ collectionName }/${ documentName }' with data:`);
+    this.logger.debug(data);
+    this.afs.collection(collectionName).doc(documentName).update(data);
   }
 
-  // createDocumentWithId(collectionPath: string, documentId: string) {
-  //   const documentPath = `${ collectionPath }/${ documentId }`;
-  //   this.logger.debug(`Creating a document at '/${ documentPath }'`);
-  //   const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-  //   return documentRef.set({}, { merge: true });
-  // }
-  //
+  createId() {
+    const documentId = this.afs.createId();
+    return documentId;
+  }
 
-  // getDataInDocument(collectionName: string, documentName: string) {
-  //   this.logger.debug(`Getting data in document '/${ collectionName }/${ documentName }'`);
-  //   return this.afs.collection(collectionName).doc(documentName).snapshotChanges().pipe(map(action => {
-  //     const data = action.payload.data();
-  //     const uid = action.payload.id;
-  //     return { uid, ...data };
-  //   }));
-  // }
+  createDocument(collectionPath: string, documentId: string) {
+    const documentPath = `${ collectionPath }/${ documentId }`;
+    this.logger.debug(`Creating a document at '/${ documentPath }`);
+    this.afs.doc(documentPath).set({}, { merge: true });
+  }
+
+  createDocumentWithData(collectionPath: string, documentId: string, data: any) {
+    const documentPath = `${ collectionPath }/${ documentId }`;
+    this.logger.debug(`Creating a document at '/${ documentPath }' with data:`);
+    this.logger.debug(data);
+    this.afs.doc(documentPath).set(data, { merge: true });
+  }
+
+  async getDataInDocument(collectionName: string, documentName: string) {
+    this.logger.debug(`Getting data in document '/${ collectionName }/${ documentName }'`);
+    const data = await this.afs.collection(collectionName).doc(documentName).get();
+    return (await data.toPromise()).data();
+  }
 
   // getOrderedDocumentsInCollection(
   //   collectionName: string, orderBy: string, ascOrder: boolean) {
