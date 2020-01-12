@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { FirebaseService } from './firebase.service';
 import { AuthService } from 'src/app/modules/auth/auth.service';
+import Stripe from 'stripe';
 
 @Injectable()
 export class PaymentService {
@@ -12,7 +13,7 @@ export class PaymentService {
     private logger: NGXLogger) {
   }
 
-  addNewUserPaymentMethods(id, setupIntent) {
+  addNewUserPaymentMethods(id: string, setupIntent: Stripe.SetupIntent) {
     // const id = await this.authService.getUser().id;
     console.log(setupIntent);
     const data = {
@@ -26,7 +27,7 @@ export class PaymentService {
     this.firebaseService.createDocumentWithData(paymentMethodsCollection, paymentMethodId, data);
   }
 
-  async getSetupIntentClientSecret(id) {
+  async getSetupIntentClientSecret(id: string) {
     // const user = await this.authService.getUser();
     // const data = await this.firebaseService.getDataInDocument('users', user.uid);
     const data = await this.firebaseService.getDataInDocument('users', id);
@@ -34,7 +35,7 @@ export class PaymentService {
     return data.stripe.setupIntent.client_secret;
   }
 
-  async submitStripeCharge(source, amount, currency) {
+  async submitStripeCharge(source: Stripe.Source, amount: number, currency: string) {
     // const user = await this.authService.getUser();
     const user = { uid: 1 }; // TODO: Replace this when login is working
     const amountAsHundrethOfCurrency = amount * 100; // Stripe charges in 1/100 of normal unit i.e. in pence or cent
@@ -48,7 +49,7 @@ export class PaymentService {
     return id;
   }
 
-  async submitCardDetails(source, amount, currency) {
+  async submitCardDetails(source: Stripe.Source, amount: number, currency: string) {
     // const user = await this.authService.getUser();
     const user = { uid: 1 }; // TODO: Replace this when login is working
     const cardData = {
