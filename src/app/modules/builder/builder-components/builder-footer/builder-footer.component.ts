@@ -33,6 +33,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   footerAlignmentClass: string;
   footerSocialLinksContainerStyle: any;
   footerComponentLayout: any;
+  activeElement: string;
 
   private footerStyleSubscription: Subscription;
   private footerPageLinksStyleSubscription: Subscription;
@@ -48,6 +49,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   private activeEditComponentSubscription: Subscription;
   private previewModeSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
+  private activeElementSubscription: Subscription;
 
   private facebookUrlSubscription: Subscription;
   private twitterUrlSubscription: Subscription;
@@ -109,6 +111,12 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
       if (response) {
         this.footerStyle = response;
+      }
+    });
+
+    this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
+      if (response) {
+        this.activeElement = response;
       }
     });
 
@@ -203,6 +211,32 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     this.builderService.setSidebarComponentsSetting();
   }
 
+  setActiveElementStyle(activeElement, element) {
+    if (activeElement == element && !this.previewMode) {
+      if (element.indexOf('footer-copyright') > -1) {
+        return 'footer-copyright-edit';
+      }
+    }
+  }
+
+  setFooterCopyrightClass() {
+    if (this.previewMode) {
+      return 'footer-copyright-preview';
+    }
+    if (!this.previewMode) {
+      return 'footer-copyright-active';
+    }
+  }
+
+  selectFooterCopyright(event: any, elementId: string) {
+    this.builderService.setActiveEditComponent(ActiveComponents.Footer);
+    this.builderService.setSidebarOptionsSetting();
+    this.builderService.activeElement.next(elementId);
+    this.builderService.setActiveEditSetting(ActiveSettings.Options);
+    this.builderService.triggerScrollTo('footer-options-copyright');
+    event.stopPropagation();
+  }
+
   ngOnDestroy() {
     this.footerStyleSubscription.unsubscribe();
     this.footerPageLinksStyleSubscription.unsubscribe();
@@ -223,5 +257,6 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     this.youtubeUrlSubscription.unsubscribe();
     this.githubUrlSubscription.unsubscribe();
     this.linkedinUrlSubscription.unsubscribe();
+    this.activeElementSubscription.unsubscribe();
   }
 }

@@ -9,7 +9,6 @@ import { FormRegisterModule } from 'src/app/shared/components/form-register/form
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContactModule } from './contact/contact-page.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { BuilderModule } from '../builder/builder.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +20,6 @@ import { BuilderModule } from '../builder/builder.module';
   ],
   imports: [
     HomeModule,
-    BuilderModule,
     MainRoutingModule,
     FontAwesomeModule,
     ContactModule,

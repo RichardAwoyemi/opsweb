@@ -251,4 +251,15 @@ footer > div {
   opacity: 1
 }
 
+.footer-copyright-preview, .footer-copyright-active {
+  border: 1px solid transparent;
+  transition: unset;
+}
+
+.footer-copyright-active:hover, .footer-copyright-edit {
+  border: 1px solid #00d9e1;
+  padding: 12px 5px !important;
+  cursor: pointer;
+}
+
 

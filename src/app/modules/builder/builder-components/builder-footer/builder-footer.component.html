@@ -27,7 +27,12 @@
       </div>
     </div>
     <div [ngClass]="footerAlignmentClass">
-      <span [ngStyle]="footerCopyrightStyle">Copyright &copy; {{ today | date: 'yyyy' }}</span>
+      <span
+        (click)="selectFooterCopyright($event, 'footer-copyright')"
+        [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
+        [ngClass]="setFooterCopyrightClass()"
+        [ngStyle]="footerCopyrightStyle"
+        id="footer-copyright-1">Copyright &copy; {{ today | date: 'yyyy' }}</span>
     </div>
   </footer>
   <!-- Layout 1 --->
@@ -35,7 +40,13 @@
           [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
     <div class="row">
       <div class="col-md-4 text-left">
-        <span [ngStyle]="footerCopyrightStyle">Copyright &copy; {{ today | date: 'yyyy' }}</span>
+        <span (click)="selectFooterCopyright($event, 'footer-copyright')"
+              [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
+              [ngClass]="setFooterCopyrightClass()"
+              [ngStyle]="footerCopyrightStyle"
+              id="footer-copyright-2">
+          Copyright &copy; {{ today | date: 'yyyy' }}
+        </span>
       </div>
       <div class="col-md-4 text-center">
         <div *ngIf="footerMenuOptions.length > 0">

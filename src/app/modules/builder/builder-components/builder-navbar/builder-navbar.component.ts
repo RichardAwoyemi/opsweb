@@ -253,6 +253,7 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     this.builderService.triggerScrollTo('navbar-options-logo');
+    event.stopPropagation();
   }
 
   ngOnDestroy() {

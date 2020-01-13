@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'forgot-password', loadChildren: '../auth/forgot-password/forgot-password.module#ForgotPasswordModule', canActivate: [AnonymousGuard] },
   { path: 'verify-email', loadChildren: '../auth/verify-email/verify-email.module#VerifyEmailModule', canActivate: [AnonymousGuard] },
   { path: 'builder', loadChildren: '../builder/builder.module#BuilderModule' },
+  { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule' },
   { path: '', loadChildren: './home/home.module#HomeModule' },
   { path: '**', redirectTo: '' }
 ];
