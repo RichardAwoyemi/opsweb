@@ -25,7 +25,7 @@ export class AuthService {
     private firebaseService: FirebaseService,
     private userService: UserService,
     private logger: NGXLogger,
-    public ngZone: NgZone
+    private ngZone: NgZone
   ) {
     this.afAuth.authState.subscribe(result => {
       if (result) {
@@ -49,7 +49,6 @@ export class AuthService {
   }
 
   facebookSignIn() {
-    this.logger.debug(`Initialising desktop Facebook sign in`);
     const provider = new auth.FacebookAuthProvider();
     let firstName = null, lastName = null;
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
@@ -71,13 +70,11 @@ export class AuthService {
   }
 
   mobileFacebookSignIn() {
-    this.logger.debug(`Initialising mobile Facebook sign in`);
     const provider = new auth.FacebookAuthProvider();
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   googleSignIn() {
-    this.logger.debug('Initialising desktop Google sign in');
     const provider = new auth.GoogleAuthProvider();
     let firstName = null;
     let lastName = null;
@@ -85,13 +82,14 @@ export class AuthService {
       if (result) {
         firstName = result.additionalUserInfo.profile['given_name'];
         lastName = result.additionalUserInfo.profile['family_name'];
-        const path = `/users/${result.user.uid}/`;
-        const doc = await this.firebaseService.docExists(path);
-        if (!doc) {
+        if (!result.user.uid) {
           this.userService.processNewDesktopUser(result, firstName, lastName);
-        }
-        if (doc) {
-          this.logger.debug(`${firstName} ${lastName} is a returning desktop user`);
+        } else {
+          const path = `/users/${ result.user.uid }/`;
+          const doc = await this.firebaseService.docExists(path);
+          if (!doc) {
+            this.userService.processNewDesktopUser(result, firstName, lastName);
+          }
         }
       }
     }).catch((error) => {
@@ -100,13 +98,11 @@ export class AuthService {
   }
 
   mobileGoogleSignIn() {
-    this.logger.debug('Initialising mobile Google sign in');
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
   async processMobileLogin(result, uid) {
-    this.logger.debug('Initialising mobile login');
     const path = `/users/${uid}/`;
     const doc = await this.firebaseService.docExists(path);
     if (!doc) {
@@ -122,7 +118,6 @@ export class AuthService {
   }
 
   register(email, password, firstName, lastName) {
-    this.logger.debug('Initialising registration');
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
       if (result) {
         const path = `/users/${result.user.uid}/`;
@@ -142,7 +137,6 @@ export class AuthService {
   }
 
   signIn(email, password) {
-    this.logger.debug('Initialising sign in');
     return new Promise<any>((resolve, reject) => {
       return this.afAuth.auth.signInWithEmailAndPassword(email, password).then(res => {
         resolve(res);
@@ -152,7 +146,6 @@ export class AuthService {
   }
 
   sendVerificationMail() {
-    this.logger.debug('Sending verification email');
     return this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
       this.ngZone.run(() => {
         this.router.navigate(['verify-email']).then(() => {
@@ -163,7 +156,6 @@ export class AuthService {
   }
 
   forgotPassword(passwordResetEmail) {
-    this.logger.debug('Sending password reset email');
     return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
       this.simpleModalService.displayMessage('Great!', 'Password reset email sent, please check your inbox.' +
         ' If you do not receive this email, check your spam or bulk email folder.');

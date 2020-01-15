@@ -6,7 +6,7 @@ import { BuilderService } from './builder.service';
 import { BuilderHeaderComponent } from './builder-header/builder-header.component';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../shared/services/data.service';
-import { BuilderComponentModule } from './builder-components/builder-component.module';
+import { BuilderComponentsModule } from './builder-components/builder-components.module';
 import { TemplateService } from '../../shared/services/template.service';
 import { BuilderActionsModule } from './builder-actions/builder-actions.module';
 import { BuilderShowcaseModule } from './builder-showcase/builder-showcase.module';
@@ -27,7 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     FormsModule,
-    BuilderComponentModule,
+    BuilderComponentsModule,
     BuilderSidebarModule,
     BuilderShowcaseModule,
     BuilderActionsModule,

@@ -1,9 +1,10 @@
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.page';
 import { NgModule } from '@angular/core';
-import { DashboardBodyComponent } from './dashboard-body/dashboard-body.component';
-import { DashboardSidebarComponent } from './dashboard-sidebar/dashboard-sidebar.component';
+import { DashboardBodyModule } from './dashboard-body/dashboard-body.module';
+import { DashboardSidebarModule } from './dashboard-sidebar/dashboard-sidebar.module';
 import { CommonModule } from '@angular/common';
+import { DashboardService } from './dashboard.service';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent }
@@ -12,14 +13,16 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DashboardComponent,
-    DashboardSidebarComponent,
-    DashboardBodyComponent
   ],
   imports: [
     RouterModule.forChild(routes),
+    DashboardBodyModule,
+    DashboardSidebarModule,
     CommonModule
   ],
-  providers: []
+  providers: [
+    DashboardService
+  ]
 })
 
 export class DashboardModule {

@@ -7,7 +7,7 @@ import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-d
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { ActiveComponents, ActiveElements } from '../../builder';
-import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 
 @Component({
@@ -38,7 +38,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
 
   constructor(
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentService,
+    private builderComponentService: BuilderComponentsService,
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService,
     private builderNavbarService: BuilderNavbarService

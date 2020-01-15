@@ -4,7 +4,7 @@ import { ActiveComponents, ActiveComponentsFullSelector } from '../builder';
 import { UtilService } from '../../../shared/services/util.service';
 
 @Injectable()
-export class BuilderComponentService {
+export class BuilderComponentsService {
   pageComponents = new BehaviorSubject<any>({
     'pages': [
       {

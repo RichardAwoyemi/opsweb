@@ -45,5 +45,5 @@ import { BuilderFooterService } from './builder-footer/builder-footer.service';
   ]
 })
 
-export class BuilderComponentModule {
+export class BuilderComponentsModule {
 }

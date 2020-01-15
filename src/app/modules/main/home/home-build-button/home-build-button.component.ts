@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { UtilService } from 'src/app/shared/services/util.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +9,6 @@ export class HomeBuildButtonComponent {
   @Input() position: string;
 
   constructor(
-    public utilService: UtilService,
     public router: Router
   ) {
   }

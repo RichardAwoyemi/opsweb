@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { Subscription } from 'rxjs';
-import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { SessionStorageService } from '../../../../shared/services/session-storage.service';
 import { ActiveComponents, ActiveComponentsFullSelector } from '../../builder';
 import { UtilService } from '../../../../shared/services/util.service';
@@ -24,7 +24,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
 
   constructor(
     private activeModal: NgbActiveModal,
-    private builderComponentService: BuilderComponentService,
+    private builderComponentService: BuilderComponentsService,
     private builderService: BuilderService,
     private toastrService: ToastrService,
     private sessionStorageService: SessionStorageService

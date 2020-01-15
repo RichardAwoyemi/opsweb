@@ -7,7 +7,7 @@ import { BuilderNavbarService } from '../../builder-components/builder-navbar/bu
 import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 import { BuilderService } from '../../builder.service';
-import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-builder-rename-page-modal',
@@ -28,7 +28,7 @@ export class BuilderRenamePageModalComponent implements IModalComponent {
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentService,
+    private builderComponentService: BuilderComponentsService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }

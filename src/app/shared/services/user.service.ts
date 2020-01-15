@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { UtilService } from './util.service';
-import { NGXLogger } from 'ngx-logger';
 import { Subject } from 'rxjs';
 import { IUser } from '../models/user';
 
@@ -13,11 +10,7 @@ export class UserService {
   user = new Subject();
 
   constructor(
-    private afs: AngularFirestore,
-    public afAuth: AngularFireAuth,
-    public router: Router,
-    private utilService: UtilService,
-    private logger: NGXLogger
+    private afs: AngularFirestore
   ) {
   }
 
@@ -29,22 +22,13 @@ export class UserService {
     }));
   }
 
-  getNumberOfUsers() {
-    this.logger.debug('Getting number of users');
-    return this.afs.collection('counters').doc('users').snapshotChanges().pipe(map(action => {
-      const data = action.payload.data();
-      return { data };
-    }));
-  }
-
   setUserData(user) {
-    this.logger.debug(`Setting user data`);
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ user.uid }`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ user.user.uid }`);
     const userData: any = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      uid: user.user.uid,
+      email: user.user.email,
+      displayName: user.user.displayName,
+      photoURL: user.user.photoURL,
       emailVerified: true
     };
     return userRef.set(userData, {
@@ -53,7 +37,6 @@ export class UserService {
   }
 
   setUserDetailData(uid, firstName, lastName, referralId) {
-    this.logger.debug(`Setting user detail data for ${ firstName } ${ lastName }`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
     let userDetailData = {};
     if (firstName && lastName) {
@@ -95,11 +78,6 @@ export class UserService {
   }
 
   processNewMobileUser(result, firstName, lastName) {
-    if (firstName && lastName) {
-      this.logger.debug(`Processing ${ firstName } ${ lastName } as new moible user`);
-    } else {
-      this.logger.debug(`Processing anonymous as new mobile user`);
-    }
     const referralId = UtilService.generateRandomString(8);
     this.setUserData(result).then(() => {
     });
@@ -108,7 +86,6 @@ export class UserService {
   }
 
   setUserCurrencyAndTimezonePreferences(uid, timezone, currency) {
-    this.logger.debug(`Setting timezone and currency information for ${ uid }`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
     const userDetailData = {
       selectedCurrency: currency,
@@ -120,14 +97,12 @@ export class UserService {
   }
 
   getUserByUsername(username) {
-    this.logger.debug(`Getting user with username '${ username }'`);
     if (username) {
       return this.afs.collection('users', ref => ref.where('username', '==', username).limit(1)).valueChanges();
     }
   }
 
   setUserPhoto(uid, photoURL) {
-    this.logger.debug(`Setting user photo for ${ uid }`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
     const userPhotoData = {
       photoURL: photoURL,
@@ -138,7 +113,6 @@ export class UserService {
   }
 
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
-    this.logger.debug(`Setting personal details for ${ uid }`);
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
     let userDetailData = {};
     if (streetAddress2) {
@@ -174,15 +148,10 @@ export class UserService {
   }
 
   processNewDesktopUser(result, firstName, lastName) {
-    if (firstName && lastName) {
-      this.logger.debug(`Processing ${ firstName } ${ lastName } as new desktop user`);
-    } else {
-      this.logger.debug(`Processing anonymous as new desktop user`);
-    }
     const referralId = UtilService.generateRandomString(8);
-    this.setUserData(result.IUser).then(() => {
+    this.setUserData(result).then(() => {
     });
-    this.setUserDetailData(result.IUser.uid, firstName, lastName, referralId).then(() => {
+    this.setUserDetailData(result.uid, firstName, lastName, referralId).then(() => {
     });
   }
 }

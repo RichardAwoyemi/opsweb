@@ -25,6 +25,7 @@ export class BuilderComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.routerService.currentRoute.next(window.location.pathname);
+    this.routerService.setCurrentRoute();
 
     this.ngxLoader.start();
     this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {

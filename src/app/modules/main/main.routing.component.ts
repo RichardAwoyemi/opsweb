@@ -4,6 +4,7 @@ import { AnonymousGuard } from 'src/app/modules/core/guards/anonymous.guard';
 import { ContactComponent } from './contact/contact.page';
 import { LegalComponent } from './legal/legal.page';
 import { PressComponent } from './press/press.page';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
   { path: 'press', component: PressComponent, canActivate: [AnonymousGuard] },
@@ -14,8 +15,8 @@ const routes: Routes = [
   { path: 'forgot-password', loadChildren: '../auth/forgot-password/forgot-password.module#ForgotPasswordModule', canActivate: [AnonymousGuard] },
   { path: 'verify-email', loadChildren: '../auth/verify-email/verify-email.module#VerifyEmailModule', canActivate: [AnonymousGuard] },
   { path: 'builder', loadChildren: '../builder/builder.module#BuilderModule' },
-  { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule' },
-  { path: '', loadChildren: './home/home.module#HomeModule' },
+  { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard] },
+  { path: '', loadChildren: './home/home.module#HomeModule', canActivate: [AnonymousGuard] },
   { path: '**', redirectTo: '' }
 ];
 

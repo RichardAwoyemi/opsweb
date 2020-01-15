@@ -4,10 +4,10 @@ import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builde
 import { BuilderShowcaseComponent } from './builder-showcase.component';
 import { BuilderShowcaseToolbarComponent } from './builder-showcase-toolbar/builder-showcase-toolbar.component';
 import { BuilderShowcaseService } from './builder-showcase.service';
-import { BuilderComponentModule } from '../builder-components/builder-component.module';
+import { BuilderComponentsModule } from '../builder-components/builder-components.module';
 import { BuilderToolbarComponent } from '../builder-toolbar/builder-toolbar.component';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { BuilderComponentService } from '../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../builder-components/builder-components.service';
 import { BuilderDynamicHtmlModule } from '../builder-components/builder-dynamic-html/builder-dynamic-html.module';
 import { BuilderNavbarComponent } from '../builder-components/builder-navbar/builder-navbar.component';
 import { ActiveComponentsPartialSelector } from '../builder';
@@ -31,9 +31,9 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
   ],
   imports: [
     CommonModule,
-    BuilderComponentModule,
+    BuilderComponentsModule,
     NgbPopoverModule,
-    BuilderComponentModule,
+    BuilderComponentsModule,
     SimpleModalModule,
     SortablejsModule.forRoot({ animation: 500 }),
     BuilderDynamicHtmlModule.forRoot({
@@ -54,7 +54,7 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
   ],
   providers: [
     BuilderShowcaseService,
-    BuilderComponentService,
+    BuilderComponentsService,
     SimpleModalService
   ],
   entryComponents: [

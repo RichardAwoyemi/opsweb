@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { ActiveComponentsFullSelector } from '../../builder';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { SessionStorageService } from '../../../../shared/services/session-storage.service';
@@ -32,7 +32,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
   private pageComponentsSubscription: Subscription;
 
   constructor(
-    private builderComponentService: BuilderComponentService,
+    private builderComponentService: BuilderComponentsService,
     private simpleModalService: SimpleModalService,
     private modalService: NgbModal,
     private builderService: BuilderService,

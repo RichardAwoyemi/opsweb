@@ -8,7 +8,7 @@ import { BuilderNavbarService } from '../../builder-components/builder-navbar/bu
 import { BuilderRenamePageModalComponent } from '../../builder-actions/builder-rename-page-modal/builder-rename-page-modal.component';
 import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
-import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { BuilderAddComponentModalComponent } from '../../builder-actions/builder-add-component-modal/builder-add-component-modal.component';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
@@ -36,7 +36,7 @@ export class BuilderSidebarPagesComponent {
     private modalService: NgbModal,
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
-    private builderComponentService: BuilderComponentService,
+    private builderComponentService: BuilderComponentsService,
     private simpleModalService: SimpleModalService
   ) {
     this.options = {

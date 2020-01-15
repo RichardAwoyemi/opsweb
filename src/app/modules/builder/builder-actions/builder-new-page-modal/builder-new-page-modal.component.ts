@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BuilderActionsService } from '../builder-actions.service';
 import { ActiveComponentsFullSelector } from '../../builder';
 import { BuilderService } from '../../builder.service';
-import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-builder-delete-page-modal',
@@ -27,7 +27,7 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit {
   constructor(
     private builderNavbarService: BuilderNavbarService,
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentService,
+    private builderComponentService: BuilderComponentsService,
     private builderActionsService: BuilderActionsService,
     private toastrService: ToastrService,
     private activeModal: NgbActiveModal

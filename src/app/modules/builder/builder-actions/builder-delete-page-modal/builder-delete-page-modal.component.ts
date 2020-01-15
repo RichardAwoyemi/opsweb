@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { ToastrService } from 'ngx-toastr';
 import { BuilderService } from '../../builder.service';
-import { BuilderComponentService } from '../../builder-components/builder.component.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-builder-delete-page-modal',
@@ -23,7 +23,7 @@ export class BuilderDeletePageModalComponent implements IModalComponent {
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentService,
+    private builderComponentService: BuilderComponentsService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }

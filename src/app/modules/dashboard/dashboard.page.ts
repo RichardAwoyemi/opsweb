@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { RouterService } from '../../shared/services/router.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,8 +10,15 @@ export class DashboardComponent implements OnInit {
   bodyClass: string = 'col-md-9';
   innerWidth: number;
 
+  constructor(
+    private routerService: RouterService
+  ) {
+  }
+
   ngOnInit() {
     this.innerWidth = window.innerWidth;
+    this.routerService.currentRoute.next(window.location.pathname);
+    this.routerService.setCurrentRoute();
   }
 
   @HostListener('window:resize', ['$event'])
