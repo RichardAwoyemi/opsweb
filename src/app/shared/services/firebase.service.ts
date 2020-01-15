@@ -33,6 +33,7 @@ export class FirebaseService {
   //   }
   // }
 
+
   async docExists(path: string) {
     return this.afs.doc(path).valueChanges().pipe(first()).toPromise();
   }
@@ -62,11 +63,15 @@ export class FirebaseService {
     this.afs.doc(documentPath).set({}, { merge: true });
   }
 
-  createDocumentWithData(collectionPath: string, documentId: string, data: any) {
+  async createDocumentWithData(collectionPath: string, documentId: string, data: any, sensitive: boolean) {
     const documentPath = `${ collectionPath }/${ documentId }`;
     this.logger.debug(`Creating a document at '/${ documentPath }' with data:`);
-    this.logger.debug(data);
-    this.afs.doc(documentPath).set(data, { merge: true });
+    if (sensitive) {
+      this.logger.debug('Not showing sensitive data');
+    } else {
+      this.logger.debug(data);
+    }
+    await this.afs.doc(documentPath).set(data, { merge: true });
   }
 
   async getDataInDocument(collectionName: string, documentName: string) {

@@ -49,6 +49,7 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
 
   email;
   name;
+  additionalData;
 
   cardNumber;
   cardExpiry;
@@ -243,14 +244,12 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
     submit.remove();
 
     // Show a loading screen...
-    this.checkout.nativeElement.classList.add('submitting');
-
+    this.startLoadingSpinner();
     this.disableInputs();
+    this.disableSubmitButton();
 
     // Gather additional customer data we may have collected in our form.
-    const additionalData = {
-      amount: this.amount ? this.amount * 100 : undefined,
-      currency: this.currency,
+    this.additionalData = {
       owner: {
         name: this.name ? this.name : undefined,
         email: this.email ? this.email : undefined,
@@ -266,38 +265,64 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
     // TODO: replace with the authenticated user Id
     const id = '1';
 
-    const { source, error } = await this.stripe.createSource(this.cardNumber, additionalData);
-    if (source) {
-      this.logger.debug('Created source object');
-      const clientSecret = await this.paymentService.getSetupIntentClientSecret(id);
-      if (clientSecret) {
-        this.logger.debug('Successfully obtained clientSecret');
-        const { setupIntent, error2 } = await this.stripe.confirmCardSetup(clientSecret, source);
-        if (setupIntent.status === 'succeeded') {
-          this.logger.debug('Successfully confirmed card setup');
-          this.paymentService.addNewUserPaymentMethods(id, setupIntent);
-          // Stop loading!
-          this.checkout.nativeElement.classList.add('submitted');
-          // this.confirmation = this.paymentService.submitStripeCharge(source, this.amount, this.currency);
-          localStorage.removeItem('newTaskDocRef');
-          setTimeout(() => { this.router.navigate(['dashboard']); }, 5000);
+    const { paymentMethod, error } = await this.stripe.createPaymentMethod({
+      type: 'card',
+      card: this.cardNumber,
+      billing_details: this.additionalData.owner
+    });
+    if (paymentMethod) {
+      this.logger.debug('Successfully created paymentMethod object');
+      const addPaymentMethod = await this.paymentService.addPaymentMethod(id, paymentMethod);
+      if (addPaymentMethod) {
+        this.logger.debug('Successfully added new payment method to firebase');
+        const clientSecret = await this.paymentService.getSetupIntentClientSecret(id);
+        if (clientSecret) {
+          this.logger.debug('Successfully obtained client secret from firebase');
+          this.logger.debug('Checking setupIntent status');
+          this.stripe.retrieveSetupIntent(clientSecret).then((result) => {
+            if (result.setupIntent.status === 'succeeded') {
+              this.logger.debug('Successfully confirmed card setup');
+              this.stopLoadingSpinner();
+              setTimeout(() => { this.router.navigate(['dashboard']); }, 10000);
+            } else {
+              this.logger.error('There was an error confirming card setup', result.error);
+              this.onFailedPaymentMethod();
+            }
+          });
+          /*this.stripe.confirmCardSetup(clientSecret, { payment_method: paymentMethod.id }).then((result) => {
+            console.log(result);
+            if (result.error) {
+              this.logger.error('There was an error confirming card setup', result.error);
+              this.onFailedPaymentMethod();
+            } else {
+              this.logger.debug('Successfully confirmed card setup');
+              // Stop loading!
+              this.checkout.nativeElement.classList.add('submitted');
+              setTimeout(() => { this.router.navigate(['dashboard']); }, 5000);
+            }
+          });*/
         } else {
-          this.logger.error('There was an error confirming card setup', error2);
+          this.logger.error('There was an error obtaining clientSecret!');
           this.onFailedPaymentMethod();
         }
       } else {
-        this.logger.error('There was an error obtaining clientSecret!');
+        this.logger.error('Could not create a source from provided details', error);
         this.onFailedPaymentMethod();
       }
-    } else {
-      this.logger.error('Could not create a source from provided details', error);
-      this.onFailedPaymentMethod();
     }
+  }
+
+  startLoadingSpinner() {
+    this.checkout.nativeElement.classList.add('submitting');
+  }
+  stopLoadingSpinner() {
+    this.checkout.nativeElement.classList.add('submitted');
   }
 
   onFailedPaymentMethod() {
     this.checkout.nativeElement.classList.remove('submitting');
     this.enableInputs();
+    this.enableSubmitButton();
   }
 }
 

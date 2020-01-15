@@ -13,18 +13,19 @@ export class PaymentService {
     private logger: NGXLogger) {
   }
 
-  addNewUserPaymentMethods(id: string, setupIntent: Stripe.SetupIntent) {
+  async addPaymentMethod(id: string, paymentMethod: Stripe.PaymentMethod) {
     // const id = await this.authService.getUser().id;
-    console.log(setupIntent);
     const data = {
-      paymentMethod: setupIntent.payment_method,
-      paymentMethodTypes: setupIntent.payment_method_types,
-      created: setupIntent.created,
-      status: setupIntent.status,
+      paymentMethod: paymentMethod.id,
+      billingDetails: paymentMethod.billing_details,
+      card: paymentMethod.card,
+      type: paymentMethod.type,
+      created: paymentMethod.created
     };
     const paymentMethodsCollection = `users/${id}/paymentMethods`;
     const paymentMethodId = this.firebaseService.createId();
-    this.firebaseService.createDocumentWithData(paymentMethodsCollection, paymentMethodId, data);
+    await this.firebaseService.createDocumentWithData(paymentMethodsCollection, paymentMethodId, data, true);
+    return await this.firebaseService.getDataInDocument(paymentMethodsCollection, paymentMethodId);
   }
 
   async getSetupIntentClientSecret(id: string) {
@@ -45,19 +46,7 @@ export class PaymentService {
       currency: currency
     };
     const id = this.firebaseService.createId();
-    this.firebaseService.createDocumentWithData(`users/${user.uid}/payments`, id, chargeData);
-    return id;
-  }
-
-  async submitCardDetails(source: Stripe.Source, amount: number, currency: string) {
-    // const user = await this.authService.getUser();
-    const user = { uid: 1 }; // TODO: Replace this when login is working
-    const cardData = {
-      source: source.id,
-      currency: currency
-    };
-    const id = this.firebaseService.createId();
-    this.firebaseService.createDocumentWithData(`users/${user.uid}/paymentMethods`, id, cardData);
+    this.firebaseService.createDocumentWithData(`users/${user.uid}/payments`, id, chargeData, true);
     return id;
   }
 }
