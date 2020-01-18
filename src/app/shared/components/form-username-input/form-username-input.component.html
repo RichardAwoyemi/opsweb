@@ -1,7 +1,7 @@
 <div class="input-group">
   <label style="width: 100%">
     <input (change)="username=username.trim();" (keydown)="onKeydownCheckUsername()" [(ngModel)]="username"
-           blockSpecialCharacter
+           blockAlphanumericCharacters
            class="form-control" name="username" type="text">
   </label>
 </div>

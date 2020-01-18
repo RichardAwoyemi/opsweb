@@ -67,7 +67,6 @@ export class UserService {
       dobYear: user.dobYear,
       postcode: user.postcode,
       selectedCurrency: user.selectedCurrency,
-      selectedTimezone: user.selectedTimezone,
       streetAddress1: user.streetAddress1,
       streetAddress2: user.streetAddress2,
       city: user.city,
@@ -85,11 +84,10 @@ export class UserService {
     });
   }
 
-  setUserCurrencyAndTimezonePreferences(uid, timezone, currency) {
+  setUserCurrencyPreferences(uid, timezone, currency) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
     const userDetailData = {
-      selectedCurrency: currency,
-      selectedTimezone: timezone
+      selectedCurrency: currency
     };
     return userRef.set(userDetailData, {
       merge: true
@@ -126,8 +124,7 @@ export class UserService {
         streetAddress1: streetAddress1,
         streetAddress2: streetAddress2,
         city: city,
-        postcode: postcode,
-        onboardingComplete: true
+        postcode: postcode
       };
     } else {
       userDetailData = {

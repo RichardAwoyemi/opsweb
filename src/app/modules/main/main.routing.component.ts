@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'builder', loadChildren: '../builder/builder.module#BuilderModule' },
   { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard] },
   { path: '', loadChildren: './home/home.module#HomeModule', canActivate: [AnonymousGuard] },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '', canActivate: [AnonymousGuard] }
 ];
 
 @NgModule({

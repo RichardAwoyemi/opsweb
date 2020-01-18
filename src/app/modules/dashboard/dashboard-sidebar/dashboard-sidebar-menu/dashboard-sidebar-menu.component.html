@@ -1,11 +1,28 @@
-<div class="col-md-12" style="margin-top: -1em; margin-bottom: -1em">
-  <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_WEBSITES)" [ngClass]="sidebarWebsitesTab" href="#"
-     style="padding-left: 0; font-size: 18px">Your Websites</a>
-  <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_TEMPLATES)" [ngClass]="sidebarTemplatesTab" href="#"
-     style="padding-left: 0; font-size: 18px">Templates</a>
-  <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_SETTINGS)" [ngClass]="sidebarAccountsTab" href="#"
-     style="padding-left: 0; font-size: 18px">Account Settings</a>
-  <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_REWARDS)" [ngClass]="sidebarRewardsTab" href="#"
-     style="padding-left: 0; font-size: 18px">Rewards</a>
-  <a (click)="signOut()" class="nav-link" href="#" style="padding-left: 0; font-size: 18px">Log Out</a>
-</div>
+<ng-container *ngIf="user.firstName && user.lastName">
+  <div class="col-md-12" style="margin-top: -1em; margin-bottom: -1em">
+    <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_WEBSITES)" [ngClass]="setActiveSidebarClass(ACTIVE_SIDEBAR_WEBSITES)"
+       href="#"
+       style="padding-left: 0; font-size: 18px">Websites</a>
+    <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_TEMPLATES)" [ngClass]="setActiveSidebarClass(ACTIVE_SIDEBAR_TEMPLATES)"
+       href="#"
+       style="padding-left: 0; font-size: 18px">Templates</a>
+    <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_SETTINGS)" [ngClass]="setActiveSidebarClass(ACTIVE_SIDEBAR_SETTINGS)"
+       href="#"
+       style="padding-left: 0; font-size: 18px">Settings</a>
+    <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_REWARDS)" [ngClass]="setActiveSidebarClass(ACTIVE_SIDEBAR_REWARDS)"
+       href="#"
+       style="padding-left: 0; font-size: 18px">Rewards</a>
+    <a (click)="signOut()" class="nav-link" href="#" style="padding-left: 0; font-size: 18px">Log Out</a>
+  </div>
+</ng-container>
+<ng-container *ngIf="!user.firstName && !user.lastName">
+  <div class="col-md-12" style="margin-top: -1em; margin-bottom: -1em">
+    <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_SETTINGS)" [ngClass]="setActiveSidebarClass(ACTIVE_SIDEBAR_SETTINGS)"
+       href="#"
+       style="padding-left: 0; font-size: 18px">Settings</a>
+    <a (click)="setActiveSidebar(ACTIVE_SIDEBAR_REWARDS)" [ngClass]="setActiveSidebarClass(ACTIVE_SIDEBAR_REWARDS)"
+       href="#"
+       style="padding-left: 0; font-size: 18px">Rewards</a>
+    <a (click)="signOut()" class="nav-link" href="#" style="padding-left: 0; font-size: 18px">Log Out</a>
+  </div>
+</ng-container>

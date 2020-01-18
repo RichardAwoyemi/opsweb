@@ -5,17 +5,33 @@ import { DashboardBodyComponent } from './dashboard-body.component';
 import { DashboardBodyWebsitesComponent } from './dashboard-body-websites/dashboard-body-websites.component';
 import { DashboardBodyTemplatesComponent } from './dashboard-body-templates/dashboard-body-templates.component';
 import { CommonModule } from '@angular/common';
+import { SettingsBillingComponent } from './dashboard-body-settings/settings-billing/settings-billing.component';
+import { SettingsProfileComponent } from './dashboard-body-settings/settings-profile/settings-profile.component';
+import { FormChangePasswordComponent } from '../../../shared/components/form-change-password/form-change-password.component';
+import { FormPhotoUploadModule } from '../../../shared/components/form-photo-upload/form-photo-upload.module';
+import { FormUsernameInputModule } from '../../../shared/components/form-username-input/form-username-input.module';
+import { FormNameInputModule } from '../../../shared/components/form-name-input/form-name-input.module';
+import { FormDobInputModule } from '../../../shared/components/form-dob-input/form-dob-input.module';
+import { FormAddressInputModule } from '../../../shared/components/form-address-input/form-address-input.module';
 
 @NgModule({
   declarations: [
     DashboardBodySettingsComponent,
+    SettingsBillingComponent,
+    SettingsProfileComponent,
+    FormChangePasswordComponent,
     DashboardBodyWebsitesComponent,
     DashboardBodyRewardsComponent,
     DashboardBodyTemplatesComponent,
     DashboardBodyComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormPhotoUploadModule,
+    FormUsernameInputModule,
+    FormNameInputModule,
+    FormDobInputModule,
+    FormAddressInputModule
   ],
   exports: [
     DashboardBodySettingsComponent,

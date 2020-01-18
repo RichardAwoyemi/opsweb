@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormDobInputService } from './form-dob-input.service';
 import { NGXLogger } from 'ngx-logger';
@@ -16,6 +16,10 @@ import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
 export class FormDobInputComponent implements OnInit, OnDestroy {
   dates: any;
   years: any;
+  user: IUser;
+  private dobDay: string;
+  private dobMonth: string;
+  private dobYear: string;
 
   constructor(
     private utilService: UtilService,
@@ -26,7 +30,6 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
     private formDobInputService: FormDobInputService
   ) { }
 
-  @Input() user: any;
   private datesSubscription: Subscription;
 
   ngOnInit() {
@@ -35,14 +38,23 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
       .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
+
           if (!result.dobDay) {
-            this.user.dobDay = 'Day';
+            this.dobDay = 'Day';
+          } else {
+            this.dobDay = this.user.dobDay;
           }
+
           if (!result.dobMonth) {
-            this.user.dobMonth = 'Month';
+            this.dobMonth = 'Month';
+          } else {
+            this.dobMonth = this.user.dobMonth;
           }
+
           if (!result.dobYear) {
-            this.user.dobYear = 'Year';
+            this.dobYear = 'Year';
+          } else {
+            this.dobYear = this.user.dobYear;
           }
         }
       });
@@ -61,7 +73,17 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
   }
 
   onChangeUpdateDob() {
+    if (this.dobDay !== 'Day') {
+      this.user.dobDay = this.dobDay;
+    }
+    if (this.dobMonth !== 'Month') {
+      this.user.dobMonth = this.dobMonth;
+    }
+    if (this.dobYear !== 'Year') {
+      this.user.dobYear = this.dobYear;
+    }
     this.userService.user.next(this.user);
+
     this.formDobInputService.showDobDayInputError = this.user.dobDay === 'Day';
     this.formDobInputService.showDobMonthInputError = this.user.dobMonth === 'Month';
     this.formDobInputService.showDobYearInputError = this.user.dobYear === 'Year';

@@ -15,10 +15,8 @@ export interface IUser {
   dobDay: string;
   dobMonth: string;
   dobYear: string;
-  onboardingComplete: boolean;
   postcode: string;
   selectedCurrency: string;
-  selectedTimezone: string;
   streetAddress1: string;
   streetAddress2: string;
   city: string;

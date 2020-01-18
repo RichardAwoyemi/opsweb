@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-md-6">
       <label style="width: 100%">
-        <select (change)="onChangeUpdateDob()" [(ngModel)]="user['dobMonth']" class="form-control" name="dobMonth">
+        <select (change)="onChangeUpdateDob()" [(ngModel)]="dobMonth" class="form-control" name="dobMonth">
           <option disabled>Month</option>
           <option *ngFor="let date of dates" [ngValue]="date.name">{{ date.name }}</option>
         </select>
@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-3">
       <label style="width: 100%">
-        <select (change)="onChangeUpdateDob()" [(ngModel)]="user['dobDay']" class="form-control" name="dobDay">
+        <select (change)="onChangeUpdateDob()" [(ngModel)]="dobDay" class="form-control" name="dobDay">
           <option disabled>Day</option>
           <ng-container *ngIf="user['dobMonth'] == 'January'">
             <option *ngFor="let date of counter(dates[0]['days']); let i = index" [ngValue]="i + 1">
@@ -64,9 +64,9 @@
         </select>
       </label>
     </div>
-    <div *ngIf="user['dobYear']" class="col-md-3">
+    <div class="col-md-3">
       <label style="width: 100%">
-        <select (change)="onChangeUpdateDob()" [(ngModel)]="user['dobYear']" class="form-control" name="dobYear">
+        <select (change)="onChangeUpdateDob()" [(ngModel)]="dobYear" class="form-control" name="dobYear">
           <option disabled>Year</option>
           <option *ngFor="let year of years" [ngValue]="year">{{ year }}</option>
         </select>

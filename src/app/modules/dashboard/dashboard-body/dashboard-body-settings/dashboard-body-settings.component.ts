@@ -5,12 +5,9 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './dashboard-body-settings.component.html'
 })
 export class DashboardBodySettingsComponent implements OnInit {
-  innerHeight: number;
-
   constructor() {
   }
 
   ngOnInit() {
-    this.innerHeight = window.innerHeight;
   }
 }
