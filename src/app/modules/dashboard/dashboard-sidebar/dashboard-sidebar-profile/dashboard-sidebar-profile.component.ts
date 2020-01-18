@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActiveSidebarSettings } from '../../dashboard';
 import { DashboardService } from '../../dashboard.service';
 import { IUser } from '../../../../shared/models/user';
 import * as fromUser from '../../../core/store/user/user.reducer';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
+import { debounce } from '../../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-dashboard-sidebar-profile',
@@ -34,6 +35,12 @@ export class DashboardSidebarProfileComponent implements OnInit {
           this.user = result;
         }
       });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  @debounce()
+  onResize() {
+    this.dashboardSidebarWidth = document.getElementById('dashboard-sidebar').offsetWidth - 30;
   }
 
   redirectToBuilder() {

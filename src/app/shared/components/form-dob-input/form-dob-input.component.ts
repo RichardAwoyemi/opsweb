@@ -39,19 +39,19 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
         if (result) {
           this.user = result;
 
-          if (!result.dobDay) {
+          if (!result.dobDay || result.dobDay.trim().length === 0) {
             this.dobDay = 'Day';
           } else {
             this.dobDay = this.user.dobDay;
           }
 
-          if (!result.dobMonth) {
+          if (!result.dobMonth || result.dobMonth.trim().length === 0) {
             this.dobMonth = 'Month';
           } else {
             this.dobMonth = this.user.dobMonth;
           }
 
-          if (!result.dobYear) {
+          if (!result.dobYear || result.dobYear.trim().length === 0) {
             this.dobYear = 'Year';
           } else {
             this.dobYear = this.user.dobYear;
