@@ -23,7 +23,9 @@ const initialState: IUser = {
   city: null,
   username: null,
   firstName: null,
-  lastName: null
+  lastName: null,
+  referralId: null,
+  referredBy: null
 };
 
 export const userReducer = createReducer(

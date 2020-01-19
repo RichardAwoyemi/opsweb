@@ -23,4 +23,6 @@ export interface IUser {
   username: string;
   firstName: string;
   lastName: string;
+  referralId: string;
+  referredBy: string;
 }

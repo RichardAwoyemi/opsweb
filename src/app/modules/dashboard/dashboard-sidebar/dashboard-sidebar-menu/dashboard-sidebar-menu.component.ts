@@ -35,7 +35,7 @@ export class DashboardSidebarMenuComponent {
       .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
-          if (!this.user.firstName && !this.user.lastName) {
+          if (!this.user.firstName && !this.user.lastName && this.user.uid) {
             this.dashboardService.activeSidebarSetting.next(ActiveSidebarSettings.AccountSettings);
             if (!this.messageDisplayed) {
               this.simpleModalService.displayMessage('👋', 'Please set up your account before continuing.');

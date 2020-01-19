@@ -72,7 +72,9 @@ export class UserService {
       city: user.city,
       username: user.username,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      referralId: user.referralId,
+      referredBy: user.referredBy
     };
   }
 
@@ -148,7 +150,7 @@ export class UserService {
     const referralId = UtilService.generateRandomString(8);
     this.setUserData(result).then(() => {
     });
-    this.setUserDetailData(result.uid, firstName, lastName, referralId).then(() => {
+    this.setUserDetailData(result.user.uid, firstName, lastName, referralId).then(() => {
     });
   }
 }

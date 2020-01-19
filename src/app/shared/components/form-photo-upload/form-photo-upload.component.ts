@@ -29,7 +29,9 @@ export class FormPhotoUploadComponent implements OnInit {
     username: null,
     photoURL: '/assets/img/anonymous.jpg',
     firstName: null,
-    lastName: null
+    lastName: null,
+    referralId: null,
+    referredBy: null
   };
 
   constructor(
