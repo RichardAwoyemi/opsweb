@@ -1,13 +1,9 @@
 import { Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { environment } from '../../../../../environments/environment';
 import { PaymentService } from '../../../../shared/services/payment.service';
 import { Router } from '@angular/router';
-import { FirebaseService } from '../../../../shared/services/firebase.service';
 import { NGXLogger } from 'ngx-logger';
-
-declare const Stripe: any;
 
 @Component({
   selector: 'app-payment-form',
@@ -25,7 +21,6 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private paymentService: PaymentService,
-    private firebaseService: FirebaseService,
     public router: Router,
     private logger: NGXLogger
   ) { }
@@ -37,25 +32,39 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
   @ViewChild('checkoutContainer', {static: false}) checkout: ElementRef;
   @ViewChild('reset', {static: false}) resetButton: ElementRef;
   @ViewChild('error', {static: false}) error: ElementRef;
+  @ViewChild('success', {static: false}) success: ElementRef;
   @ViewChild('errorMessage', {static: false}) errorMessage: ElementRef;
+  @ViewChild('authorise', {static: false}) authorise: ElementRef;
+  @ViewChild('exists', {static: false}) exists: ElementRef;
 
   @ViewChild('address', {static: false}) address1: ElementRef;
   @ViewChild('city', {static: false}) city: ElementRef;
   @ViewChild('state', {static: false}) state: ElementRef;
   @ViewChild('zip', {static: false}) zip: ElementRef;
   @ViewChild('submit', {static: false}) submit: ElementRef;
+  @ViewChild('title', {static: false}) title: ElementRef;
+
+  FormAction = {
+    CONIRM_AUTH: 'CONIRM_AUTH',
+    DECLINE_AUTH: 'DECLINE_AUTH',
+    SUBMIT_CARD: 'SUBMIT_CARD'
+  };
+
+  // TODO: replace with the authenticated user Id
+  userId = '1';
+
+  paymentMethod;
 
   listener;
 
   email;
   name;
-  additionalData;
+  billingDetails;
 
   cardNumber;
   cardExpiry;
   cardCvc;
 
-  stripe;
   currency;
 
   savedErrors = {};
@@ -96,9 +105,8 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
     this.addFocusBlurAndKeyUpAnimationsToInputs();
-
-    this.stripe = Stripe(environment.stripeKey);
-    const elements = this.stripe.elements();
+  
+    const elements = this.paymentService.getStripe().elements();
 
     this.cardNumber = elements.create('cardNumber', {
       style: this.style,
@@ -197,7 +205,7 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
         input.classList.remove('focused');
       });
       input.addEventListener('keyup', function () {
-        if (input.value.length === 0) {
+        if (input.value !== null || input.value.length === 0) {
           input.classList.add('empty');
         } else {
           input.classList.remove('empty');
@@ -243,84 +251,138 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
     submit.click();
     submit.remove();
 
-    // Show a loading screen...
-    this.startLoadingSpinner();
     this.disableInputs();
     this.disableSubmitButton();
 
-    // Gather additional customer data we may have collected in our form.
-    this.additionalData = {
-      owner: {
-        name: this.name ? this.name : undefined,
-        email: this.email ? this.email : undefined,
-        address: {
-          line1: this.address1 ? this.address1.nativeElement.value : undefined,
-          city: this.city ? this.city.nativeElement.value : undefined,
-          state: this.state ? this.state.nativeElement.value : undefined,
-          postal_code: this.zip ? this.zip.nativeElement.value : undefined,
-        }
-      }
-    };
-
-    // TODO: replace with the authenticated user Id
-    const id = '1';
-
-    const { paymentMethod, error } = await this.stripe.createPaymentMethod({
-      type: 'card',
-      card: this.cardNumber,
-      billing_details: this.additionalData.owner
-    });
+    this.billingDetails = this.paymentService.prepareBillingDetails(this.name, this.email, this.address1, this.city, this.state, this.zip);
+    const paymentMethod = await this.paymentService.createPaymentMethod(this.cardNumber, this.billingDetails);
     if (paymentMethod) {
-      this.logger.debug('Successfully created paymentMethod object');
-      const addPaymentMethod = await this.paymentService.addPaymentMethod(id, paymentMethod);
-      if (addPaymentMethod) {
-        this.logger.debug('Successfully added new payment method to firebase');
-        const clientSecret = await this.paymentService.getSetupIntentClientSecret(id);
-        if (clientSecret) {
-          this.logger.debug('Successfully obtained client secret from firebase');
-          this.logger.debug('Checking setupIntent status');
-          this.stripe.retrieveSetupIntent(clientSecret).then((result) => {
-            if (result.setupIntent.status === 'succeeded') {
-              this.logger.debug('Successfully confirmed card setup');
-              this.stopLoadingSpinner();
-              setTimeout(() => { this.router.navigate(['dashboard']); }, 10000);
-            } else {
-              this.logger.error('There was an error confirming card setup', result.error);
-              this.onFailedPaymentMethod();
-            }
-          });
-          /*this.stripe.confirmCardSetup(clientSecret, { payment_method: paymentMethod.id }).then((result) => {
-            console.log(result);
-            if (result.error) {
-              this.logger.error('There was an error confirming card setup', result.error);
-              this.onFailedPaymentMethod();
-            } else {
-              this.logger.debug('Successfully confirmed card setup');
-              // Stop loading!
-              this.checkout.nativeElement.classList.add('submitted');
-              setTimeout(() => { this.router.navigate(['dashboard']); }, 5000);
-            }
-          });*/
-        } else {
-          this.logger.error('There was an error obtaining clientSecret!');
-          this.onFailedPaymentMethod();
-        }
+      this.paymentMethod = paymentMethod;
+      const paymentMethodExists = await this.paymentService.checkForPaymentMethod(this.userId, this.paymentMethod.card);
+      if (paymentMethodExists) {
+        this.waitingLoadingSpinner();
+        this.hideAuthorisationPopup();
+        this.showPaymentMethodExists();
       } else {
-        this.logger.error('Could not create a source from provided details', error);
-        this.onFailedPaymentMethod();
+        this.waitingLoadingSpinner();
+        this.hideAuthorisationPopup();
+        this.showConfirmationPopup();
       }
     }
   }
 
-  startLoadingSpinner() {
-    this.checkout.nativeElement.classList.add('submitting');
-  }
-  stopLoadingSpinner() {
-    this.checkout.nativeElement.classList.add('submitted');
+  onCancelAuthorisedCardClick(e) {
+    e.preventDefault();
+    this.hideAuthorisationPopup();
+    this.hideConfirmationPopup(this.FormAction.DECLINE_AUTH);
   }
 
-  onFailedPaymentMethod() {
+  onBackExistsCardClick(e) {
+    e.preventDefault();
+    this.hideAuthorisationPopup();
+    this.hidePaymentMethodExists();
+  }
+
+  async onAuthorisedCardClick(e) {
+    e.preventDefault();
+    this.validateFormBySubmit();
+    this.hideConfirmationPopup(this.FormAction.CONIRM_AUTH);
+
+    if (this.paymentMethod) {
+      this.logger.debug('Successfully created paymentMethod object', this.paymentMethod);
+      const addPaymentMethod = await this.paymentService.addPaymentMethod(this.userId, this.paymentMethod);
+      if (addPaymentMethod) {
+        this.logger.debug('Successfully added new payment method to firebase', addPaymentMethod);
+        const clientSecret = await this.paymentService.getSetupIntentClientSecret(this.userId);
+        if (clientSecret) {
+          this.logger.debug('Successfully obtained client secret from firebase');
+          this.logger.debug('Checking setupIntent status');
+          this.paymentService.getStripe().retrieveSetupIntent(clientSecret).then((result) => {
+            if (result.setupIntent.status === 'succeeded') {
+              this.logger.debug('Successfully confirmed card setup', result.setupIntent);
+              this.completeLoadingSpinner();
+              this.setTitle('Confirmed new payment method!');
+              //setTimeout(() => { this.router.navigate(['dashboard']); }, 10000);
+            } else {
+              this.logger.error('There was an error confirming card setup', result.error);
+              this.showPaymentForm();
+            }
+          });
+        } else {
+          this.logger.error('There was an error obtaining clientSecret!');
+          this.showPaymentForm();
+        }
+      } else {
+        this.logger.error('Could not add paymentMethod to Firebase', addPaymentMethod);
+        this.showPaymentForm();
+      }
+    } else {
+      this.showPaymentForm();
+    }
+  }
+
+  validateFormBySubmit() {
+    // The only way to trigger HTML5 form validation UI is to fake a user submit event.
+    const submit = document.createElement('input');
+    submit.type = 'submit';
+    submit.style.display = 'none';
+    this.form.nativeElement.appendChild(submit);
+    submit.click();
+    submit.remove();
+  }
+  setTitle(title) {
+    this.title.nativeElement.innerHTML = title;
+  }
+
+  waitingLoadingSpinner() {
+    this.checkout.nativeElement.classList.add('submitting');
+  }
+  completeLoadingSpinner() {
+    this.checkout.nativeElement.classList.add('submitted');
+  }
+  removeLoadingSpinner() {
+    this.checkout.nativeElement.classList.remove('submitted');
     this.checkout.nativeElement.classList.remove('submitting');
+  }
+
+  hidePaymentMethodExists() {
+    this.exists.nativeElement.setAttribute('style', 'opacity: 0');
+    setTimeout(() => {
+      this.showPaymentForm();
+      this.authorise.nativeElement.setAttribute('style', 'display: block');
+    }, 350);
+  }
+  hideAuthorisationPopup() {
+    this.success.nativeElement.setAttribute('style', 'display: none');
+  }
+  hideConfirmationPopup(action) {
+    this.authorise.nativeElement.setAttribute('style', 'opacity: 0');
+    setTimeout(() => {
+      if (action === this.FormAction.DECLINE_AUTH) {
+        this.showPaymentForm();
+      } else if (action === this.FormAction.CONIRM_AUTH) {
+        this.waitingLoadingSpinner();
+        this.showAuthorisationPopup();
+      }
+    }, 350);
+  }
+
+  showPaymentMethodExists() {
+    this.setTitle('Payment method exists');
+    this.authorise.nativeElement.setAttribute('style', 'display: none');
+    this.exists.nativeElement.setAttribute('style', 'opacity: 1; transform: translateY(25px)');
+  }
+  showAuthorisationPopup() {
+    this.setTitle('Adding payment method...');
+    this.success.nativeElement.setAttribute('style', 'display: block');
+  }
+  showConfirmationPopup() {
+    this.setTitle('Confirm new payment method');
+    this.authorise.nativeElement.setAttribute('style', 'opacity: 1; transform: translateY(25px)');
+  }
+  showPaymentForm() {
+    this.setTitle('Add a payment method');
+    this.removeLoadingSpinner();
     this.enableInputs();
     this.enableSubmitButton();
   }

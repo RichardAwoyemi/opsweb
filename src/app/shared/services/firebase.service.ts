@@ -80,6 +80,24 @@ export class FirebaseService {
     return (await data.toPromise()).data();
   }
 
+  async checkPaymentMethodsInCollectionExists(collectionName: string, card: any) {
+    this.logger.debug(`Getting documents in collection '${ collectionName }' that match new card`);
+    const paymentMethods = await this.afs.collection(collectionName, ref => ref
+      .where('card.brand', '==', card.brand)
+      .where('card.country', '==', card.country)
+      .where('card.funding', '==', card.funding)
+      .where('card.last4', '==', card.last4)
+      .where('card.exp_month', '==', card.exp_month)
+      .where('card.exp_year', '==', card.exp_year)).get().toPromise();
+
+    if (paymentMethods && paymentMethods.docs.length > 0) {
+      console.log('Found payment method');
+      return true;
+    } else {
+      console.log('No payment methods found!');
+      return false;
+    }
+  }
   // getOrderedDocumentsInCollection(
   //   collectionName: string, orderBy: string, ascOrder: boolean) {
   //   const orderDirection = FirebaseService.getOrderDirection(ascOrder);
@@ -130,14 +148,4 @@ export class FirebaseService {
   //   }));
   // }
   //
-  // getDocumentsInCollection(collectionName: string) {
-  //   this.logger.debug(`Getting documents in collection '${ collectionName }'`);
-  //   return this.afs.collection(collectionName).snapshotChanges().pipe(map(actions => {
-  //     return actions.map(action => {
-  //       const data = action.payload.doc.data();
-  //       const uid = action.payload.doc.id;
-  //       return { uid, ...data };
-  //     });
-  //   }));
-  // }
 }
