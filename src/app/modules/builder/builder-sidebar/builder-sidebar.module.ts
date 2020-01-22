@@ -38,6 +38,7 @@ import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.mod
   ],
   exports: [
     BuilderSidebarComponent,
+    FilterPipe,
   ]
 })
 

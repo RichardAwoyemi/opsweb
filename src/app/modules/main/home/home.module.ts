@@ -7,8 +7,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HomeComponent } from './home.page';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeBuildButtonComponent } from './home-build-button/home-build-button.component';
-import { HomeBrowserMockupComponent } from './home-browser-mockup/home-browser-mockup.component';
 import { CommonModule } from '@angular/common';
+import { BrowserMockupModule } from '../../../shared/components/browser-mockup/browser-mockup.module';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }
@@ -21,13 +21,13 @@ const routes: Routes = [
     HomePopupComponent,
     HomeSectionHeaderComponent,
     HomeBuildButtonComponent,
-    HomeBrowserMockupComponent,
     LoginButtonGroupComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     FontAwesomeModule,
     RouterModule,
+    BrowserMockupModule,
     CommonModule
   ],
   exports: [
@@ -36,7 +36,6 @@ const routes: Routes = [
     HomePopupComponent,
     HomeSectionHeaderComponent,
     HomeBuildButtonComponent,
-    HomeBrowserMockupComponent,
     LoginButtonGroupComponent
   ],
 })

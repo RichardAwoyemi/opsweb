@@ -3,13 +3,15 @@ import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
-  selector: 'app-home-browser-mockup',
-  templateUrl: './home-browser-mockup.component.html',
-  styleUrls: ['./home-browser-mockup.component.css']
+  selector: 'app-browser-mockup',
+  templateUrl: './browser-mockup.component.html',
+  styleUrls: ['./browser-mockup.component.css']
 })
-export class HomeBrowserMockupComponent implements OnInit {
+export class BrowserMockupComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   @Input() img: string;
+  @Input() view: string;
+  imageStyle: any;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -18,5 +20,9 @@ export class HomeBrowserMockupComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
+  }
+
+  setImageOpacity(opacity) {
+    this.imageStyle = { 'opacity': opacity };
   }
 }

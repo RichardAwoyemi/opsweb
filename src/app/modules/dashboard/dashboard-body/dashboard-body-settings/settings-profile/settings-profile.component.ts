@@ -12,6 +12,5 @@ export class SettingsProfileComponent implements OnInit {
   }
 
   setUserPersonalDetails() {
-
   }
 }

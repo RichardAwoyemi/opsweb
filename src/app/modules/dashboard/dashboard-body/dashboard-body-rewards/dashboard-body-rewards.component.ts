@@ -29,7 +29,6 @@ export class DashboardBodyRewardsComponent implements OnInit {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-
     this.userStore.select('user')
       .pipe()
       .subscribe(async (result: IUser) => {

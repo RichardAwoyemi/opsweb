@@ -25,3 +25,31 @@
 .browser-mockup {
   flex: 1;
 }
+
+.template-mockup .btn {
+  display: none;
+}
+
+.template-mockup:hover .preview-btn {
+  display: block;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.template-mockup:hover .edit {
+  display: block;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.btn-block {
+  width: 50% !important;
+}

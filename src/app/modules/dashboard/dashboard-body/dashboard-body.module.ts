@@ -13,6 +13,10 @@ import { FormUsernameInputModule } from '../../../shared/components/form-usernam
 import { FormNameInputModule } from '../../../shared/components/form-name-input/form-name-input.module';
 import { FormDobInputModule } from '../../../shared/components/form-dob-input/form-dob-input.module';
 import { FormAddressInputModule } from '../../../shared/components/form-address-input/form-address-input.module';
+import { BrowserMockupModule } from '../../../shared/components/browser-mockup/browser-mockup.module';
+import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.module';
+import { FormsModule } from '@angular/forms';
+import { BuilderSidebarModule } from '../../builder/builder-sidebar/builder-sidebar.module';
 
 @NgModule({
   declarations: [
@@ -31,14 +35,18 @@ import { FormAddressInputModule } from '../../../shared/components/form-address-
     FormUsernameInputModule,
     FormNameInputModule,
     FormDobInputModule,
-    FormAddressInputModule
+    FormAddressInputModule,
+    BrowserMockupModule,
+    ArraySortModule,
+    FormsModule,
+    BuilderSidebarModule
   ],
   exports: [
     DashboardBodySettingsComponent,
     DashboardBodyWebsitesComponent,
     DashboardBodyRewardsComponent,
     DashboardBodyTemplatesComponent,
-    DashboardBodyComponent
+    DashboardBodyComponent,
   ]
 })
 

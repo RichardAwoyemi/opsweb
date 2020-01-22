@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterService } from '../../shared/services/router.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,14 +12,17 @@ export class DashboardComponent implements OnInit {
   innerWidth: number;
 
   constructor(
-    private routerService: RouterService
+    private routerService: RouterService,
+    private ngxLoader: NgxUiLoaderService,
   ) {
   }
 
   ngOnInit() {
+    this.ngxLoader.start();
     this.innerWidth = window.innerWidth;
     this.routerService.currentRoute.next(window.location.pathname);
     this.routerService.setCurrentRoute();
+    this.ngxLoader.stop();
   }
 
   @HostListener('window:resize', ['$event'])
