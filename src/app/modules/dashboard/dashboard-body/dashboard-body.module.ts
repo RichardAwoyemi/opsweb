@@ -17,6 +17,7 @@ import { BrowserMockupModule } from '../../../shared/components/browser-mockup/b
 import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.module';
 import { FormsModule } from '@angular/forms';
 import { BuilderSidebarModule } from '../../builder/builder-sidebar/builder-sidebar.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BuilderSidebarModule } from '../../builder/builder-sidebar/builder-side
     BrowserMockupModule,
     ArraySortModule,
     FormsModule,
-    BuilderSidebarModule
+    BuilderSidebarModule,
+    RouterModule
   ],
   exports: [
     DashboardBodySettingsComponent,

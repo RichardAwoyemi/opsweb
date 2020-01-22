@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { IUser } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-form-change-password',
@@ -15,13 +14,11 @@ export class FormChangePasswordComponent implements OnInit {
   isPasswordChangeEnabled = false;
 
   constructor(
-    private ngxLoader: NgxUiLoaderService,
     private userStore: Store<fromUser.State>
   ) {
   }
 
   ngOnInit() {
-    this.ngxLoader.start();
     this.userStore.select('user')
       .pipe()
       .subscribe(async (result: IUser) => {
@@ -29,7 +26,6 @@ export class FormChangePasswordComponent implements OnInit {
           this.user = result;
         }
       });
-    this.ngxLoader.stop();
   }
 
   changePassword() {

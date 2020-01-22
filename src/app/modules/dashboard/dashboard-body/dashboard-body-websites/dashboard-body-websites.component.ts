@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardBodyWebsitesComponent implements OnInit {
   innerHeight: number;
+  websites: any;
 
   constructor() {
   }

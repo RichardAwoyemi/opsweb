@@ -52,6 +52,7 @@ export class DashboardSidebarMenuComponent {
 
   setActiveSidebar(selectedOption) {
     this.dashboardService.activeSidebarSetting.next(selectedOption);
+    this.dashboardService.triggerScrollTo(selectedOption);
   }
 
   setActiveSidebarClass(option) {
