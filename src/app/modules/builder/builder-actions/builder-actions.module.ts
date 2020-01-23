@@ -13,6 +13,8 @@ import { BuilderActionsService } from './builder-actions.service';
 import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/builder-delete-image-modal.component';
 import { BuilderCreateAccountModalComponent } from './builder-create-account-modal/builder-create-account-modal.component';
 import { BuilderAddComponentModalComponent } from './builder-add-component-modal/builder-add-component-modal.component';
+import { BuilderConfirmSaveModalComponent } from './builder-confirm-save-modal/builder-confirm-save-modal.component';
+import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-modal/builder-rename-website-modal.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { BuilderAddComponentModalComponent } from './builder-add-component-modal
     BuilderRenamePageModalComponent,
     BuilderCreateAccountModalComponent,
     BuilderAddComponentModalComponent,
+    BuilderConfirmSaveModalComponent,
+    BuilderRenameWebsiteModalComponent,
     BlockNonAlphabetCharactersDirective
   ],
   imports: [
@@ -39,6 +43,8 @@ import { BuilderAddComponentModalComponent } from './builder-add-component-modal
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
+    BuilderConfirmSaveModalComponent,
+    BuilderRenameWebsiteModalComponent,
     BuilderAddComponentModalComponent,
     BuilderCreateAccountModalComponent
   ],
@@ -54,6 +60,8 @@ import { BuilderAddComponentModalComponent } from './builder-add-component-modal
     BuilderRenamePageModalComponent,
     BuilderComponentToolbarComponent,
     BuilderAddComponentModalComponent,
+    BuilderConfirmSaveModalComponent,
+    BuilderRenameWebsiteModalComponent,
     BuilderCreateAccountModalComponent
   ]
 })

@@ -13,6 +13,7 @@ import { BuilderShowcaseModule } from './builder-showcase/builder-showcase.modul
 import { BuilderSidebarModule } from './builder-sidebar/builder-sidebar.module';
 import { ToastrModule } from 'ngx-toastr';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: BuilderComponent }
@@ -32,7 +33,8 @@ const routes: Routes = [
     BuilderShowcaseModule,
     BuilderActionsModule,
     ScrollToModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgbPopoverModule
   ],
   providers: [
     BuilderService,

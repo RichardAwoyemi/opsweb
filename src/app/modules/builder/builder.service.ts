@@ -52,6 +52,8 @@ export class BuilderService {
   fontNames = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
 
+  websiteName = new BehaviorSubject(<string>(null));
+
   resetMenu() {
     this.sidebarTemplatesMenu.next(this.SIDEBAR_INACTIVE_MENU);
     this.sidebarPagesMenu.next(this.SIDEBAR_INACTIVE_MENU);

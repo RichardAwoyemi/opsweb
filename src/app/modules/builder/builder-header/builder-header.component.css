@@ -15,3 +15,15 @@
 .dropdown-item:hover {
   cursor: pointer;
 }
+
+.website-name {
+  color: #fff;
+  font-size: 1em;
+  float: right;
+  margin-left: 0.75em;
+  margin-top: 2px;
+}
+
+.website-name:hover {
+  cursor: text;
+}

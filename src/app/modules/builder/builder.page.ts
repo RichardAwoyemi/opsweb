@@ -3,6 +3,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderService } from './builder.service';
 import { Subscription } from 'rxjs';
 import { RouterService } from '../../shared/services/router.service';
+import { UtilService } from '../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder',
@@ -13,7 +14,8 @@ export class BuilderComponent implements OnInit {
   previewMode: boolean = false;
   sidebarClass: string = 'col-md-3';
   showcaseClass: string = 'col-md-9';
-  private previewModeSubscription: Subscription;
+  websiteName: string;
+  previewModeSubscription: Subscription;
 
   constructor(
     private ngxLoader: NgxUiLoaderService,
@@ -26,6 +28,7 @@ export class BuilderComponent implements OnInit {
     this.innerWidth = window.innerWidth;
     this.routerService.currentRoute.next(window.location.pathname);
     this.routerService.setCurrentRoute();
+    this.builderService.websiteName.next(UtilService.generatWebsiteName());
 
     this.ngxLoader.start();
     this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {
