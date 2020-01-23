@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 export class DashboardBodyTemplatesComponent implements OnInit {
   innerHeight: number;
   searchText: string;
-  private webTemplates: Template[];
+  webTemplates: Template[];
   private webTemplateSubscription: Subscription;
 
   constructor(
