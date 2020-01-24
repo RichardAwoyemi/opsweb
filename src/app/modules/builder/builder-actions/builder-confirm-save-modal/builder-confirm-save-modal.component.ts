@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-builder-confirm-save-modal',
@@ -9,6 +10,7 @@ import { IModalComponent } from '../../../../shared/models/modal';
 export class BuilderConfirmSaveModalComponent implements IModalComponent, OnInit {
   constructor(
     private activeModal: NgbActiveModal,
+    private toastrService: ToastrService
   ) {
   }
 
@@ -17,6 +19,7 @@ export class BuilderConfirmSaveModalComponent implements IModalComponent, OnInit
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
+    this.toastrService.success('Your website has been saved.', 'Great!');
   }
 
   onCloseButtonClick() {
