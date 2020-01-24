@@ -3,6 +3,14 @@
   opacity: 0.8;
 }
 
+.component-holder:nth-child(even) {
+  padding-left: 0.5em !important;
+}
+
+.component-holder:nth-child(odd) {
+  padding-right: 0.5em !important;
+}
+
 .input-group {
   background-color: #ffffff;
 }
