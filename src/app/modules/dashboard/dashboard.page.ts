@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.ngxLoader.start();
     this.innerWidth = window.innerWidth;
+    this.setDashboardPanelSizes();
     this.routerService.currentRoute.next(window.location.pathname);
     this.routerService.setCurrentRoute();
     this.ngxLoader.stop();

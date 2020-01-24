@@ -5,9 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-builder-confirm-save-modal',
-  templateUrl: './builder-confirm-save-modal.component.html'
+  templateUrl: './builder-save-website-modal.component.html'
 })
-export class BuilderConfirmSaveModalComponent implements IModalComponent, OnInit {
+export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit {
   constructor(
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService

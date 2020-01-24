@@ -212,7 +212,6 @@ body::-webkit-scrollbar-thumb {
   padding: 1em;
 }
 
-
 /* Context menu */
 
 .context-menu-item:hover {
@@ -262,4 +261,7 @@ footer > div {
   cursor: pointer;
 }
 
-
+.dragging {
+  cursor: grabbing;
+  background-color: red;
+}

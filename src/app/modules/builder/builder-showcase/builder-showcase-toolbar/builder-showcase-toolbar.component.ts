@@ -9,7 +9,7 @@ import { SimpleModalService } from '../../../../shared/components/simple-modal/s
 import { ActiveComponents, ActiveElements } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
-import { BuilderConfirmSaveModalComponent } from '../../builder-actions/builder-confirm-save-modal/builder-confirm-save-modal.component';
+import { BuilderSaveWebsiteModalComponent } from '../../builder-actions/builder-save-website-modal/builder-save-website-modal.component';
 
 @Component({
   selector: 'app-builder-showcase-toolbar',
@@ -157,7 +157,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
   }
 
   save() {
-    this.modalService.open(BuilderConfirmSaveModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(BuilderSaveWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 
   @HostListener('document:fullscreenchange')

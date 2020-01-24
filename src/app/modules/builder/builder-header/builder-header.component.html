@@ -16,7 +16,8 @@
         &nbsp;&nbsp;
         <span aria-expanded="false" class="dropdown-toggle no-caret"
               data-toggle="dropdown">
-          <img alt="user" class="avatar avatar-xs" src="../../../../assets/img/anonymous.jpg">
+            <img *ngIf="!user.photoURL" alt="user" class="avatar avatar-xs" src="{{ photoURL }}">
+            <img *ngIf="user.photoURL" alt="user" class="avatar avatar-xs" src="{{ user.photoURL }}">
         </span>
         <div class="dropdown-menu dropdown-menu-right">
           <a (click)="redirectToDashboard()" class="dropdown-item">Dashboard</a>
