@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActiveFooterThemes, ActiveTemplates } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-footer-colour-picker',
@@ -13,14 +14,17 @@ export class FooterColourPickerComponent implements OnInit {
   footerStyle: any;
   footerTemplate: string = ActiveTemplates.Default;
   footerTheme: string = ActiveFooterThemes.Default;
+  websiteChangeCount: number;
   private footerStyleSubscription: Subscription;
   private footerThemeSubscription: Subscription;
   private footerThemesSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
   private defaultFooterStyleSubscription: Subscription;
+  private websiteChangeCountSubscription: Subscription;
 
   constructor(
-    private builderFooterService: BuilderFooterService
+    private builderFooterService: BuilderFooterService,
+    private builderService: BuilderService
   ) {
   }
 
@@ -54,6 +58,12 @@ export class FooterColourPickerComponent implements OnInit {
         });
       }
     });
+
+    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+      if (response) {
+        this.websiteChangeCount = response['value'];
+      }
+    });
   }
 
   onThemeChange() {
@@ -63,10 +73,12 @@ export class FooterColourPickerComponent implements OnInit {
       this.builderFooterService.footerTheme.next(this.footerTheme);
       this.builderFooterService.setFooterTheme(this.footerTheme);
     }
+    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFooterStyle() {
     this.builderFooterService.footerStyle.next(this.footerStyle);
+    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {
@@ -82,5 +94,6 @@ export class FooterColourPickerComponent implements OnInit {
     this.footerThemesSubscription.unsubscribe();
     this.footerTemplateSubscription.unsubscribe();
     this.defaultFooterStyleSubscription.unsubscribe();
+    this.websiteChangeCountSubscription.unsubscribe();
   }
 }

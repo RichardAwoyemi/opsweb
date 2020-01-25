@@ -8,6 +8,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderChangeTemplateModalComponent } from '../../builder-actions/builder-change-template-modal/builder-change-template-modal.component';
 import { BuilderService } from '../../builder.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
+import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
+import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -16,11 +19,13 @@ import { debounce } from '../../../../shared/decorators/debounce.decorator';
 })
 export class BuilderSidebarTemplatesComponent implements OnInit {
   innerHeight: number;
+  websiteChangeCount: number;
   searchText: string;
   private webTemplateSubscription: Subscription;
   private webTemplateBusinessSubscription: Subscription;
   private templateSubscription: Subscription;
   private selectedTemplateSubscription: Subscription;
+  private websiteChangeCountSubscription: Subscription;
   private webTemplateBusiness: Template[];
   private webTemplates: Template[];
   private selectedTemplate: Template;
@@ -29,6 +34,9 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
     private dataService: DataService,
     private templateService: TemplateService,
     private builderService: BuilderService,
+    private builderNavbarService: BuilderNavbarService,
+    private builderHeroService: BuilderHeroService,
+    private builderFooterService: BuilderFooterService,
     private modalService: NgbModal
   ) {
   }
@@ -61,6 +69,12 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
     this.selectedTemplateSubscription = this.templateService.selectedTemplate.subscribe(response => {
       if (response) {
         this.selectedTemplate = response;
+      }
+    });
+
+    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+      if (response) {
+        this.websiteChangeCount = response['value'];
       }
     });
 
@@ -124,7 +138,22 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   }
 
   setTemplate(templateId: string) {
-    const modal = this.modalService.open(BuilderChangeTemplateModalComponent, { windowClass: 'modal-holder', centered: true });
-    modal.componentInstance.templateId = templateId;
+    if (this.websiteChangeCount > 0) {
+      const modal = this.modalService.open(BuilderChangeTemplateModalComponent, { windowClass: 'modal-holder', centered: true });
+      modal.componentInstance.templateId = templateId;
+      this.builderService.resetWebsiteChangeCount();
+    } else {
+      this.builderNavbarService.setComponentTemplate(templateId);
+      this.builderHeroService.setComponentTemplate(templateId);
+      this.builderFooterService.setComponentTemplate(templateId);
+    }
+  }
+
+  ngOnDestroy() {
+    this.webTemplateSubscription.unsubscribe();
+    this.webTemplateBusinessSubscription.unsubscribe();
+    this.websiteChangeCountSubscription.unsubscribe();
+    this.templateSubscription.unsubscribe();
+    this.selectedTemplateSubscription.unsubscribe();
   }
 }

@@ -34,8 +34,9 @@ export class AuthService {
     });
   }
 
-  public static isLoggedIn() {
-    return !!localStorage.getItem('uid');
+  public isLoggedIn() {
+    const user = this.afAuth.auth.currentUser;
+    return !!user;
   }
 
   static parseData(authData: any): Partial<IAuth> {

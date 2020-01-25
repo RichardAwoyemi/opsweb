@@ -2,12 +2,14 @@
   <div class="row">
     <div class="col-md-6">
       <div class="float-left">
-        <img alt="logo-white" src="../../../../assets/img/logo-white.svg" style="height: 30px; width: 30px">
-        <div (blur)="removeLineBreaks($event);
-        saveWebsiteName($event);" (keydown.enter)="saveWebsiteName($event); $event.preventDefault()"
-             ngbPopover="Website Name"
-             triggers="mouseenter:mouseleave"
-             [attr.contenteditable]="true" [attr.spellcheck]="false" class="website-name">{{ websiteName }}</div>
+        <a (click)="redirect()" href="#">
+          <img alt="logo-white" src="../../../../assets/img/logo-white.svg" style="height: 30px; width: 30px">
+          <div (blur)="removeLineBreaks($event); saveWebsiteName($event);"
+               (keydown.enter)="saveWebsiteName($event); $event.preventDefault()"
+               [attr.contenteditable]="true"
+               [attr.spellcheck]="false"
+               class="website-name" ngbPopover="Website Name" triggers="mouseenter:mouseleave">{{ websiteName }}</div>
+        </a>
       </div>
     </div>
     <div class="col-md-6">
@@ -20,9 +22,14 @@
             <img *ngIf="user.photoURL" alt="user" class="avatar avatar-xs" src="{{ user.photoURL }}">
         </span>
         <div class="dropdown-menu dropdown-menu-right">
-          <a (click)="redirectToDashboard()" class="dropdown-item">Dashboard</a>
-          <a (click)="openCreateAccountModal()" class="dropdown-item">Create Account</a>
-          <a (click)="signOut()" class="dropdown-item">Log Out</a>
+          <ng-container *ngIf="isLoggedIn()">
+            <a (click)="redirectToDashboard()" class="dropdown-item">Dashboard</a>
+            <a (click)="openCreateAccountModal()" class="dropdown-item">Create Account</a>
+            <a (click)="signOut()" class="dropdown-item">Log Out</a>
+          </ng-container>
+          <ng-container *ngIf="!isLoggedIn()">
+            <a (click)="openCreateAccountModal()" class="dropdown-item">Create Account</a>
+          </ng-container>
         </div>
       </div>
     </div>

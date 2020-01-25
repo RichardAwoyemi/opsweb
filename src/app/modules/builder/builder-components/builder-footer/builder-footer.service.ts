@@ -28,7 +28,7 @@ export class BuilderFooterService {
   private FOOTER_THEME_PATH = './assets/data/web-themes/footer.json';
 
   constructor(
-    public httpClient: HttpClient
+    private httpClient: HttpClient,
   ) {
   }
 
@@ -125,5 +125,11 @@ export class BuilderFooterService {
         }).forEach(r => sortedFooterMenuOptions[r] = unsortedFooterMenuOptions[r]);
     }
     return sortedFooterMenuOptions;
+  }
+
+  setComponentTemplate(templateId) {
+    this.footerTheme.next(ActiveFooterThemes.Default);
+    this.footerTemplate.next(templateId);
+    this.setFooterTemplate(templateId);
   }
 }

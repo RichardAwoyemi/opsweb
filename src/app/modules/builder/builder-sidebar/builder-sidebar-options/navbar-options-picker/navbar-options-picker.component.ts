@@ -35,6 +35,7 @@ export class NavbarOptionsPickerComponent implements OnInit {
   navbarTemplate: string = ActiveTemplates.Default;
   defaultNavbarStyle: any;
   options: SortablejsOptions;
+  websiteChangeCount: number;
 
   private navbarMenuOptionsSubscription: Subscription;
   private navbarLogoImageSubscription: Subscription;
@@ -45,6 +46,7 @@ export class NavbarOptionsPickerComponent implements OnInit {
   private navbarLinkStyleSubscription: Subscription;
   private navbarTemplateSubscription: Subscription;
   private defaultNavbarStyleSubscription: Subscription;
+  private websiteChangeCountSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
@@ -148,6 +150,12 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
       if (response) {
         this.fontUnits = response;
+      }
+    });
+
+    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+      if (response) {
+        this.websiteChangeCount = response['value'];
       }
     });
   }
@@ -273,5 +281,6 @@ export class NavbarOptionsPickerComponent implements OnInit {
     this.navbarLinkStyleSubscription.unsubscribe();
     this.navbarTemplateSubscription.unsubscribe();
     this.defaultNavbarStyleSubscription.unsubscribe();
+    this.websiteChangeCountSubscription.unsubscribe();
   }
 }

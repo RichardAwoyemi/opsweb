@@ -21,12 +21,13 @@ export class NavbarComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private routerService: RouterService,
+    private authService: AuthService,
     private authStore: Store<fromAuth.State>,
     private userStore: Store<fromUser.State>
   ) {}
 
   get isLoggedIn() {
-    return AuthService.isLoggedIn();
+    return this.authService.isLoggedIn();
   }
 
   ngOnInit() {

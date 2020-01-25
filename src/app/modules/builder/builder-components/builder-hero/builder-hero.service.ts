@@ -16,7 +16,7 @@ export class BuilderHeroService {
   private NAVBAR_THEME_PATH = './assets/data/web-themes/navbar.json';
 
   constructor(
-    public httpClient: HttpClient
+    private httpClient: HttpClient,
   ) {
   }
 
@@ -54,5 +54,9 @@ export class BuilderHeroService {
     this.heroSubheadingStyle.next(template['heroSubheadingStyle']);
     this.heroButtonStyle.next(template['heroButtonStyle']);
     this.heroImage.next(`${ template['id'].toLowerCase() }-hero.svg`);
+  }
+
+  setComponentTemplate(templateId) {
+    this.setHeroTemplate(templateId);
   }
 }

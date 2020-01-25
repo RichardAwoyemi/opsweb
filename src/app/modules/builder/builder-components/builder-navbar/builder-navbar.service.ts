@@ -22,7 +22,7 @@ export class BuilderNavbarService {
   private NAVBAR_THEME_PATH = './assets/data/web-themes/navbar.json';
 
   constructor(
-    public httpClient: HttpClient
+    private httpClient: HttpClient
   ) {
   }
 
@@ -117,5 +117,11 @@ export class BuilderNavbarService {
     this.navbarLinkStyle.next(template['navbarLinkStyle']);
     this.navbarBrandStyle.next(template['navbarBrandStyle']);
     this.navbarLogoImageStyle.next(template['navbarLogoImageStyle']);
+  }
+
+  setComponentTemplate(templateId) {
+    this.navbarTheme.next(ActiveNavbarThemes.Default);
+    this.navbarTemplate.next(templateId);
+    this.setNavbarTemplate(templateId);
   }
 }

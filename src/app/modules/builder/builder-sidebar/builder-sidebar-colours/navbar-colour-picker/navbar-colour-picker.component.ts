@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { ActiveNavbarThemes, ActiveTemplates } from '../../../builder';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-navbar-colour-picker',
@@ -21,6 +22,7 @@ export class NavbarColourPickerComponent implements OnInit {
   navbarTemplate: string = ActiveTemplates.Default;
   navbarTheme: string = ActiveNavbarThemes.Default;
   defaultNavbarStyle: any;
+  websiteChangeCount: number;
   private navbarStyleSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
   private navbarLinkStyleSubscription: Subscription;
@@ -28,9 +30,11 @@ export class NavbarColourPickerComponent implements OnInit {
   private navbarThemeSubscription: Subscription;
   private navbarThemesSubscription: Subscription;
   private defaultNavbarStyleSubscription: Subscription;
+  private websiteChangeCountSubscription: Subscription;
 
   constructor(
-    private builderNavbarService: BuilderNavbarService
+    private builderNavbarService: BuilderNavbarService,
+    private builderService: BuilderService
   ) {
   }
 
@@ -76,6 +80,12 @@ export class NavbarColourPickerComponent implements OnInit {
         this.navbarThemes = response;
       }
     });
+
+    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+      if (response) {
+        this.websiteChangeCount = response['value'];
+      }
+    });
   }
 
   onThemeChange() {
@@ -85,6 +95,7 @@ export class NavbarColourPickerComponent implements OnInit {
       this.builderNavbarService.navbarTheme.next(this.navbarTheme);
       this.builderNavbarService.setNavbarTheme(this.navbarTheme);
     }
+    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setNavbarStyle() {
@@ -120,5 +131,6 @@ export class NavbarColourPickerComponent implements OnInit {
     this.navbarThemeSubscription.unsubscribe();
     this.navbarThemesSubscription.unsubscribe();
     this.defaultNavbarStyleSubscription.unsubscribe();
+    this.websiteChangeCountSubscription.unsubscribe();
   }
 }

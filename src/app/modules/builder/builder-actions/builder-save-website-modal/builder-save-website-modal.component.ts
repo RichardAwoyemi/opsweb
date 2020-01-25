@@ -25,7 +25,4 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
   onCloseButtonClick() {
     this.activeModal.dismiss();
   }
-
-  ngOnDestroy() {
-  }
 }

@@ -13,7 +13,7 @@ export class AnonymousGuard implements CanActivate {
   ) { }
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    if (AuthService.isLoggedIn()) {
+    if (this.authService.isLoggedIn()) {
       this.router.navigate(['dashboard']).then(() => {
       });
     }

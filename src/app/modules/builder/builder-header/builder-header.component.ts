@@ -46,12 +46,18 @@ export class BuilderHeaderComponent implements OnInit {
     }));
   }
 
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
   openCreateAccountModal() {
     this.modalService.open(BuilderCreateAccountModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 
   signOut() {
     this.authService.signOut();
+    this.router.navigate(['home']).then(() => {
+    });
   }
 
   redirectToDashboard() {
@@ -68,6 +74,16 @@ export class BuilderHeaderComponent implements OnInit {
       const modal = this.modalService.open(BuilderSaveWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
       modal.componentInstance.websiteName = this.websiteName;
       modal.componentInstance.newWebsiteName = event.target.innerHTML;
+    }
+  }
+
+  redirect() {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['dashboard']).then(() => {
+      });
+    } else {
+      this.router.navigate(['home']).then(() => {
+      });
     }
   }
 }

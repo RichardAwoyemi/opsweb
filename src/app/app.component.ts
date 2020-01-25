@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { IUser } from './shared/models/user';
 import { Router } from '@angular/router';
 import { RouterService } from './shared/services/router.service';
+import { AuthService } from './modules/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
     public afAuth: AngularFireAuth,
     public router: Router,
     private routerService: RouterService,
+    private authService: AuthService,
     private authStore: Store<fromAuth.State>,
     private userStore: Store<fromUser.State>
   ) {
@@ -44,7 +46,7 @@ export class AppComponent implements OnInit {
     this.userStore.select('user')
       .pipe()
       .subscribe(async (result: IUser) => {
-        if (result) {
+        if (result && this.authService.isLoggedIn()) {
           this.redirectUser();
         }
       });

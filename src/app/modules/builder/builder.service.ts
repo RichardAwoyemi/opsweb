@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ActiveComponents, ActiveOrientations } from './builder';
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 
@@ -52,7 +52,10 @@ export class BuilderService {
   fontNames = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
 
-  websiteName = new BehaviorSubject(<string>(null));
+  websiteName = new BehaviorSubject<string>(null);
+
+  initialWebsiteChangeCount: any = { value: 0 };
+  websiteChangeCount = new BehaviorSubject<any>(this.initialWebsiteChangeCount);
 
   resetMenu() {
     this.sidebarTemplatesMenu.next(this.SIDEBAR_INACTIVE_MENU);
@@ -254,5 +257,17 @@ export class BuilderService {
       target: elementId
     };
     this.scrollToService.scrollTo(config);
+  }
+
+  getWebsiteChangeCount(): Observable<any> {
+    return this.websiteChangeCount.asObservable();
+  }
+
+  setWebsiteChangeCount(value: number, delta: number) {
+    this.websiteChangeCount.next({ value: (value + delta) });
+  }
+
+  resetWebsiteChangeCount() {
+    this.websiteChangeCount.next(this.websiteChangeCount);
   }
 }
