@@ -1,9 +1,11 @@
 import { Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { PaymentService } from '../../../../shared/services/payment.service';
+import { PaymentService, PlanType } from '../../../../shared/services/payment.service';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
+import { UserData } from './models/user-data';
+import { DefaultPaymentMethodData } from './models/default-payment-method-data';
 
 @Component({
   selector: 'app-payment-form',
@@ -105,7 +107,7 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
     this.addFocusBlurAndKeyUpAnimationsToInputs();
-  
+
     const elements = this.paymentService.getStripe().elements();
 
     this.cardNumber = elements.create('cardNumber', {
@@ -254,6 +256,10 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
     this.disableInputs();
     this.disableSubmitButton();
 
+    // TODO: REMOVE - testing cancel subscription
+    const userData = await this.paymentService.getUserData(this.userId);
+    this.paymentService.cancelSubscription(userData);
+
     this.billingDetails = this.paymentService.prepareBillingDetails(this.name, this.email, this.address1, this.city, this.state, this.zip);
     const paymentMethod = await this.paymentService.createPaymentMethod(this.cardNumber, this.billingDetails);
     if (paymentMethod) {
@@ -289,31 +295,35 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
     this.hideConfirmationPopup(this.FormAction.CONIRM_AUTH);
 
     if (this.paymentMethod) {
-      this.logger.debug('Successfully created paymentMethod object', this.paymentMethod);
+      this.logger.debug('Successfully created paymentMethod object');
       const addPaymentMethod = await this.paymentService.addPaymentMethod(this.userId, this.paymentMethod);
       if (addPaymentMethod) {
-        this.logger.debug('Successfully added new payment method to firebase', addPaymentMethod);
+        this.logger.debug('Successfully added new payment method to firebase');
         const clientSecret = await this.paymentService.getSetupIntentClientSecret(this.userId);
         if (clientSecret) {
           this.logger.debug('Successfully obtained client secret from firebase');
           this.logger.debug('Checking setupIntent status');
-          this.paymentService.getStripe().retrieveSetupIntent(clientSecret).then((result) => {
-            if (result.setupIntent.status === 'succeeded') {
-              this.logger.debug('Successfully confirmed card setup', result.setupIntent);
-              this.completeLoadingSpinner();
-              this.setTitle('Confirmed new payment method!');
-              //setTimeout(() => { this.router.navigate(['dashboard']); }, 10000);
-            } else {
-              this.logger.error('There was an error confirming card setup', result.error);
-              this.showPaymentForm();
-            }
-          });
+          const setupIntent = await this.paymentService.retrieveSetupIntent(clientSecret);
+          if (setupIntent.status === 'succeeded') {
+            this.completeLoadingSpinner();
+            this.setTitle('Confirmed new payment method!');
+            
+            // Test subscription creation TODO: DELETE
+            await this.paymentService.updateDefaultPaymentMethod(this.userId, this.paymentMethod);
+            const userData: UserData = await this.paymentService.getUserData(this.userId);
+            await this.paymentService.addSubscription(userData, PlanType.MONTHLY);
+            // END
+
+            setTimeout(() => { this.router.navigate(['dashboard']); }, 10000);
+          } else {
+            this.showPaymentForm();
+          }
         } else {
           this.logger.error('There was an error obtaining clientSecret!');
           this.showPaymentForm();
         }
       } else {
-        this.logger.error('Could not add paymentMethod to Firebase', addPaymentMethod);
+        this.logger.error('Could not add paymentMethod to Firebase');
         this.showPaymentForm();
       }
     } else {
@@ -387,5 +397,3 @@ export class PaymentFormComponent implements OnInit, AfterViewInit {
     this.enableSubmitButton();
   }
 }
-
-

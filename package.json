@@ -53,6 +53,7 @@
     "rxjs": "^6.5.4",
     "rxjs-compat": "^6.5.3",
     "sortablejs": "^1.9.0",
+    "stripe": "^8.7.0",
     "typescript": "~3.5.3",
     "zone.js": "^0.10.2"
   },

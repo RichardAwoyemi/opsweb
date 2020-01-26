@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { first } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 @Injectable({
@@ -15,6 +16,10 @@ export class FirebaseService {
     public afAuth: AngularFireAuth,
     public logger: NGXLogger
   ) {
+  }
+
+  static FieldDelete() {
+    return firebase.firestore.FieldValue.delete();
   }
 
   // static getCurrentTimestamp() {
@@ -63,6 +68,12 @@ export class FirebaseService {
     this.afs.doc(documentPath).set({}, { merge: true });
   }
 
+  deleteDocument(collectionPath: string, documentId: string) {
+    const documentPath = `${ collectionPath }/${ documentId }`;
+    this.logger.debug(`Deleting document at '/${ documentPath }`);
+    this.afs.doc(documentPath).delete();
+  }
+
   async createDocumentWithData(collectionPath: string, documentId: string, data: any, sensitive: boolean) {
     const documentPath = `${ collectionPath }/${ documentId }`;
     this.logger.debug(`Creating a document at '/${ documentPath }' with data:`);
@@ -98,21 +109,11 @@ export class FirebaseService {
       return false;
     }
   }
-  // getOrderedDocumentsInCollection(
-  //   collectionName: string, orderBy: string, ascOrder: boolean) {
-  //   const orderDirection = FirebaseService.getOrderDirection(ascOrder);
-  //
-  //   this.logger.debug(`Getting documents in collection '/${ collectionName }' orderedBy '${ orderBy } [${ orderDirection }]' `);
-  //
-  //   return this.afs.collection(collectionName,
-  //     ref => ref.orderBy(orderBy, orderDirection)).snapshotChanges().pipe(map(actions => {
-  //     return actions.map(action => {
-  //       const data = action.payload.doc.data();
-  //       const uid = action.payload.doc.id;
-  //       return { uid, ...data };
-  //     });
-  //   }));
-  // }
+
+  async getDocumentsInCollection(collectionName: string) {
+    this.logger.debug(`Getting documents in collection '/${ collectionName }'`);
+    return await this.afs.collection(collectionName).get().toPromise();
+  }
   //
   // getLimitedOrderedDocumentsInCollection(
   //   collectionName: string, orderBy: string, ascOrder: boolean, limit: number) {
