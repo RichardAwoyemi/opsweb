@@ -16,6 +16,10 @@ export class UtilService {
     return '<' + text + '></' + text + '/>';
   }
 
+  static isNullOrWhitespace(text: any): boolean {
+    return !text || !text.trim();
+  }
+
   static generateRandomString(length) {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
     if (!length) {

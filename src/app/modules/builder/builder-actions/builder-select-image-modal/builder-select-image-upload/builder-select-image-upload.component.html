@@ -1,0 +1,29 @@
+<div [ngStyle]="{ 'height': innerHeight + 'px' }" class="row sidebar-scroll"
+     style="margin-top: -16px; margin-bottom: -72px; margin-right: 1px">
+  <div class="col-md-12">&nbsp;</div>
+  <div class="col-md-4">
+    <strong>Image <span class="text-danger">*</span></strong>
+    <br>
+    <small>Maximum file size of 2MB</small>
+  </div>
+  <div class="col-md-8">
+    <img [ngStyle]=" { 'max-height': imageHeight + 'px' }" [src]="heroImageUrl" alt="{{ heroImageAlt }}">
+    <div style="padding-top: 20px;">
+      <button (click)="onUploadImageButtonClick()" class="btn btn-secondary" type="button">Replace
+        Image
+      </button>
+    </div>
+  </div>
+  <div class="col-md-12">&nbsp;</div>
+  <div class="col-md-4">
+    <strong>Description <span class="text-danger">*</span></strong>
+    <br>
+    <small>Increase SEO by describing images displayed on your site.</small>
+  </div>
+  <div class="col-md-8">
+    <label for="img-alt-text" style="display: none"></label>
+    <input [(ngModel)]="heroImageAlt" class="form-control form-control-lg" id="img-alt-text" type="text">
+  </div>
+  <div class="col-md-12">&nbsp;</div>
+</div>
+<br>

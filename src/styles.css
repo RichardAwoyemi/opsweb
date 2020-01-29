@@ -179,3 +179,29 @@ iframe {
   max-width: 80%;
   max-height: 80%;
 }
+
+/* Image search */
+
+.caption-link {
+  color: #868e96;
+}
+
+.caption-link:hover {
+  color: #868e96;
+  text-decoration: underline;
+}
+
+.bg-gallery {
+  background-color: #ffffff;
+  padding: 0.5rem;
+  border-color: #ffffff;
+  border-radius: 5px;
+}
+
+.bg-gallery:hover {
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  border-color: #f4f7f9;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,0 +1,30 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Select image</h5>
+    <button (click)="onCloseButtonClick()" class="close" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#tab-library">Library</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab-upload">Upload</a>
+      </li>
+    </ul>
+    <div class="tab-content p-4" style="margin-left: -1rem; margin-right: -1rem; padding-bottom: 0">
+      <div class="tab-pane fade show active" id="tab-library">
+        <app-builder-select-image-library></app-builder-select-image-library>
+      </div>
+      <div class="tab-pane fade" id="tab-upload">
+        <app-builder-select-image-upload></app-builder-select-image-upload>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="onConfirmButtonClick()" class="btn btn-secondary" type="button">Save</button>&nbsp;
+    <button (click)="onCloseButtonClick()" class="btn btn-secondary" type="button">Cancel</button>
+  </div>
+</div>

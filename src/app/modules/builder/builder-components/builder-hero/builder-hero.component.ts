@@ -14,6 +14,7 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   heroHeadingStyle: any = { 'font-family': '\'Avenir Next Medium\', Helvetica, Arial, sans-serif' };
   heroImage: string;
   heroImageUrl: string;
+  heroImageAlt: string;
   heroSubheadingStyle: any;
   heroButtonStyle: any;
   activeEditComponent: string;
@@ -24,7 +25,8 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   private heroButtonStyleSubscription: Subscription;
   private heroHeadingStyleSubscription: Subscription;
   private heroSubheadingStyleSubscription: Subscription;
-  private heroImageSubscription: Subscription;
+  private heroImageUrlSubscription: Subscription;
+  private heroImageAltSubscription: Subscription;
   private previewModeSubscription: Subscription;
 
   constructor(
@@ -64,10 +66,15 @@ export class BuilderHeroComponent implements OnInit, IComponent {
       }
     });
 
-    this.heroImageSubscription = this.builderHeroService.heroImage.subscribe(response => {
+    this.heroImageUrlSubscription = this.builderHeroService.heroImageUrl.subscribe(response => {
       if (response) {
-        this.heroImage = response;
-        this.heroImageUrl = `../assets/img/${ response }`;
+        this.heroImageUrl = response;
+      }
+    });
+
+    this.heroImageAltSubscription = this.builderHeroService.heroImageAlt.subscribe(response => {
+      if (response) {
+        this.heroImageAlt = response;
       }
     });
   }
@@ -100,7 +107,8 @@ export class BuilderHeroComponent implements OnInit, IComponent {
     this.heroButtonStyleSubscription.unsubscribe();
     this.heroHeadingStyleSubscription.unsubscribe();
     this.heroSubheadingStyleSubscription.unsubscribe();
-    this.heroImageSubscription.unsubscribe();
+    this.heroImageUrlSubscription.unsubscribe();
+    this.heroImageAltSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
   }
 }

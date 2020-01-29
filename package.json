@@ -54,6 +54,7 @@
     "rxjs-compat": "^6.5.3",
     "sortablejs": "^1.9.0",
     "typescript": "~3.5.3",
+    "unsplash-js": "^6.0.0",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {

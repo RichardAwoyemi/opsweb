@@ -14,6 +14,7 @@ import { BuilderSidebarDataComponent } from './builder-sidebar-data/builder-side
 import { SortablejsModule } from 'ngx-sortablejs';
 import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.module';
+import { UnsplashService } from '../../../shared/services/unsplash.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.mod
     BuilderSidebarTemplatesComponent,
     BuilderSidebarPagesComponent,
     BuilderSidebarDataComponent,
-    FilterPipe,
+    FilterPipe
   ],
   imports: [
     BuilderSidebarColoursModule,
@@ -34,11 +35,14 @@ import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.mod
     SortablejsModule,
     NgbDropdownModule,
     NgbPopoverModule,
-    ArraySortModule,
+    ArraySortModule
   ],
   exports: [
     BuilderSidebarComponent,
-    FilterPipe,
+    FilterPipe
+  ],
+  providers: [
+    UnsplashService
   ]
 })
 

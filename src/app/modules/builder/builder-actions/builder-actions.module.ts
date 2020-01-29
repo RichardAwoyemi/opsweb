@@ -15,6 +15,9 @@ import { BuilderCreateAccountModalComponent } from './builder-create-account-mod
 import { BuilderAddComponentModalComponent } from './builder-add-component-modal/builder-add-component-modal.component';
 import { BuilderSaveWebsiteModalComponent } from './builder-save-website-modal/builder-save-website-modal.component';
 import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-modal/builder-rename-website-modal.component';
+import { BuilderSelectImageModalComponent } from './builder-select-image-modal/builder-select-image-modal.component';
+import { BuilderSelectImageUploadComponent } from './builder-select-image-modal/builder-select-image-upload/builder-select-image-upload.component';
+import { BuilderSelectImageLibraryComponent } from './builder-select-image-modal/builder-select-image-library/builder-select-image-library.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-mod
     BuilderAddComponentModalComponent,
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
-    BlockNonAlphabetCharactersDirective
+    BuilderSelectImageModalComponent,
+    BlockNonAlphabetCharactersDirective,
+    BuilderSelectImageUploadComponent,
+    BuilderSelectImageLibraryComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +52,8 @@ import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-mod
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
     BuilderAddComponentModalComponent,
-    BuilderCreateAccountModalComponent
+    BuilderCreateAccountModalComponent,
+    BuilderSelectImageModalComponent
   ],
   providers: [
     BuilderActionsService
@@ -62,7 +69,8 @@ import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-mod
     BuilderAddComponentModalComponent,
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
-    BuilderCreateAccountModalComponent
+    BuilderCreateAccountModalComponent,
+    BuilderSelectImageModalComponent
   ]
 })
 

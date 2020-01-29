@@ -8,7 +8,8 @@ export class BuilderHeroService {
   heroHeadingStyle = new BehaviorSubject<Object>(null);
   heroSubheadingStyle = new BehaviorSubject<Object>(null);
   heroButtonStyle = new BehaviorSubject<Object>(null);
-  heroImage = new BehaviorSubject<string>('default-hero.svg');
+  heroImageUrl = new BehaviorSubject<string>('../assets/img/default-hero.svg');
+  heroImageAlt = new BehaviorSubject<string>('default-hero.svg');
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -53,7 +54,8 @@ export class BuilderHeroService {
     this.heroHeadingStyle.next(template['heroHeadingStyle']);
     this.heroSubheadingStyle.next(template['heroSubheadingStyle']);
     this.heroButtonStyle.next(template['heroButtonStyle']);
-    this.heroImage.next(`${ template['id'].toLowerCase() }-hero.svg`);
+    this.heroImageUrl.next(`../assets/img/${ template['id'].toLowerCase() }-hero.svg`);
+    this.heroImageAlt.next(`${ template['id'].toLowerCase() }-hero.svg`);
   }
 
   setComponentTemplate(templateId) {
