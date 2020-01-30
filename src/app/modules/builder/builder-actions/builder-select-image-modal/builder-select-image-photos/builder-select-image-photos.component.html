@@ -1,7 +1,7 @@
 <div class="form-group input-group">
   <label for="searchText" style="display: none"></label>
-  <input (keydown)="onSearch($event)" [(ngModel)]="searchText" class="form-control" id="searchText"
-         name="searchText" placeholder="Search for..." style="font-size: 12px" type="searchText">
+  <input (keydown)="onEnterKeyPressed($event)" [(ngModel)]="searchText" class="form-control" id="searchText"
+         name="searchText" placeholder="Search for..." style="font-size: 14px" type="searchText">
   <div class="input-group-append ml-4">
     <button (click)="onSearchButtonClick()" class="btn btn-secondary" type="button">Go</button>
   </div>

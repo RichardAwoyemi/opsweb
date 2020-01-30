@@ -17,7 +17,7 @@ import { BuilderSaveWebsiteModalComponent } from './builder-save-website-modal/b
 import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-modal/builder-rename-website-modal.component';
 import { BuilderSelectImageModalComponent } from './builder-select-image-modal/builder-select-image-modal.component';
 import { BuilderSelectImageUploadComponent } from './builder-select-image-modal/builder-select-image-upload/builder-select-image-upload.component';
-import { BuilderSelectImageLibraryComponent } from './builder-select-image-modal/builder-select-image-library/builder-select-image-library.component';
+import { BuilderSelectImagePhotosComponent } from './builder-select-image-modal/builder-select-image-photos/builder-select-image-photos.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { BuilderSelectImageLibraryComponent } from './builder-select-image-modal
     BuilderSelectImageModalComponent,
     BlockNonAlphabetCharactersDirective,
     BuilderSelectImageUploadComponent,
-    BuilderSelectImageLibraryComponent
+    BuilderSelectImagePhotosComponent
   ],
   imports: [
     CommonModule,

@@ -2,25 +2,34 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { UtilService } from '../../../../../shared/services/util.service';
 import { UnsplashService } from '../../../../../shared/services/unsplash.service';
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
+import { BuilderActionsService } from '../../builder-actions.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-builder-select-image-library',
-  templateUrl: './builder-select-image-library.component.html'
+  selector: 'app-builder-select-image-photos',
+  templateUrl: './builder-select-image-photos.component.html'
 })
-export class BuilderSelectImageLibraryComponent implements OnInit {
+export class BuilderSelectImagePhotosComponent implements OnInit {
   selectedImageIndex: number;
   selectedImage: any;
   searchText: string;
   images: any;
   innerHeight: number;
+  activeLibrarySearchText: string;
+  private activeLibrarySearchTextSubscription: Subscription;
 
   constructor(
-    private unsplashService: UnsplashService
+    private unsplashService: UnsplashService,
+    private builderActionsService: BuilderActionsService
   ) {
   }
 
   ngOnInit() {
     this.innerHeight = window.innerHeight - 360;
+
+    this.activeLibrarySearchTextSubscription = this.builderActionsService.activeLibrarySelectedImage.subscribe(response => {
+      this.activeLibrarySearchText = response;
+    });
   }
 
   searchImages() {
@@ -32,6 +41,7 @@ export class BuilderSelectImageLibraryComponent implements OnInit {
   toggleSelection(i: number, image: any) {
     this.selectedImageIndex = i;
     this.selectedImage = image;
+    this.builderActionsService.activeLibrarySelectedImage.next(image);
   }
 
   setImageSelection(i: number) {
@@ -42,13 +52,19 @@ export class BuilderSelectImageLibraryComponent implements OnInit {
     }
   }
 
-  onSearch(event: KeyboardEvent) {
+  onEnterKeyPressed(event: KeyboardEvent) {
     if (event.key === 'Enter') {
+      this.builderActionsService.activeLibrarySearchText.next(this.searchText);
       return this.searchImages();
+    } else {
+      if (this.searchText != this.activeLibrarySearchText) {
+        this.images = null;
+      }
     }
   }
 
   onSearchButtonClick() {
+    this.builderActionsService.activeLibrarySearchText.next(this.searchText);
     return this.searchImages();
   }
 
