@@ -212,6 +212,14 @@ body::-webkit-scrollbar-thumb {
   padding: 1em;
 }
 
+.feature-subheader-preview, .feature-text-active {
+  border: 1px solid transparent;
+}
+
+.feature-text-active:hover, .feature-text-edit {
+  border: 1px solid #00d9e1;
+}
+
 /* Context menu */
 
 .context-menu-item:hover {

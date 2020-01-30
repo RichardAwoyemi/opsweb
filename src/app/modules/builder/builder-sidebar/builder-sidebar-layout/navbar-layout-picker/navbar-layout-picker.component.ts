@@ -8,18 +8,18 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./navbar-layout-picker.component.css']
 })
 export class NavbarLayoutPickerComponent implements OnInit {
-  navbarLinkPaddingTop: number = 0;
-  navbarLinkPaddingLeft: number = 0;
-  navbarLinkPaddingRight: number = 0;
-  navbarLinkPaddingBottom: number = 0;
-  navbarLogoImagePaddingTop: number = 0;
-  navbarLogoImagePaddingLeft: number = 0;
-  navbarLogoImagePaddingRight: number = 0;
-  navbarLogoImagePaddingBottom: number = 0;
-  navbarBrandPaddingTop: number = 0;
-  navbarBrandPaddingLeft: number = 0;
-  navbarBrandPaddingRight: number = 0;
-  navbarBrandPaddingBottom: number = 0;
+  navbarLinkPaddingTop: 0;
+  navbarLinkPaddingLeft: 0;
+  navbarLinkPaddingRight: 0;
+  navbarLinkPaddingBottom: 0;
+  navbarLogoImagePaddingTop: 0;
+  navbarLogoImagePaddingLeft: 0;
+  navbarLogoImagePaddingRight: 0;
+  navbarLogoImagePaddingBottom: 0;
+  navbarBrandPaddingTop: 0;
+  navbarBrandPaddingLeft: 0;
+  navbarBrandPaddingRight: 0;
+  navbarBrandPaddingBottom: 0;
   navbarLinkStyle: any;
   navbarLogoImageStyle: any;
   navbarLogoImage: any;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, HostListener } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActiveComponents, ActiveOrientations } from './builder';
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
@@ -11,6 +11,7 @@ export class BuilderService {
   }
 
   activeEditComponent = new BehaviorSubject<string>(null);
+  activeEditComponentId = new BehaviorSubject<string>(null);
   activeEditSetting = new BehaviorSubject<string>(null);
   activePageSetting = new BehaviorSubject<string>('Home');
   activePageIndex = new BehaviorSubject<number>(0);
@@ -84,8 +85,17 @@ export class BuilderService {
     this.toolbarOptionsButton.next(this.TOOLBAR_INACTIVE_BUTTON);
   }
 
-  setActiveEditComponent(componentName: string) {
-    window.postMessage({ 'for': 'opsonion', 'action': 'unique-component-selected' }, '*');
+  selectElement(componentName: string, componentId: string, elementId: string, settingName: string, scrollElement: string) {
+    this.setActiveEditComponent(componentName, componentId);
+    this.setSidebarOptionsSetting();
+    this.activeElement.next(elementId);
+    this.setActiveEditSetting(settingName);
+    this.triggerScrollTo(scrollElement);
+  }
+
+  setActiveEditComponent(componentName: string, componentId: string = null) {
+    if (componentId === null) { window.postMessage({ 'for': 'opsonion', 'action': 'unique-component-selected' }, '*'); }
+    this.activeEditComponentId.next(componentId);
     this.activeEditComponent.next(componentName);
     this.setSidebarColoursSetting();
   }
@@ -120,7 +130,7 @@ export class BuilderService {
     this.toolbarColoursButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarColoursMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarColoursTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo(`${ this.activeEditComponent.getValue() }-colours`);
+    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-colours`);
   }
 
   setSidebarLayoutSetting() {
@@ -130,7 +140,7 @@ export class BuilderService {
     this.toolbarLayoutButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarLayoutMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarLayoutTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo(`${ this.activeEditComponent.getValue() }-layout`);
+    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-layout`);
   }
 
   setSidebarOptionsSetting() {
@@ -140,7 +150,7 @@ export class BuilderService {
     this.toolbarOptionsButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarOptionsMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarOptionsTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo(`${ this.activeEditComponent.getValue() }-options`);
+    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-options`);
   }
 
   setSidebarPagesSetting() {
@@ -160,11 +170,11 @@ export class BuilderService {
     this.sidebarDataTab.next(this.SIDEBAR_ACTIVE_TAB);
   }
 
-  static setComponentClass(previewMode: boolean, activeEditComponent: string, componentName: string) {
+  static setComponentClass(previewMode: boolean, activeEditComponent: string, componentName: string, active: boolean = true) {
     if (previewMode) {
       return '';
     } else {
-      if (activeEditComponent == componentName) {
+      if ((activeEditComponent == componentName) && active) {
         return 'component-border-active';
       } else {
         return 'component-border';
@@ -172,9 +182,9 @@ export class BuilderService {
     }
   }
 
-  static setContextMenu(previewMode: boolean, activeEditComponent: string, componentName: string) {
+  static setContextMenu(previewMode: boolean, activeEditComponent: string, componentName: string, active: boolean = true) {
     if (!previewMode && activeEditComponent == componentName) {
-      return `${ componentName }-edit-component no-select`;
+      return `${componentName}-edit-component no-select`;
     } else {
       return 'no-select';
     }
@@ -186,6 +196,9 @@ export class BuilderService {
     }
     if (activeEditComponent == ActiveComponents.Footer) {
       this.processIncomingFooterMessages(e);
+    }
+    if (activeEditComponent == ActiveComponents.Features) {
+      this.processIncomingFeaturesMessages(e);
     }
   }
 
@@ -252,6 +265,41 @@ export class BuilderService {
     }
   }
 
+  processIncomingFeaturesMessages(e: any) {
+    if (e.data.action == 'features-options-copyright') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('features-options-copyright');
+    }
+    if (e.data.action == 'features-layout-copyright') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('features-layout-copyright');
+    }
+    if (e.data.action == 'features-options-social') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('features-options-social');
+    }
+    if (e.data.action == 'features-layout-social') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('features-layout-social');
+    }
+    if (e.data.action == 'features-options-menu') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('features-options-menu');
+    }
+    if (e.data.action == 'features-layout-menu') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('features-layout-menu');
+    }
+    if (e.data.action == 'features-position') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('features-layout');
+    }
+    if (e.data.action == 'features-colours') {
+      this.setSidebarColoursSetting();
+      this.triggerScrollTo('features-colours');
+    }
+  }
+
   triggerScrollTo(elementId: string) {
     const config: ScrollToConfigOptions = {
       target: elementId
@@ -269,5 +317,17 @@ export class BuilderService {
 
   resetWebsiteChangeCount() {
     this.websiteChangeCount.next(this.websiteChangeCount);
+  }
+
+  @HostListener('window:message', ['$event'])
+  onMessage(e) {
+    if (e.data.for == 'opsonion') {
+      if (e.data.action == 'unique-component-selected' || e.data.action == 'duplicate-component-deselected') {
+        this.activeEditComponentId.next(null);
+      }
+      if (e.data.action == 'duplicate-component-selected') {
+        this.activeEditComponentId.next(e.data.message);
+      }
+    }
   }
 }

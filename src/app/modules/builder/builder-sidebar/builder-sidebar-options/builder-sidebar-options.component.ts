@@ -10,6 +10,7 @@ import { BuilderService } from '../../builder.service';
 export class BuilderSidebarOptionsComponent implements OnInit {
   navbarComponent: string = ActiveComponents.Navbar;
   footerComponent: string = ActiveComponents.Footer;
+  featuresComponent: string = ActiveComponents.Features;
   activeEditComponent: string;
   private activeEditComponentSubscription: Subscription;
 

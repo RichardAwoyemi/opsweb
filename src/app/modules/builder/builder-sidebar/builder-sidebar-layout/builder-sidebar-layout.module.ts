@@ -4,12 +4,14 @@ import { BuilderSidebarLayoutComponent } from './builder-sidebar-layout.componen
 import { NavbarLayoutPickerComponent } from './navbar-layout-picker/navbar-layout-picker.component';
 import { FormsModule } from '@angular/forms';
 import { FooterLayoutPickerComponent } from './footer-layout-picker/footer-layout-picker.component';
+import { FeaturesLayoutPickerComponent } from './features-layout-picker/features-layout-picker.component';
 
 @NgModule({
   declarations: [
     BuilderSidebarLayoutComponent,
     NavbarLayoutPickerComponent,
-    FooterLayoutPickerComponent
+    FooterLayoutPickerComponent,
+    FeaturesLayoutPickerComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { FooterLayoutPickerComponent } from './footer-layout-picker/footer-layou
   exports: [
     BuilderSidebarLayoutComponent,
     NavbarLayoutPickerComponent,
-    FooterLayoutPickerComponent
+    FooterLayoutPickerComponent,
+    FeaturesLayoutPickerComponent
   ],
   providers: []
 })

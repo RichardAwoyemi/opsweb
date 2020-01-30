@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Default"
+  },
+  {
+    "name": "Stanley",
+    "featureHeaderStyle": {
+      "color": "#4C4C4C"
+    },
+    "navbarSubheaderStyle": {
+      "color": "#AAAAAA"
+    }
+  }
+]

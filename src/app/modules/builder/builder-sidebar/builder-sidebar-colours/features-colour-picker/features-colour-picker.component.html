@@ -1,0 +1,33 @@
+<div id="features-colours" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group" *ngIf="!!featuresHeaderStyle?.color">
+  <label style="color: rgba(255, 255, 255, 0.65);">Background</label>
+  <div style="width: 100%">
+    <span (colorPickerChange)="setFeaturesStyle()" [(colorPicker)]="featuresStyle['background-color']"
+          [cpPositionOffset]="'0%'"
+          [cpPosition]="'bottom'" [style.background]="featuresStyle['background-color']"
+          class="form-control form-control-lg colour-picker"></span>
+  </div>
+</div>
+<div id="features-colours" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group" *ngIf="!!featuresHeaderStyle?.color">
+  <label style="color: rgba(255, 255, 255, 0.65);">Header</label>
+  <div style="width: 100%">
+    <span (colorPickerChange)="setFeaturesHeaderStyle()" [(colorPicker)]="featuresHeaderStyle.color"
+          [cpPositionOffset]="'0%'"
+          [cpPosition]="'bottom'" [style.background]="featuresHeaderStyle?.color"
+          class="form-control form-control-lg colour-picker"></span>
+  </div>
+</div>
+<div class="form-group" *ngIf="!!featuresSubheaderStyle?.color">
+  <label style="color: rgba(255, 255, 255, 0.65);">Text</label>
+  <div style="width: 100%">
+    <span (colorPickerChange)="setFeaturesSubheaderStyle()" [(colorPicker)]="featuresSubheaderStyle.color"
+          [cpPositionOffset]="'0%'"
+          [cpPosition]="'bottom'" [style.background]="featuresSubheaderStyle?.color"
+          class="form-control form-control-lg colour-picker"></span>
+  </div>
+</div>
+<hr style="background-color: rgba(255, 255, 255, 0.1)">
+<div style="padding-bottom: 1em">
+  <button (click)="resetToDefault()" class="btn btn-xl btn-block btn-secondary" type="button">Reset to Default</button>
+</div>

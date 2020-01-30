@@ -1,26 +1,67 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents } from '../../builder';
+import { ActiveComponents, ActiveFeaturesThemes, ActiveSettings, ActiveTemplates } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
-import { UtilService } from '../../../../shared/services/util.service';
+import { HttpClient } from '@angular/common/http';
+import { UtilService } from 'src/app/shared/services/util.service';
+import { BuilderFeaturesService } from './builder-features.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-builder-features',
   templateUrl: './builder-features.component.html'
 })
-export class BuilderFeaturesComponent implements OnInit, IComponent {
+export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   componentName: string = ActiveComponents.Features;
-  componentId: string = `${ ActiveComponents.Features }-${ UtilService.generateRandomString(8) }`;
-  innerHeight: number;
+  componentId = `${ActiveComponents.Features}-${UtilService.generateRandomString(8)}`;
   activeEditComponent: string;
+  activeEditComponentId: string;
+  innerHeight: number;
   previewMode: boolean;
-  componentActive: boolean = false;
+  componentActive = false;
+  activeElement: string;
+  containerClass: string;
+  featuresContainerStyle: any;
+  featuresItemArray: any = [
+    {
+      'header': 'Seamless',
+      'subheader': 'Building a website has never been easier than this!  Get started today, free of cost.'
+    },
+    {
+      'header': 'Beautiful',
+      'subheader': 'Leverage our amazing library of templates and themes! Minimalism has never looked so good.'
+    },
+    {
+      'header': 'Growth',
+      'subheader': 'Grow with ease and whilst recieving useful anayltics! It\' just what you need to grow!'
+    }
+  ];
+  featuresHeaderStyle: any;
+  featuresSubheaderStyle: any;
+  featuresStyle: any = {'width': '33.3%'};
+
+  private featuresHeaderStyleSubscription: Subscription;
+  private featuresSubheaderStyleSubscription: Subscription;
+  private featuresStyleSubscription: Subscription;
   private activeEditComponentSubscription: Subscription;
+  private activeEditComponentIdSubscription: Subscription;
   private previewModeSubscription: Subscription;
+  private containerClassSubscription: Subscription;
+  private containerStyleSubscription: Subscription;
+  private featuresItemArraySubscription: Subscription;
+  private featuresTemplateSubscription: Subscription;
+  private featuresThemeSubscription: Subscription;
+
+  private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
+  private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
+  private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
+  private FEATURES_THEME_PATH = './assets/data/web-themes/features.json';
 
   constructor(
-    private builderService: BuilderService
+    private httpClient: HttpClient,
+    private builderService: BuilderService,
+    private builderFeaturesService: BuilderFeaturesService
   ) {
   }
 
@@ -31,40 +72,184 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
       this.previewMode = response;
     });
 
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+      this.activeEditComponentId = response;
+      this.componentActive = response == this.componentId;
+      if (this.componentActive) {
+        this.updateService();
+      }
+    });
+
+    this.featuresHeaderStyleSubscription = this.builderFeaturesService.featuresHeaderStyle.subscribe(response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.featuresHeaderStyle = response;
+      }
+    });
+
+    this.featuresSubheaderStyleSubscription = this.builderFeaturesService.featuresSubheaderStyle.subscribe(response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.featuresSubheaderStyle = response;
+      }
+    });
+
+    this.featuresStyleSubscription = this.builderFeaturesService.featuresStyle.subscribe( response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.featuresStyle = response;
+      }
+    });
+
+    this.containerClassSubscription = this.builderFeaturesService.featuresContainerClass.subscribe(response => {
+      if (response) {
+        this.containerClass = response;
+      }
+    });
+
+    this.containerStyleSubscription = this.builderFeaturesService.featuresContainerStyle.subscribe(response => {
+      if (response) {
+        this.featuresContainerStyle = response;
+      }
+    });
+
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
       }
     });
+
+    this.featuresItemArraySubscription = this.builderFeaturesService.featuresItemArray.subscribe(response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.featuresItemArray = response;
+      }
+    });
+
+    this.featuresThemeSubscription = this.builderFeaturesService.featuresTheme.subscribe(response => {
+      if (!response) {
+        this.setFeaturesThemeStyle(this.builderFeaturesService.featuresTemplate.getValue());
+        this.setFeaturesTemplate(ActiveTemplates.Default);
+      }
+    });
+
+    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
+      if (!response) {
+        this.setFeaturesTemplate(ActiveTemplates.Default);
+      }
+    });
+  }
+
+  updateService() {
+    this.builderFeaturesService.featuresHeaderStyle.next(this.featuresHeaderStyle);
+    this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
+    this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
+    this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
+  }
+
+  setFeaturesTemplate(templateId: string) {
+    switch (templateId) {
+      case ActiveTemplates.Default:
+        this.httpClient.get(this.DEFAULT_TEMPLATE_PATH).subscribe(response => {
+          this.setFeaturesThemeStyle(response);
+        });
+        break;
+      case ActiveTemplates.Quick:
+        this.httpClient.get(this.QUICK_TEMPLATE_PATH).subscribe(response => {
+          this.setFeaturesThemeStyle(response);
+        });
+        break;
+      case ActiveTemplates.Front:
+        this.httpClient.get(this.FRONT_TEMPLATE_PATH).subscribe(response => {
+          this.setFeaturesThemeStyle(response);
+        });
+        break;
+      default:
+        break;
+    }
   }
 
   setActiveEditComponent() {
-    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-selected', 'message': this.componentId }, '*');
-    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    if (this.activeEditComponentId === this.componentId) {
+      this.clearActiveEditComponent();
+    } else {
+      window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-selected', 'message': this.componentId }, '*');
+      this.builderService.setActiveEditComponent(this.componentName, this.componentId);
+      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+    }
   }
 
   setComponentClass() {
-    if (!this.previewMode) {
-      if (this.componentActive) {
-        return 'component-border-active';
-      } else {
-        return 'component-border';
-      }
-    } else {
-      return '';
-    }
+    return BuilderService.setComponentClass(this.previewMode, this.activeEditComponent, this.componentName, this.componentActive);
   }
 
   setContextMenu() {
-    if (!this.previewMode && this.componentActive) {
-      return `${ this.componentName }-edit-component no-select`;
-    } else {
-      return 'no-select';
-    }
+    return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName, this.componentActive);
   }
 
   clearActiveEditComponent() {
+    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected', 'message': this.componentId }, '*');
     this.componentActive = false;
+    this.builderService.activeEditComponentId.next(null);
+    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.setSidebarComponentsSetting();
+  }
+
+  setFeaturesThemeStyle(theme: any) {
+    if (theme) {
+      let featuresHeaderStyle = this.featuresHeaderStyle;
+      let featuresSubheaderStyle = this.featuresSubheaderStyle;
+      if (featuresHeaderStyle && theme['featuresHeaderStyle']['color']) {
+        featuresHeaderStyle['color'] = theme['featuresHeaderStyle']['color'];
+      } else {
+        featuresHeaderStyle = theme['featuresHeaderStyle'];
+      }
+
+      if (featuresSubheaderStyle && theme['featuresSubheaderStyle']['color']) {
+        featuresSubheaderStyle['color'] = theme['featuresSubheaderStyle']['color'];
+      } else {
+        featuresSubheaderStyle = theme['featuresSubheaderStyle'];
+      }
+
+      const featuresStyle = {...this.featuresStyle, ...theme['featuresStyle']};
+
+      this.featuresHeaderStyle = featuresHeaderStyle;
+      this.featuresSubheaderStyle = featuresSubheaderStyle;
+      this.featuresStyle = featuresStyle;
+
+      this.builderFeaturesService.featuresHeaderStyle.next(this.featuresHeaderStyle);
+      this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
+      this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
+    }
+  }
+
+  setFeaturesTemplateStyle(template: any) {
+    this.featuresHeaderStyle = Object.assign(template['featuresHeaderStyle']);
+    this.featuresSubheaderStyle = Object.assign(template['featuresSubheaderStyle']);
+    this.featuresStyle = Object.assign(template['featuresStyle']);
+    this.builderFeaturesService.featuresHeaderStyle.next(this.featuresHeaderStyle);
+    this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
+    this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
+  }
+
+  setFeatureTextClass() {
+    if (this.previewMode) {
+      return 'feature-text-preview';
+    }
+    if (!this.previewMode) {
+      return 'feature-text-active';
+    }
+  }
+
+  selectFeatureText(event: any, elementId: string, scrollTo: string) {
+    this.builderService.selectElement(
+      this.componentName,
+      this.componentId,
+      elementId,
+      ActiveSettings.Options,
+      scrollTo
+    );
+    event.stopPropagation();
+  }
+
+  setContentEditable() {
+    return !this.previewMode;
   }
 
   @HostListener('window:message', ['$event'])
@@ -80,7 +265,16 @@ export class BuilderFeaturesComponent implements OnInit, IComponent {
   }
 
   ngOnDestroy() {
+    this.featuresHeaderStyleSubscription.unsubscribe();
+    this.featuresSubheaderStyleSubscription.unsubscribe();
+    this.featuresStyleSubscription.unsubscribe();
+    this.featuresTemplateSubscription.unsubscribe();
+    this.featuresThemeSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
     this.activeEditComponentSubscription.unsubscribe();
+    this.containerClassSubscription.unsubscribe();
+    this.containerStyleSubscription.unsubscribe();
+    this.featuresItemArraySubscription.unsubscribe();
   }
 }
