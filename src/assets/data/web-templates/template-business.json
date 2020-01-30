@@ -1,12 +1,10 @@
 [
   {
     "id": "business-1",
-    "name": "Quick",
-    "description": "Quick helps you build beautiful websites that stand out and automatically adapt to your brand’s identity."
+    "name": "Quick"
   },
   {
     "id": "business-2",
-    "name": "Front",
-    "description": "Front is an incredibly beautiful, fully responsive, and mobile-first projects on the web."
+    "name": "Front"
   }
 ]

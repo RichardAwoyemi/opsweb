@@ -1,6 +1,52 @@
 {
   "id": "business-2",
   "name": "Front",
+  "defaultComponents": {
+    "pages": [
+      {
+        "name": "Home",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-hero></app-builder-hero>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "About",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "Features",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "Contact",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      }
+    ]
+  },
   "navbarStyle": {
     "background-color": "#FFFFFF",
     "display": "flex",

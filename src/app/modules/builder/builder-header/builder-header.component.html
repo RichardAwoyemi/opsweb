@@ -4,12 +4,12 @@
       <div class="float-left">
         <a (click)="redirect()" href="#">
           <img alt="logo-white" src="../../../../assets/img/logo-white.svg" style="height: 30px; width: 30px">
-          <div (blur)="removeLineBreaks($event); saveWebsiteName($event);"
-               (keydown.enter)="saveWebsiteName($event); $event.preventDefault()"
-               [attr.contenteditable]="true"
-               [attr.spellcheck]="false"
-               class="website-name" ngbPopover="Website Name" triggers="mouseenter:mouseleave">{{ websiteName }}</div>
         </a>
+        <div (blur)="removeLineBreaks($event); saveWebsiteName($event);"
+             (keydown.enter)="saveWebsiteName($event); $event.preventDefault()"
+             [attr.contenteditable]="true"
+             [attr.spellcheck]="false"
+             class="website-name" ngbPopover="Website Name" triggers="mouseenter:mouseleave">{{ websiteName }}</div>
       </div>
     </div>
     <div class="col-md-6">

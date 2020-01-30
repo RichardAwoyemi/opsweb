@@ -11,6 +11,7 @@ import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
 import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -21,14 +22,15 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   innerHeight: number;
   websiteChangeCount: number;
   searchText: string;
+  pageComponents: any;
+  private webTemplates: Template[];
+  private selectedTemplate: Template;
+
   private webTemplateSubscription: Subscription;
-  private webTemplateBusinessSubscription: Subscription;
   private templateSubscription: Subscription;
   private selectedTemplateSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
-  private webTemplateBusiness: Template[];
-  private webTemplates: Template[];
-  private selectedTemplate: Template;
+  private pageComponentsSubscription: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -37,6 +39,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
     private builderNavbarService: BuilderNavbarService,
     private builderHeroService: BuilderHeroService,
     private builderFooterService: BuilderFooterService,
+    private builderComponentsService: BuilderComponentsService,
     private modalService: NgbModal
   ) {
   }
@@ -54,15 +57,9 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
     this.webTemplateSubscription = this.dataService.getAllWebTemplates().subscribe(response => {
       if (response) {
         this.webTemplates = response;
-        this.webTemplates.push(new Template(ActiveTemplates.Default, 'Default', 'Default template'));
+        this.webTemplates.push({ id: ActiveTemplates.Default, name: 'Default' });
         TemplateService.parseSelectedTemplates([].concat.apply([], this.webTemplates));
         TemplateService.parseAvailableTemplates([].concat.apply([], this.webTemplates));
-      }
-    });
-
-    this.webTemplateBusinessSubscription = this.dataService.getWebTemplateBusiness().subscribe(response => {
-      if (response) {
-        this.webTemplateBusiness = response;
       }
     });
 
@@ -78,55 +75,9 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
       }
     });
 
-    this.templateSubscription = this.templateService.selectedCategory.subscribe(response => {
+    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
-        switch (response) {
-          case 'All':
-            TemplateService.parseSelectedTemplates([].concat.apply([], this.webTemplates));
-            break;
-          case 'Business':
-            TemplateService.parseSelectedTemplates([].concat.apply([], this.webTemplateBusiness));
-            break;
-          case 'E-commerce':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Photography':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Video':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Music':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Design':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Restaurants and Food':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Travel and Tourism':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Events':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Portfolio and CV':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Beauty and Hair':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Fashion and Style':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          case 'Community and Education':
-            TemplateService.parseSelectedTemplates([].concat.apply([], null));
-            break;
-          default:
-            TemplateService.parseSelectedTemplates([].concat.apply([], this.webTemplates));
-            break;
-        }
+        this.pageComponents = response;
       }
     });
   }
@@ -138,22 +89,30 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   }
 
   setTemplate(templateId: string) {
-    if (this.websiteChangeCount > 0) {
-      const modal = this.modalService.open(BuilderChangeTemplateModalComponent, { windowClass: 'modal-holder', centered: true });
-      modal.componentInstance.templateId = templateId;
-      this.builderService.resetWebsiteChangeCount();
-    } else {
-      this.builderNavbarService.setComponentTemplate(templateId);
-      this.builderHeroService.setComponentTemplate(templateId);
-      this.builderFooterService.setComponentTemplate(templateId);
-    }
+    this.templateSubscription = this.templateService.getTemplate(templateId).subscribe(response => {
+      if (response) {
+        const defaultPageComponents = response['defaultComponents'];
+        if (this.websiteChangeCount > 0 || JSON.stringify(defaultPageComponents) !== JSON.stringify(this.pageComponents)) {
+          const modal = this.modalService.open(BuilderChangeTemplateModalComponent, { windowClass: 'modal-holder', centered: true });
+          modal.componentInstance.templateId = templateId;
+          modal.componentInstance.defaultPageComponents = defaultPageComponents;
+          this.builderService.resetWebsiteChangeCount();
+        } else {
+          this.builderComponentsService.pageComponents.next(defaultPageComponents);
+          this.builderNavbarService.setComponentTemplate(templateId);
+          this.builderHeroService.setComponentTemplate(templateId);
+          this.builderFooterService.setComponentTemplate(templateId);
+        }
+      }
+    });
   }
 
   ngOnDestroy() {
     this.webTemplateSubscription.unsubscribe();
-    this.webTemplateBusinessSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
-    this.templateSubscription.unsubscribe();
     this.selectedTemplateSubscription.unsubscribe();
+    if (this.templateSubscription) {
+      this.templateSubscription.unsubscribe();
+    }
   }
 }

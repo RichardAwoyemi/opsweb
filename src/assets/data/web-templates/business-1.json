@@ -1,6 +1,40 @@
 {
   "id": "business-1",
   "name": "Quick",
+  "defaultComponents": {
+    "pages": [
+      {
+        "name": "Home",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "About",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "Contact",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      }
+    ]
+  },
   "navbarStyle": {
     "background-color": "#FFFFFF",
     "display": "flex",
