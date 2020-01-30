@@ -18,6 +18,7 @@ import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-mod
 import { BuilderSelectImageModalComponent } from './builder-select-image-modal/builder-select-image-modal.component';
 import { BuilderSelectImageUploadComponent } from './builder-select-image-modal/builder-select-image-upload/builder-select-image-upload.component';
 import { BuilderSelectImagePhotosComponent } from './builder-select-image-modal/builder-select-image-photos/builder-select-image-photos.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { BuilderSelectImagePhotosComponent } from './builder-select-image-modal/
   imports: [
     CommonModule,
     FormsModule,
-    SimpleModalModule
+    SimpleModalModule,
+    ImageCropperModule
   ],
   exports: [
     BuilderDeletePageModalComponent,

@@ -354,6 +354,6 @@ export class UtilService {
     ];
 
     return left[Math.floor(Math.random() * left.length)] + '-' +
-      right[Math.floor(Math.random() * left.length)] + '-' + Math.floor(100000 + Math.random() * 900000);
+      right[Math.floor(Math.random() * left.length)] + '-' + Math.floor(10000000 + Math.random() * 90000000);
   }
 }

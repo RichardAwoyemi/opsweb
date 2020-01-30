@@ -4,6 +4,7 @@ import { UnsplashService } from '../../../../../shared/services/unsplash.service
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
 import { BuilderActionsService } from '../../builder-actions.service';
 import { Subscription } from 'rxjs';
+import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 
 @Component({
   selector: 'app-builder-select-image-photos',
@@ -20,6 +21,7 @@ export class BuilderSelectImagePhotosComponent implements OnInit {
 
   constructor(
     private unsplashService: UnsplashService,
+    private builderHeroService: BuilderHeroService,
     private builderActionsService: BuilderActionsService
   ) {
   }
@@ -41,7 +43,8 @@ export class BuilderSelectImagePhotosComponent implements OnInit {
   toggleSelection(i: number, image: any) {
     this.selectedImageIndex = i;
     this.selectedImage = image;
-    this.builderActionsService.activeLibrarySelectedImage.next(image);
+    this.builderActionsService.activeLibrarySelectedImage.next(image['urls']['full']);
+    this.builderActionsService.activeLibrarySelectedImageAlt.next(image['alt_description']);
   }
 
   setImageSelection(i: number) {
@@ -61,6 +64,8 @@ export class BuilderSelectImagePhotosComponent implements OnInit {
         this.images = null;
       }
     }
+    this.builderActionsService.activeLibrarySelectedImage.next(this.builderHeroService.heroImageUrl.getValue());
+    this.builderActionsService.activeLibrarySelectedImageAlt.next(this.builderHeroService.heroImageAlt.getValue());
   }
 
   onSearchButtonClick() {

@@ -7,12 +7,28 @@
     <small>Maximum file size of 2MB</small>
   </div>
   <div class="col-md-8">
-    <img [ngStyle]=" { 'max-height': imageHeight + 'px' }" [src]="heroImageUrl" alt="{{ heroImageAlt }}">
-    <div style="padding-top: 20px;">
-      <button (click)="onUploadImageButtonClick()" class="btn btn-secondary" type="button">Replace
-        Image
-      </button>
-    </div>
+    <ng-container *ngIf="imageChangedEvent">
+      <div class="image-preview">
+        <image-cropper (imageCropped)="imageCropped($event)" [imageChangedEvent]="imageChangedEvent"
+                       [maintainAspectRatio]="false"
+                       [ngStyle]="{ 'max-height': imageHeight + 'px' }"
+                       format="png"></image-cropper>
+      </div>
+      <div style="padding-top: 20px;">
+        <button (click)="onCropImageButtonClick()" class="btn btn-secondary" type="button">Crop Image</button>&nbsp;
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!imageChangedEvent">
+      <div class="image-preview">
+        <img [ngStyle]="{ 'max-height': imageHeight + 'px' }" [src]="heroImageUrl" alt="{{ heroImageAlt }}">
+      </div>
+      <div style="padding-top: 20px;">
+        <label class="btn btn-lg btn-secondary btn-file">
+          <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
+          <span>Replace Image</span>
+        </label>
+      </div>
+    </ng-container>
   </div>
   <div class="col-md-12">&nbsp;</div>
   <div class="col-md-4">
