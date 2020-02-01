@@ -5,11 +5,13 @@ import { NavbarColourPickerComponent } from './navbar-colour-picker/navbar-colou
 import { ColorPickerModule } from 'ngx-color-picker';
 import { FormsModule } from '@angular/forms';
 import { FooterColourPickerComponent } from './footer-colour-picker/footer-colour-picker.component';
+import { HeroColourPickerComponent } from './hero-colour-picker/hero-colour-picker.component';
 
 @NgModule({
   declarations: [
     BuilderSidebarColoursComponent,
     FooterColourPickerComponent,
+    HeroColourPickerComponent,
     NavbarColourPickerComponent
   ],
   imports: [

@@ -7,7 +7,7 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <div (click)="setFooterAlignment('text-center'); setComponentLayout(0)"
+    <div (click)="setFooterAlignment('text-center'); setComponentLayout({'layout':0})"
          [ngClass]="setComponentLayoutSelectorClass('text-center', 0)">
       <svg height="88px" viewBox="0 0 114 88" width="114px">
         <defs>
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div (click)="setFooterAlignment('text-left'); setComponentLayout(0)"
+    <div (click)="setFooterAlignment('text-left'); setComponentLayout({'layout':0})"
          [ngClass]="setComponentLayoutSelectorClass('text-left', 0)">
       <svg height="88px" viewBox="0 0 114 88" width="114px">
         <defs>
@@ -81,8 +81,8 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div (click)="setFooterAlignment('text-right'); setComponentLayout(0)"
-         [ngClass]="setComponentLayoutSelectorClass('text-right', 1)">
+    <div (click)="setFooterAlignment('text-right'); setComponentLayout({'layout':0})"
+         [ngClass]="setComponentLayoutSelectorClass('text-right', 0)">
       <svg height="88px" viewBox="0 0 114 88" width="114px">
         <defs>
           <rect height="88" id="path-1" rx="6" width="114" x="0" y="0"></rect>
@@ -118,7 +118,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div (click)="setFooterAlignment('text-center'); setComponentLayout(1)"
+    <div (click)="setFooterAlignment('text-center'); setComponentLayout({'layout':1})"
          [ngClass]="setComponentLayoutSelectorClass('text-center', 1)">
       <svg height="88px" viewBox="0 0 114 88" width="114px">
         <defs>

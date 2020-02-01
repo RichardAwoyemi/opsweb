@@ -52,6 +52,11 @@ export enum ActiveFooterThemes {
   Stanley = 'Stanley'
 }
 
+export enum ActiveHeroThemes {
+  Default = 'Default',
+  Stanley = 'Stanley'
+}
+
 export enum ActiveOrientations {
   Desktop = 'desktop',
   Tablet = 'tablet',

@@ -241,6 +241,7 @@ export class NavbarOptionsPickerComponent implements OnInit {
 
   resetNavbarBrandFontSize() {
     this.navbarBrandStyle['font-size'] = this.defaultNavbarStyle['navbarBrandStyle']['font-size'];
+    this.navbarBrandFontUnit = 'px';
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 

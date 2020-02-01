@@ -14,7 +14,7 @@ export class BuilderFooterService {
   footerPageLinksStyle = new BehaviorSubject<Object>(null);
   footerCopyrightStyle = new BehaviorSubject<Object>(null);
   footerMenuOptions = new BehaviorSubject<Object>(null);
-  footerComponentLayout = new BehaviorSubject<number>(0);
+  footerComponentLayout = new BehaviorSubject<any>({ 'layout': 0 });
   facebookUrl = new BehaviorSubject<string>(null);
   twitterUrl = new BehaviorSubject<string>(null);
   instagramUrl = new BehaviorSubject<string>(null);
