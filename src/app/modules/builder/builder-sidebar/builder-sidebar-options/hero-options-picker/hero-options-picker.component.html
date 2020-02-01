@@ -7,10 +7,200 @@
     <div class="col-md-6 text-right">
       <a (click)="resetHeroImage()" class="fw-600 fs-12" href="#">Reset</a>
     </div>
+    <div class="col-md-12">
+      <div class="image-preview" style="margin-bottom: 1em; height: 150px; margin-top: 1em">
+        <img [attr.alt]="heroImageAlt" [attr.src]="heroImageUrl" class="hero-image"/>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <a (click)="openSelectImageModal()" class="btn btn-xl btn-block btn-secondary">Select Image</a>
+    </div>
+  </div>
+  <div class="row" style="padding-top: 1em">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroImageSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setHeroImageSize()" (ngModelChange)="setHeroImageSize()"
+               [(ngModel)]="heroImageSize"
+               class="form-control form-control-lg"
+               max="100" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input [(ngModel)]="heroImageUnit" class="form-control form-control-lg" disabled>
+      </label>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <a (click)="openSelectImageModal()" class="btn btn-xl btn-block btn-secondary">Select Image</a>
+<hr style="background-color: rgba(255, 255, 255, 0.1)">
+<div class="form-group" id="hero-heading-options">
+  <label style="color: rgba(255, 255, 255, 1)">Heading</label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroHeadingFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
   </div>
+  <label style="width: 100%">
+    <select (change)="onHeroHeadingFontNameChange()" [(ngModel)]="heroHeadingFontName"
+            class="form-control form-control-lg">
+      <option *ngFor="let fontName of fontNames | ssort"
+              [attr.selected]="fontName == heroHeadingFontName ? true : null"
+              [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+    </select>
+  </label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroHeadingFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setHeroHeadingFontSize()" (ngModelChange)="setHeroHeadingFontSize()"
+               [(ngModel)]="heroHeadingFontSize"
+               class="form-control form-control-lg"
+               max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <select (change)="onHeroHeadingFontUnitChange()" [(ngModel)]="heroHeadingFontUnit"
+                class="form-control form-control-lg">
+          <option *ngFor="let fontUnit of fontUnits | ssort"
+                  [attr.selected]="fontUnit == heroHeadingFontUnit ? true : null">{{ fontUnit }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</div>
+<hr style="background-color: rgba(255, 255, 255, 0.1)">
+
+<div class="form-group" id="hero-subheading-options">
+  <label style="color: rgba(255, 255, 255, 1)">Subheading</label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroSubheadingFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="setHeroSubheadingFont()" [(ngModel)]="heroSubheadingFontName"
+            class="form-control form-control-lg">
+      <option *ngFor="let fontName of fontNames | ssort"
+              [attr.selected]="fontName == heroSubheadingFontName ? true : null"
+              [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+    </select>
+  </label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroSubheadingFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setHeroSubheadingFontSize()" (ngModelChange)="setHeroSubheadingFontSize()"
+               [(ngModel)]="heroSubheadingFontSize"
+               class="form-control form-control-lg"
+               max="100" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <select (change)="onHeroSubheadingFontUnitChange()" [(ngModel)]="heroSubheadingFontUnit"
+                class="form-control form-control-lg">
+          <option *ngFor="let fontUnit of fontUnits | ssort"
+                  [attr.selected]="fontUnit == heroSubheadingFontUnit ? true : null">{{ fontUnit }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</div>
+<hr style="background-color: rgba(255, 255, 255, 0.1)">
+
+<div class="form-group" id="hero-button-options">
+  <label style="color: rgba(255, 255, 255, 1)">Button</label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroButtonFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="onHeroButtonFontNameChange()" [(ngModel)]="heroButtonFontName"
+            class="form-control form-control-lg">
+      <option *ngFor="let fontName of fontNames | ssort"
+              [attr.selected]="fontName == heroButtonFontName ? true : null"
+              [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+    </select>
+  </label>
+  <div class="row" style="padding-top: 1em">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroButtonFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setHeroButtonFontSize()" (ngModelChange)="setHeroButtonFontSize()"
+               [(ngModel)]="heroButtonFontSize"
+               class="form-control form-control-lg"
+               max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <select (change)="onHeroButtonFontUnitChange()" [(ngModel)]="heroButtonFontUnit"
+                class="form-control form-control-lg">
+          <option *ngFor="let fontUnit of fontUnits | ssort"
+                  [attr.selected]="fontUnit == heroButtonFontUnit ? true : null">{{ fontUnit }}</option>
+        </select> </label>
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Link</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeroButtonLink()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="setHeroButtonLink()" [(ngModel)]="menuOption" class="form-control form-control-lg">
+      <option *ngFor="let navbarMenuOption of navbarMenuOptions"
+              [attr.selected]="navbarMenuOption == menuOption ? true : null">{{ navbarMenuOption }}</option>
+    </select>
+  </label>
 </div>

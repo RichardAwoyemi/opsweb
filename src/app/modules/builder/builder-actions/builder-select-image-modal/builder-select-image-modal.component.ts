@@ -38,8 +38,10 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   }
 
   async onConfirmButtonClick() {
-    if (this.activeLibrarySelectedImage != this.builderHeroService.heroImageUrl.getValue() || this.activeLibrarySelectedImageAltText != this.builderHeroService.heroImageAlt.getValue()) {
-      this.uploadImage();
+    if (this.activeLibrarySelectedImage) {
+      if (this.activeLibrarySelectedImage != this.builderHeroService.heroImageUrl.getValue() || this.activeLibrarySelectedImageAltText != this.builderHeroService.heroImageAlt.getValue()) {
+        this.uploadImage();
+      }
     }
     this.activeModal.dismiss();
   }

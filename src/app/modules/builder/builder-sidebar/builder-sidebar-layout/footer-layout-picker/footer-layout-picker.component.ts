@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-footer-layout-picker',
-  templateUrl: './footer-layout-picker.component.html',
-  styleUrls: ['./footer-layout-picker.component.css']
+  templateUrl: './footer-layout-picker.component.html'
 })
-export class FooterLayoutPickerComponent implements OnInit {
+export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   footerPaddingTop: number;
   footerPaddingLeft: number;
   footerPaddingRight: number;
@@ -32,7 +31,7 @@ export class FooterLayoutPickerComponent implements OnInit {
   footerPageLinksStyle: any;
   footerTemplate: any;
   defaultFooterStyle: any;
-  footerComponentLayout: number = 0;
+  footerComponentLayout: any = { 'layout': 0 };
   facebookUrl: string;
   twitterUrl: string;
   instagramUrl: string;
@@ -204,12 +203,12 @@ export class FooterLayoutPickerComponent implements OnInit {
 
   resetFooterAlignment() {
     this.setFooterAlignment('text-center');
-    this.setComponentLayout(0);
+    this.setComponentLayout({ 'layout': 0 });
   }
 
-  setComponentLayout(footerComponentLayout: number) {
+  setComponentLayout(footerComponentLayout: any) {
     this.builderFooterService.footerComponentLayout.next(footerComponentLayout);
-    if (footerComponentLayout == 1) {
+    if (footerComponentLayout['layout'] == 1) {
       this.footerSocialLinksContainerStyle['margin-right'] = '-10px';
       this.footerSocialLinksContainerStyle['margin-bottom'] = '-10px';
       this.footerSocialLinksContainerStyle['padding-top'] = '4px';
@@ -348,7 +347,7 @@ export class FooterLayoutPickerComponent implements OnInit {
   }
 
   setComponentLayoutSelectorClass(alignmentClass: string, componentLayout: number) {
-    if (alignmentClass == this.footerAlignmentClass && componentLayout === this.footerComponentLayout) {
+    if (alignmentClass == this.footerAlignmentClass && componentLayout === this.footerComponentLayout['layout']) {
       return 'layout-spacer-active';
     } else {
       return 'layout-spacer';

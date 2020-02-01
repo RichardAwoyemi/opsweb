@@ -72,6 +72,9 @@
     "font-family": "'Nunito Sans', sans-serif",
     "width": "100px"
   },
+  "heroBackgroundStyle": {
+    "color": "#FFFFFF"
+  },
   "heroHeadingStyle": {
     "font-family": "'Nunito Sans', sans-serif",
     "font-size": "48px"

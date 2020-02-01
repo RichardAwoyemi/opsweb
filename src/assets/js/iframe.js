@@ -54,11 +54,38 @@ function setupNavbarContextMenu() {
 
 function setupHeroContextMenu() {
   let heroItems = {
-    "manage-menu": {name: "Edit Image"},
-    "set-design": {name: "Set Design"},
-    "set-layout": {name: "Set Layout"},
+    "hero-colours": {
+      name: "Colours"
+    },
+    "hero": {
+      "name": "Hero",
+      "items": {
+        "hero-layout": {"name": "Set Position"}
+      }
+    },
+    "hero-heading": {
+      "name": "Heading",
+      "items": {
+        "hero-options-heading": {"name": "Edit Design"},
+        "hero-layout-heading": {"name": "Set Position"}
+      }
+    },
+    "hero-subheading": {
+      "name": "Subheading",
+      "items": {
+        "hero-options-subheading": {"name": "Edit Design"},
+        "hero-layout-subheading": {"name": "Set Position"}
+      }
+    },
+    "hero-button": {
+      "name": "Button",
+      "items": {
+        "hero-options-button": {"name": "Edit Design"},
+        "hero-layout-button": {"name": "Set Position"}
+      }
+    },
     "sep1": "---------",
-    "delete-component": {name: "Delete Component"},
+    "delete-component": {name: "Delete"}
   };
 
   $(function () {
@@ -67,6 +94,7 @@ function setupHeroContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
+        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
       },
       items: heroItems
     });
@@ -78,6 +106,7 @@ function setupHeroContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
+        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
       },
       items: heroItems
     });
