@@ -80,6 +80,19 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       }
     });
 
+    this.featuresThemeSubscription = this.builderFeaturesService.featuresTheme.subscribe(response => {
+      if (!response) {
+        this.setFeaturesThemeStyle(this.builderFeaturesService.featuresTemplate.getValue());
+        this.setFeaturesTemplate(ActiveTemplates.Default);
+      }
+    });
+
+    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
+      if (!response) {
+        this.builderFeaturesService.featuresTemplate.next(ActiveFeaturesThemes.Default);
+      }
+    });
+
     this.featuresHeaderStyleSubscription = this.builderFeaturesService.featuresHeaderStyle.subscribe(response => {
       if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
         this.featuresHeaderStyle = response;
@@ -119,19 +132,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.featuresItemArraySubscription = this.builderFeaturesService.featuresItemArray.subscribe(response => {
       if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
         this.featuresItemArray = response;
-      }
-    });
-
-    this.featuresThemeSubscription = this.builderFeaturesService.featuresTheme.subscribe(response => {
-      if (!response) {
-        this.setFeaturesThemeStyle(this.builderFeaturesService.featuresTemplate.getValue());
-        this.setFeaturesTemplate(ActiveTemplates.Default);
-      }
-    });
-
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
-      if (!response) {
-        this.setFeaturesTemplate(ActiveTemplates.Default);
       }
     });
   }

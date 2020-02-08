@@ -27,3 +27,11 @@
   cursor: pointer !important;
   transition: all .2s ease-in;
 }
+
+.btn-group.btn-group-full {
+  display: flex;
+}
+
+.btn-group-full .btn {
+  flex: 1
+}

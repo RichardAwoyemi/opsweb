@@ -115,8 +115,10 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   resetToDefault() {
     const id = this.activeComponentId;
     this.builderFeaturesService.featuresTheme.next(ActiveFeaturesThemes.Default);
+    this.featuresStyle['background-color'] = this.defaultFeaturesStyle['featuresStyle']['background-color'];
     this.featuresHeaderStyle['color'] = this.defaultFeaturesStyle['featuresHeaderStyle']['color'];
     this.featuresSubheaderStyle['color'] = this.defaultFeaturesStyle['featuresSubheaderStyle']['color'];
+    this.setFeaturesStyle();
     this.setFeaturesHeaderStyle();
     this.setFeaturesSubheaderStyle();
   }

@@ -112,6 +112,13 @@ export class FeaturesOptionsPickerComponent implements OnInit {
     }
   }
 
+  resetFeatureFontSize(){
+    this.featuresHeaderStyle['font-size'] = this.defaultFeaturesStyle['featuresHeaderStyle']['font-size'];
+    this.featuresSubheaderStyle['font-size'] = this.defaultFeaturesStyle['featuresSubheaderStyle']['font-size'];
+    this.builderFeaturesService.featuresHeaderStyle.next(this.featuresHeaderStyle);
+    this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
+  }
+
   ngOnDestroy() {
     this.featuresHeaderStyleSubscription.unsubscribe();
     this.featuresSubheaderStyleSubscription.unsubscribe();
