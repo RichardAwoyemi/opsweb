@@ -114,6 +114,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit {
 
   togglePreview() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.setSidebarComponentsSetting();
     this.builderService.previewMode.next(!this.previewMode);

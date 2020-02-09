@@ -5,12 +5,14 @@ import { NavbarColourPickerComponent } from './navbar-colour-picker/navbar-colou
 import { ColorPickerModule } from 'ngx-color-picker';
 import { FormsModule } from '@angular/forms';
 import { FooterColourPickerComponent } from './footer-colour-picker/footer-colour-picker.component';
+import { FeaturesColourPickerComponent } from './features-colour-picker/features-colour-picker.component';
 import { HeroColourPickerComponent } from './hero-colour-picker/hero-colour-picker.component';
 
 @NgModule({
   declarations: [
     BuilderSidebarColoursComponent,
     FooterColourPickerComponent,
+    FeaturesColourPickerComponent,
     HeroColourPickerComponent,
     NavbarColourPickerComponent
   ],
@@ -20,10 +22,8 @@ import { HeroColourPickerComponent } from './hero-colour-picker/hero-colour-pick
     FormsModule
   ],
   exports: [
-    BuilderSidebarColoursComponent,
-    NavbarColourPickerComponent
-  ],
-  providers: []
+    BuilderSidebarColoursComponent
+  ]
 })
 
 export class BuilderSidebarColoursModule {

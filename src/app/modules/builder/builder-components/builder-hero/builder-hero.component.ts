@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderHeroService } from './builder-hero.service';
-import { ActiveComponents, ActiveElements, ActiveHeroThemes, ActiveSettings, ActiveTemplates } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-hero',
@@ -18,8 +19,10 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   heroBackgroundStyle: any;
   heroButtonStyle: any;
   activeEditComponent: string;
+  activeEditComponentId: string;
   previewMode: boolean = false;
   componentName: string = ActiveComponents.Hero;
+  componentId: string = `${ ActiveComponents.Hero }-${ UtilService.generateRandomString(8) }`;
   heroHeadingText: string;
   heroButtonText: string;
   heroSubheadingText: string;
@@ -31,7 +34,8 @@ export class BuilderHeroComponent implements OnInit, IComponent {
 
   private heroTemplateSubscription: Subscription;
   private heroImageSizeSubscription: Subscription;
-  private activeEditTaskComponentSubscription: Subscription;
+  private activeEditComponentSubscription: Subscription;
+  private activeEditComponentIdSubscription: Subscription;
   private heroButtonStyleSubscription: Subscription;
   private heroHeadingStyleSubscription: Subscription;
   private heroSubheadingStyleSubscription: Subscription;
@@ -57,9 +61,15 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.activeEditTaskComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
+    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
+      }
+    });
+
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+      if (response) {
+        this.activeEditComponentId = response;
       }
     });
 
@@ -106,14 +116,14 @@ export class BuilderHeroComponent implements OnInit, IComponent {
 
     this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(response => {
       if (!response) {
-        this.builderHeroService.heroTemplate.next(ActiveHeroThemes.Default);
+        this.builderHeroService.heroTemplate.next(ActiveThemes.Default);
         this.builderHeroService.setHeroTemplate(ActiveTemplates.Default);
       }
     });
 
     this.heroThemeSubscription = this.builderHeroService.heroTheme.subscribe(response => {
       if (!response) {
-        this.builderHeroService.heroTheme.next(ActiveHeroThemes.Default);
+        this.builderHeroService.heroTheme.next(ActiveThemes.Default);
       }
     });
 
@@ -162,10 +172,11 @@ export class BuilderHeroComponent implements OnInit, IComponent {
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
+    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     if (this.activeEditComponent == ActiveComponents.Hero) {
       this.clearActiveEditComponent();
     } else {
-      this.builderService.setActiveEditComponent(ActiveComponents.Hero);
+      this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
       this.builderService.setActiveEditSetting(ActiveSettings.Colours);
     }
   }
@@ -179,8 +190,7 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   }
 
   clearActiveEditComponent() {
-    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.clearActiveEditComponent();
   }
 
   setHeroTextContainerClass() {
@@ -218,7 +228,7 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   }
 
   selectHeroImage(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero);
+    this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     this.builderService.setActiveEditSetting(ActiveSettings.Options);
@@ -236,11 +246,11 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   }
 
   selectHeroHeading(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero);
+    this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-heading-options');
+    this.builderService.triggerScrollTo('hero-options-heading');
     event.stopPropagation();
   }
 
@@ -249,16 +259,16 @@ export class BuilderHeroComponent implements OnInit, IComponent {
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-subheading-options');
+    this.builderService.triggerScrollTo('hero-options-subheading');
     event.stopPropagation();
   }
 
   selectHeroButton(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero);
+    this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-button-options');
+    this.builderService.triggerScrollTo('hero-options-button');
     event.stopPropagation();
   }
 
@@ -286,7 +296,7 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   }
 
   ngOnDestroy() {
-    this.activeEditTaskComponentSubscription.unsubscribe();
+    this.activeEditComponentSubscription.unsubscribe();
     this.heroBackgroundStyleSubscription.unsubscribe();
     this.heroButtonStyleSubscription.unsubscribe();
     this.heroHeadingStyleSubscription.unsubscribe();

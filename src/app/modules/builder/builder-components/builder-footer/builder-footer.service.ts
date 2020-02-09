@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveFooterThemes, ActiveTemplates } from '../../builder';
+import { ActiveTemplates, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -61,13 +61,13 @@ export class BuilderFooterService {
   setFooterTheme(themeId: string) {
     let response: any;
     switch (themeId) {
-      case ActiveFooterThemes.Default:
+      case ActiveThemes.Default:
         this.setFooterThemeStyle(this.footerTemplate.getValue());
         break;
-      case ActiveFooterThemes.Stanley:
+      case ActiveThemes.Stanley:
         this.httpClient.get(this.FOOTER_THEME_PATH).subscribe((themes: Array<any>) => {
           response = themes.filter(theme => {
-            return theme.name == ActiveFooterThemes.Stanley;
+            return theme.name == ActiveThemes.Stanley;
           });
           this.setFooterThemeStyle(response[0]);
         });
@@ -128,7 +128,7 @@ export class BuilderFooterService {
   }
 
   setComponentTemplate(templateId) {
-    this.footerTheme.next(ActiveFooterThemes.Default);
+    this.footerTheme.next(ActiveThemes.Default);
     this.footerTemplate.next(templateId);
     this.setFooterTemplate(templateId);
   }

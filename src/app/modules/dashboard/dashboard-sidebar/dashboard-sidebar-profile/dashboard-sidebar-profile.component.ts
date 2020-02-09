@@ -6,6 +6,8 @@ import * as fromUser from '../../../core/store/user/user.reducer';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DashboardCreateWebsiteModalComponent } from '../../dashboard-actions/dashboard-create-website-modal/dashboard-create-website-modal.component';
 
 @Component({
   selector: 'app-dashboard-sidebar-profile',
@@ -21,7 +23,8 @@ export class DashboardSidebarProfileComponent implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private userStore: Store<fromUser.State>,
-    public router: Router
+    public router: Router,
+    private modalService: NgbModal
   ) {
   }
 
@@ -50,5 +53,9 @@ export class DashboardSidebarProfileComponent implements OnInit {
 
   setActiveSidebar(selectedOption: string) {
     this.dashboardService.activeSidebarSetting.next(selectedOption);
+  }
+
+  openCreateWebsiteModal() {
+    this.modalService.open(DashboardCreateWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 }

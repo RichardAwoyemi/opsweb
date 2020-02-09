@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { ActiveNavbarThemes, ActiveTemplates } from '../../../builder';
+import { ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderService } from '../../../builder.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class NavbarColourPickerComponent implements OnInit {
     'color': '#000'
   };
   navbarTemplate: string = ActiveTemplates.Default;
-  navbarTheme: string = ActiveNavbarThemes.Default;
+  navbarTheme: string = ActiveThemes.Default;
   defaultNavbarStyle: any;
   websiteChangeCount: number;
   private navbarStyleSubscription: Subscription;
@@ -89,7 +89,7 @@ export class NavbarColourPickerComponent implements OnInit {
   }
 
   onThemeChange() {
-    if (this.navbarTheme === ActiveNavbarThemes.Default) {
+    if (this.navbarTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
       this.builderNavbarService.navbarTheme.next(this.navbarTheme);
@@ -111,7 +111,7 @@ export class NavbarColourPickerComponent implements OnInit {
   }
 
   resetToDefault() {
-    this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
+    this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
 
     this.navbarStyle['background-color'] = this.defaultNavbarStyle['navbarStyle']['background-color'];
     this.builderNavbarService.navbarStyle.next(this.navbarStyle);

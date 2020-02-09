@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,9 @@ export class BuilderComponentToolbarComponent implements OnInit {
   activeEditComponent: string;
   activeEditComponentId: string;
   activeRoute: string;
+
   private activeEditComponentSubscription: Subscription;
+  private activeEditComponentIdSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -31,6 +33,9 @@ export class BuilderComponentToolbarComponent implements OnInit {
         this.activeEditComponent = response;
       }
     });
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+        this.activeEditComponentId = response;
+    });
   }
 
   deleteComponent() {
@@ -38,7 +43,7 @@ export class BuilderComponentToolbarComponent implements OnInit {
   }
 
   toggleComponentToolbarVisibility() {
-    if (this.activeEditComponent === this.componentName || this.activeEditComponentId) {
+    if (this.activeEditComponent === this.componentName && this.activeEditComponentId == this.componentId) {
       return (this.activeEditComponent === this.componentName && this.activeRoute != '/preview') ||
         (this.activeEditComponentId === this.componentId && this.activeRoute != '/preview');
     } else {
@@ -46,19 +51,8 @@ export class BuilderComponentToolbarComponent implements OnInit {
     }
   }
 
-  @HostListener('window:message', ['$event'])
-  onMessage(e) {
-    if (e.data.for == 'opsonion') {
-      if (e.data.action == 'unique-component-selected' || e.data.action == 'duplicate-component-deselected') {
-        this.activeEditComponentId = null;
-      }
-      if (e.data.action == 'duplicate-component-selected') {
-        this.activeEditComponentId = e.data.message;
-      }
-    }
-  }
-
   ngOnDestroy() {
     this.activeEditComponentSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
   }
 }

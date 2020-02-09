@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ArraySortModule } from '../../../../shared/pipes/array-sort/array-sort.module';
 import { HeroOptionsPickerComponent } from './hero-options-picker/hero-options-picker.component';
 import { FooterOptionsPickerComponent } from './footer-options-picker/footer-options-picker.component';
+import { FeaturesOptionsPickerComponent } from './features-options-picker/features-options-picker.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     BuilderUploadImageModalComponent,
     NavbarOptionsPickerComponent,
     FooterOptionsPickerComponent,
+    FeaturesOptionsPickerComponent,
     HeroOptionsPickerComponent
   ],
   imports: [

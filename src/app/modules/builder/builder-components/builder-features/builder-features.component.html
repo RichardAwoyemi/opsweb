@@ -1,20 +1,25 @@
-<div [attr.id]="componentId">
-  <app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
-                                 [componentName]="componentName"></app-builder-component-toolbar>
-  <div [ngClass]="setContextMenu()">
-    <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
-      <div class="row feature-row">
-        <div class="col-md-4">
-          <h5>{{ componentId }}</h5>
-          <p>Donec id elit non mi porta gravida at eget metus.</p>
-        </div>
-        <div class="col-md-4">
-          <h5>Customisable</h5>
-          <p>Donec id elit non mi porta gravida at eget metus.</p>
-        </div>
-        <div class="col-md-4">
-          <h5>Clean</h5>
-          <p>Donec id elit non mi porta gravida at eget metus.</p>
+<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
+                               [componentName]="componentName"></app-builder-component-toolbar>
+<div [attr.id]="componentId" [ngClass]="setContextMenu()">
+  <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
+    <div [ngStyle]="setFeaturesOuterStyle()" class="row" style="margin: 0.02em;">
+      <div *ngFor="let feature of featuresItemArray; let i = index" [ngStyle]="setFeaturesInnerStyle()">
+        <div style="padding: 12px">
+          <div
+            (click)="selectFeaturesElement($event, componentId+'-'+'heading'+'-'+i)"
+            [attr.contenteditable]="setContentEditable()"
+            [class]="setActiveElement(componentId+'-'+'heading'+'-'+i)"
+            [innerText]="feature['heading']"
+            [ngClass]="setFeaturesClass('features-heading')"
+            [ngStyle]="featuresHeadingStyle" id="{{ componentId+'-'+'heading'+'-'+i }}">
+          </div>
+          <div
+            (click)="selectFeaturesElement($event, componentId+'-'+'subheading'+'-'+i)"
+            [attr.contenteditable]="setContentEditable()"
+            [class]="setActiveElement(componentId+'-'+'subheading'+'-'+i)"
+            [innerText]="feature['subheading']"
+            [ngClass]="setFeaturesClass('features-subheading')"
+            [ngStyle]="featuresSubheadingStyle" id="{{ componentId+'-'+'subheading'+'-'+i }}"></div>
         </div>
       </div>
     </div>

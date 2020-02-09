@@ -1,10 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderNavbarService } from './builder-navbar.service';
-import { ActiveComponents, ActiveElements, ActiveNavbarThemes, ActiveSettings, ActiveTemplates } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
-import { debounce } from '../../../../shared/decorators/debounce.decorator';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-navbar',
@@ -12,7 +12,6 @@ import { debounce } from '../../../../shared/decorators/debounce.decorator';
   styleUrls: ['./builder-navbar.component.css']
 })
 export class BuilderNavbarComponent implements OnInit, IComponent {
-  innerHeight: number;
   navbarStyle: any;
   navbarLinkStyle: any;
   navbarBrandStyle: any;
@@ -21,12 +20,15 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   navbarMenuOptions: any;
   navbarLayoutClass: any = 'navbar-nav ml-auto';
   activeEditComponent: string;
+  activeEditComponentId: string;
   componentName: string = ActiveComponents.Navbar;
+  componentId: string = `${ ActiveComponents.Navbar }-${ UtilService.generateRandomString(8) }`;
   activeElement: string;
   previewMode: boolean = false;
   navbarInputStyle: any;
   navbarLogoImageStyle: any;
   private activeEditComponentSubscription: Subscription;
+  private activeEditComponentIdSubscription: Subscription;
   private navbarStyleSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
   private navbarLinkStyleSubscription: Subscription;
@@ -47,21 +49,19 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   }
 
   ngOnInit() {
-    this.innerHeight = window.innerHeight;
-
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
       this.previewMode = response;
     });
 
     this.navbarThemeSubscription = this.builderNavbarService.navbarTheme.subscribe(response => {
       if (!response) {
-        this.builderNavbarService.navbarTheme.next(ActiveNavbarThemes.Default);
+        this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
       }
     });
 
     this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
       if (!response) {
-        this.builderNavbarService.navbarTemplate.next(ActiveNavbarThemes.Default);
+        this.builderNavbarService.navbarTemplate.next(ActiveThemes.Default);
         this.builderNavbarService.setNavbarTemplate(ActiveTemplates.Default);
       }
     });
@@ -69,6 +69,12 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
+      }
+    });
+
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+      if (response) {
+        this.activeEditComponentId = response;
       }
     });
 
@@ -129,10 +135,11 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
+    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     if (this.activeEditComponent == ActiveComponents.Navbar) {
       this.clearActiveEditComponent();
     } else {
-      this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
       this.builderService.setActiveEditSetting(ActiveSettings.Colours);
     }
   }
@@ -167,23 +174,16 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
     return !this.previewMode;
   }
 
-  @HostListener('window:resize', ['$event'])
-  @debounce()
-  onResize() {
-    this.innerHeight = window.innerHeight;
-  }
-
   isNavbarLogoImageNull() {
     return !this.navbarLogoImage || this.navbarLogoImage == 'navbarLogoImage';
   }
 
   clearActiveEditComponent() {
-    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.clearActiveEditComponent();
   }
 
   selectNavbarLink(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+    this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     this.builderService.setActiveEditSetting(ActiveSettings.Options);
@@ -211,7 +211,7 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
   }
 
   selectNavbarLogoBrand(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+    this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
     this.builderService.setSidebarOptionsSetting();
     this.builderService.activeElement.next(elementId);
     this.builderService.setActiveEditSetting(ActiveSettings.Options);

@@ -12,5 +12,6 @@ export const environment = {
   },
   logging: {
     level: NgxLoggerLevel.INFO,
-  }
+  },
+  unsplashAccessKey: 'b8f2ee0c596389fb783b1a677b01ab058f5e62bcd0ed676633290c0c1ac73bf4'
 };

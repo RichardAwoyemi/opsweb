@@ -1,4 +1,4 @@
 export interface IModalComponent {
-  onConfirmButtonClick(): void;
+  onConfirmButtonClick(condition?): void;
   onCloseButtonClick(): void;
 }

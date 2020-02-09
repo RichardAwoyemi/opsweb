@@ -10,8 +10,10 @@ import { BuilderService } from '../../builder.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+// import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
 import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -40,6 +42,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
     private builderHeroService: BuilderHeroService,
     private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService,
+    private builderFeaturesService: BuilderFeaturesService,
     private modalService: NgbModal
   ) {
   }
@@ -102,6 +105,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
           this.builderNavbarService.setComponentTemplate(templateId);
           this.builderHeroService.setComponentTemplate(templateId);
           this.builderFooterService.setComponentTemplate(templateId);
+          this.builderFeaturesService.setComponentTemplate(templateId);
         }
       }
     });

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActiveFooterThemes, ActiveTemplates } from '../../../builder';
+import { ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
@@ -13,7 +13,7 @@ export class FooterColourPickerComponent implements OnInit {
   defaultFooterStyle: any;
   footerStyle: any;
   footerTemplate: string = ActiveTemplates.Default;
-  footerTheme: string = ActiveFooterThemes.Default;
+  footerTheme: string = ActiveThemes.Default;
   websiteChangeCount: number;
   private footerStyleSubscription: Subscription;
   private footerThemeSubscription: Subscription;
@@ -67,7 +67,7 @@ export class FooterColourPickerComponent implements OnInit {
   }
 
   onThemeChange() {
-    if (this.footerTheme === ActiveFooterThemes.Default) {
+    if (this.footerTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
       this.builderFooterService.footerTheme.next(this.footerTheme);
@@ -82,7 +82,7 @@ export class FooterColourPickerComponent implements OnInit {
   }
 
   resetToDefault() {
-    this.builderFooterService.footerTheme.next(ActiveFooterThemes.Default);
+    this.builderFooterService.footerTheme.next(ActiveThemes.Default);
     this.footerStyle['background-color'] = this.defaultFooterStyle['footerStyle']['background-color'];
     this.footerStyle['color'] = this.defaultFooterStyle['footerStyle']['color'];
     this.builderFooterService.footerStyle.next(this.footerStyle);

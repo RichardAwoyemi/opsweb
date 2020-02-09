@@ -5,8 +5,7 @@
 /* Content editable */
 
 [contenteditable]:focus {
-  outline: 0 solid transparent;
-!important;
+  outline: 0 solid transparent !important;
 }
 
 /* General */
@@ -43,7 +42,7 @@
   url('../fonts/avenir-next/regular.ttf') format('truetype');
 }
 
-body, div {
+body {
   font-family: 'Avenir Next Regular', Helvetica, sans-serif !important;
 }
 
@@ -72,27 +71,30 @@ body::-webkit-scrollbar-thumb {
 /* Component */
 
 .component-border {
-  border: 1px solid transparent;
+  border: 1px solid transparent !important;
   transform: scale(0.95, 0.95) translate3d(0, 0, 0);
 }
 
 .component-border-placeholder {
+  border: 1px solid transparent !important;
   transform: scale(0.95, 0.95) translate3d(0, 0, 0);
 }
 
 .component-border:hover {
   cursor: pointer !important;
-  border: 1px solid #00d9e1;
+  border: 1px solid #00d9e1 !important;
   transition: all .5s ease;
   transform: scale(1, 1) translate3d(0, 0, 0);
 }
 
 .component-border-placeholder:hover {
+  border: 1px solid transparent !important;
   transform: scale(1, 1) translate3d(0, 0, 0);
+  overflow: hidden;
 }
 
 .component-border-active {
-  border: 1px solid #4285F4;
+  border: 1px solid #4285F4 !important;
   transition: all .5s ease;
   transform: scale(1, 1) translate3d(0, 0, 0);
 }
@@ -148,6 +150,13 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
+/* Heading */
+
+header.header > div > a.btn {
+  border-bottom: 0 !important;
+  margin-right: 0 !important;
+}
+
 /* Hero */
 
 .jumbotron {
@@ -188,7 +197,6 @@ body::-webkit-scrollbar-thumb {
 
 .drop-box {
   height: 10px;
-  background-color: #ffffff;
 }
 
 .drop-box-active {
@@ -234,8 +242,14 @@ body::-webkit-scrollbar-thumb {
 
 /* Features */
 
-.feature-row {
-  padding: 1em;
+.features-heading-preview, .features-heading-active,
+.features-subheading-preview, .features-subheading-active {
+  border: 1px solid transparent;
+}
+
+.features-heading-active:hover, .features-heading-edit,
+.features-subheading-active:hover, .features-subheading-edit {
+  border: 1px solid #00d9e1;
 }
 
 /* Context menu */

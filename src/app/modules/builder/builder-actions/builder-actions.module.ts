@@ -55,7 +55,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     BuilderRenameWebsiteModalComponent,
     BuilderAddComponentModalComponent,
     BuilderCreateAccountModalComponent,
-    BuilderSelectImageModalComponent
+    BuilderSelectImageModalComponent,
+    BlockNonAlphabetCharactersDirective
   ],
   providers: [
     BuilderActionsService

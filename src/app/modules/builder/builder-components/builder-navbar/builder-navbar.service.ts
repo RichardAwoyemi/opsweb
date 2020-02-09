@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveNavbarThemes, ActiveTemplates } from '../../builder';
+import { ActiveTemplates, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -55,13 +55,13 @@ export class BuilderNavbarService {
   setNavbarTheme(themeId: string) {
     let response: any;
     switch (themeId) {
-      case ActiveNavbarThemes.Default:
+      case ActiveThemes.Default:
         this.setNavbarTemplate(this.navbarTemplate.getValue());
         break;
-      case ActiveNavbarThemes.Stanley:
+      case ActiveThemes.Stanley:
         this.httpClient.get(this.NAVBAR_THEME_PATH).subscribe((themes: Array<any>) => {
           response = themes.filter(theme => {
-            return theme.name == ActiveNavbarThemes.Stanley;
+            return theme.name === ActiveThemes.Stanley;
           });
           this.setNavbarThemeStyle(response[0]);
         });
@@ -120,7 +120,7 @@ export class BuilderNavbarService {
   }
 
   setComponentTemplate(templateId) {
-    this.navbarTheme.next(ActiveNavbarThemes.Default);
+    this.navbarTheme.next(ActiveThemes.Default);
     this.navbarTemplate.next(templateId);
     this.setNavbarTemplate(templateId);
   }

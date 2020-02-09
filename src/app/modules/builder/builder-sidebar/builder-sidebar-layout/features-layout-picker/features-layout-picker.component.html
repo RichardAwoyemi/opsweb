@@ -1,0 +1,207 @@
+<div id="features-layout" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 1)">Features</label>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group" style="margin-bottom: .3em;">
+      <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Top</label>
+          <label style="width: 100%">
+            <input (keyup)="setFeaturesPaddingTop()" (ngModelChange)="setFeaturesPaddingTop()"
+                   [(ngModel)]="featuresPaddingTop" autocomplete="off" class="form-control" max="300" min="0"
+                   name="number"
+                   type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Left</label>
+          <label style="width: 100%">
+            <input (keyup)="setFeaturesPaddingLeft()" (ngModelChange)="setFeaturesPaddingLeft()"
+                   [(ngModel)]="featuresPaddingLeft" autocomplete="off" class="form-control" max="300" min="0"
+                   name="number"
+                   style="width: 100%" type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Right</label>
+          <label style="width: 100%">
+            <input (keyup)="setFeaturesPaddingRight()" (ngModelChange)="setFeaturesPaddingRight()"
+                   [(ngModel)]="featuresPaddingRight" autocomplete="off" class="form-control" max="300" min="0"
+                   name="number"
+                   style="width: 100%" type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Bottom</label>
+          <label style="width: 100%">
+            <input (keyup)="setFeaturesPaddingBottom()" (ngModelChange)="setFeaturesPaddingBottom()"
+                   [(ngModel)]="featuresPaddingBottom" autocomplete="off" class="form-control" max="300" min="0"
+                   name="number"
+                   style="width: 100%" type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-top: 1em;">
+        <label (click)="resetFeaturesPaddingStyle()" class="btn btn-xl btn-block btn-secondary">
+          <span>Reset To Default</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+
+<div class="form-group" id="features-layout-heading">
+  <label style="color: rgba(255, 255, 255, 1)">Heading</label>
+</div>
+<div class="form-group" style="margin-bottom: 1em; margin-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Position</label>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group btn-group-full">
+      <button (click)="setFeaturesHeadingPosition('left')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-left"></i></button>
+      <button (click)="setFeaturesHeadingPosition('center')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-center"></i></button>
+      <button (click)="setFeaturesHeadingPosition('right')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-right"></i></button>
+      <button (click)="setFeaturesHeadingPosition('justify')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-justify"></i></button>
+    </div>
+  </div>
+</div>
+<div class="form-group" style="margin-bottom: .3em; margin-top: 1.5em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Top</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesHeadingPaddingTop()" (ngModelChange)="setFeaturesHeadingPaddingTop()"
+               [(ngModel)]="featuresHeadingPaddingTop" autocomplete="off" class="form-control" max="300" min="0"
+               name="number"
+               type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Left</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesHeadingPaddingLeft()" (ngModelChange)="setFeaturesHeadingPaddingLeft()"
+               [(ngModel)]="featuresHeadingPaddingLeft" autocomplete="off" class="form-control" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Right</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesHeadingPaddingRight()" (ngModelChange)="setFeaturesHeadingPaddingRight()"
+               [(ngModel)]="featuresHeadingPaddingRight" autocomplete="off" class="form-control" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Bottom</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesHeadingPaddingBottom()" (ngModelChange)="setFeaturesHeadingPaddingBottom()"
+               [(ngModel)]="featuresHeadingPaddingBottom" autocomplete="off" class="form-control" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-top: 1em;">
+    <label (click)="resetFeaturesHeadingPaddingStyle()" class="btn btn-xl btn-block btn-secondary">
+      <span>Reset To Default</span>
+    </label>
+  </div>
+</div>
+<hr>
+
+<div class="form-group" id="features-layout-subheading">
+  <label style="color: rgba(255, 255, 255, 1)">Subheading</label>
+</div>
+<div class="form-group" style="margin-bottom: 1em; margin-top: 1em">
+  <label id="features-layout-position" style="color: rgba(255, 255, 255, 0.65)">Position</label>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group btn-group-full">
+      <button (click)="setFeaturesSubheadingPosition('left')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-left"></i></button>
+      <button (click)="setFeaturesSubheadingPosition('center')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-center"></i></button>
+      <button (click)="setFeaturesSubheadingPosition('right')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-right"></i></button>
+      <button (click)="setFeaturesSubheadingPosition('justify')" class="btn btn-xs btn-secondary" type="button"><i
+        class="ti-align-justify"></i></button>
+    </div>
+  </div>
+</div>
+<div class="form-group" style="margin-bottom: .3em; margin-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Top</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesSubheadingPaddingTop()" (ngModelChange)="setFeaturesSubheadingPaddingTop()"
+               [(ngModel)]="featuresSubheadingPaddingTop" autocomplete="off" class="form-control" max="300" min="0"
+               name="number" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Left</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesSubheadingPaddingLeft()" (ngModelChange)="setFeaturesSubheadingPaddingLeft()"
+               [(ngModel)]="featuresSubheadingPaddingLeft" autocomplete="off" class="form-control" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Right</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesSubheadingPaddingRight()" (ngModelChange)="setFeaturesSubheadingPaddingRight()"
+               [(ngModel)]="featuresSubheadingPaddingRight" autocomplete="off" class="form-control" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Bottom</label>
+      <label style="width: 100%">
+        <input (keyup)="setFeaturesSubheadingPaddingBottom()" (ngModelChange)="setFeaturesSubheadingPaddingBottom()"
+               [(ngModel)]="featuresSubheadingPaddingBottom" autocomplete="off" class="form-control" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-top: 1em;">
+    <label (click)="resetFeaturesSubheadingPaddingStyle()" class="btn btn-xl btn-block btn-secondary">
+      <span>Reset To Default</span>
+    </label>
+  </div>
+</div>

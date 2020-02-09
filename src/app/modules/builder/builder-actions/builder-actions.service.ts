@@ -21,6 +21,11 @@ export class BuilderActionsService {
     return false;
   }
 
+  static toggleWebsiteModalSaveButton(websiteName: string) {
+    websiteName = websiteName.trim();
+    return websiteName.length === 0;
+  }
+
   static togglePageModalSaveButton(pageName: string, navbarMenuOptions: any) {
     pageName = pageName.trim();
     if (pageName.length === 0) {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
-import { ActiveHeroThemes, ActiveTemplates } from '../../../builder';
+import { ActiveTemplates, ActiveThemes } from '../../../builder';
 
 @Component({
   selector: 'app-hero-colour-picker',
@@ -24,7 +24,7 @@ export class HeroColourPickerComponent implements OnInit {
     'color': '#FFFFFF'
   };
   heroTemplate: string = ActiveTemplates.Default;
-  heroTheme: string = ActiveHeroThemes.Default;
+  heroTheme: string = ActiveThemes.Default;
   heroThemes: any;
   websiteChangeCount: number;
   defaultHeroStyle: any;
@@ -102,7 +102,7 @@ export class HeroColourPickerComponent implements OnInit {
   }
 
   onThemeChange() {
-    if (this.heroTheme === ActiveHeroThemes.Default) {
+    if (this.heroTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
       this.builderHeroService.heroTheme.next(this.heroTheme);
@@ -132,7 +132,7 @@ export class HeroColourPickerComponent implements OnInit {
   }
 
   resetToDefault() {
-    this.builderHeroService.heroTheme.next(ActiveHeroThemes.Default);
+    this.builderHeroService.heroTheme.next(ActiveThemes.Default);
 
     this.heroBackgroundStyle['background-color'] = this.defaultHeroStyle['heroBackgroundStyle']['background-color'];
     this.builderHeroService.heroBackgroundStyle.next(this.heroBackgroundStyle);

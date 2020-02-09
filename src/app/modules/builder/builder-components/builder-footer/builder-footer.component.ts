@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveElements, ActiveFooterThemes, ActiveSettings, ActiveTemplates } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
 import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-hero',
@@ -12,8 +13,10 @@ import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
 })
 export class BuilderFooterComponent implements OnInit, IComponent {
   componentName: string = ActiveComponents.Footer;
+  componentId = `${ ActiveComponents.Footer }-${ UtilService.generateRandomString(8) }`;
   innerHeight: number;
   activeEditComponent: string;
+  activeEditComponentId: string;
   today: number = Date.now();
   previewMode: boolean;
   footerStyle: any;
@@ -48,6 +51,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   private footerComponentLayoutSubscription: Subscription;
 
   private activeEditComponentSubscription: Subscription;
+  private activeEditComponentIdSubscription: Subscription;
   private previewModeSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private activeElementSubscription: Subscription;
@@ -69,6 +73,10 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
     this.copyrightText = 'Copyright \u00A9 ' + new Date().getFullYear();
+
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+      this.activeEditComponentId = response;
+    });
 
     this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
       this.footerComponentLayout = response;
@@ -179,24 +187,25 @@ export class BuilderFooterComponent implements OnInit, IComponent {
 
     this.footerThemeSubscription = this.builderFooterService.footerTheme.subscribe(response => {
       if (!response) {
-        this.builderFooterService.footerTheme.next(ActiveFooterThemes.Default);
+        this.builderFooterService.footerTheme.next(ActiveThemes.Default);
         this.builderFooterService.setFooterTemplate(ActiveTemplates.Default);
       }
     });
 
     this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
       if (!response) {
-        this.builderFooterService.footerTemplate.next(ActiveFooterThemes.Default);
+        this.builderFooterService.footerTemplate.next(ActiveThemes.Default);
       }
     });
   }
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
+    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     if (this.activeEditComponent == ActiveComponents.Footer) {
-      this.clearActiveEditComponent();
+      this.builderService.clearActiveEditComponent();
     } else {
-      this.builderService.setActiveEditComponent(ActiveComponents.Footer);
+      this.builderService.setActiveEditComponent(this.componentName, this.componentId);
       this.builderService.setActiveEditSetting(ActiveSettings.Colours);
     }
   }
@@ -207,11 +216,6 @@ export class BuilderFooterComponent implements OnInit, IComponent {
 
   setContextMenu() {
     return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
-  }
-
-  clearActiveEditComponent() {
-    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
   }
 
   setActiveElementStyle(activeElement, element) {
@@ -240,6 +244,10 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     event.stopPropagation();
   }
 
+  clearActiveEditComponent() {
+    this.builderService.clearActiveEditComponent();
+  }
+
   ngOnDestroy() {
     this.footerStyleSubscription.unsubscribe();
     this.footerPageLinksStyleSubscription.unsubscribe();
@@ -252,6 +260,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     this.footerAlignmentClassSubscription.unsubscribe();
     this.footerComponentLayoutSubscription.unsubscribe();
     this.activeEditComponentSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
     this.navbarMenuOptionsSubscription.unsubscribe();
     this.facebookUrlSubscription.unsubscribe();

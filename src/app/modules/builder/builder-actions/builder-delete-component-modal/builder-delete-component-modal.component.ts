@@ -18,6 +18,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   pageComponents: any;
   private activeComponentIndex: number = 0;
   private components: Array<string>;
+
   private activePageSettingSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
   private activeComponentIndexSubscription: Subscription;
@@ -66,6 +67,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     }
     this.builderComponentService.pageComponents.next(this.pageComponents);
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.setSidebarComponentsSetting();
     this.toastrService.success('Your component has been deleted.', 'Great!');
     this.activeModal.dismiss();
   }

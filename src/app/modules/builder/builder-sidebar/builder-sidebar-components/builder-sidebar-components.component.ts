@@ -47,6 +47,7 @@ export class BuilderSidebarComponentsComponent implements OnInit {
 
   clearActiveComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.builderService.activeEditComponentId.next(null);
     this.builderService.setSidebarComponentsSetting();
   }
 

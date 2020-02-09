@@ -221,7 +221,7 @@ export class FooterOptionsPickerComponent implements OnInit {
   }
 
   resetFooterSocialLinksFontSize() {
-    this.footerSocialLinksFontSize['font-size'] = this.defaultFooterStyle['footerSocialLinksFontSize']['font-size'];
+    this.footerSocialLinksStyle['font-size'] = this.defaultFooterStyle['footerSocialLinksFontSize']['font-size'];
     this.footerSocialLinksFontUnit = 'px';
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
   }

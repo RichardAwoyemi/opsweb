@@ -3,8 +3,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderService } from './builder.service';
 import { Subscription } from 'rxjs';
 import { RouterService } from '../../shared/services/router.service';
-import { UtilService } from '../../shared/services/util.service';
 import { ShepherdService } from 'angular-shepherd';
+import { UtilService } from '../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder',
@@ -30,7 +30,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
     this.innerWidth = window.innerWidth;
     this.routerService.currentRoute.next(window.location.pathname);
     this.routerService.setCurrentRoute();
-    this.builderService.websiteName.next(UtilService.generatWebsiteName());
+    this.builderService.websiteName.next(UtilService.generateWebsiteName());
 
     this.ngxLoader.start();
     this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {

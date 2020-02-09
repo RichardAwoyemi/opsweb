@@ -9,6 +9,12 @@
           "<app-builder-placeholder></app-builder-placeholder>",
           "<app-builder-navbar></app-builder-navbar>",
           "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-hero></app-builder-hero>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-features></app-builder-features>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-features></app-builder-features>",
+          "<app-builder-placeholder></app-builder-placeholder>",
           "<app-builder-footer></app-builder-footer>",
           "<app-builder-placeholder></app-builder-placeholder>"
         ]
@@ -127,5 +133,33 @@
     "padding-right": "0px",
     "padding-bottom": "0px",
     "font-size": "14px"
+  },
+  "featuresHeadingStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "20px",
+    "font-weight": "bold",
+    "color": "#000",
+    "padding-left": "10px",
+    "padding-bottom": "5px",
+    "margin-bottom": "5px",
+    "padding-top": "0px",
+    "padding-right": "10px"
+  },
+  "featuresSubheadingStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "13px",
+    "color": "#757575",
+    "padding-left": "10px",
+    "padding-bottom": "0px",
+    "padding-top": "0px",
+    "padding-right": "10px"
+  },
+  "featuresStyle": {
+    "background-color": "#FFFFFF",
+    "padding-left": "10px",
+    "padding-bottom": "14px",
+    "padding-top": "14px",
+    "padding-right": "10px",
+    "width": "33.3%"
   }
 }

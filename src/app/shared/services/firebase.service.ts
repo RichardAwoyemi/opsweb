@@ -20,7 +20,7 @@ export class FirebaseService {
   // static getCurrentTimestamp() {
   //   return firebase.firestore.FieldValue.serverTimestamp();
   // }
-  //
+
   // static getDateFromTimestamp(serverTimestamp: any) {
   //   return new Date(serverTimestamp.seconds * 1000);
   // }
@@ -40,11 +40,11 @@ export class FirebaseService {
   // createDocument(collectionPath: string) {
   //   const documentId = this.afs.createId();
   //   const documentPath = `${ collectionPath }/${ documentId }`;
-  //   this.logger.debug(`Creating a document with generated Id at: '/${ documentPath }'`);
+  //   this.logger.debug(`Creating a document with generated id at: '/${ documentPath }'`);
   //   const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
   //   return documentRef.set({}, { merge: true });
   // }
-  //
+
   // updateDocument(documentPath: string, data: any) {
   //   this.logger.debug(`Updating a document with id at: '/${ documentPath }' with data:`);
   //   this.logger.debug(data);
@@ -89,7 +89,7 @@ export class FirebaseService {
   //     });
   //   }));
   // }
-  //
+
   // getLimitedOrderedDocumentsInCollection(
   //   collectionName: string, orderBy: string, ascOrder: boolean, limit: number) {
   //   const orderDirection = FirebaseService.getOrderDirection(ascOrder);
@@ -106,7 +106,7 @@ export class FirebaseService {
   //     });
   //   }));
   // }
-  //
+
   // getLimitedOrderedDocumentsInCollectionFromStartIndex(
   //   collectionName: string, orderBy: string, ascOrder: boolean, limit: number, startAfterRef: any, startAfterIndex: number) {
   //   const orderDirection = FirebaseService.getOrderDirection(ascOrder);
@@ -123,7 +123,7 @@ export class FirebaseService {
   //     });
   //   }));
   // }
-  //
+
   // getDocumentsInCollection(collectionName: string) {
   //   this.logger.debug(`Getting documents in collection '${ collectionName }'`);
   //   return this.afs.collection(collectionName).snapshotChanges().pipe(map(actions => {

@@ -15,6 +15,10 @@ export class BuilderComponentsService {
           `${ ActiveComponentsFullSelector.Placeholder }`,
           `${ ActiveComponentsFullSelector.Hero }`,
           `${ ActiveComponentsFullSelector.Placeholder }`,
+          `${ ActiveComponentsFullSelector.Features }`,
+          `${ ActiveComponentsFullSelector.Placeholder }`,
+          `${ ActiveComponentsFullSelector.Features }`,
+          `${ ActiveComponentsFullSelector.Placeholder }`,
           `${ ActiveComponentsFullSelector.Footer }`,
           `${ ActiveComponentsFullSelector.Placeholder }`,
         ]

@@ -11,7 +11,7 @@ import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 
 @Component({
-  selector: 'app-builder-delete-page-modal',
+  selector: 'app-builder-new-page-modal',
   templateUrl: './builder-new-page-modal.component.html'
 })
 export class BuilderNewPageModalComponent implements IModalComponent, OnInit {

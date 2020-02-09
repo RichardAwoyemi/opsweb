@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveHeroThemes, ActiveTemplates } from '../../builder';
+import { ActiveTemplates, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -70,7 +70,7 @@ export class BuilderHeroService {
   }
 
   setComponentTemplate(templateId) {
-    this.heroTheme.next(ActiveHeroThemes.Default);
+    this.heroTheme.next(ActiveThemes.Default);
     this.heroTemplate.next(templateId);
     this.setHeroTemplate(templateId);
   }
@@ -91,13 +91,13 @@ export class BuilderHeroService {
   setHeroTheme(themeId: string) {
     let response: any;
     switch (themeId) {
-      case ActiveHeroThemes.Default:
+      case ActiveThemes.Default:
         this.setHeroThemeStyle(this.heroTemplate.getValue());
         break;
-      case ActiveHeroThemes.Stanley:
+      case ActiveThemes.Stanley:
         this.httpClient.get(this.HERO_THEME_PATH).subscribe((themes: Array<any>) => {
           response = themes.filter(theme => {
-            return theme.name == ActiveHeroThemes.Stanley;
+            return theme.name == ActiveThemes.Stanley;
           });
           this.setHeroThemeStyle(response[0]);
         });

@@ -42,7 +42,7 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
         { component: BuilderHeroComponent, selector: ActiveComponentsPartialSelector.Hero },
         { component: BuilderPlaceholderComponent, selector: ActiveComponentsPartialSelector.Placeholder },
         { component: BuilderFooterComponent, selector: ActiveComponentsPartialSelector.Footer },
-        { component: BuilderFeaturesComponent, selector: ActiveComponentsPartialSelector.Features },
+        { component: BuilderFeaturesComponent, selector: ActiveComponentsPartialSelector.Features }
       ]
     }),
     RouterModule

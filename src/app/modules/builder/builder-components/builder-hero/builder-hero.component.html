@@ -1,5 +1,6 @@
-<app-builder-component-toolbar *ngIf="!previewMode" [componentName]="componentName"></app-builder-component-toolbar>
-<div [ngClass]="setContextMenu()">
+<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
+                               [componentName]="componentName"></app-builder-component-toolbar>
+<div [attr.id]="componentId" [ngClass]="setContextMenu()">
   <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
        [ngStyle]="heroBackgroundStyle" class="jumbotron" style="margin-bottom: 0">
     <div class="row row-grid align-items-center">

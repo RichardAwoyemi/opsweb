@@ -48,7 +48,7 @@ import { RouterModule } from '@angular/router';
     DashboardBodyWebsitesComponent,
     DashboardBodyRewardsComponent,
     DashboardBodyTemplatesComponent,
-    DashboardBodyComponent,
+    DashboardBodyComponent
   ]
 })
 

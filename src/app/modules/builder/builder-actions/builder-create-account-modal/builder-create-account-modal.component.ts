@@ -8,7 +8,7 @@ import { IModalComponent } from '../../../../shared/models/modal';
 })
 export class BuilderCreateAccountModalComponent implements IModalComponent, OnInit {
   constructor(
-    private activeModal: NgbActiveModal,
+    private activeModal: NgbActiveModal
   ) {
   }
 

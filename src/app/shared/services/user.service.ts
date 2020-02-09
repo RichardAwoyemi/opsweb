@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { UtilService } from './util.service';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { IUser } from '../models/user';
 
 @Injectable()
 export class UserService {
-  user = new Subject();
+  user = new BehaviorSubject(<Object>(null));
 
   constructor(
     private afs: AngularFirestore
