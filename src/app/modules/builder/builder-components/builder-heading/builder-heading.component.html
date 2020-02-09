@@ -3,10 +3,11 @@
 <div [attr.id]="componentId">
   <div [ngClass]="setContextMenu()">
     <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
-      <header class="header">
+      <header class="header" [ngStyle]='headingStyle'>
         <div class="container text-center">
-          <h1 class="display-4 mb-7">More Conversion, For Your SaaS</h1>
-          <a class="btn btn-lg btn-round btn-primary" href="#">View demos</a>
+          <h1 class="display-4 mb-3" [ngStyle]="headingHeaderStyle" [attr.contenteditable]="setContentEditable()">Something Awesome Was Here</h1>
+          <p *ngIf="headingSubheaderCondition" class="lead mb-5" [ngStyle]="headingSubheaderStyle" [attr.contenteditable]="setContentEditable()" (click)="selectHeadingText($event, 'heading-subheader-' + componentId, 'heading-options-subheader')">Reading this means you must really want to know more about our secret sauce!</p>
+          <a *ngIf="headingButtonCondition" class="btn btn-lg btn-round btn-primary" [attr.contenteditable]="setContentEditable()" [ngStyle]="headingButtonStyle">Learn more</a>
         </div>
       </header>
     </div>

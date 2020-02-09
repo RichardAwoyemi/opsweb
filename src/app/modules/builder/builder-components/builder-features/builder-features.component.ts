@@ -240,9 +240,9 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
         this.featuresStyle = { ...this.featuresStyle, ...featureStyleTheme };
       }
 
-      this.builderFeaturesService.featuresHeaderStyle.next(this.featuresHeaderStyle);
-      this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
-      this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
+      this.builderFeaturesService['featuresHeaderStyle'].next(this.featuresHeaderStyle);
+      this.builderFeaturesService['featuresSubheaderStyle'].next(this.featuresSubheaderStyle);
+      this.builderFeaturesService['featuresStyle'].next(this.featuresStyle);
     }
   }
 

@@ -3,7 +3,7 @@ import Unsplash from 'unsplash-js';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
-export class UnsplashService {
+export class  UnsplashService {
   getUnsplashApi(): Unsplash {
     return new Unsplash({
       accessKey: environment.unsplashAccessKey,

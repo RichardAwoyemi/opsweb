@@ -1,12 +1,11 @@
-import { Component, HostListener, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveHeadingThemes, ActiveSettings, ActiveTemplates } from '../../builder';
+import { ActiveComponents,  ActiveSettings, ActiveTemplates } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { HttpClient } from '@angular/common/http';
 import { UtilService } from 'src/app/shared/services/util.service';
 import { BuilderHeadingService } from './builder-heading.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-builder-heading',
@@ -21,44 +20,30 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   previewMode: boolean;
   componentActive = false;
   activeElement: string;
-  containerClass: string;
-  headingContainerStyle: any;
-  headingItemArray: any = [
-    {
-      'header': 'Seamless',
-      'subheader': 'Building a website has never been easier than this!  Get started today, free of cost.'
-    },
-    {
-      'header': 'Beautiful',
-      'subheader': 'Leverage our amazing library of templates and themes! Minimalism has never looked so good.'
-    },
-    {
-      'header': 'Growth',
-      'subheader': 'Grow with ease and whilst recieving useful anayltics! It\' just what you need to grow!'
-    }
-  ];
   headingHeaderStyle: any;
   headingSubheaderStyle: any;
-  headingStyle: any = { 'width': '33.3%' };
-  orientation: any;
+  headingButtonStyle: any;
+  headingSubheaderCondition: boolean = true;
+  headingButtonCondition: boolean = true;
+  headingStyle: any;
 
   private breakpointSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
   private headingSubheaderStyleSubscription: Subscription;
+  private headingButtonStyleSubsciption: Subscription;
+  private headingSubheaderConditionSubscription: Subscription;
+  private headingButtonConditionSubsciption: Subscription;
   private headingStyleSubscription: Subscription;
   private activeEditComponentSubscription: Subscription;
   private activeEditComponentIdSubscription: Subscription;
   private previewModeSubscription: Subscription;
-  private containerClassSubscription: Subscription;
-  private containerStyleSubscription: Subscription;
-  private headingItemArraySubscription: Subscription;
   private headingTemplateSubscription: Subscription;
   private headingThemeSubscription: Subscription;
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
   private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
-  private FEATURES_THEME_PATH = './assets/data/web-themes/heading.json';
+  private HEADING_THEME_PATH = './assets/data/web-themes/heading.json';
 
   constructor(
     private httpClient: HttpClient,
@@ -113,65 +98,17 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
       }
     });
 
-    this.containerClassSubscription = this.builderHeadingService.headingContainerClass.subscribe(response => {
-      if (response) {
-        this.containerClass = response;
-      }
-    });
-
-    this.containerStyleSubscription = this.builderHeadingService.headingContainerStyle.subscribe(response => {
-      if (response) {
-        this.headingContainerStyle = response;
-      }
-    });
-
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
       }
     });
-
-    this.headingItemArraySubscription = this.builderHeadingService.headingItemArray.subscribe(response => {
-      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
-        this.headingItemArray = response;
-      }
-    });
-
-    this.breakpointSubscription = this.builderHeadingService.breakpoint.subscribe(response => {
-      if (response) {
-        this.updateFeatureWidth();
-      }
-    });
-
-    this.builderService.toolbarMobileOrientationButton.subscribe(response => {
-      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.updateFeatureWidth('mobile');
-      }
-    });
-
-    this.builderService.toolbarDesktopOrientationButton.subscribe(response => {
-      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.updateFeatureWidth('desktop');
-      }
-    });
-
-    this.builderService.toolbarTabletOrientationButton.subscribe(response => {
-      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.updateFeatureWidth('tablet');
-      }
-    });
-
-  }
-
-  updateFeatureWidth(orientaiton: string = null) {
-    this.builderHeadingService.adjustFeatureCount(Object.keys(this.headingItemArray).length, orientaiton);
   }
 
   updateService() {
     this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
     this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
     this.builderHeadingService.headingStyle.next(this.headingStyle);
-    this.builderHeadingService.headingItemArray.next(this.headingItemArray);
   }
 
   setHeadingTemplate(templateId: string) {
@@ -226,18 +163,18 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     if (theme) {
 
       if (theme['headingHeaderStyle']) {
-        const featureHeaderStyleTheme = theme['headingHeaderStyle'];
-        this.headingHeaderStyle = { ...this.headingHeaderStyle, ...featureHeaderStyleTheme };
+        const headingHeaderStyleTheme = theme['headingHeaderStyle'];
+        this.headingHeaderStyle = { ...this.headingHeaderStyle, ...headingHeaderStyleTheme };
       }
 
       if (theme['headingSubheaderStyle']) {
-        const featureSubheaderStyleTheme = theme['headingSubheaderStyle'];
-        this.headingSubheaderStyle = { ...this.headingSubheaderStyle, ...featureSubheaderStyleTheme };
+        const headingSubheaderStyleTheme = theme['headingSubheaderStyle'];
+        this.headingSubheaderStyle = { ...this.headingSubheaderStyle, ...headingSubheaderStyleTheme };
       }
 
       if (theme['headingStyle']) {
-        const featureStyleTheme = theme['headingStyle'];
-        this.headingStyle = { ...this.headingStyle, ...featureStyleTheme };
+        const headingStyleTheme = theme['headingStyle'];
+        this.headingStyle = { ...this.headingStyle, ...headingStyleTheme };
       }
 
       this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
@@ -255,16 +192,16 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.builderHeadingService.headingStyle.next(this.headingStyle);
   }
 
-  setFeatureTextClass() {
+  setHeadingTextClass() {
     if (this.previewMode) {
-      return 'feature-text-preview';
+      return 'heading-text-preview';
     }
     if (!this.previewMode) {
-      return 'feature-text-active';
+      return 'heading-text-active';
     }
   }
 
-  selectFeatureText(event: any, elementId: string, scrollTo: string) {
+  selectHeadingText(event: any, elementId: string, scrollTo: string) {
     this.builderService.selectElement(
       this.componentName,
       this.componentId,
@@ -301,8 +238,5 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.activeEditComponentIdSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
     this.activeEditComponentSubscription.unsubscribe();
-    this.containerClassSubscription.unsubscribe();
-    this.containerStyleSubscription.unsubscribe();
-    this.headingItemArraySubscription.unsubscribe();
   }
 }

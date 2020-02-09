@@ -21,22 +21,15 @@ export class HeadingLayoutPickerComponent implements OnInit {
   headingSubheaderPaddingLeft: number;
   headingSubheaderPaddingRight: number;
   headingSubheaderPaddingBottom: number;
-  headingSocialLinksMarginTop: number;
-  headingSocialLinksMarginLeft: number;
-  headingSocialLinksMarginRight: number;
-  headingSocialLinksMarginBottom: number;
-  headingPageLinksPaddingTop: number;
-  headingPageLinksPaddingLeft: number;
-  headingPageLinksPaddingRight: number;
-  headingPageLinksPaddingBottom: number;
+  headingButtonPaddingTop: number;
+  headingButtonPaddingLeft: number;
+  headingButtonPaddingRight: number;
+  headingButtonPaddingBottom: number;
   headingAlignmentClass: string;
   headingSocialLinksContainerStyle: any;
   headingHeaderStyle: any;
   headingSubheaderStyle: any;
   headingStyle: any;
-  headingCopyrightStyle: any;
-  headingSocialLinksStyle: any;
-  headingPageLinksStyle: any;
   headingTemplate: any = ActiveTemplates.Default;
   defaultHeadingStyle: any;
   headingComponentLayout: number = 0;
@@ -51,20 +44,10 @@ export class HeadingLayoutPickerComponent implements OnInit {
   private headingHeaderStyleSubscription: Subscription;
   private headingSubheaderStyleSubscription: Subscription;
   private headingStyleSubscription: Subscription;
-  private headingSocialLinksStyleSubscription: Subscription;
-  private headingPageLinksStyleSubscription: Subscription;
   private headingAlignmentClassSubscription: Subscription;
-  private headingSocialLinksContainerStyleSubscription: Subscription;
   private headingTemplateSubscription: Subscription;
   private defaultHeadingStyleSubscription: Subscription;
   private headingComponentLayoutSubscription: Subscription;
-  private facebookUrlSubscription: Subscription;
-  private twitterUrlSubscription: Subscription;
-  private instagramUrlSubscription: Subscription;
-  private youtubeUrlSubscription: Subscription;
-  private githubUrlSubscription: Subscription;
-  private linkedinUrlSubscription: Subscription;
-  private headingMenuOptionsSubscription: Subscription;
 
   constructor(
     private builderHeadingService: BuilderHeadingService
@@ -82,53 +65,8 @@ export class HeadingLayoutPickerComponent implements OnInit {
       });
     });
 
-    this.headingMenuOptionsSubscription = this.builderHeadingService.headingMenuOptions.subscribe(response => {
-      if (response) {
-        let headingMenuOptions = [];
-        Object.keys(response).forEach(function (key) {
-          if (response[key] !== false) {
-            headingMenuOptions.push(key);
-          }
-        });
-        this.headingMenuOptions = headingMenuOptions;
-      } else {
-        this.headingMenuOptions = [];
-      }
-    });
-
-    this.twitterUrlSubscription = this.builderHeadingService.twitterUrl.subscribe(response => {
-      this.twitterUrl = response;
-    });
-
-    this.instagramUrlSubscription = this.builderHeadingService.instagramUrl.subscribe(response => {
-      this.instagramUrl = response;
-    });
-
-    this.youtubeUrlSubscription = this.builderHeadingService.youtubeUrl.subscribe(response => {
-      this.youtubeUrl = response;
-    });
-
-    this.githubUrlSubscription = this.builderHeadingService.githubUrl.subscribe(response => {
-      this.githubUrl = response;
-    });
-
-    this.facebookUrlSubscription = this.builderHeadingService.facebookUrl.subscribe(response => {
-      this.facebookUrl = response;
-    });
-
-    this.linkedinUrlSubscription = this.builderHeadingService.linkedinUrl.subscribe(response => {
-      this.linkedinUrl = response;
-    });
-
-
     this.headingAlignmentClassSubscription = this.builderHeadingService.headingAlignmentClass.subscribe(response => {
       this.headingAlignmentClass = response;
-    });
-
-    this.headingSocialLinksContainerStyleSubscription = this.builderHeadingService.headingSocialLinksContainerStyle.subscribe(response => {
-      if (response) {
-        this.headingSocialLinksContainerStyle = response;
-      }
     });
 
     this.headingComponentLayoutSubscription = this.builderHeadingService.headingComponentLayout.subscribe(response => {
@@ -190,42 +128,6 @@ export class HeadingLayoutPickerComponent implements OnInit {
         }
       }
     });
-
-    this.headingSocialLinksStyleSubscription = this.builderHeadingService.headingSocialLinksStyle.subscribe(response => {
-      if (response) {
-        this.headingSocialLinksStyle = response;
-        if (this.headingSocialLinksStyle['margin-top']) {
-          this.headingSocialLinksMarginTop = this.headingSocialLinksStyle['margin-top'].replace('px', '');
-        }
-        if (this.headingSocialLinksStyle['margin-left']) {
-          this.headingSocialLinksMarginLeft = this.headingSocialLinksStyle['margin-left'].replace('px', '');
-        }
-        if (this.headingSocialLinksStyle['margin-right']) {
-          this.headingSocialLinksMarginRight = this.headingSocialLinksStyle['margin-right'].replace('px', '');
-        }
-        if (this.headingSocialLinksStyle['margin-bottom']) {
-          this.headingSocialLinksMarginBottom = this.headingSocialLinksStyle['margin-bottom'].replace('px', '');
-        }
-      }
-    });
-
-    this.headingPageLinksStyleSubscription = this.builderHeadingService.headingPageLinksStyle.subscribe(response => {
-      if (response) {
-        this.headingPageLinksStyle = response;
-        if (this.headingPageLinksStyle['padding-top']) {
-          this.headingPageLinksPaddingTop = this.headingPageLinksStyle['padding-top'].replace('px', '');
-        }
-        if (this.headingPageLinksStyle['padding-left']) {
-          this.headingPageLinksPaddingLeft = this.headingPageLinksStyle['padding-left'].replace('px', '');
-        }
-        if (this.headingPageLinksStyle['padding-right']) {
-          this.headingPageLinksPaddingRight = this.headingPageLinksStyle['padding-right'].replace('px', '');
-        }
-        if (this.headingPageLinksStyle['padding-bottom']) {
-          this.headingPageLinksPaddingBottom = this.headingPageLinksStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
   }
 
   resetHeadingAlignment() {
@@ -245,71 +147,6 @@ export class HeadingLayoutPickerComponent implements OnInit {
       this.headingSocialLinksContainerStyle['padding-top'] = '0px';
       this.builderHeadingService.headingSocialLinksContainerStyle.next(this.headingSocialLinksContainerStyle);
     }
-  }
-
-
-  resetHeadingCopyrightPaddingStyle() {
-    this.headingCopyrightStyle['padding-top'] = this.defaultHeadingStyle['headingCopyrightStyle']['padding-top'];
-    this.headingCopyrightStyle['padding-left'] = this.defaultHeadingStyle['headingCopyrightStyle']['padding-left'];
-    this.headingCopyrightStyle['padding-right'] = this.defaultHeadingStyle['headingCopyrightStyle']['padding-right'];
-    this.headingCopyrightStyle['padding-bottom'] = this.defaultHeadingStyle['headingCopyrightStyle']['padding-bottom'];
-    this.builderHeadingService.headingCopyrightStyle.next(this.headingCopyrightStyle);
-  }
-
-  setHeadingSocialLinksMarginTop() {
-    this.headingSocialLinksStyle['margin-top'] = `${ this.headingSocialLinksMarginTop }px`;
-    this.builderHeadingService.headingSocialLinksStyle.next(this.headingSocialLinksStyle);
-  }
-
-  setHeadingSocialLinksMarginLeft() {
-    this.headingSocialLinksStyle['margin-left'] = `${ this.headingSocialLinksMarginLeft }px`;
-    this.builderHeadingService.headingSocialLinksStyle.next(this.headingSocialLinksStyle);
-  }
-
-  setHeadingSocialLinksMarginRight() {
-    this.headingSocialLinksStyle['margin-right'] = `${ this.headingSocialLinksMarginRight }px`;
-    this.builderHeadingService.headingSocialLinksStyle.next(this.headingSocialLinksStyle);
-  }
-
-  setHeadingSocialLinksMarginBottom() {
-    this.headingSocialLinksStyle['margin-bottom'] = `${ this.headingSocialLinksMarginBottom }px`;
-    this.builderHeadingService.headingSocialLinksStyle.next(this.headingSocialLinksStyle);
-  }
-
-  resetHeadingSocialLinksMarginStyle() {
-    this.headingSocialLinksStyle['margin-top'] = this.defaultHeadingStyle['headingSocialLinksStyle']['margin-top'];
-    this.headingSocialLinksStyle['margin-left'] = this.defaultHeadingStyle['headingSocialLinksStyle']['margin-left'];
-    this.headingSocialLinksStyle['margin-right'] = this.defaultHeadingStyle['headingSocialLinksStyle']['margin-right'];
-    this.headingSocialLinksStyle['margin-bottom'] = this.defaultHeadingStyle['headingSocialLinksStyle']['margin-bottom'];
-    this.builderHeadingService.headingSocialLinksStyle.next(this.headingSocialLinksStyle);
-  }
-
-  setHeadingPageLinksPaddingTop() {
-    this.headingPageLinksStyle['padding-top'] = `${ this.headingPageLinksPaddingTop }px`;
-    this.builderHeadingService.headingPageLinksStyle.next(this.headingPageLinksStyle);
-  }
-
-  setHeadingPageLinksPaddingLeft() {
-    this.headingPageLinksStyle['padding-left'] = `${ this.headingPageLinksPaddingLeft }px`;
-    this.builderHeadingService.headingPageLinksStyle.next(this.headingPageLinksStyle);
-  }
-
-  setHeadingPageLinksPaddingRight() {
-    this.headingPageLinksStyle['padding-right'] = `${ this.headingPageLinksPaddingRight }px`;
-    this.builderHeadingService.headingPageLinksStyle.next(this.headingPageLinksStyle);
-  }
-
-  setHeadingPageLinksPaddingBottom() {
-    this.headingPageLinksStyle['padding-bottom'] = `${ this.headingPageLinksPaddingBottom }px`;
-    this.builderHeadingService.headingPageLinksStyle.next(this.headingPageLinksStyle);
-  }
-
-  resetHeadingPageLinksPaddingStyle() {
-    this.headingPageLinksStyle['padding-top'] = this.defaultHeadingStyle['headingPageLinksStyle']['padding-top'];
-    this.headingPageLinksStyle['padding-left'] = this.defaultHeadingStyle['headingPageLinksStyle']['padding-left'];
-    this.headingPageLinksStyle['padding-right'] = this.defaultHeadingStyle['headingPageLinksStyle']['padding-right'];
-    this.headingPageLinksStyle['padding-bottom'] = this.defaultHeadingStyle['headingPageLinksStyle']['padding-bottom'];
-    this.builderHeadingService.headingPageLinksStyle.next(this.headingPageLinksStyle);
   }
 
   setHeadingHeaderPaddingTop() {
@@ -413,19 +250,9 @@ export class HeadingLayoutPickerComponent implements OnInit {
     this.headingHeaderStyleSubscription.unsubscribe();
     this.headingSubheaderStyleSubscription.unsubscribe();
     this.headingStyleSubscription.unsubscribe();
-    this.headingSocialLinksStyleSubscription.unsubscribe();
-    this.headingPageLinksStyleSubscription.unsubscribe();
     this.headingAlignmentClassSubscription.unsubscribe();
-    this.headingSocialLinksContainerStyleSubscription.unsubscribe();
     this.headingTemplateSubscription.unsubscribe();
     this.defaultHeadingStyleSubscription.unsubscribe();
     this.headingComponentLayoutSubscription.unsubscribe();
-    this.facebookUrlSubscription.unsubscribe();
-    this.twitterUrlSubscription.unsubscribe();
-    this.instagramUrlSubscription.unsubscribe();
-    this.youtubeUrlSubscription.unsubscribe();
-    this.githubUrlSubscription.unsubscribe();
-    this.linkedinUrlSubscription.unsubscribe();
-    this.headingMenuOptionsSubscription.unsubscribe();
   }
 }

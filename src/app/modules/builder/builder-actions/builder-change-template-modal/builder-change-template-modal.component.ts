@@ -29,14 +29,14 @@ export class BuilderChangeTemplateModalComponent implements IModalComponent {
   ) {
   }
 
-  onConfirmButtonClick() {
+  onConfirmButtonClick(condition: boolean) {
     this.activeModal.dismiss();
     this.builderNavbarService.setComponentTemplate(this.templateId);
     this.builderHeroService.setComponentTemplate(this.templateId);
     this.builderFooterService.setComponentTemplate(this.templateId);
     this.builderFeaturesService.setComponentTemplate(this.templateId);
     this.builderHeadingService.setComponentTemplate(this.templateId);
-    this.builderComponentService.pageComponents.next(this.defaultPageComponents);
+    if (condition) {this.builderComponentService.pageComponents.next(this.defaultPageComponents)};
     this.toastrService.success('Your template has been updated.', 'Great!');
   }
 

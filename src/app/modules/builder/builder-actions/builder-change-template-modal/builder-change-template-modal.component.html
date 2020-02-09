@@ -9,7 +9,8 @@
     Are you sure you want to change template? Please note that all of your design changes will be lost.
   </div>
   <div class="modal-footer">
-    <button (click)="onConfirmButtonClick()" class="btn btn-secondary" type="button">Yes</button>&nbsp;
+    <button (click)="onConfirmButtonClick(true)" class="btn btn-secondary" type="button">Yes</button>&nbsp;
+    <button (click)="onConfirmButtonClick(false)" class="btn btn-secondary" type="button">Keep Structure</button>&nbsp;
     <button (click)="onCloseButtonClick()" class="btn btn-secondary" type="button">No</button>
   </div>
 </div>

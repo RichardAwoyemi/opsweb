@@ -93,11 +93,6 @@ export class HeadingOptionsPickerComponent implements OnInit {
     });
   }
 
-  setNumberOfHeading() {
-    this.builderHeadingService.adjustFeatureCount(this.numberOfHeading);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
-  }
-
   onHeadingFontChange(parameterName: string, parameter: any, isHeader: boolean = true, isSubheader: boolean = true) {
     if (isHeader) {
       this.headingHeaderStyle[parameterName] = parameter;

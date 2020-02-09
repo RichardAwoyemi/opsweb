@@ -181,5 +181,31 @@
     "padding-bottom": "14px",
     "padding-top": "14px",
     "padding-right": "10px"
+  },
+  "headingHeaderStyle": {
+    "font-family": "'Avenir Next Regular', sans-serif",
+    "font-size": "20",
+    "font-weight": "bold",
+    "color": "#000",
+    "padding-left": "10px",
+    "padding-bottom": "0px",
+    "padding-top": "0px",
+    "padding-right": "10px"
+  },
+  "headingSubheaderStyle": {
+    "font-family": "'Avenir Next Regular', sans-serif",
+    "font-size": "13",
+    "color": "#757575",
+    "padding-left": "10px",
+    "padding-bottom": "0px",
+    "padding-top": "0px",
+    "padding-right": "10px"
+  },
+  "headingStyle": {
+    "background-color": "#fff",
+    "padding-left": "10px",
+    "padding-bottom": "50px",
+    "padding-top": "50px",
+    "padding-right": "10px"
   }
 }
