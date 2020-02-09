@@ -66,12 +66,6 @@ export class BuilderNavbarComponent implements OnInit, IComponent {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-      if (!response) {
-        this.builderNavbarService.navbarTemplate.next(ActiveNavbarThemes.Default);
-      }
-    });
-
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;

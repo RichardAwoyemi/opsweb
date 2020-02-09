@@ -2,6 +2,13 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700');
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"');
 
+/* Content editable */
+
+[contenteditable]:focus {
+  outline: 0 solid transparent;
+!important;
+}
+
 /* General */
 
 @font-face {
@@ -141,11 +148,30 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
-/* Jumbotron */
+/* Hero */
 
 .jumbotron {
   background-color: unset;
   border-radius: 0;
+}
+
+.hero-image-preview, .hero-image-active,
+.hero-heading-preview, .hero-heading-active,
+.hero-subheading-preview, .hero-subheading-active,
+.hero-button-preview, .hero-button-active {
+  border: 1px solid transparent;
+}
+
+.hero-image-active:hover, .hero-image-edit,
+.hero-heading-active:hover, .hero-heading-edit,
+.hero-subheading-active:hover, .hero-subheading-edit,
+.hero-button-active:hover, .hero-button-edit {
+  border: 1px solid #00d9e1;
+}
+
+.hero-heading-preview, .hero-heading-active,
+.hero-heading-active:hover, .hero-heading-edit {
+  margin-bottom: 10px;
 }
 
 /* No select */
@@ -267,9 +293,4 @@ footer > div {
   border: 1px solid #00d9e1;
   padding: 12px 5px !important;
   cursor: pointer;
-}
-
-.dragging {
-  cursor: grabbing;
-  background-color: red;
 }

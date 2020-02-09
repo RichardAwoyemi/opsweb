@@ -1,5 +1,51 @@
 {
   "id": "default",
+  "defaultComponents": {
+    "pages": [
+      {
+        "name": "Home",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-hero></app-builder-hero>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "About",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "Features",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "Contact",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      }
+    ]
+  },
   "navbarStyle": {
     "background-color": "#FFFFFF",
     "padding": "24px"
@@ -31,11 +77,49 @@
     "font-size": "17px",
     "width": "100px"
   },
-  "heroHeadingStyle": {
-    "font-family": "'Avenir Next Medium', sans-serif"
+  "heroBackgroundStyle": {
+    "color": "#FFFFFF"
   },
-  "heroSubheadingStyle": {},
-  "heroButtonStyle": {},
+  "heroHeadingStyle": {
+    "font-family": "'Avenir Next Medium', sans-serif",
+    "color": "#323D47",
+    "font-size": "48px",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px",
+    "line-height": "60px"
+  },
+  "heroSubheadingStyle": {
+    "font-family": "'Avenir Next Regular', sans-serif",
+    "color": "#757575",
+    "line-height": "34px",
+    "font-size": "20px",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px"
+  },
+  "heroImageStyle": {
+    "width": "100%",
+    "src": "../assets/img/default-hero.svg",
+    "alt": "default-hero.svg",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px"
+  },
+  "heroButtonStyle": {
+    "font-family": "'Avenir Next Medium', sans-serif",
+    "background-color": "#205ECC",
+    "border-color": "#205ECC",
+    "color": "#FFFFFF",
+    "font-size": "12px",
+    "padding-top": "8px",
+    "padding-left": "26px",
+    "padding-right": "26px",
+    "padding-bottom": "8px"
+  },
   "footerStyle": {
     "color": "#757575",
     "padding-top": "16px",

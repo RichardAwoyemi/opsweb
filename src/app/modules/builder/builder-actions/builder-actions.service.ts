@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class BuilderActionsService {
+  activeLibrarySelectedImage = new BehaviorSubject<string>(null);
+  activeLibrarySelectedImageAlt = new BehaviorSubject<string>(null);
+  activeLibrarySearchText = new BehaviorSubject<string>(null);
+
   static togglePageModalErrorMessage(pageName: string, navbarMenuOptions: any): boolean {
     pageName = pageName.trim();
     if (pageName.length === 0) {

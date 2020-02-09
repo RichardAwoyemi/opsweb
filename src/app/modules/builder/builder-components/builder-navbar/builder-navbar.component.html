@@ -14,7 +14,7 @@
               [class]="setActiveElementStyle(activeElement, 'navbar-logo-brand')"
               [ngClass]="setNavbarLogoBrandClass()"
               id="'navbar-logo-brand'"
-              style="padding: .5rem;">{{ navbarLogoText }}</span>
+              [innerText]="navbarLogoText" style="padding: .5rem;"></span>
       </ng-container>
       <ng-container *ngIf="isNavbarLogoImageNull() == false">
         <img (click)="selectNavbarLogoImage($event, 'navbar-logo-image')"
@@ -42,7 +42,7 @@
              [ngClass]="setNavbarLinkClass()"
              [ngStyle]="navbarLinkStyle"
              id="{{ 'navbar-link-' + i }}"
-             style="padding: .5rem">{{ navbarMenuOption }}</a>
+             [innerText]="navbarMenuOption" style="padding: .5rem"></a>
         </li>
       </ul>
     </div>

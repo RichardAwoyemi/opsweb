@@ -23,7 +23,6 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
     `${ ActiveComponentsFullSelector.Placeholder }`,
   ];
   options: SortablejsOptions;
-  reload: boolean = true;
   activeEditComponent: string;
   pageComponents: any;
   activePage: string = 'Home';
@@ -104,8 +103,6 @@ export class BuilderShowcaseLayoutComponent implements OnInit {
             this.builderComponentService.pageComponents.next(this.pageComponents);
           }
         }
-        // setTimeout(() => this.reload = false);
-        // setTimeout(() => this.reload = true);
       }
       if (e.data.action == 'component-exists') {
         this.simpleModalService.displayMessage('Oops!', 'This component cannot be added twice to a single page.');

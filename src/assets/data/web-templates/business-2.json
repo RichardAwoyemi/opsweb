@@ -1,6 +1,52 @@
 {
   "id": "business-2",
   "name": "Front",
+  "defaultComponents": {
+    "pages": [
+      {
+        "name": "Home",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-hero></app-builder-hero>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "About",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "Features",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      },
+      {
+        "name": "Contact",
+        "components": [
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-navbar></app-builder-navbar>",
+          "<app-builder-placeholder></app-builder-placeholder>",
+          "<app-builder-footer></app-builder-footer>",
+          "<app-builder-placeholder></app-builder-placeholder>"
+        ]
+      }
+    ]
+  },
   "navbarStyle": {
     "background-color": "#FFFFFF",
     "display": "flex",
@@ -40,12 +86,22 @@
     "font-family": "'Poppins', sans-serif",
     "width": "100px"
   },
+  "heroBackgroundStyle": {
+    "color": "#FFFFFF"
+  },
   "heroHeadingStyle": {
     "font-family": "'Poppins', sans-serif",
     "color": "#1e2022",
     "font-weight": "300",
     "line-height": "1.2",
     "font-size": "3.5rem"
+  },
+  "heroSubheadingStyle": {
+    "font-family": "'Poppins', sans-serif",
+    "color": "#757575",
+    "line-height": "34px",
+    "font-weight": "300",
+    "font-size": "20px"
   },
   "heroButtonStyle": {
     "color": "#377dff",

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveFooterThemes, ActiveSettings, ActiveTemplates } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveFooterThemes, ActiveSettings, ActiveTemplates } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
@@ -34,6 +34,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   footerSocialLinksContainerStyle: any;
   footerComponentLayout: any;
   activeElement: string;
+  copyrightText: string;
 
   private footerStyleSubscription: Subscription;
   private footerPageLinksStyleSubscription: Subscription;
@@ -67,6 +68,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
+    this.copyrightText = 'Copyright \u00A9 ' + new Date().getFullYear();
 
     this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
       this.footerComponentLayout = response;
@@ -190,6 +192,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   }
 
   setActiveEditComponent() {
+    this.builderService.activeElement.next(ActiveElements.Default);
     if (this.activeEditComponent == ActiveComponents.Footer) {
       this.clearActiveEditComponent();
     } else {

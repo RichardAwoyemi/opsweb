@@ -1,15 +1,16 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderService } from './builder.service';
 import { Subscription } from 'rxjs';
 import { RouterService } from '../../shared/services/router.service';
 import { UtilService } from '../../shared/services/util.service';
+import { ShepherdService } from 'angular-shepherd';
 
 @Component({
   selector: 'app-builder',
   templateUrl: './builder.page.html'
 })
-export class BuilderComponent implements OnInit {
+export class BuilderComponent implements OnInit, AfterViewInit {
   innerWidth: number;
   previewMode: boolean = false;
   sidebarClass: string = 'col-md-3';
@@ -20,7 +21,8 @@ export class BuilderComponent implements OnInit {
   constructor(
     private ngxLoader: NgxUiLoaderService,
     private builderService: BuilderService,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private shepherdService: ShepherdService
   ) {
   }
 
@@ -41,6 +43,19 @@ export class BuilderComponent implements OnInit {
       }
     }));
     this.ngxLoader.stop();
+  }
+
+  ngAfterViewInit() {
+    const startTour = localStorage.getItem('builderTourComplete');
+    if (!startTour || startTour == 'false') {
+      this.shepherdService.defaultStepOptions = this.builderService.shepherdDefaultStepOptions;
+      this.shepherdService.requiredElements = [];
+      this.shepherdService.modal = true;
+      this.shepherdService.confirmCancel = false;
+      this.shepherdService.addSteps(this.builderService.shepherdDefaultSteps);
+      this.shepherdService.start();
+      localStorage.setItem('builderTourComplete', 'true');
+    }
   }
 
   @HostListener('window:resize', ['$event'])

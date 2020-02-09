@@ -2,6 +2,7 @@ import { Injectable, HostListener } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActiveComponents, ActiveOrientations } from './builder';
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
+import { TourService } from '../../shared/services/tour.service';
 
 @Injectable()
 export class BuilderService {
@@ -54,9 +55,11 @@ export class BuilderService {
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
 
   websiteName = new BehaviorSubject<string>(null);
-
   initialWebsiteChangeCount: any = { value: 0 };
   websiteChangeCount = new BehaviorSubject<any>(this.initialWebsiteChangeCount);
+
+  shepherdDefaultStepOptions: any = TourService.setupBuilderTourStepOptions;
+  shepherdDefaultSteps: any = TourService.setupBuilderTourSteps();
 
   resetMenu() {
     this.sidebarTemplatesMenu.next(this.SIDEBAR_INACTIVE_MENU);

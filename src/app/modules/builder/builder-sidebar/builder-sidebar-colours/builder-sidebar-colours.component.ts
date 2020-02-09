@@ -12,6 +12,7 @@ export class BuilderSidebarColoursComponent implements OnInit {
   navbar: string = ActiveComponents.Navbar;
   footer: string = ActiveComponents.Footer;
   features: string = ActiveComponents.Features;
+  hero: string = ActiveComponents.Hero;
   activeEditComponent: string;
   private activeEditComponentSubscription: Subscription;
 

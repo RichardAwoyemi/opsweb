@@ -40,16 +40,20 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
     this.activeModal.dismiss();
     if (this.croppedImage) {
       if (!environment.production) {
-        this.imgurService.upload(this.croppedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
-          if (imgurResponse.status == '200') {
-            this.builderNavbarService.navbarLogoImage.next(imgurResponse.data.link);
-            this.toastrService.success('Your image has been uploaded.', 'Great!');
-          } else {
-            this.toastrService.error('An error occurred while trying to upload your image. Please try again.', 'Oops!');
-          }
-        });
+        this.uploadImageToImgur();
       }
     }
+  }
+
+  uploadImageToImgur() {
+    this.imgurService.upload(this.croppedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
+      if (imgurResponse.status == '200') {
+        this.builderNavbarService.navbarLogoImage.next(imgurResponse.data.link);
+        this.toastrService.success('Your image has been uploaded.', 'Great!');
+      } else {
+        this.toastrService.error('An error occurred while trying to upload your image. Please try again.', 'Oops!');
+      }
+    });
   }
 
   imageCropped(event: ImageCroppedEvent) {

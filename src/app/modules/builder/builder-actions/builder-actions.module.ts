@@ -15,6 +15,10 @@ import { BuilderCreateAccountModalComponent } from './builder-create-account-mod
 import { BuilderAddComponentModalComponent } from './builder-add-component-modal/builder-add-component-modal.component';
 import { BuilderSaveWebsiteModalComponent } from './builder-save-website-modal/builder-save-website-modal.component';
 import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-modal/builder-rename-website-modal.component';
+import { BuilderSelectImageModalComponent } from './builder-select-image-modal/builder-select-image-modal.component';
+import { BuilderSelectImageUploadComponent } from './builder-select-image-modal/builder-select-image-upload/builder-select-image-upload.component';
+import { BuilderSelectImagePhotosComponent } from './builder-select-image-modal/builder-select-image-photos/builder-select-image-photos.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -29,12 +33,16 @@ import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-mod
     BuilderAddComponentModalComponent,
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
-    BlockNonAlphabetCharactersDirective
+    BuilderSelectImageModalComponent,
+    BlockNonAlphabetCharactersDirective,
+    BuilderSelectImageUploadComponent,
+    BuilderSelectImagePhotosComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    SimpleModalModule
+    SimpleModalModule,
+    ImageCropperModule
   ],
   exports: [
     BuilderDeletePageModalComponent,
@@ -46,7 +54,8 @@ import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-mod
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
     BuilderAddComponentModalComponent,
-    BuilderCreateAccountModalComponent
+    BuilderCreateAccountModalComponent,
+    BuilderSelectImageModalComponent
   ],
   providers: [
     BuilderActionsService
@@ -62,7 +71,8 @@ import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-mod
     BuilderAddComponentModalComponent,
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
-    BuilderCreateAccountModalComponent
+    BuilderCreateAccountModalComponent,
+    BuilderSelectImageModalComponent
   ]
 })
 
