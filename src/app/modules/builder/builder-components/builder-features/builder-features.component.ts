@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { BuilderService } from '../../builder.service';
 import { ActiveComponents, ActiveFeaturesThemes, ActiveSettings, ActiveTemplates } from '../../builder';
 import { Subscription } from 'rxjs';
@@ -39,8 +39,10 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   ];
   featuresHeaderStyle: any;
   featuresSubheaderStyle: any;
-  featuresStyle: any = {'width': '33.3%'};
+  featuresStyle: any = { 'width': '33.3%' };
+  orientation: any;
 
+  private breakpointSubscription: Subscription;
   private featuresHeaderStyleSubscription: Subscription;
   private featuresSubheaderStyleSubscription: Subscription;
   private featuresStyleSubscription: Subscription;
@@ -83,13 +85,13 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.featuresThemeSubscription = this.builderFeaturesService.featuresTheme.subscribe(response => {
       if (!response) {
         this.setFeaturesThemeStyle(this.builderFeaturesService.featuresTemplate.getValue());
-        this.setFeaturesTemplate(ActiveTemplates.Default);
+        this.builderFeaturesService.featuresTemplate.next(ActiveTemplates.Default);
       }
     });
 
     this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
-      if (!response) {
-        this.builderFeaturesService.featuresTemplate.next(ActiveFeaturesThemes.Default);
+      if (response) {
+        this.setFeaturesTemplate(response);
       }
     });
 
@@ -105,7 +107,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       }
     });
 
-    this.featuresStyleSubscription = this.builderFeaturesService.featuresStyle.subscribe( response => {
+    this.featuresStyleSubscription = this.builderFeaturesService.featuresStyle.subscribe(response => {
       if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
         this.featuresStyle = response;
       }
@@ -134,6 +136,35 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
         this.featuresItemArray = response;
       }
     });
+
+    this.breakpointSubscription = this.builderFeaturesService.breakpoint.subscribe(response => {
+      if (response) {
+        this.updateFeatureWidth();
+      }
+    });
+
+    this.builderService.toolbarMobileOrientationButton.subscribe(response => {
+      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+        this.updateFeatureWidth('mobile');
+      }
+    });
+
+    this.builderService.toolbarDesktopOrientationButton.subscribe(response => {
+      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+        this.updateFeatureWidth('desktop');
+      }
+    });
+
+    this.builderService.toolbarTabletOrientationButton.subscribe(response => {
+      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+        this.updateFeatureWidth('tablet');
+      }
+    });
+
+  }
+
+  updateFeatureWidth(orientaiton: string = null) {
+    this.builderFeaturesService.adjustFeatureCount(Object.keys(this.featuresItemArray).length, orientaiton);
   }
 
   updateService() {
@@ -193,25 +224,21 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
 
   setFeaturesThemeStyle(theme: any) {
     if (theme) {
-      let featuresHeaderStyle = this.featuresHeaderStyle;
-      let featuresSubheaderStyle = this.featuresSubheaderStyle;
-      if (featuresHeaderStyle && theme['featuresHeaderStyle']['color']) {
-        featuresHeaderStyle['color'] = theme['featuresHeaderStyle']['color'];
-      } else {
-        featuresHeaderStyle = theme['featuresHeaderStyle'];
+
+      if (theme['featuresHeaderStyle']) {
+        const featureHeaderStyleTheme = theme['featuresHeaderStyle'];
+        this.featuresHeaderStyle = { ...this.featuresHeaderStyle, ...featureHeaderStyleTheme };
       }
 
-      if (featuresSubheaderStyle && theme['featuresSubheaderStyle']['color']) {
-        featuresSubheaderStyle['color'] = theme['featuresSubheaderStyle']['color'];
-      } else {
-        featuresSubheaderStyle = theme['featuresSubheaderStyle'];
+      if (theme['featuresSubheaderStyle']) {
+        const featureSubheaderStyleTheme = theme['featuresSubheaderStyle'];
+        this.featuresSubheaderStyle = { ...this.featuresSubheaderStyle, ...featureSubheaderStyleTheme };
       }
 
-      const featuresStyle = {...this.featuresStyle, ...theme['featuresStyle']};
-
-      this.featuresHeaderStyle = featuresHeaderStyle;
-      this.featuresSubheaderStyle = featuresSubheaderStyle;
-      this.featuresStyle = featuresStyle;
+      if (theme['featuresStyle']) {
+        const featureStyleTheme = theme['featuresStyle'];
+        this.featuresStyle = { ...this.featuresStyle, ...featureStyleTheme };
+      }
 
       this.builderFeaturesService.featuresHeaderStyle.next(this.featuresHeaderStyle);
       this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
@@ -265,6 +292,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.breakpointSubscription.unsubscribe();
     this.featuresHeaderStyleSubscription.unsubscribe();
     this.featuresSubheaderStyleSubscription.unsubscribe();
     this.featuresStyleSubscription.unsubscribe();

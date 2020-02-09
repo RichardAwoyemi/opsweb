@@ -119,6 +119,15 @@ export class FeaturesOptionsPickerComponent implements OnInit {
     this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
   }
 
+  resetFeaturesFontName() {
+    this.featuresHeaderStyle['font-family'] = this.defaultFeaturesStyle['featuresHeaderStyle']['font-family'];
+    this.featuresSubheaderStyle['font-family'] = this.defaultFeaturesStyle['featuresSubheaderStyle']['font-family'];
+    const featuresFont = this.featuresHeaderStyle['font-family'].split(','); //header assumed to be the same
+    this.featuresFont = featuresFont[0].replace(/'/g, '');
+    this.builderFeaturesService.featuresHeaderStyle.next(this.featuresHeaderStyle);
+    this.builderFeaturesService.featuresSubheaderStyle.next(this.featuresSubheaderStyle);
+  }
+
   ngOnDestroy() {
     this.featuresHeaderStyleSubscription.unsubscribe();
     this.featuresSubheaderStyleSubscription.unsubscribe();

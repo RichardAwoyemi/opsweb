@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActiveFeaturesThemes, ActiveTemplates } from '../../builder';
 import { HttpClient } from '@angular/common/http';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BuilderService } from '../../builder.service';
 
 @Injectable()
 export class BuilderFeaturesService {
@@ -26,6 +28,7 @@ export class BuilderFeaturesService {
   youtubeUrl = new BehaviorSubject<string>(null);
   githubUrl = new BehaviorSubject<string>(null);
   linkedinUrl = new BehaviorSubject<string>(null);
+  breakpoint = new BehaviorSubject<string>(null);
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -34,7 +37,20 @@ export class BuilderFeaturesService {
 
   constructor(
     private httpClient: HttpClient,
+    private breakpointObserver: BreakpointObserver,
+    private builderService: BuilderService
   ) {
+    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium, Breakpoints.Large, Breakpoints.XLarge]).subscribe(result => {
+      if (result.breakpoints[Breakpoints.XSmall] || result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset]) {
+        this.breakpoint.next('small');
+      }
+      if (result.breakpoints[Breakpoints.Medium]) {
+        this.breakpoint.next('medium');
+      }
+      if (result.breakpoints[Breakpoints.Large] || result.breakpoints[Breakpoints.XLarge]) {
+        this.breakpoint.next('large');
+      }
+    });
   }
 
   getFeaturesThemes(): Observable<any> {
@@ -45,14 +61,14 @@ export class BuilderFeaturesService {
     let response: any;
     switch (themeId) {
       case ActiveFeaturesThemes.Default:
-        this.postMessage('update-feature', '', 'set-features-theme', this.featuresTemplate.getValue());
+        this.builderService.postMessage('update-feature', '', 'set-features-theme', this.featuresTemplate.getValue());
         break;
       case ActiveFeaturesThemes.Stanley:
         this.httpClient.get(this.FEATURES_THEME_PATH).subscribe((themes: Array<any>) => {
           response = themes.filter(theme => {
             return theme.name == ActiveFeaturesThemes.Stanley;
           });
-          this.postMessage('update-feature', componentId, 'set-features-theme', response[0]);
+          this.builderService.postMessage('update-feature', componentId, 'set-features-theme', response[0]);
         });
         break;
       default:
@@ -74,12 +90,18 @@ export class BuilderFeaturesService {
   }
 
 
-  adjustFeatureCount(number) {
+  adjustFeatureCount(number, orientation: string = null) {
     if (number && !isNaN(number) && number <= 8) {
+      let multiplier: number;
+      let breakpoint = this.breakpoint.getValue();
+      let showcaseOrientation = orientation || this.builderService.activeOrientation.getValue();
+      if (breakpoint == 'small' || showcaseOrientation == 'mobile') { multiplier = 4 } else
+      if (breakpoint == 'medium' || showcaseOrientation == 'tablet') { multiplier = 1.5 } else
+      if (breakpoint == 'large' || showcaseOrientation == 'desktop') { multiplier = 1 };
       const originalFeaturesItemArray = this.featuresItemArray.getValue();
       const currentFeatureCount = Object.keys(originalFeaturesItemArray).length;
       let featuresStyle = this.featuresStyle.getValue();
-      const width = 100 / number + '%';
+      const width = 100 * multiplier / number + '%';
       let i = 0;
       let featuresItemArray = [{}];
       while (i < Math.floor(number)) {
@@ -105,13 +127,4 @@ export class BuilderFeaturesService {
     this.featuresTemplate.next(templateId);
   }
 
-  postMessage(action: string, id: any = null, message: string = null, value: any = null) {
-    window.postMessage({
-      'for': 'opsonion',
-      'action': action,
-      'id': id,
-      'message': message,
-      'value': value
-    }, '*');
-  }
 }

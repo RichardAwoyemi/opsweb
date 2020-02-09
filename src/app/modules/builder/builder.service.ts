@@ -319,6 +319,16 @@ export class BuilderService {
     this.websiteChangeCount.next(this.websiteChangeCount);
   }
 
+  postMessage(action: string, id: any = null, message: string = null, value: any = null) {
+    window.postMessage({
+      'for': 'opsonion',
+      'action': action,
+      'id': id,
+      'message': message,
+      'value': value
+    }, '*');
+  }
+
   @HostListener('window:message', ['$event'])
   onMessage(e) {
     if (e.data.for == 'opsonion') {

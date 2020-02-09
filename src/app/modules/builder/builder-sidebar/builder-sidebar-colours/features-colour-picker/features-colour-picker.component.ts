@@ -42,7 +42,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderFeaturesService.postMessage('get-feature', this.activeComponentId, 'feature-subheader-style-color');
+    this.builderService.postMessage('get-feature', this.activeComponentId, 'feature-subheader-style-color');
 
     this.featureStyleSubscription = this.builderFeaturesService.featuresStyle.subscribe(response => {
       if (response) {

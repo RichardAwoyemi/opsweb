@@ -90,5 +90,31 @@
     "padding-right": "0px",
     "padding-bottom": "0px",
     "font-size": "14px"
+  },
+  "featuresHeaderStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "20",
+    "font-weight": "bold",
+    "color": "#000",
+    "padding-left": "10px",
+    "padding-bottom": "0px",
+    "padding-top": "0px",
+    "padding-right": "10px"
+  },
+  "featuresSubheaderStyle": {
+    "font-family": "'Nunito Sans', sans-serif",
+    "font-size": "13",
+    "color": "#757575",
+    "padding-left": "10px",
+    "padding-bottom": "0px",
+    "padding-top": "0px",
+    "padding-right": "10px"
+  },
+  "featuresStyle": {
+    "background-color": "#fff",
+    "padding-left": "10px",
+    "padding-bottom": "14px",
+    "padding-top": "14px",
+    "padding-right": "10px"
   }
 }
