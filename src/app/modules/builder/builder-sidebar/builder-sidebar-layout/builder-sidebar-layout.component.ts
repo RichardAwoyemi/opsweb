@@ -12,6 +12,7 @@ export class BuilderSidebarLayoutComponent implements OnInit {
   heroComponent: string = ActiveComponents.Hero;
   footerComponent: string = ActiveComponents.Footer;
   featuresComponent: string = ActiveComponents.Features;
+  headingComponent: string = ActiveComponents.Heading;
   activeEditComponent: string;
   private activeEditComponentSubscription: Subscription;
 

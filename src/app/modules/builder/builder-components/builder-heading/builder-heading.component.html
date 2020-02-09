@@ -1,0 +1,14 @@
+<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId" [componentName]="componentName">
+</app-builder-component-toolbar>
+<div [attr.id]="componentId">
+  <div [ngClass]="setContextMenu()">
+    <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
+      <header class="header">
+        <div class="container text-center">
+          <h1 class="display-4 mb-7">More Conversion, For Your SaaS</h1>
+          <a class="btn btn-lg btn-round btn-primary" href="#">View demos</a>
+        </div>
+      </header>
+    </div>
+  </div>
+</div>

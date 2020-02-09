@@ -7,10 +7,12 @@ import { BuilderHeroService } from './builder-hero/builder-hero.service';
 import { BuilderPlaceholderComponent } from './builder-placeholder/builder-placeholder.component';
 import { SessionStorageService } from '../../../shared/services/session-storage.service';
 import { BuilderFooterComponent } from './builder-footer/builder-footer.component';
-import { BuilderFeaturesComponent } from './builder-features/builder-features.component';
 import { BuilderActionsModule } from '../builder-actions/builder-actions.module';
 import { BuilderFooterService } from './builder-footer/builder-footer.service';
 import { BuilderFeaturesService } from './builder-features/builder-features.service';
+import { BuilderFeaturesComponent } from './builder-features/builder-features.component';
+import { BuilderHeadingService } from './builder-heading/builder-heading.service';
+import { BuilderHeadingComponent } from './builder-heading/builder-heading.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { BuilderFeaturesService } from './builder-features/builder-features.serv
     BuilderPlaceholderComponent,
     BuilderHeroComponent,
     BuilderFooterComponent,
-    BuilderFeaturesComponent
+    BuilderFeaturesComponent,
+    BuilderHeadingComponent
   ],
   imports: [
     CommonModule,
@@ -29,13 +32,15 @@ import { BuilderFeaturesService } from './builder-features/builder-features.serv
     BuilderPlaceholderComponent,
     BuilderHeroComponent,
     BuilderFooterComponent,
-    BuilderFeaturesComponent
+    BuilderFeaturesComponent,
+    BuilderHeadingComponent
   ],
   providers: [
     BuilderNavbarService,
     BuilderHeroService,
     BuilderFooterService,
     BuilderFeaturesService,
+    BuilderHeadingService,
     SessionStorageService
   ],
   entryComponents: [
@@ -43,7 +48,8 @@ import { BuilderFeaturesService } from './builder-features/builder-features.serv
     BuilderPlaceholderComponent,
     BuilderHeroComponent,
     BuilderFooterComponent,
-    BuilderFeaturesComponent
+    BuilderFeaturesComponent,
+    BuilderHeadingComponent
   ]
 })
 

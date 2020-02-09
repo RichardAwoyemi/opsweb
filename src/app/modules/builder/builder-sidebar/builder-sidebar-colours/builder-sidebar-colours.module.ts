@@ -6,6 +6,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { FormsModule } from '@angular/forms';
 import { FooterColourPickerComponent } from './footer-colour-picker/footer-colour-picker.component';
 import { FeaturesColourPickerComponent } from './features-colour-picker/features-colour-picker.component';
+import { HeadingColourPickerComponent } from './heading-colour-picker/heading-colour-picker.component';
 import { HeroColourPickerComponent } from './hero-colour-picker/hero-colour-picker.component';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { HeroColourPickerComponent } from './hero-colour-picker/hero-colour-pick
     BuilderSidebarColoursComponent,
     FooterColourPickerComponent,
     FeaturesColourPickerComponent,
+    HeadingColourPickerComponent,
     HeroColourPickerComponent,
     NavbarColourPickerComponent
   ],

@@ -5,6 +5,7 @@ import { NavbarLayoutPickerComponent } from './navbar-layout-picker/navbar-layou
 import { FormsModule } from '@angular/forms';
 import { FooterLayoutPickerComponent } from './footer-layout-picker/footer-layout-picker.component';
 import { FeaturesLayoutPickerComponent } from './features-layout-picker/features-layout-picker.component';
+import { HeadingLayoutPickerComponent } from './heading-layout-picker/heading-layout-picker.component';
 import { HeroLayoutPickerComponent } from './hero-layout-picker/hero-layout-picker.component';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { HeroLayoutPickerComponent } from './hero-layout-picker/hero-layout-pick
     NavbarLayoutPickerComponent,
     FooterLayoutPickerComponent,
     FeaturesLayoutPickerComponent,
+    HeadingLayoutPickerComponent,
     HeroLayoutPickerComponent,
     FooterLayoutPickerComponent
   ],
@@ -25,6 +27,7 @@ import { HeroLayoutPickerComponent } from './hero-layout-picker/hero-layout-pick
     NavbarLayoutPickerComponent,
     FooterLayoutPickerComponent,
     FeaturesLayoutPickerComponent,
+    HeadingLayoutPickerComponent,
     HeroLayoutPickerComponent,
     FooterLayoutPickerComponent
   ],

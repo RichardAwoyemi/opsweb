@@ -26,6 +26,10 @@ export class BuilderSidebarComponentsComponent implements OnInit {
     {
       'name': UtilService.toTitleCase(ActiveComponents.Features),
       'selector': ActiveComponentsFullSelector.Features
+    },
+    {
+      'name': UtilService.toTitleCase(ActiveComponents.Heading),
+      'selector': ActiveComponentsFullSelector.Heading
     }
   ];
   searchText: string;

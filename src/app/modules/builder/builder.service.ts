@@ -203,6 +203,9 @@ export class BuilderService {
     if (activeEditComponent == ActiveComponents.Features) {
       this.processIncomingFeaturesMessages(e);
     }
+    if (activeEditComponent == ActiveComponents.Heading) {
+      this.processIncomingHeadingMessages(e);
+    }
   }
 
   static removeLineBreaks(e: any) {
@@ -301,6 +304,43 @@ export class BuilderService {
       this.setSidebarColoursSetting();
       this.triggerScrollTo('features-colours');
     }
+  }
+
+  processIncomingHeadingMessages(e: any) {
+    if (e.data.action == 'heading-options-copyright') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('heading-options-copyright');
+    }
+    if (e.data.action == 'heading-layout-copyright') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('heading-layout-copyright');
+    }
+    if (e.data.action == 'heading-options-social') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('heading-options-social');
+    }
+    if (e.data.action == 'heading-layout-social') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('heading-layout-social');
+    }
+    if (e.data.action == 'heading-options-menu') {
+      this.setSidebarOptionsSetting();
+      this.triggerScrollTo('heading-options-menu');
+    }
+    if (e.data.action == 'heading-layout-menu') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('heading-layout-menu');
+    }
+    if (e.data.action == 'heading-position') {
+      this.setSidebarLayoutSetting();
+      this.triggerScrollTo('heading-layout');
+    }
+    if (e.data.action == 'heading-colours') {
+      this.setSidebarColoursSetting();
+      this.triggerScrollTo('heading-colours');
+    }
+
+
   }
 
   triggerScrollTo(elementId: string) {

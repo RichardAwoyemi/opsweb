@@ -1,0 +1,33 @@
+<div id="heading-colours" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group" *ngIf="!!headingHeaderStyle?.color">
+  <label style="color: rgba(255, 255, 255, 0.65);">Background</label>
+  <div style="width: 100%">
+    <span (colorPickerChange)="setHeadingStyle()" [(colorPicker)]="headingStyle['background-color']"
+          [cpPositionOffset]="'0%'"
+          [cpPosition]="'bottom'" [style.background]="headingStyle['background-color']"
+          class="form-control form-control-lg colour-picker"></span>
+  </div>
+</div>
+<div id="heading-colours" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group" *ngIf="!!headingHeaderStyle?.color">
+  <label style="color: rgba(255, 255, 255, 0.65);">Header</label>
+  <div style="width: 100%">
+    <span (colorPickerChange)="setHeadingHeaderStyle()" [(colorPicker)]="headingHeaderStyle.color"
+          [cpPositionOffset]="'0%'"
+          [cpPosition]="'bottom'" [style.background]="headingHeaderStyle?.color"
+          class="form-control form-control-lg colour-picker"></span>
+  </div>
+</div>
+<div class="form-group" *ngIf="!!headingSubheaderStyle?.color">
+  <label style="color: rgba(255, 255, 255, 0.65);">Text</label>
+  <div style="width: 100%">
+    <span (colorPickerChange)="setHeadingSubheaderStyle()" [(colorPicker)]="headingSubheaderStyle.color"
+          [cpPositionOffset]="'0%'"
+          [cpPosition]="'bottom'" [style.background]="headingSubheaderStyle?.color"
+          class="form-control form-control-lg colour-picker"></span>
+  </div>
+</div>
+<hr style="background-color: rgba(255, 255, 255, 0.1)">
+<div style="padding-bottom: 1em">
+  <button (click)="resetToDefault()" class="btn btn-xl btn-block btn-secondary" type="button">Reset to Default</button>
+</div>

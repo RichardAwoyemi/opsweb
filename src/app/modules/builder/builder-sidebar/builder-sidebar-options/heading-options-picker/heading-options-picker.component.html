@@ -1,0 +1,72 @@
+<div id="heading-options" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<ng-container>
+  <div class="form-group">
+    <label style="color: rgba(255, 255, 255, 1)">Heading</label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Number</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <!-- <a (click)="resetHeadingCount()" class="fw-600 fs-12" href="#">Reset</a> -->
+      </div>
+    </div>
+    <label style="width: 100%">
+      <input (keyup)="setNumberOfHeading()" (ngModelChange)="setNumberOfHeading()" [(ngModel)]="numberOfHeading"
+        class="form-control form-control-lg" max="8" min="0" name="number" style="width: 100%" type="number">
+    </label>
+  </div>
+  <ng-container>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6">
+          <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+        </div>
+        <div class="col-md-6 text-right">
+          <a (click)="resetHeadingFontName()" class="fw-600 fs-12" href="#">Reset</a>
+        </div>
+      </div>
+      <label style="width: 100%">
+        <select (change)="onHeadingFontChange('font-family', headingFont)" [(ngModel)]="headingFont"
+          class="form-control form-control-lg">
+          <option *ngFor="let fontName of fontNames | ssort" [attr.selected]="headingFont == fontName ? true : null"
+            [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+        </select>
+      </label>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label style="color: rgba(255, 255, 255, 1)">Size</label>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6">
+          <label style="color: rgba(255, 255, 255, 0.65);">Header</label>
+        </div>
+        <div class="col-md-6">
+          <label style="color: rgba(255, 255, 255, 0.65);">Text</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label style="width: 100%">
+            <input (keyup)="onHeadingFontChange('font-size', headingHeaderStyle['font-size'], true, false)"
+              (ngModelChange)="onHeadingFontChange('font-size', headingHeaderStyle['font-size'], true, false)" [(ngModel)]="headingHeaderStyle['font-size']"
+              class="form-control form-control-lg" max="300" min="0" name="number" style="width: 100%" type="number">
+          </label>
+        </div>
+        <div class="col-md-6">
+          <label style="width: 100%">
+            <input (keyup)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)"
+              (ngModelChange)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)" [(ngModel)]="headingSubheaderStyle['font-size']"
+              class="form-control form-control-lg" max="300" min="0" name="number" style="width: 100%" type="number">
+          </label>
+        </div>
+        <div class="col-md-12" style="margin-top: 1em;">
+          <label (click)="resetFeatureFontSize()" class="btn btn-xl btn-block btn-secondary">
+            <span>Reset To Default</span>
+          </label>
+        </div>
+      </div>
+    </div>

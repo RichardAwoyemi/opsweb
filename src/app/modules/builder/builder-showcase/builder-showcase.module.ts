@@ -18,6 +18,7 @@ import { SimpleModalService } from '../../../shared/components/simple-modal/simp
 import { BuilderFooterComponent } from '../builder-components/builder-footer/builder-footer.component';
 import { RouterModule } from '@angular/router';
 import { BuilderFeaturesComponent } from '../builder-components/builder-features/builder-features.component';
+import { BuilderHeadingComponent } from '../builder-components/builder-heading/builder-heading.component';
 import { SortablejsModule } from 'ngx-sortablejs';
 import { BuilderDynamicHtmlComponent } from '../builder-components/builder-dynamic-html/builder-dynamic-html.component';
 import { SimpleModalModule } from '../../../shared/components/simple-modal/simple-modal.module';
@@ -43,6 +44,7 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
         { component: BuilderPlaceholderComponent, selector: ActiveComponentsPartialSelector.Placeholder },
         { component: BuilderFooterComponent, selector: ActiveComponentsPartialSelector.Footer },
         { component: BuilderFeaturesComponent, selector: ActiveComponentsPartialSelector.Features },
+        { component: BuilderHeadingComponent, selector: ActiveComponentsPartialSelector.Heading },
       ]
     }),
     RouterModule

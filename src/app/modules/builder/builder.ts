@@ -17,7 +17,8 @@ export enum ActiveComponents {
   Hero = 'hero',
   Placeholder = 'placeholder',
   Footer = 'footer',
-  Features = 'features'
+  Features = 'features',
+  Heading = 'heading'
 }
 
 export enum ActiveComponentsFullSelector {
@@ -25,7 +26,8 @@ export enum ActiveComponentsFullSelector {
   Hero = '<app-builder-hero></app-builder-hero>',
   Placeholder = '<app-builder-placeholder></app-builder-placeholder>',
   Footer = '<app-builder-footer></app-builder-footer>',
-  Features = '<app-builder-features></app-builder-features>'
+  Features = '<app-builder-features></app-builder-features>',
+  Heading = '<app-builder-heading></app-builder-heading>'
 }
 
 export enum ActiveComponentsPartialSelector {
@@ -33,7 +35,8 @@ export enum ActiveComponentsPartialSelector {
   Hero = 'app-builder-hero',
   Placeholder = 'app-builder-placeholder',
   Footer = 'app-builder-footer',
-  Features = 'app-builder-features'
+  Features = 'app-builder-features',
+  Heading = 'app-builder-heading'
 }
 
 export enum ActiveTemplates {
@@ -53,6 +56,11 @@ export enum ActiveFooterThemes {
 }
 
 export enum ActiveFeaturesThemes {
+  Default = 'Default',
+  Stanley = 'Stanley'
+}
+
+export enum ActiveHeadingThemes {
   Default = 'Default',
   Stanley = 'Stanley'
 }
