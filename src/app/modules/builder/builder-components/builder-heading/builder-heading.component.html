@@ -3,13 +3,13 @@
 <div [attr.id]="componentId">
   <div [ngClass]="setContextMenu()">
     <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
-      <div [ngClass]='headingContainerClass' [ngStyle]='headingStyle' [title]='headingBackgroundImageAlt'>
-        <header [ngStyle]="headingBackgroundColor">
+      <header [ngStyle]="headingBackgroundImg" [title]='headingBackgroundImageAlt'>
+      <div [ngClass]='headingContainerClass' [ngStyle]='headingStyle'>
           <h1 [ngClass]="setHeadingTextClass('display-4 mb-3')" [ngStyle]="headingHeaderStyle" [attr.contenteditable]="setContentEditable()">Awesome Stuff</h1>
           <p *ngIf="headingSubheaderCondition" [ngClass]="setHeadingTextClass('lead mb-5')" [ngStyle]="headingSubheaderStyle" [attr.contenteditable]="setContentEditable()" (click)="selectHeadingText($event, 'heading-subheader-' + componentId, 'heading-options-subheader')">Reading this means you must really want to know more about our secret sauce!</p>
           <a *ngIf="headingButtonCondition" [ngClass]="setHeadingTextClass('btn btn-lg btn-round btn-primary')" [attr.contenteditable]="setContentEditable()" [ngStyle]="headingButtonStyle">Learn more</a>
-        </header>
         </div>
+      </header>
     </div>
   </div>
 </div>

@@ -6,6 +6,7 @@ import { BuilderHeadingService } from '../../../builder-components/builder-headi
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { faGrinTongueSquint } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UtilService } from '../../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-heading-options-picker',
@@ -50,6 +51,7 @@ export class HeadingOptionsPickerComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
+    private utilService: UtilService,
     private builderHeadingService: BuilderHeadingService,
     private builderService: BuilderService
   ) {
@@ -178,7 +180,10 @@ export class HeadingOptionsPickerComponent implements OnInit {
   }
 
   setBackgroundOpacity(){
-    this.headingStyle['opacity'] = this.opacityPercentage / 100;
+    const preOpacictyColor = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']);
+    const opactictyDecimal = 1 - this.opacityPercentage / 100;
+    const postOpacityColor = preOpacictyColor.replace(/(?<=\,)([^,]*)(?=\))/, opactictyDecimal);
+    this.headingStyle['background-color'] = postOpacityColor;
     this.builderHeadingService.headingStyle.next(this.headingStyle);
   }
 

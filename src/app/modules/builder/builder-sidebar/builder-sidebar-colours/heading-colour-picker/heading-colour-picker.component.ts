@@ -44,7 +44,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.headingBackgroundColorSubscription = this.builderHeadingService.headingBackgroundColor.subscribe(response => {
+    this.headingBackgroundColorSubscription = this.builderHeadingService.headingStyle.subscribe(response => {
       if (response) {
         this.headingBackgroundColor = response;
       }
@@ -104,7 +104,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   }
 
   setHeadingStyle() {
-    this.builderHeadingService.headingBackgroundColor.next(this.headingBackgroundColor);
+    this.builderHeadingService.headingStyle.next(this.headingBackgroundColor);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 

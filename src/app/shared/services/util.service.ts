@@ -12,7 +12,7 @@ export class UtilService {
     );
   }
 
-  static hexToRgbA(hex) {
+  hexToRgbA(hex) {
     var c;
     if (hex.charAt(0) == '#'){
     if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {

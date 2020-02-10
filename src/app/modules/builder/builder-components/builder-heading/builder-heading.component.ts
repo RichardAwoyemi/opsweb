@@ -29,7 +29,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   headingStyle: any;
   headingContainerClass: string = 'text-center';
   headingBackgroundImageAlt: string;
-  headingBackgroundImg: any;
+  headingBackgroundImg: any = {};
   headingBackgroundColor: any;
 
   private breakpointSubscription: Subscription;
@@ -133,8 +133,8 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
 
     this.headingBackgroundImageUrlSubscription = this.builderHeadingService.headingBackgroundImageUrl.subscribe(response => {
       if (this.componentId == this.builderService.activeEditComponentId.getValue() && response) {
-        this.headingStyle['background-image'] = "url(" + response + ")";
-        this.headingStyle.next(this.headingStyle);
+        this.headingBackgroundImg['background-image'] = "url(" + response + ")";
+        this.builderHeadingService.resetBackgroundOpacity();
       }
     });
 

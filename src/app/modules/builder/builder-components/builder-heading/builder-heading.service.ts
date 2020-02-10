@@ -25,7 +25,7 @@ export class BuilderHeadingService {
   headingButtonStyle = new BehaviorSubject<string>(null);
   headingSubheaderCondition = new BehaviorSubject<boolean>(null);
   headingButtonCondition = new BehaviorSubject<boolean>(null);
-  headingBackgroundImageUrl = new BehaviorSubject<string>(null);
+  headingBackgroundImageUrl = new BehaviorSubject<string>('');
   headingBackgroundImageAlt = new BehaviorSubject<string>(null);
   headingBackgroundColor = new BehaviorSubject<Object>({});
 
@@ -37,6 +37,7 @@ export class BuilderHeadingService {
   constructor(
     private httpClient: HttpClient,
     private builderService: BuilderService,
+    private utilService: UtilService
   ) {
   }
 
@@ -79,6 +80,14 @@ export class BuilderHeadingService {
   setComponentTemplate(templateId) {
     this.headingTheme.next(ActiveHeadingThemes.Default);
     this.headingTemplate.next(templateId);
+  }
+
+  resetBackgroundOpacity() {
+    let newStyle = this.headingStyle.getValue();
+    let backgroundColor = newStyle['background-color'];
+    backgroundColor = this.utilService.hexToRgbA(backgroundColor).replace(/(?<=\,)([^,]*)(?=\))/, '0');
+    newStyle['background-color'] = backgroundColor;
+    this.headingStyle.next(newStyle);
   }
 
 }
