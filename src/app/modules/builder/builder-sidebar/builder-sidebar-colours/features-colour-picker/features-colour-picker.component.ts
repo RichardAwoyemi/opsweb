@@ -144,6 +144,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     if (this.defaultFeaturesStyleSubscription && !this.defaultFeaturesStyleSubscription.closed) {this.defaultFeaturesStyleSubscription.unsubscribe(); }
     this.websiteChangeCountSubscription.unsubscribe();
     this.activeComponentIdSubscription.unsubscribe();
+    this.featureStyleSubscription.unsubscribe();
     this.featureHeaderStyleSubscription.unsubscribe();
     this.featureSubheaderStyleSubscription.unsubscribe();
   }

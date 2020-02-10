@@ -151,10 +151,7 @@ body::-webkit-scrollbar-thumb {
 /* Heading */
 
 header.header > div > a.btn {
-  background-color: #4285F4 !important;
-  border-color: #4285F4 !important;
   border-bottom: 0 !important;
-  color: #FFFFFF !important;
   margin-right: 0 !important;
 }
 

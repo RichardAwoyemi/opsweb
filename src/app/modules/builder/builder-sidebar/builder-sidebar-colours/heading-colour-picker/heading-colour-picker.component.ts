@@ -14,14 +14,16 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   headingStyle: any;
   headingHeaderStyle: any = {'color': '#000'};
   headingSubheaderStyle: any = {'color': '#000'};
+  headingButtonStyle: any = {'color': '#000'};
   headingTemplate: string = ActiveTemplates.Default;
   headingTheme: string = ActiveHeadingThemes.Default;
   websiteChangeCount: number;
   activeComponentId: string;
 
-  private featureStyleSubscription: Subscription;
-  private featureHeaderStyleSubscription: Subscription;
-  private featureSubheaderStyleSubscription: Subscription;
+  private headingStyleSubscription: Subscription;
+  private headingHeaderStyleSubscription: Subscription;
+  private headingSubheaderStyleSubscription: Subscription;
+  private headingButtonStyleSubscription: Subscription;
   private headingThemesSubscription: Subscription;
   private headingTemplateSubscription: Subscription;
   private defaultHeadingStyleSubscription: Subscription;
@@ -42,23 +44,27 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderService.postMessage('get-feature', this.activeComponentId, 'feature-subheader-style-color');
-
-    this.featureStyleSubscription = this.builderHeadingService.headingStyle.subscribe(response => {
+    this.headingStyleSubscription = this.builderHeadingService.headingStyle.subscribe(response => {
       if (response) {
         this.headingStyle = response;
       }
     });
 
-    this.featureHeaderStyleSubscription = this.builderHeadingService.headingHeaderStyle.subscribe(response => {
+    this.headingHeaderStyleSubscription = this.builderHeadingService.headingHeaderStyle.subscribe(response => {
       if (response) {
         this.headingHeaderStyle = response;
       }
     });
 
-    this.featureSubheaderStyleSubscription = this.builderHeadingService.headingSubheaderStyle.subscribe(response => {
+    this.headingSubheaderStyleSubscription = this.builderHeadingService.headingSubheaderStyle.subscribe(response => {
       if (response) {
         this.headingSubheaderStyle = response;
+      }
+    });
+
+    this.headingButtonStyleSubscription = this.builderHeadingService.headingButtonStyle.subscribe(response => {
+      if (response) {
+        this.headingButtonStyle = response;
       }
     });
 
@@ -112,6 +118,11 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
+  setHeadingButtonStyle() {
+    this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
+    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+  }
+
   resetToDefault() {
     const id = this.activeComponentId;
     this.builderHeadingService.headingTheme.next(ActiveHeadingThemes.Default);
@@ -144,7 +155,9 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
     if (this.defaultHeadingStyleSubscription && !this.defaultHeadingStyleSubscription.closed) {this.defaultHeadingStyleSubscription.unsubscribe(); }
     this.websiteChangeCountSubscription.unsubscribe();
     this.activeComponentIdSubscription.unsubscribe();
-    this.featureHeaderStyleSubscription.unsubscribe();
-    this.featureSubheaderStyleSubscription.unsubscribe();
+    this.headingStyleSubscription.unsubscribe();
+    this.headingHeaderStyleSubscription.unsubscribe();
+    this.headingSubheaderStyleSubscription.unsubscribe();
+    this.headingButtonStyleSubscription.unsubscribe();
   }
 }

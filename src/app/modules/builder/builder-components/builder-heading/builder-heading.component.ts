@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents,  ActiveSettings, ActiveTemplates } from '../../builder';
+import { ActiveComponents, ActiveSettings, ActiveTemplates } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { HttpClient } from '@angular/common/http';
@@ -30,9 +30,9 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   private breakpointSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
   private headingSubheaderStyleSubscription: Subscription;
-  private headingButtonStyleSubsciption: Subscription;
+  private headingButtonStyleSubscription: Subscription;
   private headingSubheaderConditionSubscription: Subscription;
-  private headingButtonConditionSubsciption: Subscription;
+  private headingButtonConditionSubscription: Subscription;
   private headingStyleSubscription: Subscription;
   private activeEditComponentSubscription: Subscription;
   private activeEditComponentIdSubscription: Subscription;
@@ -98,6 +98,24 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
       }
     });
 
+    this.headingButtonStyleSubscription = this.builderHeadingService.headingButtonStyle.subscribe(response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.headingButtonStyle = response;
+      }
+    });
+
+    this.headingSubheaderConditionSubscription = this.builderHeadingService.headingSubheaderCondition.subscribe(response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.headingSubheaderCondition = response;
+      }
+    });
+
+    this.headingButtonConditionSubscription = this.builderHeadingService.headingButtonCondition.subscribe(response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.headingButtonCondition = response;
+      }
+    });
+
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
@@ -108,6 +126,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   updateService() {
     this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
     this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
+    this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
     this.builderHeadingService.headingStyle.next(this.headingStyle);
   }
 
@@ -172,6 +191,11 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
         this.headingSubheaderStyle = { ...this.headingSubheaderStyle, ...headingSubheaderStyleTheme };
       }
 
+      if (theme['headingButtonStyle']) {
+        const headingButtonStyleTheme = theme['headingButtonStyle'];
+        this.headingButtonStyle = { ...this.headingButtonStyle, ...headingButtonStyleTheme };
+      }
+
       if (theme['headingStyle']) {
         const headingStyleTheme = theme['headingStyle'];
         this.headingStyle = { ...this.headingStyle, ...headingStyleTheme };
@@ -179,6 +203,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
 
       this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
       this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
+      this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
       this.builderHeadingService.headingStyle.next(this.headingStyle);
     }
   }
@@ -189,6 +214,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.headingStyle = Object.assign(template['headingStyle']);
     this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
     this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
+    this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
     this.builderHeadingService.headingStyle.next(this.headingStyle);
   }
 
@@ -238,5 +264,8 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.activeEditComponentIdSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
     this.activeEditComponentSubscription.unsubscribe();
+    this.headingButtonStyleSubscription.unsubscribe();
+    this.headingSubheaderConditionSubscription.unsubscribe();
+    this.headingButtonConditionSubscription.unsubscribe();
   }
 }

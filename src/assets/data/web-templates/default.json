@@ -184,7 +184,7 @@
   },
   "headingHeaderStyle": {
     "font-family": "'Avenir Next Regular', sans-serif",
-    "font-size": "20",
+    "font-size": "48",
     "font-weight": "bold",
     "color": "#000",
     "padding-left": "10px",
@@ -194,18 +194,29 @@
   },
   "headingSubheaderStyle": {
     "font-family": "'Avenir Next Regular', sans-serif",
-    "font-size": "13",
+    "font-size": "20",
     "color": "#757575",
     "padding-left": "10px",
     "padding-bottom": "0px",
     "padding-top": "0px",
     "padding-right": "10px"
   },
+  "headingButtonStyle": {
+    "font-family": "'Avenir Next Medium', sans-serif",
+    "background-color": "#205ECC",
+    "border-color": "#205ECC",
+    "color": "#FFFFFF",
+    "font-size": "12px",
+    "padding-top": "8px",
+    "padding-left": "26px",
+    "padding-right": "26px",
+    "padding-bottom": "8px"
+  },
   "headingStyle": {
     "background-color": "#fff",
     "padding-left": "10px",
-    "padding-bottom": "50px",
-    "padding-top": "50px",
+    "padding-bottom": "75px",
+    "padding-top": "75px",
     "padding-right": "10px"
   }
 }

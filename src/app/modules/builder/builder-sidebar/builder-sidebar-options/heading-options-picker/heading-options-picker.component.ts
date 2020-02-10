@@ -25,6 +25,9 @@ export class HeadingOptionsPickerComponent implements OnInit {
   headingSubheaderFontSize: string = '14';
   websiteChangeCount: number;
   numberOfHeading: number;
+  subheaderCondition: boolean = true;
+  buttonCondition: boolean = true;
+  conditionArray = ['Subheader', 'Button'];
 
   private headingItemArraySubscription: Subscription;
   private fontNamesSubscription: Subscription;
@@ -35,11 +38,12 @@ export class HeadingOptionsPickerComponent implements OnInit {
   private headingTemplateSubscription: Subscription;
   private defaultHeadingStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private subheaderConditionSubscription: Subscription;
+  private buttonConditionSubscription: Subscription;
 
   constructor(
     private builderHeadingService: BuilderHeadingService,
-    private builderService: BuilderService,
-    private builderNavbarService: BuilderNavbarService,
+    private builderService: BuilderService
   ) {
   }
 
@@ -86,6 +90,18 @@ export class HeadingOptionsPickerComponent implements OnInit {
       }
     });
 
+    this.subheaderConditionSubscription = this.builderHeadingService.headingSubheaderCondition.subscribe(response => {
+      if (response) {
+        this.subheaderCondition = response;
+      }
+    });
+
+    this.buttonConditionSubscription = this.builderHeadingService.headingButtonCondition.subscribe(response => {
+      if (response) {
+        this.buttonCondition = response;
+      }
+    });
+
     this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
@@ -107,7 +123,7 @@ export class HeadingOptionsPickerComponent implements OnInit {
     }
   }
 
-  resetFeatureFontSize(){
+  resetHeadingFontSize() {
     this.headingHeaderStyle['font-size'] = this.defaultHeadingStyle['headingHeaderStyle']['font-size'];
     this.headingSubheaderStyle['font-size'] = this.defaultHeadingStyle['headingSubheaderStyle']['font-size'];
     this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
@@ -121,6 +137,32 @@ export class HeadingOptionsPickerComponent implements OnInit {
     this.headingFont = headingFont[0].replace(/'/g, '');
     this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
     this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
+  }
+
+  toggleOptionVisibility(option: string) {
+    switch (option) {
+      case 'Subheader':
+        this.subheaderCondition = !this.subheaderCondition;
+        this.builderHeadingService.headingSubheaderCondition.next(this.subheaderCondition);
+        break;
+      case 'Button':
+        this.buttonCondition = !this.buttonCondition;
+        this.builderHeadingService.headingButtonCondition.next(this.buttonCondition);
+        break;
+      default:
+        break;
+    }
+  }
+
+  isOptionVisible(option: string): boolean {
+    switch (option) {
+      case 'Subheader':
+        return this.subheaderCondition;
+      case 'Button':
+        return this.buttonCondition;
+      default:
+        break;
+    }
   }
 
   ngOnDestroy() {

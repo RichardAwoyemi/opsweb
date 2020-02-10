@@ -22,8 +22,8 @@ export class BuilderHeadingService {
   headingMenuOptions = new BehaviorSubject<Object>(null);
   headingComponentLayout = new BehaviorSubject<number>(0);
   headingButtonStyle = new BehaviorSubject<string>(null);
-  headingSubheaderCondition = new BehaviorSubject<string>(null);
-  headingButtonCondition = new BehaviorSubject<string>(null);
+  headingSubheaderCondition = new BehaviorSubject<boolean>(null);
+  headingButtonCondition = new BehaviorSubject<boolean>(null);
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
