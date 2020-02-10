@@ -26,6 +26,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   headingSubheaderCondition: boolean = true;
   headingButtonCondition: boolean = true;
   headingStyle: any;
+  headingContainerClass: string = 'container text-center';
 
   private breakpointSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
@@ -39,6 +40,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   private previewModeSubscription: Subscription;
   private headingTemplateSubscription: Subscription;
   private headingThemeSubscription: Subscription;
+  private headingContainerClassSubscription: Subscription;
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -115,6 +117,12 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
         this.headingButtonCondition = response;
       }
     });
+
+    this.headingContainerClassSubscription = this.builderHeadingService.headingContainerClass.subscribe(response => {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()){
+        this.headingContainerClass = response;
+      }
+    })
 
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {

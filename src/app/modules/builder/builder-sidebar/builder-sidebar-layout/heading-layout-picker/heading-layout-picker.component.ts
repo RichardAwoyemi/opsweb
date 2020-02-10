@@ -29,6 +29,8 @@ export class HeadingLayoutPickerComponent implements OnInit {
   headingSocialLinksContainerStyle: any;
   headingHeaderStyle: any;
   headingSubheaderStyle: any;
+  headingContainerClass: string;
+  headingButtonStyle: any;
   headingStyle: any;
   headingTemplate: any = ActiveTemplates.Default;
   defaultHeadingStyle: any;
@@ -41,8 +43,10 @@ export class HeadingLayoutPickerComponent implements OnInit {
   linkedinUrl: string;
   headingMenuOptions: string[];
 
+  private headingContainerClassSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
   private headingSubheaderStyleSubscription: Subscription;
+  private headingButtonStyleSubscription: Subscription;
   private headingStyleSubscription: Subscription;
   private headingAlignmentClassSubscription: Subscription;
   private headingTemplateSubscription: Subscription;
@@ -110,6 +114,18 @@ export class HeadingLayoutPickerComponent implements OnInit {
         }
       }
     });
+
+    this.headingButtonStyleSubscription = this.builderHeadingService.headingButtonStyle.subscribe(response => {
+      if (response) {
+        this.headingButtonStyle = response;
+      }
+    });
+
+    this.headingContainerClassSubscription = this.builderHeadingService.headingContainerClass.subscribe(response => {
+      if (response) {
+        this.headingContainerClass = response;
+      }
+    })
 
     this.headingStyleSubscription = this.builderHeadingService.headingStyle.subscribe(response => {
       if (response) {
@@ -242,17 +258,23 @@ export class HeadingLayoutPickerComponent implements OnInit {
   }
 
   setHeadingAlignment(alignment: string) {
-    this.headingStyle['text-align'] = alignment;
-    this.builderHeadingService.headingStyle.next(this.headingStyle);
+    this.headingHeaderStyle['text-align'] = alignment;
+    this.headingSubheaderStyle['text-align'] = alignment;
+    this.headingContainerClass = 'container text-' + alignment;
+    this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
+    this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
+    this.builderHeadingService.headingContainerClass.next(this.headingContainerClass);
   }
 
   ngOnDestroy() {
     this.headingHeaderStyleSubscription.unsubscribe();
     this.headingSubheaderStyleSubscription.unsubscribe();
+    this.headingButtonStyleSubscription.unsubscribe();
     this.headingStyleSubscription.unsubscribe();
     this.headingAlignmentClassSubscription.unsubscribe();
     this.headingTemplateSubscription.unsubscribe();
     this.defaultHeadingStyleSubscription.unsubscribe();
     this.headingComponentLayoutSubscription.unsubscribe();
+    this.headingContainerClassSubscription.unsubscribe();
   }
 }
