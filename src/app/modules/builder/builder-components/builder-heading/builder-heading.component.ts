@@ -218,12 +218,12 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.builderHeadingService.headingStyle.next(this.headingStyle);
   }
 
-  setHeadingTextClass() {
+  setHeadingTextClass(classPrefix: string) {
     if (this.previewMode) {
-      return 'heading-text-preview';
+      return classPrefix + ' heading-text-preview';
     }
     if (!this.previewMode) {
-      return 'heading-text-active';
+      return classPrefix + ' heading-text-active';
     }
   }
 

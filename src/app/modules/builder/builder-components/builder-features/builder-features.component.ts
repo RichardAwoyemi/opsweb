@@ -41,11 +41,13 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   featuresSubheaderStyle: any;
   featuresStyle: any = { 'width': '33.3%' };
   orientation: any;
+  activeThemeName: string = ActiveFeaturesThemes.Default;
 
   private breakpointSubscription: Subscription;
   private featuresHeaderStyleSubscription: Subscription;
   private featuresSubheaderStyleSubscription: Subscription;
   private featuresStyleSubscription: Subscription;
+  private activeThemeNameSubscription: Subscription;
   private activeEditComponentSubscription: Subscription;
   private activeEditComponentIdSubscription: Subscription;
   private previewModeSubscription: Subscription;
@@ -86,6 +88,8 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       if (!response) {
         this.setFeaturesThemeStyle(this.builderFeaturesService.featuresTemplate.getValue());
         this.builderFeaturesService.featuresTemplate.next(ActiveTemplates.Default);
+      } else if (response && this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.setFeaturesTheme(response);
       }
     });
 
@@ -158,6 +162,12 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.builderService.toolbarTabletOrientationButton.subscribe(response => {
       if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
         this.updateFeatureWidth('tablet');
+      }
+    });
+
+    this.activeThemeNameSubscription = this.builderFeaturesService.featuresTheme.subscribe(response => {
+      if (response && this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.activeThemeName = response;
       }
     });
 
@@ -246,6 +256,25 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     }
   }
 
+  setFeaturesTheme(themeId: string) {
+    let response: any;
+    switch (themeId) {
+      case ActiveFeaturesThemes.Default:
+        this.setFeaturesThemeStyle(this.builderFeaturesService.featuresTemplate.getValue());
+        break;
+      case ActiveFeaturesThemes.Stanley:
+        this.httpClient.get(this.FEATURES_THEME_PATH).subscribe((themes: Array<any>) => {
+          response = themes.filter(theme => {
+            return theme.name == ActiveFeaturesThemes.Stanley;
+          });
+          this.setFeaturesThemeStyle(response[0]);
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   setFeaturesTemplateStyle(template: any) {
     this.featuresHeaderStyle = Object.assign(template['featuresHeaderStyle']);
     this.featuresSubheaderStyle = Object.assign(template['featuresSubheaderStyle']);
@@ -304,5 +333,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.containerClassSubscription.unsubscribe();
     this.containerStyleSubscription.unsubscribe();
     this.featuresItemArraySubscription.unsubscribe();
+    this.activeThemeNameSubscription.unsubscribe();
   }
 }

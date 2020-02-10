@@ -4,11 +4,14 @@
   },
   {
     "name": "Stanley",
-    "featureHeaderStyle": {
-      "color": "#4C4C4C"
+    "featuresStyle": {
+      "background-color": "#108EC8"
     },
-    "navbarSubheaderStyle": {
-      "color": "#AAAAAA"
+    "featuresHeaderStyle": {
+      "color": "#FFFFFF"
+    },
+    "featuresSubheaderStyle": {
+      "color": "#FFFFFF"
     }
   }
 ]

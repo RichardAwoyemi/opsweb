@@ -23,6 +23,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   private featureHeaderStyleSubscription: Subscription;
   private featureSubheaderStyleSubscription: Subscription;
   private featuresThemesSubscription: Subscription;
+  private featuresThemeSubscription: Subscription;
   private featuresTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
@@ -68,6 +69,12 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.featuresThemeSubscription = this.builderFeaturesService.featuresTheme.subscribe(response => {
+      if (response) {
+        this.featuresTheme = response;
+      }
+    });
+
     this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
       if (response) {
         this.featuresTemplate = response;
@@ -92,7 +99,6 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       this.resetToDefault();
     } else {
       this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
-      this.builderFeaturesService.setFeaturesTheme(this.featuresTheme, this.activeComponentId);
     }
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -147,5 +153,6 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     this.featureStyleSubscription.unsubscribe();
     this.featureHeaderStyleSubscription.unsubscribe();
     this.featureSubheaderStyleSubscription.unsubscribe();
+    this.featuresThemeSubscription.unsubscribe();
   }
 }
