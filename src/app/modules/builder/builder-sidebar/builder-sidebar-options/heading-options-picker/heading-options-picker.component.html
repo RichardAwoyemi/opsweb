@@ -69,7 +69,7 @@
         </div>
         <div class="col-md-6">
           <label style="width: 100%">
-            <input (keyup)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)"
+            <input [disabled]='!subheaderCondition' (keyup)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)"
               (ngModelChange)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)" [(ngModel)]="headingSubheaderStyle['font-size']"
               class="form-control form-control-lg" max="300" min="0" name="number" style="width: 100%" type="number">
           </label>

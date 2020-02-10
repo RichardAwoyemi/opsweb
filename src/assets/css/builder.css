@@ -163,6 +163,10 @@ header.header > div > a.btn {
   border: 1px solid #00d9e1;
 }
 
+.form-control:disabled {
+    background-color: #757575;
+}
+
 /* Hero */
 
 .jumbotron {

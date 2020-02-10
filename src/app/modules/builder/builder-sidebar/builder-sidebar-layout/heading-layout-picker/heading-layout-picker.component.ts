@@ -21,12 +21,12 @@ export class HeadingLayoutPickerComponent implements OnInit {
   headingSubheaderPaddingLeft: number;
   headingSubheaderPaddingRight: number;
   headingSubheaderPaddingBottom: number;
+  headingSubheaderCondition: boolean;
   headingButtonPaddingTop: number;
   headingButtonPaddingLeft: number;
   headingButtonPaddingRight: number;
   headingButtonPaddingBottom: number;
   headingAlignmentClass: string;
-  headingSocialLinksContainerStyle: any;
   headingHeaderStyle: any;
   headingSubheaderStyle: any;
   headingContainerClass: string;
@@ -35,12 +35,6 @@ export class HeadingLayoutPickerComponent implements OnInit {
   headingTemplate: any = ActiveTemplates.Default;
   defaultHeadingStyle: any;
   headingComponentLayout: number = 0;
-  facebookUrl: string;
-  twitterUrl: string;
-  instagramUrl: string;
-  youtubeUrl: string;
-  githubUrl: string;
-  linkedinUrl: string;
   headingMenuOptions: string[];
 
   private headingContainerClassSubscription: Subscription;
@@ -52,6 +46,7 @@ export class HeadingLayoutPickerComponent implements OnInit {
   private headingTemplateSubscription: Subscription;
   private defaultHeadingStyleSubscription: Subscription;
   private headingComponentLayoutSubscription: Subscription;
+  private headingSubheaderConditionSubscription: Subscription;
 
   constructor(
     private builderHeadingService: BuilderHeadingService
@@ -144,25 +139,16 @@ export class HeadingLayoutPickerComponent implements OnInit {
         }
       }
     });
+
+    this.headingSubheaderConditionSubscription = this.builderHeadingService.headingSubheaderCondition.subscribe(response => {
+      if (response) {
+        this.headingSubheaderCondition = response;
+      }
+    });
   }
 
   resetHeadingAlignment() {
     this.setHeadingAlignment('left');
-    this.setComponentLayout(0);
-  }
-
-  setComponentLayout(headingComponentLayout: number) {
-    this.builderHeadingService.headingComponentLayout.next(headingComponentLayout);
-    if (headingComponentLayout == 1) {
-      this.headingSocialLinksContainerStyle['margin-right'] = '-10px';
-      this.headingSocialLinksContainerStyle['margin-bottom'] = '-10px';
-      this.headingSocialLinksContainerStyle['padding-top'] = '4px';
-      this.builderHeadingService.headingSocialLinksContainerStyle.next(this.headingSocialLinksContainerStyle);
-    } else {
-      this.headingSocialLinksContainerStyle['margin-right'] = '0';
-      this.headingSocialLinksContainerStyle['padding-top'] = '0px';
-      this.builderHeadingService.headingSocialLinksContainerStyle.next(this.headingSocialLinksContainerStyle);
-    }
   }
 
   setHeadingHeaderPaddingTop() {
@@ -276,5 +262,6 @@ export class HeadingLayoutPickerComponent implements OnInit {
     this.defaultHeadingStyleSubscription.unsubscribe();
     this.headingComponentLayoutSubscription.unsubscribe();
     this.headingContainerClassSubscription.unsubscribe();
+    this.headingSubheaderConditionSubscription.unsubscribe();
   }
 }
