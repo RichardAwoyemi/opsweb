@@ -1,83 +1,121 @@
 <div id="heading-options" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
 <ng-container>
   <div class="form-group">
+    <label style="color: rgba(255, 255, 255, 1)">Options</label>
+  </div>
+  <div class="form-group" style="padding-bottom: 0; margin-bottom: 0">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Links</label>
+      </div>
+    </div>
+  </div>
+  <div (click)="toggleOptionVisibility(option)" *ngFor="let option of conditionArray"
+    class="row page-row-color page-row-option justify-content-center align-items-center" style="font-size: 0.8em">
+    <div class="col-md-2" style="padding: 0.5em;">
+      <button class="btn btn-square btn-options btn-block btn-lg" style="padding-left: 10px" type="button">
+        <i *ngIf="isOptionVisible(option) === false" class="ti-close"></i>
+        <i *ngIf="isOptionVisible(option) === true" class="ti-check"></i>
+      </button>
+    </div>
+    <div class="col-md-10 row-color h-100 d-table">
+      <div class="align-items-center d-table-cell align-middle" style="padding-left: 5px">
+        {{ option }}
+      </div>
+    </div>
+  </div>
+  <hr>
+</ng-container>
+<ng-container>
+  <div class="form-group">
     <label style="color: rgba(255, 255, 255, 1)">Heading</label>
   </div>
-    <div class="form-group">
-      <div class="row">
-        <div class="col-md-6">
-          <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
-        </div>
-        <div class="col-md-6 text-right">
-          <a (click)="resetHeadingFontName()" class="fw-600 fs-12" href="#">Reset</a>
-        </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
       </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetHeadingFontName()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <label style="width: 100%">
+      <select (change)="onHeadingFontChange('font-family', headingFont)" [(ngModel)]="headingFont"
+        class="form-control form-control-lg">
+        <option *ngFor="let fontName of fontNames | ssort" [attr.selected]="headingFont == fontName ? true : null"
+          [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+      </select>
+    </label>
+  </div>
+  <hr>
+  <div class="form-group">
+    <label style="color: rgba(255, 255, 255, 1)">Size</label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Header</label>
+      </div>
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Text</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input (keyup)="onHeadingFontChange('font-size', headingHeaderStyle['font-size'], true, false)"
+            (ngModelChange)="onHeadingFontChange('font-size', headingHeaderStyle['font-size'], true, false)"
+            [(ngModel)]="headingHeaderStyle['font-size']" class="form-control form-control-lg" max="300" min="0"
+            name="number" style="width: 100%" type="number">
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input [disabled]='!subheaderCondition'
+            (keyup)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)"
+            (ngModelChange)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)"
+            [(ngModel)]="headingSubheaderStyle['font-size']" class="form-control form-control-lg" max="300" min="0"
+            name="number" style="width: 100%" type="number">
+        </label>
+      </div>
+      <div class="col-md-12" style="margin-top: 1em;">
+        <label (click)="resetHeadingFontSize()" class="btn btn-xl btn-block btn-secondary">
+          <span>Reset To Default</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 1)">Background Image</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetHeadingImage()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div *ngIf='headingBackgroundImageUrl' class="col-md-12">
+      <div class="image-preview" style="margin-bottom: 1em; height: 150px; margin-top: 1em">
+        <img [attr.alt]="headingBackgroundImageAlt" [attr.src]="headingBackgroundImageUrl" class="heading-image"/>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <a (click)="openSelectImageModal()" class="btn btn-xl btn-block btn-secondary">Select Image</a>
+    </div>
+  </div>
+  <div class="row" style="padding-top: 1em">
+    <div class="col-md-6">
       <label style="width: 100%">
-        <select (change)="onHeadingFontChange('font-family', headingFont)" [(ngModel)]="headingFont"
-          class="form-control form-control-lg">
-          <option *ngFor="let fontName of fontNames | ssort" [attr.selected]="headingFont == fontName ? true : null"
-            [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
-        </select>
+        <input (keyup)="setBackgroundOpacity()" (ngModelChange)="setBackgroundOpacity()"
+               [(ngModel)]="opacityPercentage"
+               class="form-control form-control-lg"
+               max="100" min="1" step="1" name="number"
+               style="width: 100%" type="number">
       </label>
     </div>
-    <hr>
-    <div class="form-group">
-      <label style="color: rgba(255, 255, 255, 1)">Options</label>
-    </div>
-    <div class="form-group" style="padding-bottom: 0; margin-bottom: 0">
-      <div class="row">
-        <div class="col-md-6">
-          <label style="color: rgba(255, 255, 255, 0.65);">Links</label>
-        </div>
-      </div>
-    </div>
-    <div (click)="toggleOptionVisibility(option)"
-         *ngFor="let option of conditionArray"
-         class="row page-row-color page-row-option justify-content-center align-items-center" style="font-size: 0.8em">
-      <div class="col-md-2" style="padding: 0.5em;">
-        <button class="btn btn-square btn-options btn-block btn-lg" style="padding-left: 10px" type="button">
-          <i *ngIf="isOptionVisible(option) === false" class="ti-close"></i>
-          <i *ngIf="isOptionVisible(option) === true" class="ti-check"></i>
-        </button>
-      </div>
-      <div class="col-md-10 row-color h-100 d-table">
-        <div class="align-items-center d-table-cell align-middle" style="padding-left: 5px">
-          {{ option }}
-        </div>
-      </div>
-    </div>
-    <hr>
-    <div class="form-group">
-      <label style="color: rgba(255, 255, 255, 1)">Size</label>
-    </div>
-    <div class="form-group">
-      <div class="row">
-        <div class="col-md-6">
-          <label style="color: rgba(255, 255, 255, 0.65);">Header</label>
-        </div>
-        <div class="col-md-6">
-          <label style="color: rgba(255, 255, 255, 0.65);">Text</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <label style="width: 100%">
-            <input (keyup)="onHeadingFontChange('font-size', headingHeaderStyle['font-size'], true, false)"
-              (ngModelChange)="onHeadingFontChange('font-size', headingHeaderStyle['font-size'], true, false)" [(ngModel)]="headingHeaderStyle['font-size']"
-              class="form-control form-control-lg" max="300" min="0" name="number" style="width: 100%" type="number">
-          </label>
-        </div>
-        <div class="col-md-6">
-          <label style="width: 100%">
-            <input [disabled]='!subheaderCondition' (keyup)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)"
-              (ngModelChange)="onHeadingFontChange('font-size', headingSubheaderStyle['font-size'], false, true)" [(ngModel)]="headingSubheaderStyle['font-size']"
-              class="form-control form-control-lg" max="300" min="0" name="number" style="width: 100%" type="number">
-          </label>
-        </div>
-        <div class="col-md-12" style="margin-top: 1em;">
-          <label (click)="resetHeadingFontSize()" class="btn btn-xl btn-block btn-secondary">
-            <span>Reset To Default</span>
-          </label>
-        </div>
-      </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input [(ngModel)]="percentSymbol" class="form-control form-control-lg" disabled>
+      </label>
     </div>

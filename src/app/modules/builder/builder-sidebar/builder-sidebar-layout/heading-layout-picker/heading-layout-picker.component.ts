@@ -246,7 +246,7 @@ export class HeadingLayoutPickerComponent implements OnInit {
   setHeadingAlignment(alignment: string) {
     this.headingHeaderStyle['text-align'] = alignment;
     this.headingSubheaderStyle['text-align'] = alignment;
-    this.headingContainerClass = 'container text-' + alignment;
+    this.headingContainerClass = 'text-' + alignment;
     this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
     this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
     this.builderHeadingService.headingContainerClass.next(this.headingContainerClass);

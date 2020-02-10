@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
+import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
 import { BuilderHeadingService } from '../../../builder-components/builder-heading/builder-heading.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { faGrinTongueSquint } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-heading-options-picker',
@@ -28,8 +30,11 @@ export class HeadingOptionsPickerComponent implements OnInit {
   subheaderCondition: boolean = true;
   buttonCondition: boolean = true;
   conditionArray = ['Subheader', 'Button'];
+  headingBackgroundImageUrl: string;
+  headingBackgroundImageAlt: string;
+  percentSymbol = '%';
+  opacityPercentage = 100;
 
-  private headingItemArraySubscription: Subscription;
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
@@ -40,8 +45,11 @@ export class HeadingOptionsPickerComponent implements OnInit {
   private websiteChangeCountSubscription: Subscription;
   private subheaderConditionSubscription: Subscription;
   private buttonConditionSubscription: Subscription;
+  private headingBackgroundImageUrlSubscription: Subscription;
+  private headingBackgroundImageAltSubscription: Subscription;
 
   constructor(
+    private modalService: NgbModal,
     private builderHeadingService: BuilderHeadingService,
     private builderService: BuilderService
   ) {
@@ -59,11 +67,8 @@ export class HeadingOptionsPickerComponent implements OnInit {
 
     this.headingStyleSubscription = this.builderHeadingService.headingStyle.subscribe(response => {
       this.headingStyle = response;
-    });
-
-    this.headingItemArraySubscription = this.builderHeadingService.headingItemArray.subscribe(response => {
-      this.headingItemArray = response;
-      this.numberOfHeading = Object.keys(this.headingItemArray).length;
+      const opacityDecimal = this.headingStyle['opacity'] || 1;
+      this.opacityPercentage = opacityDecimal * 100;
     });
 
     this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
@@ -96,6 +101,18 @@ export class HeadingOptionsPickerComponent implements OnInit {
       }
     });
 
+    this.headingBackgroundImageUrlSubscription = this.builderHeadingService.headingBackgroundImageUrl.subscribe(response => {
+      if (response) {
+        this.headingBackgroundImageUrl = response;
+      }
+    });
+
+    this.headingBackgroundImageAltSubscription = this.builderHeadingService.headingBackgroundImageAlt.subscribe(response => {
+      if (response) {
+        this.headingBackgroundImageAlt = response;
+      }
+    });
+
     this.buttonConditionSubscription = this.builderHeadingService.headingButtonCondition.subscribe(response => {
       if (response) {
         this.buttonCondition = response;
@@ -121,6 +138,12 @@ export class HeadingOptionsPickerComponent implements OnInit {
       this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
       this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
     }
+  }
+
+  openSelectImageModal() {
+    const modalRef = this.modalService.open(BuilderSelectImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    modalRef.componentInstance.currentImageUrl = this.builderHeadingService.headingBackgroundImageUrl;
+    modalRef.componentInstance.currentImageAlt = this.builderHeadingService.headingBackgroundImageAlt;
   }
 
   resetHeadingFontSize() {
@@ -154,6 +177,11 @@ export class HeadingOptionsPickerComponent implements OnInit {
     }
   }
 
+  setBackgroundOpacity(){
+    this.headingStyle['opacity'] = this.opacityPercentage / 100;
+    this.builderHeadingService.headingStyle.next(this.headingStyle);
+  }
+
   isOptionVisible(option: string): boolean {
     switch (option) {
       case 'Subheader':
@@ -174,5 +202,9 @@ export class HeadingOptionsPickerComponent implements OnInit {
     this.headingTemplateSubscription.unsubscribe();
     this.defaultHeadingStyleSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.subheaderConditionSubscription.unsubscribe();
+    this.buttonConditionSubscription.unsubscribe();
+    this.headingBackgroundImageAltSubscription.unsubscribe();
+    this.headingBackgroundImageUrlSubscription.unsubscribe();
   }
 }

@@ -11,7 +11,7 @@ import { BuilderService } from '../../../builder.service';
 export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   headingThemes: any;
   defaultHeadingStyle: any;
-  headingStyle: any;
+  headingBackgroundColor: any;
   headingHeaderStyle: any = {'color': '#000'};
   headingSubheaderStyle: any = {'color': '#000'};
   headingButtonStyle: any = {'color': '#000'};
@@ -20,7 +20,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   websiteChangeCount: number;
   activeComponentId: string;
 
-  private headingStyleSubscription: Subscription;
+  private headingBackgroundColorSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
   private headingSubheaderStyleSubscription: Subscription;
   private headingButtonStyleSubscription: Subscription;
@@ -44,9 +44,9 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.headingStyleSubscription = this.builderHeadingService.headingStyle.subscribe(response => {
+    this.headingBackgroundColorSubscription = this.builderHeadingService.headingBackgroundColor.subscribe(response => {
       if (response) {
-        this.headingStyle = response;
+        this.headingBackgroundColor = response;
       }
     });
 
@@ -104,7 +104,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   }
 
   setHeadingStyle() {
-    this.builderHeadingService.headingStyle.next(this.headingStyle);
+    this.builderHeadingService.headingBackgroundColor.next(this.headingBackgroundColor);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
@@ -126,7 +126,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   resetToDefault() {
     const id = this.activeComponentId;
     this.builderHeadingService.headingTheme.next(ActiveHeadingThemes.Default);
-    this.headingStyle['background-color'] = this.defaultHeadingStyle['headingStyle']['background-color'];
+    this.headingBackgroundColor['background-color'] = this.defaultHeadingStyle['headingBackgroundColor']['background-color'];
     this.headingHeaderStyle['color'] = this.defaultHeadingStyle['headingHeaderStyle']['color'];
     this.headingSubheaderStyle['color'] = this.defaultHeadingStyle['headingSubheaderStyle']['color'];
     this.setHeadingStyle();
@@ -155,7 +155,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
     if (this.defaultHeadingStyleSubscription && !this.defaultHeadingStyleSubscription.closed) {this.defaultHeadingStyleSubscription.unsubscribe(); }
     this.websiteChangeCountSubscription.unsubscribe();
     this.activeComponentIdSubscription.unsubscribe();
-    this.headingStyleSubscription.unsubscribe();
+    this.headingBackgroundColorSubscription.unsubscribe();
     this.headingHeaderStyleSubscription.unsubscribe();
     this.headingSubheaderStyleSubscription.unsubscribe();
     this.headingButtonStyleSubscription.unsubscribe();

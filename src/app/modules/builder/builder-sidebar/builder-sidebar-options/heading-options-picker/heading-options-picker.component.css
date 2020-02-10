@@ -23,3 +23,8 @@
 .input-group {
   background-color: #ffffff;
 }
+
+.heading-image {
+  max-width: 80%;
+  max-height: 80%;
+}

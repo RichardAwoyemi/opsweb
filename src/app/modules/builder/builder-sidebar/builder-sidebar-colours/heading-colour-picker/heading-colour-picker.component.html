@@ -2,9 +2,9 @@
 <div class="form-group" *ngIf="!!headingHeaderStyle?.color">
   <label style="color: rgba(255, 255, 255, 0.65);">Background</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setHeadingStyle()" [(colorPicker)]="headingStyle['background-color']"
+    <span (colorPickerChange)="setHeadingStyle()" [(colorPicker)]="headingBackgroundColor['background-color']"
           [cpPositionOffset]="'0%'"
-          [cpPosition]="'bottom'" [style.background]="headingStyle['background-color']"
+          [cpPosition]="'bottom'" [style.background]="headingBackgroundColor['background-color']"
           class="form-control form-control-lg colour-picker"></span>
   </div>
 </div>

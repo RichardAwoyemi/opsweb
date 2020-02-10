@@ -12,6 +12,24 @@ export class UtilService {
     );
   }
 
+  static hexToRgbA(hex) {
+    var c;
+    if (hex.charAt(0) == '#'){
+    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+      c = hex.substring(1).split('');
+      if (c.length == 3) {
+        c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+      c = '0x' + c.join('');
+      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',1)';
+    }
+    throw new Error('Bad Hex');
+  } else {
+    return hex;
+  }
+}
+
+
   static convertToHtmlTag(text: string) {
     return '<' + text + '></' + text + '/>';
   }
@@ -88,7 +106,7 @@ export class UtilService {
     const date = new Date();
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
       'September', 'October', 'November', 'December'];
-    return `${ date.getDate() } ${ months[date.getMonth()] } ${ date.getFullYear() }`;
+    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   }
 
   static generatWebsiteName() {
@@ -356,4 +374,6 @@ export class UtilService {
     return left[Math.floor(Math.random() * left.length)] + '-' +
       right[Math.floor(Math.random() * left.length)] + '-' + Math.floor(10000000 + Math.random() * 90000000);
   }
+
+
 }

@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ActiveHeadingThemes, ActiveTemplates } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 import { BuilderService } from '../../builder.service';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Injectable()
 export class BuilderHeadingService {
@@ -24,6 +25,9 @@ export class BuilderHeadingService {
   headingButtonStyle = new BehaviorSubject<string>(null);
   headingSubheaderCondition = new BehaviorSubject<boolean>(null);
   headingButtonCondition = new BehaviorSubject<boolean>(null);
+  headingBackgroundImageUrl = new BehaviorSubject<string>(null);
+  headingBackgroundImageAlt = new BehaviorSubject<string>(null);
+  headingBackgroundColor = new BehaviorSubject<Object>({});
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -32,7 +36,7 @@ export class BuilderHeadingService {
 
   constructor(
     private httpClient: HttpClient,
-    private builderService: BuilderService
+    private builderService: BuilderService,
   ) {
   }
 

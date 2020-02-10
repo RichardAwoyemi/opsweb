@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Default"
+  },
+  {
+    "name": "Stanley",
+    "headingStyle": {
+      "background-color": "#108EC8"
+    },
+    "headingHeaderStyle": {
+      "color": "#FFFFFF"
+    },
+    "headingSubheaderStyle": {
+      "color": "#FFFFFF"
+    },
+    "headingButtonStyle": {
+      "background-color": "#FFFFFF",
+      "color": "#108EC8"
+    }
+  }
+]

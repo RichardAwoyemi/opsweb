@@ -215,7 +215,9 @@ export class HeroOptionsPickerComponent implements OnInit {
   }
 
   openSelectImageModal() {
-    this.modalService.open(BuilderSelectImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    const modalRef = this.modalService.open(BuilderSelectImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    modalRef.componentInstance.currentImageUrl = this.builderHeroService.heroImageUrl;
+    modalRef.componentInstance.currentImageAlt = this.builderHeroService.heroImageAlt;
   }
 
   resetHeroImage() {
