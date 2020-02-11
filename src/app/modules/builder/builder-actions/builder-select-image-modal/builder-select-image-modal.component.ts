@@ -17,8 +17,8 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   private activeLibrarySelectedImageAltTextSubscription: Subscription;
   private activeLibrarySelectedImage: any;
   private activeLibrarySelectedImageAltText: any;
-  currentImageUrl: BehaviorSubject<string>;
-  currentImageAlt: BehaviorSubject<string>;
+  currentImageUrl: BehaviorSubject<any>;
+  currentImageAlt: BehaviorSubject<any>;
   service: any;
 
 

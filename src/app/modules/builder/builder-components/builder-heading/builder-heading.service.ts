@@ -25,9 +25,11 @@ export class BuilderHeadingService {
   headingButtonStyle = new BehaviorSubject<string>(null);
   headingSubheaderCondition = new BehaviorSubject<boolean>(null);
   headingButtonCondition = new BehaviorSubject<boolean>(null);
-  headingBackgroundImageUrl = new BehaviorSubject<string>('');
+  headingBackgroundImageUrl = new BehaviorSubject<string>(null);
+  headingBackgroundImageStyle = new BehaviorSubject<string>(null);
   headingBackgroundImageAlt = new BehaviorSubject<string>(null);
   headingBackgroundColor = new BehaviorSubject<Object>({});
+  headingBackgroundStyle = new BehaviorSubject<Object>({});
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';

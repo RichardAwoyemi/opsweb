@@ -18,6 +18,7 @@ export class HeadingOptionsPickerComponent implements OnInit {
   fontUnits: any;
   headingHeaderStyle: any;
   headingSubheaderStyle: any;
+  headingBackgroundStyle: any;
   headingStyle: any;
   headingItemArray: any;
   headingCopyrightFontSize: number;
@@ -31,11 +32,13 @@ export class HeadingOptionsPickerComponent implements OnInit {
   subheaderCondition: boolean = true;
   buttonCondition: boolean = true;
   conditionArray = ['Subheader', 'Button'];
-  headingBackgroundImageUrl: string;
+  headingBackgroundImageUrl: any;
   headingBackgroundImageAlt: string;
   percentSymbol = '%';
   opacityPercentage = 100;
+  backgroundImageCondition = false;
 
+  private headingBackgroundStyleSubscription: Subscription;
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
@@ -63,14 +66,21 @@ export class HeadingOptionsPickerComponent implements OnInit {
       this.headingHeaderStyle = response;
     });
 
+    this.headingBackgroundStyleSubscription = this.builderHeadingService.headingBackgroundStyle.subscribe(response => {
+      this.headingBackgroundStyle = response;
+      console.log(this.headingBackgroundStyle)
+      this.backgroundImageCondition = !(this.headingBackgroundStyle['background-image'] == null);
+      console.log(!(this.headingBackgroundStyle['background-image'] == null));
+    });
+
     this.headingSubheaderStyleSubscription = this.builderHeadingService.headingSubheaderStyle.subscribe(response => {
       this.headingSubheaderStyle = response;
     });
 
     this.headingStyleSubscription = this.builderHeadingService.headingStyle.subscribe(response => {
       this.headingStyle = response;
-      const opacityDecimal = this.headingStyle['opacity'] || 1;
-      this.opacityPercentage = opacityDecimal * 100;
+      const opacityDecimal = this.utilService.hexToRgbA(this.headingStyle['background-color']).match(/(?<=\,)([^,]*)(?=\))/)[0];
+      this.opacityPercentage = (1 - opacityDecimal) * 100;
     });
 
     this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
@@ -142,6 +152,15 @@ export class HeadingOptionsPickerComponent implements OnInit {
     }
   }
 
+  onBackgroundSizeChange(){
+    this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
+  }
+
+  resetBackgroundSize(){
+    this.headingBackgroundStyle['background-size'] = this.defaultHeadingStyle['headingBackgroundStyle']['background-size'];
+    this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
+  }
+
   openSelectImageModal() {
     const modalRef = this.modalService.open(BuilderSelectImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
     modalRef.componentInstance.currentImageUrl = this.builderHeadingService.headingBackgroundImageUrl;
@@ -180,14 +199,17 @@ export class HeadingOptionsPickerComponent implements OnInit {
   }
 
   setBackgroundOpacity(){
+    if (this.backgroundImageCondition){
     const preOpacictyColor = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']);
     const opactictyDecimal = 1 - this.opacityPercentage / 100;
     const postOpacityColor = preOpacictyColor.replace(/(?<=\,)([^,]*)(?=\))/, opactictyDecimal);
     this.headingStyle['background-color'] = postOpacityColor;
     this.builderHeadingService.headingStyle.next(this.headingStyle);
+    }
   }
 
   isOptionVisible(option: string): boolean {
+    console.log(option);
     switch (option) {
       case 'Subheader':
         return this.subheaderCondition;
@@ -196,6 +218,14 @@ export class HeadingOptionsPickerComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  removeBackgroundImage(){
+    this.builderHeadingService.headingBackgroundImageUrl.next(null);
+    this.opacityPercentage = 100;
+    const preOpacictyColor = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']);
+    this.headingStyle['background-color'] = preOpacictyColor.replace(/(?<=\,)([^,]*)(?=\))/, 1);
+    this.builderHeadingService.headingStyle.next(this.headingStyle);
   }
 
   ngOnDestroy() {
@@ -211,5 +241,6 @@ export class HeadingOptionsPickerComponent implements OnInit {
     this.buttonConditionSubscription.unsubscribe();
     this.headingBackgroundImageAltSubscription.unsubscribe();
     this.headingBackgroundImageUrlSubscription.unsubscribe();
+    this.headingBackgroundStyleSubscription.unsubscribe();
   }
 }

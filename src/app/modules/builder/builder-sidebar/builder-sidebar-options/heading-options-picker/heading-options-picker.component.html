@@ -6,7 +6,7 @@
   <div class="form-group" style="padding-bottom: 0; margin-bottom: 0">
     <div class="row">
       <div class="col-md-6">
-        <label style="color: rgba(255, 255, 255, 0.65);">Links</label>
+        <label style="color: rgba(255, 255, 255, 0.65);">Switches</label>
       </div>
     </div>
   </div>
@@ -86,36 +86,62 @@
     </div>
   </div>
 </ng-container>
-
+<hr>
 <div class="form-group">
   <div class="row">
     <div class="col-md-6">
-      <label style="color: rgba(255, 255, 255, 1)">Background Image</label>
+      <label style="color: rgba(255, 255, 255, 1); margin-bottom: 1em">Background Image</label>
     </div>
-    <div class="col-md-6 text-right">
-      <a (click)="resetHeadingImage()" class="fw-600 fs-12" href="#">Reset</a>
-    </div>
-    <div *ngIf='headingBackgroundImageUrl' class="col-md-12">
+    <div *ngIf='backgroundImageCondition' class="col-md-12">
       <div class="image-preview" style="margin-bottom: 1em; height: 150px; margin-top: 1em">
-        <img [attr.alt]="headingBackgroundImageAlt" [attr.src]="headingBackgroundImageUrl" class="heading-image"/>
+        <img [attr.alt]="headingBackgroundImageAlt" [attr.src]="headingBackgroundImageUrl" class="heading-image" />
       </div>
     </div>
     <div class="col-md-12">
       <a (click)="openSelectImageModal()" class="btn btn-xl btn-block btn-secondary">Select Image</a>
     </div>
-  </div>
-  <div class="row" style="padding-top: 1em">
-    <div class="col-md-6">
-      <label style="width: 100%">
-        <input (keyup)="setBackgroundOpacity()" (ngModelChange)="setBackgroundOpacity()"
-               [(ngModel)]="opacityPercentage"
-               class="form-control form-control-lg"
-               max="100" min="1" step="1" name="number"
-               style="width: 100%" type="number">
-      </label>
+    <div *ngIf='backgroundImageCondition' class="col-md-12" style="margin-top: 1em;">
+      <a (click)="removeBackgroundImage()" class="btn btn-xl btn-block btn-secondary">Remove Image</a>
     </div>
-    <div class="col-md-6">
-      <label style="width: 100%">
-        <input [(ngModel)]="percentSymbol" class="form-control form-control-lg" disabled>
-      </label>
+  </div>
+
+  <div class="form-group"  style="padding-top: 1em">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Style</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetBackgroundSize()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <label style="width: 100%">
+      <select (change)="onBackgroundSizeChange()" [(ngModel)]="headingBackgroundStyle['background-size']"
+        class="form-control form-control-lg">
+        <option *ngFor="let styles of ['Auto','Contain','Cover']" [attr.selected]="headingBackgroundStyle['background-size']==styles ? true : null">{{ styles }}</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Opacity</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetHeadingFontName()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input (keyup)="setBackgroundOpacity()" (ngModelChange)="setBackgroundOpacity()"
+            [(ngModel)]="opacityPercentage" [disabled]="!backgroundImageCondition" class="form-control form-control-lg"
+            [value]="opacityPercentage" max="100" min="1" step="1" name="number" style="width: 100%" type="number">
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input [(ngModel)]="percentSymbol" class="form-control form-control-lg" disabled>
+        </label>
+      </div>
     </div>

@@ -6,6 +6,7 @@ import { IComponent } from '../../../../shared/models/component';
 import { HttpClient } from '@angular/common/http';
 import { UtilService } from 'src/app/shared/services/util.service';
 import { BuilderHeadingService } from './builder-heading.service';
+import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 
 @Component({
   selector: 'app-builder-heading',
@@ -30,6 +31,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   headingContainerClass: string = 'text-center';
   headingBackgroundImageAlt: string;
   headingBackgroundImg: any = {};
+  headingBackgroundStyle: any = {};
   headingBackgroundColor: any;
 
   private breakpointSubscription: Subscription;
@@ -48,6 +50,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   private headingBackgroundImageAltSubscription: Subscription;
   private headingBackgroundImageUrlSubscription: Subscription;
   private headingBackgroundColorSubscription: Subscription;
+  private headingBackgroundStyleSubscription: Subscription;
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -126,7 +129,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     });
 
     this.headingContainerClassSubscription = this.builderHeadingService.headingContainerClass.subscribe(response => {
-      if (this.componentId == this.builderService.activeEditComponentId.getValue()){
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
         this.headingContainerClass = response;
       }
     });
@@ -135,6 +138,15 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
       if (this.componentId == this.builderService.activeEditComponentId.getValue() && response) {
         this.headingBackgroundImg['background-image'] = "url(" + response + ")";
         this.builderHeadingService.resetBackgroundOpacity();
+      } else {
+        this.headingBackgroundImg['background-image'] = null;
+      }
+      this.updateBackgroundStyle();
+    });
+
+    this.headingBackgroundStyleSubscription = this.builderHeadingService.headingBackgroundStyle.subscribe(response => {
+      if (response) {
+        this.headingBackgroundStyle = response;
       }
     });
 
@@ -184,6 +196,11 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
       default:
         break;
     }
+  }
+
+  updateBackgroundStyle() {
+    this.headingBackgroundStyle = {...this.headingBackgroundStyle, ...this.headingBackgroundImg};
+    this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
   }
 
   setActiveEditComponent() {
@@ -236,10 +253,16 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
         this.headingStyle = { ...this.headingStyle, ...headingStyleTheme };
       }
 
+      if (theme['headingBackgroundStyle']) {
+        const headingBackgroundStyle = theme['headingBackgroundStyle'];
+        this.headingBackgroundStyle = {...this.headingBackgroundStyle, ...headingBackgroundStyle};
+      }
+
       this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
       this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
       this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
       this.builderHeadingService.headingStyle.next(this.headingStyle);
+      this.builderHeadingService.headingBackgroundImageUrl.next(this.headingBackgroundImg);
     }
   }
 
@@ -308,5 +331,6 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.headingBackgroundImageAltSubscription.unsubscribe();
     this.headingBackgroundImageUrlSubscription.unsubscribe();
     this.headingBackgroundColorSubscription.unsubscribe();
+    this.headingBackgroundStyleSubscription.unsubscribe();
   }
 }
