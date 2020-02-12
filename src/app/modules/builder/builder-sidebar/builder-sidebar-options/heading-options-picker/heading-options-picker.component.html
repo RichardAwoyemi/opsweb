@@ -89,23 +89,23 @@
 <hr>
 
 <ng-container *ngIf='buttonCondition'>
-<div class="form-group">
-  <div class="row">
-    <div class="col-md-6">
-      <label style="color: rgba(255, 255, 255, 0.65);">Link</label>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Link</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetHeadingButtonLink()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
     </div>
-    <div class="col-md-6 text-right">
-      <a (click)="resetHeadingButtonLink()" class="fw-600 fs-12" href="#">Reset</a>
-    </div>
+    <label style="width: 100%">
+      <select (change)="setHeadingButtonLink()" [(ngModel)]="menuOption" class="form-control form-control-lg">
+        <option *ngFor="let navbarMenuOption of navbarMenuOptions"
+          [attr.selected]="navbarMenuOption == menuOption ? true : null">{{ navbarMenuOption }}</option>
+      </select>
+    </label>
   </div>
-  <label style="width: 100%">
-    <select (change)="setHeadingButtonLink()" [(ngModel)]="menuOption" class="form-control form-control-lg">
-      <option *ngFor="let navbarMenuOption of navbarMenuOptions"
-              [attr.selected]="navbarMenuOption == menuOption ? true : null">{{ navbarMenuOption }}</option>
-    </select>
-  </label>
-</div>
-<hr>
+  <hr>
 
 </ng-container>
 <div class="form-group">
@@ -147,6 +147,24 @@
   </label>
 </div>
 
+<div *ngIf='backgroundImageCondition' class="form-group" style="padding-top: 1em">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Scrolling</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetBackgroundSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="onBackgroundAttachmentChange()" [(ngModel)]="displayedBackgroundAttachment"
+      class="form-control form-control-lg">
+      <option *ngFor="let styles of backgroundAttachmentKeys"
+        [attr.selected]="displayedBackgroundAttachment==styles ? true : null" [value]="styles">{{ styles }}</option>
+    </select>
+  </label>
+</div>
+
 <div *ngIf='backgroundImageCondition' class="form-group">
   <div class="row">
     <div class="col-md-6">
@@ -162,7 +180,7 @@
         <input (keyup)="setBackgroundOpacity(opacityPercentage)"
           (ngModelChange)="setBackgroundOpacity(opacityPercentage)" [(ngModel)]="opacityPercentage"
           [disabled]="!backgroundImageCondition" class="form-control form-control-lg" [value]="opacityPercentage"
-          max="100" min="1" step="1" name="number" style="width: 100%" type="number">
+          max="100" min="0" step="1" name="number" style="width: 100%" type="number">
       </label>
     </div>
     <div class="col-md-6">
@@ -173,7 +191,8 @@
   </div>
 </div>
 
-<div *ngIf="backgroundImageCondition && (headingBackgroundStyle['background-size'] != 'Cover')" class="form-group" style="padding-top: 1em">
+<div *ngIf="backgroundImageCondition && (headingBackgroundStyle['background-size'] != 'Cover')" class="form-group"
+  style="padding-top: 1em">
   <div class="row">
     <div class="col-md-6">
       <label style="color: rgba(255, 255, 255, 0.65);">Horizontal shift</label>
@@ -188,7 +207,7 @@
         <input (keyup)="setBackgroundPosition('x', backgroundPositionX)"
           (ngModelChange)="setBackgroundPosition('x', backgroundPositionX)" [(ngModel)]="backgroundPositionX"
           [disabled]="!backgroundImageCondition" class="form-control form-control-lg" [value]="backgroundPositionX"
-          max="100" min="1" step="1" name="number" style="width: 100%" type="number">
+          max="100" min="0" step="1" name="number" style="width: 100%" type="number">
       </label>
     </div>
     <div class="col-md-6">

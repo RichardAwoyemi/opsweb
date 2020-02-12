@@ -48,6 +48,10 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
     'background-size':'contain',
     'background-attachment': 'scroll'
   };
+  backgroundAttachment = { 'Fixed': 'scroll', 'Moving': 'fixed'};
+  backgroundAttachmentKeys = Object.keys(this.backgroundAttachment);
+  displayedBackgroundAttachment = 'Fixed';
+
   private headingBackgroundStyleSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private fontNamesSubscription: Subscription;
@@ -205,6 +209,11 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
   }
 
+  onBackgroundAttachmentChange(){
+    this.headingBackgroundStyle['background-attachment'] =  this.backgroundAttachment[this.displayedBackgroundAttachment];
+    this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
+  }
+
   resetBackgroundSize() {
     this.headingBackgroundStyle['background-size'] = this.defaultHeadingStyle['headingBackgroundStyle']['background-size'];
     this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
@@ -305,6 +314,8 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
     this.headingBackgroundStyle = this.builderHeadingService.headingBackgroundStyle.getValue();
     this.headingBackgroundImageUrl = this.headingBackgroundStyle['background-image'] || null;
     this.backgroundImageCondition = this.headingBackgroundImageUrl != null;
+    const currentAttachment = this.headingBackgroundStyle['background-attachment'] || 'scroll';
+    if (currentAttachment == 'scroll') { this.displayedBackgroundAttachment = 'Fixed'; } else { this.displayedBackgroundAttachment = 'Moving'; }
     delete this.previewStyle['background-image'];
     this.previewStyle = {...this.headingBackgroundStyle, ...this.previewStyle};
   }
