@@ -40,8 +40,14 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
   backgroundPositionX = 0;
   backgroundPositionY = 0;
   activeEditComponentId: string;
-  previewStyle = {'height': '100%', 'width': '100%', 'background-repeat':'no-repeat', 'background-position':'center', 'background-size':'contain'};
-
+  previewStyle = {
+    'height': '100%',
+    'width': '100%',
+    'background-repeat':'no-repeat',
+    'background-position':'center',
+    'background-size':'contain',
+    'background-attachment': 'scroll'
+  };
   private headingBackgroundStyleSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private fontNamesSubscription: Subscription;
@@ -293,9 +299,9 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   updateSidebar() {
-    this.backgroundPositionX = this.builderHeadingService.headingBackgroundStyle.getValue()['background-position-x'] || 0;
-    this.backgroundPositionY = this.builderHeadingService.headingBackgroundStyle.getValue()['background-position-y'] || 0;
-    this.opacityPercentage = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']).match(/(?<=\,)([^,]*)(?=\))/)[0];
+    this.backgroundPositionX = Math.floor(this.builderHeadingService.headingBackgroundStyle.getValue()['background-position-x']) || 0;
+    this.backgroundPositionY = Math.floor(this.builderHeadingService.headingBackgroundStyle.getValue()['background-position-y']) || 0;
+    this.opacityPercentage = Math.floor((1 - this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']).match(/(?<=\,)([^,]*)(?=\))/)[0]) * 100);
     this.headingBackgroundStyle = this.builderHeadingService.headingBackgroundStyle.getValue();
     this.headingBackgroundImageUrl = this.headingBackgroundStyle['background-image'] || null;
     this.backgroundImageCondition = this.headingBackgroundImageUrl != null;
