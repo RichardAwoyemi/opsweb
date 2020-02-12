@@ -34,7 +34,6 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   headingBackgroundStyle: any = {};
   headingBackgroundColor: any;
 
-  private breakpointSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
   private headingSubheaderStyleSubscription: Subscription;
   private headingButtonStyleSubscription: Subscription;
@@ -135,17 +134,19 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     });
 
     this.headingBackgroundImageUrlSubscription = this.builderHeadingService.headingBackgroundImageUrl.subscribe(response => {
-      if (this.componentId == this.builderService.activeEditComponentId.getValue() && response) {
-        this.headingBackgroundImg['background-image'] = "url(" + response + ")";
-        this.builderHeadingService.resetBackgroundOpacity();
-      } else {
-        this.headingBackgroundImg['background-image'] = null;
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        if (response) {
+          this.headingBackgroundImg['background-image'] = "url(" + response + ")";
+          this.builderHeadingService.resetBackgroundOpacity();
+        } else {
+          this.headingBackgroundImg['background-image'] = null;
+        }
+        this.updateBackgroundStyle();
       }
-      this.updateBackgroundStyle();
     });
 
     this.headingBackgroundStyleSubscription = this.builderHeadingService.headingBackgroundStyle.subscribe(response => {
-      if (response) {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue() && response) {
         this.headingBackgroundStyle = response;
       }
     });
@@ -199,7 +200,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   }
 
   updateBackgroundStyle() {
-    this.headingBackgroundStyle = {...this.headingBackgroundStyle, ...this.headingBackgroundImg};
+    this.headingBackgroundStyle = { ...this.headingBackgroundStyle, ...this.headingBackgroundImg };
     this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
   }
 
@@ -255,7 +256,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
 
       if (theme['headingBackgroundStyle']) {
         const headingBackgroundStyle = theme['headingBackgroundStyle'];
-        this.headingBackgroundStyle = {...this.headingBackgroundStyle, ...headingBackgroundStyle};
+        this.headingBackgroundStyle = { ...this.headingBackgroundStyle, ...headingBackgroundStyle };
       }
 
       this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
@@ -315,7 +316,6 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.breakpointSubscription.unsubscribe();
     this.headingHeaderStyleSubscription.unsubscribe();
     this.headingSubheaderStyleSubscription.unsubscribe();
     this.headingStyleSubscription.unsubscribe();

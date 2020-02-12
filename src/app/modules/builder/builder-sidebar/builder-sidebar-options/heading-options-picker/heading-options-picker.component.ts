@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
+import { UtilService } from '../../../../../shared/services/util.service';
 import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
 import { BuilderHeadingService } from '../../../builder-components/builder-heading/builder-heading.service';
+import { BuilderService } from '../../../builder.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { faGrinTongueSquint } from '@fortawesome/free-solid-svg-icons';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UtilService } from '../../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-heading-options-picker',
   templateUrl: './heading-options-picker.component.html',
   styleUrls: ['./heading-options-picker.component.css'],
 })
-export class HeadingOptionsPickerComponent implements OnInit {
+export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
   fontNames: any;
   fontUnits: any;
+  navbarMenuOptions: any;
+  menuOption: string;
   headingHeaderStyle: any;
   headingSubheaderStyle: any;
   headingBackgroundStyle: any;
@@ -31,14 +32,17 @@ export class HeadingOptionsPickerComponent implements OnInit {
   numberOfHeading: number;
   subheaderCondition: boolean = true;
   buttonCondition: boolean = true;
-  conditionArray = ['Subheader', 'Button'];
   headingBackgroundImageUrl: any;
   headingBackgroundImageAlt: string;
   percentSymbol = '%';
   opacityPercentage = 100;
   backgroundImageCondition = false;
+  backgroundPositionX = 0;
+  backgroundPositionY = 0;
+  activeEditComponentId: string;
 
   private headingBackgroundStyleSubscription: Subscription;
+  private navbarMenuOptionsSubscription: Subscription;
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
   private headingHeaderStyleSubscription: Subscription;
@@ -51,16 +55,24 @@ export class HeadingOptionsPickerComponent implements OnInit {
   private buttonConditionSubscription: Subscription;
   private headingBackgroundImageUrlSubscription: Subscription;
   private headingBackgroundImageAltSubscription: Subscription;
+  private headingMenuOptionSubscription: Subscription;
+  private activeEditComponentIdSubscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
     private utilService: UtilService,
     private builderHeadingService: BuilderHeadingService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private builderNavbarService: BuilderNavbarService
   ) {
   }
 
   ngOnInit() {
+
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+        if (this.activeEditComponentId != response) { this.resetSidebar(); }
+        this.activeEditComponentId = response;
+    });
 
     this.headingHeaderStyleSubscription = this.builderHeadingService.headingHeaderStyle.subscribe(response => {
       this.headingHeaderStyle = response;
@@ -68,9 +80,7 @@ export class HeadingOptionsPickerComponent implements OnInit {
 
     this.headingBackgroundStyleSubscription = this.builderHeadingService.headingBackgroundStyle.subscribe(response => {
       this.headingBackgroundStyle = response;
-      console.log(this.headingBackgroundStyle)
       this.backgroundImageCondition = !(this.headingBackgroundStyle['background-image'] == null);
-      console.log(!(this.headingBackgroundStyle['background-image'] == null));
     });
 
     this.headingSubheaderStyleSubscription = this.builderHeadingService.headingSubheaderStyle.subscribe(response => {
@@ -136,6 +146,37 @@ export class HeadingOptionsPickerComponent implements OnInit {
         this.websiteChangeCount = response['value'];
       }
     });
+
+    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+      if (response) {
+        this.navbarMenuOptions = response;
+
+        this.headingMenuOptionSubscription = this.builderHeadingService.headingButtonLink.subscribe(response => {
+          if (response) {
+            this.menuOption = response;
+          } else {
+            if (this.navbarMenuOptions.length > 0) {
+              this.menuOption = this.navbarMenuOptions[1];
+            } else {
+              this.menuOption = this.navbarMenuOptions[0];
+            }
+          }
+        });
+      }
+    });
+  }
+
+  resetHeadingButtonLink() {
+    if (this.navbarMenuOptions.length > 0) {
+      this.menuOption = this.navbarMenuOptions[1];
+    } else {
+      this.menuOption = this.navbarMenuOptions[0];
+    }
+    this.builderHeadingService.headingButtonLink.next(this.menuOption);
+  }
+
+  setHeadingButtonLink() {
+    this.builderHeadingService.headingButtonLink.next(this.menuOption);
   }
 
   onHeadingFontChange(parameterName: string, parameter: any, isHeader: boolean = true, isSubheader: boolean = true) {
@@ -152,11 +193,11 @@ export class HeadingOptionsPickerComponent implements OnInit {
     }
   }
 
-  onBackgroundSizeChange(){
+  onBackgroundSizeChange() {
     this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
   }
 
-  resetBackgroundSize(){
+  resetBackgroundSize() {
     this.headingBackgroundStyle['background-size'] = this.defaultHeadingStyle['headingBackgroundStyle']['background-size'];
     this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
   }
@@ -198,18 +239,39 @@ export class HeadingOptionsPickerComponent implements OnInit {
     }
   }
 
-  setBackgroundOpacity(){
-    if (this.backgroundImageCondition){
-    const preOpacictyColor = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']);
-    const opactictyDecimal = 1 - this.opacityPercentage / 100;
-    const postOpacityColor = preOpacictyColor.replace(/(?<=\,)([^,]*)(?=\))/, opactictyDecimal);
-    this.headingStyle['background-color'] = postOpacityColor;
-    this.builderHeadingService.headingStyle.next(this.headingStyle);
+  setBackgroundOpacity(opacity) {
+    if (this.backgroundImageCondition) {
+      const preOpacictyColor = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']);
+      const opactictyDecimal = 1 - opacity / 100;
+      const postOpacityColor = preOpacictyColor.replace(/(?<=\,)([^,]*)(?=\))/, opactictyDecimal);
+      this.headingStyle['background-color'] = postOpacityColor;
+      this.builderHeadingService.headingStyle.next(this.headingStyle);
     }
   }
 
+  setBackgroundPosition(axis, selectedVar) {
+    const param = 'background-position-' + axis;
+    this.headingBackgroundStyle[param] = selectedVar + '%';
+    this.builderHeadingService.headingBackgroundImageStyle.next(this.headingBackgroundStyle);
+  }
+
+  resetBackgroundPosition(axis) {
+    switch (axis) {
+      case 'x':
+        this.backgroundPositionX = 0;
+        this.setBackgroundPosition('x', this.backgroundPositionX);
+        break
+      case 'y':
+        this.backgroundPositionY = 0;
+        this.setBackgroundPosition('y', this.backgroundPositionY);
+        break
+      default:
+        break;
+    }
+  }
+
+
   isOptionVisible(option: string): boolean {
-    console.log(option);
     switch (option) {
       case 'Subheader':
         return this.subheaderCondition;
@@ -220,12 +282,18 @@ export class HeadingOptionsPickerComponent implements OnInit {
     }
   }
 
-  removeBackgroundImage(){
+  removeBackgroundImage() {
     this.builderHeadingService.headingBackgroundImageUrl.next(null);
     this.opacityPercentage = 100;
     const preOpacictyColor = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']);
     this.headingStyle['background-color'] = preOpacictyColor.replace(/(?<=\,)([^,]*)(?=\))/, 1);
     this.builderHeadingService.headingStyle.next(this.headingStyle);
+  }
+
+  resetSidebar() {
+    this.backgroundPositionX = this.builderHeadingService.headingBackgroundStyle['background-position-x'].getValue() || 0;
+    this.backgroundPositionY = this.builderHeadingService.headingBackgroundStyle['background-position-x'].getValue() || 0;
+    this.opacityPercentage = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle['background-color'].getValue()).match(/(?<=\,)([^,]*)(?=\))/)[0];
   }
 
   ngOnDestroy() {
@@ -242,5 +310,8 @@ export class HeadingOptionsPickerComponent implements OnInit {
     this.headingBackgroundImageAltSubscription.unsubscribe();
     this.headingBackgroundImageUrlSubscription.unsubscribe();
     this.headingBackgroundStyleSubscription.unsubscribe();
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.headingMenuOptionSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
   }
 }

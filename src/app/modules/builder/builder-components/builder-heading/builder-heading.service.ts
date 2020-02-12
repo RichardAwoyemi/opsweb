@@ -30,6 +30,7 @@ export class BuilderHeadingService {
   headingBackgroundImageAlt = new BehaviorSubject<string>(null);
   headingBackgroundColor = new BehaviorSubject<Object>({});
   headingBackgroundStyle = new BehaviorSubject<Object>({});
+  headingButtonLink = new BehaviorSubject<string>(null);
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
