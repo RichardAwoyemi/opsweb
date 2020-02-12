@@ -146,13 +146,13 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     });
 
     this.headingBackgroundStyleSubscription = this.builderHeadingService.headingBackgroundStyle.subscribe(response => {
-      if (this.componentId == this.builderService.activeEditComponentId.getValue() && response) {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
         this.headingBackgroundStyle = response;
       }
     });
 
     this.headingBackgroundImageAltSubscription = this.builderHeadingService.headingBackgroundImageAlt.subscribe(response => {
-      if (response) {
+      if (this.componentId == this.builderService.activeEditComponentId.getValue()) {
         this.headingBackgroundImageAlt = response;
       }
     });
@@ -175,6 +175,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
     this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
     this.builderHeadingService.headingStyle.next(this.headingStyle);
+    this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundStyle);
   }
 
   setHeadingTemplate(templateId: string) {
@@ -263,7 +264,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
       this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
       this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
       this.builderHeadingService.headingStyle.next(this.headingStyle);
-      this.builderHeadingService.headingBackgroundImageUrl.next(this.headingBackgroundImg);
+      this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundImg);
     }
   }
 

@@ -32,7 +32,7 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
   numberOfHeading: number;
   subheaderCondition: boolean = true;
   buttonCondition: boolean = true;
-  headingBackgroundImageUrl: any;
+  headingBackgroundImageUrl: string;
   headingBackgroundImageAlt: string;
   percentSymbol = '%';
   opacityPercentage = 100;
@@ -40,6 +40,7 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
   backgroundPositionX = 0;
   backgroundPositionY = 0;
   activeEditComponentId: string;
+  previewStyle = {'height': '100%', 'width': '100%', 'background-repeat':'no-repeat', 'background-position':'center', 'background-size':'contain'};
 
   private headingBackgroundStyleSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
@@ -70,7 +71,7 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-        if (this.activeEditComponentId != response) { this.resetSidebar(); }
+        if (this.activeEditComponentId != response) { this.updateSidebar(); }
         this.activeEditComponentId = response;
     });
 
@@ -81,6 +82,7 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
     this.headingBackgroundStyleSubscription = this.builderHeadingService.headingBackgroundStyle.subscribe(response => {
       this.headingBackgroundStyle = response;
       this.backgroundImageCondition = !(this.headingBackgroundStyle['background-image'] == null);
+      this.updateSidebar();
     });
 
     this.headingSubheaderStyleSubscription = this.builderHeadingService.headingSubheaderStyle.subscribe(response => {
@@ -290,10 +292,15 @@ export class HeadingOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderHeadingService.headingStyle.next(this.headingStyle);
   }
 
-  resetSidebar() {
-    this.backgroundPositionX = this.builderHeadingService.headingBackgroundStyle['background-position-x'].getValue() || 0;
-    this.backgroundPositionY = this.builderHeadingService.headingBackgroundStyle['background-position-x'].getValue() || 0;
-    this.opacityPercentage = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle['background-color'].getValue()).match(/(?<=\,)([^,]*)(?=\))/)[0];
+  updateSidebar() {
+    this.backgroundPositionX = this.builderHeadingService.headingBackgroundStyle.getValue()['background-position-x'] || 0;
+    this.backgroundPositionY = this.builderHeadingService.headingBackgroundStyle.getValue()['background-position-y'] || 0;
+    this.opacityPercentage = this.utilService.hexToRgbA(this.builderHeadingService.headingStyle.getValue()['background-color']).match(/(?<=\,)([^,]*)(?=\))/)[0];
+    this.headingBackgroundStyle = this.builderHeadingService.headingBackgroundStyle.getValue();
+    this.headingBackgroundImageUrl = this.headingBackgroundStyle['background-image'] || null;
+    this.backgroundImageCondition = this.headingBackgroundImageUrl != null;
+    delete this.previewStyle['background-image'];
+    this.previewStyle = {...this.headingBackgroundStyle, ...this.previewStyle};
   }
 
   ngOnDestroy() {
