@@ -15,7 +15,8 @@
     },
     "headingButtonStyle": {
       "background-color": "#FFFFFF",
-      "color": "#108EC8"
+      "color": "#108EC8",
+      "border-color": "#CCCCCC"
     }
   }
 ]

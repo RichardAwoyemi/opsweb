@@ -25,6 +25,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   private headingSubheaderStyleSubscription: Subscription;
   private headingButtonStyleSubscription: Subscription;
   private headingThemesSubscription: Subscription;
+  private headingThemeSubscription: Subscription;
   private headingTemplateSubscription: Subscription;
   private defaultHeadingStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
@@ -74,6 +75,12 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.headingThemeSubscription = this.builderHeadingService.headingTheme.subscribe(response => {
+      if (response) {
+        this.headingTheme = response;
+      }
+    });
+
     this.headingTemplateSubscription = this.builderHeadingService.headingTemplate.subscribe(response => {
       if (response) {
         this.headingTemplate = response;
@@ -98,7 +105,6 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
       this.resetToDefault();
     } else {
       this.builderHeadingService.headingTheme.next(this.headingTheme);
-      this.builderHeadingService.setHeadingTheme(this.headingTheme, this.activeComponentId);
     }
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -151,6 +157,7 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.headingThemesSubscription.unsubscribe();
+    this.headingThemeSubscription.unsubscribe();
     this.headingTemplateSubscription.unsubscribe();
     if (this.defaultHeadingStyleSubscription && !this.defaultHeadingStyleSubscription.closed) {this.defaultHeadingStyleSubscription.unsubscribe(); }
     this.websiteChangeCountSubscription.unsubscribe();

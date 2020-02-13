@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveSettings, ActiveTemplates } from '../../builder';
+import { ActiveComponents, ActiveSettings, ActiveTemplates, ActiveHeadingThemes } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { HttpClient } from '@angular/common/http';
@@ -33,6 +33,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   headingBackgroundImg: any = {};
   headingBackgroundStyle: any = {};
   headingBackgroundColor: any;
+  activeThemeName: string = ActiveHeadingThemes.Default;
 
   private headingHeaderStyleSubscription: Subscription;
   private headingSubheaderStyleSubscription: Subscription;
@@ -50,6 +51,7 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
   private headingBackgroundImageUrlSubscription: Subscription;
   private headingBackgroundColorSubscription: Subscription;
   private headingBackgroundStyleSubscription: Subscription;
+  private activeThemeNameSubscription: Subscription;
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -82,6 +84,8 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
       if (!response) {
         this.setHeadingThemeStyle(this.builderHeadingService.headingTemplate.getValue());
         this.builderHeadingService.headingTemplate.next(ActiveTemplates.Default);
+      } else if (response && this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.setHeadingTheme(response);
       }
     });
 
@@ -168,6 +172,13 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
         this.activeEditComponent = response;
       }
     });
+
+    this.activeThemeNameSubscription = this.builderHeadingService.headingTheme.subscribe(response => {
+      if (response && this.componentId == this.builderService.activeEditComponentId.getValue()) {
+        this.activeThemeName = response;
+      }
+    });
+
   }
 
   updateService() {
@@ -260,11 +271,30 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
         this.headingBackgroundStyle = { ...this.headingBackgroundStyle, ...headingBackgroundStyle };
       }
 
-      this.builderHeadingService.headingHeaderStyle.next(this.headingHeaderStyle);
-      this.builderHeadingService.headingSubheaderStyle.next(this.headingSubheaderStyle);
-      this.builderHeadingService.headingButtonStyle.next(this.headingButtonStyle);
-      this.builderHeadingService.headingStyle.next(this.headingStyle);
-      this.builderHeadingService.headingBackgroundStyle.next(this.headingBackgroundImg);
+      this.builderHeadingService['headingHeaderStyle'].next(this.headingHeaderStyle);
+      this.builderHeadingService['headingSubheaderStyle'].next(this.headingSubheaderStyle);
+      this.builderHeadingService['headingButtonStyle'].next(this.headingButtonStyle);
+      this.builderHeadingService['headingStyle'].next(this.headingStyle);
+      this.builderHeadingService['headingBackgroundStyle'].next(this.headingBackgroundImg);
+    }
+  }
+
+  setHeadingTheme(themeId: string) {
+    let response: any;
+    switch (themeId) {
+      case ActiveHeadingThemes.Default:
+        this.setHeadingThemeStyle(this.builderHeadingService.headingTemplate.getValue());
+        break;
+      case ActiveHeadingThemes.Stanley:
+        this.httpClient.get(this.HEADING_THEME_PATH).subscribe((themes: Array<any>) => {
+          response = themes.filter(theme => {
+            return theme.name == ActiveHeadingThemes.Stanley;
+          });
+          this.setHeadingThemeStyle(response[0]);
+        });
+        break;
+      default:
+        break;
     }
   }
 
@@ -333,5 +363,6 @@ export class BuilderHeadingComponent implements OnInit, IComponent, OnDestroy {
     this.headingBackgroundImageUrlSubscription.unsubscribe();
     this.headingBackgroundColorSubscription.unsubscribe();
     this.headingBackgroundStyleSubscription.unsubscribe();
+    this.activeThemeNameSubscription.unsubscribe();
   }
 }
