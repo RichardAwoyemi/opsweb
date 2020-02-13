@@ -132,9 +132,12 @@ export class HeadingColourPickerComponent implements OnInit, OnDestroy {
   resetToDefault() {
     const id = this.activeComponentId;
     this.builderHeadingService.headingTheme.next(ActiveHeadingThemes.Default);
-    this.headingBackgroundColor['background-color'] = this.defaultHeadingStyle['headingBackgroundColor']['background-color'];
+    this.headingBackgroundColor['background-color'] = this.defaultHeadingStyle['headingStyle']['background-color'];
     this.headingHeaderStyle['color'] = this.defaultHeadingStyle['headingHeaderStyle']['color'];
     this.headingSubheaderStyle['color'] = this.defaultHeadingStyle['headingSubheaderStyle']['color'];
+    this.headingButtonStyle['color'] = this.defaultHeadingStyle['headingButtonStyle']['color'];
+    this.headingButtonStyle['border-color'] = this.defaultHeadingStyle['headingButtonStyle']['border-color'];
+    this.headingButtonStyle['background-color'] = this.defaultHeadingStyle['headingButtonStyle']['background-color'];
     this.setHeadingStyle();
     this.setHeadingHeaderStyle();
     this.setHeadingSubheaderStyle();
