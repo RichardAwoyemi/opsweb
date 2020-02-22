@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
@@ -8,7 +8,7 @@ import { ActiveTemplates, ActiveThemes } from '../../../builder';
   selector: 'app-hero-colour-picker',
   templateUrl: './hero-colour-picker.component.html'
 })
-export class HeroColourPickerComponent implements OnInit {
+export class HeroColourPickerComponent implements OnInit, OnDestroy {
   heroBackgroundStyle: any = {
     'color': '#FFF'
   };
@@ -82,9 +82,9 @@ export class HeroColourPickerComponent implements OnInit {
       }
     });
 
-    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(response => {
-      if (response) {
-        this.heroTemplate = response;
+    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(heroTemplateResponse => {
+      if (heroTemplateResponse) {
+        this.heroTemplate = heroTemplateResponse;
 
         this.defaultHeroStyleSubscription = this.builderHeroService.getDefaultHeroStyle(this.heroTemplate).subscribe(response => {
           if (response) {

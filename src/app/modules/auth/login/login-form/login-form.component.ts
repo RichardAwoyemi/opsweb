@@ -3,7 +3,6 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SimpleModalService } from 'src/app/shared/components/simple-modal/simple-modal.service';
-import { UtilService } from 'src/app/shared/services/util.service';
 import { AuthService } from '../../auth.service';
 
 @Component({
@@ -18,10 +17,10 @@ export class LoginFormComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
     public simpleModalService: SimpleModalService,
-    public utilService: UtilService,
     public ngZone: NgZone,
     public router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);

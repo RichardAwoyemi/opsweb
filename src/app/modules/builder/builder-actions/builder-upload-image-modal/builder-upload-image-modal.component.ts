@@ -28,7 +28,7 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
   ngOnInit() {
     this.innerHeight = window.innerHeight - 300;
     this.modalHeight = {
-      'height': `${ this.innerHeight }px`
+      'height': `${this.innerHeight}px`
     };
   }
 
@@ -47,7 +47,7 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
 
   uploadImageToImgur() {
     this.imgurService.upload(this.croppedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status == '200') {
+      if (imgurResponse.status === '200') {
         this.builderNavbarService.navbarLogoImage.next(imgurResponse.data.link);
         this.toastrService.success('Your image has been uploaded.', 'Great!');
       } else {

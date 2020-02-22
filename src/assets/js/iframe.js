@@ -33,7 +33,7 @@ function setupNavbarContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
+        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
       },
       items: navbarItems
     });
@@ -45,7 +45,7 @@ function setupNavbarContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
+        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
       },
       items: navbarItems
     });
@@ -94,7 +94,7 @@ function setupHeroContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
+        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
       },
       items: heroItems
     });
@@ -106,7 +106,7 @@ function setupHeroContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
+        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
       },
       items: heroItems
     });
@@ -155,7 +155,7 @@ function setupFooterContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
+        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
       },
       items: footerItems
     });
@@ -167,7 +167,7 @@ function setupFooterContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${key}`}, '*')
+        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
       },
       items: footerItems
     });

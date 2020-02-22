@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { Subscription } from 'rxjs';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { SessionStorageService } from '../../../../shared/services/session-storage.service';
-import { ActiveComponents, ActiveComponentsFullSelector } from '../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder';
 import { UtilService } from '../../../../shared/services/util.service';
 import { BuilderService } from '../../builder.service';
 import { ToastrService } from 'ngx-toastr';
@@ -13,10 +12,11 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-builder-delete-component-modal',
   templateUrl: './builder-delete-component-modal.component.html'
 })
-export class BuilderDeleteComponentModalComponent implements IModalComponent, OnInit {
+export class BuilderDeleteComponentModalComponent implements IModalComponent, OnInit, OnDestroy {
   activePage: string;
+  activePageIndex: number;
   pageComponents: any;
-  private activeComponentIndex: number = 0;
+  private activeComponentIndex: number;
   private components: Array<string>;
 
   private activePageSettingSubscription: Subscription;
@@ -27,8 +27,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     private activeModal: NgbActiveModal,
     private builderComponentService: BuilderComponentsService,
     private builderService: BuilderService,
-    private toastrService: ToastrService,
-    private sessionStorageService: SessionStorageService
+    private toastrService: ToastrService
   ) {
   }
 
@@ -39,15 +38,16 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
       }
     }));
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((response => {
-      if (response) {
-        this.activePage = response;
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingResponse => {
+      if (activePageSettingResponse) {
+        this.activePage = activePageSettingResponse;
         this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
           if (response) {
             this.pageComponents = response;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+              if (this.pageComponents['pages'][i]['name'] === this.activePage) {
                 this.components = response['pages'][i]['components'];
+                this.activePageIndex = i;
               }
             }
           }
@@ -58,13 +58,36 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
 
   onConfirmButtonClick() {
     this.components.splice(this.activeComponentIndex, 1);
-    this.components = UtilService.dedupeAdjacent(this.components, ActiveComponentsFullSelector.Placeholder);
-    this.sessionStorageService.setItem('components', JSON.stringify(this.components));
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      if (this.pageComponents['pages'][i]['name'] == this.activePage) {
-        this.pageComponents['pages'][i]['components'] = this.components;
+
+    const componentsArrayWithoutPlaceholders = [];
+    for (let i = 0; i < this.components.length; i++) {
+      if (this.components[i]['componentName'] !== ActiveComponentsPartialSelector.Placeholder) {
+        componentsArrayWithoutPlaceholders.push(this.components[i]);
       }
     }
+
+    const componentsArrayWithPlaceholders = componentsArrayWithoutPlaceholders.reduce((r, a) => r.concat(a,
+      {
+        componentIndex: null,
+        componentName: ActiveComponentsPartialSelector.Placeholder,
+        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+        timestamp: new Date().getTime()
+      }),
+
+      [{
+        componentIndex: null,
+        componentName: ActiveComponentsPartialSelector.Placeholder,
+        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+        timestamp: new Date().getTime()
+      }]
+    );
+    for (let i = 0; i < componentsArrayWithPlaceholders.length; i++) {
+      componentsArrayWithPlaceholders[i]['componentIndex'] = i;
+    }
+
+    this.components = componentsArrayWithPlaceholders;
+    this.pageComponents['pages'][this.activePageIndex]['components'] = this.components;
+
     this.builderComponentService.pageComponents.next(this.pageComponents);
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.setSidebarComponentsSetting();

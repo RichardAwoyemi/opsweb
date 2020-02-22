@@ -20,7 +20,8 @@ export class FormAddressInputComponent implements OnInit {
     public formAddressInputService: FormAddressInputService,
     private userService: UserService,
     private userStore: Store<fromUser.State>
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.userStore.select('user')

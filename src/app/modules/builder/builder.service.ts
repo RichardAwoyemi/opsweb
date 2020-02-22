@@ -6,11 +6,6 @@ import { TourService } from '../../shared/services/tour.service';
 
 @Injectable()
 export class BuilderService {
-  constructor(
-    private scrollToService: ScrollToService
-  ) {
-  }
-
   activeEditComponent = new BehaviorSubject<string>(null);
   activeEditComponentId = new BehaviorSubject<string>(null);
   activeEditSetting = new BehaviorSubject<string>(null);
@@ -18,11 +13,10 @@ export class BuilderService {
   activePageIndex = new BehaviorSubject<number>(0);
   activeElement = new BehaviorSubject<string>(null);
   activeOrientation = new BehaviorSubject<string>(ActiveOrientations.Desktop);
-
-  SIDEBAR_INACTIVE_TAB: string = 'tab-pane fade tab-padding';
-  SIDEBAR_INACTIVE_MENU: string = 'nav-link';
-  SIDEBAR_ACTIVE_TAB: string = 'tab-pane fade active show tab-padding';
-  SIDEBAR_ACTIVE_MENU: string = 'nav-link active';
+  SIDEBAR_INACTIVE_TAB = 'tab-pane fade tab-padding';
+  SIDEBAR_INACTIVE_MENU = 'nav-link';
+  SIDEBAR_ACTIVE_TAB = 'tab-pane fade active show tab-padding';
+  SIDEBAR_ACTIVE_MENU = 'nav-link active';
   sidebarTemplatesMenu = new BehaviorSubject<string>(this.SIDEBAR_ACTIVE_MENU);
   sidebarTemplatesTab = new BehaviorSubject<string>(this.SIDEBAR_ACTIVE_TAB);
   sidebarPagesMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
@@ -37,9 +31,8 @@ export class BuilderService {
   sidebarOptionsTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
   sidebarDataMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
   sidebarDataTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
-
-  TOOLBAR_ACTIVE_BUTTON: string = 'toolbar-button toolbar-button-active';
-  TOOLBAR_INACTIVE_BUTTON: string = 'toolbar-button';
+  TOOLBAR_ACTIVE_BUTTON = 'toolbar-button toolbar-button-active';
+  TOOLBAR_INACTIVE_BUTTON = 'toolbar-button';
   toolbarColoursButton = new BehaviorSubject<string>(this.TOOLBAR_ACTIVE_BUTTON);
   toolbarComponentsButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
   toolbarLayoutButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
@@ -47,20 +40,45 @@ export class BuilderService {
   toolbarDesktopOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_ACTIVE_BUTTON);
   toolbarTabletOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
   toolbarMobileOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
-
   previewMode = new BehaviorSubject<boolean>(false);
   fullScreenMode = new BehaviorSubject<boolean>(false);
-
   fontNames = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
-
   websiteName = new BehaviorSubject<string>(null);
-
-  initialWebsiteChangeCount: any = { value: 0 };
+  initialWebsiteChangeCount: any = {value: 0};
   websiteChangeCount = new BehaviorSubject<any>(this.initialWebsiteChangeCount);
-
   shepherdDefaultStepOptions: any = TourService.setupBuilderTourStepOptions;
   shepherdDefaultSteps: any = TourService.setupBuilderTourSteps();
+
+  constructor(
+    private scrollToService: ScrollToService
+  ) {
+  }
+
+  static removeLineBreaks(e: any) {
+    const element = e.target;
+    element.innerText = element.innerText.replace(/\n/g, '').trim();
+  }
+
+  static setComponentClass(previewMode: boolean, activeEditComponent: string, componentName: string, active: boolean = true) {
+    if (previewMode) {
+      return '';
+    } else {
+      if ((activeEditComponent === componentName) && active) {
+        return 'component-border-active';
+      } else {
+        return 'component-border';
+      }
+    }
+  }
+
+  static setContextMenu(previewMode: boolean, activeEditComponent: string, componentName: string) {
+    if (!previewMode && activeEditComponent === componentName) {
+      return `${componentName}-edit-component no-select`;
+    } else {
+      return 'no-select';
+    }
+  }
 
   resetMenu() {
     this.sidebarTemplatesMenu.next(this.SIDEBAR_INACTIVE_MENU);
@@ -87,11 +105,6 @@ export class BuilderService {
     this.toolbarComponentsButton.next(this.TOOLBAR_INACTIVE_BUTTON);
     this.toolbarLayoutButton.next(this.TOOLBAR_INACTIVE_BUTTON);
     this.toolbarOptionsButton.next(this.TOOLBAR_INACTIVE_BUTTON);
-  }
-
-  static removeLineBreaks(e: any) {
-    let element = e.target;
-    element.innerText = element.innerText.replace(/\n/g, '').trim();
   }
 
   setActiveEditSetting(settingName: string) {
@@ -164,26 +177,6 @@ export class BuilderService {
     this.sidebarDataTab.next(this.SIDEBAR_ACTIVE_TAB);
   }
 
-  static setComponentClass(previewMode: boolean, activeEditComponent: string, componentName: string, active: boolean = true) {
-    if (previewMode) {
-      return '';
-    } else {
-      if ((activeEditComponent == componentName) && active) {
-        return 'component-border-active';
-      } else {
-        return 'component-border';
-      }
-    }
-  }
-
-  static setContextMenu(previewMode: boolean, activeEditComponent: string, componentName: string) {
-    if (!previewMode && activeEditComponent == componentName) {
-      return `${componentName}-edit-component no-select`;
-    } else {
-      return 'no-select';
-    }
-  }
-
   setActiveEditComponent(componentName: string, componentId: string = null) {
     if (componentId != null) {
       this.activeEditComponentId.next(componentId);
@@ -193,105 +186,105 @@ export class BuilderService {
   }
 
   processIncomingMessages(e: any, activeEditComponent: string) {
-    if (activeEditComponent == ActiveComponents.Navbar) {
+    if (activeEditComponent === ActiveComponents.Navbar) {
       this.processIncomingNavbarMessages(e);
     }
-    if (activeEditComponent == ActiveComponents.Footer) {
+    if (activeEditComponent === ActiveComponents.Footer) {
       this.processIncomingFooterMessages(e);
     }
-    if (activeEditComponent == ActiveComponents.Features) {
+    if (activeEditComponent === ActiveComponents.Features) {
       this.processIncomingFeaturesMessages(e);
     }
   }
 
   processIncomingNavbarMessages(e: any) {
-    if (e.data.action == 'navbar-options-logo') {
+    if (e.data.action === 'navbar-options-logo') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('navbar-options-logo');
     }
-    if (e.data.action == 'navbar-options-menu') {
+    if (e.data.action === 'navbar-options-menu') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('navbar-options-menu');
     }
-    if (e.data.action == 'navbar-layout-logo') {
+    if (e.data.action === 'navbar-layout-logo') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('navbar-layout-logo');
     }
-    if (e.data.action == 'navbar-layout-menu') {
+    if (e.data.action === 'navbar-layout-menu') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('navbar-layout-menu');
     }
-    if (e.data.action == 'navbar-colours') {
+    if (e.data.action === 'navbar-colours') {
       this.setSidebarColoursSetting();
       this.triggerScrollTo('navbar-colours');
     }
   }
 
   processIncomingFooterMessages(e: any) {
-    if (e.data.action == 'footer-options-copyright') {
+    if (e.data.action === 'footer-options-copyright') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('footer-options-copyright');
     }
-    if (e.data.action == 'footer-layout-copyright') {
+    if (e.data.action === 'footer-layout-copyright') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('footer-layout-copyright');
     }
-    if (e.data.action == 'footer-options-social') {
+    if (e.data.action === 'footer-options-social') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('footer-options-social');
     }
-    if (e.data.action == 'footer-layout-social') {
+    if (e.data.action === 'footer-layout-social') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('footer-layout-social');
     }
-    if (e.data.action == 'footer-options-menu') {
+    if (e.data.action === 'footer-options-menu') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('footer-options-menu');
     }
-    if (e.data.action == 'footer-layout-menu') {
+    if (e.data.action === 'footer-layout-menu') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('footer-layout-menu');
     }
-    if (e.data.action == 'footer-position') {
+    if (e.data.action === 'footer-position') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('footer-layout');
     }
-    if (e.data.action == 'footer-colours') {
+    if (e.data.action === 'footer-colours') {
       this.setSidebarColoursSetting();
       this.triggerScrollTo('footer-colours');
     }
   }
 
   processIncomingFeaturesMessages(e: any) {
-    if (e.data.action == 'features-options-copyright') {
+    if (e.data.action === 'features-options-copyright') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('features-options-copyright');
     }
-    if (e.data.action == 'features-layout-copyright') {
+    if (e.data.action === 'features-layout-copyright') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('features-layout-copyright');
     }
-    if (e.data.action == 'features-options-social') {
+    if (e.data.action === 'features-options-social') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('features-options-social');
     }
-    if (e.data.action == 'features-layout-social') {
+    if (e.data.action === 'features-layout-social') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('features-layout-social');
     }
-    if (e.data.action == 'features-options-menu') {
+    if (e.data.action === 'features-options-menu') {
       this.setSidebarOptionsSetting();
       this.triggerScrollTo('features-options-menu');
     }
-    if (e.data.action == 'features-layout-menu') {
+    if (e.data.action === 'features-layout-menu') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('features-layout-menu');
     }
-    if (e.data.action == 'features-position') {
+    if (e.data.action === 'features-position') {
       this.setSidebarLayoutSetting();
       this.triggerScrollTo('features-layout');
     }
-    if (e.data.action == 'features-colours') {
+    if (e.data.action === 'features-colours') {
       this.setSidebarColoursSetting();
       this.triggerScrollTo('features-colours');
     }
@@ -309,30 +302,20 @@ export class BuilderService {
   }
 
   setWebsiteChangeCount(value: number, delta: number) {
-    this.websiteChangeCount.next({ value: (value + delta) });
+    this.websiteChangeCount.next({value: (value + delta)});
   }
 
   resetWebsiteChangeCount() {
     this.websiteChangeCount.next(this.initialWebsiteChangeCount);
   }
 
-  postMessage(action: string, id: any = null, message: string = null, value: any = null) {
-    window.postMessage({
-      'for': 'opsonion',
-      'action': action,
-      'id': id,
-      'message': message,
-      'value': value
-    }, '*');
-  }
-
   @HostListener('window:message', ['$event'])
   onMessage(e) {
-    if (e.data.for == 'opsonion') {
-      if (e.data.action == 'unique-component-selected' || e.data.action == 'duplicate-component-deselected') {
+    if (e.data.for === 'opsonion') {
+      if (e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
         this.activeEditComponentId.next(null);
       }
-      if (e.data.action == 'duplicate-component-selected') {
+      if (e.data.action === 'duplicate-component-selected') {
         this.activeEditComponentId.next(e.data.message);
       }
     }

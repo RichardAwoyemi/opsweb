@@ -23,6 +23,6 @@ export class BrowserMockupComponent implements OnInit {
   }
 
   setImageOpacity(opacity) {
-    this.imageStyle = { 'opacity': opacity };
+    this.imageStyle = {'opacity': opacity};
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,7 @@ import { BuilderService } from '../../../builder.service';
   selector: 'app-footer-colour-picker',
   templateUrl: './footer-colour-picker.component.html'
 })
-export class FooterColourPickerComponent implements OnInit {
+export class FooterColourPickerComponent implements OnInit, OnDestroy {
   footerThemes: any;
   defaultFooterStyle: any;
   footerStyle: any;
@@ -47,9 +47,9 @@ export class FooterColourPickerComponent implements OnInit {
       }
     });
 
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
-      if (response) {
-        this.footerTemplate = response;
+    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
+      if (footerTemplateResponse) {
+        this.footerTemplate = footerTemplateResponse;
 
         this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
           if (response) {

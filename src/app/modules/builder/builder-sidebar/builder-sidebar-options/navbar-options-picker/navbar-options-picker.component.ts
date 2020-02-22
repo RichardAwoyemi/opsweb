@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,17 +15,17 @@ import { BuilderFooterService } from '../../../builder-components/builder-footer
   templateUrl: './navbar-options-picker.component.html',
   styleUrls: ['./navbar-options-picker.component.css'],
 })
-export class NavbarOptionsPickerComponent implements OnInit {
+export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
   navbarMenuOptions: any;
   navbarLogoImage: any;
   fontNames: any;
   fontUnits: any;
   imageUnits: any;
-  navbarBrandFontName: string = 'Avenir Next Regular';
-  navbarLinkFontName: string = 'Avenir Next Regular';
-  navbarBrandFontUnit: string = 'px';
-  navbarLinkFontUnit: string = 'px';
-  navbarLogoImageUnit: string = 'px';
+  navbarBrandFontName = 'Avenir Next Regular';
+  navbarLinkFontName = 'Avenir Next Regular';
+  navbarBrandFontUnit = 'px';
+  navbarLinkFontUnit = 'px';
+  navbarLogoImageUnit = 'px';
   navbarLinkStyle: any;
   navbarBrandStyle: any;
   navbarLogoImageStyle: any;
@@ -57,7 +57,7 @@ export class NavbarOptionsPickerComponent implements OnInit {
   ) {
     this.options = {
       onUpdate: function (e: any) {
-        let navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
+        const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
         const oldIndexNavbarMenuOption = navbarMenuOptions[e.oldIndex];
         const newIndexNavbarMenuOption = navbarMenuOptions[e.newIndex];
         navbarMenuOptions[e.newIndex] = oldIndexNavbarMenuOption;
@@ -93,9 +93,9 @@ export class NavbarOptionsPickerComponent implements OnInit {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-      if (response) {
-        this.navbarTemplate = response;
+    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarTemplateResponse => {
+      if (navbarTemplateResponse) {
+        this.navbarTemplate = navbarTemplateResponse;
 
         this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
           if (response) {
@@ -169,17 +169,21 @@ export class NavbarOptionsPickerComponent implements OnInit {
   }
 
   isNavbarLogoImageNull() {
-    return !this.navbarLogoImage || this.navbarLogoImage == 'navbarLogoImage';
+    return !this.navbarLogoImage || this.navbarLogoImage === 'navbarLogoImage';
   }
 
 
   openCropImageModal(event: any) {
-    const modal = this.modalService.open(BuilderUploadImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    const modal = this.modalService.open(BuilderUploadImageModalComponent, {
+      windowClass: 'modal-holder',
+      centered: true,
+      size: 'lg'
+    });
     modal.componentInstance.imageChangedEvent = event;
   }
 
   openDeleteImageModal() {
-    this.modalService.open(BuilderDeleteImageModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(BuilderDeleteImageModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 
   onNavbarBrandFontNameChange() {
@@ -193,13 +197,13 @@ export class NavbarOptionsPickerComponent implements OnInit {
   }
 
   onNavbarBrandFontUnitChange() {
-    if (this.navbarBrandFontUnit == 'em') {
+    if (this.navbarBrandFontUnit === 'em') {
       if (this.navbarBrandFontSize < 16) {
         this.navbarBrandFontSize = 16;
       }
       this.navbarBrandFontSize = Math.round(this.navbarBrandFontSize / 16);
     }
-    if (this.navbarBrandFontUnit == 'px') {
+    if (this.navbarBrandFontUnit === 'px') {
       this.navbarBrandFontSize = Math.round(this.navbarBrandFontSize * 16);
     }
     this.navbarBrandStyle['font-size'] = this.navbarBrandFontSize + this.navbarBrandFontUnit;
@@ -217,14 +221,14 @@ export class NavbarOptionsPickerComponent implements OnInit {
   }
 
   onNavbarLinkFontUnitChange() {
-    if (this.navbarLinkFontUnit == 'em') {
+    if (this.navbarLinkFontUnit === 'em') {
       if (this.navbarLinkFontSize < 16) {
         this.navbarLinkFontSize = 16;
       }
       this.navbarLinkFontSize = Math.round(this.navbarLinkFontSize / 16);
     }
 
-    if (this.navbarLinkFontUnit == 'px') {
+    if (this.navbarLinkFontUnit === 'px') {
       this.navbarLinkFontSize = Math.round(this.navbarLinkFontSize * 16);
     }
 

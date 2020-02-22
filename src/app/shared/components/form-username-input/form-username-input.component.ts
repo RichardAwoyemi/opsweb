@@ -25,7 +25,8 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
     private formUsernameInputService: FormUsernameInputService,
     private userStore: Store<fromUser.State>,
     private logger: NGXLogger
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.userStore.select('user')
@@ -60,7 +61,7 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
               this.simpleModalService.displayMessage('Great!', 'This username is available to use.');
               messageDisplayed = true;
             }
-            let user = JSON.parse(JSON.stringify(this.user));
+            const user = JSON.parse(JSON.stringify(this.user));
             user.username = this.username;
             this.user = user;
           }

@@ -15,11 +15,12 @@ export class SectionHeaderGroupComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.headerTopPadding$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
-      map(isHandset => isHandset ? { 'padding-top': '2.5em' } : { 'padding-top': '0em' })
+      map(isHandset => isHandset ? {'padding-top': '2.5em'} : {'padding-top': '0em'})
     );
   }
 }

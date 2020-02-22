@@ -8,7 +8,8 @@ export class BlockNonAlphanumericCharactersDirective {
   regexStr = '^[a-zA-Z0-9_]*$';
   @Input() isAlphaNumeric: boolean;
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef) {
+  }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);

@@ -39,7 +39,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   async onConfirmButtonClick() {
     if (this.activeLibrarySelectedImage) {
-      if (this.activeLibrarySelectedImage != this.builderHeroService.heroImageUrl.getValue() || this.activeLibrarySelectedImageAltText != this.builderHeroService.heroImageAlt.getValue()) {
+      if (this.activeLibrarySelectedImage !== this.builderHeroService.heroImageUrl.getValue() || this.activeLibrarySelectedImageAltText !== this.builderHeroService.heroImageAlt.getValue()) {
         this.uploadImage();
       }
     }
@@ -58,7 +58,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   uploadImageToImgur() {
     this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status == '200') {
+      if (imgurResponse.status === '200') {
         this.activeLibrarySelectedImage = imgurResponse.data.link;
         this.updateImage();
       }

@@ -11,7 +11,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);

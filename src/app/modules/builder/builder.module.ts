@@ -16,7 +16,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
-  { path: '', component: BuilderComponent }
+  {path: '', component: BuilderComponent}
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { Subscription } from 'rxjs';
 
@@ -7,19 +7,19 @@ import { Subscription } from 'rxjs';
   templateUrl: './navbar-layout-picker.component.html',
   styleUrls: ['./navbar-layout-picker.component.css']
 })
-export class NavbarLayoutPickerComponent implements OnInit {
-  navbarLinkPaddingTop: number = 0;
-  navbarLinkPaddingLeft: number = 0;
-  navbarLinkPaddingRight: number = 0;
-  navbarLinkPaddingBottom: number = 0;
-  navbarLogoImagePaddingTop: number = 0;
-  navbarLogoImagePaddingLeft: number = 0;
-  navbarLogoImagePaddingRight: number = 0;
-  navbarLogoImagePaddingBottom: number = 0;
-  navbarBrandPaddingTop: number = 0;
-  navbarBrandPaddingLeft: number = 0;
-  navbarBrandPaddingRight: number = 0;
-  navbarBrandPaddingBottom: number = 0;
+export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
+  navbarLinkPaddingTop = 0;
+  navbarLinkPaddingLeft = 0;
+  navbarLinkPaddingRight = 0;
+  navbarLinkPaddingBottom = 0;
+  navbarLogoImagePaddingTop = 0;
+  navbarLogoImagePaddingLeft = 0;
+  navbarLogoImagePaddingRight = 0;
+  navbarLogoImagePaddingBottom = 0;
+  navbarBrandPaddingTop = 0;
+  navbarBrandPaddingLeft = 0;
+  navbarBrandPaddingRight = 0;
+  navbarBrandPaddingBottom = 0;
   navbarLinkStyle: any;
   navbarLogoImageStyle: any;
   navbarLogoImage: any;
@@ -105,9 +105,9 @@ export class NavbarLayoutPickerComponent implements OnInit {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-      if (response) {
-        this.navbarTemplate = response;
+    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarTemplateResponse => {
+      if (navbarTemplateResponse) {
+        this.navbarTemplate = navbarTemplateResponse;
 
         this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
           if (response) {
@@ -123,67 +123,67 @@ export class NavbarLayoutPickerComponent implements OnInit {
   }
 
   setNavbarLogoImagePaddingTop() {
-    this.navbarLogoImageStyle['padding-top'] = `${ this.navbarLogoImagePaddingTop }px`;
+    this.navbarLogoImageStyle['padding-top'] = `${this.navbarLogoImagePaddingTop}px`;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
   }
 
   setNavbarLogoImagePaddingLeft() {
-    this.navbarLogoImageStyle['padding-left'] = `${ this.navbarLogoImagePaddingLeft }px`;
+    this.navbarLogoImageStyle['padding-left'] = `${this.navbarLogoImagePaddingLeft}px`;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
   }
 
   setNavbarLogoImagePaddingRight() {
-    this.navbarLogoImageStyle['padding-right'] = `${ this.navbarLogoImagePaddingRight }px`;
+    this.navbarLogoImageStyle['padding-right'] = `${this.navbarLogoImagePaddingRight}px`;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
   }
 
   setNavbarLogoImagePaddingBottom() {
-    this.navbarLogoImageStyle['padding-bottom'] = `${ this.navbarLogoImagePaddingBottom }px`;
+    this.navbarLogoImageStyle['padding-bottom'] = `${this.navbarLogoImagePaddingBottom}px`;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
   }
 
   setNavbarBrandPaddingTop() {
-    this.navbarBrandStyle['padding-top'] = `${ this.navbarBrandPaddingTop }px`;
+    this.navbarBrandStyle['padding-top'] = `${this.navbarBrandPaddingTop}px`;
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarBrandPaddingLeft() {
-    this.navbarBrandStyle['padding-left'] = `${ this.navbarBrandPaddingLeft }px`;
+    this.navbarBrandStyle['padding-left'] = `${this.navbarBrandPaddingLeft}px`;
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarBrandPaddingRight() {
-    this.navbarBrandStyle['padding-right'] = `${ this.navbarBrandPaddingRight }px`;
+    this.navbarBrandStyle['padding-right'] = `${this.navbarBrandPaddingRight}px`;
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarBrandPaddingBottom() {
-    this.navbarBrandStyle['padding-bottom'] = `${ this.navbarBrandPaddingBottom }px`;
+    this.navbarBrandStyle['padding-bottom'] = `${this.navbarBrandPaddingBottom}px`;
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarLinkPaddingTop() {
-    this.navbarLinkStyle['padding-top'] = `${ this.navbarLinkPaddingTop }px`;
+    this.navbarLinkStyle['padding-top'] = `${this.navbarLinkPaddingTop}px`;
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   setNavbarLinkPaddingLeft() {
-    this.navbarLinkStyle['padding-left'] = `${ this.navbarLinkPaddingLeft }px`;
+    this.navbarLinkStyle['padding-left'] = `${this.navbarLinkPaddingLeft}px`;
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   setNavbarLinkPaddingRight() {
-    this.navbarLinkStyle['padding-right'] = `${ this.navbarLinkPaddingRight }px`;
+    this.navbarLinkStyle['padding-right'] = `${this.navbarLinkPaddingRight}px`;
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   setNavbarLinkPaddingBottom() {
-    this.navbarLinkStyle['padding-bottom'] = `${ this.navbarLinkPaddingBottom }px`;
+    this.navbarLinkStyle['padding-bottom'] = `${this.navbarLinkPaddingBottom}px`;
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   isNavbarLogoImageNull() {
-    return !this.navbarLogoImage || this.navbarLogoImage == 'navbarLogoImage';
+    return !this.navbarLogoImage || this.navbarLogoImage === 'navbarLogoImage';
   }
 
   resetNavbarLinkStyle() {

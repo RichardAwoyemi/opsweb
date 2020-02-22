@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Template } from '../../../../shared/models/template';
 import { DataService } from '../../../../shared/services/data.service';
@@ -10,7 +10,6 @@ import { BuilderService } from '../../builder.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
-// import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
 import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
@@ -20,7 +19,7 @@ import { BuilderFeaturesService } from '../../builder-components/builder-feature
   templateUrl: './builder-sidebar-templates.component.html',
   styleUrls: ['./builder-sidebar-templates.component.css']
 })
-export class BuilderSidebarTemplatesComponent implements OnInit {
+export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
   innerHeight: number;
   websiteChangeCount: number;
   searchText: string;
@@ -60,7 +59,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
     this.webTemplateSubscription = this.dataService.getAllWebTemplates().subscribe(response => {
       if (response) {
         this.webTemplates = response;
-        this.webTemplates.push({ id: ActiveTemplates.Default, name: 'Default' });
+        this.webTemplates.push({id: ActiveTemplates.Default, name: 'Default'});
         TemplateService.parseSelectedTemplates([].concat.apply([], this.webTemplates));
         TemplateService.parseAvailableTemplates([].concat.apply([], this.webTemplates));
       }
@@ -94,14 +93,14 @@ export class BuilderSidebarTemplatesComponent implements OnInit {
   setTemplate(templateId: string) {
     this.templateSubscription = this.templateService.getTemplate(templateId).subscribe(response => {
       if (response) {
-        const defaultPageComponents = response['defaultComponents'];
-        if (this.websiteChangeCount > 0 || JSON.stringify(defaultPageComponents) !== JSON.stringify(this.pageComponents)) {
-          const modal = this.modalService.open(BuilderChangeTemplateModalComponent, { windowClass: 'modal-holder', centered: true });
+        if (this.websiteChangeCount > 0) {
+          const modal = this.modalService.open(BuilderChangeTemplateModalComponent, {
+            windowClass: 'modal-holder',
+            centered: true
+          });
           modal.componentInstance.templateId = templateId;
-          modal.componentInstance.defaultPageComponents = defaultPageComponents;
           this.builderService.resetWebsiteChangeCount();
         } else {
-          this.builderComponentsService.pageComponents.next(defaultPageComponents);
           this.builderNavbarService.setComponentTemplate(templateId);
           this.builderHeroService.setComponentTemplate(templateId);
           this.builderFooterService.setComponentTemplate(templateId);

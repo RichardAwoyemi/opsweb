@@ -12,9 +12,9 @@ import { UtilService } from '../../shared/services/util.service';
 })
 export class BuilderComponent implements OnInit, AfterViewInit {
   innerWidth: number;
-  previewMode: boolean = false;
-  sidebarClass: string = 'col-md-3';
-  showcaseClass: string = 'col-md-9';
+  previewMode = false;
+  sidebarClass = 'col-md-3';
+  showcaseClass = 'col-md-9';
   websiteName: string;
   previewModeSubscription: Subscription;
 
@@ -47,7 +47,7 @@ export class BuilderComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const startTour = localStorage.getItem('builderTourComplete');
-    if (!startTour || startTour == 'false') {
+    if (!startTour || startTour === 'false') {
       this.shepherdService.defaultStepOptions = this.builderService.shepherdDefaultStepOptions;
       this.shepherdService.requiredElements = [];
       this.shepherdService.modal = true;

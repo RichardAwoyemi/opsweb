@@ -1,10 +1,10 @@
 let builderShowcaseId, componentIconClass, builderShowcase, currentElement, currentElementChangeFlag,
-  elementRectangle, countdown, dragOverQueueProcessTimer, htmlToInsert, components;
+  elementRectangle, countdown, dragOverQueueProcessTimer, componentToAdd, components;
 
 let singleUseComponents = [
-  '<app-builder-navbar></app-builder-navbar>',
-  '<app-builder-hero></app-builder-hero>',
-  '<app-builder-footer></app-builder-footer>'
+  'app-builder-navbar',
+  'app-builder-hero',
+  'app-builder-footer'
 ];
 
 let container = document.querySelector('body');
@@ -77,7 +77,9 @@ function componentDragStarted(e) {
   dragOverQueueProcessTimer = setInterval(function () {
     dragDropFunctions.processDragOverQueue();
   }, 100);
-  htmlToInsert = e.originalEvent.srcElement.dataset.insertHtml;
+  if (e.originalEvent['srcElement']['dataset']['insertHtml']) {
+    componentToAdd = JSON.parse(e.originalEvent['srcElement']['dataset']['insertHtml']);
+  }
 }
 
 function componentDragEnded() {
@@ -116,49 +118,37 @@ function listenForShowcaseDropEvent(e) {
 }
 
 function addComponent(e) {
-  if (htmlToInsert) {
-    if (htmlToInsert !== '<app-builder-placeholder></app-builder-placeholder>') {
-      const componentId = $(e.target).parent().parent().parent().parent().attr("id");
-      if (componentId) {
-        const tempComponentIndex = componentId.split('-');
-        const componentIndex = parseInt(tempComponentIndex[1]);
-        let componentExists = false;
+  let componentExists = false;
 
-        components = JSON.parse(sessionStorage.getItem('components'));
-        for (let i = 0; i < components.length; i++) {
-          if (components[i] === htmlToInsert) {
-            if (isInArray(components[i], singleUseComponents))
-              componentExists = true;
-          }
-          if (i === componentIndex) {
-            if (components[i] === "<app-builder-placeholder></app-builder-placeholder>") {
-              components[i] = htmlToInsert;
-            }
-          }
+  if (componentToAdd) {
+    const nearestComponentId = $(e.target).parent().parent().parent().attr("id");
+    if (nearestComponentId) {
+      components = JSON.parse(sessionStorage.getItem('components'));
+      for (let i = 0; i < components.length; i++) {
+        if (components[i]['componentName'] === componentToAdd['componentName']) {
+          if (isInArray(components[i]['componentName'], singleUseComponents))
+            componentExists = true;
         }
+      }
 
-        if (componentExists === false) {
-          components.splice(componentIndex, 0, "<app-builder-placeholder></app-builder-placeholder>");
-          components.splice(componentIndex + 2, 0, "<app-builder-placeholder></app-builder-placeholder>");
-          components = dedupeAdjacent(components, '<app-builder-placeholder></app-builder-placeholder>');
-          sessionStorage.setItem('components', JSON.stringify(components));
-          window.parent.window.postMessage({"for": "opsonion", "action": "component-added", "data": components}, '*')
-        } else {
-          window.parent.window.postMessage({"for": "opsonion", "action": "component-exists"}, '*')
-        }
-
-        htmlToInsert = null;
+      componentToAdd['nearestComponentId'] = nearestComponentId;
+      if (componentExists === false) {
+        window.parent.window.postMessage({
+          "for": "opsonion",
+          "action": "component-added",
+          "message": componentToAdd
+        }, '*')
+      } else {
+        window.parent.window.postMessage({"for": "opsonion", "action": "component-exists"}, '*')
       }
     }
   }
+
+  componentToAdd = null;
 }
 
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
-}
-
-function dedupeAdjacent(a, targets) {
-  return a.filter((e, i) => e !== a[i - 1] || !targets.includes(e))
 }
 
 // The drag over event gets fired whenever the mouse moves. This results in too many events

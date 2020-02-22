@@ -43,11 +43,11 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
 
   onConfirmButtonClick() {
     this.websiteService.createWebsite(this.websiteName).subscribe(websites => {
-      if (websites.size == 0) {
+      if (websites.size === 0) {
         const documentId = this.afs.createId();
-        const documentPath = `websites/${ documentId }`;
+        const documentPath = `websites/${documentId}`;
         const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-        documentRef.set({ name: this.websiteName, userId: this.user.uid }, { merge: true });
+        documentRef.set({name: this.websiteName, userId: this.user.uid}, {merge: true});
         this.toastrService.success('Your website has been created.');
         this.activeModal.close();
       } else {

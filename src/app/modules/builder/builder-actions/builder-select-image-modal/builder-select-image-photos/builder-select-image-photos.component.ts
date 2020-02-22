@@ -36,7 +36,7 @@ export class BuilderSelectImagePhotosComponent implements OnInit {
 
   searchImages() {
     if (!UtilService.isNullOrWhitespace(this.searchText)) {
-      this.unsplashService.searchImages(this.searchText).then((images) => this.images = images);
+      UnsplashService.searchImages(this.searchText).then((images) => this.images = images);
     }
   }
 
@@ -48,8 +48,8 @@ export class BuilderSelectImagePhotosComponent implements OnInit {
   }
 
   setImageSelection(i: number) {
-    if (i == this.selectedImageIndex) {
-      return { 'background-color': '#dee6fc' };
+    if (i === this.selectedImageIndex) {
+      return {'background-color': '#dee6fc'};
     } else {
       return {};
     }
@@ -60,7 +60,7 @@ export class BuilderSelectImagePhotosComponent implements OnInit {
       this.builderActionsService.activeLibrarySearchText.next(this.searchText);
       return this.searchImages();
     } else {
-      if (this.searchText != this.activeLibrarySearchText) {
+      if (this.searchText !== this.activeLibrarySearchText) {
         this.images = null;
       }
     }

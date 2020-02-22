@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
 import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
 import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
-import { UtilService } from '../../../../shared/services/util.service';
+import { BuilderComponentsService } from '../builder-components.service';
 
 @Component({
   selector: 'app-builder-hero',
   templateUrl: './builder-footer.component.html'
 })
-export class BuilderFooterComponent implements OnInit, IComponent {
+export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   componentName: string = ActiveComponents.Footer;
-  componentId = `${ ActiveComponents.Footer }-${ UtilService.generateRandomString(8) }`;
+  componentId: string;
+  componentIndex: number;
   innerHeight: number;
   activeEditComponent: string;
   activeEditComponentId: string;
@@ -38,6 +39,9 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   footerComponentLayout: any;
   activeElement: string;
   copyrightText: string;
+  activePageSetting: string;
+  pageComponents: any;
+  componentDetail: any;
 
   private footerStyleSubscription: Subscription;
   private footerPageLinksStyleSubscription: Subscription;
@@ -55,6 +59,8 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   private previewModeSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private activeElementSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   private facebookUrlSubscription: Subscription;
   private twitterUrlSubscription: Subscription;
@@ -66,7 +72,9 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   constructor(
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
-    private builderFooterService: BuilderFooterService
+    private builderFooterService: BuilderFooterService,
+    private builderComponentService: BuilderComponentsService,
+    private elementRef: ElementRef,
   ) {
   }
 
@@ -158,13 +166,13 @@ export class BuilderFooterComponent implements OnInit, IComponent {
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
+    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
+      if (navbarMenuOptionsResponse) {
+        this.navbarMenuOptions = navbarMenuOptionsResponse;
 
         this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
           if (response) {
-            let footerMenuOptions = [];
+            const footerMenuOptions = [];
             Object.keys(response).forEach(function (key) {
               if (response[key] !== false) {
                 footerMenuOptions.push(key);
@@ -197,12 +205,41 @@ export class BuilderFooterComponent implements OnInit, IComponent {
         this.builderFooterService.footerTemplate.next(ActiveThemes.Default);
       }
     });
+
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
+      if (activePageSettingResponse) {
+        this.activePageSetting = activePageSettingResponse;
+        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+          if (response) {
+            this.pageComponents = response;
+            if (this.elementRef.nativeElement['id']) {
+              this.componentId = this.elementRef.nativeElement['id'];
+              for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                const pageName = this.pageComponents['pages'][i]['name'];
+                if (pageName === this.activePageSetting) {
+                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                      this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                      this.builderFooterService.footerStyle.next(this.componentDetail['footerStyle']);
+                      this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['footerSocialLinksContainerStyle']);
+                      this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['footerSocialLinksStyle']);
+                      this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['footerPageLinksStyle']);
+                      this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['footerCopyrightStyle']);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    });
   }
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    if (this.activeEditComponent == ActiveComponents.Footer) {
+    if (this.activeEditComponent === ActiveComponents.Footer) {
       this.builderService.clearActiveEditComponent();
     } else {
       this.builderService.setActiveEditComponent(this.componentName, this.componentId);
@@ -219,7 +256,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   }
 
   setActiveElementStyle(activeElement, element) {
-    if (activeElement == element && !this.previewMode) {
+    if (activeElement === element && !this.previewMode) {
       if (element.indexOf('footer-copyright') > -1) {
         return 'footer-copyright-edit';
       }

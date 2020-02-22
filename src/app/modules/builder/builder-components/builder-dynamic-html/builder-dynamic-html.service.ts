@@ -1,4 +1,11 @@
-import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, Injectable, Injector } from '@angular/core';
+import {
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef,
+  Injectable,
+  Injector
+} from '@angular/core';
 import { BuilderDynamicHtmlOptions, OnMount } from './builder-dynamic-html.interface';
 
 export interface BuilderDynamicHtmlInterface {
@@ -16,7 +23,7 @@ export class BuilderDynamicHtmlService {
   private componentRefs = new Map<any, Array<ComponentRef<any>>>();
 
   constructor(private options: BuilderDynamicHtmlOptions, private cfr: ComponentFactoryResolver, private injector: Injector) {
-    this.options.components.forEach(({ selector, component }) => {
+    this.options.components.forEach(({selector, component}) => {
       let cf: ComponentFactory<any>;
       cf = this.cfr.resolveComponentFactory(component);
       this.componentFactories.set(selector, cf);
@@ -35,7 +42,7 @@ export class BuilderDynamicHtmlService {
     elementRef.nativeElement.innerHTML = html;
 
     const componentRefs: Array<ComponentRef<any>> = [];
-    this.options.components.forEach(({ selector }) => {
+    this.options.components.forEach(({selector}) => {
       const elements = (elementRef.nativeElement as Element).querySelectorAll(selector);
       Array.prototype.forEach.call(elements, (el: Element) => {
         const content = el.innerHTML;

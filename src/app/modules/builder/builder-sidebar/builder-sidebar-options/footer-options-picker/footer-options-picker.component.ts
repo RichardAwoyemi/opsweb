@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
@@ -9,7 +9,7 @@ import { BuilderNavbarService } from '../../../builder-components/builder-navbar
   templateUrl: './footer-options-picker.component.html',
   styleUrls: ['./footer-options-picker.component.css'],
 })
-export class FooterOptionsPickerComponent implements OnInit {
+export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   fontNames: any;
   fontUnits: any;
   footerStyle: any;
@@ -20,13 +20,13 @@ export class FooterOptionsPickerComponent implements OnInit {
   footerCopyrightFontSize: number;
   defaultFooterStyle: any;
   footerTemplate: string;
-  footerCopyrightFontUnit: string = 'px';
+  footerCopyrightFontUnit = 'px';
   footerSocialLinksFontSize: number;
-  footerSocialLinksFontUnit: string = 'px';
+  footerSocialLinksFontUnit = 'px';
   footerPageLinksFontSize: number;
-  footerPageLinksFontUnit: string = 'px';
-  footerPageLinkFontName: string = 'Avenir Next Regular';
-  footerCopyrightFontName: string = 'Avenir Next Regular';
+  footerPageLinksFontUnit = 'px';
+  footerPageLinkFontName = 'Avenir Next Regular';
+  footerCopyrightFontName = 'Avenir Next Regular';
   facebookUrl: string;
   twitterUrl: string;
   instagramUrl: string;
@@ -102,9 +102,9 @@ export class FooterOptionsPickerComponent implements OnInit {
       }
     });
 
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
-      if (response) {
-        this.footerTemplate = response;
+    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
+      if (footerTemplateResponse) {
+        this.footerTemplate = footerTemplateResponse;
 
         this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
           if (response) {
@@ -204,14 +204,14 @@ export class FooterOptionsPickerComponent implements OnInit {
   }
 
   onFooterCopyrightFontUnitChange() {
-    if (this.footerCopyrightFontUnit == 'em') {
+    if (this.footerCopyrightFontUnit === 'em') {
       if (this.footerCopyrightFontSize < 16) {
         this.footerCopyrightFontSize = 16;
       }
       this.footerCopyrightFontSize = Math.round(this.footerCopyrightFontSize / 16);
     }
 
-    if (this.footerCopyrightFontUnit == 'px') {
+    if (this.footerCopyrightFontUnit === 'px') {
       this.footerCopyrightFontSize = Math.round(this.footerCopyrightFontSize * 16);
     }
 
@@ -233,14 +233,14 @@ export class FooterOptionsPickerComponent implements OnInit {
   }
 
   onFooterSocialLinksFontUnitChange() {
-    if (this.footerSocialLinksFontUnit == 'em') {
+    if (this.footerSocialLinksFontUnit === 'em') {
       if (this.footerSocialLinksFontSize < 16) {
         this.footerSocialLinksFontSize = 16;
       }
       this.footerSocialLinksFontSize = Math.round(this.footerSocialLinksFontSize / 16);
     }
 
-    if (this.footerSocialLinksFontUnit == 'px') {
+    if (this.footerSocialLinksFontUnit === 'px') {
       this.footerSocialLinksFontSize = Math.round(this.footerSocialLinksFontSize * 16);
     }
 
@@ -275,14 +275,14 @@ export class FooterOptionsPickerComponent implements OnInit {
   }
 
   onFooterPageLinksFontUnitChange() {
-    if (this.footerPageLinksFontUnit == 'em') {
+    if (this.footerPageLinksFontUnit === 'em') {
       if (this.footerPageLinksFontSize < 16) {
         this.footerPageLinksFontSize = 16;
       }
       this.footerPageLinksFontSize = Math.round(this.footerPageLinksFontSize / 16);
     }
 
-    if (this.footerPageLinksFontUnit == 'px') {
+    if (this.footerPageLinksFontUnit === 'px') {
       this.footerPageLinksFontSize = Math.round(this.footerPageLinksFontSize * 16);
     }
 
@@ -292,29 +292,29 @@ export class FooterOptionsPickerComponent implements OnInit {
   }
 
   onSocialLinkChange(platform: string) {
-    if (platform == 'facebook') {
+    if (platform === 'facebook') {
       this.builderFooterService.facebookUrl.next(this.facebookUrl);
-    } else if (platform == 'twitter') {
+    } else if (platform === 'twitter') {
       this.builderFooterService.twitterUrl.next(this.twitterUrl);
-    } else if (platform == 'instagram') {
+    } else if (platform === 'instagram') {
       this.builderFooterService.instagramUrl.next(this.instagramUrl);
-    } else if (platform == 'youtube') {
+    } else if (platform === 'youtube') {
       this.builderFooterService.youtubeUrl.next(this.youtubeUrl);
-    } else if (platform == 'github') {
+    } else if (platform === 'github') {
       this.builderFooterService.githubUrl.next(this.githubUrl);
-    } else if (platform == 'linkedin') {
+    } else if (platform === 'linkedin') {
       this.builderFooterService.linkedinUrl.next(this.linkedinUrl);
     }
   }
 
   toggleFooterMenuOptionVisibility(index: number) {
     let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
-    let selectedNavbarMenuOption = this.navbarMenuOptions[index];
+    const selectedNavbarMenuOption = this.navbarMenuOptions[index];
 
-    if (footerMenuOptions == null) {
+    if (footerMenuOptions === null) {
       footerMenuOptions = [];
       for (let i = 0; i < this.navbarMenuOptions.length; i++) {
-        footerMenuOptions[this.navbarMenuOptions[i]] = this.navbarMenuOptions[i] == selectedNavbarMenuOption;
+        footerMenuOptions[this.navbarMenuOptions[i]] = this.navbarMenuOptions[i] === selectedNavbarMenuOption;
       }
     } else {
       Object.keys(footerMenuOptions).forEach(function (key) {
@@ -329,7 +329,7 @@ export class FooterOptionsPickerComponent implements OnInit {
   }
 
   checkIfFooterMenuOptionIsVisible(menuOption: string): boolean {
-    let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
+    const footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
     if (footerMenuOptions && footerMenuOptions[menuOption]) {
       return footerMenuOptions[menuOption];
     } else {

@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { ActiveTemplates, ActiveThemes } from '../../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderService } from '../../../builder.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-navbar-colour-picker',
   templateUrl: './navbar-colour-picker.component.html'
 })
-export class NavbarColourPickerComponent implements OnInit {
+export class NavbarColourPickerComponent implements OnInit, OnDestroy {
   navbarThemes: any;
   navbarStyle: any = {
     'background-color': '#FFFFFF'
@@ -23,6 +24,8 @@ export class NavbarColourPickerComponent implements OnInit {
   navbarTheme: string = ActiveThemes.Default;
   defaultNavbarStyle: any;
   websiteChangeCount: number;
+  pageComponents: any;
+
   private navbarStyleSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
   private navbarLinkStyleSubscription: Subscription;
@@ -31,9 +34,11 @@ export class NavbarColourPickerComponent implements OnInit {
   private navbarThemesSubscription: Subscription;
   private defaultNavbarStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
+    private builderComponentService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -57,9 +62,9 @@ export class NavbarColourPickerComponent implements OnInit {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-      if (response) {
-        this.navbarTemplate = response;
+    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarResponse => {
+      if (navbarResponse) {
+        this.navbarTemplate = navbarResponse;
 
         this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
           if (response) {
@@ -84,6 +89,12 @@ export class NavbarColourPickerComponent implements OnInit {
     this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
+      }
+    });
+
+    this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
       }
     });
   }
@@ -123,7 +134,24 @@ export class NavbarColourPickerComponent implements OnInit {
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
+  setChanges() {
+    const timestamp = new Date().getTime();
+    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+        if (this.pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
+          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
+          this.pageComponents['pages'][i]['components'][j]['navbarTheme'] = this.navbarTheme;
+          this.pageComponents['pages'][i]['components'][j]['navbarStyle'] = this.navbarStyle;
+          this.pageComponents['pages'][i]['components'][j]['navbarBrandStyle'] = this.navbarBrandStyle;
+          this.pageComponents['pages'][i]['components'][j]['navbarLinkStyle'] = this.navbarLinkStyle;
+        }
+      }
+    }
+    this.builderComponentService.pageComponents.next(this.pageComponents);
+  }
+
   ngOnDestroy() {
+    this.setChanges();
     this.navbarStyleSubscription.unsubscribe();
     this.navbarBrandStyleSubscription.unsubscribe();
     this.navbarLinkStyleSubscription.unsubscribe();
@@ -132,5 +160,6 @@ export class NavbarColourPickerComponent implements OnInit {
     this.navbarThemesSubscription.unsubscribe();
     this.defaultNavbarStyleSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

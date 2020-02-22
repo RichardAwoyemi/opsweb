@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderHeroService } from './builder-hero.service';
-import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings, ActiveThemes } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
-import { UtilService } from '../../../../shared/services/util.service';
+import { BuilderComponentsService } from '../builder-components.service';
 
 @Component({
   selector: 'app-builder-hero',
   templateUrl: './builder-hero.component.html'
 })
-export class BuilderHeroComponent implements OnInit, IComponent {
+export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   innerHeight: number;
   heroHeadingStyle: any;
   heroImageUrl: string;
@@ -20,17 +20,20 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   heroButtonStyle: any;
   activeEditComponent: string;
   activeEditComponentId: string;
-  previewMode: boolean = false;
+  previewMode = false;
   componentName: string = ActiveComponents.Hero;
-  componentId: string = `${ ActiveComponents.Hero }-${ UtilService.generateRandomString(8) }`;
+  componentId: string;
   heroHeadingText: string;
   heroButtonText: string;
   heroSubheadingText: string;
   heroComponentLayout: any;
   heroImageContainerClass: string;
   heroTextContainerClass: string;
-  heroImageSize: number = 100;
+  heroImageSize = 100;
   activeElement: string;
+  componentDetail: any;
+  activePageSetting: string;
+  pageComponents: any;
 
   private heroTemplateSubscription: Subscription;
   private heroImageSizeSubscription: Subscription;
@@ -51,10 +54,14 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   private heroImageContainerClassSubscription: Subscription;
   private heroTextContainerClassSubscription: Subscription;
   private activeElementSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
-    private builderHeroService: BuilderHeroService
+    private builderHeroService: BuilderHeroService,
+    private builderComponentService: BuilderComponentsService,
+    private elementRef: ElementRef
   ) {
   }
 
@@ -117,7 +124,6 @@ export class BuilderHeroComponent implements OnInit, IComponent {
     this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(response => {
       if (!response) {
         this.builderHeroService.heroTemplate.next(ActiveThemes.Default);
-        this.builderHeroService.setHeroTemplate(ActiveTemplates.Default);
       }
     });
 
@@ -168,12 +174,41 @@ export class BuilderHeroComponent implements OnInit, IComponent {
     this.heroTextContainerClassSubscription = this.builderHeroService.heroTextContainerClass.subscribe(response => {
       this.heroTextContainerClass = response;
     });
+
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
+      if (activePageSettingResponse) {
+        this.activePageSetting = activePageSettingResponse;
+        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+          if (response) {
+            this.pageComponents = response;
+            if (this.elementRef.nativeElement['id']) {
+              this.componentId = this.elementRef.nativeElement['id'];
+              for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                const pageName = this.pageComponents['pages'][i]['name'];
+                if (pageName === this.activePageSetting) {
+                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                      this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                      this.builderHeroService.heroBackgroundStyle.next(this.componentDetail['heroBackgroundStyle']);
+                      this.builderHeroService.heroHeadingStyle.next(this.componentDetail['heroHeadingStyle']);
+                      this.builderHeroService.heroSubheadingStyle.next(this.componentDetail['heroSubheadingStyle']);
+                      this.builderHeroService.heroImageStyle.next(this.componentDetail['heroImageStyle']);
+                      this.builderHeroService.heroButtonStyle.next(this.componentDetail['heroButtonStyle']);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    });
   }
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    if (this.activeEditComponent == ActiveComponents.Hero) {
+    if (this.activeEditComponent === ActiveComponents.Hero) {
       this.clearActiveEditComponent();
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
@@ -216,11 +251,11 @@ export class BuilderHeroComponent implements OnInit, IComponent {
   }
 
   setHeroImageStyle() {
-    return { 'width': this.heroImageSize + '%' };
+    return {'width': this.heroImageSize + '%'};
   }
 
   setActiveElementStyle(activeElement, element) {
-    if (activeElement == element && !this.previewMode) {
+    if (activeElement === element && !this.previewMode) {
       if (element.indexOf(element) > -1) {
         return element + '-edit';
       }

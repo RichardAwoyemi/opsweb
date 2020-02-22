@@ -11,7 +11,9 @@
           <p class="text-center">If you do not receive this email, please check your spam or bulk email folder.</p>
           <br>
           <div class="col-md-4 col-xl-4 mx-auto input-border">
-            <button class="btn btn-lg btn-block btn-secondary" (click)="authService.sendVerificationMail()">Resend Email</button>
+            <button (click)="authService.sendVerificationMail()" class="btn btn-lg btn-block btn-secondary">Resend
+              Email
+            </button>
           </div>
         </div>
         <div *ngIf="!authService.user as user">
@@ -20,8 +22,8 @@
           <p class="text-center">Nothing to see here!</p>
           <br>
           <div class="col-md-4 col-xl-4 mx-auto input-border">
-            <button class="btn btn-lg btn-block btn-secondary" [routerLink]="['/login']">Login</button>
-            <button class="btn btn-lg btn-block btn-secondary" [routerLink]="['/register']">Register</button>
+            <button [routerLink]="['/login']" class="btn btn-lg btn-block btn-secondary">Login</button>
+            <button [routerLink]="['/register']" class="btn btn-lg btn-block btn-secondary">Register</button>
           </div>
         </div>
       </div>

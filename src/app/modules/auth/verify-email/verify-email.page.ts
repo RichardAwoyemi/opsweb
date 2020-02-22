@@ -13,7 +13,8 @@ export class VerifyEmailComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     public authService: AuthService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);

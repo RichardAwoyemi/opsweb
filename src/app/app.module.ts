@@ -12,7 +12,7 @@ import { BuilderModule } from './modules/builder/builder.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
-  { path: '', loadChildren: './modules/main/main.module#MainModule' }
+  {path: '', loadChildren: './modules/main/main.module#MainModule'}
 ];
 
 @NgModule({

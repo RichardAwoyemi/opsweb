@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActiveSidebarSettings } from '../../dashboard';
 import { DashboardService } from '../../dashboard.service';
@@ -12,13 +12,13 @@ import { SimpleModalService } from '../../../../shared/components/simple-modal/s
   selector: 'app-dashboard-sidebar-links',
   templateUrl: './dashboard-sidebar-menu.component.html'
 })
-export class DashboardSidebarMenuComponent {
+export class DashboardSidebarMenuComponent implements OnInit {
   ACTIVE_SIDEBAR_WEBSITES: string = ActiveSidebarSettings.Websites;
   ACTIVE_SIDEBAR_TEMPLATES: string = ActiveSidebarSettings.Templates;
   ACTIVE_SIDEBAR_SETTINGS: string = ActiveSidebarSettings.AccountSettings;
   ACTIVE_SIDEBAR_REWARDS: string = ActiveSidebarSettings.Rewards;
   user: IUser;
-  messageDisplayed: boolean = false;
+  messageDisplayed = false;
 
   constructor(
     public router: Router,

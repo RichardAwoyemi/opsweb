@@ -9,7 +9,8 @@ export class SimpleModalComponent implements OnInit {
   public header: string;
   public message: string;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal) {
+  }
 
   ngOnInit() {
   }

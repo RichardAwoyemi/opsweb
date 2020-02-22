@@ -23,7 +23,8 @@ export class CropImageModalComponent implements OnInit {
     private simpleModalService: SimpleModalService,
     private imgurService: ImgurService,
     private userService: UserService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user'));

@@ -13,9 +13,9 @@
               (keydown.enter)="saveNavbarLogoBrandOption(); $event.preventDefault()"
               [attr.contenteditable]="setContentEditable()"
               [class]="setActiveElementStyle(activeElement, 'navbar-logo-brand')"
+              [innerText]="navbarLogoText"
               [ngClass]="setNavbarLogoBrandClass()"
-              id="'navbar-logo-brand'"
-              [innerText]="navbarLogoText" style="padding: .5rem;"></span>
+              id="'navbar-logo-brand'" style="padding: .5rem;"></span>
       </ng-container>
       <ng-container *ngIf="isNavbarLogoImageNull() == false">
         <img (click)="selectNavbarLogoImage($event, 'navbar-logo-image')"
@@ -40,10 +40,10 @@
              (keydown.enter)="saveNavbarMenuOption(i, $event.target.innerText); $event.preventDefault(); $event.target.blur()"
              [attr.contenteditable]="setContentEditable()"
              [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
+             [innerText]="navbarMenuOption"
              [ngClass]="setNavbarLinkClass()"
              [ngStyle]="navbarLinkStyle"
-             id="{{ 'navbar-link-' + i }}"
-             [innerText]="navbarMenuOption" style="padding: .5rem"></a>
+             id="{{ 'navbar-link-' + i }}" style="padding: .5rem"></a>
         </li>
       </ul>
     </div>

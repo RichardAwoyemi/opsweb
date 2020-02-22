@@ -20,6 +20,6 @@ export class DashboardBodyWebsitesComponent implements OnInit {
   }
 
   openCreateWebsiteModal() {
-    this.modalService.open(DashboardCreateWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(DashboardCreateWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 }

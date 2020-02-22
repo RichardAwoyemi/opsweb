@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { BuilderActionsService } from '../builder-actions.service';
@@ -13,12 +13,12 @@ import { BuilderComponentsService } from '../../builder-components/builder-compo
   selector: 'app-builder-rename-page-modal',
   templateUrl: './builder-rename-page-modal.component.html'
 })
-export class BuilderRenamePageModalComponent implements IModalComponent {
+export class BuilderRenamePageModalComponent implements IModalComponent, OnInit, OnDestroy {
   @Input() activePage: string;
   @Input() activePageIndex: number;
   pageName: string;
-  displayError: boolean = false;
-  disableSaveButton: boolean = false;
+  displayError = false;
+  disableSaveButton = false;
   navbarMenuOptions: any;
   pageComponents: any;
   private navbarMenuOptionsSubscription: Subscription;
@@ -58,7 +58,7 @@ export class BuilderRenamePageModalComponent implements IModalComponent {
     this.activeModal.dismiss();
 
     for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+      if (this.pageComponents['pages'][i]['name'] === this.activePage) {
         this.pageComponents['pages'][i]['name'] = UtilService.toTitleCase(this.pageName);
       }
     }

@@ -7,52 +7,12 @@ import { IUser } from '../models/user';
 
 @Injectable()
 export class UserService {
+
   user = new BehaviorSubject(<Object>(null));
 
   constructor(
     private afs: AngularFirestore
   ) {
-  }
-
-  getUserById(id) {
-    return this.afs.collection('users').doc(id).snapshotChanges().pipe(map(action => {
-      const data = action.payload.data();
-      const uid = action.payload.id;
-      return { uid, ...data };
-    }));
-  }
-
-  setUserData(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ user.user.uid }`);
-    const userData: any = {
-      uid: user.user.uid,
-      email: user.user.email,
-      displayName: user.user.displayName,
-      photoURL: user.user.photoURL,
-      emailVerified: true
-    };
-    return userRef.set(userData, {
-      merge: true
-    });
-  }
-
-  setUserDetailData(uid, firstName, lastName, referralId) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
-    let userDetailData = {};
-    if (firstName && lastName) {
-      userDetailData = {
-        firstName: firstName,
-        lastName: lastName,
-        referralId: referralId
-      };
-    } else {
-      userDetailData = {
-        referralId: referralId
-      };
-    }
-    return userRef.set(userDetailData, {
-      merge: true
-    });
   }
 
   static parseData(user: IUser) {
@@ -78,6 +38,47 @@ export class UserService {
     };
   }
 
+  getUserById(id) {
+    return this.afs.collection('users').doc(id).snapshotChanges().pipe(map(action => {
+      const data = action.payload.data();
+      const uid = action.payload.id;
+      return {uid, ...data};
+    }));
+  }
+
+  setUserData(user) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.user.uid}`);
+    const userData: any = {
+      uid: user.user.uid,
+      email: user.user.email,
+      displayName: user.user.displayName,
+      photoURL: user.user.photoURL,
+      emailVerified: true
+    };
+    return userRef.set(userData, {
+      merge: true
+    });
+  }
+
+  setUserDetailData(uid, firstName, lastName, referralId) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    let userDetailData = {};
+    if (firstName && lastName) {
+      userDetailData = {
+        firstName: firstName,
+        lastName: lastName,
+        referralId: referralId
+      };
+    } else {
+      userDetailData = {
+        referralId: referralId
+      };
+    }
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
   processNewMobileUser(result, firstName, lastName) {
     const referralId = UtilService.generateRandomString(8);
     this.setUserData(result).then(() => {
@@ -87,7 +88,7 @@ export class UserService {
   }
 
   setUserCurrencyPreferences(uid, timezone, currency) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     const userDetailData = {
       selectedCurrency: currency
     };
@@ -103,7 +104,7 @@ export class UserService {
   }
 
   setUserPhoto(uid, photoURL) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     const userPhotoData = {
       photoURL: photoURL,
     };
@@ -113,7 +114,7 @@ export class UserService {
   }
 
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ uid }`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     let userDetailData = {};
     if (streetAddress2) {
       userDetailData = {

@@ -3,7 +3,7 @@
 </div>
 <div style="text-align: center">
   <label class="btn btn-xs btn-secondary btn-file">
-    <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="fileChangeEvent($event)" />
+    <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
     <span>Upload</span>
   </label>
 </div>

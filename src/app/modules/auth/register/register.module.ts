@@ -7,7 +7,7 @@ import { SectionHeaderGroupModule } from 'src/app/shared/components/section-head
 import { FormRegisterModule } from 'src/app/shared/components/form-register/form-register.module';
 
 const routes: Routes = [
-  { path: '', component: RegisterComponent, canActivate: [AnonymousGuard] },
+  {path: '', component: RegisterComponent, canActivate: [AnonymousGuard]},
 ];
 
 @NgModule({
@@ -24,4 +24,5 @@ const routes: Routes = [
   ]
 })
 
-export class RegisterModule { }
+export class RegisterModule {
+}

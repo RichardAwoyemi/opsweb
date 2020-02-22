@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
 import { ActiveComponents } from '../../builder';
 import { Subscription } from 'rxjs';
@@ -7,9 +7,9 @@ import { Subscription } from 'rxjs';
   selector: 'app-builder-placeholder',
   templateUrl: './builder-placeholder.component.html'
 })
-export class BuilderPlaceholderComponent implements OnInit {
+export class BuilderPlaceholderComponent implements OnInit, OnDestroy {
   @Input() componentId: number;
-  previewMode: boolean = false;
+  previewMode = false;
   private previewModeSubscription: Subscription;
   private activeEditComponentSubscription: Subscription;
   private activeEditComponent: string;

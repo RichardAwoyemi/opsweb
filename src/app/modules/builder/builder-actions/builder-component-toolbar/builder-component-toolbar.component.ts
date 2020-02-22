@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-builder-component-toolbar',
   templateUrl: './builder-component-toolbar.component.html'
 })
-export class BuilderComponentToolbarComponent implements OnInit {
+export class BuilderComponentToolbarComponent implements OnInit, OnDestroy {
   @Input() componentName;
   @Input() componentId;
   activeEditComponent: string;
@@ -34,18 +34,18 @@ export class BuilderComponentToolbarComponent implements OnInit {
       }
     });
     this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-        this.activeEditComponentId = response;
+      this.activeEditComponentId = response;
     });
   }
 
   deleteComponent() {
-    this.modalService.open(BuilderDeleteComponentModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 
   toggleComponentToolbarVisibility() {
-    if (this.activeEditComponent === this.componentName && this.activeEditComponentId == this.componentId) {
-      return (this.activeEditComponent === this.componentName && this.activeRoute != '/preview') ||
-        (this.activeEditComponentId === this.componentId && this.activeRoute != '/preview');
+    if (this.activeEditComponent === this.componentName && this.activeEditComponentId === this.componentId) {
+      return (this.activeEditComponent === this.componentName && this.activeRoute !== '/preview') ||
+        (this.activeEditComponentId === this.componentId && this.activeRoute !== '/preview');
     } else {
       return false;
     }

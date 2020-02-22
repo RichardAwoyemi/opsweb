@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
+import { BuilderComponentsService } from '../builder-components.service';
 
 @Injectable()
 export class BuilderNavbarService {
@@ -14,7 +15,7 @@ export class BuilderNavbarService {
   navbarLinkStyle = new BehaviorSubject<Object>(null);
   navbarBrandStyle = new BehaviorSubject<Object>(null);
   navbarLayoutClass = new BehaviorSubject<Object>(null);
-  navbarMenuOptions = new BehaviorSubject<Array<String>>(['Home', 'About', 'Features', 'Contact']);
+  navbarMenuOptions = new BehaviorSubject<Array<String>>(null);
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -22,7 +23,8 @@ export class BuilderNavbarService {
   private NAVBAR_THEME_PATH = './assets/data/web-themes/navbar.json';
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private builderComponentsService: BuilderComponentsService
   ) {
   }
 
@@ -110,6 +112,18 @@ export class BuilderNavbarService {
     this.navbarStyle.next(navbarStyle);
     this.navbarLinkStyle.next(navbarLinkStyle);
     this.navbarBrandStyle.next(navbarBrandStyle);
+
+    const pageComponents = this.builderComponentsService.pageComponents.getValue();
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
+        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
+          pageComponents['pages'][i]['components'][j]['navbarStyle']['background-color'] = theme['navbarStyle']['background-color'];
+          pageComponents['pages'][i]['components'][j]['navbarLinkStyle']['color'] = theme['navbarLinkStyle']['color'];
+          pageComponents['pages'][i]['components'][j]['navbarBrandStyle']['color'] = theme['navbarBrandStyle']['color'];
+        }
+      }
+    }
+    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   setNavbarTemplateStyle(template: any) {
@@ -117,6 +131,19 @@ export class BuilderNavbarService {
     this.navbarLinkStyle.next(template['navbarLinkStyle']);
     this.navbarBrandStyle.next(template['navbarBrandStyle']);
     this.navbarLogoImageStyle.next(template['navbarLogoImageStyle']);
+
+    const pageComponents = this.builderComponentsService.pageComponents.getValue();
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
+        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
+          pageComponents['pages'][i]['components'][j]['navbarStyle'] = template['navbarStyle'];
+          pageComponents['pages'][i]['components'][j]['navbarLinkStyle'] = template['navbarLinkStyle'];
+          pageComponents['pages'][i]['components'][j]['navbarBrandStyle'] = template['navbarBrandStyle'];
+          pageComponents['pages'][i]['components'][j]['navbarLogoImageStyle'] = template['navbarLogoImageStyle'];
+        }
+      }
+    }
+    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   setComponentTemplate(templateId) {

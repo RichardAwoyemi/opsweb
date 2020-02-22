@@ -9,13 +9,13 @@ import { AuthService } from '../../auth.service';
 })
 export class ForgotPasswordFormComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
+  model: any = {};
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public authService: AuthService
-  ) { }
-
-  model: any = {};
+  ) {
+  }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);

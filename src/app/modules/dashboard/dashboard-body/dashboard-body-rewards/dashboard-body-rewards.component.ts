@@ -42,11 +42,11 @@ export class DashboardBodyRewardsComponent implements OnInit {
   }
 
   createReferralUrls(referralUrl) {
-    this.referralMessage = `Want to build a cool website without writing a single line of code? Sign up to join the movement at ${ this.referralUrl } - be part of something great!`;
-    this.facebookShareUrl = `http://www.facebook.com/sharer/sharer.php?u=${ referralUrl }`;
-    this.whatsappShareUrl = `https://wa.me/?text=${ this.referralMessage }`;
-    this.twitterShareUrl = `https://twitter.com/intent/tweet?text=${ this.referralMessage }`;
-    this.emailShareUrl = `mailto:?subject=Build the sites you want with the ease you deserve!&body=${ this.referralMessage }`;
+    this.referralMessage = `Want to build a cool website without writing a single line of code? Sign up to join the movement at ${this.referralUrl} - be part of something great!`;
+    this.facebookShareUrl = `http://www.facebook.com/sharer/sharer.php?u=${referralUrl}`;
+    this.whatsappShareUrl = `https://wa.me/?text=${this.referralMessage}`;
+    this.twitterShareUrl = `https://twitter.com/intent/tweet?text=${this.referralMessage}`;
+    this.emailShareUrl = `mailto:?subject=Build the sites you want with the ease you deserve!&body=${this.referralMessage}`;
   }
 
   copyMessage() {

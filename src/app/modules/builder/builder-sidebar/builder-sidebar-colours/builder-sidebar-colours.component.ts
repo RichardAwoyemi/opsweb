@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { ActiveComponents } from 'src/app/modules/builder/builder';
@@ -8,7 +8,7 @@ import { ActiveComponents } from 'src/app/modules/builder/builder';
   templateUrl: './builder-sidebar-colours.component.html',
   styleUrls: ['./builder-sidebar-colours.component.css']
 })
-export class BuilderSidebarColoursComponent implements OnInit {
+export class BuilderSidebarColoursComponent implements OnInit, OnDestroy {
   navbar: string = ActiveComponents.Navbar;
   footer: string = ActiveComponents.Footer;
   features: string = ActiveComponents.Features;

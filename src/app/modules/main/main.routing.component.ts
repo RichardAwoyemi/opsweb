@@ -7,17 +7,25 @@ import { PressComponent } from './press/press.page';
 import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'press', component: PressComponent, canActivate: [AnonymousGuard] },
-  { path: 'legal', component: LegalComponent, canActivate: [AnonymousGuard] },
-  { path: 'contact', component: ContactComponent, canActivate: [AnonymousGuard] },
-  { path: 'login', loadChildren: '../auth/login/login.module#LoginModule', canActivate: [AnonymousGuard] },
-  { path: 'register', loadChildren: '../auth/register/register.module#RegisterModule', canActivate: [AnonymousGuard] },
-  { path: 'forgot-password', loadChildren: '../auth/forgot-password/forgot-password.module#ForgotPasswordModule', canActivate: [AnonymousGuard] },
-  { path: 'verify-email', loadChildren: '../auth/verify-email/verify-email.module#VerifyEmailModule', canActivate: [AnonymousGuard] },
-  { path: 'builder', loadChildren: '../builder/builder.module#BuilderModule' },
-  { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard] },
-  { path: '', loadChildren: './home/home.module#HomeModule', canActivate: [AnonymousGuard] },
-  { path: '**', redirectTo: '', canActivate: [AnonymousGuard] }
+  {path: 'press', component: PressComponent, canActivate: [AnonymousGuard]},
+  {path: 'legal', component: LegalComponent, canActivate: [AnonymousGuard]},
+  {path: 'contact', component: ContactComponent, canActivate: [AnonymousGuard]},
+  {path: 'login', loadChildren: '../auth/login/login.module#LoginModule', canActivate: [AnonymousGuard]},
+  {path: 'register', loadChildren: '../auth/register/register.module#RegisterModule', canActivate: [AnonymousGuard]},
+  {
+    path: 'forgot-password',
+    loadChildren: '../auth/forgot-password/forgot-password.module#ForgotPasswordModule',
+    canActivate: [AnonymousGuard]
+  },
+  {
+    path: 'verify-email',
+    loadChildren: '../auth/verify-email/verify-email.module#VerifyEmailModule',
+    canActivate: [AnonymousGuard]
+  },
+  {path: 'builder', loadChildren: '../builder/builder.module#BuilderModule'},
+  {path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard]},
+  {path: '', loadChildren: './home/home.module#HomeModule', canActivate: [AnonymousGuard]},
+  {path: '**', redirectTo: '', canActivate: [AnonymousGuard]}
 ];
 
 @NgModule({
@@ -25,9 +33,10 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class MainRoutingModule implements OnInit {
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
-    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' });
+    RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'});
   }
 }

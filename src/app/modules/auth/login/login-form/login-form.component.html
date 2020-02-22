@@ -1,6 +1,6 @@
 <div class="row">
-  <form class="col-md-4 col-xl-4 mx-auto input-border" name="loginForm" (ngSubmit)="f.form.valid && login()" #f="ngForm"
-    novalidate>
+  <form #f="ngForm" (ngSubmit)="f.form.valid && login()" class="col-md-4 col-xl-4 mx-auto input-border" name="loginForm"
+        novalidate>
     <div class="form-group">
       <label style="width: 100%">
         <input #email="ngModel" [(ngModel)]="model.email" autocomplete="off"
@@ -26,7 +26,7 @@
     </div>
     <button class="btn btn-lg btn-block btn-primary" type="submit">Login</button>
     <p class="small-2 text-left mt-5 mb-0 text-center">Don't have an account? <a routerLink="/register">Create
-        one</a>.</p>
+      one</a>.</p>
     <hr class="w-10">
     <app-social-login-button-group></app-social-login-button-group>
   </form>

@@ -8,10 +8,11 @@ import { Injectable } from '@angular/core';
 export class SimpleModalService {
   constructor(
     public ngbModal: NgbModal,
-  ) { }
+  ) {
+  }
 
   displayMessage(header, message) {
-    const modalReference = this.ngbModal.open(SimpleModalComponent, { windowClass: 'modal-holder', centered: true });
+    const modalReference = this.ngbModal.open(SimpleModalComponent, {windowClass: 'modal-holder', centered: true});
     modalReference.componentInstance.header = header;
     modalReference.componentInstance.message = message;
   }

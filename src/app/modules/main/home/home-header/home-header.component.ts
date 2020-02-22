@@ -17,7 +17,8 @@ export class HomeHeaderComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);

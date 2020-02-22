@@ -2,7 +2,7 @@ import { Component, DoCheck, ElementRef, Input, OnChanges, OnDestroy, SimpleChan
 import { BuilderDynamicHtmlInterface, BuilderDynamicHtmlService } from './builder-dynamic-html.service';
 
 @Component({
-  selector: 'builder-dynamic-html',
+  selector: 'app-builder-dynamic-html',
   template: '',
 })
 export class BuilderDynamicHtmlComponent implements DoCheck, OnChanges, OnDestroy {

@@ -39,7 +39,8 @@ export class FormPhotoUploadComponent implements OnInit {
     private simpleModalService: SimpleModalService,
     private formPhotoUploadService: FormPhotoUploadService,
     private userStore: Store<fromUser.State>
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.userStore.select('user')
@@ -61,6 +62,6 @@ export class FormPhotoUploadComponent implements OnInit {
   }
 
   openCropImageModal() {
-    this.modalService.open(CropImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    this.modalService.open(CropImageModalComponent, {windowClass: 'modal-holder', centered: true, size: 'lg'});
   }
 }

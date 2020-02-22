@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 
@@ -6,7 +6,7 @@ import { IModalComponent } from '../../../../shared/models/modal';
   selector: 'app-builder-create-account-modal',
   templateUrl: './builder-create-account-modal.component.html'
 })
-export class BuilderCreateAccountModalComponent implements IModalComponent, OnInit {
+export class BuilderCreateAccountModalComponent implements IModalComponent, OnInit, OnDestroy {
   constructor(
     private activeModal: NgbActiveModal
   ) {

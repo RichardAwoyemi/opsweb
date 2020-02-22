@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
 import { Subscription } from 'rxjs';
@@ -12,26 +12,25 @@ import { ActiveTemplates } from '../../../builder';
   templateUrl: './hero-options-picker.component.html',
   styleUrls: ['./hero-options-picker.component.css']
 })
-export class HeroOptionsPickerComponent implements OnInit {
+export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   heroImageUrl: string;
   heroImageAlt: string;
   navbarMenuOptions: any;
   menuOption: string;
-  heroHeadingFontName: string = 'Avenir Next Medium';
-  heroSubheadingFontName: string = 'Avenir Next Regular';
-  heroImageSize: number = 100;
-  heroImageUnit: string = '%';
-  buttonFontName: any;
+  heroHeadingFontName = 'Avenir Next Medium';
+  heroSubheadingFontName = 'Avenir Next Regular';
+  heroImageSize = 100;
+  heroImageUnit = '%';
   fontNames: any;
   fontUnits: any;
   websiteChangeCount: number;
   heroHeadingFontSize: number;
   heroSubheadingFontSize: number;
-  heroButtonFontName: string = 'Avenir Next Medium';
+  heroButtonFontName = 'Avenir Next Medium';
   heroButtonFontSize: number;
-  heroSubheadingFontUnit: string = 'px';
-  heroHeadingFontUnit: string = 'px';
-  heroButtonFontUnit: string = 'px';
+  heroSubheadingFontUnit = 'px';
+  heroHeadingFontUnit = 'px';
+  heroButtonFontUnit = 'px';
   heroTemplate: string = ActiveTemplates.Default;
   defaultHeroStyle: any;
   heroHeadingStyle: any;
@@ -87,9 +86,9 @@ export class HeroOptionsPickerComponent implements OnInit {
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
+    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
+      if (navbarMenuOptionsResponse) {
+        this.navbarMenuOptions = navbarMenuOptionsResponse;
 
         this.heroMenuOptionSubscription = this.builderHeroService.heroButtonLink.subscribe(response => {
           if (response) {
@@ -123,9 +122,9 @@ export class HeroOptionsPickerComponent implements OnInit {
       }
     });
 
-    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(response => {
-      if (response) {
-        this.heroTemplate = response;
+    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(heroTemplateResponse => {
+      if (heroTemplateResponse) {
+        this.heroTemplate = heroTemplateResponse;
 
         this.defaultHeroStyleSubscription = this.builderHeroService.getDefaultHeroStyle(this.heroTemplate).subscribe(response => {
           if (response) {
@@ -215,7 +214,7 @@ export class HeroOptionsPickerComponent implements OnInit {
   }
 
   openSelectImageModal() {
-    this.modalService.open(BuilderSelectImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    this.modalService.open(BuilderSelectImageModalComponent, {windowClass: 'modal-holder', centered: true, size: 'lg'});
   }
 
   resetHeroImage() {
@@ -253,23 +252,18 @@ export class HeroOptionsPickerComponent implements OnInit {
   }
 
   onHeroHeadingFontUnitChange() {
-    if (this.heroHeadingFontUnit == 'em') {
+    if (this.heroHeadingFontUnit === 'em') {
       if (this.heroHeadingFontSize < 16) {
         this.heroHeadingFontSize = 16;
       }
       this.heroHeadingFontSize = Math.round(this.heroHeadingFontSize / 16);
     }
 
-    if (this.heroHeadingFontUnit == 'px') {
+    if (this.heroHeadingFontUnit === 'px') {
       this.heroHeadingFontSize = Math.round(this.heroHeadingFontSize * 16);
     }
 
     this.heroHeadingStyle['font-size'] = this.heroHeadingFontSize + this.heroHeadingFontUnit;
-    this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
-  }
-
-  setHeroHeadingFont() {
-    this.heroHeadingStyle['font-family'] = this.heroHeadingFontName;
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
@@ -289,20 +283,15 @@ export class HeroOptionsPickerComponent implements OnInit {
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
-  onHeroSubheadingFontNameChange() {
-    this.heroSubheadingStyle['font-family'] = this.heroSubheadingFontName;
-    this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
-  }
-
   onHeroSubheadingFontUnitChange() {
-    if (this.heroSubheadingFontUnit == 'em') {
+    if (this.heroSubheadingFontUnit === 'em') {
       if (this.heroSubheadingFontSize < 16) {
         this.heroSubheadingFontSize = 16;
       }
       this.heroSubheadingFontSize = Math.round(this.heroSubheadingFontSize / 16);
     }
 
-    if (this.heroSubheadingFontUnit == 'px') {
+    if (this.heroSubheadingFontUnit === 'px') {
       this.heroSubheadingFontSize = Math.round(this.heroHeadingFontSize * 16);
     }
 
@@ -337,23 +326,18 @@ export class HeroOptionsPickerComponent implements OnInit {
   }
 
   onHeroButtonFontUnitChange() {
-    if (this.heroButtonFontUnit == 'em') {
+    if (this.heroButtonFontUnit === 'em') {
       if (this.heroButtonFontSize < 16) {
         this.heroButtonFontSize = 16;
       }
       this.heroButtonFontSize = Math.round(this.heroButtonFontSize / 16);
     }
 
-    if (this.heroButtonFontUnit == 'px') {
+    if (this.heroButtonFontUnit === 'px') {
       this.heroButtonFontSize = Math.round(this.heroButtonFontSize * 16);
     }
 
     this.heroButtonStyle['font-size'] = this.heroButtonFontSize + this.heroButtonFontUnit;
-    this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
-  }
-
-  setHeroButtonFont() {
-    this.heroButtonStyle['font-family'] = this.heroButtonFontName;
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 

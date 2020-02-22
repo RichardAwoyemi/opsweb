@@ -31,7 +31,7 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   footerPageLinksStyle: any;
   footerTemplate: any;
   defaultFooterStyle: any;
-  footerComponentLayout: any = { 'layout': 0 };
+  footerComponentLayout: any = {'layout': 0};
   facebookUrl: string;
   twitterUrl: string;
   instagramUrl: string;
@@ -63,8 +63,8 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
-      this.footerTemplate = response;
+    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
+      this.footerTemplate = footerTemplateResponse;
 
       this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
         if (response) {
@@ -75,7 +75,7 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
 
     this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
       if (response) {
-        let footerMenuOptions = [];
+        const footerMenuOptions = [];
         Object.keys(response).forEach(function (key) {
           if (response[key] !== false) {
             footerMenuOptions.push(key);
@@ -203,12 +203,12 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
 
   resetFooterAlignment() {
     this.setFooterAlignment('text-center');
-    this.setComponentLayout({ 'layout': 0 });
+    this.setComponentLayout({'layout': 0});
   }
 
   setComponentLayout(footerComponentLayout: any) {
     this.builderFooterService.footerComponentLayout.next(footerComponentLayout);
-    if (footerComponentLayout['layout'] == 1) {
+    if (footerComponentLayout['layout'] === 1) {
       this.footerSocialLinksContainerStyle['margin-right'] = '-10px';
       this.footerSocialLinksContainerStyle['margin-bottom'] = '-10px';
       this.footerSocialLinksContainerStyle['padding-top'] = '4px';
@@ -222,10 +222,10 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
 
   setFooterAlignment(footerAlignment: string) {
     this.builderFooterService.footerAlignmentClass.next(footerAlignment);
-    if (footerAlignment == 'text-left') {
+    if (footerAlignment === 'text-left') {
       this.footerSocialLinksContainerStyle['margin-left'] = '-12px';
       this.builderFooterService.footerSocialLinksContainerStyle.next(this.footerSocialLinksContainerStyle);
-    } else if (footerAlignment == 'text-right') {
+    } else if (footerAlignment === 'text-right') {
       this.footerSocialLinksContainerStyle['margin-right'] = '-10px';
       this.builderFooterService.footerSocialLinksContainerStyle.next(this.footerSocialLinksContainerStyle);
     } else {
@@ -235,22 +235,22 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   setFooterCopyrightPaddingTop() {
-    this.footerCopyrightStyle['padding-top'] = `${ this.footerCopyrightPaddingTop }px`;
+    this.footerCopyrightStyle['padding-top'] = `${this.footerCopyrightPaddingTop}px`;
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
 
   setFooterCopyrightPaddingLeft() {
-    this.footerCopyrightStyle['padding-left'] = `${ this.footerCopyrightPaddingLeft }px`;
+    this.footerCopyrightStyle['padding-left'] = `${this.footerCopyrightPaddingLeft}px`;
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
 
   setFooterCopyrightPaddingRight() {
-    this.footerCopyrightStyle['padding-right'] = `${ this.footerCopyrightPaddingRight }px`;
+    this.footerCopyrightStyle['padding-right'] = `${this.footerCopyrightPaddingRight}px`;
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
 
   setFooterCopyrightPaddingBottom() {
-    this.footerCopyrightStyle['padding-bottom'] = `${ this.footerCopyrightPaddingBottom }px`;
+    this.footerCopyrightStyle['padding-bottom'] = `${this.footerCopyrightPaddingBottom}px`;
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
 
@@ -263,22 +263,22 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   setFooterSocialLinksMarginTop() {
-    this.footerSocialLinksStyle['margin-top'] = `${ this.footerSocialLinksMarginTop }px`;
+    this.footerSocialLinksStyle['margin-top'] = `${this.footerSocialLinksMarginTop}px`;
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
   }
 
   setFooterSocialLinksMarginLeft() {
-    this.footerSocialLinksStyle['margin-left'] = `${ this.footerSocialLinksMarginLeft }px`;
+    this.footerSocialLinksStyle['margin-left'] = `${this.footerSocialLinksMarginLeft}px`;
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
   }
 
   setFooterSocialLinksMarginRight() {
-    this.footerSocialLinksStyle['margin-right'] = `${ this.footerSocialLinksMarginRight }px`;
+    this.footerSocialLinksStyle['margin-right'] = `${this.footerSocialLinksMarginRight}px`;
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
   }
 
   setFooterSocialLinksMarginBottom() {
-    this.footerSocialLinksStyle['margin-bottom'] = `${ this.footerSocialLinksMarginBottom }px`;
+    this.footerSocialLinksStyle['margin-bottom'] = `${this.footerSocialLinksMarginBottom}px`;
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
   }
 
@@ -291,22 +291,22 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   setFooterPageLinksPaddingTop() {
-    this.footerPageLinksStyle['padding-top'] = `${ this.footerPageLinksPaddingTop }px`;
+    this.footerPageLinksStyle['padding-top'] = `${this.footerPageLinksPaddingTop}px`;
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
   }
 
   setFooterPageLinksPaddingLeft() {
-    this.footerPageLinksStyle['padding-left'] = `${ this.footerPageLinksPaddingLeft }px`;
+    this.footerPageLinksStyle['padding-left'] = `${this.footerPageLinksPaddingLeft}px`;
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
   }
 
   setFooterPageLinksPaddingRight() {
-    this.footerPageLinksStyle['padding-right'] = `${ this.footerPageLinksPaddingRight }px`;
+    this.footerPageLinksStyle['padding-right'] = `${this.footerPageLinksPaddingRight}px`;
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
   }
 
   setFooterPageLinksPaddingBottom() {
-    this.footerPageLinksStyle['padding-bottom'] = `${ this.footerPageLinksPaddingBottom }px`;
+    this.footerPageLinksStyle['padding-bottom'] = `${this.footerPageLinksPaddingBottom}px`;
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
   }
 
@@ -319,22 +319,22 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   setFooterPaddingTop() {
-    this.footerStyle['padding-top'] = `${ this.footerPaddingTop }px`;
+    this.footerStyle['padding-top'] = `${this.footerPaddingTop}px`;
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
   setFooterPaddingLeft() {
-    this.footerStyle['padding-left'] = `${ this.footerPaddingLeft }px`;
+    this.footerStyle['padding-left'] = `${this.footerPaddingLeft}px`;
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
   setFooterPaddingRight() {
-    this.footerStyle['padding-right'] = `${ this.footerPaddingRight }px`;
+    this.footerStyle['padding-right'] = `${this.footerPaddingRight}px`;
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
   setFooterPaddingBottom() {
-    this.footerStyle['padding-bottom'] = `${ this.footerPaddingBottom }px`;
+    this.footerStyle['padding-bottom'] = `${this.footerPaddingBottom}px`;
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
@@ -347,7 +347,7 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   setComponentLayoutSelectorClass(alignmentClass: string, componentLayout: number) {
-    if (alignmentClass == this.footerAlignmentClass && componentLayout === this.footerComponentLayout['layout']) {
+    if (alignmentClass === this.footerAlignmentClass && componentLayout === this.footerComponentLayout['layout']) {
       return 'layout-spacer-active';
     } else {
       return 'layout-spacer';

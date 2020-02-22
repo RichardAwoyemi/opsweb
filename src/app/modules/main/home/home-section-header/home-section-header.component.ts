@@ -13,11 +13,12 @@ export class HomeSectionHeaderComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.headerPadding$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
-      map(isHandset => isHandset ? { 'padding-top': '3em' } : { 'padding-bottom': '0px', 'padding-top': '70px' })
+      map(isHandset => isHandset ? {'padding-top': '3em'} : {'padding-bottom': '0px', 'padding-top': '70px'})
     );
   }
 }

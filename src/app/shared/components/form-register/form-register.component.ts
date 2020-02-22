@@ -9,8 +9,8 @@ export class FormRegisterComponent implements OnInit {
   @Input() referredById: string;
   model: any = {};
 
-  constructor(
-  ) { }
+  constructor() {
+  }
 
   ngOnInit() {
     localStorage.removeItem('user');
