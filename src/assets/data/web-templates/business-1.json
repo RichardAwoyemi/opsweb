@@ -1,46 +1,6 @@
 {
   "id": "business-1",
   "name": "Quick",
-  "defaultComponents": {
-    "pages": [
-      {
-        "name": "Home",
-        "components": [
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-navbar></app-builder-navbar>",
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-hero></app-builder-hero>",
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-features></app-builder-features>",
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-features></app-builder-features>",
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-footer></app-builder-footer>",
-          "<app-builder-placeholder></app-builder-placeholder>"
-        ]
-      },
-      {
-        "name": "About",
-        "components": [
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-navbar></app-builder-navbar>",
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-footer></app-builder-footer>",
-          "<app-builder-placeholder></app-builder-placeholder>"
-        ]
-      },
-      {
-        "name": "Contact",
-        "components": [
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-navbar></app-builder-navbar>",
-          "<app-builder-placeholder></app-builder-placeholder>",
-          "<app-builder-footer></app-builder-footer>",
-          "<app-builder-placeholder></app-builder-placeholder>"
-        ]
-      }
-    ]
-  },
   "navbarStyle": {
     "background-color": "#FFFFFF",
     "display": "flex",
@@ -91,6 +51,15 @@
     "line-height": "34px",
     "font-weight": "300",
     "font-size": "20px"
+  },
+  "heroImageStyle": {
+    "width": "100%",
+    "src": "../assets/img/business-1-hero.svg",
+    "alt": "business-1-hero.svg",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px"
   },
   "heroButtonStyle": {
     "font-family": "'Nunito Sans', sans-serif",

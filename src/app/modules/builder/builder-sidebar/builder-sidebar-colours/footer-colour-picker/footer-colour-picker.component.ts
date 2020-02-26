@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActiveTemplates, ActiveThemes } from '../../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-footer-colour-picker',
@@ -14,16 +15,20 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
   footerStyle: any;
   footerTemplate: string = ActiveTemplates.Default;
   footerTheme: string = ActiveThemes.Default;
+  pageComponents: any;
   websiteChangeCount: number;
+
   private footerStyleSubscription: Subscription;
   private footerThemeSubscription: Subscription;
   private footerThemesSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
   private defaultFooterStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderFooterService: BuilderFooterService,
+    private builderComponentService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -59,6 +64,12 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
+
     this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
@@ -88,12 +99,28 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
+  setChanges() {
+    const timestamp = new Date().getTime();
+    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+        if (this.pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
+          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
+          this.pageComponents['pages'][i]['components'][j]['footerTheme'] = this.footerTheme;
+          this.pageComponents['pages'][i]['components'][j]['footerStyle'] = this.footerStyle;
+        }
+      }
+    }
+    this.builderComponentService.pageComponents.next(this.pageComponents);
+  }
+
   ngOnDestroy() {
+    this.setChanges();
     this.footerStyleSubscription.unsubscribe();
     this.footerThemeSubscription.unsubscribe();
     this.footerThemesSubscription.unsubscribe();
     this.footerTemplateSubscription.unsubscribe();
     this.defaultFooterStyleSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

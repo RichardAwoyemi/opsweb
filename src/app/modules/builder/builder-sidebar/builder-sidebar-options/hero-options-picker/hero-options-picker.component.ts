@@ -5,7 +5,8 @@ import { Subscription } from 'rxjs';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderService } from '../../../builder.service';
-import { ActiveTemplates } from '../../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-hero-options-picker',
@@ -37,6 +38,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   heroImageStyle: any;
   heroSubheadingStyle: any;
   heroButtonStyle: any;
+  pageComponents: any;
 
   private heroImageUrlSubscription: Subscription;
   private heroImageAltSubscription: Subscription;
@@ -52,10 +54,12 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   private heroButtonStyleSubscription: Subscription;
   private heroImageStyleSubscription: Subscription;
   private heroMenuOptionSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
     private builderHeroService: BuilderHeroService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService
   ) {
@@ -211,6 +215,22 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
         this.heroImageStyle = response;
       }
     });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
+  }
+
+  setHeroImageOptionsStyle(key, value) {
+    const targetComponentLocation = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Hero);
+    for (let i = 0; i < targetComponentLocation.length; i++) {
+      const activePageIndex = targetComponentLocation[i]['activePageIndex'];
+      const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
+      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key]['heroImageStyle'] = value;
+    }
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
 
   openSelectImageModal() {
@@ -219,12 +239,14 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
 
   resetHeroImage() {
     this.heroImageStyle['src'] = this.defaultHeroStyle['heroImageStyle']['src'];
+    this.setHeroImageOptionsStyle('src', this.heroImageStyle['src']);
     this.builderHeroService.heroImageUrl.next(this.heroImageStyle['src']);
     this.builderHeroService.heroImageAlt.next(this.heroImageStyle['alt']);
   }
 
   resetHeroImageSize() {
     this.heroImageStyle['width'] = this.defaultHeroStyle['heroImageStyle']['width'];
+    this.setHeroImageOptionsStyle('width', this.heroImageStyle['src']);
     this.builderHeroService.heroImageSize.next(this.heroImageStyle['width'].replace('%', ''));
   }
 
@@ -232,22 +254,26 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.heroImageStyle['width'] = this.heroImageSize + '%';
     this.builderHeroService.heroImageStyle.next(this.heroImageStyle);
     this.builderHeroService.heroImageSize.next(this.heroImageSize);
+    this.setHeroImageOptionsStyle('width', this.heroImageStyle['src']);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetHeroHeadingFontName() {
     this.heroHeadingStyle['font-family'] = this.defaultHeroStyle['heroHeadingStyle']['font-family'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   resetHeroHeadingFontSize() {
     this.heroHeadingStyle['font-size'] = this.defaultHeroStyle['heroHeadingStyle']['font-size'];
     this.heroHeadingFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   onHeroHeadingFontNameChange() {
     this.heroHeadingStyle['font-family'] = this.heroHeadingFontName;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
@@ -264,22 +290,26 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     }
 
     this.heroHeadingStyle['font-size'] = this.heroHeadingFontSize + this.heroHeadingFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   setHeroHeadingFontSize() {
     this.heroHeadingStyle['font-size'] = this.heroHeadingFontSize + this.heroHeadingFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   resetHeroSubheadingFontName() {
     this.heroSubheadingStyle['font-family'] = this.defaultHeroStyle['heroSubheadingStyle']['font-family'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
   resetHeroSubheadingFontSize() {
     this.heroSubheadingStyle['font-size'] = this.defaultHeroStyle['heroSubheadingStyle']['font-size'];
     this.heroSubheadingFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
@@ -296,32 +326,38 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     }
 
     this.heroSubheadingStyle['font-size'] = this.heroSubheadingStyle + this.heroSubheadingFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
   setHeroSubheadingFont() {
     this.heroSubheadingStyle['font-family'] = this.heroSubheadingFontName;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
   setHeroSubheadingFontSize() {
     this.heroSubheadingStyle['font-size'] = this.heroSubheadingFontSize + this.heroSubheadingFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
   resetHeroButtonFontName() {
     this.heroButtonStyle['font-family'] = this.defaultHeroStyle['heroButtonStyle']['font-family'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
   resetHeroButtonFontSize() {
     this.heroButtonStyle['font-size'] = this.defaultHeroStyle['heroButtonStyle']['font-size'];
     this.heroButtonFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
   onHeroButtonFontNameChange() {
     this.heroButtonStyle['font-family'] = this.heroButtonFontName;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
@@ -338,11 +374,13 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     }
 
     this.heroButtonStyle['font-size'] = this.heroButtonFontSize + this.heroButtonFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
   setHeroButtonFontSize() {
     this.heroButtonStyle['font-size'] = this.heroButtonFontSize + this.heroButtonFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
@@ -352,10 +390,12 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     } else {
       this.menuOption = this.navbarMenuOptions[0];
     }
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonLink', this.menuOption);
     this.builderHeroService.heroButtonLink.next(this.menuOption);
   }
 
   setHeroButtonLink() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonLink', this.menuOption);
     this.builderHeroService.heroButtonLink.next(this.menuOption);
   }
 
@@ -374,5 +414,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.heroButtonStyleSubscription.unsubscribe();
     this.heroImageStyleSubscription.unsubscribe();
     this.heroMenuOptionSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

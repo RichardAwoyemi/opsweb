@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
-import { ActiveTemplates, ActiveThemes } from '../../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-hero-colour-picker',
@@ -28,6 +29,7 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
   heroThemes: any;
   websiteChangeCount: number;
   defaultHeroStyle: any;
+  pageComponents: any;
 
   private heroBackgroundStyleSubscription: Subscription;
   private heroHeadingStyleSubscription: Subscription;
@@ -38,9 +40,11 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
   private heroTemplateSubscription: Subscription;
   private defaultHeroStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderHeroService: BuilderHeroService,
+    private builderComponentService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -91,6 +95,12 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
             this.defaultHeroStyle = response;
           }
         });
+      }
+    });
+
+    this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
       }
     });
 
@@ -149,7 +159,25 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
+  setChanges() {
+    const timestamp = new Date().getTime();
+    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+        if (this.pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Hero) {
+          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
+          this.pageComponents['pages'][i]['components'][j]['heroTheme'] = this.heroTheme;
+          this.pageComponents['pages'][i]['components'][j]['heroBackgroundStyle'] = this.heroBackgroundStyle;
+          this.pageComponents['pages'][i]['components'][j]['heroHeadingStyle'] = this.heroHeadingStyle;
+          this.pageComponents['pages'][i]['components'][j]['heroButtonStyle'] = this.heroButtonStyle;
+          this.pageComponents['pages'][i]['components'][j]['heroSubheadingStyle'] = this.heroSubheadingStyle;
+        }
+      }
+    }
+    this.builderComponentService.pageComponents.next(this.pageComponents);
+  }
+
   ngOnDestroy() {
+    this.setChanges();
     this.heroBackgroundStyleSubscription.unsubscribe();
     this.heroHeadingStyleSubscription.unsubscribe();
     this.heroSubheadingStyleSubscription.unsubscribe();
@@ -159,5 +187,6 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
     this.heroTemplateSubscription.unsubscribe();
     this.defaultHeroStyleSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

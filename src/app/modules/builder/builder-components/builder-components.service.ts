@@ -76,6 +76,7 @@ export class BuilderComponentsService {
             'componentId': `${ActiveComponents.Hero}-${UtilService.generateRandomString(8)}`,
             'componentName': ActiveComponentsPartialSelector.Hero,
             'timestamp': new Date().getTime(),
+            'heroButtonLink': 'About',
             'heroBackgroundStyle': {
               'background-color': '#FFFFFF'
             },
@@ -118,7 +119,10 @@ export class BuilderComponentsService {
               'padding-left': '26px',
               'padding-right': '26px',
               'padding-bottom': '8px'
-            }
+            },
+            'heroComponentLayout': {
+              'layout': 0
+            },
           },
           {
             'componentIndex': 4,
@@ -278,6 +282,18 @@ export class BuilderComponentsService {
               'padding-left': '0px',
               'padding-bottom': '0px',
               'padding-right': '0px'
+            },
+            'footerAlignmentClass': 'text-center',
+            'footerComponentLayout': {
+              'layout': 0
+            },
+            'footerSocialLinks': {
+              'facebookUrl': null,
+              'twitterUrl': null,
+              'instagramUrl': null,
+              'youtubeUrl': null,
+              'githubUrl': null,
+              'linkedinUrl': null,
             }
           },
           {
@@ -386,6 +402,18 @@ export class BuilderComponentsService {
               'padding-left': '0px',
               'padding-bottom': '0px',
               'padding-right': '0px'
+            },
+            'footerAlignmentClass': 'text-center',
+            'footerComponentLayout': {
+              'layout': 0
+            },
+            'footerSocialLinks': {
+              'facebookUrl': null,
+              'twitterUrl': null,
+              'instagramUrl': null,
+              'youtubeUrl': null,
+              'githubUrl': null,
+              'linkedinUrl': null,
             }
           },
           {
@@ -415,7 +443,7 @@ export class BuilderComponentsService {
     }
   }
 
-  getActiveTargetComponent(componentId: string) {
+  getActiveTargetComponentById(componentId: string) {
     let activePageIndex = null;
     let activeComponentIndex = null;
     const pageComponents = this.pageComponents.getValue();
@@ -431,5 +459,41 @@ export class BuilderComponentsService {
       'activePageIndex': activePageIndex,
       'activeComponentIndex': activeComponentIndex,
     };
+  }
+
+  getTargetComponentByName(componentName) {
+    const targetComponentArray = [];
+    const pageComponents = this.pageComponents.getValue();
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
+        if (pageComponents['pages'][i]['components'][j]['componentName'] === componentName) {
+          targetComponentArray.push({
+            'activePageIndex': i,
+            'activeComponentIndex': j
+          });
+        }
+      }
+    }
+    return targetComponentArray;
+  }
+
+  setPageComponentsByName(component, key, value) {
+    const targetComponentLocation = this.getTargetComponentByName(component);
+    const pageComponents = this.pageComponents.getValue();
+    for (let i = 0; i < targetComponentLocation.length; i++) {
+      const activePageIndex = targetComponentLocation[i]['activePageIndex'];
+      const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
+      pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key] = value;
+    }
+    this.pageComponents.next(pageComponents);
+  }
+
+  setPageComponentById(component, key, value) {
+    const targetComponentLocation = this.getActiveTargetComponentById(component);
+    const pageComponents = this.pageComponents.getValue();
+    const activePageIndex = targetComponentLocation['activePageIndex'];
+    const activeComponentIndex = targetComponentLocation['activeComponentIndex'];
+    pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key] = value;
+    this.pageComponents.next(pageComponents);
   }
 }

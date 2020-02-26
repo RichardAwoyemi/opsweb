@@ -194,6 +194,9 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       this.builderHeroService.heroSubheadingStyle.next(this.componentDetail['heroSubheadingStyle']);
                       this.builderHeroService.heroImageStyle.next(this.componentDetail['heroImageStyle']);
                       this.builderHeroService.heroButtonStyle.next(this.componentDetail['heroButtonStyle']);
+                      this.builderHeroService.heroImageUrl.next(this.componentDetail['heroImageStyle']['src']);
+                      this.builderHeroService.heroImageAlt.next(this.componentDetail['heroImageStyle']['alt']);
+                      this.builderHeroService.heroComponentLayout.next(this.componentDetail['heroComponentLayout']);
                     }
                   }
                 }

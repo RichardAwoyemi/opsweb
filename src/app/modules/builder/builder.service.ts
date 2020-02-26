@@ -45,7 +45,9 @@ export class BuilderService {
   fontNames = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
   websiteName = new BehaviorSubject<string>(null);
+  websiteId = new BehaviorSubject<string>(null);
   initialWebsiteChangeCount: any = {value: 0};
+  pageLoaded = new BehaviorSubject<boolean>(false);
   websiteChangeCount = new BehaviorSubject<any>(this.initialWebsiteChangeCount);
   shepherdDefaultStepOptions: any = TourService.setupBuilderTourStepOptions;
   shepherdDefaultSteps: any = TourService.setupBuilderTourSteps();

@@ -121,7 +121,7 @@ export class BuilderFeaturesService {
         this.featuresStyle.next(featuresStyle);
       }
 
-      const targetActiveComponent = this.builderComponentsService.getActiveTargetComponent(componentId);
+      const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
       const message = {
         'featuresStyle': this.featuresStyle.getValue(),
         'featuresHeadingStyle': this.featuresHeadingStyle.getValue(),
@@ -175,7 +175,7 @@ export class BuilderFeaturesService {
           i++;
         }
       }
-      const targetActiveComponent = this.builderComponentsService.getActiveTargetComponent(componentId);
+      const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
       const message = {
         'featuresItemArray': featuresItemArray,
         'featuresItemWidth': width,
@@ -193,7 +193,7 @@ export class BuilderFeaturesService {
 
   setFeaturesHeadingStyle(componentId: string) {
     const action = `${componentId}-style`;
-    const targetActiveComponent = this.builderComponentsService.getActiveTargetComponent(componentId);
+    const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
     const message = {
       'featuresHeadingStyle': this.featuresHeadingStyle.getValue(),
       'targetActiveComponent': targetActiveComponent
@@ -203,7 +203,7 @@ export class BuilderFeaturesService {
 
   setFeaturesSubheadingStyle(componentId: string) {
     const action = `${componentId}-style`;
-    const targetActiveComponent = this.builderComponentsService.getActiveTargetComponent(componentId);
+    const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
     const message = {
       'featuresSubheadingStyle': this.featuresSubheadingStyle.getValue(),
       'targetActiveComponent': targetActiveComponent,

@@ -7,6 +7,8 @@ import { BuilderHeroService } from '../../builder-components/builder-hero/builde
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { ActiveComponentsPartialSelector } from '../../builder';
 
 @Component({
   selector: 'app-builder-select-image-modal',
@@ -22,6 +24,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
     private activeModal: NgbActiveModal,
     private builderHeroService: BuilderHeroService,
     private builderActionsService: BuilderActionsService,
+    private builderComponentsService: BuilderComponentsService,
     private toastrService: ToastrService,
     private imgurService: ImgurService
   ) {
@@ -58,7 +61,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   uploadImageToImgur() {
     this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status === '200') {
+      if (imgurResponse.status === 200) {
         this.activeLibrarySelectedImage = imgurResponse.data.link;
         this.updateImage();
       }
@@ -66,6 +69,10 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   }
 
   updateImage() {
+    const heroImageStyle = this.builderHeroService.heroImageStyle.getValue();
+    heroImageStyle['src'] = this.activeLibrarySelectedImage;
+    heroImageStyle['alt'] = this.activeLibrarySelectedImageAltText;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', heroImageStyle);
     this.builderHeroService.heroImageUrl.next(this.activeLibrarySelectedImage);
     this.builderHeroService.heroImageAlt.next(this.activeLibrarySelectedImageAltText);
     this.toastrService.success('Your image has been updated.', 'Great!');

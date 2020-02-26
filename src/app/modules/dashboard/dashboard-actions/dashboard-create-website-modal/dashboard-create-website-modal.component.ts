@@ -9,6 +9,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { IUser } from '../../../../shared/models/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from '../../../core/store/user/user.reducer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-create-website-modal',
@@ -25,7 +26,8 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
     private toastrService: ToastrService,
     private afs: AngularFirestore,
     private userStore: Store<fromUser.State>,
-    private websiteService: WebsiteService
+    private websiteService: WebsiteService,
+    public router: Router
   ) {
   }
 
@@ -47,9 +49,11 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
         const documentId = this.afs.createId();
         const documentPath = `websites/${documentId}`;
         const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-        documentRef.set({name: this.websiteName, userId: this.user.uid}, {merge: true});
+        documentRef.set({name: this.websiteName, createdBy: this.user.uid}, {merge: true});
         this.toastrService.success('Your website has been created.');
         this.activeModal.close();
+        this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+        });
       } else {
         this.toastrService.error(`A website with this name already exists.`);
       }

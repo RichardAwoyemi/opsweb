@@ -22,7 +22,7 @@ const routes: Routes = [
     loadChildren: '../auth/verify-email/verify-email.module#VerifyEmailModule',
     canActivate: [AnonymousGuard]
   },
-  {path: 'builder', loadChildren: '../builder/builder.module#BuilderModule'},
+  {path: 'builder/:id', loadChildren: '../builder/builder.module#BuilderModule'},
   {path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard]},
   {path: '', loadChildren: './home/home.module#HomeModule', canActivate: [AnonymousGuard]},
   {path: '**', redirectTo: '', canActivate: [AnonymousGuard]}

@@ -83,11 +83,15 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.copyrightText = 'Copyright \u00A9 ' + new Date().getFullYear();
 
     this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      this.activeEditComponentId = response;
+      if (response) {
+        this.activeEditComponentId = response;
+      }
     });
 
     this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
-      this.footerComponentLayout = response;
+      if (response) {
+        this.footerComponentLayout = response;
+      }
     });
 
     this.footerSocialLinksContainerStyleSubscription = this.builderFooterService.footerSocialLinksContainerStyle.subscribe(response => {
@@ -95,35 +99,51 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     });
 
     this.footerAlignmentClassSubscription = this.builderFooterService.footerAlignmentClass.subscribe(response => {
-      this.footerAlignmentClass = response;
+      if (response) {
+        this.footerAlignmentClass = response;
+      }
     });
 
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      this.previewMode = response;
+      if (response) {
+        this.previewMode = response;
+      }
     });
 
     this.twitterUrlSubscription = this.builderFooterService.twitterUrl.subscribe(response => {
-      this.twitterUrl = response;
+      if (response) {
+        this.twitterUrl = response;
+      }
     });
 
     this.instagramUrlSubscription = this.builderFooterService.instagramUrl.subscribe(response => {
-      this.instagramUrl = response;
+      if (response) {
+        this.instagramUrl = response;
+      }
     });
 
     this.youtubeUrlSubscription = this.builderFooterService.youtubeUrl.subscribe(response => {
-      this.youtubeUrl = response;
+      if (response) {
+        this.youtubeUrl = response;
+      }
     });
 
     this.githubUrlSubscription = this.builderFooterService.githubUrl.subscribe(response => {
-      this.githubUrl = response;
+      if (response) {
+        this.githubUrl = response;
+      }
     });
 
     this.facebookUrlSubscription = this.builderFooterService.facebookUrl.subscribe(response => {
-      this.facebookUrl = response;
+      if (response) {
+        this.facebookUrl = response;
+      }
     });
 
     this.linkedinUrlSubscription = this.builderFooterService.linkedinUrl.subscribe(response => {
-      this.linkedinUrl = response;
+      if (response) {
+        this.linkedinUrl = response;
+      }
     });
 
     this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
@@ -225,6 +245,14 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
                       this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['footerSocialLinksStyle']);
                       this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['footerPageLinksStyle']);
                       this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['footerCopyrightStyle']);
+                      this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
+                      this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
+                      this.builderFooterService.facebookUrl.next(this.componentDetail['footerSocialLinks']['facebookUrl']);
+                      this.builderFooterService.twitterUrl.next(this.componentDetail['footerSocialLinks']['twitterUrl']);
+                      this.builderFooterService.instagramUrl.next(this.componentDetail['footerSocialLinks']['instagramUrl']);
+                      this.builderFooterService.youtubeUrl.next(this.componentDetail['footerSocialLinks']['youtubeUrl']);
+                      this.builderFooterService.githubUrl.next(this.componentDetail['footerSocialLinks']['githubUrl']);
+                      this.builderFooterService.linkedinUrl.next(this.componentDetail['footerSocialLinks']['linkedinUrl']);
                     }
                   }
                 }

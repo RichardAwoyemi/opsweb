@@ -7,8 +7,9 @@ import { SimpleModalService } from '../../../../../shared/components/simple-moda
 import { BuilderUploadImageModalComponent } from '../../../builder-actions/builder-upload-image-modal/builder-upload-image-modal.component';
 import { BuilderDeleteImageModalComponent } from '../../../builder-actions/builder-delete-image-modal/builder-delete-image-modal.component';
 import { BuilderService } from '../../../builder.service';
-import { ActiveTemplates } from '../../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-navbar-options-picker',
@@ -36,6 +37,7 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
   defaultNavbarStyle: any;
   options: SortablejsOptions;
   websiteChangeCount: number;
+  pageComponents: any;
 
   private navbarMenuOptionsSubscription: Subscription;
   private navbarLogoImageSubscription: Subscription;
@@ -47,8 +49,10 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
   private navbarTemplateSubscription: Subscription;
   private defaultNavbarStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
+    private builderComponentsService: BuilderComponentsService,
     private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
@@ -158,6 +162,12 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
         this.websiteChangeCount = response['value'];
       }
     });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
   }
 
   fileChangeEvent(event: any): void {
@@ -171,7 +181,6 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
   isNavbarLogoImageNull() {
     return !this.navbarLogoImage || this.navbarLogoImage === 'navbarLogoImage';
   }
-
 
   openCropImageModal(event: any) {
     const modal = this.modalService.open(BuilderUploadImageModalComponent, {
@@ -188,11 +197,13 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
 
   onNavbarBrandFontNameChange() {
     this.navbarBrandStyle['font-family'] = this.navbarBrandFontName;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarBrandFontSize() {
     this.navbarBrandStyle['font-size'] = this.navbarBrandFontSize + this.navbarBrandFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
@@ -207,16 +218,19 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
       this.navbarBrandFontSize = Math.round(this.navbarBrandFontSize * 16);
     }
     this.navbarBrandStyle['font-size'] = this.navbarBrandFontSize + this.navbarBrandFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   onNavbarLinkFontNameChange() {
     this.navbarLinkStyle['font-family'] = this.navbarLinkFontName;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   setNavbarLinkFontSize() {
     this.navbarLinkStyle['font-size'] = this.navbarLinkFontSize + this.navbarLinkFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
@@ -233,6 +247,7 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     }
 
     this.navbarLinkStyle['font-size'] = this.navbarLinkFontSize + this.navbarLinkFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
@@ -240,12 +255,14 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     this.navbarBrandStyle['font-family'] = this.defaultNavbarStyle['navbarBrandStyle']['font-family'];
     const navbarBrandFontNames = this.navbarBrandStyle['font-family'].split(',');
     this.navbarBrandFontName = navbarBrandFontNames[0].replace(/'/g, '');
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   resetNavbarBrandFontSize() {
     this.navbarBrandStyle['font-size'] = this.defaultNavbarStyle['navbarBrandStyle']['font-size'];
     this.navbarBrandFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
@@ -253,12 +270,14 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     this.navbarLinkStyle['font-family'] = this.defaultNavbarStyle['navbarLinkStyle']['font-family'];
     const navbarLinkFontNames = this.navbarLinkStyle['font-family'].split(',');
     this.navbarLinkFontName = navbarLinkFontNames[0].replace(/'/g, '');
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   resetNavbarLinkFontSize() {
     this.navbarLinkStyle['font-size'] = this.defaultNavbarStyle['navbarLinkStyle']['font-size'];
     this.navbarLinkFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
@@ -266,6 +285,7 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     this.navbarLogoImageStyle['width'] = this.defaultNavbarStyle['navbarLogoImageStyle']['width'];
     this.navbarBrandStyle['width'] = this.defaultNavbarStyle['navbarLogoImageStyle']['width'];
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLogoImageStyle', this.navbarLogoImageStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
@@ -273,6 +293,8 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     this.navbarLogoImageStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
     this.navbarBrandStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLogoImageStyle', this.navbarLogoImageStyle);
+    /**/
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 

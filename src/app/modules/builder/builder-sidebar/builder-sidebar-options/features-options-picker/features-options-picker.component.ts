@@ -271,6 +271,7 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.setChanges();
     this.featuresHeadingStyleSubscription.unsubscribe();
     this.featuresSubheadingStyleSubscription.unsubscribe();
     this.featuresStyleSubscription.unsubscribe();

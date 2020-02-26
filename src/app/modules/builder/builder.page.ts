@@ -1,29 +1,33 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderService } from './builder.service';
 import { Subscription } from 'rxjs';
 import { RouterService } from '../../shared/services/router.service';
 import { ShepherdService } from 'angular-shepherd';
 import { UtilService } from '../../shared/services/util.service';
+import { WebsiteService } from '../../shared/services/website.service';
+import { BuilderComponentsService } from './builder-components/builder-components.service';
 
 @Component({
   selector: 'app-builder',
   templateUrl: './builder.page.html'
 })
-export class BuilderComponent implements OnInit, AfterViewInit {
+export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   innerWidth: number;
   previewMode = false;
   sidebarClass = 'col-md-3';
   showcaseClass = 'col-md-9';
   websiteName: string;
   previewModeSubscription: Subscription;
+  websiteSubscription: Subscription;
 
   constructor(
     private ngxLoader: NgxUiLoaderService,
     private builderService: BuilderService,
     private routerService: RouterService,
-    private shepherdService: ShepherdService
-  ) {
+    private websiteService: WebsiteService,
+    private shepherdService: ShepherdService,
+    private builderComponentsService: BuilderComponentsService) {
   }
 
   ngOnInit() {
@@ -42,6 +46,20 @@ export class BuilderComponent implements OnInit, AfterViewInit {
         this.setBuilderPanelSizes();
       }
     }));
+
+    const id = window.location.pathname.split('/')[2];
+    if (id) {
+      this.builderService.websiteId.next(id);
+      this.websiteSubscription = this.websiteService.getWebsite(id).subscribe((response => {
+          if (response) {
+            this.builderService.websiteName.next(response['name']);
+            this.builderService.pageLoaded.next(true);
+            const pages = {'pages': response['pages']};
+            this.builderComponentsService.pageComponents.next(pages);
+          }
+        }
+      ));
+    }
     this.ngxLoader.stop();
   }
 
@@ -74,5 +92,10 @@ export class BuilderComponent implements OnInit, AfterViewInit {
       this.showcaseClass = 'col-md-9';
       this.sidebarClass = 'col-md-3';
     }
+  }
+
+  ngOnDestroy() {
+    this.previewModeSubscription.unsubscribe();
+    this.websiteSubscription.unsubscribe();
   }
 }

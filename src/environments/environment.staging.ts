@@ -13,7 +13,7 @@ export const environment = {
   logging: {
     level: NgxLoggerLevel.DEBUG,
   },
-  stripeId: 'pk_test_ofSdYFbZUTS9ZMMrk8fZHwe800bq0UGijl',
+  stripeKey: 'pk_test_ofSdYFbZUTS9ZMMrk8fZHwe800bq0UGijl',
   firebaseApiUrl: 'https://us-central1-opsonion-dev.cloudfunctions.net',
   unsplashAccessKey: 'b8f2ee0c596389fb783b1a677b01ab058f5e62bcd0ed676633290c0c1ac73bf4'
 };

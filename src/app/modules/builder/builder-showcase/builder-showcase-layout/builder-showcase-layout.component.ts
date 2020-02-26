@@ -20,10 +20,12 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   options: SortablejsOptions;
   activeEditComponent: string;
   pageComponents: any;
+  pageLoaded = false;
   activePage = 'Home';
   private activeEditComponentSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
+  private pageLoadedSubscription: Subscription;
 
   constructor(
     private builderComponentService: BuilderComponentsService,
@@ -134,6 +136,12 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
+      }
+    });
+
+    this.pageLoadedSubscription = this.builderService.pageLoaded.subscribe(response => {
+      if (response) {
+        this.pageLoaded = response;
       }
     });
   }
@@ -269,6 +277,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.activeEditComponentSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
+    this.pageLoadedSubscription.unsubscribe();
     this.pageComponentsSubscription.unsubscribe();
   }
 }

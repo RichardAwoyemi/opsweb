@@ -15,8 +15,8 @@ export class BuilderHeroService {
   heroTemplate = new BehaviorSubject<string>(null);
   heroTheme = new BehaviorSubject<string>(null);
   heroImageSize = new BehaviorSubject<number>(100);
-  heroImageUrl = new BehaviorSubject<string>('../assets/img/default-hero.svg');
-  heroImageAlt = new BehaviorSubject<string>('default-hero.svg');
+  heroImageUrl = new BehaviorSubject<string>(null);
+  heroImageAlt = new BehaviorSubject<string>(null);
   heroHeadingText = new BehaviorSubject<string>('Unleash your genius');
   heroSubheadingText = new BehaviorSubject<string>('Build a beautiful, modern website with flexible components built from scratch.');
   heroButtonText = new BehaviorSubject<string>('Learn more');
@@ -79,8 +79,6 @@ export class BuilderHeroService {
           pageComponents['pages'][i]['components'][j]['heroSubheadingStyle'] = template['heroSubheadingStyle'];
           pageComponents['pages'][i]['components'][j]['heroButtonStyle'] = template['heroButtonStyle'];
           pageComponents['pages'][i]['components'][j]['heroImageStyle'] = template['heroImageStyle'];
-          pageComponents['pages'][i]['components'][j]['heroImageUrl'] = template['heroImageUrl'];
-          pageComponents['pages'][i]['components'][j]['heroImageAlt'] = template['heroImageAlt'];
         }
       }
     }

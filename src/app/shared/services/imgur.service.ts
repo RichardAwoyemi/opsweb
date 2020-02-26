@@ -5,7 +5,7 @@ import { UtilService } from './util.service';
 export interface ImgurResponse {
   data: any;
   success: boolean;
-  status: string;
+  status: number;
 }
 
 @Injectable()
