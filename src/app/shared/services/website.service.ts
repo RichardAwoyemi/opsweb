@@ -15,6 +15,10 @@ export class WebsiteService {
   ) {
   }
 
+  getWebsitesByUserId(id) {
+    return this.afs.collection('websites', ref => ref.where('createdBy', '==', id)).valueChanges();
+  }
+
   getWebsite(id) {
     if (id) {
       return this.afs.collection('websites').doc(id).snapshotChanges().pipe(map(action => {
@@ -27,9 +31,6 @@ export class WebsiteService {
 
   createWebsite(name) {
     return this.afs.collection('websites', (ref) => ref.where('name', '==', name).limit(1)).get();
-  }
-
-  renameWebsite() {
   }
 
   saveWebsite() {

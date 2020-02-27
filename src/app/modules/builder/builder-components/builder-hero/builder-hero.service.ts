@@ -6,6 +6,11 @@ import { BuilderComponentsService } from '../builder-components.service';
 
 @Injectable()
 export class BuilderHeroService {
+  constructor(
+    private httpClient: HttpClient,
+    private builderComponentsService: BuilderComponentsService
+  ) {
+  }
   heroHeadingStyle = new BehaviorSubject<Object>(null);
   heroBackgroundStyle = new BehaviorSubject<Object>(null);
   heroSubheadingStyle = new BehaviorSubject<Object>(null);
@@ -29,10 +34,16 @@ export class BuilderHeroService {
   private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
   private HERO_THEME_PATH = './assets/data/web-themes/hero.json';
 
-  constructor(
-    private httpClient: HttpClient,
-    private builderComponentsService: BuilderComponentsService
-  ) {
+  static validateHeroImageStyle(heroImageStyle) {
+    if (!heroImageStyle['src'] || !heroImageStyle['alt']) {
+      return true;
+    }
+    if (heroImageStyle['src'] && heroImageStyle['alt']) {
+      if (heroImageStyle['src'].indexOf('.svg') > -1) {
+        return true;
+      }
+    }
+    return false;
   }
 
   getHeroThemes(): Observable<any> {
@@ -66,9 +77,13 @@ export class BuilderHeroService {
     this.heroHeadingStyle.next(template['heroHeadingStyle']);
     this.heroSubheadingStyle.next(template['heroSubheadingStyle']);
     this.heroButtonStyle.next(template['heroButtonStyle']);
-    this.heroImageStyle.next(template['heroImageStyle']);
-    this.heroImageUrl.next(`../assets/img/${template['id'].toLowerCase()}-hero.svg`);
-    this.heroImageAlt.next(`${template['id'].toLowerCase()}-hero.svg`);
+
+    const heroImageStyle = this.heroImageStyle.getValue();
+    if (BuilderHeroService.validateHeroImageStyle(heroImageStyle)) {
+      this.heroImageStyle.next(template['heroImageStyle']);
+      this.heroImageUrl.next(`../assets/img/${template['id'].toLowerCase()}-hero.svg`);
+      this.heroImageAlt.next(`${template['id'].toLowerCase()}-hero.svg`);
+    }
 
     const pageComponents = this.builderComponentsService.pageComponents.getValue();
     for (let i = 0; i < pageComponents['pages'].length; i++) {
@@ -78,7 +93,9 @@ export class BuilderHeroService {
           pageComponents['pages'][i]['components'][j]['heroHeadingStyle'] = template['heroHeadingStyle'];
           pageComponents['pages'][i]['components'][j]['heroSubheadingStyle'] = template['heroSubheadingStyle'];
           pageComponents['pages'][i]['components'][j]['heroButtonStyle'] = template['heroButtonStyle'];
-          pageComponents['pages'][i]['components'][j]['heroImageStyle'] = template['heroImageStyle'];
+          if (BuilderHeroService.validateHeroImageStyle(heroImageStyle)) {
+            pageComponents['pages'][i]['components'][j]['heroImageStyle'] = template['heroImageStyle'];
+          }
         }
       }
     }

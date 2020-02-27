@@ -38,7 +38,7 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -92,7 +92,7 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -103,55 +103,46 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
     if (this.navbarTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
-      this.builderNavbarService.navbarTheme.next(this.navbarTheme);
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', this.navbarTheme);
       this.builderNavbarService.setNavbarTheme(this.navbarTheme);
+      this.builderNavbarService.navbarTheme.next(this.navbarTheme);
     }
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setNavbarStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', this.navbarStyle);
     this.builderNavbarService.navbarStyle.next(this.navbarStyle);
   }
 
   setNavbarBrandStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarLinkStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   resetToDefault() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', ActiveThemes.Default);
     this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
 
     this.navbarStyle['background-color'] = this.defaultNavbarStyle['navbarStyle']['background-color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', this.navbarStyle);
     this.builderNavbarService.navbarStyle.next(this.navbarStyle);
 
     this.navbarBrandStyle['color'] = this.defaultNavbarStyle['navbarBrandStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
 
     this.navbarLinkStyle['color'] = this.defaultNavbarStyle['navbarLinkStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
-  setChanges() {
-    const timestamp = new Date().getTime();
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-        if (this.pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
-          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
-          this.pageComponents['pages'][i]['components'][j]['navbarTheme'] = this.navbarTheme;
-          this.pageComponents['pages'][i]['components'][j]['navbarStyle'] = this.navbarStyle;
-          this.pageComponents['pages'][i]['components'][j]['navbarBrandStyle'] = this.navbarBrandStyle;
-          this.pageComponents['pages'][i]['components'][j]['navbarLinkStyle'] = this.navbarLinkStyle;
-        }
-      }
-    }
-    this.builderComponentService.pageComponents.next(this.pageComponents);
-  }
-
   ngOnDestroy() {
-    this.setChanges();
     this.navbarStyleSubscription.unsubscribe();
     this.navbarBrandStyleSubscription.unsubscribe();
     this.navbarLinkStyleSubscription.unsubscribe();

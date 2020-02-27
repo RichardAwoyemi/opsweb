@@ -2,7 +2,7 @@
                                [componentName]="componentName"></app-builder-component-toolbar>
 <div [attr.id]="componentId" [ngClass]="setContextMenu()">
   <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
-    <div [ngStyle]="setFeaturesOuterStyle()" class="row" style="margin: 0.02em;">
+    <div [ngStyle]="setFeaturesOuterStyle()" class="row" style="margin: 0.03em;">
       <div *ngFor="let feature of featuresItemArray; let i = index" [ngStyle]="setFeaturesInnerStyle()">
         <div style="padding: 12px">
           <div

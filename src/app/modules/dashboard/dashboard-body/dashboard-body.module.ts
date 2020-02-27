@@ -18,6 +18,7 @@ import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.mod
 import { FormsModule } from '@angular/forms';
 import { BuilderSidebarModule } from '../../builder/builder-sidebar/builder-sidebar.module';
 import { RouterModule } from '@angular/router';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { RouterModule } from '@angular/router';
     ArraySortModule,
     FormsModule,
     BuilderSidebarModule,
-    RouterModule
+    RouterModule,
+    NgbDropdownModule
   ],
   exports: [
     DashboardBodySettingsComponent,

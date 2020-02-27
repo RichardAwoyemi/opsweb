@@ -7,6 +7,7 @@ import { ShepherdService } from 'angular-shepherd';
 import { UtilService } from '../../shared/services/util.service';
 import { WebsiteService } from '../../shared/services/website.service';
 import { BuilderComponentsService } from './builder-components/builder-components.service';
+import { ActiveComponents, ActiveElements } from './builder';
 
 @Component({
   selector: 'app-builder',
@@ -35,6 +36,9 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routerService.currentRoute.next(window.location.pathname);
     this.routerService.setCurrentRoute();
     this.builderService.websiteName.next(UtilService.generateWebsiteName());
+    this.builderService.setActiveEditComponent(ActiveComponents.Placeholder);
+    this.builderService.setActiveEditSetting(ActiveElements.Default);
+    this.builderService.setSidebarTemplatesSetting();
 
     this.ngxLoader.start();
     this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {
@@ -53,9 +57,12 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.websiteSubscription = this.websiteService.getWebsite(id).subscribe((response => {
           if (response) {
             this.builderService.websiteName.next(response['name']);
+            if (response['pages']) {
+              this.builderComponentsService.pageComponents.next({'pages': response['pages']});
+            } else {
+              this.builderComponentsService.pageComponents.next(this.builderComponentsService.defaultPageComponents.getValue());
+            }
             this.builderService.pageLoaded.next(true);
-            const pages = {'pages': response['pages']};
-            this.builderComponentsService.pageComponents.next(pages);
           }
         }
       ));

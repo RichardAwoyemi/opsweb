@@ -44,7 +44,7 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
 
   constructor(
     private builderHeroService: BuilderHeroService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -98,7 +98,7 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -115,18 +115,21 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
     if (this.heroTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
-      this.builderHeroService.heroTheme.next(this.heroTheme);
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroTheme', this.heroTheme);
       this.builderHeroService.setHeroTheme(this.heroTheme);
+      this.builderHeroService.heroTheme.next(this.heroTheme);
     }
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setHeroBackgroundStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroBackgroundStyle', this.heroBackgroundStyle);
     this.builderHeroService.heroBackgroundStyle.next(this.heroBackgroundStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setHeroHeadingStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -137,47 +140,35 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
   }
 
   setHeroButtonStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroTheme', ActiveThemes.Default);
     this.builderHeroService.heroTheme.next(ActiveThemes.Default);
 
     this.heroBackgroundStyle['background-color'] = this.defaultHeroStyle['heroBackgroundStyle']['background-color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroBackgroundStyle', ActiveThemes.Default);
     this.builderHeroService.heroBackgroundStyle.next(this.heroBackgroundStyle);
 
     this.heroHeadingStyle['color'] = this.defaultHeroStyle['heroHeadingStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', ActiveThemes.Default);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
 
     this.heroSubheadingStyle['color'] = this.defaultHeroStyle['heroSubheadingStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', ActiveThemes.Default);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
 
     this.heroButtonStyle['background-color'] = this.defaultHeroStyle['heroButtonStyle']['background-color'];
     this.heroButtonStyle['color'] = this.defaultHeroStyle['heroButtonStyle']['color'];
     this.heroButtonStyle['border-color'] = this.defaultHeroStyle['heroButtonStyle']['border-color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', ActiveThemes.Default);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
-  setChanges() {
-    const timestamp = new Date().getTime();
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-        if (this.pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Hero) {
-          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
-          this.pageComponents['pages'][i]['components'][j]['heroTheme'] = this.heroTheme;
-          this.pageComponents['pages'][i]['components'][j]['heroBackgroundStyle'] = this.heroBackgroundStyle;
-          this.pageComponents['pages'][i]['components'][j]['heroHeadingStyle'] = this.heroHeadingStyle;
-          this.pageComponents['pages'][i]['components'][j]['heroButtonStyle'] = this.heroButtonStyle;
-          this.pageComponents['pages'][i]['components'][j]['heroSubheadingStyle'] = this.heroSubheadingStyle;
-        }
-      }
-    }
-    this.builderComponentService.pageComponents.next(this.pageComponents);
-  }
-
   ngOnDestroy() {
-    this.setChanges();
     this.heroBackgroundStyleSubscription.unsubscribe();
     this.heroHeadingStyleSubscription.unsubscribe();
     this.heroSubheadingStyleSubscription.unsubscribe();

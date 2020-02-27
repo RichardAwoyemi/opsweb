@@ -11,7 +11,8 @@ import { UtilService } from '../../../shared/services/util.service';
 
 @Injectable()
 export class BuilderComponentsService {
-  pageComponents = new BehaviorSubject<any>({
+  pageComponents = new BehaviorSubject<any>(null);
+  defaultPageComponents = new BehaviorSubject<any>({
     'pages': [
       {
         'name': 'Home',
@@ -60,7 +61,7 @@ export class BuilderComponentsService {
             },
             'navbarLayoutClass': 'navbar-nav ml-auto',
             'navbarLogoText': 'Logo',
-            'navbarLogoImage': null,
+            'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
             'navbarTheme': ActiveThemes.Default,
             'navbarTemplate': ActiveTemplates.Default,
@@ -351,7 +352,7 @@ export class BuilderComponentsService {
             },
             'navbarLayoutClass': 'navbar-nav ml-auto',
             'navbarLogoText': 'Logo',
-            'navbarLogoImage': null,
+            'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
             'navbarTheme': ActiveThemes.Default,
             'navbarTemplate': ActiveTemplates.Default,

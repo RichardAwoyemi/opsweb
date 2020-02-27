@@ -10,6 +10,7 @@ import { IUser } from '../../../../shared/models/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from '../../../core/store/user/user.reducer';
 import { Router } from '@angular/router';
+import { BuilderComponentsService } from '../../../builder/builder-components/builder-components.service';
 
 @Component({
   selector: 'app-dashboard-create-website-modal',
@@ -17,7 +18,6 @@ import { Router } from '@angular/router';
 })
 export class DashboardCreateWebsiteModalComponent implements IModalComponent, OnInit {
   user: IUser;
-  displayError: boolean;
   disableSaveButton: boolean;
   websiteName: string;
 
@@ -27,6 +27,7 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
     private afs: AngularFirestore,
     private userStore: Store<fromUser.State>,
     private websiteService: WebsiteService,
+    private builderComponentsService: BuilderComponentsService,
     public router: Router
   ) {
   }
@@ -48,8 +49,14 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
       if (websites.size === 0) {
         const documentId = this.afs.createId();
         const documentPath = `websites/${documentId}`;
+        const defaultPageComponents = this.builderComponentsService.defaultPageComponents.getValue();
         const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-        documentRef.set({name: this.websiteName, createdBy: this.user.uid}, {merge: true});
+        documentRef.set({
+          name: this.websiteName,
+          id: documentId,
+          createdBy: this.user.uid,
+          pages: defaultPageComponents['pages']
+        }, {merge: true});
         this.toastrService.success('Your website has been created.');
         this.activeModal.close();
         this.router.navigateByUrl(`/builder/${documentId}`).then(() => {

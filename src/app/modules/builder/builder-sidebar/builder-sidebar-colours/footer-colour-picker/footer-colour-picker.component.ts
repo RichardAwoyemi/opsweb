@@ -28,7 +28,7 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
 
   constructor(
     private builderFooterService: BuilderFooterService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -64,7 +64,7 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -81,6 +81,7 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
     if (this.footerTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', this.footerTheme);
       this.builderFooterService.footerTheme.next(this.footerTheme);
       this.builderFooterService.setFooterTheme(this.footerTheme);
     }
@@ -88,6 +89,7 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
   }
 
   setFooterStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -96,25 +98,12 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
     this.builderFooterService.footerTheme.next(ActiveThemes.Default);
     this.footerStyle['background-color'] = this.defaultFooterStyle['footerStyle']['background-color'];
     this.footerStyle['color'] = this.defaultFooterStyle['footerStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
-  setChanges() {
-    const timestamp = new Date().getTime();
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-        if (this.pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
-          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
-          this.pageComponents['pages'][i]['components'][j]['footerTheme'] = this.footerTheme;
-          this.pageComponents['pages'][i]['components'][j]['footerStyle'] = this.footerStyle;
-        }
-      }
-    }
-    this.builderComponentService.pageComponents.next(this.pageComponents);
-  }
-
   ngOnDestroy() {
-    this.setChanges();
     this.footerStyleSubscription.unsubscribe();
     this.footerThemeSubscription.unsubscribe();
     this.footerThemesSubscription.unsubscribe();

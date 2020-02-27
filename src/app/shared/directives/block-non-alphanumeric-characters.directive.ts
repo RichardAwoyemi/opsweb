@@ -2,10 +2,10 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
   // tslint:disable-next-line: directive-selector
-  selector: '[blockAlphanumericCharacters]'
+  selector: '[blockNonAlphanumericCharacters]'
 })
 export class BlockNonAlphanumericCharactersDirective {
-  regexStr = '^[a-zA-Z0-9_]*$';
+  regexStr = '^[a-zA-Z0-9_-]*$';
   @Input() isAlphaNumeric: boolean;
 
   constructor(private el: ElementRef) {

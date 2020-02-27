@@ -121,6 +121,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     if (this.featuresTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
+      this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresTheme', this.featuresTheme);
       this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
       this.builderFeaturesService.setFeaturesTheme(this.featuresTheme, this.activeComponentId);
     }
@@ -128,21 +129,25 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   }
 
   setFeaturesStyle() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingStyle() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingStyle() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresTheme', ActiveThemes.Default);
     this.builderFeaturesService.featuresTheme.next(ActiveThemes.Default);
     this.featuresStyle['background-color'] = this.defaultFeaturesStyle['featuresStyle']['background-color'];
     this.featuresHeadingStyle['color'] = this.defaultFeaturesStyle['featuresHeadingStyle']['color'];
@@ -153,24 +158,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     this.builderFeaturesService.setFeaturesTheme(ActiveThemes.Default, this.activeComponentId);
   }
 
-  setChanges() {
-    const timestamp = new Date().getTime();
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeComponentId) {
-          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
-          this.pageComponents['pages'][i]['components'][j]['featuresTheme'] = this.featuresTheme;
-          this.pageComponents['pages'][i]['components'][j]['featuresStyle'] = this.featuresStyle;
-          this.pageComponents['pages'][i]['components'][j]['featuresHeadingStyle'] = this.featuresHeadingStyle;
-          this.pageComponents['pages'][i]['components'][j]['featuresSubheadingStyle'] = this.featuresSubheadingStyle;
-        }
-      }
-    }
-    this.builderComponentsService.pageComponents.next(this.pageComponents);
-  }
-
   ngOnDestroy() {
-    this.setChanges();
     this.featuresThemesSubscription.unsubscribe();
     this.featuresThemeSubscription.unsubscribe();
     this.featuresTemplateSubscription.unsubscribe();

@@ -28,9 +28,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   featuresSubheadingStyle: any;
   featuresStyle: any;
   pageComponents: any;
-  featuresOrientation: any;
-  featuresHeadingActiveStyle: string;
-  featuresSubheadingActiveStyle: string;
   featuresTheme: string = ActiveThemes.Default;
 
   private featuresBreakpointSubscription: Subscription;

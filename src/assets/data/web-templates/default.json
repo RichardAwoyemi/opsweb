@@ -31,6 +31,8 @@
     "font-size": "17px",
     "width": "100px"
   },
+  "navbarLogoText": "Logo",
+  "navbarLogoImage": "../assets/img/default-logo.png",
   "heroBackgroundStyle": {
     "color": "#FFFFFF"
   },
