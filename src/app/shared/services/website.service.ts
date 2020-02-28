@@ -4,15 +4,66 @@ import { NGXLogger } from 'ngx-logger';
 import { BuilderComponentsService } from '../../modules/builder/builder-components/builder-components.service';
 import { map } from 'rxjs/operators';
 import { BuilderService } from '../../modules/builder/builder.service';
+import { ActiveTemplates } from '../../modules/builder/builder';
+import { UtilService } from './util.service';
+import { IUser } from '../models/user';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class WebsiteService {
   constructor(
     private afs: AngularFirestore,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
-    public logger: NGXLogger
+    private toastrService: ToastrService,
+    public logger: NGXLogger,
+    public router: Router
   ) {
+  }
+
+  createWebsiteFromTemplate(template: string, user: IUser) {
+    const websiteName = UtilService.generateWebsiteName();
+    const documentId = this.afs.createId();
+    const documentPath = `websites/${documentId}`;
+    const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
+
+    const frontPageComponents = this.builderComponentsService.frontPageComponents.getValue();
+    const quickPageComponents = this.builderComponentsService.quickPageComponents.getValue();
+    const defaultPageComponents = this.builderComponentsService.defaultPageComponents.getValue();
+
+    switch (template['id']) {
+      case ActiveTemplates.Front:
+        documentRef.set({
+          name: websiteName,
+          id: documentId,
+          createdBy: user.uid,
+          pages: frontPageComponents['pages']
+        }, {merge: true});
+        break;
+      case ActiveTemplates.Quick:
+        documentRef.set({
+          name: websiteName,
+          id: documentId,
+          createdBy: user.uid,
+          pages: quickPageComponents['pages']
+        }, {merge: true});
+        break;
+      default:
+        documentRef.set({
+          name: websiteName,
+          id: documentId,
+          createdBy: user.uid,
+          pages: defaultPageComponents['pages']
+        }, {merge: true});
+        break;
+    }
+
+    this.builderService.setSidebarComponentsSetting();
+    this.builderService.activePageIndex.next(0);
+    this.toastrService.success('Your website has been created.');
+    this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+    });
   }
 
   getWebsitesByUserId(id) {
@@ -35,15 +86,12 @@ export class WebsiteService {
 
   saveWebsite() {
     const id = this.builderService.websiteId.getValue();
-    const pageComponents = this.builderComponentService.pageComponents.getValue();
+    const pageComponents = this.builderComponentsService.pageComponents.getValue();
     if (id && pageComponents) {
       const websiteRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${id}`);
       return websiteRef.set(pageComponents, {
         merge: true
       });
     }
-  }
-
-  deleteWebsite() {
   }
 }

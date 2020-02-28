@@ -34,7 +34,6 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
 
   ngOnInit() {
     this.websiteName = UtilService.generateWebsiteName();
-
     this.userStore.select('user')
       .pipe()
       .subscribe(async (result: IUser) => {
