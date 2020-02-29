@@ -4,7 +4,9 @@
     <span class="input-group-text"><i class="ti-search"></i></span>
   </div>
   <label for="search-components"></label>
-  <input (keyup)="searchText.trim();" [(ngModel)]="searchText" class="form-control" id="search-components"
+  <input id="search-components" 
+         class="builder-sidebar-components-search form-control"
+         (keyup)="searchText.trim();" [(ngModel)]="searchText" 
          placeholder="Search Components" type="text">
 </div>
 <div class="row">
@@ -15,11 +17,13 @@
            data-overlay="6" draggable="true"
            (click)="clearActiveComponent()" (drag)="clearActiveComponent()"
            style="height: 100px; margin-bottom: 1em">
-        <div class="card-body text-center flex-grow-0">
-          <img alt="{{ components.name | lowercase }}-component"
+        <div class="builder-sidebar-components-{{ components.name | lowercase }} card-body text-center flex-grow-0">
+          <img class="builder-sidebar-components-{{ components.name | lowercase }}"
+               alt="{{ components.name | lowercase }}-component"
                src="../assets/img/{{ components.name | lowercase }}-component-icon.svg"
                style="height: 24px; width: 24px"/>
-          <p class="card-title mb-0" style="font-size: 14px; padding-top: 1em; color: #EDF0F2">{{ components.name }}</p>
+          <p class="builder-sidebar-components-{{ components.name | lowercase }} card-title mb-0" 
+             style="font-size: 14px; padding-top: 1em; color: #EDF0F2">{{ components.name }}</p>
         </div>
       </div>
     </div>

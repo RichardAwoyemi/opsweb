@@ -2,25 +2,26 @@
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Background</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setFooterStyle()" [(colorPicker)]="footerStyle['background-color']"
+    <span class="footer-colour-select-background form-control form-control-lg colour-picker"
+          (colorPickerChange)="setFooterStyle()" [(colorPicker)]="footerStyle['background-color']"
           [cpPositionOffset]="'0%'"
-          [cpPosition]="'bottom'" [style.background]="footerStyle['background-color']"
-          class="form-control form-control-lg colour-picker"></span>
+          [cpPosition]="'bottom'" [style.background]="footerStyle['background-color']"></span>
   </div>
 </div>
 <div class="form-group">
-  <label style="color: rgba(255, 255, 255, 0.65);">Colour</label>
+  <label style="color: rgba(255, 255, 255, 0.65);">Text</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setFooterStyle()" [(colorPicker)]="footerStyle['color']"
+    <span class="footer-colour-select-text form-control form-control-lg colour-picker"
+          (colorPickerChange)="setFooterStyle()" [(colorPicker)]="footerStyle['color']"
           [cpPositionOffset]="'0%'"
-          [cpPosition]="'bottom'" [style.background]="footerStyle['color']"
-          class="form-control form-control-lg colour-picker"></span>
+          [cpPosition]="'bottom'" [style.background]="footerStyle['color']"></span>
   </div>
 </div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Theme</label>
   <label style="width: 100%">
-    <select (change)="onThemeChange()" [(ngModel)]="footerTheme" class="form-control form-control-lg">
+    <select class="footer-theme-select form-control form-control-lg" 
+            (change)="onThemeChange()" [(ngModel)]="footerTheme">
       <option *ngFor="let theme of footerThemes"
               [attr.selected]="theme['name'] == footerTheme ? true : null">{{ theme['name'] }}</option>
     </select>
@@ -28,5 +29,6 @@
 </div>
 <hr style="background-color: rgba(255, 255, 255, 0.1)">
 <div style="padding-bottom: 1em">
-  <button (click)="resetToDefault()" class="btn btn-xl btn-block btn-secondary" type="button">Reset to Default</button>
+  <button class="footer-colours-reset btn btn-xl btn-block btn-secondary" 
+          (click)="resetToDefault()" type="button">Reset to Default</button>
 </div>
