@@ -57,6 +57,8 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
   }
 
   ngOnDestroy() {
-    this.websiteNameAvailabilitySubscription.unsubscribe();
+    if (this.websiteNameAvailabilitySubscription) {
+      this.websiteNameAvailabilitySubscription.unsubscribe();
+    }
   }
 }

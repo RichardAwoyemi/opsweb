@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {
-  ActiveComponents,
-  ActiveComponentsFullSelector,
-  ActiveComponentsPartialSelector,
-  ActiveTemplates,
-  ActiveThemes
-} from '../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../builder';
 import { UtilService } from '../../../shared/services/util.service';
 
 @Injectable()
@@ -1302,18 +1296,26 @@ export class BuilderComponentsService {
 
   activeComponentIndex = new BehaviorSubject<number>(0);
 
-  static getComponentCleanName(componentSelectorName: string) {
-    switch (componentSelectorName) {
-      case ActiveComponentsFullSelector.Navbar:
+  static getComponentCleanName(componentSelectorName) {
+    switch (componentSelectorName['componentName']) {
+      case ActiveComponentsPartialSelector.Navbar:
         return UtilService.toTitleCase(ActiveComponents.Navbar);
-      case ActiveComponentsFullSelector.Hero:
+      case ActiveComponentsPartialSelector.Hero:
         return UtilService.toTitleCase(ActiveComponents.Hero);
-      case ActiveComponentsFullSelector.Features:
+      case ActiveComponentsPartialSelector.Features:
         return UtilService.toTitleCase(ActiveComponents.Features);
-      case ActiveComponentsFullSelector.Footer:
+      case ActiveComponentsPartialSelector.Footer:
         return UtilService.toTitleCase(ActiveComponents.Footer);
       default:
         return UtilService.toTitleCase(ActiveComponents.Placeholder);
+    }
+  }
+
+  static getTargetPageComponents(pageComponents, activePageIndex) {
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      if (i === activePageIndex) {
+        return pageComponents['pages'][i];
+      }
     }
   }
 
@@ -1369,5 +1371,64 @@ export class BuilderComponentsService {
     const activeComponentIndex = targetComponentLocation['activeComponentIndex'];
     pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key] = value;
     this.pageComponents.next(pageComponents);
+  }
+
+  checkIfComponentExists(componentName) {
+    const pageComponents = this.pageComponents.getValue();
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
+        if (pageComponents['pages'][i]['components'][j]['componentName'] === componentName) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  addComponent(component, activePageIndex) {
+    switch (component['componentName']) {
+      case ActiveComponentsPartialSelector.Navbar:
+        this.addNavbarComponent(component, activePageIndex);
+        break;
+      case ActiveComponentsPartialSelector.Hero:
+        this.addHeroComponent(component, activePageIndex);
+        break;
+      case ActiveComponentsPartialSelector.Features:
+        this.addFeaturesComponent(component, activePageIndex);
+        break;
+      case ActiveComponentsPartialSelector.Footer:
+        this.addFooterComponent(component, activePageIndex);
+        break;
+    }
+  }
+
+  addNavbarComponent(component, activePageIndex) {
+    const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
+    component['navbarTemplate'] = pageComponents['template'];
+    component['navbarTheme'] = ActiveThemes.Default;
+    if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Navbar)) {
+    }
+  }
+
+  addHeroComponent(component, activePageIndex) {
+    const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
+    component['heroTemplate'] = pageComponents['template'];
+    component['heroTheme'] = ActiveThemes.Default;
+    if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Hero)) {
+    }
+  }
+
+  addFeaturesComponent(component, activePageIndex) {
+    const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
+    component['featuresTemplate'] = pageComponents['template'];
+    component['featuresTheme'] = ActiveThemes.Default;
+  }
+
+  addFooterComponent(component, activePageIndex) {
+    const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
+    component['footerTemplate'] = pageComponents['template'];
+    component['footerTheme'] = ActiveThemes.Default;
+    if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Footer)) {
+    }
   }
 }

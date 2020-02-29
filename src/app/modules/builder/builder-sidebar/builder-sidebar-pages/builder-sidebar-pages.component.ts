@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActiveComponentsFullSelector, ActiveSettings } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveSettings } from '../../builder';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
@@ -44,8 +44,6 @@ export class BuilderSidebarPagesComponent implements OnInit {
         for (let i = 0; i < e.target.children.length; i++) {
           tempComponentArrayWithoutPlaceholders.push(e.target.children[i].id);
         }
-        const componentArray = tempComponentArrayWithoutPlaceholders.reduce((r, a) => r.concat(a, '<app-builder-placeholder></app-builder-placeholder>'), ['<app-builder-placeholder></app-builder-placeholder>']);
-        window.postMessage({'for': 'opsonion', 'action': 'recycle-showcase-dom', 'data': componentArray}, '*');
       }
     };
   }
@@ -72,7 +70,7 @@ export class BuilderSidebarPagesComponent implements OnInit {
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               if (this.pageComponents['pages'][i]['name'] === this.activePage) {
                 this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
-                  return a !== ActiveComponentsFullSelector.Placeholder;
+                  return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
                 });
               }
             }
@@ -82,8 +80,8 @@ export class BuilderSidebarPagesComponent implements OnInit {
     }));
   }
 
-  getComponentCleanName(componentListOption: string) {
-    return BuilderComponentsService.getComponentCleanName(componentListOption);
+  getComponentCleanName(component: any) {
+    return BuilderComponentsService.getComponentCleanName(component);
   }
 
   openNewPageModal() {

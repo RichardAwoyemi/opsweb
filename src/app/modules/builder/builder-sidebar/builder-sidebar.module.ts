@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { BuilderSidebarPagesComponent } from './builder-sidebar-pages/builder-sidebar-pages.component';
 import { BuilderSidebarDataComponent } from './builder-sidebar-data/builder-sidebar-data.component';
 import { SortablejsModule } from 'ngx-sortablejs';
-import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.module';
 import { UnsplashService } from '../../../shared/services/unsplash.service';
 
@@ -35,7 +35,8 @@ import { UnsplashService } from '../../../shared/services/unsplash.service';
     SortablejsModule,
     NgbDropdownModule,
     NgbPopoverModule,
-    ArraySortModule
+    ArraySortModule,
+    NgbTooltipModule
   ],
   exports: [
     BuilderSidebarComponent,

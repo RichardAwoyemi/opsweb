@@ -1,6 +1,5 @@
 .component-icon:hover {
   cursor: pointer;
-  opacity: 0.75;
 }
 
 .component-holder:nth-child(even) {
@@ -13,4 +12,16 @@
 
 .input-group {
   background-color: #ffffff;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-item:hover {
+  cursor: pointer !important;
+}
+
+.dropdown-menu {
+  min-width: 10px !important;
 }
