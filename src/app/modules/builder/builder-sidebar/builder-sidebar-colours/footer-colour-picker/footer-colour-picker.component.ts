@@ -1,29 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { ActiveTemplates, ActiveThemes } from '../../../builder';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-footer-colour-picker',
   templateUrl: './footer-colour-picker.component.html'
 })
-export class FooterColourPickerComponent implements OnInit {
+export class FooterColourPickerComponent implements OnInit, OnDestroy {
   footerThemes: any;
   defaultFooterStyle: any;
   footerStyle: any;
   footerTemplate: string = ActiveTemplates.Default;
   footerTheme: string = ActiveThemes.Default;
+  pageComponents: any;
   websiteChangeCount: number;
+
   private footerStyleSubscription: Subscription;
   private footerThemeSubscription: Subscription;
   private footerThemesSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
   private defaultFooterStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderFooterService: BuilderFooterService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -47,15 +52,21 @@ export class FooterColourPickerComponent implements OnInit {
       }
     });
 
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
-      if (response) {
-        this.footerTemplate = response;
+    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
+      if (footerTemplateResponse) {
+        this.footerTemplate = footerTemplateResponse;
 
         this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
           if (response) {
             this.defaultFooterStyle = response;
           }
         });
+      }
+    });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
       }
     });
 
@@ -70,6 +81,7 @@ export class FooterColourPickerComponent implements OnInit {
     if (this.footerTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', this.footerTheme);
       this.builderFooterService.footerTheme.next(this.footerTheme);
       this.builderFooterService.setFooterTheme(this.footerTheme);
     }
@@ -77,6 +89,7 @@ export class FooterColourPickerComponent implements OnInit {
   }
 
   setFooterStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -85,6 +98,8 @@ export class FooterColourPickerComponent implements OnInit {
     this.builderFooterService.footerTheme.next(ActiveThemes.Default);
     this.footerStyle['background-color'] = this.defaultFooterStyle['footerStyle']['background-color'];
     this.footerStyle['color'] = this.defaultFooterStyle['footerStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
@@ -95,5 +110,6 @@ export class FooterColourPickerComponent implements OnInit {
     this.footerTemplateSubscription.unsubscribe();
     this.defaultFooterStyleSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

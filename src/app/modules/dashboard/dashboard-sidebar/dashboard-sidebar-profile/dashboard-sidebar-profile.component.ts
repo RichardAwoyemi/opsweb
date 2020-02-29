@@ -16,7 +16,7 @@ import { DashboardCreateWebsiteModalComponent } from '../../dashboard-actions/da
 })
 export class DashboardSidebarProfileComponent implements OnInit {
   ACTIVE_SIDEBAR_SETTINGS: string = ActiveSidebarSettings.AccountSettings;
-  photoURL: string = '/assets/img/anonymous.jpg';
+  photoURL = '/assets/img/anonymous.jpg';
   user: IUser;
   dashboardSidebarWidth: number;
 
@@ -56,6 +56,6 @@ export class DashboardSidebarProfileComponent implements OnInit {
   }
 
   openCreateWebsiteModal() {
-    this.modalService.open(DashboardCreateWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(DashboardCreateWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 }

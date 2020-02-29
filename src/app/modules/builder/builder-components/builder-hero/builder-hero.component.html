@@ -11,8 +11,8 @@
              [ngStyle]="setHeroImageStyle()"
              id="hero-image">
           <figure class="w-100">
-          <img [src]="heroImageUrl" alt="{{ heroImageAlt }}" class="img-fluid">
-        </figure>
+            <img [src]="heroImageUrl" alt="{{ heroImageAlt }}" class="img-fluid">
+          </figure>
         </div>
       </div>
       <div [ngClass]="setHeroTextContainerClass()">
@@ -26,7 +26,7 @@
               [innerText]="heroHeadingText"
               [ngStyle]="heroHeadingStyle"
               class="display-4 text-center text-md-left mb-3">
-        </h1>
+          </h1>
         </div>
         <div (click)="selectHeroSubheading($event, 'hero-subheading')"
              [class]="setActiveElementStyle(activeElement, 'hero-subheading')"

@@ -34,11 +34,6 @@ export class AuthService {
     });
   }
 
-  public isLoggedIn() {
-    const user = this.afAuth.auth.currentUser;
-    return !!user;
-  }
-
   static parseData(authData: any): Partial<IAuth> {
     return {
       uid: authData.uid,
@@ -47,6 +42,11 @@ export class AuthService {
       photoURL: authData.photoURL,
       emailVerified: authData.emailVerified,
     };
+  }
+
+  public isLoggedIn() {
+    const user = this.afAuth.auth.currentUser;
+    return !!user;
   }
 
   facebookSignIn() {
@@ -86,7 +86,7 @@ export class AuthService {
         if (!result.user.uid) {
           this.userService.processNewDesktopUser(result, firstName, lastName);
         } else {
-          const path = `/users/${ result.user.uid }/`;
+          const path = `/users/${result.user.uid}/`;
           const doc = await this.firebaseService.docExists(path);
           if (!doc) {
             this.userService.processNewDesktopUser(result, firstName, lastName);
@@ -101,21 +101,6 @@ export class AuthService {
   mobileGoogleSignIn() {
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithRedirect(provider);
-  }
-
-  async processMobileLogin(result, uid) {
-    const path = `/users/${uid}/`;
-    const doc = await this.firebaseService.docExists(path);
-    if (!doc) {
-      const user: any = {
-        uid: uid,
-        email: result.email,
-        displayName: result.displayName,
-        photoURL: result.photoURL,
-        emailVerified: true
-      };
-      this.userService.processNewMobileUser(user, null, null);
-    }
   }
 
   register(email, password, firstName, lastName) {
@@ -153,15 +138,6 @@ export class AuthService {
         });
       });
     }).then(() => {
-    });
-  }
-
-  forgotPassword(passwordResetEmail) {
-    return this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail).then(() => {
-      this.simpleModalService.displayMessage('Great!', 'Password reset email sent, please check your inbox.' +
-        ' If you do not receive this email, check your spam or bulk email folder.');
-    }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops', error.message);
     });
   }
 

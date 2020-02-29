@@ -20,6 +20,7 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
   private dobDay: string;
   private dobMonth: string;
   private dobYear: string;
+  private datesSubscription: Subscription;
 
   constructor(
     private utilService: UtilService,
@@ -28,9 +29,8 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
     private logger: NGXLogger,
     private userStore: Store<fromUser.State>,
     private formDobInputService: FormDobInputService
-  ) { }
-
-  private datesSubscription: Subscription;
+  ) {
+  }
 
   ngOnInit() {
     this.userStore.select('user')

@@ -35,3 +35,12 @@
 .btn-group-full .btn {
   flex: 1
 }
+
+.fw-600:hover {
+  text-decoration: underline;
+}
+
+.fw-600 {
+  color: #7193F0;
+  font-weight: normal !important;
+}

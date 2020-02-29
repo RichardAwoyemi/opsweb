@@ -14,7 +14,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BuilderChangeTemplateModalComponent implements IModalComponent {
   @Input() templateId;
-  @Input() defaultPageComponents;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -33,7 +32,6 @@ export class BuilderChangeTemplateModalComponent implements IModalComponent {
     this.builderHeroService.setComponentTemplate(this.templateId);
     this.builderFooterService.setComponentTemplate(this.templateId);
     this.builderFeaturesService.setComponentTemplate(this.templateId);
-    this.builderComponentService.pageComponents.next(this.defaultPageComponents);
     this.toastrService.success('Your template has been updated.', 'Great!');
   }
 

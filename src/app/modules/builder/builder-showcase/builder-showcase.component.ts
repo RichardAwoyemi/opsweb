@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentFactoryResolver, ElementRef, HostListener, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ComponentFactoryResolver,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../builder.service';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
@@ -16,13 +26,13 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
   innerHeight: number;
   document: any;
   componentReference: any;
-  showcaseHeight: number = 122;
-  iframeHolderHeight: number = 184;
-  iframeHeight: number = 180;
+  showcaseHeight = 122;
+  iframeHolderHeight = 184;
+  iframeHeight = 180;
   activeShowcaseOrientation: string;
+  @ViewChild('iframe', {static: false}) iframe: ElementRef;
   private activeOrientationSubscription: Subscription;
   private previewModeSubscription: Subscription;
-  @ViewChild('iframe', { static: false }) iframe: ElementRef;
 
   constructor(
     private builderService: BuilderService,
@@ -82,7 +92,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
     this.builderService.activeEditComponentId.next(null);
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
     this.builderService.activeElement.next(ActiveElements.Default);
-    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected' }, '*');
+    window.postMessage({'for': 'opsonion', 'action': 'duplicate-component-deselected'}, '*');
     this.builderService.setSidebarComponentsSetting();
   }
 }

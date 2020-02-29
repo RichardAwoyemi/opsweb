@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActiveComponentsFullSelector, ActiveSettings } from '../../builder';
@@ -18,7 +18,7 @@ import { BuilderDeleteComponentModalComponent } from '../../builder-actions/buil
   templateUrl: './builder-sidebar-pages.component.html',
   styleUrls: ['./builder-sidebar-pages.component.css']
 })
-export class BuilderSidebarPagesComponent {
+export class BuilderSidebarPagesComponent implements OnInit {
   settingsName: string = ActiveSettings.Pages;
   activeEditSetting: string;
   activePage: string;
@@ -26,7 +26,6 @@ export class BuilderSidebarPagesComponent {
   componentListOptions: any;
   pageComponents: any;
   options: SortablejsOptions;
-  builderComponents: any;
   private activeEditSettingSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
@@ -41,12 +40,12 @@ export class BuilderSidebarPagesComponent {
   ) {
     this.options = {
       onUpdate: function (e: any) {
-        let tempComponentArrayWithoutPlaceholders = [];
+        const tempComponentArrayWithoutPlaceholders = [];
         for (let i = 0; i < e.target.children.length; i++) {
           tempComponentArrayWithoutPlaceholders.push(e.target.children[i].id);
         }
-        let componentArray = tempComponentArrayWithoutPlaceholders.reduce((r, a) => r.concat(a, '<app-builder-placeholder></app-builder-placeholder>'), ['<app-builder-placeholder></app-builder-placeholder>']);
-        window.postMessage({ 'for': 'opsonion', 'action': 'recycle-showcase-dom', 'data': componentArray }, '*');
+        const componentArray = tempComponentArrayWithoutPlaceholders.reduce((r, a) => r.concat(a, '<app-builder-placeholder></app-builder-placeholder>'), ['<app-builder-placeholder></app-builder-placeholder>']);
+        window.postMessage({'for': 'opsonion', 'action': 'recycle-showcase-dom', 'data': componentArray}, '*');
       }
     };
   }
@@ -64,18 +63,17 @@ export class BuilderSidebarPagesComponent {
       }
     });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((response => {
-      if (response) {
-        this.activePage = response;
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {
+      if (activePageSettingsResponse) {
+        this.activePage = activePageSettingsResponse;
         this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
           if (response) {
             this.pageComponents = response;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+              if (this.pageComponents['pages'][i]['name'] === this.activePage) {
                 this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
                   return a !== ActiveComponentsFullSelector.Placeholder;
                 });
-
               }
             }
           }
@@ -85,30 +83,36 @@ export class BuilderSidebarPagesComponent {
   }
 
   getComponentCleanName(componentListOption: string) {
-    return this.builderComponentService.getComponentCleanName(componentListOption);
+    return BuilderComponentsService.getComponentCleanName(componentListOption);
   }
 
   openNewPageModal() {
-    this.modalService.open(BuilderNewPageModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 
   openRenamePageModal(pageName, pageIndex) {
     if (pageName !== 'Home') {
-      const modal = this.modalService.open(BuilderRenamePageModalComponent, { windowClass: 'modal-holder', centered: true });
+      const modal = this.modalService.open(BuilderRenamePageModalComponent, {
+        windowClass: 'modal-holder',
+        centered: true
+      });
       modal.componentInstance.activePage = pageName;
       modal.componentInstance.activePageIndex = pageIndex;
     } else {
-      this.simpleModalService.displayMessage('Oops!', `You cannot rename the ${ pageName } page.`);
+      this.simpleModalService.displayMessage('Oops!', `You cannot rename the ${pageName} page.`);
     }
   }
 
   openDeletePageModal(pageName, pageIndex) {
     if (pageName !== 'Home') {
-      const modal = this.modalService.open(BuilderDeletePageModalComponent, { windowClass: 'modal-holder', centered: true });
+      const modal = this.modalService.open(BuilderDeletePageModalComponent, {
+        windowClass: 'modal-holder',
+        centered: true
+      });
       modal.componentInstance.activePage = pageName;
       modal.componentInstance.activePageIndex = pageIndex;
     } else {
-      this.simpleModalService.displayMessage('Oops!', `You cannot delete the ${ pageName } page.`);
+      this.simpleModalService.displayMessage('Oops!', `You cannot delete the ${pageName} page.`);
     }
   }
 
@@ -117,10 +121,14 @@ export class BuilderSidebarPagesComponent {
   }
 
   openAddComponentModal() {
-    this.modalService.open(BuilderAddComponentModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
+    this.modalService.open(BuilderAddComponentModalComponent, {
+      windowClass: 'modal-holder',
+      centered: true,
+      size: 'lg'
+    });
   }
 
   openDeleteComponentModal() {
-    this.modalService.open(BuilderDeleteComponentModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 }

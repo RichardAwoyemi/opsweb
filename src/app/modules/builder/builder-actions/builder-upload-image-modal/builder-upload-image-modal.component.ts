@@ -5,7 +5,9 @@ import { BuilderNavbarService } from '../../builder-components/builder-navbar/bu
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../../environments/environment';
+import { Subscription } from 'rxjs';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { ActiveComponentsPartialSelector } from '../../builder';
 
 @Component({
   selector: 'app-builder-upload-image-modal',
@@ -16,20 +18,30 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
   croppedImage: any;
   innerHeight: number;
   modalHeight: any;
+  pageComponents: any;
+
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private activeModal: NgbActiveModal,
     private imgurService: ImgurService,
     private toastrService: ToastrService,
-    private builderNavbarService: BuilderNavbarService
+    private builderNavbarService: BuilderNavbarService,
+    private builderComponentsService: BuilderComponentsService
   ) {
   }
 
   ngOnInit() {
     this.innerHeight = window.innerHeight - 300;
     this.modalHeight = {
-      'height': `${ this.innerHeight }px`
+      'height': `${this.innerHeight}px`
     };
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
   }
 
   onCloseButtonClick() {
@@ -39,16 +51,25 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
   onConfirmButtonClick() {
     this.activeModal.dismiss();
     if (this.croppedImage) {
-      if (!environment.production) {
-        this.uploadImageToImgur();
-      }
+      this.uploadImageToImgur();
     }
+  }
+
+  setNavbarOptionsStyle(key, value) {
+    const targetComponentLocation = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
+    for (let i = 0; i < targetComponentLocation.length; i++) {
+      const activePageIndex = targetComponentLocation[i]['activePageIndex'];
+      const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
+      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key] = value;
+    }
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
 
   uploadImageToImgur() {
     this.imgurService.upload(this.croppedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status == '200') {
+      if (imgurResponse.status === 200) {
         this.builderNavbarService.navbarLogoImage.next(imgurResponse.data.link);
+        this.setNavbarOptionsStyle('navbarLogoImage', imgurResponse.data.link);
         this.toastrService.success('Your image has been uploaded.', 'Great!');
       } else {
         this.toastrService.error('An error occurred while trying to upload your image. Please try again.', 'Oops!');

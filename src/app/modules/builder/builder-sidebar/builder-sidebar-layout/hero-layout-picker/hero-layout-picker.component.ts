@@ -1,18 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
-import { ActiveTemplates } from '../../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-hero-layout-picker',
   templateUrl: './hero-layout-picker.component.html'
 })
 export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
-  heroComponentLayout: any = { 'layout': 0 };
+  heroComponentLayout: any;
   heroTemplate: string = ActiveTemplates.Default;
   heroHeadingStyle: any;
   defaultHeroStyle: any;
   heroSubheadingStyle: any;
+  pageComponents: any;
   heroHeadingPaddingTop: number;
   heroHeadingPaddingLeft: number;
   heroHeadingPaddingRight: number;
@@ -27,9 +29,11 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
   private heroSubheadingStyleSubscription: Subscription;
   private defaultHeroStyleSubscription: Subscription;
   private heroTemplateSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
-    private builderHeroService: BuilderHeroService
+    private builderHeroService: BuilderHeroService,
+    private builderComponentsService: BuilderComponentsService
   ) {
   }
 
@@ -40,9 +44,9 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(response => {
-      if (response) {
-        this.heroTemplate = response;
+    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(heroTemplateResponse => {
+      if (heroTemplateResponse) {
+        this.heroTemplate = heroTemplateResponse;
 
         this.defaultHeroStyleSubscription = this.builderHeroService.getDefaultHeroStyle(this.heroTemplate).subscribe(response => {
           if (response) {
@@ -87,9 +91,16 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
   }
 
   setComponentLayout(heroComponentLayout: any) {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroComponentLayout', heroComponentLayout);
     this.builderHeroService.heroComponentLayout.next(heroComponentLayout);
   }
 
@@ -102,26 +113,30 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetHeroAlignment() {
-    this.setComponentLayout({ 'layout': 0 });
+    this.setComponentLayout({'layout': 0});
   }
 
   setHeroHeadingPaddingTop() {
-    this.heroHeadingStyle['padding-top'] = `${ this.heroHeadingPaddingTop }px`;
+    this.heroHeadingStyle['padding-top'] = `${this.heroHeadingPaddingTop}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   setHeroHeadingPaddingLeft() {
-    this.heroHeadingStyle['padding-left'] = `${ this.heroHeadingPaddingLeft }px`;
+    this.heroHeadingStyle['padding-left'] = `${this.heroHeadingPaddingLeft}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   setHeroHeadingPaddingRight() {
-    this.heroHeadingStyle['padding-right'] = `${ this.heroHeadingPaddingRight }px`;
+    this.heroHeadingStyle['padding-right'] = `${this.heroHeadingPaddingRight}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   setHeroHeadingPaddingBottom() {
-    this.heroHeadingStyle['padding-bottom'] = `${ this.heroHeadingPaddingBottom }px`;
+    this.heroHeadingStyle['padding-bottom'] = `${this.heroHeadingPaddingBottom}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
@@ -130,26 +145,31 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
     this.heroHeadingStyle['padding-left'] = this.defaultHeroStyle['heroHeadingStyle']['padding-left'];
     this.heroHeadingStyle['padding-right'] = this.defaultHeroStyle['heroHeadingStyle']['padding-right'];
     this.heroHeadingStyle['padding-bottom'] = this.defaultHeroStyle['heroHeadingStyle']['padding-bottom'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
   }
 
   setHeroSubheadingPaddingTop() {
-    this.heroSubheadingStyle['padding-top'] = `${ this.heroSubheadingPaddingTop }px`;
+    this.heroSubheadingStyle['padding-top'] = `${this.heroSubheadingPaddingTop}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
   setHeroSubheadingPaddingLeft() {
-    this.heroSubheadingStyle['padding-left'] = `${ this.heroSubheadingPaddingLeft }px`;
+    this.heroSubheadingStyle['padding-left'] = `${this.heroSubheadingPaddingLeft}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
   setHeroSubheadingPaddingRight() {
-    this.heroSubheadingStyle['padding-right'] = `${ this.heroSubheadingPaddingRight }px`;
+    this.heroSubheadingStyle['padding-right'] = `${this.heroSubheadingPaddingRight}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
   setHeroSubheadingPaddingBottom() {
-    this.heroSubheadingStyle['padding-bottom'] = `${ this.heroSubheadingPaddingBottom }px`;
+    this.heroSubheadingStyle['padding-bottom'] = `${this.heroSubheadingPaddingBottom}px`;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
@@ -158,6 +178,7 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
     this.heroSubheadingStyle['padding-left'] = this.defaultHeroStyle['heroSubheadingStyle']['padding-left'];
     this.heroSubheadingStyle['padding-right'] = this.defaultHeroStyle['heroSubheadingStyle']['padding-right'];
     this.heroSubheadingStyle['padding-bottom'] = this.defaultHeroStyle['heroSubheadingStyle']['padding-bottom'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
@@ -167,5 +188,6 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
     this.heroSubheadingStyleSubscription.unsubscribe();
     this.defaultHeroStyleSubscription.unsubscribe();
     this.heroTemplateSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

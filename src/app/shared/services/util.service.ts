@@ -12,10 +12,6 @@ export class UtilService {
     );
   }
 
-  static convertToHtmlTag(text: string) {
-    return '<' + text + '></' + text + '/>';
-  }
-
   static isNullOrWhitespace(text: any): boolean {
     return !text || !text.trim();
   }
@@ -30,10 +26,6 @@ export class UtilService {
       str += chars[Math.floor(Math.random() * chars.length)];
     }
     return str;
-  }
-
-  static dedupeAdjacent(a, targets) {
-    return a.filter((e, i) => e !== a[i - 1] || !targets.includes(e));
   }
 
   static createYearRange(start, end) {
@@ -51,24 +43,6 @@ export class UtilService {
     return arr;
   }
 
-  static roundNumber(n: any, digits: number) {
-    let negative = false;
-    if (digits === undefined) {
-      digits = 0;
-    }
-    if (n < 0) {
-      negative = true;
-      n = n * -1;
-    }
-    const multiplier = Math.pow(10, digits);
-    n = parseFloat((n * multiplier).toFixed(11));
-    n = (Math.round(n) / multiplier).toFixed(2);
-    if (negative) {
-      n = (n * -1).toFixed(2);
-    }
-    return n;
-  }
-
   static copyMessage(referralUrl) {
     const selectBox = document.createElement('textarea');
     selectBox.style.position = 'fixed';
@@ -82,13 +56,6 @@ export class UtilService {
     document.execCommand('copy');
     document.body.removeChild(selectBox);
     return;
-  }
-
-  static getCurrentDate() {
-    const date = new Date();
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-      'September', 'October', 'November', 'December'];
-    return `${ date.getDate() } ${ months[date.getMonth()] } ${ date.getFullYear() }`;
   }
 
   static generateRandomWord() {

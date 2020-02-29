@@ -19,8 +19,11 @@
       </label>
     </div>
     <div class="col-md-12">
-      <div *ngIf="formNameInputService.showFirstNameInputError"><small class="text-danger">First Name is
-          required</small><br></div>
+      <div *ngIf="formNameInputService.showFirstNameInputError">
+        <small class="text-danger">First Name is
+          required
+        </small>
+        <br></div>
       <small *ngIf="formNameInputService.showLastNameInputError" class="text-danger">Last Name is required</small>
     </div>
   </div>

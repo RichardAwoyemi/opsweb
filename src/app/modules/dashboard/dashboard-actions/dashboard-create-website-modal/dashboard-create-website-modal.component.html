@@ -9,8 +9,8 @@
     Please enter a name for your new website.
     <div class="form-group">
       <label for="websiteName"></label>
-      <input (change)="websiteName=websiteName.trim(); displayError=false" (keyup)="validateWebsiteName()"
-             [(ngModel)]="websiteName"
+      <input (change)="websiteName=websiteName.trim();" (keyup)="validateWebsiteName()"
+             [(ngModel)]="websiteName" blockNonAlphanumericCharacters
              class="form-control" id="websiteName" type="text">
     </div>
   </div>

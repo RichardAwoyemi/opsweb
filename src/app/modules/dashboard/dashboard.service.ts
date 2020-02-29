@@ -5,12 +5,12 @@ import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scrol
 
 @Injectable()
 export class DashboardService {
+  activeSidebarSetting = new BehaviorSubject<string>(ActiveSidebarSettings.Websites);
+
   constructor(
     private scrollToService: ScrollToService
   ) {
   }
-
-  activeSidebarSetting = new BehaviorSubject<string>(ActiveSidebarSettings.Websites);
 
   triggerScrollTo(elementId: string) {
     const config: ScrollToConfigOptions = {

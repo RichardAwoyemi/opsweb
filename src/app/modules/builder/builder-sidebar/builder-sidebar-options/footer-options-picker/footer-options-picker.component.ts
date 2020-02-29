@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { ActiveComponentsPartialSelector } from '../../../builder';
 
 @Component({
   selector: 'app-footer-options-picker',
   templateUrl: './footer-options-picker.component.html',
   styleUrls: ['./footer-options-picker.component.css'],
 })
-export class FooterOptionsPickerComponent implements OnInit {
+export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   fontNames: any;
   fontUnits: any;
   footerStyle: any;
@@ -19,14 +21,15 @@ export class FooterOptionsPickerComponent implements OnInit {
   footerPageLinksStyle: any;
   footerCopyrightFontSize: number;
   defaultFooterStyle: any;
+  pageComponents: any;
   footerTemplate: string;
-  footerCopyrightFontUnit: string = 'px';
+  footerCopyrightFontUnit = 'px';
   footerSocialLinksFontSize: number;
-  footerSocialLinksFontUnit: string = 'px';
+  footerSocialLinksFontUnit = 'px';
   footerPageLinksFontSize: number;
-  footerPageLinksFontUnit: string = 'px';
-  footerPageLinkFontName: string = 'Avenir Next Regular';
-  footerCopyrightFontName: string = 'Avenir Next Regular';
+  footerPageLinksFontUnit = 'px';
+  footerPageLinkFontName = 'Avenir Next Regular';
+  footerCopyrightFontName = 'Avenir Next Regular';
   facebookUrl: string;
   twitterUrl: string;
   instagramUrl: string;
@@ -51,10 +54,12 @@ export class FooterOptionsPickerComponent implements OnInit {
   private linkedinUrlSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
+    private builderComponentsService: BuilderComponentsService,
     private builderNavbarService: BuilderNavbarService,
   ) {
   }
@@ -102,9 +107,9 @@ export class FooterOptionsPickerComponent implements OnInit {
       }
     });
 
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
-      if (response) {
-        this.footerTemplate = response;
+    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
+      if (footerTemplateResponse) {
+        this.footerTemplate = footerTemplateResponse;
 
         this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
           if (response) {
@@ -176,46 +181,67 @@ export class FooterOptionsPickerComponent implements OnInit {
         this.websiteChangeCount = response['value'];
       }
     });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
+  }
+
+  setFooterSocialLinks(key, value) {
+    const targetComponentLocation = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Footer);
+    for (let i = 0; i < targetComponentLocation.length; i++) {
+      const activePageIndex = targetComponentLocation[i]['activePageIndex'];
+      const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
+      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['footerSocialLinks'][key] = value;
+    }
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
 
   resetFooterCopyrightFontName() {
     this.footerCopyrightStyle['font-family'] = this.defaultFooterStyle['footerCopyrightStyle']['font-family'];
     const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
     this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
 
   onFooterCopyrightFontNameChange() {
     this.footerCopyrightStyle['font-family'] = this.footerCopyrightFontName;
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFooterCopyrightFontSize() {
     this.footerCopyrightStyle['font-size'] = this.defaultFooterStyle['footerCopyrightStyle']['font-size'];
     this.footerCopyrightFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
 
   setFooterCopyrightFontSize() {
     this.footerCopyrightStyle['font-size'] = this.footerCopyrightFontSize + this.footerCopyrightFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFooterCopyrightFontUnitChange() {
-    if (this.footerCopyrightFontUnit == 'em') {
+    if (this.footerCopyrightFontUnit === 'em') {
       if (this.footerCopyrightFontSize < 16) {
         this.footerCopyrightFontSize = 16;
       }
       this.footerCopyrightFontSize = Math.round(this.footerCopyrightFontSize / 16);
     }
 
-    if (this.footerCopyrightFontUnit == 'px') {
+    if (this.footerCopyrightFontUnit === 'px') {
       this.footerCopyrightFontSize = Math.round(this.footerCopyrightFontSize * 16);
     }
 
     this.footerCopyrightStyle['font-size'] = this.footerCopyrightFontSize + this.footerCopyrightFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -223,28 +249,31 @@ export class FooterOptionsPickerComponent implements OnInit {
   resetFooterSocialLinksFontSize() {
     this.footerSocialLinksStyle['font-size'] = this.defaultFooterStyle['footerSocialLinksFontSize']['font-size'];
     this.footerSocialLinksFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
   }
 
   setFooterSocialLinksFontSize() {
     this.footerSocialLinksStyle['font-size'] = this.footerSocialLinksFontSize + this.footerSocialLinksFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFooterSocialLinksFontUnitChange() {
-    if (this.footerSocialLinksFontUnit == 'em') {
+    if (this.footerSocialLinksFontUnit === 'em') {
       if (this.footerSocialLinksFontSize < 16) {
         this.footerSocialLinksFontSize = 16;
       }
       this.footerSocialLinksFontSize = Math.round(this.footerSocialLinksFontSize / 16);
     }
 
-    if (this.footerSocialLinksFontUnit == 'px') {
+    if (this.footerSocialLinksFontUnit === 'px') {
       this.footerSocialLinksFontSize = Math.round(this.footerSocialLinksFontSize * 16);
     }
 
     this.footerSocialLinksStyle['font-size'] = this.footerSocialLinksFontSize + this.footerSocialLinksFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -253,11 +282,13 @@ export class FooterOptionsPickerComponent implements OnInit {
     this.footerPageLinksStyle['font-family'] = this.defaultFooterStyle['footerPageLinksStyle']['font-family'];
     const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
     this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
   }
 
   onFooterPageLinksFontNameChange() {
     this.footerPageLinksStyle['font-family'] = this.footerPageLinkFontName;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -265,56 +296,77 @@ export class FooterOptionsPickerComponent implements OnInit {
   resetFooterPagesLinkFontSize() {
     this.footerPageLinksStyle['font-size'] = this.defaultFooterStyle['footerPageLinksStyle']['font-size'];
     this.footerPageLinksFontUnit = 'px';
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
   }
 
   setFooterPageLinksFontSize() {
     this.footerPageLinksStyle['font-size'] = this.footerPageLinksFontSize + this.footerPageLinksFontUnit;
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFooterPageLinksFontUnitChange() {
-    if (this.footerPageLinksFontUnit == 'em') {
+    if (this.footerPageLinksFontUnit === 'em') {
       if (this.footerPageLinksFontSize < 16) {
         this.footerPageLinksFontSize = 16;
       }
       this.footerPageLinksFontSize = Math.round(this.footerPageLinksFontSize / 16);
     }
 
-    if (this.footerPageLinksFontUnit == 'px') {
+    if (this.footerPageLinksFontUnit === 'px') {
       this.footerPageLinksFontSize = Math.round(this.footerPageLinksFontSize * 16);
     }
 
     this.footerPageLinksStyle['font-size'] = this.footerPageLinksFontSize + this.footerPageLinksFontUnit;
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onSocialLinkChange(platform: string) {
-    if (platform == 'facebook') {
-      this.builderFooterService.facebookUrl.next(this.facebookUrl);
-    } else if (platform == 'twitter') {
-      this.builderFooterService.twitterUrl.next(this.twitterUrl);
-    } else if (platform == 'instagram') {
-      this.builderFooterService.instagramUrl.next(this.instagramUrl);
-    } else if (platform == 'youtube') {
-      this.builderFooterService.youtubeUrl.next(this.youtubeUrl);
-    } else if (platform == 'github') {
-      this.builderFooterService.githubUrl.next(this.githubUrl);
-    } else if (platform == 'linkedin') {
-      this.builderFooterService.linkedinUrl.next(this.linkedinUrl);
+    if (platform === 'facebook') {
+      if (this.facebookUrl) {
+        this.setFooterSocialLinks('facebookUrl', this.facebookUrl);
+        this.builderFooterService.facebookUrl.next(this.facebookUrl);
+      }
+    } else if (platform === 'twitter') {
+      if (this.twitterUrl) {
+        this.setFooterSocialLinks('twitterUrl', this.twitterUrl);
+        this.builderFooterService.twitterUrl.next(this.twitterUrl);
+      }
+    } else if (platform === 'instagram') {
+      if (this.instagramUrl) {
+        this.setFooterSocialLinks('instagramUrl', this.instagramUrl);
+        this.builderFooterService.instagramUrl.next(this.instagramUrl);
+      }
+    } else if (platform === 'youtube') {
+      if (this.youtubeUrl) {
+        this.setFooterSocialLinks('youtubeUrl', this.youtubeUrl);
+        this.builderFooterService.youtubeUrl.next(this.youtubeUrl);
+      }
+    } else if (platform === 'github') {
+      if (this.githubUrl) {
+        this.setFooterSocialLinks('githubUrl', this.githubUrl);
+        this.builderFooterService.githubUrl.next(this.githubUrl);
+      }
+    } else if (platform === 'linkedin') {
+      if (this.linkedinUrl) {
+        this.setFooterSocialLinks('linkedinUrl', this.linkedinUrl);
+        this.builderFooterService.linkedinUrl.next(this.linkedinUrl);
+      }
     }
   }
 
   toggleFooterMenuOptionVisibility(index: number) {
     let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
-    let selectedNavbarMenuOption = this.navbarMenuOptions[index];
+    const selectedNavbarMenuOption = this.navbarMenuOptions[index];
 
-    if (footerMenuOptions == null) {
+    if (footerMenuOptions === null) {
       footerMenuOptions = [];
       for (let i = 0; i < this.navbarMenuOptions.length; i++) {
-        footerMenuOptions[this.navbarMenuOptions[i]] = this.navbarMenuOptions[i] == selectedNavbarMenuOption;
+        footerMenuOptions[this.navbarMenuOptions[i]] = this.navbarMenuOptions[i] === selectedNavbarMenuOption;
       }
     } else {
       Object.keys(footerMenuOptions).forEach(function (key) {
@@ -325,11 +377,12 @@ export class FooterOptionsPickerComponent implements OnInit {
       footerMenuOptions = this.builderFooterService.sortFooterMenuOptions(footerMenuOptions, this.navbarMenuOptions);
     }
 
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
     this.builderFooterService.footerMenuOptions.next(footerMenuOptions);
   }
 
   checkIfFooterMenuOptionIsVisible(menuOption: string): boolean {
-    let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
+    const footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
     if (footerMenuOptions && footerMenuOptions[menuOption]) {
       return footerMenuOptions[menuOption];
     } else {

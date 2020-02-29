@@ -11,13 +11,13 @@ import { debounce } from '../../../shared/decorators/debounce.decorator';
 })
 export class BuilderSidebarComponent implements OnInit, OnDestroy {
   innerHeight: number;
-  sidebarTemplatesTab: string = 'tab-pane fade active show tab-padding';
-  sidebarComponentsTab: string = 'tab-pane fade tab-padding';
-  sidebarColoursTab: string = 'tab-pane fade tab-padding';
-  sidebarLayoutTab: string = 'tab-pane fade tab-padding';
-  sidebarOptionsTab: string = 'tab-pane fade tab-padding';
-  sidebarPagesTab: string = 'tab-pane fade tab-padding';
-  sidebarDataTab: string = 'tab-pane fade tab-padding';
+  sidebarTemplatesTab = 'tab-pane fade active show tab-padding';
+  sidebarComponentsTab = 'tab-pane fade tab-padding';
+  sidebarColoursTab = 'tab-pane fade tab-padding';
+  sidebarLayoutTab = 'tab-pane fade tab-padding';
+  sidebarOptionsTab = 'tab-pane fade tab-padding';
+  sidebarPagesTab = 'tab-pane fade tab-padding';
+  sidebarDataTab = 'tab-pane fade tab-padding';
   private sidebarDetailsTemplatesSubscription: Subscription;
   private sidebarDetailsComponentsSubscription: Subscription;
   private sidebarDetailsColoursSubscription: Subscription;

@@ -73,12 +73,21 @@
       </label>
     </div>
     <div class="col-md-12">
-      <div *ngIf="formDobInputService.showDobMonthInputError"><small class="text-danger">Month is
-          required</small><br></div>
-      <div *ngIf="formDobInputService.showDobDayInputError"><small class="text-danger">Day is
-          required</small><br></div>
-      <div *ngIf="formDobInputService.showDobYearInputError"><small class="text-danger">Year is
-          required</small></div>
+      <div *ngIf="formDobInputService.showDobMonthInputError">
+        <small class="text-danger">Month is
+          required
+        </small>
+        <br></div>
+      <div *ngIf="formDobInputService.showDobDayInputError">
+        <small class="text-danger">Day is
+          required
+        </small>
+        <br></div>
+      <div *ngIf="formDobInputService.showDobYearInputError">
+        <small class="text-danger">Year is
+          required
+        </small>
+      </div>
     </div>
   </div>
 </div>

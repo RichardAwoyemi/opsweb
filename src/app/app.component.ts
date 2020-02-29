@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, Subscription } from 'rxjs';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
@@ -17,7 +17,7 @@ import { AuthService } from './modules/auth/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   isMobile: Observable<BreakpointState>;
   private authSubscription: Subscription;
 
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   }
 
   redirectUser() {
-    this.router.navigate([this.routerService.getCurrentRoute()]).then(() => {
+    this.router.navigate([RouterService.getCurrentRoute()]).then(() => {
     });
   }
 

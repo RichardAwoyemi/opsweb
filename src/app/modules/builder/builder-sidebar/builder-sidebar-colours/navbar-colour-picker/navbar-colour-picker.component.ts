@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { ActiveTemplates, ActiveThemes } from '../../../builder';
+import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderService } from '../../../builder.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-navbar-colour-picker',
   templateUrl: './navbar-colour-picker.component.html'
 })
-export class NavbarColourPickerComponent implements OnInit {
+export class NavbarColourPickerComponent implements OnInit, OnDestroy {
   navbarThemes: any;
   navbarStyle: any = {
     'background-color': '#FFFFFF'
@@ -23,6 +24,8 @@ export class NavbarColourPickerComponent implements OnInit {
   navbarTheme: string = ActiveThemes.Default;
   defaultNavbarStyle: any;
   websiteChangeCount: number;
+  pageComponents: any;
+
   private navbarStyleSubscription: Subscription;
   private navbarBrandStyleSubscription: Subscription;
   private navbarLinkStyleSubscription: Subscription;
@@ -31,9 +34,11 @@ export class NavbarColourPickerComponent implements OnInit {
   private navbarThemesSubscription: Subscription;
   private defaultNavbarStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -57,9 +62,9 @@ export class NavbarColourPickerComponent implements OnInit {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-      if (response) {
-        this.navbarTemplate = response;
+    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarResponse => {
+      if (navbarResponse) {
+        this.navbarTemplate = navbarResponse;
 
         this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
           if (response) {
@@ -86,40 +91,54 @@ export class NavbarColourPickerComponent implements OnInit {
         this.websiteChangeCount = response['value'];
       }
     });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
   }
 
   onThemeChange() {
     if (this.navbarTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
-      this.builderNavbarService.navbarTheme.next(this.navbarTheme);
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', this.navbarTheme);
       this.builderNavbarService.setNavbarTheme(this.navbarTheme);
+      this.builderNavbarService.navbarTheme.next(this.navbarTheme);
     }
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setNavbarStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', this.navbarStyle);
     this.builderNavbarService.navbarStyle.next(this.navbarStyle);
   }
 
   setNavbarBrandStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarLinkStyle() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
   resetToDefault() {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', ActiveThemes.Default);
     this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
 
     this.navbarStyle['background-color'] = this.defaultNavbarStyle['navbarStyle']['background-color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', this.navbarStyle);
     this.builderNavbarService.navbarStyle.next(this.navbarStyle);
 
     this.navbarBrandStyle['color'] = this.defaultNavbarStyle['navbarBrandStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
 
     this.navbarLinkStyle['color'] = this.defaultNavbarStyle['navbarLinkStyle']['color'];
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }
 
@@ -132,5 +151,6 @@ export class NavbarColourPickerComponent implements OnInit {
     this.navbarThemesSubscription.unsubscribe();
     this.defaultNavbarStyleSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

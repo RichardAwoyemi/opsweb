@@ -13,8 +13,8 @@ export class BuilderDynamicHtmlModule {
       ngModule: BuilderDynamicHtmlModule,
       providers: [
         BuilderDynamicHtmlService,
-        { provide: BuilderDynamicHtmlOptions, useValue: options },
-        { provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: options.components, multi: true },
+        {provide: BuilderDynamicHtmlOptions, useValue: options},
+        {provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: options.components, multi: true},
       ],
     };
   }

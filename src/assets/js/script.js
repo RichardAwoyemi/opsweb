@@ -1,6 +1,6 @@
 'use strict';
 
-$(function() {
+$(function () {
   // Google Analytics
 
   /*window.dataLayer = window.dataLayer || [];

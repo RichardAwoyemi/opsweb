@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserMockupModule } from '../../../shared/components/browser-mockup/browser-mockup.module';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }
+  {path: '', component: HomeComponent}
 ];
 
 @NgModule({

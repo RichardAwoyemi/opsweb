@@ -10,14 +10,14 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent {
   isMobile: Observable<BreakpointState>;
+  model: any = {};
 
   constructor(
     private authService: AuthService,
     private logger: NGXLogger,
     public router: Router
-  ) { }
-
-  model: any = {};
+  ) {
+  }
 
   public resolved(captchaResponse: string) {
     this.logger.debug(`Resolved captcha with response ${captchaResponse}:`);

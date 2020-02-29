@@ -7,9 +7,32 @@
     </div>
     <div class="col-md-12 text-center">
       <div style="padding-top: 2em; padding-bottom: 1em">
-        <p>There doesn't seem to be anything going on here.</p>
+        <p>Your first website is going to be amazing.</p>
       </div>
       <button (click)="openCreateWebsiteModal()" class="btn btn-lg btn-primary" type="button">Create Website</button>
+    </div>
+  </div>
+</div>
+<div [ngStyle]="{'height': innerHeight + 'px'}">
+  <div style="padding: 2em">
+    <h3>Websites</h3>
+    <div class="row gap-y" style="padding-top: 1.75em">
+      <div *ngFor="let website of websites; let i = index" class="col-md-6 col-lg-4">
+        <div #myDrop="ngbDropdown" ngbDropdown placement="bottom">
+          <div (click)="$event.stopPropagation(); myDrop.open();" class="card border hover-shadow-6 d-block">
+            <div class="p-6 text">
+              <span ngbDropdownToggle>
+                <span>{{ website.name }}</span>
+              </span>
+              <div ngbDropdownMenu>
+                <button (click)="openBuilderPage(website.id)" ngbDropdownItem>Edit</button>
+                <button (click)="openRenameWebsiteModal(website.id, website.name)" ngbDropdownItem>Rename</button>
+                <button (click)="openDeleteWebsiteModal(website.id, website.name)" ngbDropdownItem>Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

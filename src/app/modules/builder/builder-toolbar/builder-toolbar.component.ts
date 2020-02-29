@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../builder.service';
 import { ActiveComponents, ActiveOrientations, ActiveSettings } from 'src/app/modules/builder/builder';
@@ -8,7 +8,7 @@ import { ActiveComponents, ActiveOrientations, ActiveSettings } from 'src/app/mo
   templateUrl: './builder-toolbar.component.html',
   styleUrls: ['./builder-toolbar.component.css']
 })
-export class BuilderToolbarComponent implements OnInit {
+export class BuilderToolbarComponent implements OnInit, OnDestroy {
   activeEditComponent: string;
   ACTIVE_COLOURS_SETTING: string = ActiveSettings.Colours;
   ACTIVE_COMPONENTS_SETTING: string = ActiveSettings.Components;
@@ -17,16 +17,15 @@ export class BuilderToolbarComponent implements OnInit {
   ACTIVE_DESKTOP_ORIENTATION: string = ActiveOrientations.Desktop;
   ACTIVE_TABLET_ORIENTATION: string = ActiveOrientations.Tablet;
   ACTIVE_MOBILE_ORIENTATION: string = ActiveOrientations.Mobile;
+  previewMode = false;
+  toolbarButtonDesktopOrientation: string = this.builderService.TOOLBAR_ACTIVE_BUTTON;
+  toolbarButtonMobileOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  toolbarButtonTabletOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  toolbarClass = 'toolbar no-select';
   private toolbarButtonColoursStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   private toolbarButtonComponentsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   private toolbarButtonLayoutStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   private toolbarButtonOptionsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  previewMode: boolean = false;
-  toolbarButtonDesktopOrientation: string = this.builderService.TOOLBAR_ACTIVE_BUTTON;
-  toolbarButtonMobileOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  toolbarButtonTabletOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  toolbarClass: string = 'toolbar no-select';
-
   private activeEditComponentSubscription: Subscription;
   private previewModeSubscription: Subscription;
   private toolbarButtonColourSubscription: Subscription;
@@ -103,25 +102,25 @@ export class BuilderToolbarComponent implements OnInit {
 
   setActiveEditSetting(settingName: string) {
     this.builderService.setActiveEditSetting(settingName);
-    if (settingName == ActiveSettings.Colours) {
+    if (settingName === ActiveSettings.Colours) {
       this.builderService.setSidebarColoursSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Colours);
-      this.builderService.triggerScrollTo(`${ this.activeEditComponent }-colours}`);
+      this.builderService.triggerScrollTo(`${this.activeEditComponent}-colours}`);
     }
-    if (settingName == ActiveSettings.Components) {
+    if (settingName === ActiveSettings.Components) {
       this.builderService.setSidebarComponentsSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Components);
       this.builderService.triggerScrollTo('components');
     }
-    if (settingName == ActiveSettings.Layout) {
+    if (settingName === ActiveSettings.Layout) {
       this.builderService.setSidebarLayoutSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Layout);
-      this.builderService.triggerScrollTo(`${ this.activeEditComponent }-layout}`);
+      this.builderService.triggerScrollTo(`${this.activeEditComponent}-layout}`);
     }
-    if (settingName == ActiveSettings.Options) {
+    if (settingName === ActiveSettings.Options) {
       this.builderService.setSidebarOptionsSetting();
       this.setPrimaryToolbarButtonClass(ActiveSettings.Options);
-      this.builderService.triggerScrollTo(`${ this.activeEditComponent }-options}`);
+      this.builderService.triggerScrollTo(`${this.activeEditComponent}-options}`);
     }
   }
 
@@ -131,22 +130,22 @@ export class BuilderToolbarComponent implements OnInit {
     this.builderService.toolbarLayoutButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
     this.builderService.toolbarOptionsButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
 
-    if (activeSetting == ActiveSettings.Colours) {
+    if (activeSetting === ActiveSettings.Colours) {
       this.builderService.toolbarColoursButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
     }
-    if (activeSetting == ActiveSettings.Components) {
+    if (activeSetting === ActiveSettings.Components) {
       this.builderService.toolbarComponentsButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
     }
-    if (activeSetting == ActiveSettings.Layout) {
+    if (activeSetting === ActiveSettings.Layout) {
       this.builderService.toolbarLayoutButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
     }
-    if (activeSetting == ActiveSettings.Options) {
+    if (activeSetting === ActiveSettings.Options) {
       this.builderService.toolbarOptionsButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
     }
   }
 
   toggleMenuItemVisibility(menuItem) {
-    if (this.activeEditComponent == ActiveComponents.Placeholder) {
+    if (this.activeEditComponent === ActiveComponents.Placeholder) {
       if (menuItem === ActiveSettings.Colours) {
         return false;
       }
@@ -169,15 +168,15 @@ export class BuilderToolbarComponent implements OnInit {
     this.builderService.toolbarTabletOrientationButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
     this.builderService.toolbarMobileOrientationButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
 
-    if (activeOrientation == ActiveOrientations.Desktop) {
+    if (activeOrientation === ActiveOrientations.Desktop) {
       this.builderService.toolbarDesktopOrientationButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
       this.builderService.activeOrientation.next(ActiveOrientations.Desktop);
     }
-    if (activeOrientation == ActiveOrientations.Tablet) {
+    if (activeOrientation === ActiveOrientations.Tablet) {
       this.builderService.toolbarTabletOrientationButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
       this.builderService.activeOrientation.next(ActiveOrientations.Tablet);
     }
-    if (activeOrientation == ActiveOrientations.Mobile) {
+    if (activeOrientation === ActiveOrientations.Mobile) {
       this.builderService.toolbarMobileOrientationButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
       this.builderService.activeOrientation.next(ActiveOrientations.Mobile);
     }

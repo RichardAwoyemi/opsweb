@@ -7,8 +7,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   templateUrl: './dashboard.page.html'
 })
 export class DashboardComponent implements OnInit {
-  sidebarClass: string = 'col-md-3';
-  bodyClass: string = 'col-md-9';
+  sidebarClass = 'col-md-3';
+  bodyClass = 'col-md-9';
   innerWidth: number;
 
   constructor(

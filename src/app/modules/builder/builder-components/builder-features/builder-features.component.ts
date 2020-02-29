@@ -1,11 +1,11 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings, ActiveThemes } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { HttpClient } from '@angular/common/http';
-import { UtilService } from 'src/app/shared/services/util.service';
 import { BuilderFeaturesService } from './builder-features.service';
+import { BuilderComponentsService } from '../builder-components.service';
 
 @Component({
   selector: 'app-builder-features',
@@ -13,35 +13,22 @@ import { BuilderFeaturesService } from './builder-features.service';
 })
 export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   componentName: string = ActiveComponents.Features;
-  componentId = `${ActiveComponents.Features}-${UtilService.generateRandomString(8)}`;
+  componentId: string;
+  componentIndex: string;
   activeEditComponent: string;
   activeEditComponentId: string;
   innerHeight: number;
   previewMode: boolean;
   componentActive = false;
   activeElement: string;
-  featuresItemArray: any = [
-    {
-      'heading': UtilService.generateRandomWord(),
-      'subheading': 'Building a website has never been easier than this! Get started today, free of cost.'
-    },
-    {
-      'heading': UtilService.generateRandomWord(),
-      'subheading': 'Make our amazing library of templates and themes your own with our extensive range of custom options.'
-    },
-    {
-      'heading': UtilService.generateRandomWord(),
-      'subheading': 'Grow with ease and whilst receiving useful analytics. It\'s just what you need to grow.'
-    }
-  ];
+  activePageSetting: string;
+  componentDetail: any;
+  featuresItemArray: any;
   featuresHeadingStyle: any;
   featuresSubheadingStyle: any;
-  featuresStyle: any = { 'width': '33.3%' };
-  featuresOrientation: any;
-  featuresHeadingActiveStyle: string;
-  featuresSubheadingActiveStyle: string;
+  featuresStyle: any;
+  pageComponents: any;
   featuresTheme: string = ActiveThemes.Default;
-  featuresTemplate: string = ActiveTemplates.Default;
 
   private featuresBreakpointSubscription: Subscription;
   private featuresStyleSubscription: Subscription;
@@ -49,25 +36,25 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   private activeEditComponentIdSubscription: Subscription;
   private previewModeSubscription: Subscription;
   private featuresItemArraySubscription: Subscription;
-  private featuresTemplateSubscription: Subscription;
   private featuresThemeSubscription: Subscription;
   private featuresHeadingStyleSubscription: Subscription;
   private featuresSubheadingStyleSubscription: Subscription;
   private activeElementSubscription: Subscription;
+  private componentsDetailSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private httpClient: HttpClient,
     private builderService: BuilderService,
-    private builderFeaturesService: BuilderFeaturesService
+    private builderFeaturesService: BuilderFeaturesService,
+    private builderComponentService: BuilderComponentsService,
+    private elementRef: ElementRef
   ) {
   }
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.builderFeaturesService.featuresHeadingStyle.next({});
-    this.builderFeaturesService.featuresSubheadingStyle.next({});
-    this.builderFeaturesService.featuresStyle.next({});
-    this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
 
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
       this.previewMode = response;
@@ -76,14 +63,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
       if (response) {
         this.activeEditComponentId = response;
-      }
-    });
-
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
-      if (response) {
-        this.builderFeaturesService.setFeaturesTemplate(response, this.componentId);
-      } else {
-        this.builderFeaturesService.setFeaturesTemplate(this.featuresTemplate, this.componentId);
       }
     });
 
@@ -106,36 +85,70 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     });
 
     this.builderService.toolbarMobileOrientationButton.subscribe(response => {
-      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
         this.setNumberOfFeatures(ActiveOrientations.Mobile);
       }
     });
 
     this.builderService.toolbarDesktopOrientationButton.subscribe(response => {
-      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
         this.setNumberOfFeatures(ActiveOrientations.Desktop);
       }
     });
 
     this.builderService.toolbarTabletOrientationButton.subscribe(response => {
-      if (response == this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
         this.setNumberOfFeatures(ActiveOrientations.Tablet);
+      }
+    });
+
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
+      if (activePageSettingResponse) {
+        this.activePageSetting = activePageSettingResponse;
+        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+          if (response) {
+            this.pageComponents = response;
+            this.componentId = this.elementRef.nativeElement['id'];
+            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+              const pageName = this.pageComponents['pages'][i]['name'];
+              if (pageName === this.activePageSetting) {
+                for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                  if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                    this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                    this.featuresStyle = this.componentDetail['featuresStyle'];
+                    this.featuresHeadingStyle = this.componentDetail['featuresHeadingStyle'];
+                    this.featuresSubheadingStyle = this.componentDetail['featuresSubheadingStyle'];
+                    this.featuresItemArray = this.componentDetail['featuresItemArray'];
+                    this.featuresTheme = this.componentDetail['featuresTheme'];
+                    this.componentIndex = this.componentDetail['componentIndex'];
+                  }
+                }
+              }
+            }
+          }
+        });
       }
     });
   }
 
   setNumberOfFeatures(orientation: string = null) {
-    this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
-    this.builderFeaturesService.setNumberOfFeatures(this.componentId, this.featuresItemArray.length, orientation);
+    if (this.featuresItemArray) {
+      this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
+      this.builderFeaturesService.setNumberOfFeatures(this.componentId, this.featuresItemArray.length, orientation);
+    }
   }
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    if (this.activeEditComponentId == this.componentId) {
+    if (this.activeEditComponentId === this.componentId) {
       this.clearActiveEditComponent();
     } else {
-      window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-selected', 'message': this.componentId }, '*');
+      window.postMessage({
+        'for': 'opsonion',
+        'action': 'duplicate-component-selected',
+        'message': this.componentId
+      }, '*');
       this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(this.componentName, this.componentId);
       this.builderService.setActiveEditSetting(ActiveSettings.Colours);
@@ -145,7 +158,11 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
 
   selectFeaturesElement(event: any, elementId: string) {
     if (!this.previewMode) {
-      window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-selected', 'message': this.componentId }, '*');
+      window.postMessage({
+        'for': 'opsonion',
+        'action': 'duplicate-component-selected',
+        'message': this.componentId
+      }, '*');
       this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(ActiveComponents.Features, this.componentId);
       this.builderService.setActiveEditSetting(ActiveSettings.Options);
@@ -156,7 +173,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
         this.builderService.triggerScrollTo('features-heading-options');
       }
       this.setComponentStyle();
-      window.postMessage({ 'for': 'opsonion', 'action': 'element-selected', 'message': elementId }, '*');
+      window.postMessage({'for': 'opsonion', 'action': 'element-selected', 'message': elementId}, '*');
       event.stopPropagation();
     }
   }
@@ -178,7 +195,11 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   }
 
   clearActiveEditComponent() {
-    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected', 'message': this.componentId }, '*');
+    window.postMessage({
+      'for': 'opsonion',
+      'action': 'duplicate-component-deselected',
+      'message': this.componentId
+    }, '*');
     this.componentActive = false;
     this.builderService.clearActiveEditComponent();
   }
@@ -196,102 +217,130 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     return !this.previewMode;
   }
 
-  setActiveElementStyle(activeElement, element) {
-    if (activeElement == element && !this.previewMode) {
-      if (element.indexOf(element) > -1) {
-        return element + '-edit';
-      }
-    }
-  }
-
   @HostListener('window:message', ['$event'])
   onMessage(e) {
-    if (e.data.for == 'opsonion') {
-      if (e.data.action == 'unique-component-selected' || e.data.action == 'duplicate-component-deselected') {
+    if (e.data.for === 'opsonion') {
+      if (e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
         this.componentActive = false;
       }
 
-      if (e.data.action == 'duplicate-component-selected') {
-        this.componentActive = e.data.message == this.componentId;
+      if (e.data.action === 'duplicate-component-selected') {
+        this.componentActive = e.data.message === this.componentId;
       }
 
-      if (e.data.action == 'element-selected') {
+      if (e.data.action === 'element-selected') {
         this.builderService.activeElement.next(e.data.message);
       }
 
       if (e.data.action.indexOf(this.componentId) > -1) {
         if (e.data.action.indexOf('item') > -1) {
-          if (e.data.message['featuresItemWidth']) {
-            this.featuresStyle['width'] = e.data.message['featuresItemWidth'];
-          }
-          if (e.data.message['featuresItemArray']) {
-            this.featuresItemArray = e.data.message['featuresItemArray'];
-          }
+          this.setFeaturesItems(e.data.message);
         }
         if (e.data.action.indexOf('theme') > -1) {
           this.setFeaturesThemeStyle(e.data.message);
         }
-        if (e.data.action.indexOf('template') > -1) {
-          this.setFeaturesTemplateStyle(e.data.message);
+        if (e.data.action.indexOf('style') > -1) {
+          this.setFeaturesStyle(e.data.message);
         }
       }
     }
   }
 
-  setFeaturesThemeStyle(theme: any) {
-    if (theme['featuresStyle']) {
-      this.featuresStyle['background-color'] = theme['featuresStyle']['background-color'];
-      this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
-    }
-    if (theme['featuresHeadingStyle']) {
-      this.featuresHeadingStyle['color'] = theme['featuresHeadingStyle']['color'];
-      this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    }
-    if (theme['featuresSubheadingStyle']) {
-      this.featuresSubheadingStyle['color'] = theme['featuresSubheadingStyle']['color'];
-      this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    }
-    if (theme['name']) {
-      this.featuresTheme = theme['name'];
-      this.builderFeaturesService.featuresTheme.next(theme['name']);
+  setFeaturesItems(items: any) {
+    if (this.featuresStyle) {
+      const components = this.builderComponentService.pageComponents.getValue();
+      const activePageIndex = items['targetActiveComponent']['activePageIndex'];
+      const activeComponentIndex = items['targetActiveComponent']['activeComponentIndex'];
+      const timestamp = new Date().getTime();
+
+      if (items['featuresItemWidth']) {
+        this.featuresStyle['width'] = items['featuresItemWidth'];
+        components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresStyle'] = this.featuresStyle;
+        components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
+        this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
+      }
+
+      if (items['featuresItemArray']) {
+        this.featuresItemArray = items['featuresItemArray'];
+        components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresItemArray'] = this.featuresItemArray;
+        components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
+        this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
+      }
+
+      this.builderComponentService.pageComponents.next(components);
     }
   }
 
-  setFeaturesTemplateStyle(template: any) {
-    if (template['featuresStyle']) {
+  setFeaturesStyle(style: any) {
+    const components = this.builderComponentService.pageComponents.getValue();
+    const activePageIndex = style['targetActiveComponent']['activePageIndex'];
+    const activeComponentIndex = style['targetActiveComponent']['activeComponentIndex'];
+    const timestamp = new Date().getTime();
+
+    if (style['featuresStyle']) {
       const previousWidth = this.featuresStyle['width'];
-      this.featuresStyle = template['featuresStyle'];
+      this.featuresStyle = style['featuresStyle'];
       this.featuresStyle['width'] = previousWidth;
+      components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresStyle'] = this.featuresStyle;
+      components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
       this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     }
-    if (template['featuresHeadingStyle']) {
-      this.featuresHeadingStyle = template['featuresHeadingStyle'];
+
+    if (style['featuresHeadingStyle']) {
+      this.featuresHeadingStyle = style['featuresHeadingStyle'];
+      components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresHeadingStyle'] = this.featuresHeadingStyle;
+      components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
       this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     }
-    if (template['featuresSubheadingStyle']) {
-      this.featuresSubheadingStyle = template['featuresSubheadingStyle'];
+
+    if (style['featuresSubheadingStyle']) {
+      this.featuresSubheadingStyle = style['featuresSubheadingStyle'];
+      components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresSubheadingStyle'] = this.featuresSubheadingStyle;
+      components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
       this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     }
+  }
+
+  setFeaturesThemeStyle(theme: any) {
+    const components = this.builderComponentService.pageComponents.getValue();
+    const activePageIndex = theme['targetActiveComponent']['activePageIndex'];
+    const activeComponentIndex = theme['targetActiveComponent']['activeComponentIndex'];
+    const timestamp = new Date().getTime();
+
+    components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresStyle'] = theme['featuresStyle'];
+    components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresHeadingStyle'] = theme['featuresHeadingStyle'];
+    components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresSubheadingStyle'] = theme['featuresSubheadingStyle'];
+    components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
+
+    this.featuresStyle = theme['featuresStyle'];
+    this.featuresHeadingStyle = theme['featuresHeadingStyle'];
+    this.featuresSubheadingStyle = theme['featuresSubheadingStyle'];
+
+    this.builderComponentService.pageComponents.next(components);
   }
 
   setFeaturesOuterStyle() {
-    return {
-      'padding-top': this.featuresStyle['padding-top'],
-      'padding-left': this.featuresStyle['padding-left'],
-      'padding-right': this.featuresStyle['padding-right'],
-      'padding-bottom': this.featuresStyle['padding-bottom'],
-      'background-color': this.featuresStyle['background-color'],
-    };
+    if (this.featuresStyle) {
+      return {
+        'padding-top': this.featuresStyle['padding-top'],
+        'padding-left': this.featuresStyle['padding-left'],
+        'padding-right': this.featuresStyle['padding-right'],
+        'padding-bottom': this.featuresStyle['padding-bottom'],
+        'background-color': this.featuresStyle['background-color'],
+      };
+    }
   }
 
   setFeaturesInnerStyle() {
-    return {
-      'width': this.featuresStyle['width']
-    };
+    if (this.featuresStyle) {
+      return {
+        'width': this.featuresStyle['width']
+      };
+    }
   }
 
   setActiveElement(elementId: string) {
-    if (this.activeElement == elementId && !this.previewMode) {
+    if (this.activeElement === elementId && !this.previewMode) {
       if (elementId.indexOf('subheading') > -1) {
         return 'features-subheading-edit';
       } else if (elementId.indexOf('heading') > -1) {
@@ -317,9 +366,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     if (this.featuresStyleSubscription) {
       this.featuresStyleSubscription.unsubscribe();
     }
-    if (this.featuresTemplateSubscription) {
-      this.featuresTemplateSubscription.unsubscribe();
-    }
     if (this.featuresThemeSubscription) {
       this.featuresThemeSubscription.unsubscribe();
     }
@@ -334,6 +380,9 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     }
     if (this.featuresItemArraySubscription) {
       this.featuresItemArraySubscription.unsubscribe();
+    }
+    if (this.componentsDetailSubscription) {
+      this.componentsDetailSubscription.unsubscribe();
     }
   }
 }

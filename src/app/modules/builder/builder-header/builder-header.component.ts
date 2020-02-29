@@ -18,7 +18,7 @@ import { BuilderSaveWebsiteModalComponent } from '../builder-actions/builder-sav
 export class BuilderHeaderComponent implements OnInit {
   websiteName: string;
   websiteNameSubscription: Subscription;
-  photoURL: string = '/assets/img/anonymous.jpg';
+  photoURL = '/assets/img/anonymous.jpg';
   user: IUser;
 
   constructor(
@@ -51,7 +51,7 @@ export class BuilderHeaderComponent implements OnInit {
   }
 
   openCreateAccountModal() {
-    this.modalService.open(BuilderCreateAccountModalComponent, { windowClass: 'modal-holder', centered: true });
+    this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 
   signOut() {
@@ -70,8 +70,11 @@ export class BuilderHeaderComponent implements OnInit {
   }
 
   saveWebsiteName(event: any) {
-    if (this.websiteName != event.target.innerHTML) {
-      const modal = this.modalService.open(BuilderSaveWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
+    if (this.websiteName !== event.target.innerHTML) {
+      const modal = this.modalService.open(BuilderSaveWebsiteModalComponent, {
+        windowClass: 'modal-holder',
+        centered: true
+      });
       modal.componentInstance.websiteName = this.websiteName;
       modal.componentInstance.newWebsiteName = event.target.innerHTML;
     }

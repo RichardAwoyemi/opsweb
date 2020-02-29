@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
 import { ActiveTemplates } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-features-options-picker',
   templateUrl: './features-options-picker.component.html',
   styleUrls: ['./features-options-picker.component.css'],
 })
-export class FeaturesOptionsPickerComponent implements OnInit {
+export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   fontNames: any;
   fontUnits: any;
   featuresStyle: any;
@@ -17,15 +18,17 @@ export class FeaturesOptionsPickerComponent implements OnInit {
   defaultFeaturesStyle: any;
   featuresTemplate: string;
   featuresHeadingStyle: any;
-  featuresHeadingFontName: string = 'Avenir Next Medium';
+  featuresHeadingFontName = 'Avenir Next Medium';
   featuresHeadingFontSize: number;
-  featuresHeadingFontUnit: string = 'px';
+  featuresHeadingFontUnit = 'px';
   featuresSubheadingStyle: any;
-  featuresSubheadingFontName: string = 'Avenir Next Medium';
+  featuresSubheadingFontName = 'Avenir Next Medium';
   featuresSubheadingFontSize: number;
-  featuresSubheadingFontUnit: string = 'px';
+  featuresSubheadingFontUnit = 'px';
   websiteChangeCount: number;
-  numberOfFeatures: number;
+  numberOfFeatures = 3;
+  pageComponents: any;
+  activeComponentId: string;
   activeEditComponentId: string;
 
   private activeEditComponentIdSubscription: Subscription;
@@ -38,33 +41,44 @@ export class FeaturesOptionsPickerComponent implements OnInit {
   private featuresTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
 
   ngOnInit() {
     this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      this.activeEditComponentId = response;
+      if (response) {
+        this.activeEditComponentId = response;
+      }
     });
 
     this.featuresHeadingStyleSubscription = this.builderFeaturesService.featuresHeadingStyle.subscribe(response => {
-      this.featuresHeadingStyle = response;
+      if (response) {
+        this.featuresHeadingStyle = response;
+      }
     });
 
     this.featuresSubheadingStyleSubscription = this.builderFeaturesService.featuresSubheadingStyle.subscribe(response => {
-      this.featuresSubheadingStyle = response;
+      if (response) {
+        this.featuresSubheadingStyle = response;
+      }
     });
 
     this.featuresStyleSubscription = this.builderFeaturesService.featuresStyle.subscribe(response => {
-      this.featuresStyle = response;
+      if (response) {
+        this.featuresStyle = response;
+      }
     });
 
     this.featuresItemArraySubscription = this.builderFeaturesService.featuresItemArray.subscribe(response => {
-      this.featuresItemArray = response;
-      this.numberOfFeatures = Object.keys(this.featuresItemArray).length;
+      if (response) {
+        this.featuresItemArray = response;
+      }
     });
 
     this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
@@ -79,9 +93,9 @@ export class FeaturesOptionsPickerComponent implements OnInit {
       }
     });
 
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
-      if (response) {
-        this.featuresTemplate = response;
+    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
+      if (featuresTemplateResponse) {
+        this.featuresTemplate = featuresTemplateResponse;
         this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = response;
@@ -137,6 +151,13 @@ export class FeaturesOptionsPickerComponent implements OnInit {
         this.featuresSubheadingFontName = featuresFontNames[0].replace(/'/g, '');
       }
     });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
+
   }
 
   setNumberOfFeatures() {
@@ -176,14 +197,14 @@ export class FeaturesOptionsPickerComponent implements OnInit {
   }
 
   onFeaturesHeadingFontUnitChange() {
-    if (this.featuresHeadingFontUnit == 'em') {
+    if (this.featuresHeadingFontUnit === 'em') {
       if (this.featuresHeadingFontSize < 16) {
         this.featuresHeadingFontSize = 16;
       }
       this.featuresHeadingFontSize = Math.round(this.featuresHeadingFontSize / 16);
     }
 
-    if (this.featuresHeadingFontUnit == 'px') {
+    if (this.featuresHeadingFontUnit === 'px') {
       this.featuresHeadingFontSize = Math.round(this.featuresHeadingFontSize * 16);
     }
 
@@ -218,14 +239,14 @@ export class FeaturesOptionsPickerComponent implements OnInit {
   }
 
   onFeaturesSubheadingFontUnitChange() {
-    if (this.featuresSubheadingFontUnit == 'em') {
+    if (this.featuresSubheadingFontUnit === 'em') {
       if (this.featuresSubheadingFontSize < 16) {
         this.featuresSubheadingFontSize = 16;
       }
       this.featuresSubheadingFontSize = Math.round(this.featuresSubheadingFontSize / 16);
     }
 
-    if (this.featuresSubheadingFontUnit == 'px') {
+    if (this.featuresSubheadingFontUnit === 'px') {
       this.featuresSubheadingFontSize = Math.round(this.featuresSubheadingFontSize * 16);
     }
 
@@ -234,7 +255,23 @@ export class FeaturesOptionsPickerComponent implements OnInit {
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
+  setChanges() {
+    const timestamp = new Date().getTime();
+    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeComponentId) {
+          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
+          this.pageComponents['pages'][i]['components'][j]['featuresStyle'] = this.featuresStyle;
+          this.pageComponents['pages'][i]['components'][j]['featuresHeadingStyle'] = this.featuresHeadingStyle;
+          this.pageComponents['pages'][i]['components'][j]['featuresSubheadingStyle'] = this.featuresSubheadingStyle;
+        }
+      }
+    }
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
+  }
+
   ngOnDestroy() {
+    this.setChanges();
     this.featuresHeadingStyleSubscription.unsubscribe();
     this.featuresSubheadingStyleSubscription.unsubscribe();
     this.featuresStyleSubscription.unsubscribe();
@@ -242,5 +279,6 @@ export class FeaturesOptionsPickerComponent implements OnInit {
     this.fontUnitsSubscription.unsubscribe();
     this.featuresTemplateSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

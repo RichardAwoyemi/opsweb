@@ -24,14 +24,15 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private authStore: Store<fromAuth.State>,
     private userStore: Store<fromUser.State>
-  ) {}
+  ) {
+  }
 
   get isLoggedIn() {
     return this.authService.isLoggedIn();
   }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([ Breakpoints.Handset ]);
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.routerService.currentRoute.next(window.location.pathname);
     this.navbarSubscription = this.routerService.currentRoute.subscribe(result => {
       if (result) {

@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
 import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
 import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
-import { UtilService } from '../../../../shared/services/util.service';
+import { BuilderComponentsService } from '../builder-components.service';
 
 @Component({
   selector: 'app-builder-hero',
   templateUrl: './builder-footer.component.html'
 })
-export class BuilderFooterComponent implements OnInit, IComponent {
+export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   componentName: string = ActiveComponents.Footer;
-  componentId = `${ ActiveComponents.Footer }-${ UtilService.generateRandomString(8) }`;
+  componentId: string;
+  componentIndex: number;
   innerHeight: number;
   activeEditComponent: string;
   activeEditComponentId: string;
@@ -38,6 +39,9 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   footerComponentLayout: any;
   activeElement: string;
   copyrightText: string;
+  activePageSetting: string;
+  pageComponents: any;
+  componentDetail: any;
 
   private footerStyleSubscription: Subscription;
   private footerPageLinksStyleSubscription: Subscription;
@@ -55,6 +59,8 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   private previewModeSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private activeElementSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   private facebookUrlSubscription: Subscription;
   private twitterUrlSubscription: Subscription;
@@ -66,7 +72,9 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   constructor(
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
-    private builderFooterService: BuilderFooterService
+    private builderFooterService: BuilderFooterService,
+    private builderComponentService: BuilderComponentsService,
+    private elementRef: ElementRef,
   ) {
   }
 
@@ -75,11 +83,15 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     this.copyrightText = 'Copyright \u00A9 ' + new Date().getFullYear();
 
     this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      this.activeEditComponentId = response;
+      if (response) {
+        this.activeEditComponentId = response;
+      }
     });
 
     this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
-      this.footerComponentLayout = response;
+      if (response) {
+        this.footerComponentLayout = response;
+      }
     });
 
     this.footerSocialLinksContainerStyleSubscription = this.builderFooterService.footerSocialLinksContainerStyle.subscribe(response => {
@@ -87,35 +99,51 @@ export class BuilderFooterComponent implements OnInit, IComponent {
     });
 
     this.footerAlignmentClassSubscription = this.builderFooterService.footerAlignmentClass.subscribe(response => {
-      this.footerAlignmentClass = response;
+      if (response) {
+        this.footerAlignmentClass = response;
+      }
     });
 
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      this.previewMode = response;
+      if (response) {
+        this.previewMode = response;
+      }
     });
 
     this.twitterUrlSubscription = this.builderFooterService.twitterUrl.subscribe(response => {
-      this.twitterUrl = response;
+      if (response) {
+        this.twitterUrl = response;
+      }
     });
 
     this.instagramUrlSubscription = this.builderFooterService.instagramUrl.subscribe(response => {
-      this.instagramUrl = response;
+      if (response) {
+        this.instagramUrl = response;
+      }
     });
 
     this.youtubeUrlSubscription = this.builderFooterService.youtubeUrl.subscribe(response => {
-      this.youtubeUrl = response;
+      if (response) {
+        this.youtubeUrl = response;
+      }
     });
 
     this.githubUrlSubscription = this.builderFooterService.githubUrl.subscribe(response => {
-      this.githubUrl = response;
+      if (response) {
+        this.githubUrl = response;
+      }
     });
 
     this.facebookUrlSubscription = this.builderFooterService.facebookUrl.subscribe(response => {
-      this.facebookUrl = response;
+      if (response) {
+        this.facebookUrl = response;
+      }
     });
 
     this.linkedinUrlSubscription = this.builderFooterService.linkedinUrl.subscribe(response => {
-      this.linkedinUrl = response;
+      if (response) {
+        this.linkedinUrl = response;
+      }
     });
 
     this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
@@ -158,13 +186,13 @@ export class BuilderFooterComponent implements OnInit, IComponent {
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
+    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
+      if (navbarMenuOptionsResponse) {
+        this.navbarMenuOptions = navbarMenuOptionsResponse;
 
         this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
           if (response) {
-            let footerMenuOptions = [];
+            const footerMenuOptions = [];
             Object.keys(response).forEach(function (key) {
               if (response[key] !== false) {
                 footerMenuOptions.push(key);
@@ -197,12 +225,49 @@ export class BuilderFooterComponent implements OnInit, IComponent {
         this.builderFooterService.footerTemplate.next(ActiveThemes.Default);
       }
     });
+
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
+      if (activePageSettingResponse) {
+        this.activePageSetting = activePageSettingResponse;
+        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+          if (response) {
+            this.pageComponents = response;
+            if (this.elementRef.nativeElement['id']) {
+              this.componentId = this.elementRef.nativeElement['id'];
+              for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                const pageName = this.pageComponents['pages'][i]['name'];
+                if (pageName === this.activePageSetting) {
+                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                      this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                      this.builderFooterService.footerStyle.next(this.componentDetail['footerStyle']);
+                      this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['footerSocialLinksContainerStyle']);
+                      this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['footerSocialLinksStyle']);
+                      this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['footerPageLinksStyle']);
+                      this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['footerCopyrightStyle']);
+                      this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
+                      this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
+                      this.builderFooterService.facebookUrl.next(this.componentDetail['footerSocialLinks']['facebookUrl']);
+                      this.builderFooterService.twitterUrl.next(this.componentDetail['footerSocialLinks']['twitterUrl']);
+                      this.builderFooterService.instagramUrl.next(this.componentDetail['footerSocialLinks']['instagramUrl']);
+                      this.builderFooterService.youtubeUrl.next(this.componentDetail['footerSocialLinks']['youtubeUrl']);
+                      this.builderFooterService.githubUrl.next(this.componentDetail['footerSocialLinks']['githubUrl']);
+                      this.builderFooterService.linkedinUrl.next(this.componentDetail['footerSocialLinks']['linkedinUrl']);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    });
   }
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    if (this.activeEditComponent == ActiveComponents.Footer) {
+    if (this.activeEditComponent === ActiveComponents.Footer) {
       this.builderService.clearActiveEditComponent();
     } else {
       this.builderService.setActiveEditComponent(this.componentName, this.componentId);
@@ -219,7 +284,7 @@ export class BuilderFooterComponent implements OnInit, IComponent {
   }
 
   setActiveElementStyle(activeElement, element) {
-    if (activeElement == element && !this.previewMode) {
+    if (activeElement === element && !this.previewMode) {
       if (element.indexOf('footer-copyright') > -1) {
         return 'footer-copyright-edit';
       }

@@ -27,7 +27,7 @@
   <div class="row" style="padding-top: 2em">
     <div *ngFor="let template of webTemplates | filter: searchText | sort: 'name'" class="col-md-4">
       <app-browser-mockup [img]="'../../../../../assets/img/' + template.id + '.jpg'"
-                          [view]="'template'"></app-browser-mockup>
+                          [template]="template" [user]="user" [view]="'template'"></app-browser-mockup>
       <div class="text-center" style="padding-top: 1em">{{ template.name }}</div>
     </div>
   </div>

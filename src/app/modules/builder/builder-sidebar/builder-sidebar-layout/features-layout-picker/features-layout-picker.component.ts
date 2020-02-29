@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
 import { Subscription } from 'rxjs';
 import { ActiveTemplates } from '../../../builder';
 import { BuilderService } from '../../../builder.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-features-layout-picker',
   templateUrl: './features-layout-picker.component.html',
   styleUrls: ['./features-layout-picker.component.css']
 })
-export class FeaturesLayoutPickerComponent implements OnInit {
+export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
   featuresPaddingTop: number;
   featuresPaddingLeft: number;
   featuresPaddingRight: number;
@@ -28,8 +29,9 @@ export class FeaturesLayoutPickerComponent implements OnInit {
   featuresStyle: any;
   featuresTemplate: any = ActiveTemplates.Default;
   defaultFeaturesStyle: any;
+  pageComponents: any;
+  activeComponentId: string;
   websiteChangeCount: number;
-  featuresMenuOptions: string[];
 
   private featuresHeadingStyleSubscription: Subscription;
   private featuresSubheadingStyleSubscription: Subscription;
@@ -38,16 +40,25 @@ export class FeaturesLayoutPickerComponent implements OnInit {
   private featuresTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
+  private activeComponentIdSubscription: Subscription;
 
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
 
   ngOnInit() {
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
-      this.featuresTemplate = response;
+    this.activeComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+      if (response) {
+        this.activeComponentId = response;
+      }
+    });
+
+    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
+      this.featuresTemplate = featuresTemplateResponse;
 
       this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
         if (response) {
@@ -114,33 +125,49 @@ export class FeaturesLayoutPickerComponent implements OnInit {
       }
     });
 
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
+
     this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
     });
+
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
   }
 
   setFeaturesHeadingPaddingTop() {
-    this.featuresHeadingStyle['padding-top'] = `${ this.featuresHeadingPaddingTop }px`;
+    this.featuresHeadingStyle['padding-top'] = `${this.featuresHeadingPaddingTop}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingPaddingLeft() {
-    this.featuresHeadingStyle['padding-left'] = `${ this.featuresHeadingPaddingLeft }px`;
+    this.featuresHeadingStyle['padding-left'] = `${this.featuresHeadingPaddingLeft}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingPaddingRight() {
-    this.featuresHeadingStyle['padding-right'] = `${ this.featuresHeadingPaddingRight }px`;
+    this.featuresHeadingStyle['padding-right'] = `${this.featuresHeadingPaddingRight}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingPaddingBottom() {
-    this.featuresHeadingStyle['padding-bottom'] = `${ this.featuresHeadingPaddingBottom }px`;
+    this.featuresHeadingStyle['padding-bottom'] = `${this.featuresHeadingPaddingBottom}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -150,29 +177,34 @@ export class FeaturesLayoutPickerComponent implements OnInit {
     this.featuresHeadingStyle['padding-left'] = this.defaultFeaturesStyle['featuresHeadingStyle']['padding-left'];
     this.featuresHeadingStyle['padding-right'] = this.defaultFeaturesStyle['featuresHeadingStyle']['padding-right'];
     this.featuresHeadingStyle['padding-bottom'] = this.defaultFeaturesStyle['featuresHeadingStyle']['padding-bottom'];
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
   }
 
   setFeaturesSubheadingPaddingTop() {
-    this.featuresSubheadingStyle['padding-top'] = `${ this.featuresSubheadingPaddingTop }px`;
+    this.featuresSubheadingStyle['padding-top'] = `${this.featuresSubheadingPaddingTop}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingPaddingLeft() {
-    this.featuresSubheadingStyle['padding-left'] = `${ this.featuresSubheadingPaddingLeft }px`;
+    this.featuresSubheadingStyle['padding-left'] = `${this.featuresSubheadingPaddingLeft}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingPaddingRight() {
-    this.featuresSubheadingStyle['padding-right'] = `${ this.featuresSubheadingPaddingRight }px`;
+    this.featuresSubheadingStyle['padding-right'] = `${this.featuresSubheadingPaddingRight}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingPaddingBottom() {
-    this.featuresSubheadingStyle['padding-bottom'] = `${ this.featuresSubheadingPaddingBottom }px`;
+    this.featuresSubheadingStyle['padding-bottom'] = `${this.featuresSubheadingPaddingBottom}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -182,29 +214,34 @@ export class FeaturesLayoutPickerComponent implements OnInit {
     this.featuresSubheadingStyle['padding-left'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['padding-left'];
     this.featuresSubheadingStyle['padding-right'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['padding-right'];
     this.featuresSubheadingStyle['padding-bottom'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['padding-bottom'];
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
   }
 
   setFeaturesPaddingTop() {
-    this.featuresStyle['padding-top'] = `${ this.featuresPaddingTop }px`;
+    this.featuresStyle['padding-top'] = `${this.featuresPaddingTop}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesPaddingLeft() {
-    this.featuresStyle['padding-left'] = `${ this.featuresPaddingLeft }px`;
+    this.featuresStyle['padding-left'] = `${this.featuresPaddingLeft}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesPaddingRight() {
-    this.featuresStyle['padding-right'] = `${ this.featuresPaddingRight }px`;
+    this.featuresStyle['padding-right'] = `${this.featuresPaddingRight}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesPaddingBottom() {
-    this.featuresStyle['padding-bottom'] = `${ this.featuresPaddingBottom }px`;
+    this.featuresStyle['padding-bottom'] = `${this.featuresPaddingBottom}px`;
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -214,32 +251,26 @@ export class FeaturesLayoutPickerComponent implements OnInit {
     this.featuresStyle['padding-left'] = this.defaultFeaturesStyle['featuresStyle']['padding-left'];
     this.featuresStyle['padding-right'] = this.defaultFeaturesStyle['featuresStyle']['padding-right'];
     this.featuresStyle['padding-bottom'] = this.defaultFeaturesStyle['featuresStyle']['padding-bottom'];
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
   }
 
   setFeaturesHeadingPosition(alignment: string) {
     this.featuresHeadingStyle['text-align'] = alignment;
-    this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-  }
-
-  resetFeaturesHeadingPosition() {
-    this.featuresHeadingStyle['text-align'] = 'left';
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
   }
 
   setFeaturesSubheadingPosition(alignment: string) {
     this.featuresSubheadingStyle['text-align'] = alignment;
-    this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-  }
-
-  resetFeaturesSubheadingPosition() {
-    this.featuresSubheadingStyle['text-align'] = 'left';
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
   }
 
   ngOnDestroy() {
     this.featuresHeadingStyleSubscription.unsubscribe();
     this.featuresSubheadingStyleSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
     this.featuresStyleSubscription.unsubscribe();
     this.featuresAlignmentClassSubscription.unsubscribe();
     this.featuresTemplateSubscription.unsubscribe();

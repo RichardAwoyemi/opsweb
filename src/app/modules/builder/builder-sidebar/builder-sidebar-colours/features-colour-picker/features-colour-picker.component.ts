@@ -1,12 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-features-colour-picker',
-  templateUrl: './features-colour-picker.component.html'
+  templateUrl: './features-colour-picker.component.html',
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   featuresThemes: any;
@@ -14,10 +16,12 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   featuresStyle: any;
   featuresHeadingStyle: any;
   featuresSubheadingStyle: any;
+  pageComponents: any;
   featuresTemplate: string;
   featuresTheme: string;
   websiteChangeCount: number;
   activeComponentId: string;
+  activePageSetting: string;
 
   private featureStyleSubscription: Subscription;
   private featureHeadingStyleSubscription: Subscription;
@@ -28,9 +32,12 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   private defaultFeaturesStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
   private activeComponentIdSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+  private builderComponentsSubscription: Subscription;
 
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
   }
@@ -39,6 +46,12 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     this.activeComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
       if (response) {
         this.activeComponentId = response;
+      }
+    });
+
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(response => {
+      if (response) {
+        this.activePageSetting = response;
       }
     });
 
@@ -74,9 +87,9 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(response => {
-      if (response) {
-        this.featuresTemplate = response;
+    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
+      if (featuresTemplateResponse) {
+        this.featuresTemplate = featuresTemplateResponse;
         this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = response;
@@ -91,6 +104,12 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
+
     this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
@@ -102,6 +121,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     if (this.featuresTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
+      this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresTheme', this.featuresTheme);
       this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
       this.builderFeaturesService.setFeaturesTheme(this.featuresTheme, this.activeComponentId);
     }
@@ -109,32 +129,36 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   }
 
   setFeaturesStyle() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingStyle() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingStyle() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {
+    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresTheme', ActiveThemes.Default);
     this.builderFeaturesService.featuresTheme.next(ActiveThemes.Default);
-    this.builderFeaturesService.setFeaturesTheme(ActiveThemes.Default, this.activeComponentId);
     this.featuresStyle['background-color'] = this.defaultFeaturesStyle['featuresStyle']['background-color'];
     this.featuresHeadingStyle['color'] = this.defaultFeaturesStyle['featuresHeadingStyle']['color'];
     this.featuresSubheadingStyle['color'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['color'];
     this.setFeaturesStyle();
     this.setFeaturesHeadingStyle();
     this.setFeaturesSubheadingStyle();
+    this.builderFeaturesService.setFeaturesTheme(ActiveThemes.Default, this.activeComponentId);
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.featuresThemesSubscription.unsubscribe();
     this.featuresThemeSubscription.unsubscribe();
     this.featuresTemplateSubscription.unsubscribe();
@@ -146,5 +170,6 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     this.featureStyleSubscription.unsubscribe();
     this.featureHeadingStyleSubscription.unsubscribe();
     this.featureSubheadingStyleSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

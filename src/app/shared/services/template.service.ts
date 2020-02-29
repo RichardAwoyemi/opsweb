@@ -6,11 +6,11 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class TemplateService {
-  selectedTemplate: Subject<Template> = new Subject<Template>();
 
   static searchText: string;
   static selectedTemplates: Template[];
   static availableTemplates: Template[];
+  selectedTemplate: Subject<Template> = new Subject<Template>();
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
   private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
@@ -21,7 +21,7 @@ export class TemplateService {
   }
 
   static parseTemplates(templates: Template[]) {
-    let parsedTemplates = new Array<Template>();
+    const parsedTemplates = new Array<Template>();
     for (let i = 0; i < templates.length; i++) {
       parsedTemplates.push({
         id: templates[i].id,
@@ -29,6 +29,14 @@ export class TemplateService {
       });
     }
     return parsedTemplates;
+  }
+
+  static parseAvailableTemplates(templates: Template[]) {
+    this.availableTemplates = this.parseTemplates(templates);
+  }
+
+  static parseSelectedTemplates(templates: Template[]) {
+    this.selectedTemplates = this.parseTemplates(templates);
   }
 
   getTemplate(templateId): Observable<any> {
@@ -42,13 +50,5 @@ export class TemplateService {
       default:
         return null;
     }
-  }
-
-  static parseAvailableTemplates(templates: Template[]) {
-    this.availableTemplates = this.parseTemplates(templates);
-  }
-
-  static parseSelectedTemplates(templates: Template[]) {
-    this.selectedTemplates = this.parseTemplates(templates);
   }
 }

@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { WebsiteService } from '../../services/website.service';
+import { IUser } from '../../models/user';
 
 @Component({
   selector: 'app-browser-mockup',
@@ -11,10 +13,13 @@ export class BrowserMockupComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   @Input() img: string;
   @Input() view: string;
+  @Input() template: string;
+  @Input() user: IUser;
   imageStyle: any;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -23,6 +28,10 @@ export class BrowserMockupComponent implements OnInit {
   }
 
   setImageOpacity(opacity) {
-    this.imageStyle = { 'opacity': opacity };
+    this.imageStyle = {'opacity': opacity};
+  }
+
+  createWebsite() {
+    this.websiteService.createWebsiteFromTemplate(this.template, this.user);
   }
 }

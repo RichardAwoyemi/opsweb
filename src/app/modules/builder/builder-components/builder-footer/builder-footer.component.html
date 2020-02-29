@@ -2,8 +2,9 @@
                                [componentName]="componentName"></app-builder-component-toolbar>
 <div [attr.id]="componentId" [ngClass]="setContextMenu()">
   <!-- Default --->
-  <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
-          *ngIf="footerComponentLayout['layout'] === 0" [ngStyle]="footerStyle">
+  <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()"
+          *ngIf="footerComponentLayout['layout'] === 0"
+          [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
     <div *ngIf="facebookUrl || twitterUrl || instagramUrl || youtubeUrl || githubUrl || linkedinUrl"
          [ngClass]="footerAlignmentClass">
       <div [ngStyle]="footerSocialLinksContainerStyle" class="footer-social-links">
@@ -21,7 +22,7 @@
           class="ti-linkedin"></i></span>
       </div>
     </div>
-    <div *ngIf="footerMenuOptions.length > 0" [ngClass]="footerAlignmentClass">
+    <div *ngIf="footerMenuOptions?.length > 0" [ngClass]="footerAlignmentClass">
       <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
         <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index"
               [innerText]="footerMenuOption" [ngStyle]="footerPageLinksListStyle"></span>
@@ -31,9 +32,9 @@
       <span
         (click)="selectFooterCopyright($event, 'footer-copyright')"
         [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
+        [innerText]="copyrightText"
         [ngClass]="setFooterCopyrightClass()"
-        [ngStyle]="footerCopyrightStyle"
-        [innerText]="copyrightText" id="footer-copyright-1"></span>
+        [ngStyle]="footerCopyrightStyle" id="footer-copyright-1"></span>
     </div>
   </footer>
   <!-- Layout 1 --->

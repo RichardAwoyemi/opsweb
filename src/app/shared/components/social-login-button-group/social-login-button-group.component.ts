@@ -16,7 +16,8 @@ export class SocialLoginButtonGroupComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private store: Store<fromAuth.State>
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
@@ -29,6 +30,7 @@ export class SocialLoginButtonGroupComponent implements OnInit {
   mobileGoogleSignIn() {
     this.store.dispatch(authActions.mobileGoogleSignIn());
   }
+
   facebookSignIn() {
     this.store.dispatch(authActions.facebookSignIn());
   }

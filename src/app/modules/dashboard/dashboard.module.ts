@@ -9,7 +9,7 @@ import { DashboardActionsModule } from './dashboard-actions/dashboard-actions.mo
 import { WebsiteService } from '../../shared/services/website.service';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent }
+  {path: '', component: DashboardComponent}
 ];
 
 @NgModule({

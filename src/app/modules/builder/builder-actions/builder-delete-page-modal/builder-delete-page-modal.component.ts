@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { BuilderComponentsService } from '../../builder-components/builder-compo
   selector: 'app-builder-delete-page-modal',
   templateUrl: './builder-delete-page-modal.component.html'
 })
-export class BuilderDeletePageModalComponent implements IModalComponent {
+export class BuilderDeletePageModalComponent implements IModalComponent, OnInit, OnDestroy {
   @Input() activePage;
   @Input() activePageIndex;
   navbarMenuOptions: any;
@@ -50,7 +50,7 @@ export class BuilderDeletePageModalComponent implements IModalComponent {
     this.activeModal.dismiss();
 
     for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      if (this.pageComponents['pages'][i]['name'] == this.activePage) {
+      if (this.pageComponents['pages'][i]['name'] === this.activePage) {
         this.pageComponents['pages'].splice(i, 1);
       }
     }

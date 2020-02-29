@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
@@ -14,11 +14,11 @@ import { BuilderComponentsService } from '../../builder-components/builder-compo
   selector: 'app-builder-new-page-modal',
   templateUrl: './builder-new-page-modal.component.html'
 })
-export class BuilderNewPageModalComponent implements IModalComponent, OnInit {
+export class BuilderNewPageModalComponent implements IModalComponent, OnInit, OnDestroy {
   @Input() activePage;
   pageName: string;
-  displayError: boolean = false;
-  disableSaveButton: boolean = false;
+  displayError = false;
+  disableSaveButton = false;
   navbarMenuOptions: any;
   pageComponents: any;
   private navbarMenuOptionsSubscription: Subscription;
@@ -61,14 +61,14 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit {
     this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
 
-    let newPage = {
+    const newPage = {
       'name': UtilService.toTitleCase(this.pageName),
       'components': [
-        `${ ActiveComponentsFullSelector.Placeholder }`,
-        `${ ActiveComponentsFullSelector.Navbar }`,
-        `${ ActiveComponentsFullSelector.Placeholder }`,
-        `${ ActiveComponentsFullSelector.Footer }`,
-        `${ ActiveComponentsFullSelector.Placeholder }`,
+        `${ActiveComponentsFullSelector.Placeholder}`,
+        `${ActiveComponentsFullSelector.Navbar}`,
+        `${ActiveComponentsFullSelector.Placeholder}`,
+        `${ActiveComponentsFullSelector.Footer}`,
+        `${ActiveComponentsFullSelector.Placeholder}`,
       ]
     };
     this.pageComponents['pages'].push(newPage);

@@ -19,6 +19,7 @@ import { BuilderSelectImageModalComponent } from './builder-select-image-modal/b
 import { BuilderSelectImageUploadComponent } from './builder-select-image-modal/builder-select-image-upload/builder-select-image-upload.component';
 import { BuilderSelectImagePhotosComponent } from './builder-select-image-modal/builder-select-image-photos/builder-select-image-photos.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { WebsiteService } from '../../../shared/services/website.service';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     BlockNonAlphabetCharactersDirective
   ],
   providers: [
-    BuilderActionsService
+    BuilderActionsService,
+    WebsiteService
   ],
   entryComponents: [
     BuilderDeletePageModalComponent,
