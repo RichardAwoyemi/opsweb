@@ -29,6 +29,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   featuresStyle: any;
   pageComponents: any;
   featuresTheme: string = ActiveThemes.Default;
+  featuresTemplate: string;
 
   private featuresBreakpointSubscription: Subscription;
   private featuresStyleSubscription: Subscription;
@@ -120,6 +121,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
                     this.featuresSubheadingStyle = this.componentDetail['featuresSubheadingStyle'];
                     this.featuresItemArray = this.componentDetail['featuresItemArray'];
                     this.featuresTheme = this.componentDetail['featuresTheme'];
+                    this.featuresTemplate = this.componentDetail['featuresTemplate'];
                     this.componentIndex = this.componentDetail['componentIndex'];
                   }
                 }
@@ -192,6 +194,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
     this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
+    this.builderFeaturesService.featuresTemplate.next(this.featuresTemplate);
   }
 
   clearActiveEditComponent() {

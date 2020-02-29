@@ -49,7 +49,8 @@ export class WebsiteService {
               name: websiteName,
               id: documentId,
               createdBy: user.uid,
-              pages: frontPageComponents['pages']
+              pages: frontPageComponents['pages'],
+              template: ActiveTemplates.Front
             }, {merge: true});
             break;
           case ActiveTemplates.Quick:
@@ -57,7 +58,8 @@ export class WebsiteService {
               name: websiteName,
               id: documentId,
               createdBy: user.uid,
-              pages: quickPageComponents['pages']
+              pages: quickPageComponents['pages'],
+              template: ActiveTemplates.Quick
             }, {merge: true});
             break;
           default:
@@ -65,7 +67,8 @@ export class WebsiteService {
               name: websiteName,
               id: documentId,
               createdBy: user.uid,
-              pages: defaultPageComponents['pages']
+              pages: defaultPageComponents['pages'],
+              template: ActiveTemplates.Default
             }, {merge: true});
             break;
         }

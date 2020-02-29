@@ -103,6 +103,8 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
           modal.componentInstance.templateId = templateId;
           this.websiteService.resetWebsiteChangeCount();
         } else {
+          this.pageComponents['template'] = templateId;
+          this.builderComponentsService.pageComponents.next(this.pageComponents);
           this.builderNavbarService.setComponentTemplate(templateId);
           this.builderHeroService.setComponentTemplate(templateId);
           this.builderFooterService.setComponentTemplate(templateId);

@@ -13,6 +13,7 @@ import { UtilService } from '../../../shared/services/util.service';
 export class BuilderComponentsService {
   pageComponents = new BehaviorSubject<any>(null);
   defaultPageComponents = new BehaviorSubject<any>({
+    'template': ActiveTemplates.Default,
     'pages': [
       {
         'name': 'Home',
@@ -433,6 +434,7 @@ export class BuilderComponentsService {
     ]
   });
   frontPageComponents = new BehaviorSubject<any>({
+    'template': ActiveTemplates.Front,
     'pages': [
       {
         'name': 'Home',
@@ -865,6 +867,7 @@ export class BuilderComponentsService {
     ]
   });
   quickPageComponents = new BehaviorSubject<any>({
+    'template': ActiveTemplates.Quick,
     'pages': [
       {
         'name': 'Home',

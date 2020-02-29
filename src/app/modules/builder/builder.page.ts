@@ -58,7 +58,10 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
           if (response) {
             this.websiteService.websiteName.next(response['name']);
             if (response['pages']) {
-              this.builderComponentsService.pageComponents.next({'pages': response['pages']});
+              this.builderComponentsService.pageComponents.next({
+                'pages': response['pages'],
+                'template': response['template']
+              });
             } else {
               this.builderComponentsService.pageComponents.next(this.builderComponentsService.defaultPageComponents.getValue());
             }

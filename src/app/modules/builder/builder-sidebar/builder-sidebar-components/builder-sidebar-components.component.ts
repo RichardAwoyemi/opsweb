@@ -4,6 +4,7 @@ import { UtilService } from '../../../../shared/services/util.service';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,7 +43,8 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
 
   constructor(
     private builderService: BuilderService,
-    private builderFeaturesService: BuilderFeaturesService
+    private builderFeaturesService: BuilderFeaturesService,
+    private builderComponentsService: BuilderComponentsService
   ) {
   }
 
@@ -53,10 +55,11 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
-      if (featuresTemplateResponse) {
-        this.featuresTemplate = featuresTemplateResponse;
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
+    this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
+      if (pageComponentsResponse) {
+        console.log(pageComponentsResponse);
+        const template = pageComponentsResponse['template'];
+        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(template).subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = {
               'featuresStyle': response['featuresStyle'],
@@ -67,7 +70,7 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
         });
       } else {
         this.featuresTemplate = ActiveTemplates.Default;
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(ActiveTemplates.Default).subscribe(response => {
+        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = {
               'featuresStyle': response['featuresStyle'],
