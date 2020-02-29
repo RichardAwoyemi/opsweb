@@ -9,7 +9,7 @@ import { UtilService } from './util.service';
 import { IUser } from '../models/user';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Injectable()
 export class WebsiteService {
@@ -22,6 +22,12 @@ export class WebsiteService {
     public router: Router
   ) {
   }
+
+  websiteName = new BehaviorSubject<string>(null);
+  websiteId = new BehaviorSubject<string>(null);
+  initialWebsiteChangeCount: any = {value: 0};
+  websiteChangeCount = new BehaviorSubject<any>(this.initialWebsiteChangeCount);
+  websiteLoaded = new BehaviorSubject<boolean>(false);
 
   private websiteOwnershipSubscription: Subscription;
 
@@ -65,11 +71,11 @@ export class WebsiteService {
         }
         this.builderService.setSidebarComponentsSetting();
         this.builderService.activePageIndex.next(0);
-        this.toastrService.success('Your website has been created.');
+        this.toastrService.success('Your website has been created.', 'Great!');
         this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
         });
       } else {
-        this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
+        this.toastrService.error('You cannot create more than 3 websites on your current plan.', 'Oops!');
       }
       this.websiteOwnershipSubscription.unsubscribe();
     });
@@ -94,7 +100,7 @@ export class WebsiteService {
   }
 
   saveWebsite() {
-    const id = this.builderService.websiteId.getValue();
+    const id = this.websiteId.getValue();
     const pageComponents = this.builderComponentsService.pageComponents.getValue();
     if (id && pageComponents) {
       const websiteRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${id}`);
@@ -102,5 +108,17 @@ export class WebsiteService {
         merge: true
       });
     }
+  }
+
+  getWebsiteChangeCount(): Observable<any> {
+    return this.websiteChangeCount.asObservable();
+  }
+
+  setWebsiteChangeCount(value: number, delta: number) {
+    this.websiteChangeCount.next({value: (value + delta)});
+  }
+
+  resetWebsiteChangeCount() {
+    this.websiteChangeCount.next(this.initialWebsiteChangeCount);
   }
 }

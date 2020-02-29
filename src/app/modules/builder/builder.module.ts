@@ -14,6 +14,7 @@ import { BuilderSidebarModule } from './builder-sidebar/builder-sidebar.module';
 import { ToastrModule } from 'ngx-toastr';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormUsernameInputModule } from '../../shared/components/form-username-input/form-username-input.module';
 
 const routes: Routes = [
   {path: '', component: BuilderComponent}
@@ -34,7 +35,8 @@ const routes: Routes = [
     BuilderActionsModule,
     ScrollToModule.forRoot(),
     ToastrModule.forRoot(),
-    NgbPopoverModule
+    NgbPopoverModule,
+    FormUsernameInputModule
   ],
   providers: [
     BuilderService,

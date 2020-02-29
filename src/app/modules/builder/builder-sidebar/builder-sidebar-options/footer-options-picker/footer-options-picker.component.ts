@@ -5,6 +5,7 @@ import { BuilderFooterService } from '../../../builder-components/builder-footer
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { ActiveComponentsPartialSelector } from '../../../builder';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-footer-options-picker',
@@ -59,6 +60,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   constructor(
     private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
+    private websiteService: WebsiteService,
     private builderComponentsService: BuilderComponentsService,
     private builderNavbarService: BuilderNavbarService,
   ) {
@@ -176,7 +178,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -211,7 +213,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerCopyrightStyle['font-family'] = this.footerCopyrightFontName;
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFooterCopyrightFontSize() {
@@ -225,7 +227,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerCopyrightStyle['font-size'] = this.footerCopyrightFontSize + this.footerCopyrightFontUnit;
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFooterCopyrightFontUnitChange() {
@@ -243,7 +245,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerCopyrightStyle['font-size'] = this.footerCopyrightFontSize + this.footerCopyrightFontUnit;
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFooterSocialLinksFontSize() {
@@ -257,7 +259,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerSocialLinksStyle['font-size'] = this.footerSocialLinksFontSize + this.footerSocialLinksFontUnit;
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFooterSocialLinksFontUnitChange() {
@@ -275,7 +277,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerSocialLinksStyle['font-size'] = this.footerSocialLinksFontSize + this.footerSocialLinksFontUnit;
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFooterPageLinksFontName() {
@@ -290,7 +292,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerPageLinksStyle['font-family'] = this.footerPageLinkFontName;
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFooterPagesLinkFontSize() {
@@ -304,7 +306,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerPageLinksStyle['font-size'] = this.footerPageLinksFontSize + this.footerPageLinksFontUnit;
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFooterPageLinksFontUnitChange() {
@@ -322,7 +324,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerPageLinksStyle['font-size'] = this.footerPageLinksFontSize + this.footerPageLinksFontUnit;
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onSocialLinkChange(platform: string) {

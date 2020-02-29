@@ -10,6 +10,7 @@ import { BuilderService } from '../../../builder.service';
 import { ActiveComponentsPartialSelector, ActiveTemplates } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-navbar-options-picker',
@@ -56,6 +57,7 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
+    private websiteService: WebsiteService,
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService
   ) {
@@ -157,7 +159,7 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }

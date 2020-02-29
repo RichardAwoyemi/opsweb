@@ -33,7 +33,7 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
       }
     });
 
-    this.websiteNameSubscription = this.builderService.websiteName.subscribe(response => {
+    this.websiteNameSubscription = this.websiteService.websiteName.subscribe(response => {
       if (response) {
         this.websiteName = response;
       }

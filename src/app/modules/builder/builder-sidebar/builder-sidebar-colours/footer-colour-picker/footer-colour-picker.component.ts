@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-footer-colour-picker',
@@ -29,7 +29,7 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
   constructor(
     private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService,
-    private builderService: BuilderService
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -70,7 +70,7 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -85,13 +85,13 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
       this.builderFooterService.footerTheme.next(this.footerTheme);
       this.builderFooterService.setFooterTheme(this.footerTheme);
     }
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFooterStyle() {
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {

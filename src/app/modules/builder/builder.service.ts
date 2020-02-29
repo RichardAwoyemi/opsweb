@@ -1,5 +1,5 @@
 import { HostListener, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ActiveComponents, ActiveOrientations } from './builder';
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { TourService } from '../../shared/services/tour.service';
@@ -44,11 +44,6 @@ export class BuilderService {
   fullScreenMode = new BehaviorSubject<boolean>(false);
   fontNames = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
-  websiteName = new BehaviorSubject<string>(null);
-  websiteId = new BehaviorSubject<string>(null);
-  initialWebsiteChangeCount: any = {value: 0};
-  pageLoaded = new BehaviorSubject<boolean>(false);
-  websiteChangeCount = new BehaviorSubject<any>(this.initialWebsiteChangeCount);
   shepherdDefaultStepOptions: any = TourService.setupBuilderTourStepOptions;
   shepherdDefaultSteps: any = TourService.setupBuilderTourSteps();
 
@@ -297,18 +292,6 @@ export class BuilderService {
       target: elementId
     };
     this.scrollToService.scrollTo(config);
-  }
-
-  getWebsiteChangeCount(): Observable<any> {
-    return this.websiteChangeCount.asObservable();
-  }
-
-  setWebsiteChangeCount(value: number, delta: number) {
-    this.websiteChangeCount.next({value: (value + delta)});
-  }
-
-  resetWebsiteChangeCount() {
-    this.websiteChangeCount.next(this.initialWebsiteChangeCount);
   }
 
   @HostListener('window:message', ['$event'])

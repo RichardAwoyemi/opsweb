@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
-import { BuilderService } from '../../../builder.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-navbar-colour-picker',
@@ -39,7 +39,7 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
   constructor(
     private builderNavbarService: BuilderNavbarService,
     private builderComponentsService: BuilderComponentsService,
-    private builderService: BuilderService
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -86,7 +86,7 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -107,7 +107,7 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
       this.builderNavbarService.setNavbarTheme(this.navbarTheme);
       this.builderNavbarService.navbarTheme.next(this.navbarTheme);
     }
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setNavbarStyle() {

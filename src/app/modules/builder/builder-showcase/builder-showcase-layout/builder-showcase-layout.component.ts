@@ -9,6 +9,7 @@ import { BuilderDeleteComponentModalComponent } from '../../builder-actions/buil
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilService } from '../../../../shared/services/util.service';
 import { SessionStorageService } from '../../../../shared/services/session-storage.service';
+import { WebsiteService } from '../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-builder-showcase-layout',
@@ -20,18 +21,19 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   options: SortablejsOptions;
   activeEditComponent: string;
   pageComponents: any;
-  pageLoaded = false;
+  websiteLoaded = false;
   activePage = 'Home';
   private activeEditComponentSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
-  private pageLoadedSubscription: Subscription;
+  private websiteLoadedSubscription: Subscription;
 
   constructor(
     private builderComponentService: BuilderComponentsService,
     private simpleModalService: SimpleModalService,
     private sessionStorageService: SessionStorageService,
     private modalService: NgbModal,
+    private websiteService: WebsiteService,
     private builderService: BuilderService
   ) {
     function getUnorderedComponentsArrayWithoutPlaceholders(e: any) {
@@ -139,9 +141,9 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.pageLoadedSubscription = this.builderService.pageLoaded.subscribe(response => {
+    this.websiteLoadedSubscription = this.websiteService.websiteLoaded.subscribe(response => {
       if (response) {
-        this.pageLoaded = response;
+        this.websiteLoaded = response;
       }
     });
   }
@@ -277,7 +279,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.activeEditComponentSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
-    this.pageLoadedSubscription.unsubscribe();
+    this.websiteLoadedSubscription.unsubscribe();
     this.pageComponentsSubscription.unsubscribe();
   }
 }

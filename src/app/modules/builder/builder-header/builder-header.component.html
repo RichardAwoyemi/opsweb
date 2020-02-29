@@ -9,6 +9,7 @@
              (keydown.enter)="saveWebsiteName($event); $event.preventDefault()"
              [attr.contenteditable]="true"
              [attr.spellcheck]="false"
+             blockNonAlphanumericCharacters
              class="website-name" ngbPopover="Website Name" triggers="mouseenter:mouseleave">{{ websiteName }}</div>
       </div>
     </div>
@@ -24,7 +25,6 @@
         <div class="dropdown-menu dropdown-menu-right">
           <ng-container *ngIf="isLoggedIn()">
             <a (click)="redirectToDashboard()" class="dropdown-item">Dashboard</a>
-            <a (click)="openCreateAccountModal()" class="dropdown-item">Create Account</a>
             <a (click)="signOut()" class="dropdown-item">Log Out</a>
           </ng-container>
           <ng-container *ngIf="!isLoggedIn()">

@@ -4,6 +4,7 @@ import { BuilderService } from '../../../builder.service';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-hero-colour-picker',
@@ -45,7 +46,8 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
   constructor(
     private builderHeroService: BuilderHeroService,
     private builderComponentsService: BuilderComponentsService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -104,7 +106,7 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -119,30 +121,30 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
       this.builderHeroService.setHeroTheme(this.heroTheme);
       this.builderHeroService.heroTheme.next(this.heroTheme);
     }
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setHeroBackgroundStyle() {
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroBackgroundStyle', this.heroBackgroundStyle);
     this.builderHeroService.heroBackgroundStyle.next(this.heroBackgroundStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setHeroHeadingStyle() {
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setHeroSubheadingStyle() {
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setHeroButtonStyle() {
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {

@@ -7,6 +7,7 @@ import { BuilderNavbarService } from '../../../builder-components/builder-navbar
 import { BuilderService } from '../../../builder.service';
 import { ActiveComponentsPartialSelector, ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-hero-options-picker',
@@ -61,6 +62,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     private builderHeroService: BuilderHeroService,
     private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
+    private websiteService: WebsiteService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }
@@ -120,7 +122,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -255,7 +257,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderHeroService.heroImageStyle.next(this.heroImageStyle);
     this.builderHeroService.heroImageSize.next(this.heroImageSize);
     this.setHeroImageOptionsStyle('width', this.heroImageStyle['src']);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetHeroHeadingFontName() {

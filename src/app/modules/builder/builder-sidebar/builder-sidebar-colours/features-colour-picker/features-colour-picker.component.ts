@@ -4,6 +4,7 @@ import { BuilderFeaturesService } from '../../../builder-components/builder-feat
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-features-colour-picker',
@@ -38,7 +39,8 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
     private builderComponentsService: BuilderComponentsService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -110,7 +112,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -125,25 +127,25 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
       this.builderFeaturesService.setFeaturesTheme(this.featuresTheme, this.activeComponentId);
     }
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesStyle() {
     this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingStyle() {
     this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingStyle() {
     this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {

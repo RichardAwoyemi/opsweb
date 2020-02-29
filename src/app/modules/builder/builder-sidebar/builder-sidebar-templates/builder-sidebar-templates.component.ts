@@ -13,6 +13,7 @@ import { BuilderFooterService } from '../../builder-components/builder-footer/bu
 import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
+import { WebsiteService } from '../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -36,6 +37,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
     private templateService: TemplateService,
+    private websiteService: WebsiteService,
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
     private builderHeroService: BuilderHeroService,
@@ -71,7 +73,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -99,7 +101,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
             centered: true
           });
           modal.componentInstance.templateId = templateId;
-          this.builderService.resetWebsiteChangeCount();
+          this.websiteService.resetWebsiteChangeCount();
         } else {
           this.builderNavbarService.setComponentTemplate(templateId);
           this.builderHeroService.setComponentTemplate(templateId);

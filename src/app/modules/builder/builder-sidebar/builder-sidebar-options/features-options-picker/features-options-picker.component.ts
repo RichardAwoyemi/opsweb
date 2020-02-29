@@ -4,6 +4,7 @@ import { BuilderService } from '../../../builder.service';
 import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
 import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-features-options-picker',
@@ -46,7 +47,8 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
     private builderComponentsService: BuilderComponentsService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -110,7 +112,7 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.builderService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -162,12 +164,12 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
 
   setNumberOfFeatures() {
     this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, this.numberOfFeatures);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetNumberOfFeatures() {
     this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, 3);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFeaturesHeadingFontName() {
@@ -187,13 +189,13 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.featuresHeadingStyle['font-family'] = this.featuresHeadingFontName;
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.builderFeaturesService.setFeaturesHeadingStyle(this.activeEditComponentId);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingFontSize() {
     this.featuresHeadingStyle['font-size'] = this.featuresHeadingFontSize + this.featuresHeadingFontUnit;
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFeaturesHeadingFontUnitChange() {
@@ -210,7 +212,7 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
 
     this.featuresHeadingStyle['font-size'] = this.featuresHeadingFontSize + this.featuresHeadingFontUnit;
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFeaturesSubheadingFontName() {
@@ -229,13 +231,13 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.featuresSubheadingStyle['font-family'] = this.featuresSubheadingFontName;
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.builderFeaturesService.setFeaturesSubheadingStyle(this.activeEditComponentId);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingFontSize() {
     this.featuresSubheadingStyle['font-size'] = this.featuresSubheadingFontSize + this.featuresSubheadingFontUnit;
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   onFeaturesSubheadingFontUnitChange() {
@@ -252,7 +254,7 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
 
     this.featuresSubheadingStyle['font-size'] = this.featuresSubheadingFontSize + this.featuresSubheadingFontUnit;
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    this.builderService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setChanges() {

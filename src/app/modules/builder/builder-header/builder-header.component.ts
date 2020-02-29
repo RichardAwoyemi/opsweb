@@ -8,7 +8,8 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { IUser } from '../../../shared/models/user';
 import * as fromUser from '../../core/store/user/user.reducer';
-import { BuilderSaveWebsiteModalComponent } from '../builder-actions/builder-save-website-modal/builder-save-website-modal.component';
+import { BuilderRenameWebsiteModalComponent } from '../builder-actions/builder-rename-website-modal/builder-rename-website-modal.component';
+import { WebsiteService } from '../../../shared/services/website.service';
 
 @Component({
   selector: 'app-builder-header',
@@ -25,6 +26,7 @@ export class BuilderHeaderComponent implements OnInit {
     private modalService: NgbModal,
     private authService: AuthService,
     private builderService: BuilderService,
+    private websiteService: WebsiteService,
     private userStore: Store<fromUser.State>,
     public router: Router
   ) {
@@ -39,7 +41,7 @@ export class BuilderHeaderComponent implements OnInit {
         }
       });
 
-    this.websiteNameSubscription = this.builderService.websiteName.subscribe((response => {
+    this.websiteNameSubscription = this.websiteService.websiteName.subscribe((response => {
       if (response) {
         this.websiteName = response;
       }
@@ -71,7 +73,7 @@ export class BuilderHeaderComponent implements OnInit {
 
   saveWebsiteName(event: any) {
     if (this.websiteName !== event.target.innerHTML) {
-      const modal = this.modalService.open(BuilderSaveWebsiteModalComponent, {
+      const modal = this.modalService.open(BuilderRenameWebsiteModalComponent, {
         windowClass: 'modal-holder',
         centered: true
       });
