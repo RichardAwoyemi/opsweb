@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromUser from '../../../core/store/user/user.reducer';
 import { IUser } from '../../../../shared/models/user';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-dashboard-body-templates',
@@ -19,11 +20,14 @@ export class DashboardBodyTemplatesComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private userStore: Store<fromUser.State>
+    private userStore: Store<fromUser.State>,
+    private ngxLoader: NgxUiLoaderService
   ) {
   }
 
   ngOnInit() {
+    this.ngxLoader.start();
+
     this.innerHeight = window.innerHeight;
 
     this.webTemplateSubscription = this.dataService.getAllWebTemplates().subscribe(response => {
@@ -39,5 +43,7 @@ export class DashboardBodyTemplatesComponent implements OnInit {
           this.user = result;
         }
       });
+
+    this.ngxLoader.stop();
   }
 }

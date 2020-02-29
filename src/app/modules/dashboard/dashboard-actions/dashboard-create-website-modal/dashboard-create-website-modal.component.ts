@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderActionsService } from '../../../builder/builder-actions/builder-actions.service';
@@ -11,19 +11,25 @@ import { Store } from '@ngrx/store';
 import * as fromUser from '../../../core/store/user/user.reducer';
 import { Router } from '@angular/router';
 import { BuilderComponentsService } from '../../../builder/builder-components/builder-components.service';
+import { Subscription } from 'rxjs';
+import { BuilderService } from '../../../builder/builder.service';
 
 @Component({
   selector: 'app-dashboard-create-website-modal',
   templateUrl: './dashboard-create-website-modal.component.html'
 })
-export class DashboardCreateWebsiteModalComponent implements IModalComponent, OnInit {
+export class DashboardCreateWebsiteModalComponent implements IModalComponent, OnInit, OnDestroy {
   user: IUser;
   disableSaveButton: boolean;
   websiteName: string;
 
+  private websiteAvailabilitySubscription: Subscription;
+  private websiteOwnershipSubscription: Subscription;
+
   constructor(
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
+    private builderService: BuilderService,
     private afs: AngularFirestore,
     private userStore: Store<fromUser.State>,
     private websiteService: WebsiteService,
@@ -44,25 +50,35 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
   }
 
   onConfirmButtonClick() {
-    this.websiteService.createWebsite(this.websiteName).subscribe(websites => {
-      if (websites.size === 0) {
+    this.websiteAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.websiteName).subscribe(websitesWithSameName => {
+      if (websitesWithSameName.size === 0) {
         const documentId = this.afs.createId();
         const documentPath = `websites/${documentId}`;
         const defaultPageComponents = this.builderComponentsService.defaultPageComponents.getValue();
         const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-        documentRef.set({
-          name: this.websiteName,
-          id: documentId,
-          createdBy: this.user.uid,
-          pages: defaultPageComponents['pages']
-        }, {merge: true});
-        this.toastrService.success('Your website has been created.');
-        this.activeModal.close();
-        this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+        this.websiteOwnershipSubscription = this.websiteService.getWebsitesByUserId(this.user.uid).subscribe(websitesOwnedByUser => {
+          if (websitesOwnedByUser.length < 3) {
+            documentRef.set({
+              name: this.websiteName,
+              id: documentId,
+              createdBy: this.user.uid,
+              pages: defaultPageComponents['pages']
+            }, {merge: true});
+            this.builderService.setSidebarComponentsSetting();
+            this.builderService.activePageIndex.next(0);
+            this.toastrService.success('Your website has been created.');
+            this.activeModal.close();
+            this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+            });
+          } else {
+            this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
+          }
+          this.websiteOwnershipSubscription.unsubscribe();
         });
       } else {
         this.toastrService.error(`A website with this name already exists.`);
       }
+      this.websiteAvailabilitySubscription.unsubscribe();
     });
   }
 
@@ -72,5 +88,14 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
 
   onCloseButtonClick() {
     this.activeModal.close();
+  }
+
+  ngOnDestroy() {
+    if (this.websiteOwnershipSubscription) {
+      this.websiteOwnershipSubscription.unsubscribe();
+    }
+    if (this.websiteAvailabilitySubscription) {
+      this.websiteAvailabilitySubscription.unsubscribe();
+    }
   }
 }

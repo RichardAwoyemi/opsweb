@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private routerService: RouterService,
-    private ngxLoader: NgxUiLoaderService,
+    private ngxLoader: NgxUiLoaderService
   ) {
   }
 

@@ -33,7 +33,7 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
   }
 
   onConfirmButtonClick() {
-    this.websiteService.createWebsite(this.newWebsiteName).subscribe(websites => {
+    this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).subscribe(websites => {
       if (websites.size === 0) {
         this.activeModal.close();
         const documentRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${this.websiteId}`);

@@ -4,6 +4,7 @@ import * as fromUser from '../../../core/store/user/user.reducer';
 import { Store } from '@ngrx/store';
 import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-dashboard-body-rewards',
@@ -24,10 +25,12 @@ export class DashboardBodyRewardsComponent implements OnInit {
   constructor(
     private userStore: Store<fromUser.State>,
     private toastrService: ToastrService,
+    private ngxLoader: NgxUiLoaderService
   ) {
   }
 
   ngOnInit() {
+    this.ngxLoader.start();
     this.innerHeight = window.innerHeight;
     this.userStore.select('user')
       .pipe()
@@ -39,6 +42,7 @@ export class DashboardBodyRewardsComponent implements OnInit {
           this.createReferralUrls(this.referralUrl);
         }
       });
+    this.ngxLoader.stop();
   }
 
   createReferralUrls(referralUrl) {

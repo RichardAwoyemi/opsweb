@@ -9,6 +9,7 @@ import { UtilService } from './util.service';
 import { IUser } from '../models/user';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 export class WebsiteService {
@@ -22,6 +23,8 @@ export class WebsiteService {
   ) {
   }
 
+  private websiteOwnershipSubscription: Subscription;
+
   createWebsiteFromTemplate(template: string, user: IUser) {
     const websiteName = UtilService.generateWebsiteName();
     const documentId = this.afs.createId();
@@ -32,37 +35,43 @@ export class WebsiteService {
     const quickPageComponents = this.builderComponentsService.quickPageComponents.getValue();
     const defaultPageComponents = this.builderComponentsService.defaultPageComponents.getValue();
 
-    switch (template['id']) {
-      case ActiveTemplates.Front:
-        documentRef.set({
-          name: websiteName,
-          id: documentId,
-          createdBy: user.uid,
-          pages: frontPageComponents['pages']
-        }, {merge: true});
-        break;
-      case ActiveTemplates.Quick:
-        documentRef.set({
-          name: websiteName,
-          id: documentId,
-          createdBy: user.uid,
-          pages: quickPageComponents['pages']
-        }, {merge: true});
-        break;
-      default:
-        documentRef.set({
-          name: websiteName,
-          id: documentId,
-          createdBy: user.uid,
-          pages: defaultPageComponents['pages']
-        }, {merge: true});
-        break;
-    }
-
-    this.builderService.setSidebarComponentsSetting();
-    this.builderService.activePageIndex.next(0);
-    this.toastrService.success('Your website has been created.');
-    this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+    this.websiteOwnershipSubscription = this.getWebsitesByUserId(user.uid).subscribe(websitesOwnedByUser => {
+      if (websitesOwnedByUser.length < 3) {
+        switch (template['id']) {
+          case ActiveTemplates.Front:
+            documentRef.set({
+              name: websiteName,
+              id: documentId,
+              createdBy: user.uid,
+              pages: frontPageComponents['pages']
+            }, {merge: true});
+            break;
+          case ActiveTemplates.Quick:
+            documentRef.set({
+              name: websiteName,
+              id: documentId,
+              createdBy: user.uid,
+              pages: quickPageComponents['pages']
+            }, {merge: true});
+            break;
+          default:
+            documentRef.set({
+              name: websiteName,
+              id: documentId,
+              createdBy: user.uid,
+              pages: defaultPageComponents['pages']
+            }, {merge: true});
+            break;
+        }
+        this.builderService.setSidebarComponentsSetting();
+        this.builderService.activePageIndex.next(0);
+        this.toastrService.success('Your website has been created.');
+        this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+        });
+      } else {
+        this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
+      }
+      this.websiteOwnershipSubscription.unsubscribe();
     });
   }
 
@@ -80,7 +89,7 @@ export class WebsiteService {
     }
   }
 
-  createWebsite(name) {
+  checkIfWebsiteNameIsAvailable(name) {
     return this.afs.collection('websites', (ref) => ref.where('name', '==', name).limit(1)).get();
   }
 

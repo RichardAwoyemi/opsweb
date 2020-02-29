@@ -9,6 +9,7 @@ import * as fromUser from '../../../core/store/user/user.reducer';
 import { Router } from '@angular/router';
 import { DashboardDeleteWebsiteModalComponent } from '../../dashboard-actions/dashboard-delete-website-modal/dashboard-delete-website-modal.component';
 import { DashboardRenameWebsiteModalComponent } from '../../dashboard-actions/dashboard-rename-website-modal/dashboard-rename-website.modal.component';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-dashboard-body-websites',
@@ -26,11 +27,13 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     public router: Router,
     private websiteService: WebsiteService,
+    private ngxLoader: NgxUiLoaderService,
     private userStore: Store<fromUser.State>
   ) {
   }
 
   ngOnInit() {
+    this.ngxLoader.start();
     this.innerHeight = window.innerHeight;
     this.userStore.select('user')
       .pipe()
@@ -44,6 +47,7 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
           });
         }
       });
+    this.ngxLoader.stop();
   }
 
   openCreateWebsiteModal() {
