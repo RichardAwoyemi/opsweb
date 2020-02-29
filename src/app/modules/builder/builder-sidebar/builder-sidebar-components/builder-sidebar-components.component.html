@@ -4,7 +4,9 @@
     <span class="input-group-text"><i class="ti-search"></i></span>
   </div>
   <label for="search-components"></label>
-  <input (keyup)="searchText.trim();" [(ngModel)]="searchText" class="form-control" id="search-components"
+  <input (keyup)="searchText.trim();"
+         [(ngModel)]="searchText"
+         class="builder-sidebar-components-search form-control" id="search-components"
          placeholder="Search Components" type="text">
 </div>
 <div class="row">
@@ -18,13 +20,15 @@
            data-overlay="6" draggable="true"
            style="height: 100px; margin-bottom: 1em">
         <div #dropdown="ngbDropdown" ngbDropdown placement="bottom">
-          <div (click)="$event.stopPropagation(); dropdown.open();" class="card-body text-center flex-grow-0">
+          <div (click)="$event.stopPropagation(); dropdown.open();"
+               class="builder-sidebar-components-{{ component.name | lowercase }} card-body text-center flex-grow-0">
             <img alt="{{ component.name | lowercase }}-component"
+                 class="builder-sidebar-components-{{ component.name | lowercase }}"
                  src="../assets/img/{{ component.name | lowercase }}-component-icon.svg"
                  style="height: 24px; width: 24px"/>
-            <div class="card-title mb-0"
-                 style="font-size: 14px; padding-top: 1em; color: #EDF0F2"><span ngbDropdownToggle>
-              {{ component.name }}</span>
+            <div class="builder-sidebar-components-{{ component.name | lowercase }} card-title mb-0"
+                 style="font-size: 14px; padding-top: 1em; color: #EDF0F2">
+              <span ngbDropdownToggle>{{ component.name }}</span>
               <div ngbDropdownMenu>
                 <button (click)="addComponent(component)" ngbDropdownItem>Add</button>
               </div>

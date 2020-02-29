@@ -25,6 +25,7 @@
             ],
             "scripts": [
               "src/assets/js/script.js",
+              "src/assets/js/gtag.js",
               "src/assets/js/builder.js"
             ],
             "styles": [

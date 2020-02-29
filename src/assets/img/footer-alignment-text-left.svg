@@ -1,0 +1,33 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" height="88px" viewBox="0 0 114 88" width="114px"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <rect height="88" id="path-1" rx="6" width="114" x="0" y="0"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1">
+    <g id="Artboard" transform="translate(-64.000000, -56.000000)">
+      <g transform="translate(64.000000, 56.000000)">
+        <mask fill="white" id="mask-2">
+          <use xlink:href="#path-1"/>
+        </mask>
+        <use fill="#E6E6E6" id="Mask" xlink:href="#path-1"/>
+        <g id="Group-4" mask="url(#mask-2)">
+          <g transform="translate(31.000000, 21.000000)">
+            <rect fill="#CECECE" height="5" id="Rectangle" width="36" x="8" y="0"/>
+            <g fill="none" id="Group-3" stroke-width="1" transform="translate(0.000000, 11.000000)">
+              <rect fill="#CECECE" height="2" id="Rectangle" width="52" x="0" y="0"/>
+              <rect fill="#CECECE" height="2" id="Rectangle" width="26" x="13" y="5"/>
+            </g>
+            <rect fill="#CECECE" height="5" id="Rectangle" width="14" x="19" y="24"/>
+          </g>
+        </g>
+        <rect fill="#424242" height="20" id="Rectangle" mask="url(#mask-2)" width="114" x="0" y="68"/>
+        <rect fill="#E6E6E6" height="6" id="Rectangle" mask="url(#mask-2)" width="12" x="8" y="72"/>
+        <rect fill="#E6E6E6" height="1" id="Rectangle" mask="url(#mask-2)" width="8" x="8" y="81"/>
+        <rect fill="#E6E6E6" height="1" id="Rectangle" mask="url(#mask-2)" width="8" x="18" y="81"/>
+        <rect fill="#E6E6E6" height="1" id="Rectangle" mask="url(#mask-2)" width="8" x="28" y="81"/>
+        <rect fill="#E6E6E6" height="1" id="Rectangle" mask="url(#mask-2)" width="8" x="38" y="81"/>
+        <rect fill="#E6E6E6" height="1" id="Rectangle" mask="url(#mask-2)" width="8" x="48" y="81"/>
+      </g>
+    </g>
+  </g>
+</svg>
