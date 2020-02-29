@@ -39,6 +39,8 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
 
   private activeEditComponentSubscription: Subscription;
   private featuresTemplateSubscription: Subscription;
+  // private navbarTemplateSubscription: Subscription;
+  // private footerTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
 
   constructor(
@@ -57,9 +59,8 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
 
     this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
       if (pageComponentsResponse) {
-        console.log(pageComponentsResponse);
-        const template = pageComponentsResponse['template'];
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(template).subscribe(response => {
+        this.featuresTemplate = pageComponentsResponse['template'];
+        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = {
               'featuresStyle': response['featuresStyle'],
@@ -127,6 +128,16 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
         break;
     }
     return JSON.stringify(component);
+  }
+
+  addComponent(component: any) {
+    const tempComponentToAdd = JSON.parse(this.getComponent(component.selector));
+    const activePageIndex = this.builderService.activePageIndex.getValue();
+    const componentToAdd = tempComponentToAdd['componentDetail'];
+    componentToAdd['componentIndex'] = tempComponentToAdd['componentIndex'];
+    componentToAdd['componentId'] = tempComponentToAdd['componentId'];
+    componentToAdd['componentName'] = tempComponentToAdd['componentName'];
+    this.builderComponentsService.addComponent(componentToAdd, activePageIndex);
   }
 
   ngOnDestroy() {
