@@ -128,7 +128,6 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-
     this.footerAlignmentClassSubscription = this.builderFooterService.footerAlignmentClass.subscribe(response => {
       if (response) {
         this.footerAlignmentClass = response;
@@ -295,7 +294,6 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
-
 
   setFooterSocialLinksMarginTop() {
     this.footerSocialLinksStyle['margin-top'] = `${this.footerSocialLinksMarginTop}px`;

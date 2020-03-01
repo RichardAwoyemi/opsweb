@@ -171,7 +171,7 @@ export class BuilderComponentsService {
               },
               {
                 'heading': UtilService.generateRandomWord(),
-                'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
+                'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
             'featuresTheme': ActiveThemes.Default,
@@ -227,7 +227,7 @@ export class BuilderComponentsService {
               },
               {
                 'heading': UtilService.generateRandomWord(),
-                'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
+                'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
             'featuresTheme': ActiveThemes.Default,
@@ -596,7 +596,7 @@ export class BuilderComponentsService {
               },
               {
                 'heading': UtilService.generateRandomWord(),
-                'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
+                'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
             'featuresTheme': ActiveThemes.Default,
@@ -652,7 +652,7 @@ export class BuilderComponentsService {
               },
               {
                 'heading': UtilService.generateRandomWord(),
-                'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
+                'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
             'featuresTheme': ActiveThemes.Default,
@@ -1031,7 +1031,7 @@ export class BuilderComponentsService {
               },
               {
                 'heading': UtilService.generateRandomWord(),
-                'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
+                'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
             'featuresTheme': ActiveThemes.Default,
@@ -1087,7 +1087,7 @@ export class BuilderComponentsService {
               },
               {
                 'heading': UtilService.generateRandomWord(),
-                'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
+                'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
             'featuresTheme': ActiveThemes.Default,
@@ -1319,6 +1319,38 @@ export class BuilderComponentsService {
     }
   }
 
+  static removePlaceholders(components) {
+    const componentsArrayWithoutPlaceholders = [];
+    for (let i = 0; i < components.length; i++) {
+      if (components[i]['componentName'] !== ActiveComponentsPartialSelector.Placeholder) {
+        componentsArrayWithoutPlaceholders.push(components[i]);
+      }
+    }
+    return componentsArrayWithoutPlaceholders;
+  }
+
+  static addPlaceholders(components) {
+    const componentsArrayWithPlaceholders = components.reduce((r, a) => r.concat(a,
+      {
+        componentIndex: null,
+        componentName: ActiveComponentsPartialSelector.Placeholder,
+        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+        timestamp: new Date().getTime()
+      }),
+
+      [{
+        componentIndex: null,
+        componentName: ActiveComponentsPartialSelector.Placeholder,
+        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+        timestamp: new Date().getTime()
+      }]
+    );
+    for (let i = 0; i < componentsArrayWithPlaceholders.length; i++) {
+      componentsArrayWithPlaceholders[i]['componentIndex'] = i;
+    }
+    return componentsArrayWithPlaceholders;
+  }
+
   getActiveTargetComponentById(componentId: string) {
     let activePageIndex = null;
     let activeComponentIndex = null;
@@ -1419,9 +1451,32 @@ export class BuilderComponentsService {
   }
 
   addFeaturesComponent(component, activePageIndex) {
-    const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
-    component['featuresTemplate'] = pageComponents['template'];
+    let pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
+    component['featuresTemplate'] = this.pageComponents.getValue()['template'];
     component['featuresTheme'] = ActiveThemes.Default;
+    component['featuresItemArray'] = [
+      {
+        'heading': UtilService.generateRandomWord(),
+        'subheading': 'Building a website has never been easier than this! Get started today, free of cost.'
+      },
+      {
+        'heading': UtilService.generateRandomWord(),
+        'subheading': 'Make our amazing library of templates and themes your own with our extensive range of custom options.'
+      },
+      {
+        'heading': UtilService.generateRandomWord(),
+        'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
+      }
+    ];
+
+    const pageComponentsToAddWithoutPlaceholders = BuilderComponentsService.removePlaceholders(pageComponents['components']);
+    pageComponentsToAddWithoutPlaceholders.splice(pageComponentsToAddWithoutPlaceholders.length - 1, 0, component);
+    const pageComponentsToAddWithPlaceholders = BuilderComponentsService.addPlaceholders(pageComponentsToAddWithoutPlaceholders);
+
+    pageComponents = this.pageComponents.getValue();
+    pageComponents['pages'][activePageIndex]['components'] = pageComponentsToAddWithPlaceholders;
+
+    this.pageComponents.next(pageComponents);
   }
 
   addFooterComponent(component, activePageIndex) {
