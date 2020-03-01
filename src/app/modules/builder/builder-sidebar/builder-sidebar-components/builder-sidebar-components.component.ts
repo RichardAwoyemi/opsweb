@@ -127,11 +127,11 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
         };
         break;
     }
-    return JSON.stringify(component);
+    return component;
   }
 
   addComponent(component: any) {
-    const tempComponentToAdd = JSON.parse(this.getComponent(component.selector));
+    const tempComponentToAdd = this.getComponent(component.selector);
     const activePageIndex = this.builderService.activePageIndex.getValue();
     const componentToAdd = tempComponentToAdd['componentDetail'];
     componentToAdd['componentIndex'] = tempComponentToAdd['componentIndex'];
@@ -144,5 +144,13 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     this.activeEditComponentSubscription.unsubscribe();
     this.featuresTemplateSubscription.unsubscribe();
     this.defaultFeaturesStyleSubscription.unsubscribe();
+  }
+
+  onComponentSelect(component: any) {
+    window.postMessage({
+      'for': 'opsonion',
+      'action': 'component-selected',
+      'message': component
+    }, '*');
   }
 }

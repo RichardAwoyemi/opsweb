@@ -9,18 +9,17 @@ let singleUseComponents = [
 
 let container = document.querySelector('body');
 
-let observer = new MutationObserver(function () {
-  preloadDragFeedbackImages();
-});
+window.addEventListener("message", listenForShowcaseMessages, false);
 
-observer.observe(container, {
-  childList: true,
-  attributes: true,
-  characterData: true,
-  subtree: true,
-  attributeOldValue: true,
-  characterDataOldValue: true
-});
+function listenForShowcaseMessages(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.data) {
+    if (e.data.action === 'component-selected') {
+      componentToAdd = e.data.message;
+    }
+  }
+}
 
 function builderShowcaseLoaded() {
   builderShowcaseId = '#builder-showcase';
@@ -73,13 +72,10 @@ function preloadDragFeedbackImages() {
   }
 }
 
-function componentDragStarted(e) {
+function componentDragStarted() {
   dragOverQueueProcessTimer = setInterval(function () {
     dragDropFunctions.processDragOverQueue();
   }, 100);
-  if (e.originalEvent['srcElement']['dataset']['insertHtml']) {
-    componentToAdd = JSON.parse(e.originalEvent['srcElement']['dataset']['insertHtml']);
-  }
 }
 
 function componentDragEnded() {
@@ -112,9 +108,9 @@ function listenForShowcaseDragOverEvents(e) {
 }
 
 function listenForShowcaseDropEvent(e) {
-  addComponent(e);
   e.preventDefault();
   e.stopPropagation();
+  addComponent(e);
 }
 
 function addComponent(e) {
