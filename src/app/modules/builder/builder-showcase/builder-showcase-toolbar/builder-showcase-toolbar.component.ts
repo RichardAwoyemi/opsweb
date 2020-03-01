@@ -18,7 +18,6 @@ import { BuilderSaveWebsiteModalComponent } from '../../builder-actions/builder-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
-
   activePage = 'Home';
   innerHeight: number;
   previewButtonIcon = 'btn-icon';
@@ -145,11 +144,12 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.ariaExpandedAttribute = 'true';
   }
 
-  setActivePage(navbarMenuOption: string) {
+  setActivePage(navbarMenuOption: string, i: number) {
     this.dropdownClass = 'dropdown';
     this.dropdownMenuClass = 'dropdown-menu';
     this.ariaExpandedAttribute = 'false';
     this.builderService.activePageSetting.next(navbarMenuOption);
+    this.builderService.activePageIndex.next(i);
   }
 
   toggleFullScreen() {
