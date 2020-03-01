@@ -4,16 +4,16 @@
     <span class="input-group-text"><i class="ti-search"></i></span>
   </div>
   <label for="search-templates"></label>
-  <input (keyup)="searchText.trim();"
-         [(ngModel)]="searchText"
-         class="builder-sidebar-templates-search form-control" id="search-templates"
+  <input class="builder-sidebar-templates-search form-control" 
+         id="search-templates"
+         (keyup)="searchText.trim();" [(ngModel)]="searchText"
          placeholder="Search Templates" type="text">
 </div>
 <div class="row">
   <ng-container *ngFor="let template of selectedTemplates | filter: searchText | sort: 'name'">
     <div class="col-md-12">
-      <div (click)="setTemplate(template.id)"
-           class="builder-sidebar-templates-{{ template.name | lowercase }} card text-white bg-img justify-content-center template-icon"
+      <div class="builder-sidebar-templates-{{ template.name | lowercase }} card text-white bg-img justify-content-center template-icon"
+           (click)="setTemplate(template.id)"
            [style.backgroundImage]="'url(' + '../assets/img/' + template.id + '.jpg)'"
            data-overlay="6" style="height: 100px; margin-bottom: 1em">
         <div class="builder-sidebar-templates-{{ template.name | lowercase }} card-body text-center flex-grow-0">

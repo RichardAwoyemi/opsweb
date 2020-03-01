@@ -12,10 +12,9 @@
         <div class="form-group">
           <label>Top</label>
           <label style="width: 100%">
-            <input (keyup)="setFeaturesPaddingTop()"
-                   (ngModelChange)="setFeaturesPaddingTop()" [(ngModel)]="featuresPaddingTop"
-                   autocomplete="off" class="builder-sidebar-layout-select-feature-spacing-top form-control" max="300"
-                   min="0"
+            <input class="builder-sidebar-layout-select-feature-spacing-top form-control"
+                   (keyup)="setFeaturesPaddingTop()" (ngModelChange)="setFeaturesPaddingTop()"
+                   [(ngModel)]="featuresPaddingTop" autocomplete="off" max="300" min="0"
                    name="number"
                    type="number">
           </label>
@@ -25,10 +24,9 @@
         <div class="form-group">
           <label>Left</label>
           <label style="width: 100%">
-            <input (keyup)="setFeaturesPaddingLeft()"
-                   (ngModelChange)="setFeaturesPaddingLeft()" [(ngModel)]="featuresPaddingLeft"
-                   autocomplete="off" class="builder-sidebar-layout-select-feature-spacing-left form-control" max="300"
-                   min="0"
+            <input class="builder-sidebar-layout-select-feature-spacing-left form-control"
+                   (keyup)="setFeaturesPaddingLeft()" (ngModelChange)="setFeaturesPaddingLeft()"
+                   [(ngModel)]="featuresPaddingLeft" autocomplete="off" max="300" min="0"
                    name="number"
                    style="width: 100%" type="number">
           </label>
@@ -38,10 +36,9 @@
         <div class="form-group">
           <label>Right</label>
           <label style="width: 100%">
-            <input (keyup)="setFeaturesPaddingRight()"
-                   (ngModelChange)="setFeaturesPaddingRight()" [(ngModel)]="featuresPaddingRight"
-                   autocomplete="off" class="builder-sidebar-layout-select-feature-spacing-right form-control" max="300"
-                   min="0"
+            <input class="builder-sidebar-layout-select-feature-spacing-right form-control"
+                   (keyup)="setFeaturesPaddingRight()" (ngModelChange)="setFeaturesPaddingRight()"
+                   [(ngModel)]="featuresPaddingRight" autocomplete="off" max="300" min="0"
                    name="number"
                    style="width: 100%" type="number">
           </label>
@@ -51,18 +48,17 @@
         <div class="form-group">
           <label>Bottom</label>
           <label style="width: 100%">
-            <input (keyup)="setFeaturesPaddingBottom()"
-                   (ngModelChange)="setFeaturesPaddingBottom()" [(ngModel)]="featuresPaddingBottom"
-                   autocomplete="off" class="builder-sidebar-layout-select-feature-spacing-bottom form-control"
-                   max="300" min="0"
+            <input class="builder-sidebar-layout-select-feature-spacing-bottom form-control"
+                   (keyup)="setFeaturesPaddingBottom()" (ngModelChange)="setFeaturesPaddingBottom()"
+                   [(ngModel)]="featuresPaddingBottom" autocomplete="off" max="300" min="0"
                    name="number"
                    style="width: 100%" type="number">
           </label>
         </div>
       </div>
       <div class="col-md-12" style="margin-top: 1em;">
-        <label (click)="resetFeaturesPaddingStyle()"
-               class="builder-sidebar-layout-select-feature-spacing-reset btn btn-xl btn-block btn-secondary">
+        <label class="builder-sidebar-layout-select-feature-spacing-reset btn btn-xl btn-block btn-secondary"
+               (click)="resetFeaturesPaddingStyle()" >
           <span class="builder-sidebar-layout-select-feature-spacing-reset">Reset To Default</span>
         </label>
       </div>
@@ -87,78 +83,78 @@
   <div class="row">
     <div class="col-md-12">
       <div class="btn-group btn-group-full">
-        <button (click)="setFeaturesHeadingPosition('left')"
-                class="builder-sidebar-layout-select-heading-position-left btn btn-xs btn-secondary" type="button">
-          <i class="builder-sidebar-layout-select-heading-position-left ti-align-left"></i></button>
-        <button (click)="setFeaturesHeadingPosition('center')"
-                class="builder-sidebar-layout-select-heading-position-center btn btn-xs btn-secondary" type="button">
-          <i class="builder-sidebar-layout-select-heading-position-center ti-align-center"></i></button>
-        <button (click)="setFeaturesHeadingPosition('right')"
-                class="builder-sidebar-layout-select-heading-position-right btn btn-xs btn-secondary" type="button">
-          <i class="builder-sidebar-layout-select-heading-position-right ti-align-right"></i></button>
-        <button (click)="setFeaturesHeadingPosition('justify')"
-                class="builder-sidebar-layout-select-heading-position-justify btn btn-xs btn-secondary" type="button">
-          <i class="builder-sidebar-layout-select-heading-position-justify ti-align-justify"></i></button>
-      </div>
+        <button class="builder-sidebar-layout-select-heading-position-left btn btn-xs btn-secondary"
+              (click)="setFeaturesHeadingPosition('left')" type="button">
+           <i class="builder-sidebar-layout-select-heading-position-left ti-align-left"></i>
+      </button>
+      <button class="builder-sidebar-layout-select-heading-position-center btn btn-xs btn-secondary"
+              (click)="setFeaturesHeadingPosition('center')" type="button">
+           <i class="builder-sidebar-layout-select-heading-position-center ti-align-center"></i>
+      </button>
+      <button class="builder-sidebar-layout-select-heading-position-right btn btn-xs btn-secondary"
+              (click)="setFeaturesHeadingPosition('right')"  type="button">
+           <i class="builder-sidebar-layout-select-heading-position-right ti-align-right"></i>
+      </button>
+      <button class="builder-sidebar-layout-select-heading-position-justify btn btn-xs btn-secondary"
+              (click)="setFeaturesHeadingPosition('justify')" type="button">
+           <i class="builder-sidebar-layout-select-heading-position-justify ti-align-justify"></i>
+      </button>
     </div>
   </div>
-  <div class="form-group" style="margin-bottom: .3em; margin-top: 1.5em">
-    <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="form-group" style="margin-bottom: .3em; margin-top: 1.5em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Top</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-heading-spacing-top form-control"
+               (keyup)="setFeaturesHeadingPaddingTop()" (ngModelChange)="setFeaturesHeadingPaddingTop()"
+               [(ngModel)]="featuresHeadingPaddingTop" autocomplete="off" max="300" min="0"
+               name="number"
+               type="number">
+      </label>
+    </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Top</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesHeadingPaddingTop()"
-                 (ngModelChange)="setFeaturesHeadingPaddingTop()" [(ngModel)]="featuresHeadingPaddingTop"
-                 autocomplete="off" class="builder-sidebar-layout-select-heading-spacing-top form-control" max="300"
-                 min="0"
-                 name="number"
-                 type="number">
-        </label>
-      </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Left</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-heading-spacing-left form-control"
+               (keyup)="setFeaturesHeadingPaddingLeft()" (ngModelChange)="setFeaturesHeadingPaddingLeft()"
+               [(ngModel)]="featuresHeadingPaddingLeft" autocomplete="off" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
     </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Left</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesHeadingPaddingLeft()"
-                 (ngModelChange)="setFeaturesHeadingPaddingLeft()" [(ngModel)]="featuresHeadingPaddingLeft"
-                 autocomplete="off" class="builder-sidebar-layout-select-heading-spacing-left form-control" max="300"
-                 min="0"
-                 name="number" style="width: 100%" type="number">
-        </label>
-      </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Right</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-heading-spacing-right form-control"
+               (keyup)="setFeaturesHeadingPaddingRight()" (ngModelChange)="setFeaturesHeadingPaddingRight()"
+               [(ngModel)]="featuresHeadingPaddingRight" autocomplete="off" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
     </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Right</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesHeadingPaddingRight()"
-                 (ngModelChange)="setFeaturesHeadingPaddingRight()" [(ngModel)]="featuresHeadingPaddingRight"
-                 autocomplete="off" class="builder-sidebar-layout-select-heading-spacing-right form-control" max="300"
-                 min="0"
-                 name="number" style="width: 100%" type="number">
-        </label>
-      </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Bottom</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-heading-spacing-bottom form-control"
+               (keyup)="setFeaturesHeadingPaddingBottom()" (ngModelChange)="setFeaturesHeadingPaddingBottom()"
+               [(ngModel)]="featuresHeadingPaddingBottom" autocomplete="off" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
     </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Bottom</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesHeadingPaddingBottom()"
-                 (ngModelChange)="setFeaturesHeadingPaddingBottom()" [(ngModel)]="featuresHeadingPaddingBottom"
-                 autocomplete="off" class="builder-sidebar-layout-select-heading-spacing-bottom form-control" max="300"
-                 min="0"
-                 name="number" style="width: 100%" type="number">
-        </label>
-      </div>
-    </div>
-    <div class="col-md-12" style="margin-top: 1em;">
-      <label (click)="resetFeaturesHeadingPaddingStyle()"
-             class="builder-sidebar-layout-select-heading-spacing-reset btn btn-xl btn-block btn-secondary">
-        <span class="builder-sidebar-layout-select-heading-spacing-reset">Reset To Default</span>
+  </div>
+  <div class="col-md-12" style="margin-top: 1em;">
+    <label class="builder-sidebar-layout-select-heading-spacing-reset btn btn-xl btn-block btn-secondary"
+           (click)="resetFeaturesHeadingPaddingStyle()">
+      <span class="builder-sidebar-layout-select-heading-spacing-reset">Reset To Default</span>
       </label>
     </div>
   </div>
@@ -179,78 +175,73 @@
   <div class="row">
     <div class="col-md-12">
       <div class="btn-group btn-group-full">
-        <button (click)="setFeaturesSubheadingPosition('left')"
-                class="builder-sidebar-layout-select-subheading-position-left btn btn-xs btn-secondary" type="button">
-          <i class="builder-sidebar-layout-select-subheading-position-left ti-align-left"></i></button>
-        <button (click)="setFeaturesSubheadingPosition('center')"
-                class="builder-sidebar-layout-select-subheading-position-center btn btn-xs btn-secondary" type="button">
-          <i class="builder-sidebar-layout-select-subheading-position-center ti-align-center"></i></button>
-        <button (click)="setFeaturesSubheadingPosition('right')"
-                class="builder-sidebar-layout-select-subheading-position-right btn btn-xs btn-secondary" type="button">
-          <i class="builder-sidebar-layout-select-subheading-position-right ti-align-right"></i></button>
-        <button (click)="setFeaturesSubheadingPosition('justify')"
-                class="builder-sidebar-layout-select-subheading-position-justify btn btn-xs btn-secondary"
-                type="button">
-          <i class="builder-sidebar-layout-select-subheading-position-justify ti-align-justify"></i></button>
-      </div>
+        <button class="builder-sidebar-layout-select-subheading-position-left btn btn-xs btn-secondary"
+              (click)="setFeaturesSubheadingPosition('left')" type="button">
+           <i class="builder-sidebar-layout-select-subheading-position-left ti-align-left"></i></button>
+      <button class="builder-sidebar-layout-select-subheading-position-center btn btn-xs btn-secondary"
+              (click)="setFeaturesSubheadingPosition('center')" type="button">
+           <i class="builder-sidebar-layout-select-subheading-position-center ti-align-center"></i></button>
+      <button class="builder-sidebar-layout-select-subheading-position-right btn btn-xs btn-secondary"
+              (click)="setFeaturesSubheadingPosition('right')" type="button">
+           <i class="builder-sidebar-layout-select-subheading-position-right ti-align-right"></i></button>
+      <button class="builder-sidebar-layout-select-subheading-position-justify btn btn-xs btn-secondary"
+              (click)="setFeaturesSubheadingPosition('justify')" type="button">
+           <i class="builder-sidebar-layout-select-subheading-position-justify ti-align-justify"></i></button>
     </div>
   </div>
-  <div class="form-group" style="margin-bottom: .3em; margin-top: 1em">
-    <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="form-group" style="margin-bottom: .3em; margin-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Top</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-subheading-spacing-top form-control"
+               (keyup)="setFeaturesSubheadingPaddingTop()" (ngModelChange)="setFeaturesSubheadingPaddingTop()"
+               [(ngModel)]="featuresSubheadingPaddingTop" autocomplete="off" max="300" min="0"
+               name="number" type="number">
+      </label>
+    </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Top</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesSubheadingPaddingTop()"
-                 (ngModelChange)="setFeaturesSubheadingPaddingTop()" [(ngModel)]="featuresSubheadingPaddingTop"
-                 autocomplete="off" class="builder-sidebar-layout-select-subheading-spacing-top form-control" max="300"
-                 min="0"
-                 name="number" type="number">
-        </label>
-      </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Left</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-subheading-spacing-left form-control"
+               (keyup)="setFeaturesSubheadingPaddingLeft()" (ngModelChange)="setFeaturesSubheadingPaddingLeft()"
+               [(ngModel)]="featuresSubheadingPaddingLeft" autocomplete="off" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
     </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Left</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesSubheadingPaddingLeft()"
-                 (ngModelChange)="setFeaturesSubheadingPaddingLeft()" [(ngModel)]="featuresSubheadingPaddingLeft"
-                 autocomplete="off" class="builder-sidebar-layout-select-subheading-spacing-left form-control" max="300"
-                 min="0"
-                 name="number" style="width: 100%" type="number">
-        </label>
-      </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Right</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-subheading-spacing-right form-control"
+               (keyup)="setFeaturesSubheadingPaddingRight()" (ngModelChange)="setFeaturesSubheadingPaddingRight()"
+               [(ngModel)]="featuresSubheadingPaddingRight" autocomplete="off" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
     </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Right</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesSubheadingPaddingRight()"
-                 (ngModelChange)="setFeaturesSubheadingPaddingRight()" [(ngModel)]="featuresSubheadingPaddingRight"
-                 autocomplete="off" class="builder-sidebar-layout-select-subheading-spacing-right form-control"
-                 max="300" min="0"
-                 name="number" style="width: 100%" type="number">
-        </label>
-      </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Bottom</label>
+      <label style="width: 100%">
+        <input class="builder-sidebar-layout-select-subheading-spacing-bottom form-control"
+               (keyup)="setFeaturesSubheadingPaddingBottom()" (ngModelChange)="setFeaturesSubheadingPaddingBottom()"
+               [(ngModel)]="featuresSubheadingPaddingBottom" autocomplete="off" max="300" min="0"
+               name="number" style="width: 100%" type="number">
+      </label>
     </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label>Bottom</label>
-        <label style="width: 100%">
-          <input (keyup)="setFeaturesSubheadingPaddingBottom()"
-                 (ngModelChange)="setFeaturesSubheadingPaddingBottom()" [(ngModel)]="featuresSubheadingPaddingBottom"
-                 autocomplete="off" class="builder-sidebar-layout-select-subheading-spacing-bottom form-control"
-                 max="300" min="0"
-                 name="number" style="width: 100%" type="number">
-        </label>
-      </div>
-    </div>
-    <div class="col-md-12" style="margin-top: 1em;">
-      <label (click)="resetFeaturesSubheadingPaddingStyle()"
-             class="builder-sidebar-layout-select-subheading-spacing-resetbtn btn-xl btn-block btn-secondary">
-        <span class="builder-sidebar-layout-select-subheading-spacing-reset ">Reset To Default</span>
+  </div>
+  <div class="col-md-12" style="margin-top: 1em;">
+    <label class="builder-sidebar-layout-select-subheading-spacing-reset btn btn-xl btn-block btn-secondary"
+           (click)="resetFeaturesSubheadingPaddingStyle()">
+      <span class="builder-sidebar-layout-select-subheading-spacing-reset">Reset To Default</span>
       </label>
     </div>
   </div>

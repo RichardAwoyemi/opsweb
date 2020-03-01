@@ -1,67 +1,73 @@
 <div id="hero-colours" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Background</label>
-  <span (colorPickerChange)="setHeroBackgroundStyle()"
-        [(colorPicker)]="heroBackgroundStyle['background-color']" [cpPositionOffset]="'0%'"
+  <span class="hero-colour-select-background form-control form-control-lg colour-picker"
+        (colorPickerChange)="setHeroBackgroundStyle()"
+        [(colorPicker)]="heroBackgroundStyle['background-color']" 
+        [cpPositionOffset]="'0%'"
         [cpPosition]="'bottom'"
-        [style.background]="heroBackgroundStyle['background-color']"
-        class="hero-colour-select-background form-control form-control-lg colour-picker"></span>
+        [style.background]="heroBackgroundStyle['background-color']"></span>
 </div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Heading</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setHeroHeadingStyle()"
-          [(colorPicker)]="heroHeadingStyle['color']" [cpPosition]="'bottom'"
+    <span class="hero-colour-select-heading form-control form-control-lg colour-picker"
+          (colorPickerChange)="setHeroHeadingStyle()" 
+          [(colorPicker)]="heroHeadingStyle['color']"
           [cpPositionOffset]="'0%'"
-          [style.background]="heroHeadingStyle['color']"
-          class="hero-colour-select-heading form-control form-control-lg colour-picker"></span>
+          [cpPosition]="'bottom'" 
+          [style.background]="heroHeadingStyle['color']"></span>
   </div>
 </div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Subheading</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setHeroSubheadingStyle()"
-          [(colorPicker)]="heroSubheadingStyle['color']" [cpPosition]="'bottom'"
+    <span class="hero-colour-select-subheading form-control form-control-lg colour-picker"
+          (colorPickerChange)="setHeroSubheadingStyle()" 
+          [(colorPicker)]="heroSubheadingStyle['color']"
           [cpPositionOffset]="'0%'"
-          [style.background]="heroSubheadingStyle['color']"
-          class="hero-colour-select-subheading form-control form-control-lg colour-picker"></span>
+          [cpPosition]="'bottom'" 
+          [style.background]="heroSubheadingStyle['color']"></span>
   </div>
 </div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Button Background</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setHeroButtonStyle()"
-          [(colorPicker)]="heroButtonStyle['background-color']" [cpPosition]="'bottom'"
+    <span class="hero-colour-select-button-background form-control form-control-lg colour-picker"
+          (colorPickerChange)="setHeroButtonStyle()" 
+          [(colorPicker)]="heroButtonStyle['background-color']"
           [cpPositionOffset]="'0%'"
-          [style.background]="heroButtonStyle['background-color']"
-          class="hero-colour-select-button-background form-control form-control-lg colour-picker"></span>
+          [cpPosition]="'bottom'" 
+          [style.background]="heroButtonStyle['background-color']"></span>
   </div>
 </div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Button Text</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setHeroButtonStyle()"
-          [(colorPicker)]="heroButtonStyle['color']" [cpPosition]="'bottom'"
+    <span class="hero-colour-select-button-text form-control form-control-lg colour-picker"
+          (colorPickerChange)="setHeroButtonStyle()" 
+          [(colorPicker)]="heroButtonStyle['color']"
           [cpPositionOffset]="'0%'"
-          [style.background]="heroButtonStyle['color']"
-          class="hero-colour-select-button-text form-control form-control-lg colour-picker"></span>
+          [cpPosition]="'bottom'" 
+          [style.background]="heroButtonStyle['color']"></span>
   </div>
 </div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Button Border</label>
   <div style="width: 100%">
-    <span (colorPickerChange)="setHeroButtonStyle()"
-          [(colorPicker)]="heroButtonStyle['border-color']" [cpPosition]="'bottom'"
+    <span class="hero-colour-select-button-border form-control form-control-lg colour-picker"
+          (colorPickerChange)="setHeroButtonStyle()" 
+          [(colorPicker)]="heroButtonStyle['border-color']"
           [cpPositionOffset]="'0%'"
-          [style.background]="heroButtonStyle['border-color']"
-          class="hero-colour-select-button-border form-control form-control-lg colour-picker"></span>
+          [cpPosition]="'bottom'" 
+          [style.background]="heroButtonStyle['border-color']"></span>
   </div>
 </div>
 <div class="form-group">
   <label style="color: rgba(255, 255, 255, 0.65);">Theme</label>
   <label style="width: 100%">
-    <select (change)="onThemeChange()"
-            [(ngModel)]="heroTheme" class="hero-theme-select form-control form-control-lg">
+    <select class="hero-theme-select form-control form-control-lg"
+            (change)="onThemeChange()" [(ngModel)]="heroTheme" >
       <option *ngFor="let theme of heroThemes"
               [attr.selected]="theme['name'] == heroTheme ? true : null">{{ theme['name'] }}</option>
     </select>
@@ -69,7 +75,6 @@
 </div>
 <hr style="background-color: rgba(255, 255, 255, 0.1)">
 <div style="padding-bottom: 1em">
-  <button (click)="resetToDefault()"
-          class="hero-colours-reset btn btn-xl btn-block btn-secondary" type="button">Reset to Default
-  </button>
+  <button class="hero-colours-reset btn btn-xl btn-block btn-secondary"
+          (click)="resetToDefault()" type="button">Reset to Default</button>
 </div>

@@ -6,8 +6,8 @@
         <label style="color: rgba(255, 255, 255, 0.65)">Navigation</label>
       </div>
       <div class="col-md-6 text-right">
-        <a (click)="openNewPageModal()"
-           class="builder-sidebar-pages-page-add fw-600 fs-12" href="#">Add</a>
+        <a class="builder-sidebar-pages-page-add fw-600 fs-12"
+           (click)="openNewPageModal()" href="#">Add</a>
       </div>
     </div>
     <div [sortablejs]="navbarMenuOptions" style="padding-top: 1em">
@@ -30,15 +30,9 @@
                     ngbDropdownToggle style="margin-left: -15px; background-color: transparent" type="button"><i
               class="ti-more-alt"></i></button>
             <div aria-labelledby="pagesDropdown" ngbDropdownMenu>
-              <button (click)="viewPage(navbarMenuOption)" class="builder-sidebar-pages-page-view" ngbDropdownItem>
-                View
-              </button>
-              <button (click)="openRenamePageModal(navbarMenuOption, i)" class="builder-sidebar-pages-page-rename"
-                      ngbDropdownItem>Rename
-              </button>
-              <button (click)="openDeletePageModal(navbarMenuOption, i)" class="builder-sidebar-pages-page-delete"
-                      ngbDropdownItem>Delete
-              </button>
+              <button class="builder-sidebar-pages-page-view" (click)="viewPage(navbarMenuOption)" ngbDropdownItem>View</button>
+              <button class="builder-sidebar-pages-page-rename" (click)="openRenamePageModal(navbarMenuOption, i)" ngbDropdownItem>Rename</button>
+              <button class="builder-sidebar-pages-page-delete" (click)="openDeletePageModal(navbarMenuOption, i)" ngbDropdownItem>Delete</button>
             </div>
           </div>
         </div>
@@ -50,10 +44,9 @@
       <div class="col-md-6">
         <label style="color: rgba(255, 255, 255, 0.65)">Components</label>
       </div>
-      <div class="col-md-6 text-right">
-        <!-- TODO: MODAL IS INCOMPLETE -->
-        <a (click)="openAddComponentModal()"
-           class="builder-sidebar-pages-add-component fw-600 fs-12" href="#">Add</a>
+      <div class="col-md-6 text-right"> <!-- TODO: MODAL IS INCOMPLETE -->
+        <a class="builder-sidebar-pages-add-component fw-600 fs-12"
+           (click)="openAddComponentModal()" href="#">Add</a>
       </div>
     </div>
     <div [sortablejsOptions]="options" [sortablejs]="componentListOptions" style="padding-top: 1em">
@@ -77,9 +70,8 @@
                     ngbDropdownToggle style="margin-left: -15px; background-color: transparent" type="button"><i
               class="ti-more-alt"></i></button>
             <div aria-labelledby="pagesDropdown" ngbDropdownMenu>
-              <button (click)="openDeleteComponentModal()"
-                      class="builder-sidebar-pages-delete-component" ngbDropdownItem>Delete
-              </button>
+              <button class="builder-sidebar-pages-delete-component"
+                      (click)="openDeleteComponentModal()" ngbDropdownItem>Delete</button>
             </div>
           </div>
         </div>
