@@ -62,9 +62,9 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarResponse => {
-      if (navbarResponse) {
-        this.navbarTemplate = navbarResponse;
+    this.navbarTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+      if (templateResponse) {
+        this.navbarTemplate = templateResponse['template'];
 
         this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
           if (response) {

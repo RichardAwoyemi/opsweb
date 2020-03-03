@@ -161,7 +161,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  save() {
+  openSaveWebsiteModal() {
     this.modalService.open(BuilderSaveWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 

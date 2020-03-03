@@ -52,9 +52,9 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
-      if (footerTemplateResponse) {
-        this.footerTemplate = footerTemplateResponse;
+    this.footerTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+      if (templateResponse) {
+        this.footerTemplate = templateResponse['template'];
 
         this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
           if (response) {

@@ -71,7 +71,7 @@ export class BuilderHeaderComponent implements OnInit {
     BuilderService.removeLineBreaks(event);
   }
 
-  saveWebsiteName(event: any) {
+  openRenameWebsiteModal(event: any) {
     if (this.websiteName !== event.target.innerHTML) {
       const modal = this.modalService.open(BuilderRenameWebsiteModalComponent, {
         windowClass: 'modal-holder',

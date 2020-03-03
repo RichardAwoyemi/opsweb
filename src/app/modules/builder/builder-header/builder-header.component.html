@@ -5,8 +5,8 @@
         <a (click)="redirect()" href="#">
           <img alt="logo-white" src="../../../../assets/img/logo-white.svg" style="height: 30px; width: 30px">
         </a>
-        <div (blur)="removeLineBreaks($event); saveWebsiteName($event);"
-             (keydown.enter)="saveWebsiteName($event); $event.preventDefault()"
+        <div (blur)="removeLineBreaks($event); openRenameWebsiteModal($event);"
+             (keydown.enter)="openRenameWebsiteModal($event); $event.preventDefault()"
              [attr.contenteditable]="true"
              [attr.spellcheck]="false"
              blockNonAlphanumericCharacters

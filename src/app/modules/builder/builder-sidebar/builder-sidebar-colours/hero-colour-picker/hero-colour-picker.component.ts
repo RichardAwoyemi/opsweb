@@ -88,9 +88,9 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(heroTemplateResponse => {
-      if (heroTemplateResponse) {
-        this.heroTemplate = heroTemplateResponse;
+    this.heroTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+      if (templateResponse) {
+        this.heroTemplate = templateResponse['template'];
 
         this.defaultHeroStyleSubscription = this.builderHeroService.getDefaultHeroStyle(this.heroTemplate).subscribe(response => {
           if (response) {
@@ -152,21 +152,21 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
     this.builderHeroService.heroTheme.next(ActiveThemes.Default);
 
     this.heroBackgroundStyle['background-color'] = this.defaultHeroStyle['heroBackgroundStyle']['background-color'];
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroBackgroundStyle', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroBackgroundStyle', this.heroBackgroundStyle);
     this.builderHeroService.heroBackgroundStyle.next(this.heroBackgroundStyle);
 
     this.heroHeadingStyle['color'] = this.defaultHeroStyle['heroHeadingStyle']['color'];
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', this.heroHeadingStyle);
     this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
 
     this.heroSubheadingStyle['color'] = this.defaultHeroStyle['heroSubheadingStyle']['color'];
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', this.heroSubheadingStyle);
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
 
     this.heroButtonStyle['background-color'] = this.defaultHeroStyle['heroButtonStyle']['background-color'];
     this.heroButtonStyle['color'] = this.defaultHeroStyle['heroButtonStyle']['color'];
     this.heroButtonStyle['border-color'] = this.defaultHeroStyle['heroButtonStyle']['border-color'];
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', this.heroButtonStyle);
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 

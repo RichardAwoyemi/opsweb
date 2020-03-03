@@ -89,7 +89,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
+    this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(featuresTemplateResponse => {
       if (featuresTemplateResponse) {
         this.featuresTemplate = featuresTemplateResponse;
         this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
