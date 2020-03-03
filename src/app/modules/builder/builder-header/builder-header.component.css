@@ -27,3 +27,7 @@
 .website-name:hover {
   cursor: text;
 }
+
+#builder-header-website-name {
+  text-transform: lowercase;
+}

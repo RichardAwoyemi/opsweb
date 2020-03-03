@@ -101,8 +101,8 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
         windowClass: 'modal-holder',
         centered: true
       });
-      modal.componentInstance.websiteName = this.websiteName;
-      modal.componentInstance.newWebsiteName = event.target.innerHTML;
+      modal.componentInstance.websiteName = this.websiteName.toLowerCase();
+      modal.componentInstance.newWebsiteName = event.target.innerText.toLowerCase();
     }
   }
 

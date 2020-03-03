@@ -9,7 +9,8 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-rename-website-modal',
-  templateUrl: './dashboard-rename-website-modal.component.html'
+  templateUrl: './dashboard-rename-website-modal.component.html',
+  styleUrls: ['./dashboard-rename-website-modal.component.css']
 })
 export class DashboardRenameWebsiteModalComponent implements IModalComponent, OnInit, OnDestroy {
   @Input() websiteName;
@@ -28,23 +29,23 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
   }
 
   ngOnInit() {
-    this.newWebsiteName = this.websiteName;
+    this.newWebsiteName = this.websiteName.toLowerCase();
   }
 
   onConfirmButtonClick() {
-    this.websiteNameAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).subscribe(websites => {
-      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteId, this.newWebsiteName);
+    this.websiteNameAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName.toLowerCase()).subscribe(websites => {
+      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteId, this.newWebsiteName.toLowerCase());
       this.websiteNameAvailabilitySubscription.unsubscribe();
     });
   }
 
   onCloseButtonClick() {
-    this.websiteService.websiteName.next(this.websiteName);
+    this.websiteService.websiteName.next(this.websiteName.toLowerCase());
     this.activeModal.dismiss();
   }
 
   validateWebsiteName() {
-    this.disableSaveButton = BuilderActionsService.toggleWebsiteModalSaveButton(this.websiteName);
+    this.disableSaveButton = BuilderActionsService.toggleWebsiteModalSaveButton(this.websiteName.toLowerCase());
   }
 
   ngOnDestroy() {

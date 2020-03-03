@@ -28,7 +28,7 @@ export class BuilderRenameWebsiteModalComponent implements IModalComponent, OnDe
 
   onConfirmButtonClick() {
     this.websiteNameAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).subscribe(websites => {
-      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName);
+      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName.toLowerCase());
       this.websiteNameAvailabilitySubscription.unsubscribe();
     });
     this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': false});
@@ -36,7 +36,7 @@ export class BuilderRenameWebsiteModalComponent implements IModalComponent, OnDe
 
   onCloseButtonClick() {
     this.websiteService.websiteName.next(this.websiteName);
-    document.getElementById('builder-header-website-name').innerHTML = this.websiteName;
+    document.getElementById('builder-header-website-name').innerText = this.websiteName.toLowerCase();
     this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': false});
     this.activeModal.dismiss();
   }
