@@ -113,6 +113,21 @@ export class WebsiteService {
     }
   }
 
+  renameWebsite(websites, activeModal, websiteId, newWebsiteName) {
+    if (websites.size === 0) {
+      activeModal.dismiss();
+      const documentRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${websiteId}`);
+      documentRef.set({
+        name: newWebsiteName
+      }, {merge: true});
+      activeModal.dismiss();
+      this.websiteName.next(newWebsiteName);
+      this.toastrService.success('Your website has been renamed.', 'Great!');
+    } else {
+      this.toastrService.error(`A website with this name already exists.`, 'Oops!');
+    }
+  }
+
   getWebsiteChangeCount(): Observable<any> {
     return this.websiteChangeCount.asObservable();
   }

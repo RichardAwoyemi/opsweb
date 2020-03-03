@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderCreateAccountModalComponent } from '../builder-actions/builder-create-account-modal/builder-create-account-modal.component';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { WebsiteService } from '../../../shared/services/website.service';
   templateUrl: './builder-header.component.html',
   styleUrls: ['./builder-header.component.css']
 })
-export class BuilderHeaderComponent implements OnInit {
+export class BuilderHeaderComponent implements OnInit, OnDestroy {
   websiteName: string;
   websiteNameSubscription: Subscription;
   photoURL = '/assets/img/anonymous.jpg';
@@ -90,5 +90,9 @@ export class BuilderHeaderComponent implements OnInit {
       this.router.navigate(['home']).then(() => {
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.websiteNameSubscription.unsubscribe();
   }
 }

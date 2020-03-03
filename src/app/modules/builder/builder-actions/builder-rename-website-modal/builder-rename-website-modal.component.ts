@@ -1,17 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { BuilderService } from '../../builder.service';
-import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { WebsiteService } from '../../../../shared/services/website.service';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-builder-rename-website-modal',
   templateUrl: './builder-rename-website-modal.component.html'
 })
-export class BuilderRenameWebsiteModalComponent implements IModalComponent {
+export class BuilderRenameWebsiteModalComponent implements IModalComponent, OnDestroy {
   @Input() websiteName;
   @Input() newWebsiteName;
 
@@ -21,31 +20,26 @@ export class BuilderRenameWebsiteModalComponent implements IModalComponent {
     private afs: AngularFirestore,
     private activeModal: NgbActiveModal,
     private builderService: BuilderService,
-    private websiteService: WebsiteService,
-    private toastrService: ToastrService
+    private websiteService: WebsiteService
   ) {
   }
 
   onConfirmButtonClick() {
-    const websiteId = this.websiteService.websiteId.getValue();
     this.websiteNameAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).subscribe(websites => {
-      if (websites.size === 0) {
-        const documentRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${websiteId}`);
-        documentRef.set({
-          name: this.newWebsiteName
-        }, {merge: true});
-        this.websiteService.websiteName.next(this.newWebsiteName);
-        this.toastrService.success('Your website has been renamed.', 'Great!');
-      } else {
-        this.toastrService.error(`A website with this name already exists.`, 'Oops!');
-      }
-      this.activeModal.dismiss();
+      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName);
       this.websiteNameAvailabilitySubscription.unsubscribe();
     });
   }
 
   onCloseButtonClick() {
     this.websiteService.websiteName.next(this.websiteName);
+    document.getElementById('builder-header-website-name').innerHTML = this.websiteName;
     this.activeModal.dismiss();
+  }
+
+  ngOnDestroy() {
+    if (this.websiteNameAvailabilitySubscription) {
+      this.websiteNameAvailabilitySubscription.unsubscribe();
+    }
   }
 }

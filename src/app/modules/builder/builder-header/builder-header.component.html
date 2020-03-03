@@ -9,6 +9,7 @@
              (keydown.enter)="openRenameWebsiteModal($event); $event.preventDefault()"
              [attr.contenteditable]="true"
              [attr.spellcheck]="false"
+             id="builder-header-website-name"
              blockNonAlphanumericCharacters
              class="website-name" ngbPopover="Website Name" triggers="mouseenter:mouseleave">{{ websiteName }}</div>
       </div>

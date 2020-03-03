@@ -4,7 +4,7 @@ import { IModalComponent } from '../../../../shared/models/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BuilderActionsService } from '../../../builder/builder-actions/builder-actions.service';
 import { WebsiteService } from '../../../../shared/services/website.service';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -31,25 +31,16 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
     this.newWebsiteName = this.websiteName;
   }
 
-  onCloseButtonClick() {
-    this.activeModal.dismiss();
-  }
-
   onConfirmButtonClick() {
     this.websiteNameAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).subscribe(websites => {
-      if (websites.size === 0) {
-        this.activeModal.close();
-        const documentRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${this.websiteId}`);
-        documentRef.set({
-          name: this.newWebsiteName
-        }, {merge: true});
-        this.activeModal.close();
-        this.toastrService.success('Your website has been renamed.');
-      } else {
-        this.toastrService.error(`A website with this name already exists.`);
-      }
+      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteId, this.newWebsiteName);
       this.websiteNameAvailabilitySubscription.unsubscribe();
     });
+  }
+
+  onCloseButtonClick() {
+    this.websiteService.websiteName.next(this.websiteName);
+    this.activeModal.dismiss();
   }
 
   validateWebsiteName() {
