@@ -11,13 +11,12 @@
       <a (click)="resetNumberOfFeatures()" class="fw-600 fs-12" href="#">Reset</a>
     </div>
   </div>
-  <label style="width: 100%">
-    <input (keyup)="setNumberOfFeatures()" (ngModelChange)="setNumberOfFeatures()" [(ngModel)]="numberOfFeatures"
-           class="form-control form-control-lg" max="8" min="0" name="number" style="width: 100%" type="number">
-  </label>
+  <div style="width: 100%; margin-top: 1.5em">
+    <ng5-slider (valueChange)="setNumberOfFeatures($event)" [(value)]="numberOfFeatures"
+                [options]="options" class="custom-slider"></ng5-slider>
+  </div>
 </div>
 <hr>
-
 <div class="form-group" id="features-heading-options">
   <label style="color: rgba(255, 255, 255, 1)">Heading</label>
 </div>

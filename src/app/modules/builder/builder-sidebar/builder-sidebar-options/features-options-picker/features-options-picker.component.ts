@@ -5,6 +5,7 @@ import { BuilderFeaturesService } from '../../../builder-components/builder-feat
 import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { WebsiteService } from '../../../../../shared/services/website.service';
+import { Options } from 'ng5-slider';
 
 @Component({
   selector: 'app-features-options-picker',
@@ -30,6 +31,19 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   numberOfFeatures: number;
   pageComponents: any;
   activeEditComponentId: string;
+  options: Options = {
+    showTicksValues: true,
+    stepsArray: [
+      {value: 1},
+      {value: 2},
+      {value: 3},
+      {value: 4},
+      {value: 5},
+      {value: 6},
+      {value: 7},
+      {value: 8}
+    ]
+  };
 
   private activeEditComponentIdSubscription: Subscription;
   private fontNamesSubscription: Subscription;
@@ -163,8 +177,8 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
 
-  setNumberOfFeatures() {
-    const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, this.numberOfFeatures);
+  setNumberOfFeatures(value: number) {
+    const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, value);
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
     this.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
