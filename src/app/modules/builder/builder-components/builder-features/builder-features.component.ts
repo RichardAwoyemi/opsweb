@@ -236,9 +236,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       }
 
       if (e.data.action.indexOf(this.componentId) > -1) {
-        if (e.data.action.indexOf('item') > -1) {
-          this.setFeaturesItems(e.data.message);
-        }
         if (e.data.action.indexOf('theme') > -1) {
           this.setFeaturesThemeStyle(e.data.message);
         }
@@ -246,31 +243,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
           this.setFeaturesStyle(e.data.message);
         }
       }
-    }
-  }
-
-  setFeaturesItems(items: any) {
-    if (this.featuresStyle) {
-      const components = this.builderComponentService.pageComponents.getValue();
-      const activePageIndex = items['targetActiveComponent']['activePageIndex'];
-      const activeComponentIndex = items['targetActiveComponent']['activeComponentIndex'];
-      const timestamp = new Date().getTime();
-
-      if (items['featuresItemWidth']) {
-        this.featuresStyle['width'] = items['featuresItemWidth'];
-        components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresStyle'] = this.featuresStyle;
-        components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
-        this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
-      }
-
-      if (items['featuresItemArray']) {
-        this.featuresItemArray = items['featuresItemArray'];
-        components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresItemArray'] = this.featuresItemArray;
-        components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
-        this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
-      }
-
-      this.builderComponentService.pageComponents.next(components);
     }
   }
 

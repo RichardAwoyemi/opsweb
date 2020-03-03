@@ -175,13 +175,10 @@ export class BuilderFeaturesService {
           i++;
         }
       }
-      const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
-      const message = {
+      return {
         'featuresItemArray': featuresItemArray,
         'featuresItemWidth': width,
-        'targetActiveComponent': targetActiveComponent
       };
-      window.postMessage({'for': 'opsonion', 'action': componentId + '-item', 'message': message}, '*');
     }
   }
 

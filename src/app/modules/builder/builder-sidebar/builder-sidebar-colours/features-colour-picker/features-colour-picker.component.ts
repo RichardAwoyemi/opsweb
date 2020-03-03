@@ -21,7 +21,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   featuresTemplate: string;
   featuresTheme: string;
   websiteChangeCount: number;
-  activeComponentId: string;
+  activeEditComponentId: string;
   activePageSetting: string;
 
   private featureStyleSubscription: Subscription;
@@ -32,7 +32,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   private featuresTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
-  private activeComponentIdSubscription: Subscription;
+  private activeEditComponentIdSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
 
@@ -45,9 +45,9 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
       if (response) {
-        this.activeComponentId = response;
+        this.activeEditComponentId = response;
       }
     });
 
@@ -123,33 +123,33 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     if (this.featuresTheme === ActiveThemes.Default) {
       this.resetToDefault();
     } else {
-      this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresTheme', this.featuresTheme);
+      this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresTheme', this.featuresTheme);
       this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
-      this.builderFeaturesService.setFeaturesTheme(this.featuresTheme, this.activeComponentId);
+      this.builderFeaturesService.setFeaturesTheme(this.featuresTheme, this.activeEditComponentId);
     }
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesStyle() {
-    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresStyle', this.featuresStyle);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingStyle() {
-    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingStyle() {
-    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetToDefault() {
-    this.builderComponentsService.setPageComponentById(this.activeComponentId, 'featuresTheme', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresTheme', ActiveThemes.Default);
     this.builderFeaturesService.featuresTheme.next(ActiveThemes.Default);
     this.featuresStyle['background-color'] = this.defaultFeaturesStyle['featuresStyle']['background-color'];
     this.featuresHeadingStyle['color'] = this.defaultFeaturesStyle['featuresHeadingStyle']['color'];
@@ -157,7 +157,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     this.setFeaturesStyle();
     this.setFeaturesHeadingStyle();
     this.setFeaturesSubheadingStyle();
-    this.builderFeaturesService.setFeaturesTheme(ActiveThemes.Default, this.activeComponentId);
+    this.builderFeaturesService.setFeaturesTheme(ActiveThemes.Default, this.activeEditComponentId);
   }
 
   ngOnDestroy() {
@@ -168,7 +168,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       this.defaultFeaturesStyleSubscription.unsubscribe();
     }
     this.websiteChangeCountSubscription.unsubscribe();
-    this.activeComponentIdSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
     this.featureStyleSubscription.unsubscribe();
     this.featureHeadingStyleSubscription.unsubscribe();
     this.featureSubheadingStyleSubscription.unsubscribe();

@@ -19,26 +19,23 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   defaultFeaturesStyle: any;
   featuresTemplate: string;
   featuresHeadingStyle: any;
-  featuresHeadingFontName = 'Avenir Next Medium';
+  featuresHeadingFontName: string;
   featuresHeadingFontSize: number;
   featuresHeadingFontUnit = 'px';
   featuresSubheadingStyle: any;
-  featuresSubheadingFontName = 'Avenir Next Medium';
+  featuresSubheadingFontName: string;
   featuresSubheadingFontSize: number;
   featuresSubheadingFontUnit = 'px';
   websiteChangeCount: number;
-  numberOfFeatures = 3;
+  numberOfFeatures: number;
   pageComponents: any;
-  activeComponentId: string;
   activeEditComponentId: string;
 
   private activeEditComponentIdSubscription: Subscription;
-  private featuresItemArraySubscription: Subscription;
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
   private featuresHeadingStyleSubscription: Subscription;
   private featuresSubheadingStyleSubscription: Subscription;
-  private featuresStyleSubscription: Subscription;
   private featuresTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
@@ -68,18 +65,6 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.featuresSubheadingStyleSubscription = this.builderFeaturesService.featuresSubheadingStyle.subscribe(response => {
       if (response) {
         this.featuresSubheadingStyle = response;
-      }
-    });
-
-    this.featuresStyleSubscription = this.builderFeaturesService.featuresStyle.subscribe(response => {
-      if (response) {
-        this.featuresStyle = response;
-      }
-    });
-
-    this.featuresItemArraySubscription = this.builderFeaturesService.featuresItemArray.subscribe(response => {
-      if (response) {
-        this.featuresItemArray = response;
       }
     });
 
@@ -157,18 +142,38 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
         this.pageComponents = response;
+        for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+          for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+            if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+              this.numberOfFeatures = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'].length;
+              this.featuresItemArray = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'];
+              this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
+            }
+          }
+        }
       }
     });
+  }
 
+  setPageComponentByKey(componentId, parentKey, childKey, value) {
+    const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(componentId);
+    const activePageIndex = targetComponentLocation['activePageIndex'];
+    const activeComponentIndex = targetComponentLocation['activeComponentIndex'];
+    this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][parentKey][childKey] = value;
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
 
   setNumberOfFeatures() {
-    this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, this.numberOfFeatures);
+    const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, this.numberOfFeatures);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
+    this.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetNumberOfFeatures() {
-    this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, 3);
+    const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, 3);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
+    this.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
@@ -261,7 +266,7 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     const timestamp = new Date().getTime();
     for (let i = 0; i < this.pageComponents['pages'].length; i++) {
       for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeComponentId) {
+        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
           this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
           this.pageComponents['pages'][i]['components'][j]['featuresStyle'] = this.featuresStyle;
           this.pageComponents['pages'][i]['components'][j]['featuresHeadingStyle'] = this.featuresHeadingStyle;
@@ -276,7 +281,6 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.setChanges();
     this.featuresHeadingStyleSubscription.unsubscribe();
     this.featuresSubheadingStyleSubscription.unsubscribe();
-    this.featuresStyleSubscription.unsubscribe();
     this.fontNamesSubscription.unsubscribe();
     this.fontUnitsSubscription.unsubscribe();
     this.featuresTemplateSubscription.unsubscribe();
