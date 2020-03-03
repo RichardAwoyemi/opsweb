@@ -6,9 +6,10 @@
           <img alt="logo-white" src="../../../../assets/img/logo-white.svg" style="height: 30px; width: 30px">
         </a>
         <div (blur)="removeLineBreaks($event); openRenameWebsiteModal($event);"
-             (keydown.enter)="openRenameWebsiteModal($event); $event.preventDefault()"
+             (keydown.enter)="openRenameWebsiteModal($event)"
              [attr.contenteditable]="true"
              [attr.spellcheck]="false"
+             *ngIf="websiteLoaded"
              id="builder-header-website-name"
              blockNonAlphanumericCharacters
              class="website-name" ngbPopover="Website Name" triggers="mouseenter:mouseleave">{{ websiteName }}</div>

@@ -6,6 +6,7 @@ export class BuilderActionsService {
   activeLibrarySelectedImage = new BehaviorSubject<string>(null);
   activeLibrarySelectedImageAlt = new BehaviorSubject<string>(null);
   activeLibrarySearchText = new BehaviorSubject<string>(null);
+  renameRenameWebsiteModalStatus = new BehaviorSubject<any>({'open': false});
 
   static togglePageModalErrorMessage(pageName: string, navbarMenuOptions: any): boolean {
     pageName = pageName.trim();

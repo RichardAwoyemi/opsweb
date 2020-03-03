@@ -10,6 +10,7 @@ import { IUser } from '../../../shared/models/user';
 import * as fromUser from '../../core/store/user/user.reducer';
 import { BuilderRenameWebsiteModalComponent } from '../builder-actions/builder-rename-website-modal/builder-rename-website-modal.component';
 import { WebsiteService } from '../../../shared/services/website.service';
+import { BuilderActionsService } from '../builder-actions/builder-actions.service';
 
 @Component({
   selector: 'app-builder-header',
@@ -18,14 +19,20 @@ import { WebsiteService } from '../../../shared/services/website.service';
 })
 export class BuilderHeaderComponent implements OnInit, OnDestroy {
   websiteName: string;
-  websiteNameSubscription: Subscription;
+  websiteLoaded = false;
   photoURL = '/assets/img/anonymous.jpg';
   user: IUser;
+  modalStatus = false;
+
+  websiteNameSubscription: Subscription;
+  websiteLoadedSubscription: Subscription;
+  modalStatusSubscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
     private authService: AuthService,
     private builderService: BuilderService,
+    private builderActionsService: BuilderActionsService,
     private websiteService: WebsiteService,
     private userStore: Store<fromUser.State>,
     public router: Router
@@ -44,6 +51,18 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
     this.websiteNameSubscription = this.websiteService.websiteName.subscribe((response => {
       if (response) {
         this.websiteName = response;
+      }
+    }));
+
+    this.websiteLoadedSubscription = this.websiteService.websiteLoaded.subscribe((response => {
+      if (response) {
+        this.websiteLoaded = response;
+      }
+    }));
+
+    this.modalStatusSubscription = this.builderActionsService.renameRenameWebsiteModalStatus.subscribe((response => {
+      if (response) {
+        this.modalStatus = response['open'];
       }
     }));
   }
@@ -68,11 +87,16 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
   }
 
   removeLineBreaks(event: any) {
+    event.preventDefault();
+    event.stopPropagation();
     BuilderService.removeLineBreaks(event);
   }
 
   openRenameWebsiteModal(event: any) {
-    if (this.websiteName !== event.target.innerHTML) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.websiteName !== event.target.innerHTML && !this.modalStatus) {
+      this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': true});
       const modal = this.modalService.open(BuilderRenameWebsiteModalComponent, {
         windowClass: 'modal-holder',
         centered: true
@@ -94,5 +118,7 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.websiteNameSubscription.unsubscribe();
+    this.websiteLoadedSubscription.unsubscribe();
+    this.modalStatusSubscription.unsubscribe();
   }
 }
