@@ -94,9 +94,9 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
-      if (featuresTemplateResponse) {
-        this.featuresTemplate = featuresTemplateResponse;
+    this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+      if (templateResponse) {
+        this.featuresTemplate = templateResponse['template'];
         this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = response;
@@ -169,50 +169,42 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     });
   }
 
-  setPageComponentByKey(componentId, parentKey, childKey, value) {
-    const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(componentId);
-    const activePageIndex = targetComponentLocation['activePageIndex'];
-    const activeComponentIndex = targetComponentLocation['activeComponentIndex'];
-    this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][parentKey][childKey] = value;
-    this.builderComponentsService.pageComponents.next(this.pageComponents);
-  }
-
   setNumberOfFeatures(value: number) {
     const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, value);
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
-    this.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
+    this.builderComponentsService.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetNumberOfFeatures() {
     const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, 3);
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
-    this.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
+    this.builderComponentsService.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFeaturesHeadingFontName() {
     this.featuresHeadingStyle['font-family'] = this.defaultFeaturesStyle['featuresHeadingStyle']['font-family'];
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    this.builderFeaturesService.setFeaturesHeadingStyle(this.activeEditComponentId);
   }
 
   resetFeaturesHeadingFontSize() {
     this.featuresHeadingStyle['font-size'] = this.defaultFeaturesStyle['featuresHeadingStyle']['font-size'];
     this.featuresHeadingFontUnit = 'px';
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    this.builderFeaturesService.setFeaturesHeadingStyle(this.activeEditComponentId);
   }
 
   onFeaturesHeadingFontNameChange() {
     this.featuresHeadingStyle['font-family'] = this.featuresHeadingFontName;
-    this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    this.builderFeaturesService.setFeaturesHeadingStyle(this.activeEditComponentId);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingFontSize() {
     this.featuresHeadingStyle['font-size'] = this.featuresHeadingFontSize + this.featuresHeadingFontUnit;
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -230,31 +222,34 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     }
 
     this.featuresHeadingStyle['font-size'] = this.featuresHeadingFontSize + this.featuresHeadingFontUnit;
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFeaturesSubheadingFontName() {
     this.featuresSubheadingStyle['font-family'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['font-family'];
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    this.builderFeaturesService.setFeaturesSubheadingStyle(this.activeEditComponentId);
   }
 
   resetFeaturesSubheadingFontSize() {
     this.featuresSubheadingStyle['font-size'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['font-size'];
     this.featuresSubheadingFontUnit = 'px';
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
   }
 
   onFeaturesSubheadingFontNameChange() {
     this.featuresSubheadingStyle['font-family'] = this.featuresSubheadingFontName;
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    this.builderFeaturesService.setFeaturesSubheadingStyle(this.activeEditComponentId);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingFontSize() {
     this.featuresSubheadingStyle['font-size'] = this.featuresSubheadingFontSize + this.featuresSubheadingFontUnit;
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
@@ -272,27 +267,13 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     }
 
     this.featuresSubheadingStyle['font-size'] = this.featuresSubheadingFontSize + this.featuresSubheadingFontUnit;
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
-  setChanges() {
-    const timestamp = new Date().getTime();
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-          this.pageComponents['pages'][i]['components'][j]['timestamp'] = timestamp;
-          this.pageComponents['pages'][i]['components'][j]['featuresStyle'] = this.featuresStyle;
-          this.pageComponents['pages'][i]['components'][j]['featuresHeadingStyle'] = this.featuresHeadingStyle;
-          this.pageComponents['pages'][i]['components'][j]['featuresSubheadingStyle'] = this.featuresSubheadingStyle;
-        }
-      }
-    }
-    this.builderComponentsService.pageComponents.next(this.pageComponents);
-  }
 
   ngOnDestroy() {
-    this.setChanges();
     this.featuresHeadingStyleSubscription.unsubscribe();
     this.featuresSubheadingStyleSubscription.unsubscribe();
     this.fontNamesSubscription.unsubscribe();

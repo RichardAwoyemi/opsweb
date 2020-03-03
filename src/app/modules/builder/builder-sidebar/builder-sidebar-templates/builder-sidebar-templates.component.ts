@@ -14,6 +14,7 @@ import { BuilderHeroService } from '../../builder-components/builder-hero/builde
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
 import { WebsiteService } from '../../../../shared/services/website.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -44,7 +45,8 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
     private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService,
     private builderFeaturesService: BuilderFeaturesService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastrService: ToastrService
   ) {
   }
 
@@ -109,6 +111,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
           this.builderHeroService.setComponentTemplate(templateId);
           this.builderFooterService.setComponentTemplate(templateId);
           this.builderFeaturesService.setComponentTemplate(templateId);
+          this.toastrService.success('Your template has been updated.', 'Great!');
         }
       }
     });

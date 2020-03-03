@@ -146,6 +146,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
         this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
+            this.builderNavbarService.navbarTemplate.next(this.pageComponents['template']);
             this.componentId = this.elementRef.nativeElement['id'];
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               const pageName = this.pageComponents['pages'][i]['name'];
@@ -162,7 +163,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
                     this.builderNavbarService.navbarLogoImage.next(this.componentDetail['navbarLogoImage']);
                     this.builderNavbarService.navbarMenuOptions.next(this.componentDetail['navbarMenuOptions']);
                     this.builderNavbarService.navbarTheme.next(this.componentDetail['navbarTheme']);
-                    this.builderNavbarService.navbarTemplate.next(this.componentDetail['navbarTemplate']);
                   }
                 }
               }

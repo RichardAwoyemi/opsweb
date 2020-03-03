@@ -89,9 +89,9 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(featuresTemplateResponse => {
-      if (featuresTemplateResponse) {
-        this.featuresTemplate = featuresTemplateResponse;
+    this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+      if (templateResponse) {
+        this.featuresTemplate = templateResponse['template'];
         this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = response;
@@ -124,7 +124,6 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
       this.resetToDefault();
     } else {
       this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresTheme', this.featuresTheme);
-      this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
       this.builderFeaturesService.setFeaturesTheme(this.featuresTheme, this.activeEditComponentId);
     }
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
@@ -132,19 +131,16 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
 
   setFeaturesStyle() {
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresStyle', this.featuresStyle);
-    this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesHeadingStyle() {
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
-    this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   setFeaturesSubheadingStyle() {
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
-    this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
@@ -157,7 +153,6 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     this.setFeaturesStyle();
     this.setFeaturesHeadingStyle();
     this.setFeaturesSubheadingStyle();
-    this.builderFeaturesService.setFeaturesTheme(ActiveThemes.Default, this.activeEditComponentId);
   }
 
   ngOnDestroy() {

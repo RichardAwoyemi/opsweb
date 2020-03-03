@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../builder';
 import { UtilService } from '../../../shared/services/util.service';
+import { SessionStorageService } from '../../../shared/services/session-storage.service';
 
 @Injectable()
 export class BuilderComponentsService {
+  activeComponentIndex = new BehaviorSubject<number>(0);
+
   pageComponents = new BehaviorSubject<any>(null);
   defaultPageComponents = new BehaviorSubject<any>({
     'template': ActiveTemplates.Default,
@@ -57,8 +60,7 @@ export class BuilderComponentsService {
             'navbarLogoText': 'Logo',
             'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
-            'navbarTheme': ActiveThemes.Default,
-            'navbarTemplate': ActiveTemplates.Default,
+            'navbarTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 2,
@@ -71,7 +73,6 @@ export class BuilderComponentsService {
             'componentId': `${ActiveComponents.Hero}-${UtilService.generateRandomString(8)}`,
             'componentName': ActiveComponentsPartialSelector.Hero,
             'heroTheme': ActiveThemes.Default,
-            'heroTemplate': ActiveTemplates.Default,
             'timestamp': new Date().getTime(),
             'heroButtonLink': 'About',
             'heroBackgroundStyle': {
@@ -175,7 +176,6 @@ export class BuilderComponentsService {
               }
             ],
             'featuresTheme': ActiveThemes.Default,
-            'featuresTemplate': ActiveTemplates.Default
           },
           {
             'componentIndex': 6,
@@ -230,8 +230,7 @@ export class BuilderComponentsService {
                 'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
-            'featuresTheme': ActiveThemes.Default,
-            'featuresTemplate': ActiveTemplates.Default
+            'featuresTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 8,
@@ -244,7 +243,6 @@ export class BuilderComponentsService {
             'componentId': `${ActiveComponents.Footer}-${UtilService.generateRandomString(8)}`,
             'componentName': ActiveComponentsPartialSelector.Footer,
             'footerTheme': ActiveThemes.Default,
-            'footerTemplate': ActiveTemplates.Default,
             'timestamp': new Date().getTime(),
             'footerStyle': {
               'color': '#757575',
@@ -353,7 +351,6 @@ export class BuilderComponentsService {
             'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
             'navbarTheme': ActiveThemes.Default,
-            'navbarTemplate': ActiveTemplates.Default,
           },
           {
             'componentIndex': 2,
@@ -365,7 +362,6 @@ export class BuilderComponentsService {
             'componentIndex': 3,
             'componentId': `${ActiveComponents.Footer}-${UtilService.generateRandomString(8)}`,
             'footerTheme': ActiveThemes.Default,
-            'footerTemplate': ActiveTemplates.Default,
             'componentName': ActiveComponentsPartialSelector.Footer,
             'timestamp': new Date().getTime(),
             'footerStyle': {
@@ -487,8 +483,7 @@ export class BuilderComponentsService {
             'navbarLogoText': 'Logo',
             'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
-            'navbarTheme': ActiveThemes.Default,
-            'navbarTemplate': ActiveTemplates.Front
+            'navbarTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 2,
@@ -501,7 +496,6 @@ export class BuilderComponentsService {
             'componentId': `${ActiveComponents.Hero}-${UtilService.generateRandomString(8)}`,
             'componentName': ActiveComponentsPartialSelector.Hero,
             'heroTheme': ActiveThemes.Default,
-            'heroTemplate': ActiveTemplates.Front,
             'timestamp': new Date().getTime(),
             'heroButtonLink': 'About',
             'heroBackgroundStyle': {
@@ -599,8 +593,7 @@ export class BuilderComponentsService {
                 'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
-            'featuresTheme': ActiveThemes.Default,
-            'featuresTemplate': ActiveTemplates.Front
+            'featuresTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 6,
@@ -655,8 +648,7 @@ export class BuilderComponentsService {
                 'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
-            'featuresTheme': ActiveThemes.Default,
-            'featuresTemplate': ActiveTemplates.Default
+            'featuresTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 8,
@@ -717,8 +709,7 @@ export class BuilderComponentsService {
               'githubUrl': null,
               'linkedinUrl': null,
             },
-            'footerTheme': ActiveThemes.Default,
-            'footerTemplate': ActiveTemplates.Front
+            'footerTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 10,
@@ -785,8 +776,7 @@ export class BuilderComponentsService {
             'navbarLogoText': 'Logo',
             'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
-            'navbarTheme': ActiveThemes.Default,
-            'navbarTemplate': ActiveTemplates.Front,
+            'navbarTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 2,
@@ -847,8 +837,7 @@ export class BuilderComponentsService {
               'githubUrl': null,
               'linkedinUrl': null,
             },
-            'footerTheme': ActiveThemes.Default,
-            'footerTemplate': ActiveTemplates.Front
+            'footerTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 4,
@@ -1294,7 +1283,10 @@ export class BuilderComponentsService {
     ]
   });
 
-  activeComponentIndex = new BehaviorSubject<number>(0);
+  constructor(
+    private sessionStorageService: SessionStorageService
+  ) {
+  }
 
   static getComponentCleanName(componentSelectorName) {
     switch (componentSelectorName['componentName']) {
@@ -1351,6 +1343,117 @@ export class BuilderComponentsService {
     return componentsArrayWithPlaceholders;
   }
 
+  static getUnorderedComponentsArrayWithoutPlaceholders(e: any) {
+    const tempUnorderedComponentsArrayWithoutPlaceholders = [];
+    for (let i = 0; i < e.target.children.length; i++) {
+      const componentName = e.target.children[i].children[0].children[0].localName;
+      const componentId = e.target.children[i].children[0].children[0].id;
+      const component = {
+        componentName: componentName,
+        componentId: componentId,
+        componentIndex: null
+      };
+      if (component['componentName'] !== ActiveComponentsPartialSelector.Placeholder) {
+        tempUnorderedComponentsArrayWithoutPlaceholders.push(component);
+      }
+    }
+    return tempUnorderedComponentsArrayWithoutPlaceholders;
+  }
+
+  static getOrderedComponentsArrayWithPlaceholders(tempUnorderedComponentsArrayWithoutPlaceholders) {
+    const tempUnorderedComponentsArrayWithPlaceholders = tempUnorderedComponentsArrayWithoutPlaceholders.reduce((r, a) => r.concat(a,
+      {
+        componentName: ActiveComponentsPartialSelector.Placeholder,
+        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+        componentIndex: null,
+        timestamp: new Date().getTime()
+      }),
+
+      [{
+        componentName: ActiveComponentsPartialSelector.Placeholder,
+        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+        componentIndex: null,
+        timestamp: new Date().getTime()
+      }]
+    );
+
+    const tempOrderedComponentsArrayWithPlaceholders = [];
+    for (let i = 0; i < tempUnorderedComponentsArrayWithPlaceholders.length; i++) {
+      const component = {
+        componentName: tempUnorderedComponentsArrayWithPlaceholders[i]['componentName'],
+        componentId: tempUnorderedComponentsArrayWithPlaceholders[i]['componentId'],
+        componentIndex: i,
+        timestamp: new Date().getTime()
+      };
+      tempOrderedComponentsArrayWithPlaceholders.push(component);
+    }
+    return tempOrderedComponentsArrayWithPlaceholders;
+  }
+
+  static setupFeaturesComponent(component, tempComponent) {
+    if (tempComponent) {
+      component['featuresStyle'] = tempComponent['componentDetail']['featuresStyle'];
+      component['featuresHeadingStyle'] = tempComponent['componentDetail']['featuresHeadingStyle'];
+      component['featuresSubheadingStyle'] = tempComponent['componentDetail']['featuresSubheadingStyle'];
+    }
+    component['featuresItemArray'] = [
+      {
+        'heading': UtilService.generateRandomWord(),
+        'subheading': 'Building a website has never been easier than this! Get started today, free of cost.'
+      },
+      {
+        'heading': UtilService.generateRandomWord(),
+        'subheading': 'Make our amazing library of templates and themes your own with our extensive range of custom options.'
+      },
+      {
+        'heading': UtilService.generateRandomWord(),
+        'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
+      }
+    ];
+    return component;
+  }
+
+  static setupComponent(componentToAdd) {
+    return {
+      'componentIndex': componentToAdd['componentIndex'],
+      'componentId': componentToAdd['componentId'],
+      'componentName': componentToAdd['componentName'],
+      'timestamp': componentToAdd['timestamp']
+    };
+  }
+
+  static getActivePageIndex(pageComponents, componentToAdd) {
+    let activePageIndex = null;
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
+        if (pageComponents['pages'][i]['components'][j]['componentId'] === componentToAdd['nearestComponentId']) {
+          activePageIndex = i;
+        }
+      }
+    }
+    return activePageIndex;
+  }
+
+  static getActiveComponentIndex(pageComponents, componentToAdd) {
+    let activeComponentIndex = null;
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
+        if (pageComponents['pages'][i]['components'][j]['componentId'] === componentToAdd['nearestComponentId']) {
+          activeComponentIndex = j;
+        }
+      }
+    }
+    return activeComponentIndex;
+  }
+
+  addComponentsToSessionStorage(pageComponents, activePage) {
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      if (pageComponents['pages'][i]['name'] === activePage) {
+        this.sessionStorageService.setItem('components', JSON.stringify(pageComponents['pages'][i]['components']));
+      }
+    }
+  }
+
   getActiveTargetComponentById(componentId: string) {
     let activePageIndex = null;
     let activeComponentIndex = null;
@@ -1388,20 +1491,35 @@ export class BuilderComponentsService {
   setPageComponentsByName(component, key, value) {
     const targetComponentLocation = this.getTargetComponentByName(component);
     const pageComponents = this.pageComponents.getValue();
+    const timestamp = new Date().getTime();
     for (let i = 0; i < targetComponentLocation.length; i++) {
       const activePageIndex = targetComponentLocation[i]['activePageIndex'];
       const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
       pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key] = value;
+      pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
     }
     this.pageComponents.next(pageComponents);
   }
 
-  setPageComponentById(component, key, value) {
-    const targetComponentLocation = this.getActiveTargetComponentById(component);
+  setPageComponentByKey(componentId, parentKey, childKey, value) {
+    const targetComponentLocation = this.getActiveTargetComponentById(componentId);
     const pageComponents = this.pageComponents.getValue();
     const activePageIndex = targetComponentLocation['activePageIndex'];
     const activeComponentIndex = targetComponentLocation['activeComponentIndex'];
+    const timestamp = new Date().getTime();
+    pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][parentKey][childKey] = value;
+    pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
+    this.pageComponents.next(pageComponents);
+  }
+
+  setPageComponentById(componentId, key, value) {
+    const targetComponentLocation = this.getActiveTargetComponentById(componentId);
+    const pageComponents = this.pageComponents.getValue();
+    const activePageIndex = targetComponentLocation['activePageIndex'];
+    const activeComponentIndex = targetComponentLocation['activeComponentIndex'];
+    const timestamp = new Date().getTime();
     pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key] = value;
+    pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
     this.pageComponents.next(pageComponents);
   }
 
@@ -1436,38 +1554,24 @@ export class BuilderComponentsService {
 
   addNavbarComponent(component, activePageIndex) {
     const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
-    component['navbarTemplate'] = pageComponents['template'];
     component['navbarTheme'] = ActiveThemes.Default;
     if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Navbar)) {
+      console.log(pageComponents);
     }
   }
 
   addHeroComponent(component, activePageIndex) {
     const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
-    component['heroTemplate'] = pageComponents['template'];
     component['heroTheme'] = ActiveThemes.Default;
     if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Hero)) {
+      console.log(pageComponents);
     }
   }
 
   addFeaturesComponent(component, activePageIndex) {
     let pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
-    component['featuresTemplate'] = this.pageComponents.getValue()['template'];
     component['featuresTheme'] = ActiveThemes.Default;
-    component['featuresItemArray'] = [
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Building a website has never been easier than this! Get started today, free of cost.'
-      },
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Make our amazing library of templates and themes your own with our extensive range of custom options.'
-      },
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
-      }
-    ];
+    component = BuilderComponentsService.setupFeaturesComponent(component, null);
 
     const pageComponentsToAddWithoutPlaceholders = BuilderComponentsService.removePlaceholders(pageComponents['components']);
     pageComponentsToAddWithoutPlaceholders.splice(pageComponentsToAddWithoutPlaceholders.length - 1, 0, component);
@@ -1475,15 +1579,15 @@ export class BuilderComponentsService {
 
     pageComponents = this.pageComponents.getValue();
     pageComponents['pages'][activePageIndex]['components'] = pageComponentsToAddWithPlaceholders;
-
+    console.log(pageComponents);
     this.pageComponents.next(pageComponents);
   }
 
   addFooterComponent(component, activePageIndex) {
     const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
-    component['footerTemplate'] = pageComponents['template'];
     component['footerTheme'] = ActiveThemes.Default;
     if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Footer)) {
+      console.log(pageComponents);
     }
   }
 }

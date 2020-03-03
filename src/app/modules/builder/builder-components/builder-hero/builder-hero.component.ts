@@ -181,6 +181,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
         this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
+            this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
             if (this.elementRef.nativeElement['id']) {
               this.componentId = this.elementRef.nativeElement['id'];
               for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -197,6 +198,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       this.builderHeroService.heroImageUrl.next(this.componentDetail['heroImageStyle']['src']);
                       this.builderHeroService.heroImageAlt.next(this.componentDetail['heroImageStyle']['alt']);
                       this.builderHeroService.heroComponentLayout.next(this.componentDetail['heroComponentLayout']);
+                      this.builderHeroService.heroTheme.next(this.componentDetail['heroTheme']);
                     }
                   }
                 }

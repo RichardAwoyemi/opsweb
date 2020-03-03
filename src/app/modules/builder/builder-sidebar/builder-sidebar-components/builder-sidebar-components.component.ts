@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderFeaturesService } from '../../builder-components/builder-features/builder-features.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,15 +38,20 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   defaultFeaturesStyle: any;
   featuresTemplate: any;
 
+  defaultFooterStyle: any;
+  footerTemplate: any;
+
   private activeEditComponentSubscription: Subscription;
   private featuresTemplateSubscription: Subscription;
   // private navbarTemplateSubscription: Subscription;
-  // private footerTemplateSubscription: Subscription;
+  private footerTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
+  private defaultFooterStyleSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
     private builderFeaturesService: BuilderFeaturesService,
+    private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService
   ) {
   }
@@ -66,6 +72,34 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
               'featuresStyle': response['featuresStyle'],
               'featuresHeadingStyle': response['featuresHeadingStyle'],
               'featuresSubheadingStyle': response['featuresSubheadingStyle'],
+            };
+          }
+        });
+      } else {
+        this.featuresTemplate = ActiveTemplates.Default;
+        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
+          if (response) {
+            this.defaultFeaturesStyle = {
+              'featuresStyle': response['featuresStyle'],
+              'featuresHeadingStyle': response['featuresHeadingStyle'],
+              'featuresSubheadingStyle': response['featuresSubheadingStyle'],
+            };
+          }
+        });
+      }
+    });
+
+    this.footerTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
+      if (pageComponentsResponse) {
+        this.footerTemplate = pageComponentsResponse['template'];
+        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
+          if (response) {
+            this.defaultFooterStyle = {
+              'footerStyle': response['footerStyle'],
+              'footerSocialLinksContainerStyle': response['footerSocialLinksContainerStyle'],
+              'footerSocialLinksStyle': response['footerSocialLinksStyle'],
+              'footerPageLinksStyle': response['footerPageLinksStyle'],
+              'footerCopyrightStyle': response['footerCopyrightStyle'],
             };
           }
         });
@@ -112,8 +146,9 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
       case ActiveComponentsPartialSelector.Footer:
         component = {
           'componentIndex': null,
-          'componentId': `${ActiveComponents.Features}-${UtilService.generateRandomString(8)}`,
+          'componentId': `${ActiveComponents.Footer}-${UtilService.generateRandomString(8)}`,
           'componentName': ActiveComponentsPartialSelector.Footer,
+          'componentDetail': this.defaultFooterStyle,
           'timestamp': new Date().getTime()
         };
         break;
@@ -140,11 +175,6 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     this.builderComponentsService.addComponent(componentToAdd, activePageIndex);
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.featuresTemplateSubscription.unsubscribe();
-    this.defaultFeaturesStyleSubscription.unsubscribe();
-  }
 
   onComponentSelect(component: any) {
     window.postMessage({
@@ -152,5 +182,12 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
       'action': 'component-selected',
       'message': component
     }, '*');
+  }
+
+  ngOnDestroy() {
+    this.activeEditComponentSubscription.unsubscribe();
+    this.featuresTemplateSubscription.unsubscribe();
+    this.defaultFeaturesStyleSubscription.unsubscribe();
+    this.defaultFooterStyleSubscription.unsubscribe();
   }
 }

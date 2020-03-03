@@ -232,6 +232,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
         this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
+            this.builderFooterService.footerTemplate.next(this.pageComponents['template']);
             if (this.elementRef.nativeElement['id']) {
               this.componentId = this.elementRef.nativeElement['id'];
               for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -253,6 +254,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
                       this.builderFooterService.youtubeUrl.next(this.componentDetail['footerSocialLinks']['youtubeUrl']);
                       this.builderFooterService.githubUrl.next(this.componentDetail['footerSocialLinks']['githubUrl']);
                       this.builderFooterService.linkedinUrl.next(this.componentDetail['footerSocialLinks']['linkedinUrl']);
+                      this.builderFooterService.footerTheme.next(this.componentDetail['footerTheme']);
                     }
                   }
                 }

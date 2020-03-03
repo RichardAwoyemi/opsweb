@@ -109,6 +109,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
         this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
+            this.featuresTemplate = this.pageComponents['template'];
             this.componentId = this.elementRef.nativeElement['id'];
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               const pageName = this.pageComponents['pages'][i]['name'];
@@ -121,7 +122,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
                     this.featuresSubheadingStyle = this.componentDetail['featuresSubheadingStyle'];
                     this.featuresItemArray = this.componentDetail['featuresItemArray'];
                     this.featuresTheme = this.componentDetail['featuresTheme'];
-                    this.featuresTemplate = this.componentDetail['featuresTemplate'];
                     this.componentIndex = this.componentDetail['componentIndex'];
                   }
                 }
@@ -234,64 +234,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       if (e.data.action === 'element-selected') {
         this.builderService.activeElement.next(e.data.message);
       }
-
-      if (e.data.action.indexOf(this.componentId) > -1) {
-        if (e.data.action.indexOf('theme') > -1) {
-          this.setFeaturesThemeStyle(e.data.message);
-        }
-        if (e.data.action.indexOf('style') > -1) {
-          this.setFeaturesStyle(e.data.message);
-        }
-      }
     }
-  }
-
-  setFeaturesStyle(style: any) {
-    const components = this.builderComponentService.pageComponents.getValue();
-    const activePageIndex = style['targetActiveComponent']['activePageIndex'];
-    const activeComponentIndex = style['targetActiveComponent']['activeComponentIndex'];
-    const timestamp = new Date().getTime();
-
-    if (style['featuresStyle']) {
-      const previousWidth = this.featuresStyle['width'];
-      this.featuresStyle = style['featuresStyle'];
-      this.featuresStyle['width'] = previousWidth;
-      components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresStyle'] = this.featuresStyle;
-      components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
-      this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
-    }
-
-    if (style['featuresHeadingStyle']) {
-      this.featuresHeadingStyle = style['featuresHeadingStyle'];
-      components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresHeadingStyle'] = this.featuresHeadingStyle;
-      components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
-      this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    }
-
-    if (style['featuresSubheadingStyle']) {
-      this.featuresSubheadingStyle = style['featuresSubheadingStyle'];
-      components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresSubheadingStyle'] = this.featuresSubheadingStyle;
-      components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
-      this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    }
-  }
-
-  setFeaturesThemeStyle(theme: any) {
-    const components = this.builderComponentService.pageComponents.getValue();
-    const activePageIndex = theme['targetActiveComponent']['activePageIndex'];
-    const activeComponentIndex = theme['targetActiveComponent']['activeComponentIndex'];
-    const timestamp = new Date().getTime();
-
-    components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresStyle'] = theme['featuresStyle'];
-    components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresHeadingStyle'] = theme['featuresHeadingStyle'];
-    components['pages'][activePageIndex]['components'][activeComponentIndex]['featuresSubheadingStyle'] = theme['featuresSubheadingStyle'];
-    components['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
-
-    this.featuresStyle = theme['featuresStyle'];
-    this.featuresHeadingStyle = theme['featuresHeadingStyle'];
-    this.featuresSubheadingStyle = theme['featuresSubheadingStyle'];
-
-    this.builderComponentService.pageComponents.next(components);
   }
 
   setFeaturesOuterStyle() {

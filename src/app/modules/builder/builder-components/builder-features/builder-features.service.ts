@@ -91,44 +91,37 @@ export class BuilderFeaturesService {
     this.featuresHeadingStyle.next(template['featuresHeadingStyle']);
     this.featuresSubheadingStyle.next(template['featuresSubheadingStyle']);
     this.featuresStyle.next(template['featuresStyle']);
-
-    const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
-        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Features) {
-          pageComponents['pages'][i]['components'][j]['featuresHeadingStyle'] = template['featuresHeadingStyle'];
-          pageComponents['pages'][i]['components'][j]['featuresSubheadingStyle'] = template['featuresSubheadingStyle'];
-          pageComponents['pages'][i]['components'][j]['featuresStyle'] = template['featuresStyle'];
-        }
+    if (template) {
+      if (template['featuresHeadingStyle']) {
+        const featuresHeadingStyle = {...this.featuresHeadingStyle.getValue(), ...template['featuresHeadingStyle']};
+        this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresHeadingStyle', featuresHeadingStyle);
+      }
+      if (template['featuresSubheadingStyle']) {
+        const featuresSubheadingStyle = {...this.featuresSubheadingStyle.getValue(), ...template['featuresSubheadingStyle']};
+        this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresSubheadingStyle', featuresSubheadingStyle);
+      }
+      if (template['featuresStyle']) {
+        const featuresStyle = {...this.featuresStyle.getValue(), ...template['featuresStyle']};
+        this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresStyle', featuresStyle);
       }
     }
-    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   setFeaturesThemeStyle(theme: any, componentId: string) {
-    const action = `${componentId}-theme`;
     if (theme) {
       if (theme['featuresHeadingStyle']) {
         const featuresHeadingStyle = {...this.featuresHeadingStyle.getValue(), ...theme['featuresHeadingStyle']};
-        this.featuresHeadingStyle.next(featuresHeadingStyle);
+        this.builderComponentsService.setPageComponentById(componentId, 'featuresHeadingStyle', featuresHeadingStyle);
       }
       if (theme['featuresSubheadingStyle']) {
         const featuresSubheadingStyle = {...this.featuresSubheadingStyle.getValue(), ...theme['featuresSubheadingStyle']};
-        this.featuresSubheadingStyle.next(featuresSubheadingStyle);
+        this.builderComponentsService.setPageComponentById(componentId, 'featuresSubheadingStyle', featuresSubheadingStyle);
       }
       if (theme['featuresStyle']) {
         const featuresStyle = {...this.featuresStyle.getValue(), ...theme['featuresStyle']};
-        this.featuresStyle.next(featuresStyle);
+        this.builderComponentsService.setPageComponentById(componentId, 'featuresStyle', featuresStyle);
       }
-
-      const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
-      const message = {
-        'featuresStyle': this.featuresStyle.getValue(),
-        'featuresHeadingStyle': this.featuresHeadingStyle.getValue(),
-        'featuresSubheadingStyle': this.featuresSubheadingStyle.getValue(),
-        'targetActiveComponent': targetActiveComponent
-      };
-      window.postMessage({'for': 'opsonion', 'action': action, 'message': message}, '*');
+      this.builderComponentsService.setPageComponentById(componentId, 'featuresTheme', theme['name']);
       this.featuresTheme.next(theme['name']);
     }
   }
@@ -186,25 +179,5 @@ export class BuilderFeaturesService {
     this.featuresTheme.next(ActiveThemes.Default);
     this.featuresTemplate.next(templateId);
     this.setFeaturesTemplate(templateId);
-  }
-
-  setFeaturesHeadingStyle(componentId: string) {
-    const action = `${componentId}-style`;
-    const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
-    const message = {
-      'featuresHeadingStyle': this.featuresHeadingStyle.getValue(),
-      'targetActiveComponent': targetActiveComponent
-    };
-    window.postMessage({'for': 'opsonion', 'action': action, 'message': message}, '*');
-  }
-
-  setFeaturesSubheadingStyle(componentId: string) {
-    const action = `${componentId}-style`;
-    const targetActiveComponent = this.builderComponentsService.getActiveTargetComponentById(componentId);
-    const message = {
-      'featuresSubheadingStyle': this.featuresSubheadingStyle.getValue(),
-      'targetActiveComponent': targetActiveComponent,
-    };
-    window.postMessage({'for': 'opsonion', 'action': action, 'message': message}, '*');
   }
 }

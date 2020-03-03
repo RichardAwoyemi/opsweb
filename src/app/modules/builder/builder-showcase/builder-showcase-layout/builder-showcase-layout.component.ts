@@ -7,7 +7,6 @@ import { SortablejsOptions } from 'ngx-sortablejs';
 import { BuilderService } from '../../builder.service';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UtilService } from '../../../../shared/services/util.service';
 import { SessionStorageService } from '../../../../shared/services/session-storage.service';
 import { WebsiteService } from '../../../../shared/services/website.service';
 
@@ -36,57 +35,10 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     private websiteService: WebsiteService,
     private builderService: BuilderService
   ) {
-    function getUnorderedComponentsArrayWithoutPlaceholders(e: any) {
-      const tempUnorderedComponentsArrayWithoutPlaceholders = [];
-      for (let i = 0; i < e.target.children.length; i++) {
-        const componentName = e.target.children[i].children[0].children[0].localName;
-        const componentId = e.target.children[i].children[0].children[0].id;
-        const component = {
-          componentName: componentName,
-          componentId: componentId,
-          componentIndex: null
-        };
-        if (component['componentName'] !== ActiveComponentsPartialSelector.Placeholder) {
-          tempUnorderedComponentsArrayWithoutPlaceholders.push(component);
-        }
-      }
-      return tempUnorderedComponentsArrayWithoutPlaceholders;
-    }
-
-    function getOrderedComponentsArrayWithPlaceholders(tempUnorderedComponentsArrayWithoutPlaceholders) {
-      const tempUnorderedComponentsArrayWithPlaceholders = tempUnorderedComponentsArrayWithoutPlaceholders.reduce((r, a) => r.concat(a,
-        {
-          componentName: ActiveComponentsPartialSelector.Placeholder,
-          componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
-          componentIndex: null,
-          timestamp: new Date().getTime()
-        }),
-
-        [{
-          componentName: ActiveComponentsPartialSelector.Placeholder,
-          componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
-          componentIndex: null,
-          timestamp: new Date().getTime()
-        }]
-      );
-
-      const tempOrderedComponentsArrayWithPlaceholders = [];
-      for (let i = 0; i < tempUnorderedComponentsArrayWithPlaceholders.length; i++) {
-        const component = {
-          componentName: tempUnorderedComponentsArrayWithPlaceholders[i]['componentName'],
-          componentId: tempUnorderedComponentsArrayWithPlaceholders[i]['componentId'],
-          componentIndex: i,
-          timestamp: new Date().getTime()
-        };
-        tempOrderedComponentsArrayWithPlaceholders.push(component);
-      }
-      return tempOrderedComponentsArrayWithPlaceholders;
-    }
-
     this.options = {
       onUpdate: function (e: any) {
-        const tempUnorderedComponentsArrayWithoutPlaceholders = getUnorderedComponentsArrayWithoutPlaceholders(e);
-        const tempOrderedComponentsArrayWithPlaceholders = getOrderedComponentsArrayWithPlaceholders(tempUnorderedComponentsArrayWithoutPlaceholders);
+        const tempUnorderedComponentsArrayWithoutPlaceholders = BuilderComponentsService.getUnorderedComponentsArrayWithoutPlaceholders(e);
+        const tempOrderedComponentsArrayWithPlaceholders = BuilderComponentsService.getOrderedComponentsArrayWithPlaceholders(tempUnorderedComponentsArrayWithoutPlaceholders);
         window.postMessage({
           'for': 'opsonion',
           'action': 'recycle-showcase',
@@ -94,27 +46,6 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
         }, '*');
       }
     };
-  }
-
-  static addFeaturesComponent(component, componentToAdd) {
-    component['featuresStyle'] = componentToAdd['componentDetail']['featuresStyle'];
-    component['featuresHeadingStyle'] = componentToAdd['componentDetail']['featuresHeadingStyle'];
-    component['featuresSubheadingStyle'] = componentToAdd['componentDetail']['featuresSubheadingStyle'];
-    component['featuresItemArray'] = [
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Building a website has never been easier than this! Get started today, free of cost.'
-      },
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Make our amazing library of templates and themes your own with our extensive range of custom options.'
-      },
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
-      }
-    ];
-    return component;
   }
 
   ngOnInit() {
@@ -125,11 +56,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
           if (response) {
             this.pageComponents = response;
             this.setPageComponents();
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              if (this.pageComponents['pages'][i]['name'] === this.activePage) {
-                this.sessionStorageService.setItem('components', JSON.stringify(response['pages'][i]['components']));
-              }
-            }
+            this.builderComponentService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
           }
         }));
       }
@@ -168,57 +95,17 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.builderComponentService.activeComponentIndex.next(componentIndex);
   }
 
-  addComponent(componentToAdd) {
-    let activePageIndex = null;
-    let activeComponentIndex = null;
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === componentToAdd['nearestComponentId']) {
-          activePageIndex = i;
-          activeComponentIndex = j;
-        }
-      }
-    }
-
-    if (componentToAdd['componentDetail']) {
-      let component = {
-        'componentIndex': componentToAdd['componentIndex'],
-        'componentId': componentToAdd['componentId'],
-        'componentName': componentToAdd['componentName'],
-        'timestamp': componentToAdd['timestamp']
-      };
+  addComponent(tempComponent) {
+    const activePageIndex = BuilderComponentsService.getActivePageIndex(this.pageComponents, tempComponent);
+    const activeComponentIndex = BuilderComponentsService.getActiveComponentIndex(this.pageComponents, tempComponent);
+    if (tempComponent['componentDetail']) {
+      let component = BuilderComponentsService.setupComponent(tempComponent);
       if (component['componentName'] === ActiveComponentsPartialSelector.Features) {
-        component = BuilderShowcaseLayoutComponent.addFeaturesComponent(component, componentToAdd);
+        component = BuilderComponentsService.setupFeaturesComponent(component, tempComponent);
       }
       this.pageComponents['pages'][activePageIndex]['components'].splice(activeComponentIndex, 0, component);
-
-      const componentsArrayWithoutPlaceholders = [];
-      for (let i = 0; i < this.pageComponents['pages'][activePageIndex]['components'].length; i++) {
-        if (this.pageComponents['pages'][activePageIndex]['components'][i]['componentName'] !== ActiveComponentsPartialSelector.Placeholder) {
-          componentsArrayWithoutPlaceholders.push(this.pageComponents['pages'][activePageIndex]['components'][i]);
-        }
-      }
-
-      const componentsArrayWithPlaceholders = componentsArrayWithoutPlaceholders.reduce((r, a) => r.concat(a,
-        {
-          componentIndex: null,
-          componentName: ActiveComponentsPartialSelector.Placeholder,
-          componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
-          timestamp: new Date().getTime()
-        }),
-
-        [{
-          componentIndex: null,
-          componentName: ActiveComponentsPartialSelector.Placeholder,
-          componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
-          timestamp: new Date().getTime()
-        }]
-      );
-      for (let i = 0; i < componentsArrayWithPlaceholders.length; i++) {
-        componentsArrayWithPlaceholders[i]['componentIndex'] = i;
-      }
-
-      this.pageComponents['pages'][activePageIndex]['components'] = componentsArrayWithPlaceholders;
+      const componentsArrayWithoutPlaceholders = BuilderComponentsService.removePlaceholders(this.pageComponents['pages'][activePageIndex]['components']);
+      this.pageComponents['pages'][activePageIndex]['components'] = BuilderComponentsService.addPlaceholders(componentsArrayWithoutPlaceholders);
       this.builderComponentService.pageComponents.next(this.pageComponents);
       this.sessionStorageService.setItem('components', JSON.stringify(this.pageComponents));
     }
@@ -260,17 +147,19 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   @HostListener('window:message', ['$event'])
   onMessage(e) {
     if (e.data.for === 'opsonion') {
-      if (e.data.action === 'component-added') {
-        this.addComponent(e.data.message);
-      }
-      if (e.data.action === 'recycle-showcase') {
-        this.recycleShowcase(e.data.data);
-      }
-      if (e.data.action === 'component-exists') {
-        this.simpleModalService.displayMessage('Oops!', 'This component cannot be added twice to a single page.');
-      }
-      if (e.data.action === 'delete-component') {
-        this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
+      switch (e.data.action) {
+        case 'component-added':
+          this.addComponent(e.data.message);
+          break;
+        case 'recycle-showcase':
+          this.recycleShowcase(e.data.data);
+          break;
+        case 'component-exists':
+          this.simpleModalService.displayMessage('Oops!', 'This component cannot be added twice to a single page.');
+          break;
+        case 'delete-component':
+          this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
+          break;
       }
       this.builderService.processIncomingMessages(e, this.activeEditComponent);
     }

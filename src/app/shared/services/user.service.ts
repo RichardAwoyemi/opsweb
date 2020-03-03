@@ -7,7 +7,6 @@ import { IUser } from '../models/user';
 
 @Injectable()
 export class UserService {
-
   user = new BehaviorSubject(<Object>(null));
 
   constructor(
@@ -84,16 +83,6 @@ export class UserService {
     this.setUserData(result).then(() => {
     });
     this.setUserDetailData(result.uid, firstName, lastName, referralId).then(() => {
-    });
-  }
-
-  setUserCurrencyPreferences(uid, timezone, currency) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    const userDetailData = {
-      selectedCurrency: currency
-    };
-    return userRef.set(userDetailData, {
-      merge: true
     });
   }
 
