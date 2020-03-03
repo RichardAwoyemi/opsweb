@@ -230,7 +230,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     for (let i = 0; i < targetComponentLocation.length; i++) {
       const activePageIndex = targetComponentLocation[i]['activePageIndex'];
       const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
-      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key]['heroImageStyle'] = value;
+      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['heroImageStyle'][key] = value;
     }
     this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
@@ -248,7 +248,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
 
   resetHeroImageSize() {
     this.heroImageStyle['width'] = this.defaultHeroStyle['heroImageStyle']['width'];
-    this.setHeroImageOptionsStyle('width', this.heroImageStyle['src']);
+    this.setHeroImageOptionsStyle('width', this.heroImageStyle['width']);
     this.builderHeroService.heroImageSize.next(this.heroImageStyle['width'].replace('%', ''));
   }
 
