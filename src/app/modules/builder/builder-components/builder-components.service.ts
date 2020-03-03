@@ -1454,6 +1454,11 @@ export class BuilderComponentsService {
     }
   }
 
+  getComponent(activePageIndex, activeComponentIndex) {
+    const pageComponents = this.pageComponents.getValue();
+    return pageComponents['pages'][activePageIndex]['components'][activeComponentIndex];
+  }
+
   getActiveTargetComponentById(componentId: string) {
     let activePageIndex = null;
     let activeComponentIndex = null;

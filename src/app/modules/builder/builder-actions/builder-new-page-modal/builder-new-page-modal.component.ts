@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 import { BuilderActionsService } from '../builder-actions.service';
-import { ActiveComponentsFullSelector } from '../../builder';
+import { ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 
@@ -58,22 +58,28 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
   onConfirmButtonClick(): void {
     this.activeModal.dismiss();
 
-    this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
-    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
+    const navbarComponentPosition = this.builderComponentService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
+    const footerComponentPosition = this.builderComponentService.getTargetComponentByName(ActiveComponentsPartialSelector.Footer);
+    const navbarComponent = this.builderComponentService.getComponent(navbarComponentPosition[0]['activePageIndex'], navbarComponentPosition[0]['activeComponentIndex']);
+    const footerComponent = this.builderComponentService.getComponent(footerComponentPosition[0]['activePageIndex'], footerComponentPosition[0]['activeComponentIndex']);
+    navbarComponent['timestamp'] = new Date().getTime();
+    footerComponent['timestamp'] = new Date().getTime();
 
-    const newPage = {
-      'name': UtilService.toTitleCase(this.pageName),
-      'components': [
-        `${ActiveComponentsFullSelector.Placeholder}`,
-        `${ActiveComponentsFullSelector.Navbar}`,
-        `${ActiveComponentsFullSelector.Placeholder}`,
-        `${ActiveComponentsFullSelector.Footer}`,
-        `${ActiveComponentsFullSelector.Placeholder}`,
-      ]
-    };
-    this.pageComponents['pages'].push(newPage);
+    let tempPageComponents = [
+      navbarComponent,
+      footerComponent,
+    ];
+    tempPageComponents = BuilderComponentsService.addPlaceholders(tempPageComponents);
+
+    const pageComponents = {};
+    pageComponents['name'] = this.pageName;
+    pageComponents['components'] = tempPageComponents;
+    this.pageComponents['pages'].push(pageComponents);
     this.builderComponentService.pageComponents.next(this.pageComponents);
 
+    this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
+    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
+    this.builderComponentService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
     this.toastrService.success('Your new page has been created.', 'Great!');
   }
 

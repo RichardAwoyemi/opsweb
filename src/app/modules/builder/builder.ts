@@ -21,15 +21,6 @@ export enum ActiveComponents {
   Heading = 'heading'
 }
 
-export enum ActiveComponentsFullSelector {
-  Navbar = '<app-builder-navbar></app-builder-navbar>',
-  Hero = '<app-builder-hero></app-builder-hero>',
-  Placeholder = '<app-builder-placeholder></app-builder-placeholder>',
-  Footer = '<app-builder-footer></app-builder-footer>',
-  Features = '<app-builder-features></app-builder-features>',
-  Heading = '<app-builder-heading></app-builder-heading>'
-}
-
 export enum ActiveComponentsPartialSelector {
   Navbar = 'app-builder-navbar',
   Hero = 'app-builder-hero',
