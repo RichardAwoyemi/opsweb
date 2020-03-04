@@ -5,6 +5,7 @@ import {
   ComponentFactoryResolver,
   ElementRef,
   HostListener,
+  OnDestroy,
   OnInit,
   ViewChild,
   ViewContainerRef
@@ -22,7 +23,7 @@ import { debounce } from '../../../shared/decorators/debounce.decorator';
   changeDetection: ChangeDetectionStrategy.Default,
   styleUrls: ['./builder-showcase.component.css']
 })
-export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
+export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestroy {
   innerHeight: number;
   document: any;
   componentReference: any;
@@ -79,6 +80,11 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit {
     this.componentReference = this.viewContainerRef.createComponent(componentFactory);
     this.componentReference.changeDetectorRef.detectChanges();
     this.document.body.appendChild(this.componentReference.location.nativeElement);
+  }
+
+  ngOnDestroy() {
+    this.activeOrientationSubscription.unsubscribe();
+    this.previewModeSubscription.unsubscribe();
   }
 
   @HostListener('window:resize', ['$event'])

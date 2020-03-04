@@ -73,6 +73,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     }
 
     this.builderComponentService.pageComponents.next(pageComponents);
+    this.builderService.setSidebarComponentsSetting();
     this.toastrService.success('Your component has been deleted.', 'Great!');
     this.activeModal.dismiss();
   }

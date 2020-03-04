@@ -12,8 +12,11 @@
 <div class="row">
   <ng-container *ngFor="let component of webComponents | filter: searchText | sort: 'name'">
     <div class="col-md-6 component-holder">
+      <!--
+         JM - Do not call methods on the (drag) event handler as it will lead to performance issues, most notably a
+         a degraded UI experience when dragging and dropping components. Use (dragstart) or (dragEnd) instead.
+      -->
       <div (click)="clearActiveComponent();"
-           (drag)="clearActiveComponent();"
            (dragstart)="onComponentSelect(getComponent(component.selector))"
            [attr.data-src]="'../assets/img/component-icon.svg'"
            class="card text-white bg-img justify-content-center component-icon"
