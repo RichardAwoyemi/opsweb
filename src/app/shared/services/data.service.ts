@@ -20,10 +20,6 @@ export class DataService {
     return this.dates;
   }
 
-  public getWebTemplateBusiness(): Observable<any> {
-    return this.webTemplateBusiness;
-  }
-
   public getAllWebTemplates(): Observable<any> {
     return combineLatest([
       this.webTemplateBusiness

@@ -907,8 +907,7 @@ export class BuilderComponentsService {
             'navbarLogoText': 'Logo',
             'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
-            'navbarTheme': ActiveThemes.Default,
-            'navbarTemplate': ActiveTemplates.Quick
+            'navbarTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 2,
@@ -922,7 +921,6 @@ export class BuilderComponentsService {
             'componentName': ActiveComponentsPartialSelector.Hero,
             'timestamp': new Date().getTime(),
             'heroTheme': ActiveThemes.Default,
-            'heroTemplate': ActiveTemplates.Quick,
             'heroButtonLink': 'About',
             'heroBackgroundStyle': {
               'background-color': '#FFFFFF'
@@ -1023,8 +1021,7 @@ export class BuilderComponentsService {
                 'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
-            'featuresTheme': ActiveThemes.Default,
-            'featuresTemplate': ActiveTemplates.Quick
+            'featuresTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 6,
@@ -1079,8 +1076,7 @@ export class BuilderComponentsService {
                 'subheading': 'Grow with ease and whilst receiving useful analytics. Just what you need to blossom.'
               }
             ],
-            'featuresTheme': ActiveThemes.Default,
-            'featuresTemplate': ActiveTemplates.Quick
+            'featuresTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 8,
@@ -1093,7 +1089,6 @@ export class BuilderComponentsService {
             'componentId': `${ActiveComponents.Footer}-${UtilService.generateRandomString(8)}`,
             'componentName': ActiveComponentsPartialSelector.Footer,
             'footerTheme': ActiveThemes.Default,
-            'footerTemplate': ActiveTemplates.Quick,
             'timestamp': new Date().getTime(),
             'footerStyle': {
               'font-family': 'Nunito Sans, sans-serif',
@@ -1207,8 +1202,7 @@ export class BuilderComponentsService {
             'navbarLogoText': 'Logo',
             'navbarLogoImage': '../assets/img/default-logo.svg',
             'navbarMenuOptions': ['Home', 'About'],
-            'navbarTheme': ActiveThemes.Default,
-            'navbarTemplate': ActiveTemplates.Quick,
+            'navbarTheme': ActiveThemes.Default
           },
           {
             'componentIndex': 2,
@@ -1222,7 +1216,6 @@ export class BuilderComponentsService {
             'componentName': ActiveComponentsPartialSelector.Footer,
             'timestamp': new Date().getTime(),
             'footerTheme': ActiveThemes.Default,
-            'footerTemplate': ActiveTemplates.Quick,
             'footerStyle': {
               'font-family': 'Nunito Sans, sans-serif',
               'color': '#757575',
@@ -1321,7 +1314,7 @@ export class BuilderComponentsService {
     return componentsArrayWithoutPlaceholders;
   }
 
-  static addPlaceholders(components) {
+  static addPlaceholdersOnSinglePage(components) {
     const componentsArrayWithPlaceholders = components.reduce((r, a) => r.concat(a,
       {
         componentIndex: null,
@@ -1329,7 +1322,6 @@ export class BuilderComponentsService {
         componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
         timestamp: new Date().getTime()
       }),
-
       [{
         componentIndex: null,
         componentName: ActiveComponentsPartialSelector.Placeholder,
@@ -1341,6 +1333,25 @@ export class BuilderComponentsService {
       componentsArrayWithPlaceholders[i]['componentIndex'] = i;
     }
     return componentsArrayWithPlaceholders;
+  }
+
+  static addPlaceholdersOnMultiplePages(components) {
+    return components.map((obj) => {
+      return obj.reduce((r, a) => r.concat(a,
+        {
+          componentIndex: null,
+          componentName: ActiveComponentsPartialSelector.Placeholder,
+          componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+          timestamp: new Date().getTime()
+        }),
+        [{
+          componentIndex: null,
+          componentName: ActiveComponentsPartialSelector.Placeholder,
+          componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
+          timestamp: new Date().getTime()
+        }]
+      );
+    });
   }
 
   static getUnorderedComponentsArrayWithoutPlaceholders(e: any) {
@@ -1444,6 +1455,52 @@ export class BuilderComponentsService {
       }
     }
     return activeComponentIndex;
+  }
+
+  static deleteComponentById(components, componentId) {
+    return components.filter(function (a) {
+      return a['componentId'] !== componentId;
+    });
+  }
+
+  static deleteComponentByIndex(components, targetComponents) {
+    for (let i = 0; i < targetComponents.length; i++) {
+      const activePageIndex = targetComponents[i]['activePageIndex'];
+      const activeComponentIndex = targetComponents[i]['activeComponentIndex'];
+      components['pages'][activePageIndex]['components'][activeComponentIndex] = null;
+    }
+    return components;
+  }
+
+  static isComponent(component, componentId) {
+    return componentId.indexOf(component) > -1;
+  }
+
+  static deleteNullComponentsOnMultiplePages(components) {
+    return components['pages'].map(obj => {
+      return obj['components'].filter(item => item !== null);
+    });
+  }
+
+  static updateComponents(components, pageComponents) {
+    for (let i = 0; i < components.length; i++) {
+      pageComponents['pages'][i]['components'] = components[i];
+    }
+    return pageComponents;
+  }
+
+  deleteComponentByName(componentName) {
+    let pageComponents = this.pageComponents.getValue();
+    const targetComponents = this.getTargetComponentByName(componentName);
+    const placeholderComponents = this.getTargetComponentByName(ActiveComponentsPartialSelector.Placeholder);
+
+    pageComponents = BuilderComponentsService.deleteComponentByIndex(pageComponents, targetComponents);
+    pageComponents = BuilderComponentsService.deleteComponentByIndex(pageComponents, placeholderComponents);
+    pageComponents = BuilderComponentsService.deleteNullComponentsOnMultiplePages(pageComponents);
+    pageComponents = BuilderComponentsService.addPlaceholdersOnMultiplePages(pageComponents);
+    pageComponents.map(obj => obj.forEach((el, idx) => (el.componentIndex = idx)));
+
+    return pageComponents;
   }
 
   addComponentsToSessionStorage(pageComponents, activePage) {
@@ -1580,7 +1637,7 @@ export class BuilderComponentsService {
 
     const pageComponentsToAddWithoutPlaceholders = BuilderComponentsService.removePlaceholders(pageComponents['components']);
     pageComponentsToAddWithoutPlaceholders.splice(pageComponentsToAddWithoutPlaceholders.length - 1, 0, component);
-    const pageComponentsToAddWithPlaceholders = BuilderComponentsService.addPlaceholders(pageComponentsToAddWithoutPlaceholders);
+    const pageComponentsToAddWithPlaceholders = BuilderComponentsService.addPlaceholdersOnSinglePage(pageComponentsToAddWithoutPlaceholders);
 
     pageComponents = this.pageComponents.getValue();
     pageComponents['pages'][activePageIndex]['components'] = pageComponentsToAddWithPlaceholders;

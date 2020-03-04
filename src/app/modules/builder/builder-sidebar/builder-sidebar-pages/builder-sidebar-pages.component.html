@@ -10,7 +10,7 @@
            (click)="openNewPageModal()" href="#">Add</a>
       </div>
     </div>
-    <div [sortablejs]="navbarMenuOptions" style="padding-top: 1em">
+    <div [sortablejsOptions]="navbarMenuSortableOptions" [sortablejs]="navbarMenuOptions" style="padding-top: 1em">
       <div *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index"
            class="row page-row-color page-row-option justify-content-center align-items-center"
            style="font-size: 0.8em">
@@ -44,14 +44,15 @@
       <div class="col-md-6">
         <label style="color: rgba(255, 255, 255, 0.65)">Components</label>
       </div>
-      <div class="col-md-6 text-right"> <!-- TODO: MODAL IS INCOMPLETE -->
+      <div class="col-md-6 text-right">
         <a class="builder-sidebar-pages-add-component fw-600 fs-12"
            (click)="openAddComponentModal()" href="#">Add</a>
       </div>
     </div>
-    <div [sortablejsOptions]="options" [sortablejs]="componentListOptions" style="padding-top: 1em">
+    <div [sortablejsOptions]="componentListSortableOptions" [sortablejs]="componentListOptions"
+         style="padding-top: 1em">
       <div *ngFor="let componentListOption of componentListOptions"
-           [attr.id]="componentListOption"
+           [attr.id]="componentListOption['componentId']"
            class="row page-row-color page-row-option justify-content-center align-items-center"
            style="font-size: 0.8em">
         <div class="col-md-2" style="padding: 0.5em;">
@@ -71,7 +72,8 @@
               class="ti-more-alt"></i></button>
             <div aria-labelledby="pagesDropdown" ngbDropdownMenu>
               <button class="builder-sidebar-pages-delete-component"
-                      (click)="openDeleteComponentModal()" ngbDropdownItem>Delete</button>
+                      (click)="openDeleteComponentModal(componentListOption['componentId'])" ngbDropdownItem>Delete
+              </button>
             </div>
           </div>
         </div>

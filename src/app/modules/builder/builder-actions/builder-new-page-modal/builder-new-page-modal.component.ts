@@ -57,7 +57,6 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
 
   onConfirmButtonClick(): void {
     this.activeModal.dismiss();
-
     const navbarComponentPosition = this.builderComponentService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
     const footerComponentPosition = this.builderComponentService.getTargetComponentByName(ActiveComponentsPartialSelector.Footer);
     const navbarComponent = this.builderComponentService.getComponent(navbarComponentPosition[0]['activePageIndex'], navbarComponentPosition[0]['activeComponentIndex']);
@@ -69,7 +68,7 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
       navbarComponent,
       footerComponent,
     ];
-    tempPageComponents = BuilderComponentsService.addPlaceholders(tempPageComponents);
+    tempPageComponents = BuilderComponentsService.addPlaceholdersOnSinglePage(tempPageComponents);
 
     const pageComponents = {};
     pageComponents['name'] = this.pageName;

@@ -1,27 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { Subscription } from 'rxjs';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder';
-import { UtilService } from '../../../../shared/services/util.service';
 import { BuilderService } from '../../builder.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder';
 
 @Component({
   selector: 'app-builder-delete-component-modal',
   templateUrl: './builder-delete-component-modal.component.html'
 })
 export class BuilderDeleteComponentModalComponent implements IModalComponent, OnInit, OnDestroy {
-  activePage: string;
-  activePageIndex: number;
-  pageComponents: any;
-  private activeComponentIndex: number;
-  private components: Array<string>;
-
-  private activePageSettingSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
-  private activeComponentIndexSubscription: Subscription;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -31,23 +21,28 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   ) {
   }
 
-  ngOnInit() {
-    this.activeComponentIndexSubscription = this.builderComponentService.activeComponentIndex.subscribe((response => {
-      if (response) {
-        this.activeComponentIndex = response;
-      }
-    }));
+  @Input() componentId;
+  pageComponents: any;
+  components: any;
+  activePage: string;
+  activePageIndex: number;
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingResponse => {
-      if (activePageSettingResponse) {
-        this.activePage = activePageSettingResponse;
+  private pageComponentsSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+
+  ngOnInit() {
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {
+      if (activePageSettingsResponse) {
+        this.activePage = activePageSettingsResponse;
         this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
           if (response) {
             this.pageComponents = response;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               if (this.pageComponents['pages'][i]['name'] === this.activePage) {
-                this.components = response['pages'][i]['components'];
                 this.activePageIndex = i;
+                this.components = this.pageComponents['pages'][i]['components'].filter(function (a) {
+                  return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
+                });
               }
             }
           }
@@ -57,40 +52,27 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   }
 
   onConfirmButtonClick() {
-    this.components.splice(this.activeComponentIndex, 1);
+    let pageComponents = this.builderComponentService.pageComponents.getValue();
 
-    const componentsArrayWithoutPlaceholders = [];
-    for (let i = 0; i < this.components.length; i++) {
-      if (this.components[i]['componentName'] !== ActiveComponentsPartialSelector.Placeholder) {
-        componentsArrayWithoutPlaceholders.push(this.components[i]);
-      }
+    if (BuilderComponentsService.isComponent(ActiveComponents.Navbar, this.componentId) === true) {
+      const components = this.builderComponentService.deleteComponentByName(ActiveComponentsPartialSelector.Navbar);
+      pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
+    }
+    if (BuilderComponentsService.isComponent(ActiveComponents.Hero, this.componentId) === true) {
+      const components = this.builderComponentService.deleteComponentByName(ActiveComponentsPartialSelector.Hero);
+      pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
+    }
+    if (BuilderComponentsService.isComponent(ActiveComponents.Features, this.componentId) === true) {
+      let components = BuilderComponentsService.deleteComponentById(this.components, this.componentId);
+      components = BuilderComponentsService.addPlaceholdersOnSinglePage(components);
+      pageComponents['pages'][this.activePageIndex]['components'] = components;
+    }
+    if (BuilderComponentsService.isComponent(ActiveComponents.Footer, this.componentId) === true) {
+      const components = this.builderComponentService.deleteComponentByName(ActiveComponentsPartialSelector.Footer);
+      pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
     }
 
-    const componentsArrayWithPlaceholders = componentsArrayWithoutPlaceholders.reduce((r, a) => r.concat(a,
-      {
-        componentIndex: null,
-        componentName: ActiveComponentsPartialSelector.Placeholder,
-        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
-        timestamp: new Date().getTime()
-      }),
-
-      [{
-        componentIndex: null,
-        componentName: ActiveComponentsPartialSelector.Placeholder,
-        componentId: `${ActiveComponents.Placeholder}-${UtilService.generateRandomString(8)}`,
-        timestamp: new Date().getTime()
-      }]
-    );
-    for (let i = 0; i < componentsArrayWithPlaceholders.length; i++) {
-      componentsArrayWithPlaceholders[i]['componentIndex'] = i;
-    }
-
-    this.components = componentsArrayWithPlaceholders;
-    this.pageComponents['pages'][this.activePageIndex]['components'] = this.components;
-
-    this.builderComponentService.pageComponents.next(this.pageComponents);
-    this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderComponentService.pageComponents.next(pageComponents);
     this.toastrService.success('Your component has been deleted.', 'Great!');
     this.activeModal.dismiss();
   }
@@ -102,6 +84,5 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   ngOnDestroy() {
     this.activePageSettingSubscription.unsubscribe();
     this.pageComponentsSubscription.unsubscribe();
-    this.activeComponentIndexSubscription.unsubscribe();
   }
 }

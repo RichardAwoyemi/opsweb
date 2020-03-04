@@ -8,6 +8,7 @@ import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { ActiveComponentsPartialSelector } from '../../builder';
 
 @Component({
   selector: 'app-builder-rename-page-modal',
@@ -62,17 +63,17 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
         this.pageComponents['pages'][i]['name'] = UtilService.toTitleCase(this.pageName);
       }
     }
-    this.builderComponentService.pageComponents.next(this.pageComponents);
 
     for (let i = 0; i < this.navbarMenuOptions.length; i++) {
       if (i === this.activePageIndex) {
         this.navbarMenuOptions[i] = UtilService.toTitleCase(this.pageName);
       }
     }
+
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-
     this.builderService.activePageSetting.next(UtilService.toTitleCase(this.pageName));
-
+    this.builderComponentService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
+    this.builderComponentService.pageComponents.next(this.pageComponents);
     this.toastrService.success('Your page has been renamed.', 'Great!');
   }
 

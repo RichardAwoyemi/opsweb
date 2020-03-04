@@ -105,7 +105,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
       }
       this.pageComponents['pages'][activePageIndex]['components'].splice(activeComponentIndex, 0, component);
       const componentsArrayWithoutPlaceholders = BuilderComponentsService.removePlaceholders(this.pageComponents['pages'][activePageIndex]['components']);
-      this.pageComponents['pages'][activePageIndex]['components'] = BuilderComponentsService.addPlaceholders(componentsArrayWithoutPlaceholders);
+      this.pageComponents['pages'][activePageIndex]['components'] = BuilderComponentsService.addPlaceholdersOnSinglePage(componentsArrayWithoutPlaceholders);
       this.builderComponentService.pageComponents.next(this.pageComponents);
       this.sessionStorageService.setItem('components', JSON.stringify(this.pageComponents));
     }

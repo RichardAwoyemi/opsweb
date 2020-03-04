@@ -39,7 +39,11 @@ export class BuilderComponentToolbarComponent implements OnInit, OnDestroy {
   }
 
   deleteComponent() {
-    this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
+    const modal = this.modalService.open(BuilderDeleteComponentModalComponent, {
+      windowClass: 'modal-holder',
+      centered: true
+    });
+    modal.componentInstance.componentId = this.activeEditComponentId;
   }
 
   toggleComponentToolbarVisibility() {

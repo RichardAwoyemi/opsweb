@@ -48,7 +48,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   private footerSocialLinksStyleSubscription: Subscription;
   private footerSocialLinksContainerStyleSubscription: Subscription;
   private footerThemeSubscription: Subscription;
-  private footerTemplateSubscription: Subscription;
   private footerCopyrightStyleSubscription: Subscription;
   private footerMenuOptionsSubscription: Subscription;
   private footerAlignmentClassSubscription: Subscription;
@@ -220,12 +219,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
       }
     });
 
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(response => {
-      if (!response) {
-        this.builderFooterService.footerTemplate.next(ActiveThemes.Default);
-      }
-    });
-
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
       if (activePageSettingResponse) {
         this.activePageSetting = activePageSettingResponse;
@@ -321,7 +314,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.footerSocialLinksStyleSubscription.unsubscribe();
     this.footerSocialLinksContainerStyleSubscription.unsubscribe();
     this.footerThemeSubscription.unsubscribe();
-    this.footerTemplateSubscription.unsubscribe();
     this.footerCopyrightStyleSubscription.unsubscribe();
     this.footerMenuOptionsSubscription.unsubscribe();
     this.footerAlignmentClassSubscription.unsubscribe();
