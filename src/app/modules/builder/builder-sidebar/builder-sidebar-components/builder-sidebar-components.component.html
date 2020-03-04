@@ -12,8 +12,9 @@
 <div class="row">
   <ng-container *ngFor="let component of webComponents | filter: searchText | sort: 'name'">
     <div class="col-md-6 component-holder">
-      <div (click)="clearActiveComponent()"
-           (drag)="clearActiveComponent(); onComponentSelect(getComponent(component.selector));"
+      <div (click)="clearActiveComponent();"
+           (drag)="clearActiveComponent();"
+           (dragstart)="onComponentSelect(getComponent(component.selector))"
            [attr.data-src]="'../assets/img/component-icon.svg'"
            class="card text-white bg-img justify-content-center component-icon"
            data-overlay="6" draggable="true"

@@ -14,29 +14,12 @@ import { BuilderFooterService } from '../../builder-components/builder-footer/bu
   styleUrls: ['./builder-sidebar-components.component.css'],
 })
 export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
-  webComponents = [
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Navbar),
-      'selector': ActiveComponentsPartialSelector.Navbar
-    },
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Hero),
-      'selector': ActiveComponentsPartialSelector.Hero
-    },
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Footer),
-      'selector': ActiveComponentsPartialSelector.Footer
-    },
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Features),
-      'selector': ActiveComponentsPartialSelector.Features
-    }
-  ];
   searchText: string;
   activeEditComponent: string;
 
   defaultFeaturesStyle: any;
   featuresTemplate: any;
+  webComponents: any;
 
   defaultFooterStyle: any;
   footerTemplate: any;
@@ -57,6 +40,8 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.webComponents = BuilderComponentsService.webComponents;
+
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
@@ -174,7 +159,6 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     componentToAdd['componentName'] = tempComponentToAdd['componentName'];
     this.builderComponentsService.addComponent(componentToAdd, activePageIndex);
   }
-
 
   onComponentSelect(component: any) {
     window.postMessage({
