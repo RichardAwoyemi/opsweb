@@ -6,6 +6,29 @@ import { SessionStorageService } from '../../../shared/services/session-storage.
 
 @Injectable()
 export class BuilderComponentsService {
+  public static webComponents = [
+    {
+      'name': UtilService.toTitleCase(ActiveComponents.Navbar),
+      'selector': ActiveComponentsPartialSelector.Navbar
+    },
+    {
+      'name': UtilService.toTitleCase(ActiveComponents.Hero),
+      'selector': ActiveComponentsPartialSelector.Hero
+    },
+    {
+      'name': UtilService.toTitleCase(ActiveComponents.Footer),
+      'selector': ActiveComponentsPartialSelector.Footer
+    },
+    {
+      'name': UtilService.toTitleCase(ActiveComponents.Features),
+      'selector': ActiveComponentsPartialSelector.Features
+    }
+  ];
+
+  constructor(
+    private sessionStorageService: SessionStorageService
+  ) {
+  }
   activeComponentIndex = new BehaviorSubject<number>(0);
 
   pageComponents = new BehaviorSubject<any>(null);
@@ -1276,11 +1299,6 @@ export class BuilderComponentsService {
     ]
   });
 
-  constructor(
-    private sessionStorageService: SessionStorageService
-  ) {
-  }
-
   static getComponentCleanName(componentSelectorName) {
     switch (componentSelectorName['componentName']) {
       case ActiveComponentsPartialSelector.Navbar:
@@ -1609,7 +1627,7 @@ export class BuilderComponentsService {
         this.addFeaturesComponent(component, activePageIndex);
         break;
       case ActiveComponentsPartialSelector.Footer:
-        this.addFooterComponent(component, activePageIndex);
+        this.addFooterComponent(component);
         break;
     }
   }
@@ -1641,12 +1659,11 @@ export class BuilderComponentsService {
 
     pageComponents = this.pageComponents.getValue();
     pageComponents['pages'][activePageIndex]['components'] = pageComponentsToAddWithPlaceholders;
-    console.log(pageComponents);
     this.pageComponents.next(pageComponents);
   }
 
-  addFooterComponent(component, activePageIndex) {
-    const pageComponents = BuilderComponentsService.getTargetPageComponents(this.pageComponents.getValue(), activePageIndex);
+  addFooterComponent(component) {
+    const pageComponents = this.pageComponents.getValue();
     component['footerTheme'] = ActiveThemes.Default;
     if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Footer)) {
       console.log(pageComponents);
