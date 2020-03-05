@@ -242,7 +242,7 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
       this.builderFooterService.footerSocialLinksContainerStyle.next(this.footerSocialLinksContainerStyle);
     }
     this.footerComponentLayout = footerComponentLayout;
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerComponentLayout', this.footerComponentLayout);
+    this.builderComponentsService.setPageComponentByKey(ActiveComponentsPartialSelector.Footer, 'footerComponentLayout', 'layout', this.footerComponentLayout);
     this.builderFooterService.footerComponentLayout.next(footerComponentLayout);
   }
 
