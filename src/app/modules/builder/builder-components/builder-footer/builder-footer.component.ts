@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
@@ -47,7 +47,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   private footerPageLinksStyleSubscription: Subscription;
   private footerSocialLinksStyleSubscription: Subscription;
   private footerSocialLinksContainerStyleSubscription: Subscription;
-  private footerThemeSubscription: Subscription;
   private footerCopyrightStyleSubscription: Subscription;
   private footerMenuOptionsSubscription: Subscription;
   private footerAlignmentClassSubscription: Subscription;
@@ -212,13 +211,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
       }
     });
 
-    this.footerThemeSubscription = this.builderFooterService.footerTheme.subscribe(response => {
-      if (!response) {
-        this.builderFooterService.footerTheme.next(ActiveThemes.Default);
-        this.builderFooterService.setFooterTemplate(ActiveTemplates.Default);
-      }
-    });
-
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
       if (activePageSettingResponse) {
         this.activePageSetting = activePageSettingResponse;
@@ -226,29 +218,27 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
           if (response) {
             this.pageComponents = response;
             this.builderFooterService.footerTemplate.next(this.pageComponents['template']);
-            if (this.elementRef.nativeElement['id']) {
-              this.componentId = this.elementRef.nativeElement['id'];
-              for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-                const pageName = this.pageComponents['pages'][i]['name'];
-                if (pageName === this.activePageSetting) {
-                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                      this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                      this.builderFooterService.footerStyle.next(this.componentDetail['footerStyle']);
-                      this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['footerSocialLinksContainerStyle']);
-                      this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['footerSocialLinksStyle']);
-                      this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['footerPageLinksStyle']);
-                      this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['footerCopyrightStyle']);
-                      this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
-                      this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
-                      this.builderFooterService.facebookUrl.next(this.componentDetail['footerSocialLinks']['facebookUrl']);
-                      this.builderFooterService.twitterUrl.next(this.componentDetail['footerSocialLinks']['twitterUrl']);
-                      this.builderFooterService.instagramUrl.next(this.componentDetail['footerSocialLinks']['instagramUrl']);
-                      this.builderFooterService.youtubeUrl.next(this.componentDetail['footerSocialLinks']['youtubeUrl']);
-                      this.builderFooterService.githubUrl.next(this.componentDetail['footerSocialLinks']['githubUrl']);
-                      this.builderFooterService.linkedinUrl.next(this.componentDetail['footerSocialLinks']['linkedinUrl']);
-                      this.builderFooterService.footerTheme.next(this.componentDetail['footerTheme']);
-                    }
+            this.componentId = this.elementRef.nativeElement['id'];
+            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+              const pageName = this.pageComponents['pages'][i]['name'];
+              if (pageName === this.activePageSetting) {
+                for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                  if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                    this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                    this.builderFooterService.footerStyle.next(this.componentDetail['footerStyle']);
+                    this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['footerSocialLinksContainerStyle']);
+                    this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['footerSocialLinksStyle']);
+                    this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['footerPageLinksStyle']);
+                    this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['footerCopyrightStyle']);
+                    this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
+                    this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
+                    this.builderFooterService.facebookUrl.next(this.componentDetail['footerSocialLinks']['facebookUrl']);
+                    this.builderFooterService.twitterUrl.next(this.componentDetail['footerSocialLinks']['twitterUrl']);
+                    this.builderFooterService.instagramUrl.next(this.componentDetail['footerSocialLinks']['instagramUrl']);
+                    this.builderFooterService.youtubeUrl.next(this.componentDetail['footerSocialLinks']['youtubeUrl']);
+                    this.builderFooterService.githubUrl.next(this.componentDetail['footerSocialLinks']['githubUrl']);
+                    this.builderFooterService.linkedinUrl.next(this.componentDetail['footerSocialLinks']['linkedinUrl']);
+                    this.builderFooterService.footerTheme.next(this.componentDetail['footerTheme']);
                   }
                 }
               }
@@ -313,7 +303,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.footerPageLinksStyleSubscription.unsubscribe();
     this.footerSocialLinksStyleSubscription.unsubscribe();
     this.footerSocialLinksContainerStyleSubscription.unsubscribe();
-    this.footerThemeSubscription.unsubscribe();
     this.footerCopyrightStyleSubscription.unsubscribe();
     this.footerMenuOptionsSubscription.unsubscribe();
     this.footerAlignmentClassSubscription.unsubscribe();
