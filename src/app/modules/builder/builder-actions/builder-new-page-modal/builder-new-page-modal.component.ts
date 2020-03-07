@@ -9,6 +9,7 @@ import { BuilderActionsService } from '../builder-actions.service';
 import { ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
 
 @Component({
   selector: 'app-builder-new-page-modal',
@@ -26,8 +27,9 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
+    private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private builderActionsService: BuilderActionsService,
     private toastrService: ToastrService,
     private activeModal: NgbActiveModal
@@ -44,7 +46,7 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
       }
     });
 
-    this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -57,10 +59,10 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
 
   onConfirmButtonClick(): void {
     this.activeModal.dismiss();
-    const navbarComponentPosition = this.builderComponentService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
-    const footerComponentPosition = this.builderComponentService.getTargetComponentByName(ActiveComponentsPartialSelector.Footer);
-    const navbarComponent = this.builderComponentService.getComponent(navbarComponentPosition[0]['activePageIndex'], navbarComponentPosition[0]['activeComponentIndex']);
-    const footerComponent = this.builderComponentService.getComponent(footerComponentPosition[0]['activePageIndex'], footerComponentPosition[0]['activeComponentIndex']);
+    const navbarComponentPosition = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
+    const footerComponentPosition = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Footer);
+    const navbarComponent = this.builderComponentsService.getComponent(navbarComponentPosition[0]['activePageIndex'], navbarComponentPosition[0]['activeComponentIndex']);
+    const footerComponent = this.builderComponentsService.getComponent(footerComponentPosition[0]['activePageIndex'], footerComponentPosition[0]['activeComponentIndex']);
     navbarComponent['timestamp'] = new Date().getTime();
     footerComponent['timestamp'] = new Date().getTime();
 
@@ -74,11 +76,20 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
     pageComponents['name'] = this.pageName;
     pageComponents['components'] = tempPageComponents;
     this.pageComponents['pages'].push(pageComponents);
-    this.builderComponentService.pageComponents.next(this.pageComponents);
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
 
     this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-    this.builderComponentService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
+
+    let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
+    if (footerMenuOptions) {
+      footerMenuOptions[UtilService.toTitleCase(this.pageName)] = false;
+      footerMenuOptions = this.builderFooterService.sortFooterMenuOptions(footerMenuOptions, this.navbarMenuOptions);
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
+      this.builderFooterService.footerMenuOptions.next(footerMenuOptions);
+    }
+
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
     this.toastrService.success('Your new page has been created.', 'Great!');
   }
 
