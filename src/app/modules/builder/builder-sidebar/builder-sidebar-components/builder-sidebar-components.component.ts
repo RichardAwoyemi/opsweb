@@ -16,11 +16,9 @@ import { BuilderFooterService } from '../../builder-components/builder-footer/bu
 export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   searchText: string;
   activeEditComponent: string;
-
   defaultFeaturesStyle: any;
   featuresTemplate: any;
   webComponents: any;
-
   defaultFooterStyle: any;
   footerTemplate: any;
 

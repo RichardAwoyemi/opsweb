@@ -12,7 +12,6 @@ import { BuilderRenamePageModalComponent } from './builder-rename-page-modal/bui
 import { BuilderActionsService } from './builder-actions.service';
 import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/builder-delete-image-modal.component';
 import { BuilderCreateAccountModalComponent } from './builder-create-account-modal/builder-create-account-modal.component';
-import { BuilderAddComponentModalComponent } from './builder-add-component-modal/builder-add-component-modal.component';
 import { BuilderSaveWebsiteModalComponent } from './builder-save-website-modal/builder-save-website-modal.component';
 import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-modal/builder-rename-website-modal.component';
 import { BuilderSelectImageModalComponent } from './builder-select-image-modal/builder-select-image-modal.component';
@@ -31,7 +30,6 @@ import { WebsiteService } from '../../../shared/services/website.service';
     BuilderComponentToolbarComponent,
     BuilderRenamePageModalComponent,
     BuilderCreateAccountModalComponent,
-    BuilderAddComponentModalComponent,
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
     BuilderSelectImageModalComponent,
@@ -54,7 +52,6 @@ import { WebsiteService } from '../../../shared/services/website.service';
     BuilderComponentToolbarComponent,
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
-    BuilderAddComponentModalComponent,
     BuilderCreateAccountModalComponent,
     BuilderSelectImageModalComponent,
     BlockNonAlphabetCharactersDirective
@@ -71,7 +68,6 @@ import { WebsiteService } from '../../../shared/services/website.service';
     BuilderChangeTemplateModalComponent,
     BuilderRenamePageModalComponent,
     BuilderComponentToolbarComponent,
-    BuilderAddComponentModalComponent,
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
     BuilderCreateAccountModalComponent,
