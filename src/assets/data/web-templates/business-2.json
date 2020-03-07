@@ -47,14 +47,22 @@
     "color": "#1e2022",
     "font-weight": "300",
     "line-height": "1.2",
-    "font-size": "3.5rem"
+    "font-size": "56px",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px"
   },
   "heroSubheadingStyle": {
     "font-family": "'Poppins', sans-serif",
     "color": "#757575",
     "line-height": "34px",
     "font-weight": "300",
-    "font-size": "20px"
+    "font-size": "20px",
+    "padding-top": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "padding-bottom": "0px"
   },
   "heroImageStyle": {
     "width": "100%",
