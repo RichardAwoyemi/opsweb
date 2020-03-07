@@ -202,6 +202,9 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       if (this.componentDetail['heroHeadingText']) {
                         this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
                       }
+                      if (this.componentDetail['heroSubheadingText']) {
+                        this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
+                      }
                     }
                   }
                 }
@@ -329,9 +332,10 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.builderComponentsService.setPageComponentById(this.componentId, 'heroHeadingText', heroHeadingText);
   }
 
-  saveHeroSubheadingTextOption() {
+  saveHeroSubheadingTextOption(heroSubheadingText) {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderHeroService.heroSubheadingText.next(this.heroSubheadingText);
+    this.builderHeroService.heroHeadingText.next(heroSubheadingText);
+    this.builderComponentsService.setPageComponentById(this.componentId, 'heroSubheadingText', heroSubheadingText);
   }
 
   saveHeroButtonTextOption() {

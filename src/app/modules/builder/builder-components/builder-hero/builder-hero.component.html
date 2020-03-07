@@ -33,8 +33,8 @@
              [ngClass]="setHeroClass('hero-subheading')"
              id="hero-subheading"
              style="display:inline-block">
-          <p (blur)="removeLineBreaks($event); saveHeroSubheadingTextOption();"
-             (keydown.enter)="saveHeroSubheadingTextOption(); $event.preventDefault()"
+          <p (blur)="removeLineBreaks($event); saveHeroSubheadingTextOption($event.target['innerText']);"
+             (keydown.enter)="saveHeroSubheadingTextOption($event.target['innerText']); $event.preventDefault()"
              [attr.contenteditable]="setContentEditable()"
              [innerText]="heroSubheadingText"
              [ngStyle]="heroSubheadingStyle"
