@@ -29,12 +29,13 @@
       </div>
     </div>
     <div [ngClass]="footerAlignmentClass">
-      <span
-        (click)="selectFooterCopyright($event, 'footer-copyright')"
-        [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
-        [innerText]="copyrightText"
-        [ngClass]="setFooterCopyrightClass()"
-        [ngStyle]="footerCopyrightStyle" id="footer-copyright-1"></span>
+      <div [ngStyle]="footerCopyrightStyle">
+        <span
+          (click)="selectFooterCopyright($event, 'footer-copyright')"
+          [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
+          [innerText]="copyrightText"
+          [ngClass]="setFooterCopyrightClass()" id="footer-copyright-1"></span>
+      </div>
     </div>
   </footer>
   <!-- Layout 1 --->
@@ -43,19 +44,19 @@
           [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
     <div class="row">
       <div class="col-md-4 text-left">
-        <span (click)="selectFooterCopyright($event, 'footer-copyright')"
-              [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
-              [ngClass]="setFooterCopyrightClass()"
-              [ngStyle]="footerCopyrightStyle"
-              id="footer-copyright-2">
-          Copyright &copy; {{ today | date: 'yyyy' }}
-        </span>
+        <div [ngStyle]="footerCopyrightStyle">
+          <span (click)="selectFooterCopyright($event, 'footer-copyright')"
+                [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
+                [ngClass]="setFooterCopyrightClass()"
+                id="footer-copyright-2">
+            Copyright &copy; {{ today | date: 'yyyy' }}
+          </span>
+        </div>
       </div>
       <div class="col-md-4 text-center">
         <div *ngIf="footerMenuOptions.length > 0">
-          <div class="footer-page-links">
-        <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index"
-              [ngStyle]="footerPageLinksListStyle">{{ footerMenuOption }}</span>
+          <div [ngStyle]="footerPageLinksListStyle" class="footer-page-links">
+            <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index">{{ footerMenuOption }}</span>
           </div>
         </div>
       </div>

@@ -297,7 +297,7 @@ export class BuilderComponentsService {
             },
             'footerCopyrightStyle': {
               'font-family': 'Avenir Next Regular, sans-serif',
-              'padding-top': '12px',
+              'padding-top': '0px',
               'font-size': '14px',
               'padding-left': '0px',
               'padding-bottom': '0px',
@@ -417,7 +417,7 @@ export class BuilderComponentsService {
             },
             'footerCopyrightStyle': {
               'font-family': 'Avenir Next Regular, sans-serif',
-              'padding-top': '12px',
+              'padding-top': '0px',
               'font-size': '14px',
               'padding-left': '0px',
               'padding-bottom': '0px',
@@ -714,7 +714,7 @@ export class BuilderComponentsService {
             },
             'footerCopyrightStyle': {
               'font-family': 'Poppins, sans-serif',
-              'padding-top': '12px',
+              'padding-top': '0px',
               'font-size': '14px',
               'padding-left': '0px',
               'padding-bottom': '0px',
@@ -842,7 +842,7 @@ export class BuilderComponentsService {
             },
             'footerCopyrightStyle': {
               'font-family': 'Poppins, sans-serif',
-              'padding-top': '12px',
+              'padding-top': '0px',
               'font-size': '14px',
               'padding-left': '0px',
               'padding-bottom': '0px',
@@ -1143,7 +1143,7 @@ export class BuilderComponentsService {
             },
             'footerCopyrightStyle': {
               'font-family': 'Nunito Sans, sans-serif',
-              'padding-top': '12px',
+              'padding-top': '0px',
               'font-size': '14px',
               'padding-left': '0px',
               'padding-bottom': '0px',
@@ -1269,7 +1269,7 @@ export class BuilderComponentsService {
             },
             'footerCopyrightStyle': {
               'font-family': 'Nunito Sans, sans-serif',
-              'padding-top': '12px',
+              'padding-top': '0px',
               'font-size': '14px',
               'padding-left': '0px',
               'padding-bottom': '0px',
