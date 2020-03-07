@@ -199,15 +199,9 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       this.builderHeroService.heroImageAlt.next(this.componentDetail['heroImageStyle']['alt']);
                       this.builderHeroService.heroComponentLayout.next(this.componentDetail['heroComponentLayout']);
                       this.builderHeroService.heroTheme.next(this.componentDetail['heroTheme']);
-                      if (this.componentDetail['heroHeadingText']) {
-                        this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
-                      }
-                      if (this.componentDetail['heroSubheadingText']) {
-                        this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
-                      }
-                      if (this.componentDetail['heroButtonText']) {
-                        this.builderHeroService.heroButtonText.next(this.componentDetail['heroButtonText']);
-                      }
+                      this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
+                      this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
+                      this.builderHeroService.heroButtonText.next(this.componentDetail['heroButtonText']);
                     }
                   }
                 }

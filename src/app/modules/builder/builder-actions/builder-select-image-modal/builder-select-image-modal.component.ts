@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { ActiveComponentsPartialSelector } from '../../builder';
   selector: 'app-builder-select-image-modal',
   templateUrl: './builder-select-image-modal.component.html'
 })
-export class BuilderSelectImageModalComponent implements IModalComponent, OnInit {
+export class BuilderSelectImageModalComponent implements IModalComponent, OnInit, OnDestroy {
   private activeLibrarySelectedImageSubscription: Subscription;
   private activeLibrarySelectedImageAltTextSubscription: Subscription;
   private activeLibrarySelectedImage: any;
@@ -80,5 +80,10 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   onCloseButtonClick() {
     this.activeModal.dismiss();
+  }
+
+  ngOnDestroy() {
+    this.activeLibrarySelectedImageSubscription.unsubscribe();
+    this.activeLibrarySelectedImageAltTextSubscription.unsubscribe();
   }
 }

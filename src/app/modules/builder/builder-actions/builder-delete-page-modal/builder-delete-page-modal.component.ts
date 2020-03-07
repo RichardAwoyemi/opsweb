@@ -70,5 +70,6 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
   ngOnDestroy() {
     this.navbarMenuOptionsSubscription.unsubscribe();
     this.pageComponentsSubscription.unsubscribe();
+    this.footerMenuOptionsSubscription.unsubscribe();
   }
 }

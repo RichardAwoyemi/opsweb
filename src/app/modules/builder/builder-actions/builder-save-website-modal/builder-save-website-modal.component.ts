@@ -55,5 +55,6 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
 
   ngOnDestroy() {
     this.pageComponentsSubscription.unsubscribe();
+    this.websiteNameSubscription.unsubscribe();
   }
 }

@@ -22,7 +22,7 @@ for f in $(find ././../src/app/modules -name '*.ts'); do
       subscriptionName=${line//:}
       noOfOpenSubscriptions=$(grep -o "this.${subscriptionName}.unsubscribe()" ${f} | wc -l)
       if [[ noOfOpenSubscriptions -eq 0 ]]; then
-        Log "${RED}Found an open sub for ${subscriptionName} in $(basename ${f}) ${DEFAULT}"
+        Log "${RED}Found an open sub for ${subscriptionName} in $(basename ${f})${DEFAULT}"
       fi
     done
   fi

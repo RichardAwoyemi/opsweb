@@ -121,6 +121,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
     this.webTemplateSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
     this.selectedTemplateSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
     if (this.templateSubscription) {
       this.templateSubscription.unsubscribe();
     }

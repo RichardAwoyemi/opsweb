@@ -296,7 +296,6 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     this.navbarBrandStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLogoImageStyle', this.navbarLogoImageStyle);
-    /**/
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
@@ -311,5 +310,6 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     this.navbarTemplateSubscription.unsubscribe();
     this.defaultNavbarStyleSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

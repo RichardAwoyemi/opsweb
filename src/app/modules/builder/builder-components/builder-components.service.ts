@@ -145,6 +145,9 @@ export class BuilderComponentsService {
             'heroComponentLayout': {
               'layout': 0
             },
+            'heroHeadingText': 'Unleash your genius',
+            'heroSubheadingText': 'Build a beautiful, modern website with flexible components built from scratch.',
+            'heroButtonText': 'Learn more'
           },
           {
             'componentIndex': 4,
@@ -571,6 +574,9 @@ export class BuilderComponentsService {
             'heroComponentLayout': {
               'layout': 0
             },
+            'heroHeadingText': 'Unleash your genius',
+            'heroSubheadingText': 'Build a beautiful, modern website with flexible components built from scratch.',
+            'heroButtonText': 'Learn more'
           },
           {
             'componentIndex': 4,
@@ -999,6 +1005,9 @@ export class BuilderComponentsService {
             'heroComponentLayout': {
               'layout': 0
             },
+            'heroHeadingText': 'Unleash your genius',
+            'heroSubheadingText': 'Build a beautiful, modern website with flexible components built from scratch.',
+            'heroButtonText': 'Learn more'
           },
           {
             'componentIndex': 4,

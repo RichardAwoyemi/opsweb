@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActiveComponentsPartialSelector, ActiveSettings } from '../../builder';
@@ -17,7 +17,7 @@ import { BuilderDeleteComponentModalComponent } from '../../builder-actions/buil
   templateUrl: './builder-sidebar-pages.component.html',
   styleUrls: ['./builder-sidebar-pages.component.css']
 })
-export class BuilderSidebarPagesComponent implements OnInit {
+export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   settingsName: string = ActiveSettings.Pages;
   activeEditSetting: string;
   activePage: string;
@@ -155,5 +155,13 @@ export class BuilderSidebarPagesComponent implements OnInit {
       centered: true
     });
     modal.componentInstance.componentId = componentId;
+  }
+
+  ngOnDestroy() {
+    this.activeEditSettingSubscription.unsubscribe();
+    this.navbarMenuOptionsSubscription.unsubscribe();
+    this.activePageSettingSubscription.unsubscribe();
+    this.activePageIndexSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
   }
 }

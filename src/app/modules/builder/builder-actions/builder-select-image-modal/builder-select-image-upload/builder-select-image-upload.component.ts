@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
@@ -10,7 +10,7 @@ import { BuilderActionsService } from '../../builder-actions.service';
   templateUrl: './builder-select-image-upload.component.html',
   styleUrls: ['./builder-select-image-upload.component.css']
 })
-export class BuilderSelectImageUploadComponent implements OnInit {
+export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
   heroImageUrl: string;
   heroImageAlt: string;
   imageHeight: number;
@@ -68,5 +68,10 @@ export class BuilderSelectImageUploadComponent implements OnInit {
     this.imageChangedEvent = null;
     this.heroImageUrl = this.croppedImage;
     this.builderActionsService.activeLibrarySelectedImage.next(this.croppedImage);
+  }
+
+  ngOnDestroy() {
+    this.heroImageUrlSubscription.unsubscribe();
+    this.heroImageAltSubscription.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { UtilService } from '../../../../../shared/services/util.service';
 import { UnsplashService } from '../../../../../shared/services/unsplash.service';
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
@@ -10,7 +10,7 @@ import { BuilderHeroService } from '../../../builder-components/builder-hero/bui
   selector: 'app-builder-select-image-photos',
   templateUrl: './builder-select-image-photos.component.html'
 })
-export class BuilderSelectImagePhotosComponent implements OnInit {
+export class BuilderSelectImagePhotosComponent implements OnInit, OnDestroy {
   selectedImageIndex: number;
   selectedImage: any;
   searchText: string;
@@ -77,5 +77,9 @@ export class BuilderSelectImagePhotosComponent implements OnInit {
   @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
+  }
+
+  ngOnDestroy() {
+    this.activeLibrarySearchTextSubscription.unsubscribe();
   }
 }

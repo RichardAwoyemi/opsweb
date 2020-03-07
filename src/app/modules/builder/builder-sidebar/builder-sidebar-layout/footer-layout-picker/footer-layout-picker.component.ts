@@ -420,5 +420,6 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
     this.githubUrlSubscription.unsubscribe();
     this.linkedinUrlSubscription.unsubscribe();
     this.footerMenuOptionsSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

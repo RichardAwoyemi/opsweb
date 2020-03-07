@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
@@ -13,7 +13,7 @@ import { ActiveComponentsPartialSelector } from '../../builder';
   selector: 'app-builder-upload-image-modal',
   templateUrl: './builder-upload-image-modal.component.html'
 })
-export class BuilderUploadImageModalComponent implements IModalComponent, OnInit {
+export class BuilderUploadImageModalComponent implements IModalComponent, OnInit, OnDestroy {
   @Input() imageChangedEvent: any;
   croppedImage: any;
   innerHeight: number;
@@ -79,5 +79,9 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
 
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
+  }
+
+  ngOnDestroy() {
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

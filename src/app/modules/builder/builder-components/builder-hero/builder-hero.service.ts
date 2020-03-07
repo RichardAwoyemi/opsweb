@@ -22,9 +22,9 @@ export class BuilderHeroService {
   heroImageSize = new BehaviorSubject<number>(100);
   heroImageUrl = new BehaviorSubject<string>(null);
   heroImageAlt = new BehaviorSubject<string>(null);
-  heroHeadingText = new BehaviorSubject<string>('Unleash your genius');
-  heroSubheadingText = new BehaviorSubject<string>('Build a beautiful, modern website with flexible components built from scratch.');
-  heroButtonText = new BehaviorSubject<string>('Learn more');
+  heroHeadingText = new BehaviorSubject<string>(null);
+  heroSubheadingText = new BehaviorSubject<string>(null);
+  heroButtonText = new BehaviorSubject<string>(null);
   heroComponentLayout = new BehaviorSubject<Object>({'layout': 0});
   heroTextContainerClass = new BehaviorSubject(<string>('col-12 col-md-7 col-lg-6 order-md-1 pr-md-5'));
   heroImageContainerClass = new BehaviorSubject(<string>('col-12 col-md-5 col-lg-6 order-md-2'));

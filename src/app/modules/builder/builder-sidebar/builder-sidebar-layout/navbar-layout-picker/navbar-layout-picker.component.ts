@@ -248,5 +248,6 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
     this.navbarLogoImageSubscription.unsubscribe();
     this.navbarTemplateSubscription.unsubscribe();
     this.defaultNavbarStyleSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

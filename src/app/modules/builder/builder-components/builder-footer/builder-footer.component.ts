@@ -318,5 +318,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.githubUrlSubscription.unsubscribe();
     this.linkedinUrlSubscription.unsubscribe();
     this.activeElementSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

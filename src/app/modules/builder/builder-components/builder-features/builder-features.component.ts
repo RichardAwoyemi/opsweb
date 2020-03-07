@@ -302,5 +302,8 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     if (this.componentsDetailSubscription) {
       this.componentsDetailSubscription.unsubscribe();
     }
+    if (this.builderComponentsSubscription) {
+      this.builderComponentsSubscription.unsubscribe();
+    }
   }
 }
