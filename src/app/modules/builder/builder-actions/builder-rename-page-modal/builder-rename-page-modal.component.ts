@@ -8,7 +8,8 @@ import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { ActiveComponentsPartialSelector } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveElements } from '../../builder';
+import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
 
 @Component({
   selector: 'app-builder-rename-page-modal',
@@ -29,8 +30,9 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentsService,
-    private builderNavbarService: BuilderNavbarService
+    private builderComponentsService: BuilderComponentsService,
+    private builderNavbarService: BuilderNavbarService,
+    private builderFooterService: BuilderFooterService
   ) {
   }
 
@@ -44,7 +46,7 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
       }
     });
 
-    this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -57,23 +59,21 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
+    const pageIndex = this.activePageIndex;
+    const pageName = this.pageName;
 
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      if (this.pageComponents['pages'][i]['name'] === this.activePage) {
-        this.pageComponents['pages'][i]['name'] = UtilService.toTitleCase(this.pageName);
-      }
-    }
+    this.navbarMenuOptions[pageIndex] = pageName;
 
-    for (let i = 0; i < this.navbarMenuOptions.length; i++) {
-      if (i === this.activePageIndex) {
-        this.navbarMenuOptions[i] = UtilService.toTitleCase(this.pageName);
-      }
-    }
+    this.builderFooterService.setFooterMenuOptions(UtilService.toTitleCase(pageName), pageIndex, this.navbarMenuOptions);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', this.builderFooterService.footerMenuOptions.getValue());
+    this.builderNavbarService.setNavbarMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.builderNavbarService.navbarMenuOptions.getValue());
 
-    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-    this.builderService.activePageSetting.next(UtilService.toTitleCase(this.pageName));
-    this.builderComponentService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
-    this.builderComponentService.pageComponents.next(this.pageComponents);
+    this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), pageIndex);
+    this.builderService.activeElement.next(ActiveElements.Default);
+    this.builderService.activePageSetting.next(UtilService.toTitleCase(pageName));
+    this.builderService.activePageIndex.next(pageIndex);
+
     this.toastrService.success('Your page has been renamed.', 'Great!');
   }
 

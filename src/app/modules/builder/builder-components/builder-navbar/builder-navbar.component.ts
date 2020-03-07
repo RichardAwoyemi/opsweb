@@ -2,9 +2,18 @@ import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderNavbarService } from './builder-navbar.service';
-import { ActiveComponents, ActiveElements, ActiveSettings, ActiveTemplates, ActiveThemes } from '../../builder';
+import {
+  ActiveComponents,
+  ActiveComponentsPartialSelector,
+  ActiveElements,
+  ActiveSettings,
+  ActiveThemes
+} from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderComponentsService } from '../builder-components.service';
+import { BuilderFooterService } from '../builder-footer/builder-footer.service';
+import { ToastrService } from 'ngx-toastr';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-navbar',
@@ -18,7 +27,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   navbarLogoImage: string;
   navbarLogoText: string;
   navbarTheme: string = ActiveThemes.Default;
-  navbarTemplate: string = ActiveTemplates.Default;
   navbarMenuOptions: any;
   navbarLayoutClass: any = 'navbar-nav ml-auto';
   activeEditComponent: string;
@@ -51,9 +59,11 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
 
   constructor(
     private builderService: BuilderService,
+    private toastrService: ToastrService,
     private elementRef: ElementRef,
-    private builderComponentService: BuilderComponentsService,
-    private builderNavbarService: BuilderNavbarService
+    private builderComponentsService: BuilderComponentsService,
+    private builderNavbarService: BuilderNavbarService,
+    private builderFooterService: BuilderFooterService
   ) {
   }
 
@@ -143,7 +153,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
       if (activePageSettingResponse) {
         this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
             this.builderNavbarService.navbarTemplate.next(this.pageComponents['template']);
@@ -231,14 +241,22 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     event.stopPropagation();
   }
 
-  saveNavbarMenuOption(menuOptionIndex: number, newMenuOptionName: string) {
-    for (let i = 0; i < this.navbarMenuOptions.length; i++) {
-      if (menuOptionIndex === i) {
-        this.navbarMenuOptions[i] = newMenuOptionName;
-      }
+  saveNavbarMenuOption(pageIndex: number, pageName: string) {
+    if (pageName !== this.navbarMenuOptions[pageIndex]) {
+      this.navbarMenuOptions[pageIndex] = pageName;
+
+      this.builderFooterService.setFooterMenuOptions(UtilService.toTitleCase(pageName), pageIndex, this.navbarMenuOptions);
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', this.builderFooterService.footerMenuOptions.getValue());
+      this.builderNavbarService.setNavbarMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.builderNavbarService.navbarMenuOptions.getValue());
+
+      this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), pageIndex);
+      this.builderService.activeElement.next(ActiveElements.Default);
+      this.builderService.activePageSetting.next(UtilService.toTitleCase(pageName));
+      this.builderService.activePageIndex.next(pageIndex);
+
+      this.toastrService.success('Your page has been renamed.', 'Great!');
     }
-    this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
   }
 
   setNavbarLinkClass() {

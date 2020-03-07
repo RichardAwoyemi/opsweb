@@ -49,7 +49,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     private httpClient: HttpClient,
     private builderService: BuilderService,
     private builderFeaturesService: BuilderFeaturesService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private elementRef: ElementRef
   ) {
   }
@@ -106,7 +106,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
       if (activePageSettingResponse) {
         this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
             this.featuresTemplate = this.pageComponents['template'];

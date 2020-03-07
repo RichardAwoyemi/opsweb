@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 import { BuilderComponentsService } from '../builder-components.service';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Injectable()
 export class BuilderNavbarService {
@@ -15,7 +16,7 @@ export class BuilderNavbarService {
   navbarLinkStyle = new BehaviorSubject<Object>(null);
   navbarBrandStyle = new BehaviorSubject<Object>(null);
   navbarLayoutClass = new BehaviorSubject<Object>(null);
-  navbarMenuOptions = new BehaviorSubject<Array<String>>(null);
+  navbarMenuOptions = new BehaviorSubject<any>(null);
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -150,5 +151,15 @@ export class BuilderNavbarService {
     this.navbarTheme.next(ActiveThemes.Default);
     this.navbarTemplate.next(templateId);
     this.setNavbarTemplate(templateId);
+  }
+
+  setNavbarMenuOptions(pageName, pageIndex) {
+    const navbarMenuOptions = this.navbarMenuOptions.getValue();
+    for (let i = 0; i < navbarMenuOptions.length; i++) {
+      if (i === pageIndex) {
+        this.navbarMenuOptions[i] = UtilService.toTitleCase(pageName);
+      }
+    }
+    this.navbarMenuOptions.next(navbarMenuOptions);
   }
 }

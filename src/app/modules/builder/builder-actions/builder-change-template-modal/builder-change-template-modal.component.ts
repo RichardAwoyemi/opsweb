@@ -21,7 +21,7 @@ export class BuilderChangeTemplateModalComponent implements IModalComponent {
     private builderHeroService: BuilderHeroService,
     private builderFooterService: BuilderFooterService,
     private builderFeaturesService: BuilderFeaturesService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private toastrService: ToastrService
   ) {
   }

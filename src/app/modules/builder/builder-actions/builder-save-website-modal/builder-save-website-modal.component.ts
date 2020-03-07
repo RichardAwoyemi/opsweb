@@ -21,13 +21,13 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
     private activeModal: NgbActiveModal,
     private websiteService: WebsiteService,
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private toastrService: ToastrService
   ) {
   }
 
   ngOnInit() {
-    this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }

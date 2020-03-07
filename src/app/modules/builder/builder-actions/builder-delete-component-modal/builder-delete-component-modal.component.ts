@@ -15,7 +15,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
 
   constructor(
     private activeModal: NgbActiveModal,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
     private toastrService: ToastrService
   ) {
@@ -34,7 +34,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {
       if (activePageSettingsResponse) {
         this.activePage = activePageSettingsResponse;
-        this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
           if (response) {
             this.pageComponents = response;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -52,14 +52,14 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   }
 
   onConfirmButtonClick() {
-    let pageComponents = this.builderComponentService.pageComponents.getValue();
+    let pageComponents = this.builderComponentsService.pageComponents.getValue();
 
     if (BuilderComponentsService.isComponent(ActiveComponents.Navbar, this.componentId) === true) {
-      const components = this.builderComponentService.deleteComponentByName(ActiveComponentsPartialSelector.Navbar);
+      const components = this.builderComponentsService.deleteComponentByName(ActiveComponentsPartialSelector.Navbar);
       pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
     }
     if (BuilderComponentsService.isComponent(ActiveComponents.Hero, this.componentId) === true) {
-      const components = this.builderComponentService.deleteComponentByName(ActiveComponentsPartialSelector.Hero);
+      const components = this.builderComponentsService.deleteComponentByName(ActiveComponentsPartialSelector.Hero);
       pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
     }
     if (BuilderComponentsService.isComponent(ActiveComponents.Features, this.componentId) === true) {
@@ -68,11 +68,11 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
       pageComponents['pages'][this.activePageIndex]['components'] = components;
     }
     if (BuilderComponentsService.isComponent(ActiveComponents.Footer, this.componentId) === true) {
-      const components = this.builderComponentService.deleteComponentByName(ActiveComponentsPartialSelector.Footer);
+      const components = this.builderComponentsService.deleteComponentByName(ActiveComponentsPartialSelector.Footer);
       pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
     }
 
-    this.builderComponentService.pageComponents.next(pageComponents);
+    this.builderComponentsService.pageComponents.next(pageComponents);
     this.builderService.setSidebarComponentsSetting();
     this.toastrService.success('Your component has been deleted.', 'Great!');
     this.activeModal.dismiss();

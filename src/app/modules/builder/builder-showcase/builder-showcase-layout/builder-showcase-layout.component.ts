@@ -28,7 +28,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   private websiteLoadedSubscription: Subscription;
 
   constructor(
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService,
     private sessionStorageService: SessionStorageService,
     private modalService: NgbModal,
@@ -52,11 +52,11 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageResponse => {
       if (activePageResponse) {
         this.activePage = activePageResponse;
-        this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
           if (response) {
             this.pageComponents = response;
             this.setPageComponents();
-            this.builderComponentService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
+            this.builderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
           }
         }));
       }
@@ -78,7 +78,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   setPageComponents() {
     let tempBuilderComponents = null;
     this.builderComponents = [];
-    this.builderComponentService.activeComponentIndex.next(null);
+    this.builderComponentsService.activeComponentIndex.next(null);
 
     for (let i = 0; i < this.pageComponents['pages'].length; i++) {
       if (this.pageComponents['pages'][i]['name'] === this.activePage) {
@@ -86,13 +86,15 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
       }
     }
 
-    for (let j = 0; j < tempBuilderComponents.length; j++) {
-      this.builderComponents.push(`<${tempBuilderComponents[j]['componentName']} id='${tempBuilderComponents[j]['componentId']}'/><${tempBuilderComponents[j]['componentName']}>`);
+    if (tempBuilderComponents) {
+      for (let j = 0; j < tempBuilderComponents.length; j++) {
+        this.builderComponents.push(`<${tempBuilderComponents[j]['componentName']} id='${tempBuilderComponents[j]['componentId']}'/><${tempBuilderComponents[j]['componentName']}>`);
+      }
     }
   }
 
   builderComponentSelected(componentIndex) {
-    this.builderComponentService.activeComponentIndex.next(componentIndex);
+    this.builderComponentsService.activeComponentIndex.next(componentIndex);
   }
 
   addComponent(tempComponent) {
@@ -106,7 +108,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
       this.pageComponents['pages'][activePageIndex]['components'].splice(activeComponentIndex, 0, component);
       const componentsArrayWithoutPlaceholders = BuilderComponentsService.removePlaceholders(this.pageComponents['pages'][activePageIndex]['components']);
       this.pageComponents['pages'][activePageIndex]['components'] = BuilderComponentsService.addPlaceholdersOnSinglePage(componentsArrayWithoutPlaceholders);
-      this.builderComponentService.pageComponents.next(this.pageComponents);
+      this.builderComponentsService.pageComponents.next(this.pageComponents);
       this.sessionStorageService.setItem('components', JSON.stringify(this.pageComponents));
     }
   }
@@ -116,7 +118,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeEditComponentId.next(null);
     this.builderService.activeElement.next(null);
-    this.builderComponentService.activeComponentIndex.next(null);
+    this.builderComponentsService.activeComponentIndex.next(null);
     this.builderService.setSidebarComponentsSetting();
 
     let pageIndex = null;
@@ -141,7 +143,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
       return a['componentIndex'] - b['componentIndex'];
     });
 
-    this.builderComponentService.pageComponents.next(this.pageComponents);
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
 
   @HostListener('window:message', ['$event'])

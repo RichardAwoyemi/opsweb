@@ -157,4 +157,16 @@ export class BuilderFooterService {
     this.footerTemplate.next(templateId);
     this.setFooterTemplate(templateId);
   }
+
+  setFooterMenuOptions(pageName, pageIndex, navbarMenuOptions) {
+    let footerMenuOptions = this.footerMenuOptions.getValue();
+    if (footerMenuOptions) {
+      footerMenuOptions[pageName] = footerMenuOptions[navbarMenuOptions[pageIndex]];
+      const keys = Object.keys(footerMenuOptions);
+      delete footerMenuOptions[keys[pageIndex]];
+      footerMenuOptions = this.sortFooterMenuOptions(footerMenuOptions, navbarMenuOptions);
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
+      this.footerMenuOptions.next(footerMenuOptions);
+    }
+  }
 }

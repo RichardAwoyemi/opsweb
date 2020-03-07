@@ -23,7 +23,7 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }
@@ -35,7 +35,7 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
       }
     });
 
-    this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -54,7 +54,7 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
         this.pageComponents['pages'].splice(i, 1);
       }
     }
-    this.builderComponentService.pageComponents.next(this.pageComponents);
+    this.builderComponentsService.pageComponents.next(this.pageComponents);
 
     this.navbarMenuOptions.splice(this.activePageIndex, 1);
     this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);

@@ -29,6 +29,7 @@ export class BuilderComponentsService {
     private sessionStorageService: SessionStorageService
   ) {
   }
+
   activeComponentIndex = new BehaviorSubject<number>(0);
 
   pageComponents = new BehaviorSubject<any>(null);
@@ -1689,5 +1690,15 @@ export class BuilderComponentsService {
     if (!this.checkIfComponentExists(ActiveComponentsPartialSelector.Footer)) {
       console.log(pageComponents);
     }
+  }
+
+  renamePage(pageName: string, pageIndex: number) {
+    const pageComponents = this.pageComponents.getValue();
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      if (i === pageIndex) {
+        pageComponents['pages'][i]['name'] = pageName;
+      }
+    }
+    this.pageComponents.next(pageComponents);
   }
 }

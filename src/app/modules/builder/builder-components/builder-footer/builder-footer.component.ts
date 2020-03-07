@@ -71,7 +71,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private elementRef: ElementRef,
   ) {
   }
@@ -214,7 +214,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
       if (activePageSettingResponse) {
         this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
             this.builderFooterService.footerTemplate.next(this.pageComponents['template']);

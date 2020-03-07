@@ -37,7 +37,7 @@
         <li *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index" class="nav-item">
           <a (blur)="removeLineBreaks($event); saveNavbarMenuOption(i, $event.target['innerText']);"
              (click)="selectNavbarLink($event, 'navbar-link-' + i)"
-             (keydown.enter)="saveNavbarMenuOption(i, $event.target.innerText); $event.preventDefault(); $event.target.blur()"
+             (keydown.enter)="$event.target.blur()"
              [attr.contenteditable]="setContentEditable()"
              [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
              [innerText]="navbarMenuOption"

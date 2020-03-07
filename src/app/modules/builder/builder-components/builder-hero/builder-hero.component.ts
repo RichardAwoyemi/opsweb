@@ -60,7 +60,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   constructor(
     private builderService: BuilderService,
     private builderHeroService: BuilderHeroService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private elementRef: ElementRef
   ) {
   }
@@ -178,7 +178,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
       if (activePageSettingResponse) {
         this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentService.pageComponents.subscribe(response => {
+        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
           if (response) {
             this.pageComponents = response;
             this.builderHeroService.heroTemplate.next(this.pageComponents['template']);

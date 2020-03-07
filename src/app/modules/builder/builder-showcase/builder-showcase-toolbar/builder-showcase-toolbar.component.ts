@@ -39,7 +39,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private builderService: BuilderService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService,
     private builderNavbarService: BuilderNavbarService

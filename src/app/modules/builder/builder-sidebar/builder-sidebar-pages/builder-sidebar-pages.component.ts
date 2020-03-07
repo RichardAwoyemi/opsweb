@@ -39,14 +39,14 @@ export class BuilderSidebarPagesComponent implements OnInit {
     private modalService: NgbModal,
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
-    private builderComponentService: BuilderComponentsService,
+    private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService
   ) {
     this.navbarMenuSortableOptions = {
       onUpdate: function () {
         const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
         builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
-        builderComponentService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
+        builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
       }
     };
 
@@ -54,16 +54,16 @@ export class BuilderSidebarPagesComponent implements OnInit {
       onUpdate: function (e: any) {
         const tempComponentArrayWithoutPlaceholders = [];
         for (let i = 0; i < e.target.children.length; i++) {
-          const componentLocation = builderComponentService.getActiveTargetComponentById(e.target.children[i].id);
-          const component = builderComponentService.getComponent(componentLocation['activePageIndex'], componentLocation['activeComponentIndex']);
+          const componentLocation = builderComponentsService.getActiveTargetComponentById(e.target.children[i].id);
+          const component = builderComponentsService.getComponent(componentLocation['activePageIndex'], componentLocation['activeComponentIndex']);
           component['timestamp'] = new Date().getTime();
           tempComponentArrayWithoutPlaceholders.push(component);
         }
         const tempComponentArrayWithPlaceholders = BuilderComponentsService.addPlaceholdersOnSinglePage(tempComponentArrayWithoutPlaceholders);
-        const pageComponents = builderComponentService.pageComponents.getValue();
+        const pageComponents = builderComponentsService.pageComponents.getValue();
         const activePageIndex = builderService.activePageIndex.getValue();
         pageComponents['pages'][activePageIndex]['components'] = tempComponentArrayWithPlaceholders;
-        builderComponentService.pageComponents.next(pageComponents);
+        builderComponentsService.pageComponents.next(pageComponents);
       }
     };
   }
@@ -90,7 +90,7 @@ export class BuilderSidebarPagesComponent implements OnInit {
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {
       if (activePageSettingsResponse) {
         this.activePage = activePageSettingsResponse;
-        this.pageComponentsSubscription = this.builderComponentService.pageComponents.subscribe((response => {
+        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
           if (response) {
             this.pageComponents = response;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
