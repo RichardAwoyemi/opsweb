@@ -109,9 +109,9 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
-      if (footerTemplateResponse) {
-        this.footerTemplate = footerTemplateResponse;
+    this.footerTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+      if (templateResponse) {
+        this.footerTemplate = templateResponse['template'];
 
         this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
           if (response) {
@@ -249,7 +249,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterSocialLinksFontSize() {
-    this.footerSocialLinksStyle['font-size'] = this.defaultFooterStyle['footerSocialLinksFontSize']['font-size'];
+    this.footerSocialLinksStyle['font-size'] = this.defaultFooterStyle['footerSocialLinksStyle']['font-size'];
     this.footerSocialLinksFontUnit = 'px';
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
