@@ -10,9 +10,7 @@
              [ngClass]="setHeroClass('hero-image')"
              [ngStyle]="setHeroImageStyle()"
              id="hero-image">
-          <figure class="w-100">
             <img [src]="heroImageUrl" alt="{{ heroImageAlt }}" class="img-fluid">
-          </figure>
         </div>
       </div>
       <div [ngClass]="setHeroTextContainerClass()">
@@ -47,8 +45,8 @@
                id="hero-button" style="display:inline-block">
             <button [ngStyle]="heroButtonStyle"
                     class="btn hero-button">
-              <span (blur)="removeLineBreaks($event); saveHeroButtonTextOption();"
-                    (keydown.enter)="saveHeroButtonTextOption(); $event.preventDefault()"
+              <span (blur)="removeLineBreaks($event); saveHeroButtonTextOption($event.target['innerText']);"
+                    (keydown.enter)="saveHeroButtonTextOption($event.target['innerText']); $event.preventDefault()"
                     [attr.contenteditable]="setContentEditable()"
                     [innerText]="heroButtonText">
               </span>

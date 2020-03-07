@@ -205,6 +205,9 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       if (this.componentDetail['heroSubheadingText']) {
                         this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
                       }
+                      if (this.componentDetail['heroButtonText']) {
+                        this.builderHeroService.heroButtonText.next(this.componentDetail['heroButtonText']);
+                      }
                     }
                   }
                 }
@@ -338,9 +341,10 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.builderComponentsService.setPageComponentById(this.componentId, 'heroSubheadingText', heroSubheadingText);
   }
 
-  saveHeroButtonTextOption() {
+  saveHeroButtonTextOption(heroButtonText) {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderHeroService.heroButtonText.next(this.heroButtonText);
+    this.builderHeroService.heroButtonText.next(heroButtonText);
+    this.builderComponentsService.setPageComponentById(this.componentId, 'heroButtonText', heroButtonText);
   }
 
   ngOnDestroy() {
