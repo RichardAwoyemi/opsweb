@@ -172,14 +172,14 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   setNumberOfFeatures(value: number) {
     const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, value);
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
-    this.builderComponentsService.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
+    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetNumberOfFeatures() {
     const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, 3);
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
-    this.builderComponentsService.setPageComponentByKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
+    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 

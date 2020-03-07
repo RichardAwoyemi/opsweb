@@ -1581,7 +1581,7 @@ export class BuilderComponentsService {
     this.pageComponents.next(pageComponents);
   }
 
-  setPageComponentByKey(componentId, parentKey, childKey, value) {
+  setPageComponentByIdAndKey(componentId, parentKey, childKey, value) {
     const targetComponentLocation = this.getActiveTargetComponentById(componentId);
     const pageComponents = this.pageComponents.getValue();
     const activePageIndex = targetComponentLocation['activePageIndex'];
@@ -1589,6 +1589,19 @@ export class BuilderComponentsService {
     const timestamp = new Date().getTime();
     pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][parentKey][childKey] = value;
     pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
+    this.pageComponents.next(pageComponents);
+  }
+
+  setPageComponentsByNameAndKey(component, parentKey, childKey, value) {
+    const targetComponentLocation = this.getTargetComponentByName(component);
+    const pageComponents = this.pageComponents.getValue();
+    const timestamp = new Date().getTime();
+    for (let i = 0; i < targetComponentLocation.length; i++) {
+      const activePageIndex = targetComponentLocation[i]['activePageIndex'];
+      const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
+      pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][parentKey][childKey] = value;
+      pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['timestamp'] = timestamp;
+    }
     this.pageComponents.next(pageComponents);
   }
 

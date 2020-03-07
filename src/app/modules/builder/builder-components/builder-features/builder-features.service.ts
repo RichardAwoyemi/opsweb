@@ -101,8 +101,12 @@ export class BuilderFeaturesService {
         this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresSubheadingStyle', featuresSubheadingStyle);
       }
       if (template['featuresStyle']) {
-        const featuresStyle = {...this.featuresStyle.getValue(), ...template['featuresStyle']};
-        this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresStyle', featuresStyle);
+        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'background-color', template['featuresStyle']['background-color']);
+        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-left', template['featuresStyle']['padding-left']);
+        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-bottom', template['featuresStyle']['padding-bottom']);
+        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-bottom', template['featuresStyle']['padding-bottom']);
+        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-top', template['featuresStyle']['padding-top']);
+        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-right', template['featuresStyle']['padding-right']);
       }
     }
   }
