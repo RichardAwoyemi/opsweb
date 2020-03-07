@@ -360,6 +360,8 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.activeElementSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
+    this.heroImageSizeSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
     this.heroTextContainerClassSubscription.unsubscribe();
   }
 }

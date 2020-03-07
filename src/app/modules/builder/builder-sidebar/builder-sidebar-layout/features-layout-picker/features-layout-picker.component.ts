@@ -286,5 +286,8 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
     this.featuresAlignmentClassSubscription.unsubscribe();
     this.featuresTemplateSubscription.unsubscribe();
     this.defaultFeaturesStyleSubscription.unsubscribe();
+    this.websiteChangeCountSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
+    this.websiteChangeCountSubscription.unsubscribe();
   }
 }

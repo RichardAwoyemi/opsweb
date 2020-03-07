@@ -281,5 +281,7 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.featuresTemplateSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
+    this.defaultFeaturesStyleSubscription.unsubscribe();
   }
 }

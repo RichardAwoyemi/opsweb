@@ -322,5 +322,8 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     this.navbarThemeSubscription.unsubscribe();
     this.navbarTemplateSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
+    this.activePageSettingSubscription.unsubscribe();
+    this.activeElementSubscription.unsubscribe();
   }
 }

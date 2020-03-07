@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { debounce } from '../../../shared/decorators/debounce.decorator';
 import { Subscription } from 'rxjs';
 import { ActiveSidebarSettings } from '../dashboard';
@@ -8,7 +8,7 @@ import { DashboardService } from '../dashboard.service';
   selector: 'app-dashboard-body',
   templateUrl: './dashboard-body.component.html'
 })
-export class DashboardBodyComponent implements OnInit {
+export class DashboardBodyComponent implements OnInit, OnDestroy {
   innerHeight: number;
   activeSidebar: string = ActiveSidebarSettings.Websites;
   ACTIVE_SIDEBAR_WEBSITES: string = ActiveSidebarSettings.Websites;
@@ -36,5 +36,9 @@ export class DashboardBodyComponent implements OnInit {
   @debounce()
   onResize() {
     this.innerHeight = window.innerHeight;
+  }
+
+  ngOnDestroy() {
+    this.activeSidebarSettingSubscription.unsubscribe();
   }
 }

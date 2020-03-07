@@ -409,5 +409,6 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.linkedinUrlSubscription.unsubscribe();
     this.navbarMenuOptionsSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
+    this.builderComponentsSubscription.unsubscribe();
   }
 }

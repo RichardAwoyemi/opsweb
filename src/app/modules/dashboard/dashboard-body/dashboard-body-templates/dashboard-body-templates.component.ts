@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Template } from '../../../../shared/models/template';
 import { DataService } from '../../../../shared/services/data.service';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   selector: 'app-dashboard-body-templates',
   templateUrl: './dashboard-body-templates.component.html'
 })
-export class DashboardBodyTemplatesComponent implements OnInit {
+export class DashboardBodyTemplatesComponent implements OnInit, OnDestroy {
   user: IUser;
   innerHeight: number;
   searchText: string;
@@ -45,5 +45,9 @@ export class DashboardBodyTemplatesComponent implements OnInit {
       });
 
     this.ngxLoader.stop();
+  }
+
+  ngOnDestroy() {
+    this.webTemplateSubscription.unsubscribe();
   }
 }

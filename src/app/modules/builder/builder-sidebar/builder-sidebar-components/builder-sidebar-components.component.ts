@@ -24,7 +24,7 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
 
   private activeEditComponentSubscription: Subscription;
   private featuresTemplateSubscription: Subscription;
-  // private navbarTemplateSubscription: Subscription;
+  private navbarTemplateSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
   private defaultFeaturesStyleSubscription: Subscription;
   private defaultFooterStyleSubscription: Subscription;
@@ -171,5 +171,7 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     this.featuresTemplateSubscription.unsubscribe();
     this.defaultFeaturesStyleSubscription.unsubscribe();
     this.defaultFooterStyleSubscription.unsubscribe();
+    this.navbarTemplateSubscription.unsubscribe();
+    this.footerTemplateSubscription.unsubscribe();
   }
 }
