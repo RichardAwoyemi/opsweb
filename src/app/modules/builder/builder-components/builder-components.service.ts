@@ -1701,4 +1701,14 @@ export class BuilderComponentsService {
     }
     this.pageComponents.next(pageComponents);
   }
+
+  deletePage(pageName) {
+    const pageComponents = this.pageComponents.getValue();
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      if (pageComponents['pages'][i]['name'] === pageName) {
+        pageComponents['pages'].splice(i, 1);
+      }
+    }
+    this.pageComponents.next(pageComponents);
+  }
 }

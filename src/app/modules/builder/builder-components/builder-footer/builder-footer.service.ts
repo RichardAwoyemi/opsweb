@@ -169,4 +169,11 @@ export class BuilderFooterService {
       this.footerMenuOptions.next(footerMenuOptions);
     }
   }
+
+  deleteFooterMenuOption(pageIndex: any) {
+    const footerMenuOptions = this.footerMenuOptions.getValue();
+    const keys = Object.keys(footerMenuOptions);
+    delete footerMenuOptions[keys[pageIndex]];
+    this.footerMenuOptions.next(footerMenuOptions);
+  }
 }

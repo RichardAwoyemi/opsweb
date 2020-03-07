@@ -6,6 +6,8 @@ import { BuilderNavbarService } from '../../builder-components/builder-navbar/bu
 import { ToastrService } from 'ngx-toastr';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { ActiveComponentsPartialSelector } from '../../builder';
+import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
 
 @Component({
   selector: 'app-builder-delete-page-modal',
@@ -15,8 +17,10 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
   @Input() activePage;
   @Input() activePageIndex;
   navbarMenuOptions: any;
+  footerMenuOptions: any;
   pageComponents: any;
   private navbarMenuOptionsSubscription: Subscription;
+  private footerMenuOptionsSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
 
   constructor(
@@ -24,7 +28,8 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
     private toastrService: ToastrService,
     private builderService: BuilderService,
     private builderComponentsService: BuilderComponentsService,
-    private builderNavbarService: BuilderNavbarService
+    private builderNavbarService: BuilderNavbarService,
+    private builderFooterService: BuilderFooterService
   ) {
   }
 
@@ -32,6 +37,12 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
     this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
       if (response) {
         this.navbarMenuOptions = response;
+      }
+    });
+
+    this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+      if (response) {
+        this.footerMenuOptions = response;
       }
     });
 
@@ -48,19 +59,11 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
-
-    for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-      if (this.pageComponents['pages'][i]['name'] === this.activePage) {
-        this.pageComponents['pages'].splice(i, 1);
-      }
-    }
-    this.builderComponentsService.pageComponents.next(this.pageComponents);
-
-    this.navbarMenuOptions.splice(this.activePageIndex, 1);
-    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-
+    this.builderComponentsService.deletePage(this.activePage);
+    this.builderNavbarService.deleteNavbarMenuOption(this.activePageIndex);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.builderNavbarService.navbarMenuOptions.getValue());
+    this.builderFooterService.deleteFooterMenuOption(this.activePageIndex);
     this.builderService.activePageSetting.next('Home');
-
     this.toastrService.success('Your page has been deleted.', 'Great!');
   }
 

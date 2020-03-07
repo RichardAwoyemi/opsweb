@@ -162,4 +162,10 @@ export class BuilderNavbarService {
     }
     this.navbarMenuOptions.next(navbarMenuOptions);
   }
+
+  deleteNavbarMenuOption(pageIndex) {
+    const navbarMenuOptions = this.navbarMenuOptions.getValue();
+    navbarMenuOptions.splice(pageIndex, 1);
+    this.navbarMenuOptions.next(navbarMenuOptions);
+  }
 }
