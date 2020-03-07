@@ -199,6 +199,9 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       this.builderHeroService.heroImageAlt.next(this.componentDetail['heroImageStyle']['alt']);
                       this.builderHeroService.heroComponentLayout.next(this.componentDetail['heroComponentLayout']);
                       this.builderHeroService.heroTheme.next(this.componentDetail['heroTheme']);
+                      if (this.componentDetail['heroHeadingText']) {
+                        this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
+                      }
                     }
                   }
                 }
@@ -320,9 +323,10 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     BuilderService.removeLineBreaks(event);
   }
 
-  saveHeroHeadingTextOption() {
+  saveHeroHeadingTextOption(heroHeadingText) {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderHeroService.heroHeadingText.next(this.heroHeadingText);
+    this.builderHeroService.heroHeadingText.next(heroHeadingText);
+    this.builderComponentsService.setPageComponentById(this.componentId, 'heroHeadingText', heroHeadingText);
   }
 
   saveHeroSubheadingTextOption() {

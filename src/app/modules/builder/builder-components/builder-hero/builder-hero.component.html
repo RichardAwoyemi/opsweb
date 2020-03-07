@@ -20,8 +20,8 @@
              [class]="setActiveElementStyle(activeElement, 'hero-heading')"
              [ngClass]="setHeroClass('hero-heading')"
              id="hero-heading">
-          <h1 (blur)="removeLineBreaks($event); saveHeroHeadingTextOption();"
-              (keydown.enter)="saveHeroHeadingTextOption(); $event.preventDefault()"
+          <h1 (blur)="removeLineBreaks($event); saveHeroHeadingTextOption($event.target['innerText']);"
+              (keydown.enter)="saveHeroHeadingTextOption($event.target['innerText']); $event.preventDefault()"
               [attr.contenteditable]="setContentEditable()"
               [innerText]="heroHeadingText"
               [ngStyle]="heroHeadingStyle"
