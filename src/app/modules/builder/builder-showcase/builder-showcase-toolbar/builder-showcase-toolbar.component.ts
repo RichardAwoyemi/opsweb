@@ -15,7 +15,7 @@ import { BuilderSaveWebsiteModalComponent } from '../../builder-actions/builder-
   selector: 'app-builder-showcase-toolbar',
   templateUrl: './builder-showcase-toolbar.component.html',
   styleUrls: ['./builder-showcase-toolbar.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   activePage = 'Home';

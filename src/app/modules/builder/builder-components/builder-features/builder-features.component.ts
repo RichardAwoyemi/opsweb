@@ -75,7 +75,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
 
     this.featuresBreakpointSubscription = this.builderFeaturesService.featuresBreakpoint.subscribe(response => {
       if (response) {
-        this.setNumberOfFeatures();
+        this.setFeaturesWidth();
       }
     });
 
@@ -87,19 +87,19 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
 
     this.builderService.toolbarMobileOrientationButton.subscribe(response => {
       if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setNumberOfFeatures(ActiveOrientations.Mobile);
+        this.setFeaturesWidth(ActiveOrientations.Mobile);
       }
     });
 
     this.builderService.toolbarDesktopOrientationButton.subscribe(response => {
       if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setNumberOfFeatures(ActiveOrientations.Desktop);
+        this.setFeaturesWidth(ActiveOrientations.Desktop);
       }
     });
 
     this.builderService.toolbarTabletOrientationButton.subscribe(response => {
       if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setNumberOfFeatures(ActiveOrientations.Tablet);
+        this.setFeaturesWidth(ActiveOrientations.Tablet);
       }
     });
 
@@ -133,11 +133,8 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     });
   }
 
-  setNumberOfFeatures(orientation: string = null) {
-    if (this.featuresItemArray) {
-      this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
-      this.builderFeaturesService.setNumberOfFeatures(this.componentId, this.featuresItemArray.length, orientation);
-    }
+  setFeaturesWidth(orientation: string = null) {
+    this.builderFeaturesService.setFeaturesWidth(orientation);
   }
 
   setActiveEditComponent() {

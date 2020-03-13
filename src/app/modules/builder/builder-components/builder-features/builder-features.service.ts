@@ -180,6 +180,35 @@ export class BuilderFeaturesService {
     }
   }
 
+  setFeaturesWidth(orientation: string = null) {
+    const featureComponents = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Features);
+    const pageComponents = this.builderComponentsService.pageComponents.getValue();
+    if (featureComponents.length > 0) {
+      for (let i = 0; i < featureComponents.length; i++) {
+        const activePageIndex = featureComponents[i]['activePageIndex'];
+        const activeComponentIndex = featureComponents[i]['activeComponentIndex'];
+        const component = pageComponents['pages'][activePageIndex]['components'][activeComponentIndex];
+        const componentId = component['componentId'];
+        const featuresStyle = component['featuresStyle'];
+        const number = component['featuresItemArray'].length;
+
+        let multiplier: number;
+        const breakpoint = this.featuresBreakpoint.getValue();
+        const showcaseOrientation = orientation || this.builderService.activeOrientation.getValue();
+        if (breakpoint === 'small' || showcaseOrientation === 'mobile') {
+          multiplier = number * 4;
+        } else if (breakpoint === 'medium' || showcaseOrientation === 'tablet') {
+          multiplier = 1;
+        } else if (breakpoint === 'large' || showcaseOrientation === 'desktop') {
+          multiplier = 1;
+        }
+
+        featuresStyle['width'] = 100 * multiplier / number + '%';
+        this.builderComponentsService.setPageComponentById(componentId, 'featuresStyle', featuresStyle);
+      }
+    }
+  }
+
   setComponentTemplate(templateId) {
     this.featuresTheme.next(ActiveThemes.Default);
     this.featuresTemplate.next(templateId);

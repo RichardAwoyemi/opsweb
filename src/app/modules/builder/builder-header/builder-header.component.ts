@@ -11,6 +11,7 @@ import * as fromUser from '../../core/store/user/user.reducer';
 import { BuilderRenameWebsiteModalComponent } from '../builder-actions/builder-rename-website-modal/builder-rename-website-modal.component';
 import { WebsiteService } from '../../../shared/services/website.service';
 import { BuilderActionsService } from '../builder-actions/builder-actions.service';
+import { SimpleModalService } from '../../../shared/components/simple-modal/simple-modal.service';
 
 @Component({
   selector: 'app-builder-header',
@@ -34,6 +35,7 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
     private builderService: BuilderService,
     private builderActionsService: BuilderActionsService,
     private websiteService: WebsiteService,
+    private simpleModalService: SimpleModalService,
     private userStore: Store<fromUser.State>,
     public router: Router
   ) {
@@ -113,6 +115,12 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['home']).then(() => {
       });
+    }
+  }
+
+  openPublishModal() {
+    if (!this.authService.isLoggedIn()) {
+      this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
     }
   }
 
