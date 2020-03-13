@@ -18,6 +18,9 @@ function listenForShowcaseMessages(e) {
     if (e.data.action === 'component-selected') {
       componentToAdd = e.data.message;
     }
+    if (e.data.action === 'non-component-selected') {
+      componentToAdd = null;
+    }
   }
 }
 
@@ -135,9 +138,11 @@ function addComponent(e) {
           "message": componentToAdd
         }, '*')
       } else {
-        window.parent.window.postMessage({"for": "opsonion", "action": "component-exists"}, '*')
+        window.parent.window.postMessage({ "for": "opsonion", "action": "component-exists" }, '*')
       }
     }
+  } else {
+    window.parent.window.postMessage({ "for": "opsonion", "action": "component-error" }, '*')
   }
 
   componentToAdd = null;

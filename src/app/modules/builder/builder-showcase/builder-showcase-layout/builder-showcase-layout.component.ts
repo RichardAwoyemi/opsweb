@@ -163,6 +163,10 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
         case 'delete-component':
           this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
           break;
+        case 'component-error':
+          this.simpleModalService.displayMessage('Oops!', 'This item is not a valid component.');
+          break;
+
       }
       this.builderService.processIncomingMessages(e, this.activeEditComponent);
     }

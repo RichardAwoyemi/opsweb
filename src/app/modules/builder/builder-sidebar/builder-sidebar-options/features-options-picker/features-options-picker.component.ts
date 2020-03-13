@@ -73,9 +73,13 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
                 if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-                  this.numberOfFeatures = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'].length;
-                  this.featuresItemArray = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'];
-                  this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
+                  if (this.pageComponents['pages'][i]['components'][j]['featuresItemArray']) {
+                    this.numberOfFeatures = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'].length;
+                    this.featuresItemArray = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'];
+                  }
+                  if (this.pageComponents['pages'][i]['components'][j]['featuresStyle']) {
+                    this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
+                  }
                 }
               }
             }

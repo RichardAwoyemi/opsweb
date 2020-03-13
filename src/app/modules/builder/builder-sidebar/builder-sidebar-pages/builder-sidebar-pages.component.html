@@ -13,6 +13,7 @@
     <div [sortablejsOptions]="navbarMenuSortableOptions" [sortablejs]="navbarMenuOptions" style="padding-top: 1em">
       <div *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index"
            class="row page-row-color page-row-option justify-content-center align-items-center"
+           (dragstart)="onDragStart()"
            style="font-size: 0.8em">
         <div class="col-md-2" style="padding: 0.5em;">
           <button class="btn btn-square btn-options btn-block btn-lg btn-drag-menu" type="button">
@@ -53,6 +54,7 @@
          style="padding-top: 1em">
       <div *ngFor="let componentListOption of componentListOptions"
            [attr.id]="componentListOption['componentId']"
+           (dragstart)="onDragStart()"
            class="row page-row-color page-row-option justify-content-center align-items-center"
            style="font-size: 0.8em">
         <div class="col-md-2" style="padding: 0.5em;">
