@@ -19,7 +19,7 @@ function listenForShowcaseMessages(e) {
       componentToAdd = e.data.message;
     }
     if (e.data.action === 'non-component-selected') {
-      componentToAdd = null;
+      componentToAdd = 'non-component-selected';
     }
   }
 }
@@ -120,29 +120,30 @@ function addComponent(e) {
   let componentExists = false;
 
   if (componentToAdd) {
-    const nearestComponentId = $(e.target).parent().parent().parent().attr("id");
-    if (nearestComponentId) {
-      components = JSON.parse(sessionStorage.getItem('components'));
-      for (let i = 0; i < components.length; i++) {
-        if (components[i]['componentName'] === componentToAdd['componentName']) {
-          if (isInArray(components[i]['componentName'], singleUseComponents))
-            componentExists = true;
+    if (componentToAdd === 'non-component-selected') {
+      window.parent.window.postMessage({ "for": "opsonion", "action": "component-error" }, '*')
+    } else {
+      const nearestComponentId = $(e.target).parent().parent().parent().attr("id");
+      if (nearestComponentId) {
+        components = JSON.parse(sessionStorage.getItem('components'));
+        for (let i = 0; i < components.length; i++) {
+          if (components[i]['componentName'] === componentToAdd['componentName']) {
+            if (isInArray(components[i]['componentName'], singleUseComponents))
+              componentExists = true;
+          }
+        }
+        componentToAdd['nearestComponentId'] = nearestComponentId;
+        if (componentExists === false) {
+          window.parent.window.postMessage({
+            "for": "opsonion",
+            "action": "component-added",
+            "message": componentToAdd
+          }, '*')
+        } else {
+          window.parent.window.postMessage({ "for": "opsonion", "action": "component-exists" }, '*')
         }
       }
-
-      componentToAdd['nearestComponentId'] = nearestComponentId;
-      if (componentExists === false) {
-        window.parent.window.postMessage({
-          "for": "opsonion",
-          "action": "component-added",
-          "message": componentToAdd
-        }, '*')
-      } else {
-        window.parent.window.postMessage({ "for": "opsonion", "action": "component-exists" }, '*')
-      }
     }
-  } else {
-    window.parent.window.postMessage({ "for": "opsonion", "action": "component-error" }, '*')
   }
 
   componentToAdd = null;
