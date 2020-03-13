@@ -11,6 +11,7 @@ import { SimpleModalService } from '../../../../shared/components/simple-modal/s
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
+import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
 
 @Component({
   selector: 'app-builder-sidebar-pages',
@@ -39,6 +40,7 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
+    private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService
   ) {
@@ -47,6 +49,7 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
         const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
         builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
         builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
+        builderFooterService.mapNavbarAndFooterMenuOptions(navbarMenuOptions, builderFooterService.footerMenuOptions.getValue());
       }
     };
 

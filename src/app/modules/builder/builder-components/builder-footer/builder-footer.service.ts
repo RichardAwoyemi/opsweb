@@ -138,4 +138,17 @@ export class BuilderFooterService {
     footerMenuOptions.splice(pageIndex, 1);
     this.footerMenuOptions.next(footerMenuOptions);
   }
+
+  mapNavbarAndFooterMenuOptions(navbarMenuOptions, footerMenuOptions) {
+    const newFooterMenuOptions = [];
+    for (let i = 0; i < navbarMenuOptions.length; i++) {
+      for (let j = 0; j < footerMenuOptions.length; j++) {
+        if (navbarMenuOptions[i] === footerMenuOptions[j]['page']) {
+          newFooterMenuOptions.push({'page': footerMenuOptions[j]['page'], 'visible': footerMenuOptions[j]['visible']});
+        }
+      }
+    }
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', newFooterMenuOptions);
+    this.footerMenuOptions.next(newFooterMenuOptions);
+  }
 }
