@@ -35,15 +35,26 @@
     <div class="navbar-collapse collapse" id="navbarNav">
       <ul [ngClass]="navbarLayoutClass">
         <li *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index" class="nav-item">
-          <a (blur)="removeLineBreaks($event); saveNavbarMenuOption(i, $event.target['innerText']);"
-             (click)="selectNavbarLink($event, 'navbar-link-' + i)"
-             (keydown.enter)="$event.target.blur()"
-             [attr.contenteditable]="setContentEditable()"
-             [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
-             [innerText]="navbarMenuOption"
-             [ngClass]="setNavbarLinkClass()"
-             [ngStyle]="navbarLinkStyle"
-             id="{{ 'navbar-link-' + i }}" style="padding: .5rem"></a>
+          <ng-container *ngIf="navbarMenuOption == 'Home'">
+            <a (blur)="removeLineBreaks($event); saveNavbarMenuOption(i, $event.target['innerText']);"
+               (click)="selectNavbarLink($event, 'navbar-link-' + i)"
+               [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
+               [innerText]="navbarMenuOption"
+               [ngClass]="setNavbarLinkClass()"
+               [ngStyle]="navbarLinkStyle"
+               id="{{ 'navbar-link-home' }}" style="padding: .5rem"></a>
+          </ng-container>
+          <ng-container *ngIf="navbarMenuOption != 'Home'">
+            <a (blur)="removeLineBreaks($event); saveNavbarMenuOption(i, $event.target['innerText']);"
+               (click)="selectNavbarLink($event, 'navbar-link-' + i)"
+               (keydown.enter)="$event.target.blur()"
+               [attr.contenteditable]="setContentEditable()"
+               [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
+               [innerText]="navbarMenuOption"
+               [ngClass]="setNavbarLinkClass()"
+               [ngStyle]="navbarLinkStyle"
+               id="{{ 'navbar-link-' + i }}" style="padding: .5rem"></a>
+          </ng-container>
         </li>
       </ul>
     </div>

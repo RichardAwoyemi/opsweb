@@ -21,6 +21,7 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   webComponents: any;
   defaultFooterStyle: any;
   footerTemplate: any;
+  navbarTemplate: any;
 
   private activeEditComponentSubscription: Subscription;
   private featuresTemplateSubscription: Subscription;
@@ -43,6 +44,12 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
+      }
+    });
+
+    this.navbarTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
+      if (pageComponentsResponse) {
+        this.navbarTemplate = pageComponentsResponse['template'];
       }
     });
 

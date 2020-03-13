@@ -52,12 +52,6 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   private footerTemplateSubscription: Subscription;
   private defaultFooterStyleSubscription: Subscription;
   private footerComponentLayoutSubscription: Subscription;
-  private facebookUrlSubscription: Subscription;
-  private twitterUrlSubscription: Subscription;
-  private instagramUrlSubscription: Subscription;
-  private youtubeUrlSubscription: Subscription;
-  private githubUrlSubscription: Subscription;
-  private linkedinUrlSubscription: Subscription;
   private footerMenuOptionsSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
 
@@ -80,51 +74,7 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
 
     this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
       if (response) {
-        const footerMenuOptions = [];
-        Object.keys(response).forEach(function (key) {
-          if (response[key] !== false) {
-            footerMenuOptions.push(key);
-          }
-        });
-        this.footerMenuOptions = footerMenuOptions;
-      } else {
-        this.footerMenuOptions = [];
-      }
-    });
-
-    this.twitterUrlSubscription = this.builderFooterService.twitterUrl.subscribe(response => {
-      if (response) {
-        this.twitterUrl = response;
-      }
-    });
-
-    this.instagramUrlSubscription = this.builderFooterService.instagramUrl.subscribe(response => {
-      if (response) {
-        this.instagramUrl = response;
-      }
-    });
-
-    this.youtubeUrlSubscription = this.builderFooterService.youtubeUrl.subscribe(response => {
-      if (response) {
-        this.youtubeUrl = response;
-      }
-    });
-
-    this.githubUrlSubscription = this.builderFooterService.githubUrl.subscribe(response => {
-      if (response) {
-        this.githubUrl = response;
-      }
-    });
-
-    this.facebookUrlSubscription = this.builderFooterService.facebookUrl.subscribe(response => {
-      if (response) {
-        this.facebookUrl = response;
-      }
-    });
-
-    this.linkedinUrlSubscription = this.builderFooterService.linkedinUrl.subscribe(response => {
-      if (response) {
-        this.linkedinUrl = response;
+        this.footerMenuOptions = response;
       }
     });
 
@@ -241,25 +191,28 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
       this.footerSocialLinksContainerStyle['padding-top'] = '0px';
       this.builderFooterService.footerSocialLinksContainerStyle.next(this.footerSocialLinksContainerStyle);
     }
-    this.footerComponentLayout = footerComponentLayout;
-    this.builderComponentsService.setPageComponentByIdAndKey(ActiveComponentsPartialSelector.Footer, 'footerComponentLayout', 'layout', this.footerComponentLayout);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksContainerStyle', this.footerSocialLinksContainerStyle);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerComponentLayout', footerComponentLayout);
     this.builderFooterService.footerComponentLayout.next(footerComponentLayout);
   }
 
   setFooterAlignment(footerAlignment: string) {
     if (footerAlignment === 'text-left') {
       this.footerSocialLinksContainerStyle['margin-left'] = '-12px';
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksContainerStyle', this.footerSocialLinksContainerStyle);
       this.builderFooterService.footerSocialLinksContainerStyle.next(this.footerSocialLinksContainerStyle);
     } else if (footerAlignment === 'text-right') {
       this.footerSocialLinksContainerStyle['margin-right'] = '-10px';
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksContainerStyle', this.footerSocialLinksContainerStyle);
       this.builderFooterService.footerSocialLinksContainerStyle.next(this.footerSocialLinksContainerStyle);
     } else {
       this.footerSocialLinksContainerStyle['margin-left'] = '0px';
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksContainerStyle', this.footerSocialLinksContainerStyle);
       this.builderFooterService.footerSocialLinksContainerStyle.next(this.footerSocialLinksContainerStyle);
     }
     this.footerAlignmentClass = footerAlignment;
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerAlignment', footerAlignment);
-    this.builderFooterService.footerAlignmentClass.next(footerAlignment);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerAlignmentClass', this.footerAlignmentClass);
+    this.builderFooterService.footerAlignmentClass.next(this.footerAlignmentClass);
   }
 
   setFooterCopyrightPaddingTop() {
@@ -413,12 +366,6 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
     this.footerTemplateSubscription.unsubscribe();
     this.defaultFooterStyleSubscription.unsubscribe();
     this.footerComponentLayoutSubscription.unsubscribe();
-    this.facebookUrlSubscription.unsubscribe();
-    this.twitterUrlSubscription.unsubscribe();
-    this.instagramUrlSubscription.unsubscribe();
-    this.youtubeUrlSubscription.unsubscribe();
-    this.githubUrlSubscription.unsubscribe();
-    this.linkedinUrlSubscription.unsubscribe();
     this.footerMenuOptionsSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
   }

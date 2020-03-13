@@ -160,8 +160,8 @@
        class="row page-row-color page-row-option justify-content-center align-items-center" style="font-size: 0.8em">
     <div class="col-md-2" style="padding: 0.5em;">
       <button class="btn btn-square btn-options btn-block btn-lg" style="padding-left: 10px" type="button">
-        <i *ngIf="checkIfFooterMenuOptionIsVisible(navbarMenuOption) === false" class="ti-close"></i>
-        <i *ngIf="checkIfFooterMenuOptionIsVisible(navbarMenuOption) === true" class="ti-check"></i>
+        <i *ngIf="checkIfFooterMenuOptionIsVisible(navbarMenuOption, i) === false" class="ti-close"></i>
+        <i *ngIf="checkIfFooterMenuOptionIsVisible(navbarMenuOption, i) === true" class="ti-check"></i>
       </button>
     </div>
     <div class="col-md-10 row-color h-100 d-table">

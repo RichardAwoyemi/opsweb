@@ -8,20 +8,15 @@ import { BuilderComponentsService } from '../builder-components.service';
 export class BuilderFooterService {
   footerTemplate = new BehaviorSubject<string>(null);
   footerTheme = new BehaviorSubject<string>(null);
-  footerStyle = new BehaviorSubject<Object>(null);
+  footerStyle = new BehaviorSubject<any>(null);
   footerAlignmentClass = new BehaviorSubject<string>('text-center');
   footerSocialLinksContainerStyle = new BehaviorSubject<Object>(null);
   footerSocialLinksStyle = new BehaviorSubject<Object>(null);
+  footerSocialLinks = new BehaviorSubject<any>(null);
   footerPageLinksStyle = new BehaviorSubject<Object>(null);
   footerCopyrightStyle = new BehaviorSubject<Object>(null);
-  footerMenuOptions = new BehaviorSubject<Object>(null);
+  footerMenuOptions = new BehaviorSubject<any>(null);
   footerComponentLayout = new BehaviorSubject<any>({'layout': 0});
-  facebookUrl = new BehaviorSubject<string>(null);
-  twitterUrl = new BehaviorSubject<string>(null);
-  instagramUrl = new BehaviorSubject<string>(null);
-  youtubeUrl = new BehaviorSubject<string>(null);
-  githubUrl = new BehaviorSubject<string>(null);
-  linkedinUrl = new BehaviorSubject<string>(null);
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
   private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
@@ -91,41 +86,26 @@ export class BuilderFooterService {
     } else {
       footerStyle = theme['footerStyle'];
     }
+
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', footerStyle['name']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Footer, 'footerStyle', 'background-color', footerStyle['background-color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Footer, 'footerStyle', 'color', footerStyle['color']);
     this.footerStyle.next(footerStyle);
-
-    const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
-        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
-          pageComponents['pages'][i]['components'][j]['footerStyle']['background-color'] = footerStyle['footerStyle']['background-color'];
-          pageComponents['pages'][i]['components'][j]['footerStyle']['color'] = footerStyle['footerStyle']['color'];
-
-        }
-      }
-    }
-    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   setFooterTemplateStyle(template: any) {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', template['footerStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', template['footerSocialLinksStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', template['footerPageLinksStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', template['footerCopyrightStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksContainerStyle', template['footerSocialLinksContainerStyle']);
+
     this.footerStyle.next(template['footerStyle']);
     this.footerSocialLinksStyle.next(template['footerSocialLinksStyle']);
     this.footerPageLinksStyle.next(template['footerPageLinksStyle']);
     this.footerCopyrightStyle.next(template['footerCopyrightStyle']);
     this.footerSocialLinksContainerStyle.next(template['footerSocialLinksContainerStyle']);
-
-    const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
-        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
-          pageComponents['pages'][i]['components'][j]['footerStyle'] = template['footerStyle'];
-          pageComponents['pages'][i]['components'][j]['footerSocialLinksStyle'] = template['footerSocialLinksStyle'];
-          pageComponents['pages'][i]['components'][j]['footerPageLinksStyle'] = template['footerPageLinksStyle'];
-          pageComponents['pages'][i]['components'][j]['footerCopyrightStyle'] = template['footerCopyrightStyle'];
-          pageComponents['pages'][i]['components'][j]['footerSocialLinksContainerStyle'] = template['footerSocialLinksContainerStyle'];
-        }
-      }
-    }
-    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   getDefaultFooterStyle(templateId): Observable<any> {
@@ -141,39 +121,21 @@ export class BuilderFooterService {
     }
   }
 
-  sortFooterMenuOptions(unsortedFooterMenuOptions, navbarMenuOptions) {
-    const sortedFooterMenuOptions = {};
-    if (unsortedFooterMenuOptions && navbarMenuOptions) {
-      Object.keys(unsortedFooterMenuOptions)
-        .sort((a, b) => {
-          return navbarMenuOptions.indexOf(a) - navbarMenuOptions.indexOf(b);
-        }).forEach(r => sortedFooterMenuOptions[r] = unsortedFooterMenuOptions[r]);
-    }
-    return sortedFooterMenuOptions;
-  }
-
   setComponentTemplate(templateId) {
     this.footerTheme.next(ActiveThemes.Default);
     this.footerTemplate.next(templateId);
     this.setFooterTemplate(templateId);
   }
 
-  setFooterMenuOptions(pageName, pageIndex, navbarMenuOptions) {
-    let footerMenuOptions = this.footerMenuOptions.getValue();
-    if (footerMenuOptions) {
-      footerMenuOptions[pageName] = footerMenuOptions[navbarMenuOptions[pageIndex]];
-      const keys = Object.keys(footerMenuOptions);
-      delete footerMenuOptions[keys[pageIndex]];
-      footerMenuOptions = this.sortFooterMenuOptions(footerMenuOptions, navbarMenuOptions);
-      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
-      this.footerMenuOptions.next(footerMenuOptions);
-    }
+  setFooterMenuOptions(pageName, pageIndex) {
+    const footerMenuOptions = this.footerMenuOptions.getValue();
+    footerMenuOptions[pageIndex]['page'] = pageName;
+    this.footerMenuOptions.next(footerMenuOptions);
   }
 
   deleteFooterMenuOption(pageIndex: any) {
     const footerMenuOptions = this.footerMenuOptions.getValue();
-    const keys = Object.keys(footerMenuOptions);
-    delete footerMenuOptions[keys[pageIndex]];
+    footerMenuOptions.splice(pageIndex, 1);
     this.footerMenuOptions.next(footerMenuOptions);
   }
 }

@@ -97,54 +97,38 @@ export class BuilderNavbarService {
     } else {
       navbarStyle = theme['navbarStyle'];
     }
-
     if (navbarLinkStyle && theme['navbarLinkStyle']['color']) {
       navbarLinkStyle['color'] = theme['navbarLinkStyle']['color'];
     } else {
       navbarLinkStyle = theme['navbarLinkStyle'];
     }
-
     if (navbarBrandStyle && theme['navbarBrandStyle']['color']) {
       navbarBrandStyle['color'] = theme['navbarBrandStyle']['color'];
     } else {
       navbarBrandStyle = theme['navbarBrandStyle'];
     }
 
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', theme['name']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', 'background-color', theme['navbarStyle']['background-color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', 'color', theme['navbarLinkStyle']['color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', 'color', theme['navbarBrandStyle']['color']);
+
     this.navbarStyle.next(navbarStyle);
     this.navbarLinkStyle.next(navbarLinkStyle);
     this.navbarBrandStyle.next(navbarBrandStyle);
-
-    const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
-        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
-          pageComponents['pages'][i]['components'][j]['navbarStyle']['background-color'] = theme['navbarStyle']['background-color'];
-          pageComponents['pages'][i]['components'][j]['navbarLinkStyle']['color'] = theme['navbarLinkStyle']['color'];
-          pageComponents['pages'][i]['components'][j]['navbarBrandStyle']['color'] = theme['navbarBrandStyle']['color'];
-        }
-      }
-    }
-    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   setNavbarTemplateStyle(template: any) {
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', template['navbarStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', template['navbarLinkStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', template['navbarBrandStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLogoImageStyle', template['navbarLogoImageStyle']);
+
     this.navbarStyle.next(template['navbarStyle']);
     this.navbarLinkStyle.next(template['navbarLinkStyle']);
     this.navbarBrandStyle.next(template['navbarBrandStyle']);
     this.navbarLogoImageStyle.next(template['navbarLogoImageStyle']);
-
-    const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
-        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
-          pageComponents['pages'][i]['components'][j]['navbarStyle'] = template['navbarStyle'];
-          pageComponents['pages'][i]['components'][j]['navbarLinkStyle'] = template['navbarLinkStyle'];
-          pageComponents['pages'][i]['components'][j]['navbarBrandStyle'] = template['navbarBrandStyle'];
-          pageComponents['pages'][i]['components'][j]['navbarLogoImageStyle'] = template['navbarLogoImageStyle'];
-        }
-      }
-    }
-    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   setComponentTemplate(templateId) {

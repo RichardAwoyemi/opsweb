@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings } from '../../builder';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { BuilderService } from '../../builder.service';
@@ -117,8 +117,9 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.builderComponents = [];
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeEditComponentId.next(null);
-    this.builderService.activeElement.next(null);
+    this.builderService.activeElement.next(ActiveElements.Default);
     this.builderComponentsService.activeComponentIndex.next(null);
+    this.builderService.setActiveEditSetting(ActiveSettings.Components);
     this.builderService.setSidebarComponentsSetting();
 
     let pageIndex = null;

@@ -9,25 +9,34 @@
   <div class="col-md-6" style="padding-bottom: 1em">
     <div (click)="setFooterAlignment('text-center'); setComponentLayout({'layout':0})"
          [ngClass]="setComponentLayoutSelectorClass('text-center', 0)" style="height: 80px">
-      <img alt="footer-alignment-text-center-0" src="../../../../../../assets/img/footer-alignment-text-center-0.svg">
+      <div style="width: 75%">
+        <img alt="footer-alignment-text-center-0"
+             src="../../../../../../assets/img/footer-alignment-text-center-0.svg">
+      </div>
     </div>
   </div>
   <div class="col-md-6" style="padding-bottom: 1em">
     <div (click)="setFooterAlignment('text-left'); setComponentLayout({'layout':0})"
          [ngClass]="setComponentLayoutSelectorClass('text-left', 0)" style="height: 80px">
-      <img alt="footer-alignment-text-left" src="../../../../../../assets/img/footer-alignment-text-left.svg">
+      <div style="width: 75%">
+        <img alt="footer-alignment-text-left" src="../../../../../../assets/img/footer-alignment-text-left.svg">
+      </div>
     </div>
   </div>
   <div class="col-md-6">
     <div (click)="setFooterAlignment('text-right'); setComponentLayout({'layout':0})"
          [ngClass]="setComponentLayoutSelectorClass('text-right', 0)" style="height: 80px">
-      <img alt="footer-alignment-text-right" src="../../../../../../assets/img/footer-alignment-text-right.svg">
+      <div style="width: 75%">
+        <img alt="footer-alignment-text-right" src="../../../../../../assets/img/footer-alignment-text-right.svg">
+      </div>
     </div>
   </div>
   <div class="col-md-6">
     <div (click)="setFooterAlignment('text-center'); setComponentLayout({'layout':1})"
          [ngClass]="setComponentLayoutSelectorClass('text-center', 1)" style="height: 80px">
-      <img alt="footer-alignment-text-center-1" src="../../../../../../assets/img/footer-alignment-text-center-1.svg">
+      <div style="width: 75%">
+        <img alt="footer-alignment-text-center-1" src="../../../../../../assets/img/footer-alignment-text-center-1.svg">
+      </div>
     </div>
   </div>
   <div class="col-md-12" style="padding-top: 2em">
@@ -238,7 +247,7 @@
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="footerMenuOptions.length > 0">
+<ng-container>
   <hr>
   <div class="form-group" style="margin-top: 1.5em">
     <label style="color: rgba(255, 255, 255, 1)">Pages</label>

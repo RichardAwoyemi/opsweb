@@ -16,6 +16,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   fontNames: any;
   fontUnits: any;
   footerStyle: any;
+  footerMenuOptions = [];
   navbarMenuOptions: any;
   footerCopyrightStyle: any;
   footerSocialLinksStyle: any;
@@ -23,6 +24,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   footerCopyrightFontSize: number;
   defaultFooterStyle: any;
   pageComponents: any;
+  footerSocialLinks: any;
   footerTemplate: string;
   footerCopyrightFontUnit = 'px';
   footerSocialLinksFontSize: number;
@@ -31,13 +33,13 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   footerPageLinksFontUnit = 'px';
   footerPageLinkFontName = 'Avenir Next Regular';
   footerCopyrightFontName = 'Avenir Next Regular';
+  websiteChangeCount: number;
   facebookUrl: string;
   twitterUrl: string;
   instagramUrl: string;
   youtubeUrl: string;
   githubUrl: string;
   linkedinUrl: string;
-  websiteChangeCount: number;
 
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
@@ -47,15 +49,11 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   private footerPageLinksStyleSubscription: Subscription;
   private footerTemplateSubscription: Subscription;
   private defaultFooterStyleSubscription: Subscription;
-  private facebookUrlSubscription: Subscription;
-  private twitterUrlSubscription: Subscription;
-  private instagramUrlSubscription: Subscription;
-  private youtubeUrlSubscription: Subscription;
-  private githubUrlSubscription: Subscription;
-  private linkedinUrlSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
+  private footerMenuOptionsSubscription: Subscription;
+  private footerSocialLinksSubscription: Subscription;
 
   constructor(
     private builderFooterService: BuilderFooterService,
@@ -67,34 +65,28 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
+    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
+      if (navbarMenuOptionsResponse) {
+        this.navbarMenuOptions = navbarMenuOptionsResponse;
+
+        this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+          if (response) {
+            this.footerMenuOptions = response;
+          } else {
+            for (let i = 0; i < this.navbarMenuOptions.length; i++) {
+              const footerMenuOption = {};
+              footerMenuOption['page'] = this.navbarMenuOptions[i];
+              footerMenuOption['visible'] = false;
+              this.footerMenuOptions.push(footerMenuOption);
+            }
+            this.builderFooterService.footerMenuOptions.next(this.footerMenuOptions);
+          }
+        });
       }
     });
 
-    this.twitterUrlSubscription = this.builderFooterService.twitterUrl.subscribe(response => {
-      this.twitterUrl = response;
-    });
-
-    this.instagramUrlSubscription = this.builderFooterService.instagramUrl.subscribe(response => {
-      this.instagramUrl = response;
-    });
-
-    this.youtubeUrlSubscription = this.builderFooterService.youtubeUrl.subscribe(response => {
-      this.youtubeUrl = response;
-    });
-
-    this.githubUrlSubscription = this.builderFooterService.githubUrl.subscribe(response => {
-      this.githubUrl = response;
-    });
-
-    this.facebookUrlSubscription = this.builderFooterService.facebookUrl.subscribe(response => {
-      this.facebookUrl = response;
-    });
-
-    this.linkedinUrlSubscription = this.builderFooterService.linkedinUrl.subscribe(response => {
-      this.linkedinUrl = response;
+    this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
+      this.footerSocialLinks = response;
     });
 
     this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
@@ -172,6 +164,27 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
+      if (response['facebookUrl']) {
+        this.footerSocialLinks['facebookUrl'] = response['facebookUrl'];
+      }
+      if (response['twitterUrl']) {
+        this.footerSocialLinks['twitterUrl'] = response['twitterUrl'];
+      }
+      if (response['instagramUrl']) {
+        this.footerSocialLinks['instagramUrl'] = response['instagramUrl'];
+      }
+      if (response['youtubeUrl']) {
+        this.footerSocialLinks['youtubeUrl'] = response['youtubeUrl'];
+      }
+      if (response['githubUrl']) {
+        this.footerSocialLinks['githubUrl'] = response['githubUrl'];
+      }
+      if (response['linkedinUrl']) {
+        this.footerSocialLinks['linkedinUrl'] = response['linkedinUrl'];
+      }
+    });
+
     this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
       if (response) {
         this.footerStyle = response;
@@ -196,7 +209,16 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     for (let i = 0; i < targetComponentLocation.length; i++) {
       const activePageIndex = targetComponentLocation[i]['activePageIndex'];
       const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
-      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['footerSocialLinks'][key] = value;
+
+      if (value) {
+        if (value.trim().length === 0) {
+          this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['footerSocialLinks'][`${key}Url`] = null;
+        } else {
+          this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['footerSocialLinks'][`${key}Url`] = value;
+        }
+      } else {
+        this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['footerSocialLinks'][`${key}Url`] = null;
+      }
     }
     this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
@@ -328,65 +350,56 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   onSocialLinkChange(platform: string) {
-    if (platform === 'facebook') {
-      if (this.facebookUrl) {
-        this.setFooterSocialLinks('facebookUrl', this.facebookUrl);
-        this.builderFooterService.facebookUrl.next(this.facebookUrl);
+    if (platform) {
+      if (platform === 'facebook') {
+        const footerSocialLinks = this.builderFooterService.footerSocialLinks.getValue();
+        footerSocialLinks['facebookUrl'] = this.facebookUrl;
+        this.builderFooterService.footerSocialLinks.next(footerSocialLinks);
+        this.setFooterSocialLinks(platform, this.facebookUrl);
       }
-    } else if (platform === 'twitter') {
-      if (this.twitterUrl) {
-        this.setFooterSocialLinks('twitterUrl', this.twitterUrl);
-        this.builderFooterService.twitterUrl.next(this.twitterUrl);
+      if (platform === 'twitter') {
+        const footerSocialLinks = this.builderFooterService.footerSocialLinks.getValue();
+        footerSocialLinks['twitterUrl'] = this.twitterUrl;
+        this.builderFooterService.footerSocialLinks.next(footerSocialLinks);
+        this.setFooterSocialLinks(platform, this.twitterUrl);
       }
-    } else if (platform === 'instagram') {
-      if (this.instagramUrl) {
-        this.setFooterSocialLinks('instagramUrl', this.instagramUrl);
-        this.builderFooterService.instagramUrl.next(this.instagramUrl);
+      if (platform === 'instagram') {
+        const footerSocialLinks = this.builderFooterService.footerSocialLinks.getValue();
+        footerSocialLinks['instagramUrl'] = this.instagramUrl;
+        this.builderFooterService.footerSocialLinks.next(footerSocialLinks);
+        this.setFooterSocialLinks(platform, this.instagramUrl);
       }
-    } else if (platform === 'youtube') {
-      if (this.youtubeUrl) {
-        this.setFooterSocialLinks('youtubeUrl', this.youtubeUrl);
-        this.builderFooterService.youtubeUrl.next(this.youtubeUrl);
+      if (platform === 'youtube') {
+        const footerSocialLinks = this.builderFooterService.footerSocialLinks.getValue();
+        footerSocialLinks['youtubeUrl'] = this.youtubeUrl;
+        this.builderFooterService.footerSocialLinks.next(footerSocialLinks);
+        this.setFooterSocialLinks(platform, this.youtubeUrl);
       }
-    } else if (platform === 'github') {
-      if (this.githubUrl) {
-        this.setFooterSocialLinks('githubUrl', this.githubUrl);
-        this.builderFooterService.githubUrl.next(this.githubUrl);
+      if (platform === 'github') {
+        const footerSocialLinks = this.builderFooterService.footerSocialLinks.getValue();
+        footerSocialLinks['githubUrl'] = this.githubUrl;
+        this.builderFooterService.footerSocialLinks.next(footerSocialLinks);
+        this.setFooterSocialLinks(platform, this.githubUrl);
       }
-    } else if (platform === 'linkedin') {
-      if (this.linkedinUrl) {
-        this.setFooterSocialLinks('linkedinUrl', this.linkedinUrl);
-        this.builderFooterService.linkedinUrl.next(this.linkedinUrl);
+      if (platform === 'linkedin') {
+        const footerSocialLinks = this.builderFooterService.footerSocialLinks.getValue();
+        footerSocialLinks['linkedinUrl'] = this.linkedinUrl;
+        this.builderFooterService.footerSocialLinks.next(footerSocialLinks);
+        this.setFooterSocialLinks(platform, this.linkedinUrl);
       }
     }
   }
 
   toggleFooterMenuOptionVisibility(index: number) {
-    let footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
-    const selectedNavbarMenuOption = this.navbarMenuOptions[index];
-
-    if (footerMenuOptions === null) {
-      footerMenuOptions = [];
-      for (let i = 0; i < this.navbarMenuOptions.length; i++) {
-        footerMenuOptions[this.navbarMenuOptions[i]] = this.navbarMenuOptions[i] === selectedNavbarMenuOption;
-      }
-    } else {
-      Object.keys(footerMenuOptions).forEach(function (key) {
-        if (key === selectedNavbarMenuOption) {
-          footerMenuOptions[selectedNavbarMenuOption] = !footerMenuOptions[key];
-        }
-      });
-      footerMenuOptions = this.builderFooterService.sortFooterMenuOptions(footerMenuOptions, this.navbarMenuOptions);
-    }
-
+    const footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
+    footerMenuOptions[index]['visible'] = !footerMenuOptions[index]['visible'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
     this.builderFooterService.footerMenuOptions.next(footerMenuOptions);
   }
 
-  checkIfFooterMenuOptionIsVisible(menuOption: string): boolean {
-    const footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
-    if (footerMenuOptions && footerMenuOptions[menuOption]) {
-      return footerMenuOptions[menuOption];
+  checkIfFooterMenuOptionIsVisible(menuOption: string, menuIndex): boolean {
+    if (this.footerMenuOptions) {
+      return this.footerMenuOptions[menuIndex]['visible'] === true;
     } else {
       return false;
     }
@@ -401,14 +414,12 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerPageLinksStyleSubscription.unsubscribe();
     this.footerTemplateSubscription.unsubscribe();
     this.defaultFooterStyleSubscription.unsubscribe();
-    this.facebookUrlSubscription.unsubscribe();
-    this.twitterUrlSubscription.unsubscribe();
-    this.instagramUrlSubscription.unsubscribe();
-    this.youtubeUrlSubscription.unsubscribe();
-    this.githubUrlSubscription.unsubscribe();
-    this.linkedinUrlSubscription.unsubscribe();
+    this.footerSocialLinksSubscription.unsubscribe();
     this.navbarMenuOptionsSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
+    if (this.footerMenuOptionsSubscription) {
+      this.footerMenuOptionsSubscription.unsubscribe();
+    }
   }
 }

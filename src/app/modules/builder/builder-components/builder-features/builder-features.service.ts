@@ -92,6 +92,7 @@ export class BuilderFeaturesService {
     this.featuresSubheadingStyle.next(template['featuresSubheadingStyle']);
     this.featuresStyle.next(template['featuresStyle']);
     if (template) {
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresTheme', ActiveThemes.Default);
       if (template['featuresHeadingStyle']) {
         const featuresHeadingStyle = {...this.featuresHeadingStyle.getValue(), ...template['featuresHeadingStyle']};
         this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresHeadingStyle', featuresHeadingStyle);
@@ -151,7 +152,7 @@ export class BuilderFeaturesService {
       if (breakpoint === 'small' || showcaseOrientation === 'mobile') {
         multiplier = number * 4;
       } else if (breakpoint === 'medium' || showcaseOrientation === 'tablet') {
-        multiplier = number * 1.5;
+        multiplier = 1;
       } else if (breakpoint === 'large' || showcaseOrientation === 'desktop') {
         multiplier = 1;
       }

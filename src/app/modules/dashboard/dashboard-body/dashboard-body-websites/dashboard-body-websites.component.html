@@ -1,5 +1,5 @@
 <div id="websites"></div>
-<div *ngIf="!websites" [ngStyle]="{'height': innerHeight + 'px'}"
+<div *ngIf="websites?.length === 0" [ngStyle]="{'height': innerHeight + 'px'}"
      class="d-flex flex-row justify-content-center align-items-center">
   <div class="row">
     <div class="col-md-12 text-center">
@@ -13,21 +13,23 @@
     </div>
   </div>
 </div>
-<div [ngStyle]="{'height': innerHeight + 'px'}">
-  <div style="padding: 2em">
-    <h3>Websites</h3>
-    <div class="row gap-y" style="padding-top: 1.75em">
-      <div *ngFor="let website of websites | sort: 'name'" class="col-md-6 col-lg-4">
-        <div #dropdown="ngbDropdown" ngbDropdown placement="bottom">
-          <div (click)="$event.stopPropagation(); dropdown.open();" class="card border hover-shadow-6 d-block">
-            <div class="p-6 text">
+<div *ngIf="websites?.length > 0">
+  <div [ngStyle]="{'height': innerHeight + 'px'}">
+    <div style="padding: 2em">
+      <h3>Websites</h3>
+      <div class="row gap-y" style="padding-top: 1.75em">
+        <div *ngFor="let website of websites | sort: 'name'" class="col-md-6 col-lg-4">
+          <div #dropdown="ngbDropdown" ngbDropdown placement="bottom">
+            <div (click)="$event.stopPropagation(); dropdown.open();" class="card border hover-shadow-6 d-block">
+              <div class="p-6 text">
               <span ngbDropdownToggle>
-                <span>{{ website.name }}</span>
+                <span style="font-size: 13px">{{ website.name }}</span>
               </span>
-              <div ngbDropdownMenu>
-                <button (click)="openBuilderPage(website.id)" ngbDropdownItem>Edit</button>
-                <button (click)="openRenameWebsiteModal(website.id, website.name)" ngbDropdownItem>Rename</button>
-                <button (click)="openDeleteWebsiteModal(website.id, website.name)" ngbDropdownItem>Delete</button>
+                <div ngbDropdownMenu>
+                  <button (click)="openBuilderPage(website.id)" ngbDropdownItem>Edit</button>
+                  <button (click)="openRenameWebsiteModal(website.id, website.name)" ngbDropdownItem>Rename</button>
+                  <button (click)="openDeleteWebsiteModal(website.id, website.name)" ngbDropdownItem>Delete</button>
+                </div>
               </div>
             </div>
           </div>

@@ -105,6 +105,7 @@ export class WebsiteService {
   saveWebsite() {
     const id = this.websiteId.getValue();
     const pageComponents = this.builderComponentsService.pageComponents.getValue();
+    console.log(pageComponents);
     if (id && pageComponents) {
       const websiteRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${id}`);
       return websiteRef.set(pageComponents, {

@@ -318,7 +318,17 @@ export class BuilderComponentsService {
               'youtubeUrl': null,
               'githubUrl': null,
               'linkedinUrl': null,
-            }
+            },
+            'footerMenuOptions': [
+              {
+                'page': 'Home',
+                'visible': false,
+              },
+              {
+                'page': 'About',
+                'visible': true,
+              }
+            ]
           },
           {
             'componentIndex': 10,
@@ -438,7 +448,17 @@ export class BuilderComponentsService {
               'youtubeUrl': null,
               'githubUrl': null,
               'linkedinUrl': null,
-            }
+            },
+            'footerMenuOptions': [
+              {
+                'page': 'Home',
+                'visible': false,
+              },
+              {
+                'page': 'About',
+                'visible': true,
+              }
+            ]
           },
           {
             'componentIndex': 4,
@@ -747,6 +767,16 @@ export class BuilderComponentsService {
               'githubUrl': null,
               'linkedinUrl': null,
             },
+            'footerMenuOptions': [
+              {
+                'page': 'Home',
+                'visible': false,
+              },
+              {
+                'page': 'About',
+                'visible': true,
+              }
+            ],
             'footerTheme': ActiveThemes.Default
           },
           {
@@ -875,6 +905,16 @@ export class BuilderComponentsService {
               'githubUrl': null,
               'linkedinUrl': null,
             },
+            'footerMenuOptions': [
+              {
+                'page': 'Home',
+                'visible': false,
+              },
+              {
+                'page': 'About',
+                'visible': true,
+              }
+            ],
             'footerTheme': ActiveThemes.Default
           },
           {
@@ -1178,7 +1218,17 @@ export class BuilderComponentsService {
               'youtubeUrl': null,
               'githubUrl': null,
               'linkedinUrl': null,
-            }
+            },
+            'footerMenuOptions': [
+              {
+                'page': 'Home',
+                'visible': false,
+              },
+              {
+                'page': 'About',
+                'visible': true,
+              }
+            ]
           },
           {
             'componentIndex': 10,
@@ -1304,7 +1354,17 @@ export class BuilderComponentsService {
               'youtubeUrl': null,
               'githubUrl': null,
               'linkedinUrl': null,
-            }
+            },
+            'footerMenuOptions': [
+              {
+                'page': 'Home',
+                'visible': false,
+              },
+              {
+                'page': 'About',
+                'visible': true,
+              }
+            ]
           },
           {
             'componentIndex': 4,

@@ -11,6 +11,7 @@ export class BuilderHeroService {
     private builderComponentsService: BuilderComponentsService
   ) {
   }
+
   heroHeadingStyle = new BehaviorSubject<Object>(null);
   heroBackgroundStyle = new BehaviorSubject<Object>(null);
   heroSubheadingStyle = new BehaviorSubject<Object>(null);
@@ -85,21 +86,14 @@ export class BuilderHeroService {
       this.heroImageAlt.next(`${template['id'].toLowerCase()}-hero.svg`);
     }
 
-    const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
-        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Hero) {
-          pageComponents['pages'][i]['components'][j]['heroBackgroundStyle'] = template['heroBackgroundStyle'];
-          pageComponents['pages'][i]['components'][j]['heroHeadingStyle'] = template['heroHeadingStyle'];
-          pageComponents['pages'][i]['components'][j]['heroSubheadingStyle'] = template['heroSubheadingStyle'];
-          pageComponents['pages'][i]['components'][j]['heroButtonStyle'] = template['heroButtonStyle'];
-          if (BuilderHeroService.validateHeroImageStyle(heroImageStyle)) {
-            pageComponents['pages'][i]['components'][j]['heroImageStyle'] = template['heroImageStyle'];
-          }
-        }
-      }
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroTheme', ActiveThemes.Default);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroBackgroundStyle', template['heroBackgroundStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', template['heroHeadingStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', template['heroSubheadingStyle']);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', template['heroButtonStyle']);
+    if (BuilderHeroService.validateHeroImageStyle(heroImageStyle)) {
+      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', template['heroImageStyle']);
     }
-    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 
   setComponentTemplate(templateId) {
@@ -151,55 +145,43 @@ export class BuilderHeroService {
     } else {
       heroBackgroundStyle = theme['heroBackgroundStyle'];
     }
-
     if (heroHeadingStyle && theme['heroHeadingStyle']['color']) {
       heroHeadingStyle['color'] = theme['heroHeadingStyle']['color'];
     } else {
       heroHeadingStyle = theme['heroHeadingStyle'];
     }
-
     if (heroSubheadingStyle && theme['heroSubheadingStyle']['color']) {
       heroSubheadingStyle['color'] = theme['heroSubheadingStyle']['color'];
     } else {
       heroSubheadingStyle = theme['heroSubheadingStyle'];
     }
-
     if (heroButtonStyle && theme['heroButtonStyle']['background-color']) {
       heroButtonStyle['background-color'] = theme['heroButtonStyle']['background-color'];
     } else {
       heroButtonStyle = theme['heroButtonStyle'];
     }
-
     if (heroButtonStyle && theme['heroButtonStyle']['border-color']) {
       heroButtonStyle['border-color'] = theme['heroButtonStyle']['border-color'];
     } else {
       heroButtonStyle = theme['heroButtonStyle'];
     }
-
     if (heroButtonStyle && theme['heroButtonStyle']['color']) {
       heroButtonStyle['color'] = theme['heroButtonStyle']['color'];
     } else {
       heroButtonStyle = theme['heroButtonStyle'];
     }
 
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroTheme', theme['name']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroBackgroundStyle', 'background-color', theme['heroBackgroundStyle']['background-color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroHeadingStyle', 'color', theme['heroHeadingStyle']['color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroSubheadingStyle', 'color', theme['heroSubheadingStyle']['color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', 'background-color', theme['heroButtonStyle']['background-color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', 'border-color', theme['heroButtonStyle']['border-color']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroButtonStyle', 'color', theme['heroButtonStyle']['color']);
+
     this.heroBackgroundStyle.next(heroBackgroundStyle);
     this.heroHeadingStyle.next(heroHeadingStyle);
     this.heroSubheadingStyle.next(heroSubheadingStyle);
     this.heroButtonStyle.next(heroButtonStyle);
-
-    const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
-        if (pageComponents['pages'][i]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Hero) {
-          pageComponents['pages'][i]['components'][j]['heroBackgroundStyle']['background-color'] = theme['heroBackgroundStyle']['background-color'];
-          pageComponents['pages'][i]['components'][j]['heroHeadingStyle']['color'] = theme['heroHeadingStyle']['color'];
-          pageComponents['pages'][i]['components'][j]['heroSubheadingStyle']['color'] = theme['heroSubheadingStyle']['color'];
-          pageComponents['pages'][i]['components'][j]['heroButtonStyle']['background-color'] = theme['heroButtonStyle']['background-color'];
-          pageComponents['pages'][i]['components'][j]['heroButtonStyle']['border-color'] = theme['heroButtonStyle']['border-color'];
-          pageComponents['pages'][i]['components'][j]['heroButtonStyle']['color'] = theme['heroButtonStyle']['color'];
-        }
-      }
-    }
-    this.builderComponentsService.pageComponents.next(pageComponents);
   }
 }

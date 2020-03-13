@@ -62,7 +62,8 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
               name: this.websiteName,
               id: documentId,
               createdBy: this.user.uid,
-              pages: defaultPageComponents['pages']
+              pages: defaultPageComponents['pages'],
+              template: defaultPageComponents['template']
             }, {merge: true});
             this.builderService.setSidebarComponentsSetting();
             this.builderService.activePageIndex.next(0);

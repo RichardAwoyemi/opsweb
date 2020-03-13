@@ -64,9 +64,23 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
+    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(activeEditComponentIdResponse => {
+      if (activeEditComponentIdResponse) {
+        this.activeEditComponentId = activeEditComponentIdResponse;
+        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+          if (response) {
+            this.pageComponents = response;
+            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+              for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                  this.numberOfFeatures = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'].length;
+                  this.featuresItemArray = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'];
+                  this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
+                }
+              }
+            }
+          }
+        });
       }
     });
 
@@ -150,21 +164,6 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
 
         const featuresFontNames = this.featuresSubheadingStyle['font-family'].split(',');
         this.featuresSubheadingFontName = featuresFontNames[0].replace(/'/g, '');
-      }
-    });
-
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-        for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-          for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-            if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-              this.numberOfFeatures = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'].length;
-              this.featuresItemArray = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'];
-              this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
-            }
-          }
-        }
       }
     });
   }

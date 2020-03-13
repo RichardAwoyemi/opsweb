@@ -22,13 +22,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   previewMode: boolean;
   footerStyle: any;
   navbarMenuOptions: any;
-  footerMenuOptions: string[];
-  facebookUrl: string;
-  twitterUrl: string;
-  instagramUrl: string;
-  youtubeUrl: string;
-  githubUrl: string;
-  linkedinUrl: string;
+  footerMenuOptions: any;
   footerSocialLinksStyle: any;
   footerPageLinksStyle: any;
   footerPageLinksContainerStyle: any;
@@ -36,6 +30,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   footerCopyrightStyle: any;
   footerAlignmentClass: string;
   footerSocialLinksContainerStyle: any;
+  footerSocialLinks: any;
   footerComponentLayout: any;
   activeElement: string;
   copyrightText: string;
@@ -45,6 +40,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
 
   private footerStyleSubscription: Subscription;
   private footerPageLinksStyleSubscription: Subscription;
+  private footerSocialLinksSubscription: Subscription;
   private footerSocialLinksStyleSubscription: Subscription;
   private footerSocialLinksContainerStyleSubscription: Subscription;
   private footerCopyrightStyleSubscription: Subscription;
@@ -55,17 +51,9 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   private activeEditComponentSubscription: Subscription;
   private activeEditComponentIdSubscription: Subscription;
   private previewModeSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
   private activeElementSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
-
-  private facebookUrlSubscription: Subscription;
-  private twitterUrlSubscription: Subscription;
-  private instagramUrlSubscription: Subscription;
-  private youtubeUrlSubscription: Subscription;
-  private githubUrlSubscription: Subscription;
-  private linkedinUrlSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -108,45 +96,15 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
       }
     });
 
-    this.twitterUrlSubscription = this.builderFooterService.twitterUrl.subscribe(response => {
-      if (response) {
-        this.twitterUrl = response;
-      }
-    });
-
-    this.instagramUrlSubscription = this.builderFooterService.instagramUrl.subscribe(response => {
-      if (response) {
-        this.instagramUrl = response;
-      }
-    });
-
-    this.youtubeUrlSubscription = this.builderFooterService.youtubeUrl.subscribe(response => {
-      if (response) {
-        this.youtubeUrl = response;
-      }
-    });
-
-    this.githubUrlSubscription = this.builderFooterService.githubUrl.subscribe(response => {
-      if (response) {
-        this.githubUrl = response;
-      }
-    });
-
-    this.facebookUrlSubscription = this.builderFooterService.facebookUrl.subscribe(response => {
-      if (response) {
-        this.facebookUrl = response;
-      }
-    });
-
-    this.linkedinUrlSubscription = this.builderFooterService.linkedinUrl.subscribe(response => {
-      if (response) {
-        this.linkedinUrl = response;
-      }
-    });
-
     this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
       if (response) {
         this.footerStyle = response;
+      }
+    });
+
+    this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
+      if (response) {
+        this.footerSocialLinks = response;
       }
     });
 
@@ -184,24 +142,9 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
-      if (navbarMenuOptionsResponse) {
-        this.navbarMenuOptions = navbarMenuOptionsResponse;
-
-        this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
-          if (response) {
-            const footerMenuOptions = [];
-            Object.keys(response).forEach(function (key) {
-              if (response[key] !== false) {
-                footerMenuOptions.push(key);
-              }
-            });
-            this.footerMenuOptions = footerMenuOptions;
-          }
-          if (!response) {
-            this.footerMenuOptions = [];
-          }
-        });
+    this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+      if (response) {
+        this.footerMenuOptions = response;
       }
     });
 
@@ -226,18 +169,14 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
                   if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
                     this.componentDetail = this.pageComponents['pages'][i]['components'][j];
                     this.builderFooterService.footerStyle.next(this.componentDetail['footerStyle']);
+                    this.builderFooterService.footerMenuOptions.next(this.componentDetail['footerMenuOptions']);
                     this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['footerSocialLinksContainerStyle']);
                     this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['footerSocialLinksStyle']);
                     this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['footerPageLinksStyle']);
                     this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['footerCopyrightStyle']);
                     this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
                     this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
-                    this.builderFooterService.facebookUrl.next(this.componentDetail['footerSocialLinks']['facebookUrl']);
-                    this.builderFooterService.twitterUrl.next(this.componentDetail['footerSocialLinks']['twitterUrl']);
-                    this.builderFooterService.instagramUrl.next(this.componentDetail['footerSocialLinks']['instagramUrl']);
-                    this.builderFooterService.youtubeUrl.next(this.componentDetail['footerSocialLinks']['youtubeUrl']);
-                    this.builderFooterService.githubUrl.next(this.componentDetail['footerSocialLinks']['githubUrl']);
-                    this.builderFooterService.linkedinUrl.next(this.componentDetail['footerSocialLinks']['linkedinUrl']);
+                    this.builderFooterService.footerSocialLinks.next(this.componentDetail['footerSocialLinks']);
                     this.builderFooterService.footerTheme.next(this.componentDetail['footerTheme']);
                   }
                 }
@@ -298,6 +237,46 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.builderService.clearActiveEditComponent();
   }
 
+  displayFooterMenuOption(footerMenuOption) {
+    if (footerMenuOption['visible'] === true) {
+      return footerMenuOption['page'];
+    } else {
+      return null;
+    }
+  }
+
+  checkIfVisibleFooterMenuOptions() {
+    if (this.footerMenuOptions) {
+      for (let i = 0; i < this.footerMenuOptions.length; i++) {
+        if (this.footerMenuOptions[i]['visible'] === true) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  checkFooterSocialLinks() {
+    return !!(this.footerSocialLinks['facebookUrl'] || this.footerSocialLinks['twitterUrl'] || this.footerSocialLinks['youtubeUrl'] || this.footerSocialLinks['youtubeUrl']);
+  }
+
+  setFooterPageLinksListStyle(i) {
+    if (i === 0) {
+      this.footerPageLinksListStyle['padding-left'] = '0px';
+    }
+    if (this.footerMenuOptions.length === 1) {
+      this.footerPageLinksListStyle['padding-right'] = '0px';
+    }
+    if (i === this.footerMenuOptions.length) {
+      this.footerPageLinksListStyle['padding-right'] = '0px';
+    }
+    if (this.footerMenuOptions[i]['visible'] === false) {
+      this.footerPageLinksListStyle['padding-left'] = '0px';
+      this.footerPageLinksListStyle['padding-right'] = '0px';
+    }
+    return this.footerPageLinksListStyle;
+  }
+
   ngOnDestroy() {
     this.footerStyleSubscription.unsubscribe();
     this.footerPageLinksStyleSubscription.unsubscribe();
@@ -310,15 +289,9 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.activeEditComponentSubscription.unsubscribe();
     this.activeEditComponentIdSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.facebookUrlSubscription.unsubscribe();
-    this.twitterUrlSubscription.unsubscribe();
-    this.instagramUrlSubscription.unsubscribe();
-    this.youtubeUrlSubscription.unsubscribe();
-    this.githubUrlSubscription.unsubscribe();
-    this.linkedinUrlSubscription.unsubscribe();
     this.activeElementSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
+    this.footerSocialLinksSubscription.unsubscribe();
   }
 }
