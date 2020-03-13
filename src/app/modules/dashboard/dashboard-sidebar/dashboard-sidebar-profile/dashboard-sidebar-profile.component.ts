@@ -46,11 +46,6 @@ export class DashboardSidebarProfileComponent implements OnInit {
     this.dashboardSidebarWidth = document.getElementById('dashboard-sidebar').offsetWidth - 30;
   }
 
-  redirectToBuilder() {
-    this.router.navigate(['builder']).then(() => {
-    });
-  }
-
   setActiveSidebar(selectedOption: string) {
     this.dashboardService.activeSidebarSetting.next(selectedOption);
   }

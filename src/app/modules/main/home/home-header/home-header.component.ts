@@ -11,7 +11,7 @@ export class HomeHeaderComponent implements OnInit {
   isMobile: Observable<BreakpointState>;
   mobileTitle = 'No coders.<br>No designers.<br>No barriers.';
   desktopTitle = 'No coders. No designers. No barriers.';
-  subtitle = 'Opsonion is a no-code platform for creating, customising and deploying amazing web applications.';
+  subtitle = 'Opsonion is a platform that makes building websites easier than ever.';
   headerHeight$: Observable<string>;
   rowAlignment$: Observable<string>;
 

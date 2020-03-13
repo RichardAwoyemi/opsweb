@@ -31,6 +31,13 @@ export class WebsiteService {
 
   private websiteOwnershipSubscription: Subscription;
 
+  createWebsite() {
+    const documentId = this.afs.createId();
+    this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+    });
+    this.toastrService.success('Your website has been created.', 'Great!');
+  }
+
   createWebsiteFromTemplate(template: string, user: IUser) {
     const websiteName = UtilService.generateWebsiteName();
     const documentId = this.afs.createId();
