@@ -28,6 +28,7 @@ export class WebsiteService {
   initialWebsiteChangeCount: any = {value: 0};
   websiteChangeCount = new BehaviorSubject<any>(this.initialWebsiteChangeCount);
   websiteLoaded = new BehaviorSubject<boolean>(false);
+  MAX_NUMBER_OF_WEBSITES = 3;
 
   private websiteOwnershipSubscription: Subscription;
 
@@ -49,7 +50,7 @@ export class WebsiteService {
     const defaultPageComponents = this.builderComponentsService.defaultPageComponents.getValue();
 
     this.websiteOwnershipSubscription = this.getWebsitesByUserId(user.uid).subscribe(websitesOwnedByUser => {
-      if (websitesOwnedByUser.length < 3) {
+      if (websitesOwnedByUser.length < this.MAX_NUMBER_OF_WEBSITES) {
         switch (template['id']) {
           case ActiveTemplates.Front:
             documentRef.set({
@@ -85,7 +86,7 @@ export class WebsiteService {
         this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
         });
       } else {
-        this.toastrService.error('You cannot create more than 3 websites on your current plan.', 'Oops!');
+        this.toastrService.warning('You cannot create more than 3 websites on your current plan.', 'Oops!');
       }
       this.websiteOwnershipSubscription.unsubscribe();
     });

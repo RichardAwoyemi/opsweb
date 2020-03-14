@@ -46,3 +46,5 @@ export enum ActiveOrientations {
   Tablet = 'tablet',
   Mobile = 'mobile'
 }
+
+export const MAX_NUMBER_OF_PAGES = 4;

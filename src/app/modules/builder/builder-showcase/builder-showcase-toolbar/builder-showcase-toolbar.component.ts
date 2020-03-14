@@ -6,10 +6,11 @@ import { BuilderNavbarService } from '../../builder-components/builder-navbar/bu
 import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
-import { ActiveComponents, ActiveElements } from '../../builder';
+import { ActiveComponents, ActiveElements, MAX_NUMBER_OF_PAGES } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { BuilderSaveWebsiteModalComponent } from '../../builder-actions/builder-save-website-modal/builder-save-website-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-builder-showcase-toolbar',
@@ -30,10 +31,13 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   activeToolbarOrientation: string;
   dropdownMenuClass = 'dropdown-menu';
   ariaExpandedAttribute = 'false';
+  pageComponents = 'false';
+
   private navbarMenuOptionsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private fullScreenModeSubscription: Subscription;
   private activePageIndexSubscription: Subscription;
+  private pageComponentsSubscription: Subscription;
   private activeOrientationSubscription: Subscription;
   private previewModeSubscription: Subscription;
 
@@ -42,6 +46,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     private builderComponentsService: BuilderComponentsService,
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService,
+    private toastrService: ToastrService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }
@@ -100,6 +105,12 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
       }
     }));
 
+    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    });
+
     this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe((response => {
       if (response) {
         this.navbarMenuOptions = response;
@@ -121,7 +132,12 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   }
 
   openNewPageModal() {
-    this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
+    const numberOfPages = this.pageComponents['pages'].length;
+    if (numberOfPages + 1 > MAX_NUMBER_OF_PAGES) {
+      this.toastrService.warning('You cannot create more than four pages.', 'Oops!');
+    } else {
+      this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -195,5 +211,6 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.activePageIndexSubscription.unsubscribe();
     this.activeOrientationSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
+    this.pageComponentsSubscription.unsubscribe();
   }
 }

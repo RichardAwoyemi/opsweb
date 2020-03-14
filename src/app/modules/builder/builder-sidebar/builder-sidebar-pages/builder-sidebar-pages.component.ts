@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActiveComponentsPartialSelector, ActiveSettings } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveSettings, MAX_NUMBER_OF_PAGES } from '../../builder';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
@@ -12,6 +12,7 @@ import { BuilderComponentsService } from '../../builder-components/builder-compo
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-builder-sidebar-pages',
@@ -41,6 +42,7 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
+    private toastrService: ToastrService,
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService
   ) {
@@ -114,7 +116,12 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   }
 
   openNewPageModal() {
-    this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
+    const numberOfPages = this.pageComponents['pages'].length;
+    if (numberOfPages + 1 > MAX_NUMBER_OF_PAGES) {
+      this.toastrService.warning('You cannot create more than 4 pages on your current plan.', 'Oops!');
+    } else {
+      this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
+    }
   }
 
   openRenamePageModal(pageName, pageIndex) {

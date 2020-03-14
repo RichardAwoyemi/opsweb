@@ -270,7 +270,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   }
 
   checkPageLinkStyle(footerMenuOption) {
-    console.log(footerMenuOption);
     return footerMenuOption['visible'] !== false;
   }
 
