@@ -30,6 +30,8 @@ export class BuilderCreateAccountModalComponent implements IModalComponent {
   }
 
   facebookSignIn() {
+    this.authService.facebookSignInFromBuilder(this.builderComponentsService.pageComponents.getValue());
+    this.activeModal.dismiss();
   }
 
   emailSignIn() {

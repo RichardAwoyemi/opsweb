@@ -61,9 +61,26 @@ export class AuthService {
         if (!doc) {
           this.userService.processNewDesktopUser(result, firstName, lastName);
         }
-        if (doc) {
-          this.logger.debug(`${firstName} ${lastName} is a returning desktop user`);
+      }
+    }).catch((error) => {
+      this.simpleModalService.displayMessage('Oops', error.message);
+    });
+  }
+
+  facebookSignInFromBuilder(pageComponents) {
+    const provider = new auth.FacebookAuthProvider();
+    let firstName = null, lastName = null;
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      if (result) {
+        firstName = result.additionalUserInfo.profile['first_name'];
+        lastName = result.additionalUserInfo.profile['last_name'];
+        const path = `/users/${result.user.uid}/`;
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewDesktopUser(result, firstName, lastName);
         }
+        localStorage.setItem('builderTourComplete', 'true');
+        this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
       }
     }).catch((error) => {
       this.simpleModalService.displayMessage('Oops', error.message);

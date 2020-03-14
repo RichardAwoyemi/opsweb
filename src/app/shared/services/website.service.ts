@@ -174,6 +174,7 @@ export class WebsiteService {
               this.router.navigate([`/builder/${id}`]);
             }).then(() => {
             });
+            this.toastrService.success('Your account has been created.', 'Great!');
           });
         } else {
           this.toastrService.warning('You cannot create more than 3 websites on your current plan.', 'Oops!');
