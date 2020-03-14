@@ -1,5 +1,6 @@
-<div *ngIf="user.photoURL" style="padding-bottom: 1em; text-align: center">
-  <img alt="avatar" class="avatar avatar-xl" src="{{ user.photoURL }}">
+<div style="padding-bottom: 1em; text-align: center">
+  <img *ngIf="user.photoURL" alt="avatar" class="avatar avatar-xl" src="{{ user.photoURL }}">
+  <img *ngIf="!user.photoURL" alt="avatar" class="avatar avatar-xl" src="../../../../assets/img/anonymous.jpg">
 </div>
 <div style="text-align: center">
   <label class="btn btn-xs btn-secondary btn-file">
