@@ -16,13 +16,15 @@ import { BuilderFooterService } from '../../builder-components/builder-footer/bu
   templateUrl: './builder-rename-page-modal.component.html'
 })
 export class BuilderRenamePageModalComponent implements IModalComponent, OnInit, OnDestroy {
-  @Input() activePage: string;
   @Input() activePageIndex: number;
+  @Input() activePage: string;
   pageName: string;
   displayError = false;
   disableSaveButton = false;
   navbarMenuOptions: any;
   pageComponents: any;
+  activePageSetting: string;
+
   private navbarMenuOptionsSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
 
@@ -46,11 +48,11 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
       }
     });
 
-    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
+    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
-    }));
+    });
   }
 
   onCloseButtonClick() {
@@ -61,7 +63,6 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     this.activeModal.dismiss();
     const pageIndex = this.activePageIndex;
     const pageName = this.pageName;
-
     this.navbarMenuOptions[pageIndex] = pageName;
 
     this.builderFooterService.setFooterMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
@@ -69,10 +70,10 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     this.builderNavbarService.setNavbarMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.builderNavbarService.navbarMenuOptions.getValue());
 
-    this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), pageIndex);
+    this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), this.activePage);
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.activePageSetting.next('Home');
-    this.builderService.activePageIndex.next(0);
+    this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
 
     this.toastrService.success('Your page has been renamed.', 'Great!');
   }

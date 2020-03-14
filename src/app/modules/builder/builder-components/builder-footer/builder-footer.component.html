@@ -30,10 +30,11 @@
     </div>
     <div *ngIf="checkIfVisibleFooterMenuOptions()" [ngClass]="footerAlignmentClass">
       <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
-        <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index"
-              [innerText]="displayFooterMenuOption(footerMenuOption)"
-              [ngStyle]="checkPageLinkStyle(footerMenuOption, i)">
-        </span>
+        <ng-container *ngFor="let footerMenuOption of footerMenuOptions">
+              <span *ngIf="checkPageLinkStyle(footerMenuOption)"
+                    [innerText]="displayFooterMenuOption(footerMenuOption)"
+                    [ngStyle]="footerPageLinksListStyle"></span>
+        </ng-container>
       </div>
     </div>
     <div [ngClass]="footerAlignmentClass">
@@ -65,9 +66,11 @@
         <div class="col-md-4 text-center">
           <div *ngIf="checkIfVisibleFooterMenuOptions()">
             <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
-            <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index"
-                  [innerText]="displayFooterMenuOption(footerMenuOption)"
-                  [ngStyle]="footerPageLinksStyle"></span>
+              <ng-container *ngFor="let footerMenuOption of footerMenuOptions">
+              <span *ngIf="checkPageLinkStyle(footerMenuOption)"
+                    [innerText]="displayFooterMenuOption(footerMenuOption)"
+                    [ngStyle]="footerPageLinksListStyle"></span>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -98,9 +101,11 @@
         <div class="col-md-8 text-right">
           <div *ngIf="checkIfVisibleFooterMenuOptions()">
             <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
-            <span *ngFor="let footerMenuOption of footerMenuOptions; let i = index"
-                  [innerText]="displayFooterMenuOption(footerMenuOption)"
-                  [ngStyle]="checkPageLinkStyle(footerMenuOption, i)"></span>
+              <ng-container *ngFor="let footerMenuOption of footerMenuOptions; let i = index">
+              <span *ngIf="checkPageLinkStyle(footerMenuOption)"
+                    [innerText]="displayFooterMenuOption(footerMenuOption)"
+                    [ngStyle]="footerPageLinksListStyle"></span>
+              </ng-container>
             </div>
           </div>
         </div>

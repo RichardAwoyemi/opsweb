@@ -269,30 +269,9 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     return !!(this.footerSocialLinks['facebookUrl'] || this.footerSocialLinks['twitterUrl'] || this.footerSocialLinks['youtubeUrl'] || this.footerSocialLinks['youtubeUrl']);
   }
 
-  checkPageLinkStyle(footerMenuOption, i) {
-    if (footerMenuOption['visible'] === false) {
-      return {
-        'font-family': this.footerPageLinksListStyle['font-family'],
-        'font-size': this.footerPageLinksListStyle['font-size'],
-        'padding-left': '0px',
-        'padding-right': '0px'
-      };
-    }
-
-    if (this.footerMenuOptions[i + 1]) {
-      if (!this.footerMenuOptions[i + 2]) {
-        if (this.footerMenuOptions[i + 1]['visible'] === false) {
-          return {
-            'font-family': this.footerPageLinksListStyle['font-family'],
-            'font-size': this.footerPageLinksListStyle['font-size'],
-            'padding-left': this.footerPageLinksListStyle['padding-left'],
-            'padding-right': '0px'
-          };
-        }
-      }
-    }
-
-    return this.footerPageLinksListStyle;
+  checkPageLinkStyle(footerMenuOption) {
+    console.log(footerMenuOption);
+    return footerMenuOption['visible'] !== false;
   }
 
   checkSocialLinkStyle(footerSocialOption) {

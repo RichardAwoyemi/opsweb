@@ -1761,11 +1761,11 @@ export class BuilderComponentsService {
     }
   }
 
-  renamePage(pageName: string, pageIndex: number) {
+  renamePage(newPageName, oldPageName) {
     const pageComponents = this.pageComponents.getValue();
     for (let i = 0; i < pageComponents['pages'].length; i++) {
-      if (i === pageIndex) {
-        pageComponents['pages'][i]['name'] = pageName;
+      if (pageComponents['pages'][i]['name'] === oldPageName) {
+        pageComponents['pages'][i]['name'] = newPageName;
       }
     }
     this.pageComponents.next(pageComponents);
@@ -1779,5 +1779,14 @@ export class BuilderComponentsService {
       }
     }
     this.pageComponents.next(pageComponents);
+  }
+
+  getHomePageIndex() {
+    const pageComponents = this.pageComponents.getValue();
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      if (pageComponents['pages'][i]['name'] === 'Home') {
+        return i;
+      }
+    }
   }
 }

@@ -71,10 +71,10 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
     BuilderShowcaseService.loadIframeJs(this.document, 'https://code.jquery.com/jquery-3.4.1.min.js');
     BuilderShowcaseService.loadIframeJs(this.document, 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
     BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
-    BuilderShowcaseService.loadIframeCss(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'assets/js/iframe.js');
+    // BuilderShowcaseService.loadIframeCss(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css');
+    // BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js');
+    // BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js');
+    // BuilderShowcaseService.loadIframeJs(this.document, 'assets/js/iframe.js');
 
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(BuilderShowcaseLayoutComponent);
     this.componentReference = this.viewContainerRef.createComponent(componentFactory);

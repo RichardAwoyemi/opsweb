@@ -243,17 +243,18 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
 
   saveNavbarMenuOption(pageIndex: number, pageName: string) {
     if (pageName !== this.navbarMenuOptions[pageIndex]) {
-      this.navbarMenuOptions[pageIndex] = pageName;
+      const oldPageName = this.navbarMenuOptions[pageIndex];
 
       this.builderFooterService.setFooterMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
       this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', this.builderFooterService.footerMenuOptions.getValue());
       this.builderNavbarService.setNavbarMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
+      this.navbarMenuOptions[pageIndex] = pageName;
       this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.builderNavbarService.navbarMenuOptions.getValue());
 
-      this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), pageIndex);
+      this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), oldPageName);
       this.builderService.activeElement.next(ActiveElements.Default);
       this.builderService.activePageSetting.next('Home');
-      this.builderService.activePageIndex.next(0);
+      this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
 
       this.toastrService.success('Your page has been renamed.', 'Great!');
     }
