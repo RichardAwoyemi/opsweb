@@ -64,6 +64,7 @@ export class UserService {
     let userDetailData = {};
     if (firstName && lastName) {
       userDetailData = {
+        displayName: `${firstName} ${lastName}`,
         firstName: firstName,
         lastName: lastName,
         referralId: referralId

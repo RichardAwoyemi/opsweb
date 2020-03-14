@@ -21,6 +21,7 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(routes),
+
     NavbarModule,
     FooterModule,
     HomeModule,

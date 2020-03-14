@@ -27,10 +27,6 @@ export class NavbarComponent implements OnInit {
   ) {
   }
 
-  get isLoggedIn() {
-    return this.authService.isLoggedIn();
-  }
-
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.routerService.currentRoute.next(window.location.pathname);
@@ -39,6 +35,10 @@ export class NavbarComponent implements OnInit {
         this.currentRoute = result;
       }
     });
+  }
+
+  checkLoggedOutRoute() {
+    return RouterService.checkLoggedOutRoute(this.currentRoute);
   }
 
   signOut() {

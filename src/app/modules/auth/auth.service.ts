@@ -9,6 +9,7 @@ import { UtilService } from '../../shared/services/util.service';
 import { auth } from 'firebase/app';
 import { IAuth } from '../../shared/models/user';
 import { WebsiteService } from '../../shared/services/website.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class AuthService {
     private firebaseService: FirebaseService,
     private userService: UserService,
     private websiteService: WebsiteService,
+    private toastrService: ToastrService,
     private logger: NGXLogger,
     private ngZone: NgZone
   ) {
@@ -63,7 +65,7 @@ export class AuthService {
         }
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops', error.message);
+      this.toastrService.error(error.message, 'Oops!');
     });
   }
 
@@ -83,7 +85,7 @@ export class AuthService {
         this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops', error.message);
+      this.toastrService.error(error.message, 'Oops!');
     });
   }
 
@@ -111,7 +113,7 @@ export class AuthService {
         }
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops', error.message);
+      this.toastrService.error(error.message, 'Oops!');
     });
   }
 
@@ -136,7 +138,7 @@ export class AuthService {
         this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops!', error.message);
+      this.toastrService.error(error.message, 'Oops!');
     });
   }
 
@@ -156,11 +158,11 @@ export class AuthService {
           this.userService.processNewDesktopUser(result, firstName, lastName);
           this.sendVerificationMail().then(() => {
           });
-          this.simpleModalService.displayMessage('Great!', 'Your registration was successful.');
+          this.toastrService.success('Your registration was successful.', 'Great!');
         }
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops!', error.message);
+      this.toastrService.error(error.message, 'Oops!');
     });
   }
 

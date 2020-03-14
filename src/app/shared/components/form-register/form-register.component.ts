@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from '../../../modules/auth/auth.service';
 
 @Component({
   selector: 'app-form-register',
@@ -9,14 +10,16 @@ export class FormRegisterComponent implements OnInit {
   @Input() referredById: string;
   model: any = {};
 
-  constructor() {
+  constructor(
+    private authService: AuthService
+  ) {
   }
 
   ngOnInit() {
     localStorage.removeItem('user');
   }
 
-  registerWithReferral() {
-    return false;
+  register() {
+    this.authService.register(this.model['email'], this.model['password'], this.model['firstName'], this.model['lastName']);
   }
 }

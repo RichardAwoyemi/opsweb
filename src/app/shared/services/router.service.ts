@@ -13,6 +13,11 @@ export class RouterService {
     return currentRoute;
   }
 
+  static checkLoggedOutRoute(currentRoute) {
+    return currentRoute === '/' || currentRoute === '/login' || currentRoute === '/register' ||
+      currentRoute === '/press' || currentRoute === '/legal';
+  }
+
   setCurrentRoute() {
     localStorage.setItem('currentRoute', this.currentRoute.getValue());
   }

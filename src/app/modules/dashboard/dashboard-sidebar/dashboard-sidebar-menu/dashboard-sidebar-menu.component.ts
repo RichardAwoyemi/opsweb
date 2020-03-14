@@ -6,7 +6,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { IUser } from '../../../../shared/models/user';
 import * as fromUser from '../../../core/store/user/user.reducer';
 import { Store } from '@ngrx/store';
-import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard-sidebar-links',
@@ -23,7 +23,7 @@ export class DashboardSidebarMenuComponent implements OnInit {
   constructor(
     public router: Router,
     private dashboardService: DashboardService,
-    private simpleModalService: SimpleModalService,
+    private toastrService: ToastrService,
     private authService: AuthService,
     private userStore: Store<fromUser.State>
   ) {
@@ -38,7 +38,7 @@ export class DashboardSidebarMenuComponent implements OnInit {
           if (!this.user.firstName && !this.user.lastName && this.user.uid) {
             this.dashboardService.activeSidebarSetting.next(ActiveSidebarSettings.AccountSettings);
             if (!this.messageDisplayed) {
-              this.simpleModalService.displayMessage('👋', 'Please set up your account before continuing.');
+              this.toastrService.warning('Please set up your account before continuing.');
               this.messageDisplayed = true;
             }
           }

@@ -30,4 +30,8 @@ export class FooterComponent implements OnInit {
       }
     });
   }
+
+  checkLoggedOutRoute() {
+    RouterService.checkLoggedOutRoute(this.currentRoute);
+  }
 }
