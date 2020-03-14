@@ -50,6 +50,7 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
   }
 
   onConfirmButtonClick() {
+    this.websiteName = this.websiteName.toLowerCase();
     this.websiteAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.websiteName).subscribe(websitesWithSameName => {
       if (websitesWithSameName.size === 0) {
         const documentId = this.afs.createId();

@@ -8,6 +8,8 @@ import { UtilService } from '../../shared/services/util.service';
 import { WebsiteService } from '../../shared/services/website.service';
 import { BuilderComponentsService } from './builder-components/builder-components.service';
 import { ActiveComponents, ActiveElements } from './builder';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-builder',
@@ -28,6 +30,8 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     private routerService: RouterService,
     private websiteService: WebsiteService,
     private shepherdService: ShepherdService,
+    private toastrService: ToastrService,
+    private authService: AuthService,
     private builderComponentsService: BuilderComponentsService) {
   }
 
@@ -64,6 +68,10 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
               });
             } else {
               this.builderComponentsService.pageComponents.next(this.builderComponentsService.defaultPageComponents.getValue());
+              if (!this.authService.isLoggedIn()) {
+                this.toastrService.warning('All changes will not be saved until you create an account.');
+                localStorage.setItem('builderTourComplete', 'false');
+              }
             }
             this.websiteService.websiteLoaded.next(true);
           }

@@ -20,19 +20,17 @@
         <button (click)="openPublishModal()" class="btn btn-glass btn-primary shepherd-step-3" type="button">Publish
         </button>
         &nbsp;&nbsp;
+        <button (click)="openCreateAccountModal()" *ngIf="!isLoggedIn()" class="btn btn-glass btn-primary"
+                type="button">Sign Up
+        </button>
         <span aria-expanded="false" class="dropdown-toggle no-caret"
-              data-toggle="dropdown">
+              *ngIf="isLoggedIn()" data-toggle="dropdown">
             <img *ngIf="!user.photoURL" alt="user" class="avatar avatar-xs" src="{{ photoURL }}">
             <img *ngIf="user.photoURL" alt="user" class="avatar avatar-xs" src="{{ user.photoURL }}">
         </span>
-        <div class="dropdown-menu dropdown-menu-right">
-          <ng-container *ngIf="isLoggedIn()">
-            <a (click)="redirectToDashboard()" class="dropdown-item">Dashboard</a>
-            <a (click)="signOut()" class="dropdown-item">Log Out</a>
-          </ng-container>
-          <ng-container *ngIf="!isLoggedIn()">
-            <a (click)="openCreateAccountModal()" class="dropdown-item">Create Account</a>
-          </ng-container>
+        <div *ngIf="isLoggedIn()" class="dropdown-menu dropdown-menu-right">
+          <a (click)="redirectToDashboard()" class="dropdown-item">Dashboard</a>
+          <a (click)="signOut()" class="dropdown-item">Log Out</a>
         </div>
       </div>
     </div>

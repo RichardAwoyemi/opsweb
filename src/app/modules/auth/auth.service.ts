@@ -1,6 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { SimpleModalService } from '../../shared/components/simple-modal/simple-modal.service';
@@ -9,6 +8,7 @@ import { UserService } from '../../shared/services/user.service';
 import { UtilService } from '../../shared/services/util.service';
 import { auth } from 'firebase/app';
 import { IAuth } from '../../shared/models/user';
+import { WebsiteService } from '../../shared/services/website.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +17,13 @@ export class AuthService {
   user: any;
 
   constructor(
-    public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public simpleModalService: SimpleModalService,
     private utilService: UtilService,
     private firebaseService: FirebaseService,
     private userService: UserService,
+    private websiteService: WebsiteService,
     private logger: NGXLogger,
     private ngZone: NgZone
   ) {
@@ -98,6 +98,31 @@ export class AuthService {
     });
   }
 
+  googleSignInFromBuilder(pageComponents) {
+    const provider = new auth.GoogleAuthProvider();
+    let firstName = null;
+    let lastName = null;
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      if (result) {
+        firstName = result.additionalUserInfo.profile['given_name'];
+        lastName = result.additionalUserInfo.profile['family_name'];
+        if (!result.user.uid) {
+          this.userService.processNewDesktopUser(result, firstName, lastName);
+        } else {
+          const path = `/users/${result.user.uid}/`;
+          const doc = await this.firebaseService.docExists(path);
+          if (!doc) {
+            this.userService.processNewDesktopUser(result, firstName, lastName);
+          }
+        }
+        localStorage.setItem('builderTourComplete', 'true');
+        this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
+      }
+    }).catch((error) => {
+      this.simpleModalService.displayMessage('Oops!', error.message);
+    });
+  }
+
   mobileGoogleSignIn() {
     const provider = new auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithRedirect(provider);
@@ -118,7 +143,7 @@ export class AuthService {
         }
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops', error.message);
+      this.simpleModalService.displayMessage('Oops!', error.message);
     });
   }
 

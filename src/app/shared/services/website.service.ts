@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { NGXLogger } from 'ngx-logger';
 import { BuilderComponentsService } from '../../modules/builder/builder-components/builder-components.service';
@@ -19,6 +19,7 @@ export class WebsiteService {
     private builderService: BuilderService,
     private toastrService: ToastrService,
     public logger: NGXLogger,
+    private ngZone: NgZone,
     public router: Router
   ) {
   }
@@ -146,5 +147,39 @@ export class WebsiteService {
 
   resetWebsiteChangeCount() {
     this.websiteChangeCount.next(this.initialWebsiteChangeCount);
+  }
+
+  createWebsiteFromSource(uid, pageComponents) {
+    if (pageComponents && uid) {
+      const name = window.document.getElementById('builder-header-website-name').innerText;
+      const id = window.location.pathname.split('/')[2];
+      const createdBy = uid;
+      const pages = pageComponents['pages'];
+      const template = pageComponents['template'];
+
+      this.websiteOwnershipSubscription = this.getWebsitesByUserId(uid).subscribe(websitesOwnedByUser => {
+        if (websitesOwnedByUser.length < this.MAX_NUMBER_OF_WEBSITES) {
+          const documentPath = `websites/${id}`;
+          const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
+          documentRef.set({
+            name: name,
+            id: id,
+            createdBy: createdBy,
+            pages: pages,
+            template: template
+          }, {merge: true});
+          this.websiteName.next(name);
+          this.ngZone.run(() => {
+            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+              this.router.navigate([`/builder/${id}`]);
+            }).then(() => {
+            });
+          });
+        } else {
+          this.toastrService.warning('You cannot create more than 3 websites on your current plan.', 'Oops!');
+        }
+        this.websiteOwnershipSubscription.unsubscribe();
+      });
+    }
   }
 }

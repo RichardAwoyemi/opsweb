@@ -11,6 +11,8 @@ import { BuilderComponentsService } from '../../builder-components/builder-compo
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { BuilderSaveWebsiteModalComponent } from '../../builder-actions/builder-save-website-modal/builder-save-website-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../auth/auth.service';
+import { BuilderCreateAccountModalComponent } from '../../builder-actions/builder-create-account-modal/builder-create-account-modal.component';
 
 @Component({
   selector: 'app-builder-showcase-toolbar',
@@ -47,6 +49,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private simpleModalService: SimpleModalService,
     private toastrService: ToastrService,
+    private authService: AuthService,
     private builderNavbarService: BuilderNavbarService
   ) {
   }
@@ -178,7 +181,11 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   }
 
   openSaveWebsiteModal() {
-    this.modalService.open(BuilderSaveWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
+    if (!this.authService.isLoggedIn()) {
+      this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+    } else {
+      this.modalService.open(BuilderSaveWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
+    }
   }
 
   @HostListener('document:fullscreenchange')
