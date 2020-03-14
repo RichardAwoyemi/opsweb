@@ -268,6 +268,16 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     }
   }
 
+  saveFeaturesHeadingStyleText(text, i) {
+    this.featuresItemArray[i]['heading'] = text;
+    this.builderComponentsService.setPageComponentById(this.componentId, 'featuresItemArray', this.featuresItemArray);
+  }
+
+  saveFeaturesSubheadingStyleText(text, i) {
+    this.featuresItemArray[i]['subheading'] = text;
+    this.builderComponentsService.setPageComponentById(this.componentId, 'featuresItemArray', this.featuresItemArray);
+  }
+
   ngOnDestroy() {
     if (this.featuresBreakpointSubscription) {
       this.featuresBreakpointSubscription.unsubscribe();

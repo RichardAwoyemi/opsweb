@@ -6,6 +6,8 @@
       <div *ngFor="let feature of featuresItemArray; let i = index" [ngStyle]="setFeaturesInnerStyle()">
         <div style="padding: 12px">
           <div
+            (blur)="saveFeaturesHeadingStyleText($event.target['innerText'], i);"
+            (keydown.enter)="saveFeaturesHeadingStyleText($event.target['innerText'], i); $event.preventDefault()"
             (click)="selectFeaturesElement($event, componentId+'-'+'heading'+'-'+i)"
             [attr.contenteditable]="setContentEditable()"
             [class]="setActiveElement(componentId+'-'+'heading'+'-'+i)"
@@ -14,6 +16,8 @@
             [ngStyle]="featuresHeadingStyle" id="{{ componentId+'-'+'heading'+'-'+i }}">
           </div>
           <div
+            (blur)="saveFeaturesSubheadingStyleText($event.target['innerText'], i);"
+            (keydown.enter)="saveFeaturesSubheadingStyleText($event.target['innerText'], i); $event.preventDefault()"
             (click)="selectFeaturesElement($event, componentId+'-'+'subheading'+'-'+i)"
             [attr.contenteditable]="setContentEditable()"
             [class]="setActiveElement(componentId+'-'+'subheading'+'-'+i)"

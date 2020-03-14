@@ -21,6 +21,9 @@ function listenForShowcaseMessages(e) {
     if (e.data.action === 'non-component-selected') {
       componentToAdd = 'non-component-selected';
     }
+    if (e.data.action === null) {
+      componentToAdd = null;
+    }
   }
 }
 

@@ -62,15 +62,11 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     private simpleModalService: SimpleModalService
   ) {
     this.options = {
-      onUpdate: function (e: any) {
+      onUpdate: function () {
         const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
-        const oldIndexNavbarMenuOption = navbarMenuOptions[e.oldIndex];
-        const newIndexNavbarMenuOption = navbarMenuOptions[e.newIndex];
-        navbarMenuOptions[e.newIndex] = oldIndexNavbarMenuOption;
-        navbarMenuOptions[e.newIndex] = newIndexNavbarMenuOption;
         builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
-        // const footerMenuOptions = builderFooterService.sortFooterMenuOptions(builderFooterService.footerMenuOptions.getValue(), navbarMenuOptions);
-        // builderFooterService.footerMenuOptions.next(footerMenuOptions);
+        builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
+        builderFooterService.mapNavbarAndFooterMenuOptions(navbarMenuOptions, builderFooterService.footerMenuOptions.getValue());
       }
     };
   }

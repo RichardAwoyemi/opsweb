@@ -15,7 +15,7 @@ export class BuilderFooterService {
   footerSocialLinks = new BehaviorSubject<any>(null);
   footerPageLinksStyle = new BehaviorSubject<Object>(null);
   footerCopyrightStyle = new BehaviorSubject<Object>(null);
-  footerMenuOptions = new BehaviorSubject<any>(null);
+  footerMenuOptions = new BehaviorSubject<any>([null]);
   footerComponentLayout = new BehaviorSubject<any>({'layout': 0});
 
   private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';

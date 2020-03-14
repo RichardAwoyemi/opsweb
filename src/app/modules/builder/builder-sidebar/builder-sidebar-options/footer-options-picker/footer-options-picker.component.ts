@@ -167,21 +167,28 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
       if (response['facebookUrl']) {
         this.footerSocialLinks['facebookUrl'] = response['facebookUrl'];
+        this.facebookUrl = response['facebookUrl'];
       }
       if (response['twitterUrl']) {
         this.footerSocialLinks['twitterUrl'] = response['twitterUrl'];
+        this.twitterUrl = response['twitterUrl'];
+
       }
       if (response['instagramUrl']) {
         this.footerSocialLinks['instagramUrl'] = response['instagramUrl'];
+        this.instagramUrl = response['instagramUrl'];
       }
       if (response['youtubeUrl']) {
         this.footerSocialLinks['youtubeUrl'] = response['youtubeUrl'];
+        this.youtubeUrl = response['youtubeUrl'];
       }
       if (response['githubUrl']) {
         this.footerSocialLinks['githubUrl'] = response['githubUrl'];
+        this.githubUrl = response['githubUrl'];
       }
       if (response['linkedinUrl']) {
         this.footerSocialLinks['linkedinUrl'] = response['linkedinUrl'];
+        this.linkedinUrl = response['linkedinUrl'];
       }
     });
 

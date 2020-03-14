@@ -23,6 +23,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   footerStyle: any;
   navbarMenuOptions: any;
   footerMenuOptions: any;
+  footerMenuOptionsCount: number;
   footerSocialLinksStyle: any;
   footerPageLinksStyle: any;
   footerPageLinksContainerStyle: any;
@@ -143,8 +144,16 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     });
 
     this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+      this.footerMenuOptionsCount = 0;
       if (response) {
         this.footerMenuOptions = response;
+        for (let i = 0; i < this.footerMenuOptions.length; i++) {
+          if (this.footerMenuOptions[i]) {
+            if (this.footerMenuOptions[i]['visible'] === true) {
+              this.footerMenuOptionsCount++;
+            }
+          }
+        }
       }
     });
 
@@ -260,22 +269,40 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     return !!(this.footerSocialLinks['facebookUrl'] || this.footerSocialLinks['twitterUrl'] || this.footerSocialLinks['youtubeUrl'] || this.footerSocialLinks['youtubeUrl']);
   }
 
-  setFooterPageLinksListStyle(i) {
-    if (i === 0) {
-      this.footerPageLinksListStyle['padding-left'] = '0px';
+  checkPageLinkStyle(footerMenuOption, i) {
+    if (footerMenuOption['visible'] === false) {
+      return {
+        'font-family': this.footerPageLinksListStyle['font-family'],
+        'font-size': this.footerPageLinksListStyle['font-size'],
+        'padding-left': '0px',
+        'padding-right': '0px'
+      };
     }
-    if (this.footerMenuOptions.length === 1) {
-      this.footerPageLinksListStyle['padding-right'] = '0px';
+
+    if (this.footerMenuOptions[i + 1]) {
+      if (!this.footerMenuOptions[i + 2]) {
+        if (this.footerMenuOptions[i + 1]['visible'] === false) {
+          return {
+            'font-family': this.footerPageLinksListStyle['font-family'],
+            'font-size': this.footerPageLinksListStyle['font-size'],
+            'padding-left': this.footerPageLinksListStyle['padding-left'],
+            'padding-right': '0px'
+          };
+        }
+      }
     }
-    if (i === this.footerMenuOptions.length) {
-      this.footerPageLinksListStyle['padding-right'] = '0px';
-    }
-    if (this.footerMenuOptions[i]['visible'] === false) {
-      this.footerPageLinksListStyle['padding-left'] = '0px';
-      this.footerPageLinksListStyle['padding-right'] = '0px';
-    }
+
     return this.footerPageLinksListStyle;
   }
+
+  checkSocialLinkStyle(footerSocialOption) {
+    if (footerSocialOption === null) {
+      return {};
+    } else {
+      return this.footerSocialLinksStyle;
+    }
+  }
+
 
   ngOnDestroy() {
     this.footerStyleSubscription.unsubscribe();
@@ -294,4 +321,5 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.activePageSettingSubscription.unsubscribe();
     this.footerSocialLinksSubscription.unsubscribe();
   }
+
 }

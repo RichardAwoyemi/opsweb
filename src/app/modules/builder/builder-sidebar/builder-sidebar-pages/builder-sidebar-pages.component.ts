@@ -167,6 +167,13 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     }, '*');
   }
 
+  onDragExit() {
+    window.postMessage({
+      'for': 'opsonion',
+      'action': null,
+    }, '*');
+  }
+
   ngOnDestroy() {
     this.activeEditSettingSubscription.unsubscribe();
     this.navbarMenuOptionsSubscription.unsubscribe();

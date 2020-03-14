@@ -14,6 +14,7 @@
       <div *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index"
            class="row page-row-color page-row-option justify-content-center align-items-center"
            (dragstart)="onDragStart()"
+           (drop)="onDragExit()"
            style="font-size: 0.8em">
         <div class="col-md-2" style="padding: 0.5em;">
           <button class="btn btn-square btn-options btn-block btn-lg btn-drag-menu" type="button">
@@ -55,6 +56,7 @@
       <div *ngFor="let componentListOption of componentListOptions"
            [attr.id]="componentListOption['componentId']"
            (dragstart)="onDragStart()"
+           (drop)="onDragExit()"
            class="row page-row-color page-row-option justify-content-center align-items-center"
            style="font-size: 0.8em">
         <div class="col-md-2" style="padding: 0.5em;">
