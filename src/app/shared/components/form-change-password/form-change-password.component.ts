@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IUser } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
+import { AuthService } from '../../../modules/auth/auth.service';
 
 @Component({
   selector: 'app-form-change-password',
@@ -12,9 +13,11 @@ export class FormChangePasswordComponent implements OnInit {
     photoURL: '/assets/img/anonymous.jpg'
   };
   isPasswordChangeEnabled = false;
+  account: any;
 
   constructor(
-    private userStore: Store<fromUser.State>
+    private userStore: Store<fromUser.State>,
+    private authService: AuthService
   ) {
   }
 
@@ -26,9 +29,14 @@ export class FormChangePasswordComponent implements OnInit {
           this.user = result;
         }
       });
+
+    this.account = this.authService.checkAccountType();
+    if (this.account[0]['providerId'] === 'password') {
+      this.isPasswordChangeEnabled = true;
+    }
   }
 
   changePassword() {
-    console.log();
+    this.authService.resetPassword(this.account[0]['email']);
   }
 }

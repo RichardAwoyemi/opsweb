@@ -2,7 +2,6 @@ import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
-import { SimpleModalService } from '../../shared/components/simple-modal/simple-modal.service';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { UserService } from '../../shared/services/user.service';
 import { UtilService } from '../../shared/services/util.service';
@@ -10,6 +9,7 @@ import { auth } from 'firebase/app';
 import { IAuth } from '../../shared/models/user';
 import { WebsiteService } from '../../shared/services/website.service';
 import { ToastrService } from 'ngx-toastr';
+import { SimpleModalService } from '../../shared/components/simple-modal/simple-modal.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +20,11 @@ export class AuthService {
   constructor(
     public afAuth: AngularFireAuth,
     public router: Router,
-    public simpleModalService: SimpleModalService,
     private utilService: UtilService,
     private firebaseService: FirebaseService,
     private userService: UserService,
     private websiteService: WebsiteService,
+    private simpleModalService: SimpleModalService,
     private toastrService: ToastrService,
     private logger: NGXLogger,
     private ngZone: NgZone
@@ -65,7 +65,7 @@ export class AuthService {
         }
       }
     }).catch((error) => {
-      this.toastrService.error(error.message, 'Oops!');
+      this.simpleModalService.displayMessage('Oops!', error.message);
     });
   }
 
@@ -85,7 +85,7 @@ export class AuthService {
         this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
       }
     }).catch((error) => {
-      this.toastrService.error(error.message, 'Oops!');
+      this.simpleModalService.displayMessage('Oops!', error.message);
     });
   }
 
@@ -112,8 +112,8 @@ export class AuthService {
           }
         }
       }
-    }).catch((error) => {
-      this.toastrService.error(error.message, 'Oops!');
+    }).catch(() => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
     });
   }
 
@@ -137,8 +137,8 @@ export class AuthService {
         localStorage.setItem('builderTourComplete', 'true');
         this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
       }
-    }).catch((error) => {
-      this.toastrService.error(error.message, 'Oops!');
+    }).catch(() => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
     });
   }
 
@@ -161,8 +161,8 @@ export class AuthService {
           this.toastrService.success('Your registration was successful.', 'Great!');
         }
       }
-    }).catch((error) => {
-      this.toastrService.error(error.message, 'Oops!');
+    }).catch(() => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
     });
   }
 
@@ -182,6 +182,20 @@ export class AuthService {
         });
       });
     }).then(() => {
+    });
+  }
+
+  checkAccountType() {
+    return this.afAuth.auth.currentUser.providerData;
+  }
+
+  resetPassword(email) {
+    return this.afAuth.auth.sendPasswordResetEmail(email).then(() => {
+      this.simpleModalService.displayMessage('Check your email', 'We have sent you an email with ' +
+        'instructions on how to reset your password. If you do not receive this email within a few minutes, then please ' +
+        'also check your junk or spam folder.');
+    }).catch(() => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
     });
   }
 
