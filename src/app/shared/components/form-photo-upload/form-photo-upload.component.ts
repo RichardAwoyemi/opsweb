@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { SimpleModalService } from '../simple-modal/simple-modal.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CropImageModalComponent } from './crop-image-modal/crop-image-modal.component';
 import { FormPhotoUploadService } from './form-photo-upload.service';
 import { Store } from '@ngrx/store';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
 import { IUser } from 'src/app/shared/models/user';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-form-photo-upload',
@@ -36,7 +36,7 @@ export class FormPhotoUploadComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private simpleModalService: SimpleModalService,
+    private toastrService: ToastrService,
     private formPhotoUploadService: FormPhotoUploadService,
     private userStore: Store<fromUser.State>
   ) {
@@ -57,7 +57,7 @@ export class FormPhotoUploadComponent implements OnInit {
     if (event.target.files && event.target.files.length) {
       this.openCropImageModal();
     } else {
-      this.simpleModalService.displayMessage('Oops!', 'Please select a photo to upload.');
+      this.toastrService.warning('Please select a photo to upload.', 'Oops!');
     }
   }
 

@@ -8,6 +8,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { Store } from '@ngrx/store';
 import * as fromUser from '../../../../modules/core/store/user/user.reducer';
 import { ToastrService } from 'ngx-toastr';
+import { IUser } from '../../../models/user';
 
 @Component({
   selector: 'app-crop-image-modal',
@@ -16,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CropImageModalComponent implements OnInit {
   imageChangedEvent: any;
   croppedImage: any;
-  user: any;
+  user: IUser;
 
   constructor(
     private logger: NGXLogger,

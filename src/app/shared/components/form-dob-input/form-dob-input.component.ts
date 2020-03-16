@@ -20,7 +20,17 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
   private dobDay: string;
   private dobMonth: string;
   private dobYear: string;
+  private showDobDayInputError: any;
+  private showDobMonthInputError: any;
+  private showDobYearInputError: any;
+
   private datesSubscription: Subscription;
+  private dobDaySubscription: Subscription;
+  private dobDayInputErrorSubscription: Subscription;
+  private dobMonthSubscription: Subscription;
+  private dobMonthInputErrorSubscription: Subscription;
+  private dobYearSubscription: Subscription;
+  private dobYearInputErrorSubscription: Subscription;
 
   constructor(
     private utilService: UtilService,
@@ -38,23 +48,26 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
       .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
-
-          if (!result.dobDay || result.dobDay.trim().length === 0) {
+          if (!result.dobDay) {
             this.dobDay = 'Day';
           } else {
             this.dobDay = this.user.dobDay;
+            this.userService.dobDay.next(this.dobDay);
+            this.formDobInputService.showDobDayInputError.next({'status': false});
           }
-
-          if (!result.dobMonth || result.dobMonth.trim().length === 0) {
+          if (!result.dobMonth) {
             this.dobMonth = 'Month';
           } else {
             this.dobMonth = this.user.dobMonth;
+            this.userService.dobMonth.next(this.dobMonth);
+            this.formDobInputService.showDobMonthInputError.next({'status': false});
           }
-
-          if (!result.dobYear || result.dobYear.trim().length === 0) {
+          if (!result.dobYear) {
             this.dobYear = 'Year';
           } else {
             this.dobYear = this.user.dobYear;
+            this.userService.dobYear.next(this.dobYear);
+            this.formDobInputService.showDobYearInputError.next({'status': false});
           }
         }
       });
@@ -66,6 +79,51 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
         this.dates = Object.values(data);
       }
     });
+
+    this.datesSubscription = this.dataService.getAllDates().subscribe(data => {
+      if (data) {
+        this.dates = Object.values(data);
+      }
+    });
+
+    this.dobDayInputErrorSubscription = this.formDobInputService.showDobDayInputError.subscribe(response => {
+      if (response) {
+        this.showDobDayInputError = response;
+      }
+    });
+
+    this.dobMonthInputErrorSubscription = this.formDobInputService.showDobMonthInputError.subscribe(response => {
+      if (response) {
+        this.showDobMonthInputError = response;
+      }
+    });
+
+    this.dobYearInputErrorSubscription = this.formDobInputService.showDobYearInputError.subscribe(response => {
+      if (response) {
+        this.showDobYearInputError = response;
+      }
+    });
+
+    this.dobDaySubscription = this.userService.dobDay.subscribe((response => {
+      if (response) {
+        this.dobDay = response;
+        this.formDobInputService.showDobDayInputError.next({'status': this.dobDay === 'Day'});
+      }
+    }));
+
+    this.dobMonthSubscription = this.userService.dobMonth.subscribe((response => {
+      if (response) {
+        this.dobMonth = response;
+        this.formDobInputService.showDobMonthInputError.next({'status': this.dobMonth === 'Month'});
+      }
+    }));
+
+    this.dobYearSubscription = this.userService.dobYear.subscribe((response => {
+      if (response) {
+        this.dobYear = response;
+        this.formDobInputService.showDobYearInputError.next({'status': this.dobYear === 'Month'});
+      }
+    }));
   }
 
   counter(i: number) {
@@ -73,25 +131,22 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
   }
 
   onChangeUpdateDob() {
-    if (this.dobDay !== 'Day') {
-      this.user.dobDay = this.dobDay;
-    }
-    if (this.dobMonth !== 'Month') {
-      this.user.dobMonth = this.dobMonth;
-    }
-    if (this.dobYear !== 'Year') {
-      this.user.dobYear = this.dobYear;
-    }
-    this.userService.user.next(this.user);
+    this.userService.dobDay.next(this.dobDay);
+    this.userService.dobMonth.next(this.dobMonth);
+    this.userService.dobYear.next(this.dobYear);
 
-    this.formDobInputService.showDobDayInputError = this.user.dobDay === 'Day';
-    this.formDobInputService.showDobMonthInputError = this.user.dobMonth === 'Month';
-    this.formDobInputService.showDobYearInputError = this.user.dobYear === 'Year';
+    this.formDobInputService.showDobDayInputError.next({'status': this.dobDay === 'Day'});
+    this.formDobInputService.showDobMonthInputError.next({'status': this.dobMonth === 'Month'});
+    this.formDobInputService.showDobYearInputError.next({'status': this.dobYear === 'Year'});
   }
 
   ngOnDestroy() {
-    if (this.datesSubscription) {
-      this.datesSubscription.unsubscribe();
-    }
+    this.datesSubscription.unsubscribe();
+    this.dobDaySubscription.unsubscribe();
+    this.dobDayInputErrorSubscription.unsubscribe();
+    this.dobMonthSubscription.unsubscribe();
+    this.dobMonthInputErrorSubscription.unsubscribe();
+    this.dobYearSubscription.unsubscribe();
+    this.dobYearInputErrorSubscription.unsubscribe();
   }
 }

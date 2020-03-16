@@ -7,7 +7,17 @@ import { IUser } from '../models/user';
 
 @Injectable()
 export class UserService {
-  user = new BehaviorSubject(<Object>(null));
+  username = new BehaviorSubject(<string>(null));
+  uid = new BehaviorSubject(<string>(null));
+  firstName = new BehaviorSubject(<string>(null));
+  lastName = new BehaviorSubject(<string>(null));
+  streetAddress1 = new BehaviorSubject(<string>(null));
+  streetAddress2 = new BehaviorSubject(<string>(null));
+  city = new BehaviorSubject(<string>(null));
+  postcode = new BehaviorSubject(<string>(null));
+  dobDay = new BehaviorSubject(<string>(null));
+  dobMonth = new BehaviorSubject(<string>(null));
+  dobYear = new BehaviorSubject(<string>(null));
 
   constructor(
     private afs: AngularFirestore
@@ -79,13 +89,13 @@ export class UserService {
     });
   }
 
-  processNewMobileUser(result, firstName, lastName) {
-    const referralId = UtilService.generateRandomString(8);
-    this.setUserData(result).then(() => {
-    });
-    this.setUserDetailData(result.uid, firstName, lastName, referralId).then(() => {
-    });
-  }
+  // processNewMobileUser(result, firstName, lastName) {
+  //   const referralId = UtilService.generateRandomString(8);
+  //   this.setUserData(result).then(() => {
+  //   });
+  //   this.setUserDetailData(result.uid, firstName, lastName, referralId).then(() => {
+  //   });
+  // }
 
   getUserByUsername(username) {
     if (username) {
@@ -105,12 +115,11 @@ export class UserService {
 
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    let userDetailData = {};
-    if (streetAddress2) {
-      userDetailData = {
+    const userDetailData = {
         username: username,
         firstName: firstName,
         lastName: lastName,
+      displayName: firstName + ' ' + lastName,
         dobDay: dobDay,
         dobMonth: dobMonth,
         dobYear: dobYear,
@@ -119,19 +128,6 @@ export class UserService {
         city: city,
         postcode: postcode
       };
-    } else {
-      userDetailData = {
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        dobDay: dobDay,
-        dobMonth: dobMonth,
-        dobYear: dobYear,
-        streetAddress1: streetAddress1,
-        city: city,
-        postcode: postcode
-      };
-    }
     return userRef.set(userDetailData, {
       merge: true
     });
