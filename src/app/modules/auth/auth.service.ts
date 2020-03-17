@@ -166,6 +166,27 @@ export class AuthService {
     });
   }
 
+  registerFromBuilder(email, password, firstName, lastName, pageComponents) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
+      if (result) {
+        const path = `/users/${result.user.uid}/`;
+        firstName = UtilService.toTitleCase(firstName);
+        lastName = UtilService.toTitleCase(lastName);
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewDesktopUser(result, firstName, lastName);
+          this.sendVerificationMail().then(() => {
+          });
+          localStorage.setItem('builderTourComplete', 'true');
+          this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
+        }
+      }
+    }).catch(() => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+    });
+  }
+
+
   signIn(email, password) {
     return new Promise<any>((resolve, reject) => {
       return this.afAuth.auth.signInWithEmailAndPassword(email, password).then(res => {

@@ -212,5 +212,21 @@ export class SettingsProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.usernameExistsSubscription.unsubscribe();
     this.usernameSubscription.unsubscribe();
+    this.firstNameSubscription.unsubscribe();
+    this.lastNameSubscription.unsubscribe();
+    this.streetAddress1Subscription.unsubscribe();
+    this.streetAddress2Subscription.unsubscribe();
+    this.citySubscription.unsubscribe();
+    this.postcodeSubscription.unsubscribe();
+    this.dobDaySubscription.unsubscribe();
+    this.dobMonthSubscription.unsubscribe();
+    this.dobYearSubscription.unsubscribe();
+    this.showFirstNameInputErrorSubscription.unsubscribe();
+    this.showLastNameInputErrorSubscription.unsubscribe();
+    this.showDobDayInputErrorSubscription.unsubscribe();
+    this.showDobMonthInputErrorSubscription.unsubscribe();
+    this.showDobYearInputErrorSubscription.unsubscribe();
+    this.showStreetAddressInputErrorSubscription.unsubscribe();
+    this.showCityInputErrorSubscription.unsubscribe();
   }
 }

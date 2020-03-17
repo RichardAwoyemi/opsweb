@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { AuthService } from '../../../auth/auth.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderRegisterAccountModalComponent } from '../builder-register-account-modal/builder-register-account-modal.component';
 
 @Component({
   selector: 'app-builder-create-account-modal',
@@ -11,6 +12,7 @@ import { BuilderComponentsService } from '../../builder-components/builder-compo
 export class BuilderCreateAccountModalComponent implements IModalComponent {
   constructor(
     private activeModal: NgbActiveModal,
+    private modalService: NgbModal,
     private authService: AuthService,
     private builderComponentsService: BuilderComponentsService
   ) {
@@ -35,5 +37,7 @@ export class BuilderCreateAccountModalComponent implements IModalComponent {
   }
 
   emailSignIn() {
+    this.activeModal.dismiss();
+    this.modalService.open(BuilderRegisterAccountModalComponent, {windowClass: 'modal-holder', centered: true});
   }
 }

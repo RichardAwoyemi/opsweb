@@ -19,6 +19,7 @@ import { BuilderSelectImageUploadComponent } from './builder-select-image-modal/
 import { BuilderSelectImagePhotosComponent } from './builder-select-image-modal/builder-select-image-photos/builder-select-image-photos.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { WebsiteService } from '../../../shared/services/website.service';
+import { BuilderRegisterAccountModalComponent } from './builder-register-account-modal/builder-register-account-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,13 +36,14 @@ import { WebsiteService } from '../../../shared/services/website.service';
     BuilderSelectImageModalComponent,
     BlockNonAlphabetCharactersDirective,
     BuilderSelectImageUploadComponent,
-    BuilderSelectImagePhotosComponent
+    BuilderSelectImagePhotosComponent,
+    BuilderRegisterAccountModalComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     SimpleModalModule,
-    ImageCropperModule
+    ImageCropperModule,
   ],
   exports: [
     BuilderDeletePageModalComponent,
@@ -53,6 +55,7 @@ import { WebsiteService } from '../../../shared/services/website.service';
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
     BuilderCreateAccountModalComponent,
+    BuilderRegisterAccountModalComponent,
     BuilderSelectImageModalComponent,
     BlockNonAlphabetCharactersDirective
   ],
@@ -71,6 +74,7 @@ import { WebsiteService } from '../../../shared/services/website.service';
     BuilderSaveWebsiteModalComponent,
     BuilderRenameWebsiteModalComponent,
     BuilderCreateAccountModalComponent,
+    BuilderRegisterAccountModalComponent,
     BuilderSelectImageModalComponent
   ]
 })
