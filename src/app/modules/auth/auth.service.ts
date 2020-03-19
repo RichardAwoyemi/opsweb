@@ -61,15 +61,16 @@ export class AuthService {
         const path = `/users/${result.user.uid}/`;
         const doc = await this.firebaseService.docExists(path);
         if (!doc) {
-          this.userService.processNewDesktopUser(result, firstName, lastName);
+          this.userService.processNewUser(result, firstName, lastName);
         }
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops!', error.message);
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
     });
   }
 
-  facebookSignInFromBuilder(pageComponents) {
+  facebookSignInWithBuilder(pageComponents) {
     const provider = new auth.FacebookAuthProvider();
     let firstName = null, lastName = null;
     return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
@@ -79,18 +80,44 @@ export class AuthService {
         const path = `/users/${result.user.uid}/`;
         const doc = await this.firebaseService.docExists(path);
         if (!doc) {
-          this.userService.processNewDesktopUser(result, firstName, lastName);
+          this.userService.processNewUser(result, firstName, lastName);
         }
         localStorage.setItem('builderTourComplete', 'true');
         this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
       }
     }).catch((error) => {
-      this.simpleModalService.displayMessage('Oops!', error.message);
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
+    });
+  }
+
+  facebookSignInWithReferral(referredByUser) {
+    const provider = new auth.FacebookAuthProvider();
+    let firstName = null, lastName = null;
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      if (result) {
+        firstName = result.additionalUserInfo.profile['first_name'];
+        lastName = result.additionalUserInfo.profile['last_name'];
+        const path = `/users/${result.user.uid}/`;
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewReferredUser(result, firstName, lastName, referredByUser);
+        }
+      }
+    }).catch((error) => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
     });
   }
 
   mobileFacebookSignIn() {
     const provider = new auth.FacebookAuthProvider();
+    return this.afAuth.auth.signInWithRedirect(provider);
+  }
+
+  mobileFacebookSignInWithReferral(referredByUser) {
+    const provider = new auth.FacebookAuthProvider();
+    localStorage.setItem('referredBy', JSON.stringify(referredByUser));
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
@@ -103,21 +130,22 @@ export class AuthService {
         firstName = result.additionalUserInfo.profile['given_name'];
         lastName = result.additionalUserInfo.profile['family_name'];
         if (!result.user.uid) {
-          this.userService.processNewDesktopUser(result, firstName, lastName);
+          this.userService.processNewUser(result, firstName, lastName);
         } else {
           const path = `/users/${result.user.uid}/`;
           const doc = await this.firebaseService.docExists(path);
           if (!doc) {
-            this.userService.processNewDesktopUser(result, firstName, lastName);
+            this.userService.processNewUser(result, firstName, lastName);
           }
         }
       }
-    }).catch(() => {
+    }).catch((error) => {
       this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
     });
   }
 
-  googleSignInFromBuilder(pageComponents) {
+  googleSignInWithBuilder(pageComponents) {
     const provider = new auth.GoogleAuthProvider();
     let firstName = null;
     let lastName = null;
@@ -126,24 +154,49 @@ export class AuthService {
         firstName = result.additionalUserInfo.profile['given_name'];
         lastName = result.additionalUserInfo.profile['family_name'];
         if (!result.user.uid) {
-          this.userService.processNewDesktopUser(result, firstName, lastName);
+          this.userService.processNewUser(result, firstName, lastName);
         } else {
           const path = `/users/${result.user.uid}/`;
           const doc = await this.firebaseService.docExists(path);
           if (!doc) {
-            this.userService.processNewDesktopUser(result, firstName, lastName);
+            this.userService.processNewUser(result, firstName, lastName);
           }
         }
         localStorage.setItem('builderTourComplete', 'true');
         this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
       }
-    }).catch(() => {
+    }).catch((error) => {
       this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
+    });
+  }
+
+  googleSignInWithReferral(referredByUser) {
+    const provider = new auth.GoogleAuthProvider();
+    let firstName = null;
+    let lastName = null;
+    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+      firstName = result.additionalUserInfo.profile['given_name'];
+      lastName = result.additionalUserInfo.profile['family_name'];
+      const path = `/users/${result.user.uid}/`;
+      const doc = await this.firebaseService.docExists(path);
+      if (!doc) {
+        this.userService.processNewReferredUser(result, firstName, lastName, referredByUser);
+      }
+    }).catch((error) => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
     });
   }
 
   mobileGoogleSignIn() {
     const provider = new auth.GoogleAuthProvider();
+    return this.afAuth.auth.signInWithRedirect(provider);
+  }
+
+  mobileGoogleSignInWithReferral(referredByUser) {
+    const provider = new auth.GoogleAuthProvider();
+    localStorage.setItem('referredBy', JSON.stringify(referredByUser));
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
@@ -155,18 +208,19 @@ export class AuthService {
         lastName = UtilService.toTitleCase(lastName);
         const doc = await this.firebaseService.docExists(path);
         if (!doc) {
-          this.userService.processNewDesktopUser(result, firstName, lastName);
+          this.userService.processNewUser(result, firstName, lastName);
           this.sendVerificationMail().then(() => {
           });
           this.toastrService.success('Your registration was successful.', 'Great!');
         }
       }
-    }).catch(() => {
+    }).catch((error) => {
       this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
     });
   }
 
-  registerFromBuilder(email, password, firstName, lastName, pageComponents) {
+  registerWithBuilder(email, password, firstName, lastName, pageComponents) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
       if (result) {
         const path = `/users/${result.user.uid}/`;
@@ -174,18 +228,38 @@ export class AuthService {
         lastName = UtilService.toTitleCase(lastName);
         const doc = await this.firebaseService.docExists(path);
         if (!doc) {
-          this.userService.processNewDesktopUser(result, firstName, lastName);
+          this.userService.processNewUser(result, firstName, lastName);
           this.sendVerificationMail().then(() => {
           });
           localStorage.setItem('builderTourComplete', 'true');
           this.websiteService.createWebsiteFromSource(result.user.uid, pageComponents);
         }
       }
-    }).catch(() => {
+    }).catch((error) => {
       this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
     });
   }
 
+  registerWithReferral(email, password, firstName, lastName, referredByUser) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
+      if (result) {
+        const path = `/users/${result.user.uid}/`;
+        firstName = UtilService.toTitleCase(firstName);
+        lastName = UtilService.toTitleCase(lastName);
+        const doc = await this.firebaseService.docExists(path);
+        if (!doc) {
+          this.userService.processNewReferredUser(result, firstName, lastName, referredByUser);
+          this.sendVerificationMail().then(() => {
+          });
+          this.toastrService.success('Your registration was successful.', 'Great!');
+        }
+      }
+    }).catch((error) => {
+      this.simpleModalService.displayMessage('Oops!', 'Something has gone wrong. Please try again.');
+      this.logger.debug(error.message);
+    });
+  }
 
   signIn(email, password) {
     return new Promise<any>((resolve, reject) => {
@@ -194,6 +268,45 @@ export class AuthService {
       }, err => reject(err));
     }).then(() => {
     });
+  }
+
+  async mobileLogin(result, uid) {
+    const path = `/users/${uid}`;
+    console.log(path);
+    const doc = await this.firebaseService.docExists(path);
+    if (!doc) {
+      const userData: any = {
+        user: {
+          uid: uid,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          email: result.email,
+          displayName: result.displayName,
+          photoURL: result.photoURL,
+          emailVerified: true
+        }
+      };
+      this.userService.processNewUser(userData, result.firstName, result.lastName);
+    }
+  }
+
+  async mobileReferralLogin(result, uid, referredByUser) {
+    const path = `/users/${uid}`;
+    const doc = await this.firebaseService.docExists(path);
+    if (!doc) {
+      const userData: any = {
+        user: {
+          uid: uid,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          email: result.email,
+          displayName: result.displayName,
+          photoURL: result.photoURL,
+          emailVerified: true
+        }
+      };
+      this.userService.processNewReferredUser(userData, result.firstName, result.lastName, referredByUser);
+    }
   }
 
   sendVerificationMail() {

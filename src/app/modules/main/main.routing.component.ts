@@ -24,6 +24,7 @@ const routes: Routes = [
   },
   {path: 'builder/:id', loadChildren: '../builder/builder.module#BuilderModule'},
   {path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard]},
+  {path: 'invite/:id', loadChildren: '../invite/invite.module#InviteModule', canActivate: [AnonymousGuard]},
   {path: '', loadChildren: './home/home.module#HomeModule', canActivate: [AnonymousGuard]},
   {path: '**', redirectTo: '', canActivate: [AnonymousGuard]}
 ];

@@ -8,6 +8,7 @@ export interface IAuth {
 
 export interface IUser {
   uid: string;
+  credits: number;
   email: string;
   displayName: string;
   photoURL: string;

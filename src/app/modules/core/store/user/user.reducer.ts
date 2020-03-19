@@ -9,6 +9,7 @@ export interface State {
 
 const initialState: IUser = {
   uid: null,
+  credits: 0,
   email: null,
   displayName: null,
   photoURL: null,

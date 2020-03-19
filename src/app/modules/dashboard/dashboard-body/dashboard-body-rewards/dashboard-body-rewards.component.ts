@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { CreditsService } from '../../../../shared/services/credits.service';
 
 @Component({
   selector: 'app-dashboard-body-rewards',
@@ -13,6 +14,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 })
 export class DashboardBodyRewardsComponent implements OnInit {
   user: IUser;
+  credits = 0;
   innerHeight: number;
   referralId: string;
   referralUrl: string;
@@ -25,6 +27,7 @@ export class DashboardBodyRewardsComponent implements OnInit {
   constructor(
     private userStore: Store<fromUser.State>,
     private toastrService: ToastrService,
+    private creditsService: CreditsService,
     private ngxLoader: NgxUiLoaderService
   ) {
   }
@@ -38,8 +41,11 @@ export class DashboardBodyRewardsComponent implements OnInit {
         if (result) {
           this.user = result;
           this.referralId = this.user.referralId;
-          this.referralUrl = document.location.href.split('/')[2] + '/referral/' + this.referralId;
+          this.referralUrl = document.location.href.split('/')[2] + '/invite/' + this.referralId;
           this.createReferralUrls(this.referralUrl);
+          if (this.user.credits) {
+            this.credits = this.user.credits;
+          }
         }
       });
     this.ngxLoader.stop();

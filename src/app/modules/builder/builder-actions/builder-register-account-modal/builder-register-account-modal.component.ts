@@ -33,7 +33,7 @@ export class BuilderRegisterAccountModalComponent implements IModalComponent {
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
-    this.authService.registerFromBuilder(this.email, this.password, this.firstName, this.lastName, this.builderComponentsService.pageComponents.getValue());
+    this.authService.registerWithBuilder(this.email, this.password, this.firstName, this.lastName, this.builderComponentsService.pageComponents.getValue());
   }
 
   onChangeUpdateFirstName() {

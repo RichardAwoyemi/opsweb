@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { map } from 'rxjs/operators';
 import { UtilService } from './util.service';
 import { BehaviorSubject } from 'rxjs';
-import { IUser } from '../models/user';
+import { CreditsService } from './credits.service';
 
 @Injectable()
 export class UserService {
@@ -20,13 +20,15 @@ export class UserService {
   dobYear = new BehaviorSubject(<string>(null));
 
   constructor(
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private creditService: CreditsService
   ) {
   }
 
-  static parseData(user: IUser) {
+  static parseData(user: any) {
     return {
       uid: user.uid,
+      credits: user.credits,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
@@ -89,17 +91,15 @@ export class UserService {
     });
   }
 
-  // processNewMobileUser(result, firstName, lastName) {
-  //   const referralId = UtilService.generateRandomString(8);
-  //   this.setUserData(result).then(() => {
-  //   });
-  //   this.setUserDetailData(result.uid, firstName, lastName, referralId).then(() => {
-  //   });
-  // }
-
   getUserByUsername(username) {
     if (username) {
       return this.afs.collection('users', ref => ref.where('username', '==', username).limit(1)).valueChanges();
+    }
+  }
+
+  getUserByReferralId(referralId) {
+    if (referralId) {
+      return this.afs.collection('users', ref => ref.where('referralId', '==', referralId).limit(1)).valueChanges();
     }
   }
 
@@ -116,28 +116,53 @@ export class UserService {
   setUserPersonalDetails(uid, username, firstName, lastName, dobDay, dobMonth, dobYear, streetAddress1, streetAddress2, city, postcode) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     const userDetailData = {
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
       displayName: firstName + ' ' + lastName,
-        dobDay: dobDay,
-        dobMonth: dobMonth,
-        dobYear: dobYear,
-        streetAddress1: streetAddress1,
-        streetAddress2: streetAddress2,
-        city: city,
-        postcode: postcode
-      };
+      dobDay: dobDay,
+      dobMonth: dobMonth,
+      dobYear: dobYear,
+      streetAddress1: streetAddress1,
+      streetAddress2: streetAddress2,
+      city: city,
+      postcode: postcode
+    };
     return userRef.set(userDetailData, {
       merge: true
     });
   }
 
-  processNewDesktopUser(result, firstName, lastName) {
+  setUserReferralData(uid, firstName, lastName, referralId, referredBy) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+    const userDetailData = {
+      firstName: firstName,
+      lastName: lastName,
+      referralId: referralId,
+      referredBy: referredBy
+    };
+    return userRef.set(userDetailData, {
+      merge: true
+    });
+  }
+
+  processNewUser(result, firstName, lastName) {
     const referralId = UtilService.generateRandomString(8);
     this.setUserData(result).then(() => {
     });
     this.setUserDetailData(result.user.uid, firstName, lastName, referralId).then(() => {
+    });
+  }
+
+  processNewReferredUser(result, firstName, lastName, referredByUser) {
+    const referralId = UtilService.generateRandomString(8);
+    this.setUserData(result).then(() => {
+    });
+    this.setUserReferralData(result.user.uid, firstName, lastName, referralId, referredByUser['uid']).then(() => {
+    });
+    this.creditService.incrementCredit(referredByUser['uid'], 1).then(() => {
+    });
+    this.creditService.incrementCredit(result.user.uid, 1).then(() => {
     });
   }
 }

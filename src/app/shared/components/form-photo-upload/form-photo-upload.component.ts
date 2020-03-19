@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class FormPhotoUploadComponent implements OnInit {
   user: IUser = {
+    credits: 0,
     displayName: null,
     dobDay: null,
     dobMonth: null,

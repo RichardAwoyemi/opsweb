@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
+// import { AngularFireAuth } from '@angular/fire/auth';
 import { first } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 import 'firebase/firestore';
@@ -12,7 +12,7 @@ export class FirebaseService {
 
   constructor(
     public afs: AngularFirestore,
-    public afAuth: AngularFireAuth,
+    // public afAuth: AngularFireAuth,
     public logger: NGXLogger
   ) {
   }

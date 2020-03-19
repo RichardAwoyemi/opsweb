@@ -32,6 +32,6 @@ export class FooterComponent implements OnInit {
   }
 
   checkLoggedOutRoute() {
-    RouterService.checkLoggedOutRoute(this.currentRoute);
+    return RouterService.checkLoggedOutRoute(this.currentRoute);
   }
 }

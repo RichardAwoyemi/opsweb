@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeModule } from './modules/main/home/home.module';
 import { BuilderModule } from './modules/builder/builder.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreditsService } from './shared/services/credits.service';
 
 const routes: Routes = [
   {path: '', loadChildren: './modules/main/main.module#MainModule'}
@@ -21,7 +22,6 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(routes),
-
     NavbarModule,
     FooterModule,
     HomeModule,
@@ -32,6 +32,7 @@ const routes: Routes = [
   providers: [
     AuthService,
     UtilService,
+    CreditsService,
     UserService
   ],
   bootstrap: [AppComponent]

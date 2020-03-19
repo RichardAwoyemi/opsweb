@@ -27,12 +27,14 @@ export class BuilderCreateAccountModalComponent implements IModalComponent {
   }
 
   googleSignIn() {
-    this.authService.googleSignInFromBuilder(this.builderComponentsService.pageComponents.getValue());
+    this.authService.googleSignInWithBuilder(this.builderComponentsService.pageComponents.getValue()).then(() => {
+    });
     this.activeModal.dismiss();
   }
 
   facebookSignIn() {
-    this.authService.facebookSignInFromBuilder(this.builderComponentsService.pageComponents.getValue());
+    this.authService.facebookSignInWithBuilder(this.builderComponentsService.pageComponents.getValue()).then(() => {
+    });
     this.activeModal.dismiss();
   }
 

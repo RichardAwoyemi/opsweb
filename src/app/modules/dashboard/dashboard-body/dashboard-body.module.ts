@@ -20,6 +20,7 @@ import { BuilderSidebarModule } from '../../builder/builder-sidebar/builder-side
 import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CropImageModalComponent } from '../../../shared/components/form-photo-upload/crop-image-modal/crop-image-modal.component';
+import { CreditsService } from '../../../shared/services/credits.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,9 @@ import { CropImageModalComponent } from '../../../shared/components/form-photo-u
   ],
   entryComponents: [
     CropImageModalComponent
+  ],
+  providers: [
+    CreditsService
   ]
 })
 

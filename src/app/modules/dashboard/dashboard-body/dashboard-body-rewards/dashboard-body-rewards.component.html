@@ -36,7 +36,9 @@
     </div>
     <div class="col-md-12">
       <hr>
-      <p>You currently have <strong>0</strong> Opsonion Credits.</p>
+      <p *ngIf="credits === 0">You currently have no Opsonion Credits.</p>
+      <p *ngIf="credits === 1">You currently have <strong>{{ credits }}</strong> Opsonion Credit.</p>
+      <p *ngIf="credits > 1">You currently have <strong>{{ credits }}</strong> Opsonion Credit.</p>
     </div>
   </div>
 </div>

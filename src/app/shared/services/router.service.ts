@@ -16,7 +16,7 @@ export class RouterService {
   static checkLoggedOutRoute(currentRoute) {
     return currentRoute === '/' || currentRoute === '/login' || currentRoute === '/register' ||
       currentRoute === '/press' || currentRoute === '/legal' || currentRoute === '/forgot-password' ||
-      currentRoute === '/verify-email';
+      currentRoute === '/verify-email' || currentRoute.includes('/invite/');
   }
 
   setCurrentRoute() {
