@@ -27,6 +27,7 @@
               </span>
                 <div ngbDropdownMenu>
                   <button (click)="openBuilderPage(website.id)" ngbDropdownItem>Edit</button>
+                  <button (click)="openPreviewPage(website.id)" ngbDropdownItem>Preview</button>
                   <button (click)="openRenameWebsiteModal(website.id, website.name)" ngbDropdownItem>Rename</button>
                   <button (click)="openDeleteWebsiteModal(website.id, website.name)" ngbDropdownItem>Delete</button>
                 </div>

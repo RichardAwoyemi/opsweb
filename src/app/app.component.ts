@@ -12,13 +12,14 @@ import { Router } from '@angular/router';
 import { RouterService } from './shared/services/router.service';
 import { AuthService } from './modules/auth/auth.service';
 
+declare let window: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-
   isMobile: Observable<BreakpointState>;
   referredBy: string;
   user: any;
@@ -78,13 +79,11 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.userStore.select('user')
-      .pipe()
-      .subscribe(async (result: IUser) => {
-        if (result && this.authService.isLoggedIn()) {
-          this.redirectUser();
-        }
-      });
+    this.userStore.select('user').pipe().subscribe(async (result: IUser) => {
+      if (result && this.authService.isLoggedIn()) {
+        this.redirectUser();
+      }
+    });
   }
 
   processMobileLogin(response) {

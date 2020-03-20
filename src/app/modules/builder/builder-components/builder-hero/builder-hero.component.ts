@@ -90,7 +90,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
       this.previewMode = response;
     });
 
-
     this.heroImageSizeSubscription = this.builderHeroService.heroImageSize.subscribe(response => {
       if (response) {
         this.heroImageSize = response;

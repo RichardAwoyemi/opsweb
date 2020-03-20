@@ -59,6 +59,11 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
     });
   }
 
+  openPreviewPage(uid: string) {
+    this.router.navigate(['website/' + uid]).then(() => {
+    });
+  }
+
   openDeleteWebsiteModal(uid: string, name: string) {
     const modal = this.modalService.open(DashboardDeleteWebsiteModalComponent, {
       windowClass: 'modal-holder',

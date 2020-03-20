@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top no-select" style="top: 0;">
+  <div class="row">
+    <div class="col-md-6">
+      <a (click)="redirectToDashboard()" href="#">
+        <img alt="logo-white" src="../../../../assets/img/logo.svg" style="height: 30px; width: 30px">
+      </a>
+    </div>
+  </div>
+  <div class="col-md-6" style="padding-right: 0">
+    <div class="float-right">
+      <button (click)="redirectToBuilder()" class="btn btn-secondary"
+              type="button">Edit
+      </button>
+      &nbsp;
+      <button (click)="redirectToDashboard()" class="btn btn-secondary"
+              type="button">Close
+      </button>
+    </div>
+  </div>
+</nav>

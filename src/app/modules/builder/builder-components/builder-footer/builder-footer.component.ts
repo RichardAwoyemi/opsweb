@@ -281,7 +281,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     }
   }
 
-
   ngOnDestroy() {
     this.footerStyleSubscription.unsubscribe();
     this.footerPageLinksStyleSubscription.unsubscribe();

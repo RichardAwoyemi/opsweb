@@ -1,0 +1,4 @@
+.bg-light, .navbar-light {
+  background: #FAFBFB !important;
+  border-bottom: solid 0.05em #ecf0f0 !important;
+}

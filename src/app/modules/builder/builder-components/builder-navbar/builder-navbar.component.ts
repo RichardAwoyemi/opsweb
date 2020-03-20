@@ -39,6 +39,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   pageComponents: any;
   componentDetail: any;
   activePageSetting: string;
+  websiteMode: boolean;
 
   private activeEditComponentSubscription: Subscription;
   private activeEditComponentIdSubscription: Subscription;
@@ -56,6 +57,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   private navbarThemeSubscription: Subscription;
   private navbarTemplateSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
+  private websiteModeSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -70,6 +72,10 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   ngOnInit() {
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
       this.previewMode = response;
+    });
+
+    this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
+      this.websiteMode = response;
     });
 
     this.navbarThemeSubscription = this.builderNavbarService.navbarTheme.subscribe(response => {
@@ -326,5 +332,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     this.activeEditComponentIdSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
     this.activeElementSubscription.unsubscribe();
+    this.websiteModeSubscription.unsubscribe();
   }
 }

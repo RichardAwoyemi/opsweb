@@ -20,6 +20,15 @@ export class RouterService {
   }
 
   setCurrentRoute() {
+    if (this.currentRoute.getValue().indexOf('website') > -1) {
+      (window as any).Intercom('update', {
+        'hide_default_launcher': true
+      });
+    } else {
+      (window as any).Intercom('update', {
+        'hide_default_launcher': false
+      });
+    }
     localStorage.setItem('currentRoute', this.currentRoute.getValue());
   }
 }

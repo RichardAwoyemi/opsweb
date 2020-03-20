@@ -1,7 +1,6 @@
 import { HostListener, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ActiveComponents, ActiveOrientations } from './builder';
-import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { TourService } from '../../shared/services/tour.service';
 
 @Injectable()
@@ -41,6 +40,7 @@ export class BuilderService {
   toolbarTabletOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
   toolbarMobileOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
   previewMode = new BehaviorSubject<boolean>(false);
+  websiteMode = new BehaviorSubject<boolean>(false);
   fullScreenMode = new BehaviorSubject<boolean>(false);
   fontNames = new BehaviorSubject<string[]>(['Avenir Next Regular', 'Avenir Next Medium', 'Nunito Sans', 'Poppins']);
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
@@ -287,11 +287,8 @@ export class BuilderService {
     }
   }
 
-  triggerScrollTo(elementId: string) {
-    const config: ScrollToConfigOptions = {
-      target: elementId
-    };
-    this.scrollToService.scrollTo(config);
+  // noinspection JSUnusedLocalSymbols
+  triggerScrollTo(elementId = null) {
   }
 
   @HostListener('window:message', ['$event'])

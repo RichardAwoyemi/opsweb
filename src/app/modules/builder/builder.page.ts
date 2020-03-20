@@ -45,6 +45,8 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.builderService.setSidebarTemplatesSetting();
 
     this.ngxLoader.start();
+    this.builderService.websiteMode.next(false);
+    this.builderService.previewMode.next(false);
     this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {
       if (response) {
         this.previewMode = response;

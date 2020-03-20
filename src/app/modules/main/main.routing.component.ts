@@ -23,6 +23,7 @@ const routes: Routes = [
     canActivate: [AnonymousGuard]
   },
   {path: 'builder/:id', loadChildren: '../builder/builder.module#BuilderModule'},
+  {path: 'website/:id', loadChildren: '../website/website.module#WebsiteModule'},
   {path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard]},
   {path: 'invite/:id', loadChildren: '../invite/invite.module#InviteModule', canActivate: [AnonymousGuard]},
   {path: '', loadChildren: './home/home.module#HomeModule', canActivate: [AnonymousGuard]},
