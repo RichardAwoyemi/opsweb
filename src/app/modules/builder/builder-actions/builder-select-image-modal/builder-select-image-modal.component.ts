@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { BuilderActionsService } from '../builder-actions.service';
 import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../../environments/environment';
 import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { ActiveComponentsPartialSelector } from '../../builder';
@@ -17,8 +16,10 @@ import { ActiveComponentsPartialSelector } from '../../builder';
 export class BuilderSelectImageModalComponent implements IModalComponent, OnInit, OnDestroy {
   private activeLibrarySelectedImageSubscription: Subscription;
   private activeLibrarySelectedImageAltTextSubscription: Subscription;
+  private heroImageStyleSubscription: Subscription;
   private activeLibrarySelectedImage: any;
   private activeLibrarySelectedImageAltText: any;
+  private heroImageStyle: any;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -38,12 +39,18 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
     this.activeLibrarySelectedImageAltTextSubscription = this.builderActionsService.activeLibrarySelectedImageAlt.subscribe(response => {
       this.activeLibrarySelectedImageAltText = response;
     });
+
+    this.heroImageStyleSubscription = this.builderHeroService.heroImageStyle.subscribe(response => {
+      this.heroImageStyle = response;
+    });
   }
 
   async onConfirmButtonClick() {
-    if (this.activeLibrarySelectedImage) {
-      if (this.activeLibrarySelectedImage !== this.builderHeroService.heroImageUrl.getValue() || this.activeLibrarySelectedImageAltText !== this.builderHeroService.heroImageAlt.getValue()) {
+    if (this.heroImageStyle['src'] && this.activeLibrarySelectedImageAltText) {
+      if (this.activeLibrarySelectedImage) {
         this.uploadImage();
+      } else {
+        this.updateImage();
       }
     }
     this.activeModal.dismiss();
@@ -51,11 +58,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   uploadImage() {
     if (this.activeLibrarySelectedImage.includes('base64')) {
-      if (!environment.production) {
-        this.uploadImageToImgur();
-      }
-    } else {
-      this.updateImage();
+      this.uploadImageToImgur();
     }
   }
 
@@ -70,8 +73,12 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   updateImage() {
     const heroImageStyle = this.builderHeroService.heroImageStyle.getValue();
-    heroImageStyle['src'] = this.activeLibrarySelectedImage;
-    heroImageStyle['alt'] = this.activeLibrarySelectedImageAltText;
+    if (this.activeLibrarySelectedImage) {
+      heroImageStyle['src'] = this.activeLibrarySelectedImage;
+    }
+    if (this.activeLibrarySelectedImageAltText) {
+      heroImageStyle['alt'] = this.activeLibrarySelectedImageAltText;
+    }
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', heroImageStyle);
     this.builderHeroService.heroImageUrl.next(this.activeLibrarySelectedImage);
     this.builderHeroService.heroImageAlt.next(this.activeLibrarySelectedImageAltText);

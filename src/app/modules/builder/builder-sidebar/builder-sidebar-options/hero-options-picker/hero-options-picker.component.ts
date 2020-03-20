@@ -41,8 +41,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   heroButtonStyle: any;
   pageComponents: any;
 
-  private heroImageUrlSubscription: Subscription;
-  private heroImageAltSubscription: Subscription;
   private heroImageSizeSubscription: Subscription;
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
@@ -71,18 +69,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.heroImageSizeSubscription = this.builderHeroService.heroImageSize.subscribe(response => {
       if (response) {
         this.heroImageSize = response;
-      }
-    });
-
-    this.heroImageUrlSubscription = this.builderHeroService.heroImageUrl.subscribe(response => {
-      if (response) {
-        this.heroImageUrl = response;
-      }
-    });
-
-    this.heroImageAltSubscription = this.builderHeroService.heroImageAlt.subscribe(response => {
-      if (response) {
-        this.heroImageAlt = response;
       }
     });
 
@@ -215,6 +201,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.heroImageStyleSubscription = this.builderHeroService.heroImageStyle.subscribe(response => {
       if (response) {
         this.heroImageStyle = response;
+        this.heroImageUrl = response['src'];
+        this.heroImageAlt = response['alt'];
       }
     });
 
@@ -402,8 +390,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.heroImageUrlSubscription.unsubscribe();
-    this.heroImageAltSubscription.unsubscribe();
     this.heroImageSizeSubscription.unsubscribe();
     this.fontNamesSubscription.unsubscribe();
     this.fontUnitsSubscription.unsubscribe();

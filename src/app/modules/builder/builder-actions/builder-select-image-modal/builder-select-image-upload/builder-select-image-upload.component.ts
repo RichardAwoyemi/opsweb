@@ -18,8 +18,7 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
   croppedImage: any;
   imageChangedEvent: any;
 
-  private heroImageUrlSubscription: Subscription;
-  private heroImageAltSubscription: Subscription;
+  private heroImageStyleSubscription: Subscription;
 
   constructor(
     private builderHeroService: BuilderHeroService,
@@ -31,15 +30,10 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight - 284;
     this.imageHeight = window.innerHeight - 385;
 
-    this.heroImageUrlSubscription = this.builderHeroService.heroImageUrl.subscribe(response => {
+    this.heroImageStyleSubscription = this.builderHeroService.heroImageStyle.subscribe(response => {
       if (response) {
-        this.heroImageUrl = response;
-      }
-    });
-
-    this.heroImageAltSubscription = this.builderHeroService.heroImageAlt.subscribe(response => {
-      if (response) {
-        this.heroImageAlt = response;
+        this.heroImageUrl = response['src'];
+        this.heroImageAlt = response['alt'];
       }
     });
   }
@@ -70,8 +64,12 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
     this.builderActionsService.activeLibrarySelectedImage.next(this.croppedImage);
   }
 
+
+  setHeroImageAlt() {
+    this.builderActionsService.activeLibrarySelectedImageAlt.next(this.heroImageAlt);
+  }
+
   ngOnDestroy() {
-    this.heroImageUrlSubscription.unsubscribe();
-    this.heroImageAltSubscription.unsubscribe();
+    this.heroImageStyleSubscription.unsubscribe();
   }
 }
