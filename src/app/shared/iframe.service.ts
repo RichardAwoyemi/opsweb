@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class BuilderShowcaseService {
+export class IframeService {
   static loadIframeCss(document: any, href) {
     const css = document.createElement('link');
     css.href = href;

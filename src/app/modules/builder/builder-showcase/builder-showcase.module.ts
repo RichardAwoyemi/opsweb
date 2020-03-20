@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
 import { BuilderShowcaseComponent } from './builder-showcase.component';
 import { BuilderShowcaseToolbarComponent } from './builder-showcase-toolbar/builder-showcase-toolbar.component';
-import { BuilderShowcaseService } from './builder-showcase.service';
+import { IframeService } from '../../../shared/iframe.service';
 import { BuilderComponentsModule } from '../builder-components/builder-components.module';
 import { BuilderToolbarComponent } from '../builder-toolbar/builder-toolbar.component';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -53,7 +53,7 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
     BuilderShowcaseToolbarComponent
   ],
   providers: [
-    BuilderShowcaseService,
+    IframeService,
     BuilderComponentsService,
     SimpleModalService
   ],

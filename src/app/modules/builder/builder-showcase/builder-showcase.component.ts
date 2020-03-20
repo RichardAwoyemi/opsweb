@@ -13,7 +13,7 @@ import {
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../builder.service';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
-import { BuilderShowcaseService } from './builder-showcase.service';
+import { IframeService } from '../../../shared/iframe.service';
 import { ActiveComponents, ActiveElements, ActiveSettings } from '../builder';
 import { debounce } from '../../../shared/decorators/debounce.decorator';
 
@@ -65,17 +65,17 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
 
   ngAfterViewInit() {
     this.document = this.iframe.nativeElement.contentDocument || this.iframe.nativeElement.contentWindow;
-    BuilderShowcaseService.loadIframeCss(this.document, 'assets/css/page.min.css');
-    BuilderShowcaseService.loadIframeCss(this.document, 'assets/css/themify.css');
-    BuilderShowcaseService.loadIframeCss(this.document, 'assets/css/website.css');
-    BuilderShowcaseService.loadIframeCss(this.document, 'assets/css/builder.css');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://code.jquery.com/jquery-3.4.1.min.js');
-    // BuilderShowcaseService.loadIframeCss(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css');
-    // BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js');
-    // BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js');
-    // BuilderShowcaseService.loadIframeJs(this.document, 'assets/js/iframe.js');
+    IframeService.loadIframeCss(this.document, 'assets/css/page.min.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/themify.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/website.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/builder.css');
+    IframeService.loadIframeJs(this.document, 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
+    IframeService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
+    IframeService.loadIframeJs(this.document, 'https://code.jquery.com/jquery-3.4.1.min.js');
+    // IframeService.loadIframeCss(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css');
+    // IframeService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js');
+    // IframeService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js');
+    // IframeService.loadIframeJs(this.document, 'assets/js/iframe.js');
 
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(BuilderShowcaseLayoutComponent);
     this.componentReference = this.viewContainerRef.createComponent(componentFactory);
