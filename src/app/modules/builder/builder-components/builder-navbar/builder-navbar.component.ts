@@ -238,12 +238,17 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     this.builderService.clearActiveEditComponent();
   }
 
-  selectNavbarLink(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('navbar-options-menu');
+  selectNavbarLink(pageIndex: number, event: any, elementId: string) {
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next(this.navbarMenuOptions[pageIndex]);
+      this.builderService.activePageIndex.next(pageIndex);
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeElement.next(elementId);
+      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.triggerScrollTo('navbar-options-menu');
+    }
     event.stopPropagation();
   }
 
@@ -276,11 +281,16 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   selectNavbarLogoBrand(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('navbar-options');
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next('Home');
+      this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeElement.next(elementId);
+      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.triggerScrollTo('navbar-options');
+    }
     event.stopPropagation();
   }
 
@@ -308,10 +318,15 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   selectNavbarLogoImage(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.triggerScrollTo('navbar-options-logo');
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next('Home');
+      this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeElement.next(elementId);
+      this.builderService.triggerScrollTo('navbar-options-logo');
+    }
     event.stopPropagation();
   }
 

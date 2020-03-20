@@ -4,6 +4,7 @@ import { BuilderComponentsService } from '../../builder/builder-components/build
 import { Subscription } from 'rxjs';
 import { WebsiteService } from '../../../shared/services/website.service';
 import { ActivatedRoute } from '@angular/router';
+import { BuilderService } from '../../builder/builder.service';
 
 @Component({
   selector: 'app-website-layout',
@@ -16,9 +17,11 @@ export class WebsiteLayoutComponent implements OnInit {
   id: string;
 
   private pageComponentsSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
   private websiteSubscription: Subscription;
 
   constructor(
+    private builderService: BuilderService,
     private websiteService: WebsiteService,
     private builderComponentsService: BuilderComponentsService,
     private ngxLoader: NgxUiLoaderService,
@@ -31,26 +34,28 @@ export class WebsiteLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.ngxLoader.start();
-
-    this.websiteSubscription = this.websiteService.getWebsite(this.id).subscribe((response => {
-        if (response) {
-          if (response['pages']) {
-            this.builderComponentsService.pageComponents.next({
-              'pages': response['pages'],
-              'template': response['template']
-            });
-          }
-
-          this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((pageComponentsResponse => {
-            if (pageComponentsResponse) {
-              this.pageComponents = pageComponentsResponse;
-              this.setPageComponents();
+    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageResponse => {
+      if (activePageResponse) {
+        this.activePage = activePageResponse;
+        this.websiteSubscription = this.websiteService.getWebsite(this.id).subscribe((websiteResponse => {
+          if (websiteResponse) {
+            if (websiteResponse['pages']) {
+              this.builderComponentsService.pageComponents.next({
+                'pages': websiteResponse['pages'],
+                'template': websiteResponse['template']
+              });
+              this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((pageComponentsResponse => {
+                if (pageComponentsResponse) {
+                  this.pageComponents = pageComponentsResponse;
+                  this.setPageComponents();
+                }
+              }));
+            }
             }
           }));
         }
       }
-    ));
-
+    );
     this.ngxLoader.stop();
   }
 

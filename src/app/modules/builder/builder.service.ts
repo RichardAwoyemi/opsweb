@@ -47,11 +47,6 @@ export class BuilderService {
   shepherdDefaultStepOptions: any = TourService.setupBuilderTourStepOptions;
   shepherdDefaultSteps: any = TourService.setupBuilderTourSteps();
 
-  constructor(
-    private scrollToService: ScrollToService
-  ) {
-  }
-
   static removeLineBreaks(e: any) {
     const element = e.target;
     element.innerText = element.innerText.replace(/\n/g, '').trim();
