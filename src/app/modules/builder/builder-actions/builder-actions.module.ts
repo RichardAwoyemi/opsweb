@@ -20,6 +20,7 @@ import { BuilderSelectImagePhotosComponent } from './builder-select-image-modal/
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { WebsiteService } from '../../../shared/services/website.service';
 import { BuilderRegisterAccountModalComponent } from './builder-register-account-modal/builder-register-account-modal.component';
+import { BuilderPublishWebsiteModalComponent } from './builder-publish-website-modal/builder-publish-website-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { BuilderRegisterAccountModalComponent } from './builder-register-account
     BlockNonAlphabetCharactersDirective,
     BuilderSelectImageUploadComponent,
     BuilderSelectImagePhotosComponent,
-    BuilderRegisterAccountModalComponent
+    BuilderRegisterAccountModalComponent,
+    BuilderPublishWebsiteModalComponent
   ],
   imports: [
     CommonModule,
@@ -75,7 +77,8 @@ import { BuilderRegisterAccountModalComponent } from './builder-register-account
     BuilderRenameWebsiteModalComponent,
     BuilderCreateAccountModalComponent,
     BuilderRegisterAccountModalComponent,
-    BuilderSelectImageModalComponent
+    BuilderSelectImageModalComponent,
+    BuilderPublishWebsiteModalComponent
   ]
 })
 

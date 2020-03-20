@@ -12,6 +12,7 @@ import { BuilderRenameWebsiteModalComponent } from '../builder-actions/builder-r
 import { WebsiteService } from '../../../shared/services/website.service';
 import { BuilderActionsService } from '../builder-actions/builder-actions.service';
 import { SimpleModalService } from '../../../shared/components/simple-modal/simple-modal.service';
+import { BuilderPublishWebsiteModalComponent } from '../builder-actions/builder-publish-website-modal/builder-publish-website-modal.component';
 
 @Component({
   selector: 'app-builder-header',
@@ -121,6 +122,8 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
   openPublishModal() {
     if (!this.authService.isLoggedIn()) {
       this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+    } else {
+      this.modalService.open(BuilderPublishWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
     }
   }
 

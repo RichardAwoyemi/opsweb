@@ -38,6 +38,7 @@ export class WebsiteLayoutComponent implements OnInit {
       if (activePageResponse) {
         this.activePage = activePageResponse;
         this.websiteSubscription = this.websiteService.getWebsite(this.id).subscribe((websiteResponse => {
+          this.websiteService.websiteName.next(websiteResponse['name']);
           if (websiteResponse) {
             if (websiteResponse['pages']) {
               this.builderComponentsService.pageComponents.next({
