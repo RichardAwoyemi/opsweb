@@ -38,6 +38,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   activePageSetting: string;
   pageComponents: any;
   componentDetail: any;
+  websiteMode: boolean;
 
   private footerStyleSubscription: Subscription;
   private footerPageLinksStyleSubscription: Subscription;
@@ -55,6 +56,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   private activeElementSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
+  private websiteModeSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -73,6 +75,10 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
       if (response) {
         this.activeEditComponentId = response;
       }
+    });
+
+    this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
+      this.websiteMode = response;
     });
 
     this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
@@ -281,6 +287,13 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     }
   }
 
+  selectFooterLink(i, footerMenuOption) {
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next(footerMenuOption['page']);
+      this.builderService.activePageIndex.next(i);
+    }
+  }
+
   ngOnDestroy() {
     this.footerStyleSubscription.unsubscribe();
     this.footerPageLinksStyleSubscription.unsubscribe();
@@ -292,11 +305,11 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     this.footerComponentLayoutSubscription.unsubscribe();
     this.activeEditComponentSubscription.unsubscribe();
     this.activeEditComponentIdSubscription.unsubscribe();
+    this.activeEditComponentIdSubscription.unsubscribe();
     this.previewModeSubscription.unsubscribe();
     this.activeElementSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
-    this.footerSocialLinksSubscription.unsubscribe();
+    this.websiteModeSubscription.unsubscribe();
   }
-
 }

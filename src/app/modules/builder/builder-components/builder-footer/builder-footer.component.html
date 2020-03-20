@@ -30,8 +30,9 @@
     </div>
     <div *ngIf="checkIfVisibleFooterMenuOptions()" [ngClass]="footerAlignmentClass">
       <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
-        <ng-container *ngFor="let footerMenuOption of footerMenuOptions">
+        <ng-container *ngFor="let footerMenuOption of footerMenuOptions; let i = index">
               <span *ngIf="checkPageLinkStyle(footerMenuOption)"
+                    (click)="selectFooterLink(i, footerMenuOption)"
                     [innerText]="displayFooterMenuOption(footerMenuOption)"
                     [ngStyle]="footerPageLinksListStyle"></span>
         </ng-container>
@@ -103,6 +104,7 @@
             <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
               <ng-container *ngFor="let footerMenuOption of footerMenuOptions; let i = index">
               <span *ngIf="checkPageLinkStyle(footerMenuOption)"
+                    (click)="selectFooterLink(i, footerMenuOption)"
                     [innerText]="displayFooterMenuOption(footerMenuOption)"
                     [ngStyle]="footerPageLinksListStyle"></span>
               </ng-container>
