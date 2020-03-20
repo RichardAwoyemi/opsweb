@@ -72,7 +72,7 @@ export class WebsiteComponent implements OnInit, AfterViewInit {
 
   calculateIframeStyle() {
     if (this.authService.isLoggedIn()) {
-      return {'height': innerHeight - 30 + 'px'};
+      return {'height': innerHeight - 56 + 'px'};
     } else {
       return {'height': innerHeight + 'px'};
     }

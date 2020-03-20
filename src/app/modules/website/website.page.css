@@ -92,3 +92,15 @@
   vertical-align: middle !important;
   font-size: 13px !important;
 }
+
+.website-showcase-holder {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.website-showcase-holder iframe {
+  height: 100%;
+  width: 100%;
+  border: 0;
+}
