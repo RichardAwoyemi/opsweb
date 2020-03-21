@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderComponentsService } from '../../builder/builder-components/builder-components.service';
 import { Subscription } from 'rxjs';
@@ -9,15 +9,15 @@ import { BuilderService } from '../../builder/builder.service';
 @Component({
   selector: 'app-website-layout',
   templateUrl: './website-layout.component.html',
-  styleUrls: ['./website-layout.component.css'],
   encapsulation: ViewEncapsulation.ShadowDom
 })
 export class WebsiteLayoutComponent implements OnInit {
+
   activePage = 'Home';
   pageComponents: any;
   builderComponents: any;
   id: string;
-
+  document: any;
   private pageComponentsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private websiteSubscription: Subscription;
@@ -25,7 +25,7 @@ export class WebsiteLayoutComponent implements OnInit {
   constructor(
     private builderService: BuilderService,
     private websiteService: WebsiteService,
-    private renderer: Renderer2,
+    private element: ElementRef,
     private builderComponentsService: BuilderComponentsService,
     private ngxLoader: NgxUiLoaderService,
     private route: ActivatedRoute
@@ -36,8 +36,19 @@ export class WebsiteLayoutComponent implements OnInit {
     });
   }
 
+  private static appendToShadowRoot(shadowRoot, src) {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('href', src);
+    shadowRoot.append(link);
+  }
+
   ngOnInit() {
     this.ngxLoader.start();
+    const shadowRoot: DocumentFragment = this.element.nativeElement.shadowRoot;
+    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, './assets/css/page.css/');
+    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, './assets/css/website.css/');
+
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageResponse => {
       if (activePageResponse) {
         this.activePage = activePageResponse;
