@@ -18,3 +18,7 @@
 #builder-header-website-name {
   text-transform: lowercase;
 }
+
+.navbar {
+  position: fixed !important;
+}

@@ -36,10 +36,6 @@
   url('../fonts/avenir-next/regular.ttf') format('truetype');
 }
 
-body {
-  font-family: 'Avenir Next Regular', Helvetica, sans-serif !important;
-}
-
 body, html {
   overflow-x: hidden;
   margin-top: 0;
@@ -136,6 +132,6 @@ footer > div {
 }
 
 .footer-social-links span:hover {
-  opacity: 1
+  opacity: 1;
 }
 

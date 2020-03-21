@@ -65,7 +65,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
 
   ngAfterViewInit() {
     this.document = this.iframe.nativeElement.contentDocument || this.iframe.nativeElement.contentWindow;
-    IframeService.loadIframeCss(this.document, 'assets/css/page.min.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/page.css');
     IframeService.loadIframeCss(this.document, 'assets/css/themify.css');
     IframeService.loadIframeCss(this.document, 'assets/css/website.css');
     IframeService.loadIframeCss(this.document, 'assets/css/builder.css');

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderComponentsService } from '../../builder/builder-components/builder-components.service';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,9 @@ import { BuilderService } from '../../builder/builder.service';
 
 @Component({
   selector: 'app-website-layout',
-  templateUrl: './website-layout.component.html'
+  templateUrl: './website-layout.component.html',
+  styleUrls: ['./website-layout.component.css'],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class WebsiteLayoutComponent implements OnInit {
   activePage = 'Home';
@@ -23,6 +25,7 @@ export class WebsiteLayoutComponent implements OnInit {
   constructor(
     private builderService: BuilderService,
     private websiteService: WebsiteService,
+    private renderer: Renderer2,
     private builderComponentsService: BuilderComponentsService,
     private ngxLoader: NgxUiLoaderService,
     private route: ActivatedRoute

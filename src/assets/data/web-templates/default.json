@@ -67,8 +67,8 @@
   },
   "heroButtonStyle": {
     "font-family": "Avenir Next Medium, sans-serif",
-    "background-color": "#205ECC",
-    "border-color": "#205ECC",
+    "background-color": "#2055EC",
+    "border-color": "#2055EC",
     "color": "#FFFFFF",
     "font-size": "12px",
     "padding-top": "8px",
