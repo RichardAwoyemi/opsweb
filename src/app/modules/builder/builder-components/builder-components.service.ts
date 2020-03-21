@@ -1781,10 +1781,10 @@ export class BuilderComponentsService {
     this.pageComponents.next(pageComponents);
   }
 
-  getHomePageIndex() {
+  getPageIndex(pageName) {
     const pageComponents = this.pageComponents.getValue();
     for (let i = 0; i < pageComponents['pages'].length; i++) {
-      if (pageComponents['pages'][i]['name'] === 'Home') {
+      if (pageComponents['pages'][i]['name'] === pageName) {
         return i;
       }
     }

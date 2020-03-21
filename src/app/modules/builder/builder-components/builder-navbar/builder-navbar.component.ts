@@ -265,7 +265,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), oldPageName);
       this.builderService.activeElement.next(ActiveElements.Default);
       this.builderService.activePageSetting.next('Home');
-      this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
 
       this.toastrService.success('Your page has been renamed.', 'Great!');
     }
@@ -283,7 +283,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   selectNavbarLogoBrand(event: any, elementId: string) {
     if (this.websiteMode) {
       this.builderService.activePageSetting.next('Home');
-      this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
       this.builderService.setSidebarOptionsSetting();
@@ -320,7 +320,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   selectNavbarLogoImage(event: any, elementId: string) {
     if (this.websiteMode) {
       this.builderService.activePageSetting.next('Home');
-      this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
       this.builderService.setSidebarOptionsSetting();

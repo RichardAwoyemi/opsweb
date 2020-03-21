@@ -73,7 +73,7 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), this.activePage);
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.activePageSetting.next('Home');
-    this.builderService.activePageIndex.next(this.builderComponentsService.getHomePageIndex());
+    this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
 
     this.toastrService.success('Your page has been renamed.', 'Great!');
   }

@@ -29,11 +29,13 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   heroComponentLayout: any;
   heroImageContainerClass: string;
   heroTextContainerClass: string;
+  heroButtonLink: string;
   heroImageSize = 100;
   activeElement: string;
   componentDetail: any;
   activePageSetting: string;
   pageComponents: any;
+  websiteMode = false;
 
   private heroTemplateSubscription: Subscription;
   private heroImageSizeSubscription: Subscription;
@@ -46,6 +48,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   private heroImageAltSubscription: Subscription;
   private heroBackgroundStyleSubscription: Subscription;
   private heroThemeSubscription: Subscription;
+  private heroButtonLinkSubscription: Subscription;
   private previewModeSubscription: Subscription;
   private heroHeadingTextSubscription: Subscription;
   private heroButtonTextSubscription: Subscription;
@@ -56,6 +59,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   private activeElementSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
+  private websiteModeSubscription: Subscription;
 
   constructor(
     private builderService: BuilderService,
@@ -67,6 +71,12 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
+
+    this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
+      if (response) {
+        this.websiteMode = response;
+      }
+    });
 
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
@@ -99,6 +109,12 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.heroHeadingStyleSubscription = this.builderHeroService.heroHeadingStyle.subscribe(response => {
       if (response) {
         this.heroHeadingStyle = response;
+      }
+    });
+
+    this.heroButtonLinkSubscription = this.builderHeroService.heroButtonLink.subscribe(response => {
+      if (response) {
+        this.heroButtonLink = response;
       }
     });
 
@@ -198,6 +214,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       this.builderHeroService.heroImageAlt.next(this.componentDetail['heroImageStyle']['alt']);
                       this.builderHeroService.heroComponentLayout.next(this.componentDetail['heroComponentLayout']);
                       this.builderHeroService.heroTheme.next(this.componentDetail['heroTheme']);
+                      this.builderHeroService.heroButtonLink.next(this.componentDetail['heroButtonLink']);
                       this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
                       this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
                       this.builderHeroService.heroButtonText.next(this.componentDetail['heroButtonText']);
@@ -306,11 +323,16 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   }
 
   selectHeroButton(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-options-button');
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next(this.heroButtonLink);
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex(this.heroButtonLink));
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeElement.next(elementId);
+      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.triggerScrollTo('hero-options-button');
+    }
     event.stopPropagation();
   }
 
@@ -362,5 +384,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.heroImageSizeSubscription.unsubscribe();
     this.activeEditComponentIdSubscription.unsubscribe();
     this.heroTextContainerClassSubscription.unsubscribe();
+    this.heroButtonLinkSubscription.unsubscribe();
   }
 }

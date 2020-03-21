@@ -4,7 +4,8 @@
 <div [ngStyle]="calculateIframeStyle()" class="website-showcase-holder">
   <iframe #iframe id="website-showcase"></iframe>
 </div>
-<a class="opsonion-badge" href="https://opsonion.com?utm_campaign=website_badge">
+<a [attr.href]="'https://opsonion.com?utm_source=' + websiteId + '&utm_medium=website&utm_campaign=badge'"
+   class="opsonion-badge">
   <img alt="Opsonion logo" src="../../../assets/img/opsonion-badge.svg" style="margin-right: 8px; width: 22px;">
   <div class="opsonion-badge-text">Built with Opsonion</div>
 </a>

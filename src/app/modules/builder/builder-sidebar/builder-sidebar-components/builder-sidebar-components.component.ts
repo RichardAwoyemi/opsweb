@@ -56,55 +56,37 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
       if (pageComponentsResponse) {
         this.featuresTemplate = pageComponentsResponse['template'];
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
-          if (response) {
-            this.defaultFeaturesStyle = {
-              'featuresStyle': response['featuresStyle'],
-              'featuresHeadingStyle': response['featuresHeadingStyle'],
-              'featuresSubheadingStyle': response['featuresSubheadingStyle'],
-            };
-          }
-        });
       } else {
         this.featuresTemplate = ActiveTemplates.Default;
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
-          if (response) {
-            this.defaultFeaturesStyle = {
-              'featuresStyle': response['featuresStyle'],
-              'featuresHeadingStyle': response['featuresHeadingStyle'],
-              'featuresSubheadingStyle': response['featuresSubheadingStyle'],
-            };
-          }
-        });
       }
+      this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
+        if (response) {
+          this.defaultFeaturesStyle = {
+            'featuresStyle': response['featuresStyle'],
+            'featuresHeadingStyle': response['featuresHeadingStyle'],
+            'featuresSubheadingStyle': response['featuresSubheadingStyle'],
+          };
+        }
+      });
     });
 
     this.footerTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
       if (pageComponentsResponse) {
         this.footerTemplate = pageComponentsResponse['template'];
-        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
-          if (response) {
-            this.defaultFooterStyle = {
-              'footerStyle': response['footerStyle'],
-              'footerSocialLinksContainerStyle': response['footerSocialLinksContainerStyle'],
-              'footerSocialLinksStyle': response['footerSocialLinksStyle'],
-              'footerPageLinksStyle': response['footerPageLinksStyle'],
-              'footerCopyrightStyle': response['footerCopyrightStyle'],
-            };
-          }
-        });
       } else {
-        this.featuresTemplate = ActiveTemplates.Default;
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
-          if (response) {
-            this.defaultFeaturesStyle = {
-              'featuresStyle': response['featuresStyle'],
-              'featuresHeadingStyle': response['featuresHeadingStyle'],
-              'featuresSubheadingStyle': response['featuresSubheadingStyle'],
-            };
-          }
-        });
+        this.footerTemplate = ActiveTemplates.Default;
       }
+      this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
+        if (response) {
+          this.defaultFooterStyle = {
+            'footerStyle': response['footerStyle'],
+            'footerSocialLinksContainerStyle': response['footerSocialLinksContainerStyle'],
+            'footerSocialLinksStyle': response['footerSocialLinksStyle'],
+            'footerPageLinksStyle': response['footerPageLinksStyle'],
+            'footerCopyrightStyle': response['footerCopyrightStyle'],
+          };
+        }
+      });
     });
   }
 

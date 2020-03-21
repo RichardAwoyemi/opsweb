@@ -29,6 +29,7 @@ export class WebsiteLayoutComponent implements OnInit {
   ) {
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id');
+      this.websiteService.websiteId.next(this.id);
     });
   }
 
@@ -53,11 +54,11 @@ export class WebsiteLayoutComponent implements OnInit {
               }));
             }
             }
-          }));
+        }));
         }
+        this.ngxLoader.stop();
       }
     );
-    this.ngxLoader.stop();
   }
 
   setPageComponents() {
