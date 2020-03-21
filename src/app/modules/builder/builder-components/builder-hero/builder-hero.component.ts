@@ -1,11 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderHeroService } from './builder-hero.service';
 import { ActiveComponents, ActiveElements, ActiveSettings, ActiveThemes } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderComponentsService } from '../builder-components.service';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-builder-hero',
@@ -37,7 +37,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   activePageSetting: string;
   pageComponents: any;
   websiteMode = false;
-  isMobile: Observable<BreakpointState>;
 
   private heroTemplateSubscription: Subscription;
   private heroImageSizeSubscription: Subscription;
@@ -74,8 +73,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
 
     this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
       if (response) {
@@ -311,16 +308,20 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   }
 
   setHeroHeadingStyle() {
-    if (this.isMobile) {
-      const heroHeadingPaddingTop = this.heroHeadingStyle['padding-top'].replace('px', '');
-      const heroHeadingPaddingBottom = this.heroHeadingStyle['padding-bottom'].replace('px', '');
-      if (heroHeadingPaddingTop < 30) {
-        this.heroHeadingStyle['padding-top'] = 30 + 'px';
+    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      if (result.matches === true && this.websiteMode) {
+        const heroHeadingPaddingTop = this.heroHeadingStyle['padding-top'].replace('px', '');
+        const heroHeadingPaddingBottom = this.heroHeadingStyle['padding-bottom'].replace('px', '');
+        if (heroHeadingPaddingTop < 30) {
+          this.heroHeadingStyle['padding-top'] = '30px';
+        }
+        if (heroHeadingPaddingBottom < 30) {
+          this.heroHeadingStyle['padding-bottom'] = '30px';
+        }
+      } else {
+        this.heroHeadingStyle = this.builderHeroService.heroHeadingStyle.getValue();
       }
-      if (heroHeadingPaddingBottom < 30) {
-        this.heroHeadingStyle['padding-bottom'] = 30 + 'px';
-      }
-    }
+    });
   }
 
   selectHeroHeading(event: any, elementId: string) {

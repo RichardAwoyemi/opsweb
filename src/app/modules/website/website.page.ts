@@ -74,11 +74,13 @@ export class WebsiteComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    if (!this.isMobile) {
-      this.innerHeight = window.innerHeight;
-    } else {
-      this.innerHeight = screen.height;
-    }
+    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      if (result.matches === true) {
+        this.innerHeight = screen.height;
+      } else {
+        this.innerHeight = window.innerHeight;
+      }
+    });
   }
 
   ngAfterViewInit() {
