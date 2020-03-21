@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderComponentsService } from '../../builder/builder-components/builder-components.service';
 import { Subscription } from 'rxjs';
@@ -11,8 +11,7 @@ import { BuilderService } from '../../builder/builder.service';
   templateUrl: './website-layout.component.html',
   encapsulation: ViewEncapsulation.ShadowDom
 })
-export class WebsiteLayoutComponent implements OnInit {
-
+export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
   activePage = 'Home';
   pageComponents: any;
   builderComponents: any;
@@ -45,10 +44,6 @@ export class WebsiteLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.ngxLoader.start();
-    const shadowRoot: DocumentFragment = this.element.nativeElement.shadowRoot;
-    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, './assets/css/page.css/');
-    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, './assets/css/website.css/');
-
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageResponse => {
       if (activePageResponse) {
         this.activePage = activePageResponse;
@@ -73,6 +68,12 @@ export class WebsiteLayoutComponent implements OnInit {
         this.ngxLoader.stop();
       }
     );
+  }
+
+  ngAfterViewInit() {
+    const shadowRoot: DocumentFragment = this.element.nativeElement.shadowRoot;
+    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/page.css');
+    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/website.css');
   }
 
   setPageComponents() {
