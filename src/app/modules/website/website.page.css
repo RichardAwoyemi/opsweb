@@ -93,14 +93,19 @@
   font-size: 13px !important;
 }
 
-.website-showcase-holder {
-  -webkit-overflow-scrolling: touch;
-  overflow-y: auto;
-  overflow-x: hidden;
+.wrapper-heading {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 56px);
 }
 
-.website-showcase-holder iframe {
-  height: 100%;
-  width: 100%;
-  border: 0;
+.wrapper-no-heading {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.wrapper-heading iframe, .wrapper-no-heading iframe {
+  border: none;
+  flex-grow: 1;
 }

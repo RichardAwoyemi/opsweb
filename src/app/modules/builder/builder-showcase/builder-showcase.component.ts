@@ -13,7 +13,7 @@ import {
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../builder.service';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
-import { IframeService } from '../../../shared/iframe.service';
+import { IframeService } from '../../../shared/services/iframe.service';
 import { ActiveComponents, ActiveElements, ActiveSettings } from '../builder';
 import { debounce } from '../../../shared/decorators/debounce.decorator';
 

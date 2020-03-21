@@ -1,7 +1,7 @@
 <div *ngIf="isLoggedIn()" style="height: 56px">
   <app-website-header></app-website-header>
 </div>
-<div [ngStyle]="calculateIframeStyle()" class="website-showcase-holder">
+<div [ngClass]="getIframeClass()">
   <iframe #iframe id="website-showcase"></iframe>
 </div>
 <a [attr.href]="'https://opsonion.com?utm_source=' + websiteId + '&utm_medium=website&utm_campaign=badge'"
