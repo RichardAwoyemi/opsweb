@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { BuilderHeroService } from './builder-hero.service';
 import { ActiveComponents, ActiveElements, ActiveSettings, ActiveThemes } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderComponentsService } from '../builder-components.service';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-builder-hero',
@@ -36,6 +37,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   activePageSetting: string;
   pageComponents: any;
   websiteMode = false;
+  isMobile: Observable<BreakpointState>;
 
   private heroTemplateSubscription: Subscription;
   private heroImageSizeSubscription: Subscription;
@@ -63,6 +65,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   constructor(
     private builderService: BuilderService,
+    private breakpointObserver: BreakpointObserver,
     private builderHeroService: BuilderHeroService,
     private builderComponentsService: BuilderComponentsService,
     private elementRef: ElementRef
@@ -71,6 +74,8 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
+
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
 
     this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
       if (response) {
@@ -218,6 +223,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
                       this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
                       this.builderHeroService.heroButtonText.next(this.componentDetail['heroButtonText']);
+                      this.setHeroHeadingStyle();
                     }
                   }
                 }
@@ -301,6 +307,19 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     }
     if (!this.previewMode) {
       return element + '-active';
+    }
+  }
+
+  setHeroHeadingStyle() {
+    if (this.isMobile) {
+      const heroHeadingPaddingTop = this.heroHeadingStyle['padding-top'].replace('px', '');
+      const heroHeadingPaddingBottom = this.heroHeadingStyle['padding-bottom'].replace('px', '');
+      if (heroHeadingPaddingTop < 30) {
+        this.heroHeadingStyle['padding-top'] = 30 + 'px';
+      }
+      if (heroHeadingPaddingBottom < 30) {
+        this.heroHeadingStyle['padding-bottom'] = 30 + 'px';
+      }
     }
   }
 

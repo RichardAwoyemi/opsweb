@@ -18,7 +18,8 @@ import { IframeService } from '../../shared/iframe.service';
 import { WebsiteLayoutComponent } from './website-layout/website-layout.component';
 import { AuthService } from '../auth/auth.service';
 import { WebsiteService } from '../../shared/services/website.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-website',
@@ -32,11 +33,13 @@ export class WebsiteComponent implements OnInit, AfterViewInit, AfterViewChecked
   componentReference: any;
   innerHeight: number;
   websiteId: string;
+  isMobile: Observable<BreakpointState>;
 
   private websiteIdSubscription: Subscription;
 
   constructor(
     public router: Router,
+    private breakpointObserver: BreakpointObserver,
     private routerService: RouterService,
     private authService: AuthService,
     private builderService: BuilderService,
@@ -49,6 +52,7 @@ export class WebsiteComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
     this.builderService.websiteMode.next(true);
     this.builderService.previewMode.next(true);
     this.websiteIdSubscription = this.websiteService.websiteId.subscribe(response => {
@@ -70,7 +74,11 @@ export class WebsiteComponent implements OnInit, AfterViewInit, AfterViewChecked
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.innerHeight = window.innerHeight;
+    if (!this.isMobile) {
+      this.innerHeight = window.innerHeight;
+    } else {
+      this.innerHeight = screen.height;
+    }
   }
 
   ngAfterViewInit() {
