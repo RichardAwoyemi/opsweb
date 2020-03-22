@@ -30,6 +30,7 @@
               "src/assets/js/builder.js"
             ],
             "styles": [
+              "src/assets/css/fonts.css",
               "src/assets/css/page.css",
               "src/styles.css",
               "src/assets/css/themify.css",

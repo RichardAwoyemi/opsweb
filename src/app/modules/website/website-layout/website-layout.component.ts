@@ -72,6 +72,7 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const shadowRoot: DocumentFragment = this.element.nativeElement.shadowRoot;
+    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/fonts.css');
     WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/page.css');
     WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/website.css');
   }
