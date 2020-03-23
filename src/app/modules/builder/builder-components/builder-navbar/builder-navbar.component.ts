@@ -41,6 +41,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   componentDetail: any;
   activePageSetting: string;
   websiteMode: boolean;
+  navbarOpen: boolean;
 
   private activeEditComponentSubscription: Subscription;
   private activeEditComponentIdSubscription: Subscription;
@@ -72,6 +73,8 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   ngOnInit() {
+    this.navbarOpen = false;
+
     this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
       this.previewMode = response;
     });
@@ -352,6 +355,18 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.triggerScrollTo('navbar-options-logo');
     }
     event.stopPropagation();
+  }
+
+  toggleNavbar() {
+    if (this.websiteMode) {
+      this.navbarOpen = !this.navbarOpen;
+    }
+  }
+
+  setNavbarOpenOption() {
+    if (this.websiteMode) {
+      return {'show': this.navbarOpen};
+    }
   }
 
   ngOnDestroy() {

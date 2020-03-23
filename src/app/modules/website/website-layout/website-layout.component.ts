@@ -38,7 +38,7 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
   static addJsToShadowRoot(shadowRoot, src) {
     const link = document.createElement('script');
     link.setAttribute('src', src);
-    shadowRoot.append(link);
+    shadowRoot.prepend(link);
   }
 
   private static addCssToShadowRoot(shadowRoot, src) {
@@ -51,10 +51,6 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.ngxLoader.start();
-    const shadowRoot = this.element.nativeElement.shadowRoot;
-    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'assets/js/jquery.min.js');
-    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'assets/js/popper.min.js');
-    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'assets/js/bootstrap.min.js');
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageResponse => {
       if (activePageResponse) {
         this.activePage = activePageResponse;
@@ -83,9 +79,12 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const shadowRoot = this.element.nativeElement.shadowRoot;
+    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js');
+    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
+    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'https://code.jquery.com/jquery-3.4.1.min.js');
+    WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/fonts.css');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/website.css');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/page.css');
-    WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/fonts.css');
   }
 
   setPageComponents() {
