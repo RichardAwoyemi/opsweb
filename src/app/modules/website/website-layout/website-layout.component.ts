@@ -35,15 +35,26 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private static appendToShadowRoot(shadowRoot, src) {
+  static addJsToShadowRoot(shadowRoot, src) {
+    const link = document.createElement('script');
+    link.setAttribute('src', src);
+    shadowRoot.append(link);
+  }
+
+  private static addCssToShadowRoot(shadowRoot, src) {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', src);
-    shadowRoot.append(link);
+    link.setAttribute('type', 'text/css');
+    shadowRoot.prepend(link);
   }
 
   ngOnInit() {
     this.ngxLoader.start();
+    const shadowRoot = this.element.nativeElement.shadowRoot;
+    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'assets/js/jquery.min.js');
+    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'assets/js/popper.min.js');
+    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'assets/js/bootstrap.min.js');
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageResponse => {
       if (activePageResponse) {
         this.activePage = activePageResponse;
@@ -71,10 +82,10 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const shadowRoot: DocumentFragment = this.element.nativeElement.shadowRoot;
-    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/fonts.css');
-    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/page.css');
-    WebsiteLayoutComponent.appendToShadowRoot(shadowRoot, 'assets/css/website.css');
+    const shadowRoot = this.element.nativeElement.shadowRoot;
+    WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/website.css');
+    WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/page.css');
+    WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/fonts.css');
   }
 
   setPageComponents() {
