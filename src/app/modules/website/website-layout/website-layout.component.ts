@@ -3,8 +3,9 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderComponentsService } from '../../builder/builder-components/builder-components.service';
 import { Subscription } from 'rxjs';
 import { WebsiteService } from '../../../shared/services/website.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BuilderService } from '../../builder/builder.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-website-layout',
@@ -27,6 +28,8 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
     private element: ElementRef,
     private builderComponentsService: BuilderComponentsService,
     private ngxLoader: NgxUiLoaderService,
+    private toastrSevice: ToastrService,
+    public router: Router,
     private route: ActivatedRoute
   ) {
     this.route.paramMap.subscribe(params => {
@@ -55,8 +58,8 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
       if (activePageResponse) {
         this.activePage = activePageResponse;
         this.websiteSubscription = this.websiteService.getWebsite(this.id).subscribe((websiteResponse => {
-          this.websiteService.websiteName.next(websiteResponse['name']);
           if (websiteResponse) {
+            this.websiteService.websiteName.next(websiteResponse['name']);
             if (websiteResponse['pages']) {
               this.builderComponentsService.pageComponents.next({
                 'pages': websiteResponse['pages'],
@@ -69,9 +72,14 @@ export class WebsiteLayoutComponent implements OnInit, AfterViewInit {
                 }
               }));
             }
-            }
+          } else {
+            this.toastrSevice.warning('This website cannot be found.', 'Oops!');
+            this.router.navigate(['home']).then(() => {
+            });
+          }
         }));
-        }
+      } else {
+      }
         this.ngxLoader.stop();
       }
     );

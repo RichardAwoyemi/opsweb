@@ -100,9 +100,7 @@ export class WebsiteService {
   getWebsite(id) {
     if (id) {
       return this.afs.collection('websites').doc(id).snapshotChanges().pipe(map(action => {
-        const data = action.payload.data();
-        const uid = action.payload.id;
-        return {uid, ...data};
+        return action.payload.data();
       }));
     }
   }
