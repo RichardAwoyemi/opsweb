@@ -132,6 +132,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .component-toolbar-text {
+  font-family: 'Avenir Next Regular', sans-serif;
   font-size: 11px;
   background-color: #4285F4;
   color: #FFFFFF;

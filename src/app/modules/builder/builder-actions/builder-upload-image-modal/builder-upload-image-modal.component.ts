@@ -56,12 +56,7 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
   }
 
   setNavbarOptionsStyle(key, value) {
-    const targetComponentLocation = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
-    for (let i = 0; i < targetComponentLocation.length; i++) {
-      const activePageIndex = targetComponentLocation[i]['activePageIndex'];
-      const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
-      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex][key] = value;
-    }
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, key, value);
     this.builderComponentsService.pageComponents.next(this.pageComponents);
   }
 

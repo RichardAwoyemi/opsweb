@@ -14,7 +14,6 @@ import { BuilderComponentsService } from '../builder-components.service';
 import { BuilderFooterService } from '../builder-footer/builder-footer.service';
 import { ToastrService } from 'ngx-toastr';
 import { UtilService } from '../../../../shared/services/util.service';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-builder-navbar',
@@ -63,7 +62,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
 
   constructor(
     private builderService: BuilderService,
-    private breakpointObserver: BreakpointObserver,
     private toastrService: ToastrService,
     private elementRef: ElementRef,
     private builderComponentsService: BuilderComponentsService,
@@ -184,8 +182,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
                     this.builderNavbarService.navbarLogoImage.next(this.componentDetail['navbarLogoImage']);
                     this.builderNavbarService.navbarMenuOptions.next(this.componentDetail['navbarMenuOptions']);
                     this.builderNavbarService.navbarTheme.next(this.componentDetail['navbarTheme']);
-                    this.setNavbarLinkStyle();
-                    this.setNavbarStyle();
                   }
                 }
               }
@@ -257,26 +253,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.triggerScrollTo('navbar-options-menu');
     }
     event.stopPropagation();
-  }
-
-  setNavbarLinkStyle() {
-    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      if (result.matches === true) {
-        this.navbarLinkStyle['padding-left'] = '0px';
-        this.navbarLinkStyle['padding-bottom'] = '0px';
-      }
-    });
-  }
-
-  setNavbarStyle() {
-    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      if (result.matches === true) {
-        this.navbarStyle['padding-left'] = '1em';
-        this.navbarStyle['padding-right'] = '1em';
-      } else {
-        this.navbarStyle = this.builderNavbarService.navbarStyle.getValue();
-      }
-    });
   }
 
   saveNavbarMenuOption(pageIndex: number, pageName: string) {
