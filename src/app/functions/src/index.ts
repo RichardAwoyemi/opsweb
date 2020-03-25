@@ -22,3 +22,18 @@ exports.countAllUsers = functions.https.onRequest((req: any, res: any) => {
     console.log('Request successful!');
   }).catch((error: any) => console.log('Request failed: ', error));
 });
+
+exports.getWebsiteNameById = functions.https.onRequest((req: any, res: any) => {
+  let websiteId = req.url.split("/");
+  websiteId = websiteId[websiteId.length - 1];
+  res.set('Access-Control-Allow-Origin', '*');
+  const website = admin.firestore().collection('websites').doc(websiteId).get();
+  return website.then(function (response: any) {
+    if (response.data()) {
+      res.end(`{ "websiteName": "${response.data()['name']}" }`);
+    } else {
+      res.end(`{ "websiteName": null }`);
+    }
+    console.log('Request successful!');
+  }).catch((error: any) => console.log('Request failed: ', error));
+});
