@@ -37,3 +37,18 @@ exports.getWebsiteNameById = functions.https.onRequest((req: any, res: any) => {
     console.log('Request successful!');
   }).catch((error: any) => console.log('Request failed: ', error));
 });
+
+exports.getWebsiteIdByName = functions.https.onRequest((req: any, res: any) => {
+  let websiteName = req.url.split("/");
+  websiteName = websiteName[websiteName.length - 1];
+  res.set('Access-Control-Allow-Origin', '*');
+  const website = admin.firestore().collection('websites', (ref: any) => ref.where('name', '==', websiteName).limit(1)).get();
+  return website.then(function (response: any) {
+    if (response.empty) {
+      res.end(`{ "websiteId": null }`);
+    } else {
+      res.end(`{ "websiteId": ${JSON.stringify(response.docs[0].data()['id'])} }`);
+    }
+    console.log('Request successful!');
+  }).catch((error: any) => console.log('Request failed: ', error));
+});
