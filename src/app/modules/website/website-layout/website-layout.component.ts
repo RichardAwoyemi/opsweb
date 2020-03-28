@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BuilderComponentsService } from '../../builder/builder-components/builder-components.service';
 import { Subscription } from 'rxjs';
@@ -15,7 +15,7 @@ import { environment } from '../../../../environments/environment';
   encapsulation: ViewEncapsulation.ShadowDom,
   styleUrls: ['./website-layout.component.css']
 })
-export class WebsiteLayoutComponent implements AfterViewInit {
+export class WebsiteLayoutComponent implements AfterViewInit, OnDestroy {
   activePage = 'Home';
   pageComponents: any;
   builderComponents: any;
@@ -140,6 +140,21 @@ export class WebsiteLayoutComponent implements AfterViewInit {
       for (let j = 0; j < tempBuilderComponents.length; j++) {
         this.builderComponents.push(`<${tempBuilderComponents[j]['componentName']} id='${tempBuilderComponents[j]['componentId']}'/><${tempBuilderComponents[j]['componentName']}>`);
       }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.pageComponentsSubscription) {
+      this.pageComponentsSubscription.unsubscribe();
+    }
+    if (this.activePageSettingSubscription) {
+      this.activePageSettingSubscription.unsubscribe();
+    }
+    if (this.websiteSubscription) {
+      this.websiteSubscription.unsubscribe();
+    }
+    if (this.websiteNameSubscription) {
+      this.websiteNameSubscription.unsubscribe();
     }
   }
 }

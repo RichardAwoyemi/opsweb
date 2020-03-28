@@ -385,5 +385,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.activeEditComponentIdSubscription.unsubscribe();
     this.heroTextContainerClassSubscription.unsubscribe();
     this.heroButtonLinkSubscription.unsubscribe();
+    this.websiteModeSubscription.unsubscribe();
   }
 }

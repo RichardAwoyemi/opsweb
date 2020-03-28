@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ViewContainerRef } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterService } from '../../shared/services/router.service';
 import { BuilderService } from '../builder/builder.service';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './website.page.html',
   styleUrls: ['./website.page.css']
 })
-export class WebsiteComponent implements OnInit, AfterViewChecked {
+export class WebsiteComponent implements OnInit, AfterViewChecked, OnDestroy {
   innerHeight: number;
   websiteId: string;
 
@@ -46,5 +46,9 @@ export class WebsiteComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked() {
     this.changeDetector.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this.websiteIdSubscription.unsubscribe();
   }
 }
