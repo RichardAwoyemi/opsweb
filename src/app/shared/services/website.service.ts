@@ -97,6 +97,10 @@ export class WebsiteService {
     return this.afs.collection('websites', ref => ref.where('createdBy', '==', id)).valueChanges();
   }
 
+  getWebsiteByName(name) {
+    return this.afs.collection('websites', ref => ref.where('name', '==', name)).valueChanges();
+  }
+
   getWebsite(id) {
     if (id) {
       return this.afs.collection('websites').doc(id).snapshotChanges().pipe(map(action => {

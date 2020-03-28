@@ -7,7 +7,7 @@ import { SortablejsOptions } from 'ngx-sortablejs';
 import { BuilderService } from '../../builder.service';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SessionStorageService } from '../../../../shared/services/session-storage.service';
+import { StorageService } from '../../../../shared/services/storage.service';
 import { WebsiteService } from '../../../../shared/services/website.service';
 
 @Component({
@@ -30,7 +30,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService,
-    private sessionStorageService: SessionStorageService,
+    private sessionStorageService: StorageService,
     private modalService: NgbModal,
     private websiteService: WebsiteService,
     private builderService: BuilderService
@@ -56,7 +56,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
           if (response) {
             this.pageComponents = response;
             this.setPageComponents();
-            this.builderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
+            BuilderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
           }
         }));
       }
@@ -109,7 +109,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
       const componentsArrayWithoutPlaceholders = BuilderComponentsService.removePlaceholders(this.pageComponents['pages'][activePageIndex]['components']);
       this.pageComponents['pages'][activePageIndex]['components'] = BuilderComponentsService.addPlaceholdersOnSinglePage(componentsArrayWithoutPlaceholders);
       this.builderComponentsService.pageComponents.next(this.pageComponents);
-      this.sessionStorageService.setItem('components', JSON.stringify(this.pageComponents));
+      StorageService.setItem('components', JSON.stringify(this.pageComponents));
     }
   }
 
@@ -135,7 +135,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
               }
             }
           }
-          this.sessionStorageService.setItem('components', JSON.stringify(this.pageComponents['pages'][j]['components']));
+          StorageService.setItem('components', JSON.stringify(this.pageComponents['pages'][j]['components']));
         }
       }
     }

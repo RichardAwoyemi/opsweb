@@ -35,20 +35,31 @@ exports.getWebsiteNameById = functions.https.onRequest((req: any, res: any) => {
       res.end(`{ "websiteName": null }`);
     }
     console.log('Request successful!');
-  }).catch((error: any) => console.log('Request failed: ', error));
+  }).catch((error: any) => {
+    console.log('Request failed: ', error);
+    res.end(`{ "websiteId": null }`);
+  });
 });
 
 exports.getWebsiteIdByName = functions.https.onRequest((req: any, res: any) => {
   let websiteName = req.url.split("/");
   websiteName = websiteName[websiteName.length - 1];
   res.set('Access-Control-Allow-Origin', '*');
-  const website = admin.firestore().collection('websites', (ref: any) => ref.where('name', '==', websiteName).limit(1)).get();
-  return website.then(function (response: any) {
-    if (response.empty) {
+  console.log(`Website id request made for: ${websiteName}`);
+  const websitesRef = admin.firestore().collection('websites');
+  websitesRef.where('name', '==', websiteName).limit(1).get().then((snapshot: any) => {
+    if (snapshot.empty) {
+      console.log("Website id not found");
       res.end(`{ "websiteId": null }`);
-    } else {
-      res.end(`{ "websiteId": ${JSON.stringify(response.docs[0].data()['id'])} }`);
     }
+    snapshot.forEach((doc: any) => {
+      console.log(`Website id found: ${doc.id}`);
+      res.end(`{ "websiteId": "${doc.id}" }`);
+    });
     console.log('Request successful!');
-  }).catch((error: any) => console.log('Request failed: ', error));
+  })
+    .catch((error: any) => {
+      console.log('Request failed: ', JSON.stringify(error));
+      res.end(`{ "websiteId": null }`);
+    });
 });

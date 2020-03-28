@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeBuildButtonComponent } from './home-build-button/home-build-button.component';
 import { CommonModule } from '@angular/common';
 import { BrowserMockupModule } from '../../../shared/components/browser-mockup/browser-mockup.module';
+import { RouterService } from '../../../shared/services/router.service';
 
 const routes: Routes = [
   {path: '', component: HomeComponent}
@@ -24,7 +25,7 @@ const routes: Routes = [
     LoginButtonGroupComponent
   ],
   imports: [
-    RouterModule.forChild(routes),
+    RouterModule.forChild(RouterService.checkIfIsOnDomain() ? routes : RouterService.getSubdomainRoutes('../..')),
     FontAwesomeModule,
     RouterModule,
     BrowserMockupModule,

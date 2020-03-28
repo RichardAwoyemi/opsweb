@@ -7,7 +7,8 @@ import { WebsiteComponent } from './website.page';
 import { WebsiteHeaderComponent } from './website-header/website-header.component';
 
 const routes: Routes = [
-  {path: '', component: WebsiteComponent}
+  { path: '', component: WebsiteComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

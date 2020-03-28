@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../builder';
 import { UtilService } from '../../../shared/services/util.service';
-import { SessionStorageService } from '../../../shared/services/session-storage.service';
+import { StorageService } from '../../../shared/services/storage.service';
 
 @Injectable()
 export class BuilderComponentsService {
@@ -24,11 +24,6 @@ export class BuilderComponentsService {
       'selector': ActiveComponentsPartialSelector.Features
     }
   ];
-
-  constructor(
-    private sessionStorageService: SessionStorageService
-  ) {
-  }
 
   activeComponentIndex = new BehaviorSubject<number>(0);
 
@@ -1585,6 +1580,14 @@ export class BuilderComponentsService {
     return pageComponents;
   }
 
+  static addComponentsToSessionStorage(pageComponents, activePage) {
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      if (pageComponents['pages'][i]['name'] === activePage) {
+        StorageService.setItem('components', JSON.stringify(pageComponents['pages'][i]['components']));
+      }
+    }
+  }
+
   deleteComponentByName(componentName) {
     let pageComponents = this.pageComponents.getValue();
     const targetComponents = this.getTargetComponentByName(componentName);
@@ -1597,14 +1600,6 @@ export class BuilderComponentsService {
     pageComponents.map(obj => obj.forEach((el, idx) => (el.componentIndex = idx)));
 
     return pageComponents;
-  }
-
-  addComponentsToSessionStorage(pageComponents, activePage) {
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      if (pageComponents['pages'][i]['name'] === activePage) {
-        this.sessionStorageService.setItem('components', JSON.stringify(pageComponents['pages'][i]['components']));
-      }
-    }
   }
 
   getComponent(activePageIndex, activeComponentIndex) {

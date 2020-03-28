@@ -1,12 +1,4 @@
-import {
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterService } from '../../shared/services/router.service';
 import { BuilderService } from '../builder/builder.service';
@@ -20,8 +12,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./website.page.css']
 })
 export class WebsiteComponent implements OnInit, AfterViewChecked {
-  @ViewChild('iframe', {static: false}) iframe: ElementRef;
-  document: any;
   innerHeight: number;
   websiteId: string;
 
