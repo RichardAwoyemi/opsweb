@@ -60,7 +60,7 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
   }
 
   openPreviewPage(uid: string) {
-    this.router.navigate(['website/' + uid]).then(() => {
+    this.router.navigate(['websites/' + uid]).then(() => {
     });
   }
 

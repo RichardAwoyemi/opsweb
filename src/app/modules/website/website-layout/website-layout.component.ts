@@ -37,30 +37,9 @@ export class WebsiteLayoutComponent implements AfterViewInit {
     private route: ActivatedRoute
   ) {
     if (RouterService.checkIfIsOnDomain()) {
-      this.route.paramMap.subscribe(params => {
-        if (params.get('id')) {
-          this.id = params.get('id');
-          this.websiteService.websiteId.next(this.id);
-          this.setupWebsiteLayout();
-        } else {
-          window.location.href = environment.domainUrl;
-        }
-      });
+      this.setupInternalWebsite();
     } else {
-      const full = window.location.host;
-      const parts = full.split('.');
-      if (parts[0] && parts[1] && parts[2]) {
-        const websiteName = parts[0];
-        this.websiteNameSubscription = this.websiteService.getWebsiteByName(websiteName).subscribe(response => {
-          if (response[0]) {
-            this.id = response[0]['id'];
-            this.websiteService.websiteId.next(response[0]['id']);
-            this.setupWebsiteLayout();
-          } else {
-            window.location.href = environment.domainUrl;
-          }
-        });
-      }
+      this.setupExternalWebsite();
     }
   }
 
@@ -78,12 +57,39 @@ export class WebsiteLayoutComponent implements AfterViewInit {
     shadowRoot.prepend(link);
   }
 
-  setupWebsiteLayout() {
+  setupInternalWebsite() {
+    this.route.paramMap.subscribe(params => {
+      if (params.get('id')) {
+        this.id = params.get('id');
+        this.websiteService.websiteId.next(this.id);
+        this.setupWebsite();
+      }
+    });
+  }
+
+  setupExternalWebsite() {
+    const full = window.location.host;
+    const parts = full.split('.');
+    if (parts[0] && parts[1] && parts[2]) {
+      const websiteName = parts[0];
+      this.websiteNameSubscription = this.websiteService.getWebsiteByName(websiteName).subscribe(response => {
+        if (response[0]) {
+          this.id = response[0]['id'];
+          this.websiteService.websiteId.next(response[0]['id']);
+          this.setupWebsite();
+        } else {
+          window.location.href = environment.domainUrl;
+        }
+      });
+    }
+  }
+
+  setupWebsite() {
     this.ngxLoader.start();
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageResponse => {
         if (activePageResponse) {
           this.activePage = activePageResponse;
-          this.websiteSubscription = this.websiteService.getWebsite(this.id).subscribe((websiteResponse => {
+          this.websiteSubscription = this.websiteService.getWebsiteById(this.id).subscribe((websiteResponse => {
             if (websiteResponse) {
               this.websiteService.websiteName.next(websiteResponse['name']);
               if (websiteResponse['pages']) {
@@ -113,9 +119,7 @@ export class WebsiteLayoutComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const shadowRoot = this.element.nativeElement.shadowRoot;
-    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js');
-    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
-    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'https://code.jquery.com/jquery-3.4.1.min.js');
+    WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/js/page.min.js');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/fonts.css');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/website.css');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/page.css');

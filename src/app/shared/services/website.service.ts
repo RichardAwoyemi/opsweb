@@ -101,7 +101,7 @@ export class WebsiteService {
     return this.afs.collection('websites', ref => ref.where('name', '==', name)).valueChanges();
   }
 
-  getWebsite(id) {
+  getWebsiteById(id) {
     if (id) {
       return this.afs.collection('websites').doc(id).snapshotChanges().pipe(map(action => {
         return action.payload.data();

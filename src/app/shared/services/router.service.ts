@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class RouterService {
-
   constructor(
     public router: Router
   ) {
@@ -26,17 +25,11 @@ export class RouterService {
       currentRoute === '/verify-email' || currentRoute.includes('/invite/');
   }
 
-  static getSubdomainRoutes(path) {
-    return [
-      { path: '', loadChildren: `${path}/website/website.module#WebsiteModule` }
-    ];
-  }
-
   static checkIfIsOnDomain() {
     const full = window.location.host;
     const parts = full.split('.');
     let result = true;
-    if (parts[0] && parts[1] && parts[2]) {
+    if (parts[0] && parts[1] && parts[2] && parts[1] !== 'netlify') {
       result = false;
       (window as any).Intercom('update', {
         'hide_default_launcher': true
