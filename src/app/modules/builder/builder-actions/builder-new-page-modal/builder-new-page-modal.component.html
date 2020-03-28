@@ -1,0 +1,27 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Create new page</h5>
+    <button (click)="onCloseButtonClick()" class="close" type="button">
+      <span class="builder-modal-page-new-close" aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="displayError" class="alert alert-danger" role="alert">
+      A page with this name already exists.
+    </div>
+    Please enter a name for your new page.
+    <div class="form-group">
+      <label for="pageName"></label>
+      <input (change)="pageName=pageName.trim(); displayError=false" (keyup)="validatePageName()" [(ngModel)]="pageName"
+             blockNonAlphabetCharacters class="form-control"
+             id="pageName" type="text">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="builder-modal-page-new-save btn btn-secondary" 
+            (click)="onConfirmButtonClick()" type="button"
+            [disabled]="disableSaveButton">Save</button>&nbsp;
+    <button class="builder-modal-page-new-cancel btn btn-secondary" 
+            (click)="onCloseButtonClick()" type="button">Cancel</button>
+  </div>
+</div>

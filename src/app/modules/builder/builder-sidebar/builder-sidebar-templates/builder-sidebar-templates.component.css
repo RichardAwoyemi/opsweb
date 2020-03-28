@@ -1,0 +1,8 @@
+.template-icon:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.input-group {
+  background-color: #ffffff;
+}

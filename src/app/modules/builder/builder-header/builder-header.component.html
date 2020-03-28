@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top no-select" style="top: 0">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="float-left shepherd-step-1">
+        <a (click)="redirect()" href="#">
+          <img alt="logo-white" src="../../../../assets/img/logo-white.svg" style="height: 30px; width: 30px">
+        </a>
+        <div (blur)="removeLineBreaks($event); openRenameWebsiteModal($event);"
+             (keydown.enter)="openRenameWebsiteModal($event)"
+             [attr.contenteditable]="true"
+             [attr.spellcheck]="false"
+             *ngIf="websiteLoaded"
+             id="builder-header-website-name"
+             blockNonAlphanumericCharacters
+             class="website-name" ngbPopover="Website Name" triggers="mouseenter:mouseleave">{{ websiteName }}</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="float-right">
+        <button (click)="openPublishModal()" class="btn btn-glass btn-primary shepherd-step-3" type="button">Publish
+        </button>
+        &nbsp;&nbsp;
+        <button (click)="openCreateAccountModal()" *ngIf="!isLoggedIn()" class="btn btn-glass btn-primary"
+                type="button">Sign Up
+        </button>
+        <span aria-expanded="false" class="dropdown-toggle no-caret"
+              *ngIf="isLoggedIn()" data-toggle="dropdown">
+            <img *ngIf="!user.photoURL" alt="user" class="avatar avatar-xs" src="{{ photoURL }}">
+            <img *ngIf="user.photoURL" alt="user" class="avatar avatar-xs" src="{{ user.photoURL }}">
+        </span>
+        <div *ngIf="isLoggedIn()" class="dropdown-menu dropdown-menu-right">
+          <a (click)="redirectToDashboard()" class="dropdown-item">Dashboard</a>
+          <a (click)="signOut()" class="dropdown-item">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

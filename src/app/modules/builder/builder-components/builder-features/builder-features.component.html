@@ -1,0 +1,31 @@
+<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
+                               [componentName]="componentName"></app-builder-component-toolbar>
+<div [attr.id]="componentId" [ngClass]="setContextMenu()">
+  <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()">
+    <div [ngStyle]="setFeaturesOuterStyle()" class="row feature-item" style="margin: 0.03em;">
+      <div *ngFor="let feature of featuresItemArray; let i = index" [ngStyle]="setFeaturesInnerStyle()">
+        <div style="padding: 12px">
+          <div
+            (blur)="saveFeaturesHeadingStyleText($event.target['innerText'], i);"
+            (keydown.enter)="saveFeaturesHeadingStyleText($event.target['innerText'], i); $event.preventDefault()"
+            (click)="selectFeaturesElement($event, componentId+'-'+'heading'+'-'+i)"
+            [attr.contenteditable]="setContentEditable()"
+            [class]="setActiveElement(componentId+'-'+'heading'+'-'+i)"
+            [innerText]="feature['heading']"
+            [ngClass]="setFeaturesClass('features-heading')"
+            [ngStyle]="featuresHeadingStyle" id="{{ componentId+'-'+'heading'+'-'+i }}">
+          </div>
+          <div
+            (blur)="saveFeaturesSubheadingStyleText($event.target['innerText'], i);"
+            (keydown.enter)="saveFeaturesSubheadingStyleText($event.target['innerText'], i); $event.preventDefault()"
+            (click)="selectFeaturesElement($event, componentId+'-'+'subheading'+'-'+i)"
+            [attr.contenteditable]="setContentEditable()"
+            [class]="setActiveElement(componentId+'-'+'subheading'+'-'+i)"
+            [innerText]="feature['subheading']"
+            [ngClass]="setFeaturesClass('features-subheading')"
+            [ngStyle]="featuresSubheadingStyle" id="{{ componentId+'-'+'subheading'+'-'+i }}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

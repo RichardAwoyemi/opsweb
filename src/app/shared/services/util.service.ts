@@ -1,17 +1,8 @@
 import { Injectable } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
 
 @Injectable()
 export class UtilService {
-  IOS_APP_URL = 'https://itunes.apple.com';
-  ANDROID_APP_URL = 'https://play.google.com';
-  AIRTABLE_FORM_URL = 'https://airtable.com/shrRf5gBoMn300PBp';
-
-  constructor(
-    private logger: NGXLogger
-  ) { }
-
-  toTitleCase(str) {
+  static toTitleCase(str: string) {
     str = str.replace(/^\s+|\s+$/gm, '');
     return str.replace(
       /\w\S*/g,
@@ -21,7 +12,11 @@ export class UtilService {
     );
   }
 
-  generateRandomString(length) {
+  static isNullOrWhitespace(text: any): boolean {
+    return !text || !text.trim();
+  }
+
+  static generateRandomString(length) {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
     if (!length) {
       length = Math.floor(Math.random() * chars.length);
@@ -33,17 +28,7 @@ export class UtilService {
     return str;
   }
 
-  getAppStoreLink(userAgentString: string) {
-    if (userAgentString.indexOf('iPhone') > -1 ||
-      userAgentString.indexOf('iPod') > -1 ||
-      userAgentString.indexOf('iPad') > -1) {
-      return this.IOS_APP_URL;
-    } else if (/Android/.test(userAgentString)) {
-      return this.ANDROID_APP_URL;
-    }
-  }
-
-  createYearRange(start, end) {
+  static createYearRange(start, end) {
     const s = new Date(start);
     const startYear = s.getFullYear();
 
@@ -58,38 +43,7 @@ export class UtilService {
     return arr;
   }
 
-  roundNumber(n: any, digits: number) {
-    let negative = false;
-    if (digits === undefined) {
-      digits = 0;
-    }
-    if (n < 0) {
-      negative = true;
-      n = n * -1;
-    }
-    const multiplicator = Math.pow(10, digits);
-    n = parseFloat((n * multiplicator).toFixed(11));
-    n = (Math.round(n) / multiplicator).toFixed(2);
-    if (negative) {
-      n = (n * -1).toFixed(2);
-    }
-    return n;
-  }
-
-  setButtonAlignment(position) {
-    if (position === 'center') {
-      return 'gap-xy text-center';
-    }
-    if (position === 'left') {
-      return 'gap-xy';
-    }
-  }
-
-  openAirtableForm() {
-    window.open(this.AIRTABLE_FORM_URL, '_blank');
-  }
-
-  copyMessage(referralUrl) {
+  static copyMessage(referralUrl) {
     const selectBox = document.createElement('textarea');
     selectBox.style.position = 'fixed';
     selectBox.style.left = '0';
@@ -102,5 +56,378 @@ export class UtilService {
     document.execCommand('copy');
     document.body.removeChild(selectBox);
     return;
+  }
+
+  static generateRandomWord() {
+    const words = [
+      'admiring',
+      'adoring',
+      'affectionate',
+      'agitated',
+      'amazing',
+      'angry',
+      'awesome',
+      'blissful',
+      'boring',
+      'brave',
+      'clever',
+      'cocky',
+      'compassionate',
+      'competent',
+      'condescending',
+      'confident',
+      'cranky',
+      'dazzling',
+      'determined',
+      'distracted',
+      'dreamy',
+      'eager',
+      'ecstatic',
+      'elastic',
+      'elated',
+      'elegant',
+      'eloquent',
+      'epic',
+      'fervent',
+      'festive',
+      'flamboyant',
+      'focused',
+      'friendly',
+      'frosty',
+      'gallant',
+      'gifted',
+      'goofy',
+      'gracious',
+      'happy',
+      'hardcore',
+      'heuristic',
+      'hopeful',
+      'hungry',
+      'infallible',
+      'inspiring',
+      'jolly',
+      'jovial',
+      'keen',
+      'kind',
+      'laughing',
+      'loving',
+      'lucid',
+      'mystifying',
+      'modest',
+      'musing',
+      'naughty',
+      'nervous',
+      'nifty',
+      'nostalgic',
+      'objective',
+      'optimistic',
+      'peaceful',
+      'pedantic',
+      'pensive',
+      'practical',
+      'priceless',
+      'quirky',
+      'quizzical',
+      'relaxed',
+      'reverent',
+      'romantic',
+      'sad',
+      'serene',
+      'sharp',
+      'silly',
+      'sleepy',
+      'stoic',
+      'stupefied',
+      'suspicious',
+      'tender',
+      'thirsty',
+      'trusting',
+      'unruffled',
+      'upbeat',
+      'vibrant',
+      'vigilant',
+      'vigorous',
+      'wizardly',
+      'wonderful',
+      'xenodochial',
+      'youthful',
+      'zealous',
+      'zen',
+    ];
+    return this.titleCase(words[Math.floor(Math.random() * words.length)]);
+  }
+
+  static titleCase(str) {
+    const splitStr = str.toLowerCase().split(' ');
+    for (let i = 0; i < splitStr.length; i++) {
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    return splitStr.join(' ');
+  }
+
+  static generateWebsiteName() {
+    const left = [
+      'admiring',
+      'adoring',
+      'affectionate',
+      'agitated',
+      'amazing',
+      'angry',
+      'awesome',
+      'blissful',
+      'boring',
+      'brave',
+      'clever',
+      'cocky',
+      'compassionate',
+      'competent',
+      'condescending',
+      'confident',
+      'cranky',
+      'dazzling',
+      'determined',
+      'distracted',
+      'dreamy',
+      'eager',
+      'ecstatic',
+      'elastic',
+      'elated',
+      'elegant',
+      'eloquent',
+      'epic',
+      'fervent',
+      'festive',
+      'flamboyant',
+      'focused',
+      'friendly',
+      'frosty',
+      'gallant',
+      'gifted',
+      'goofy',
+      'gracious',
+      'happy',
+      'hardcore',
+      'heuristic',
+      'hopeful',
+      'hungry',
+      'infallible',
+      'inspiring',
+      'jolly',
+      'jovial',
+      'keen',
+      'kind',
+      'laughing',
+      'loving',
+      'lucid',
+      'mystifying',
+      'modest',
+      'musing',
+      'naughty',
+      'nervous',
+      'nifty',
+      'nostalgic',
+      'objective',
+      'optimistic',
+      'peaceful',
+      'pedantic',
+      'pensive',
+      'practical',
+      'priceless',
+      'quirky',
+      'quizzical',
+      'relaxed',
+      'reverent',
+      'romantic',
+      'sad',
+      'serene',
+      'sharp',
+      'silly',
+      'sleepy',
+      'stoic',
+      'stupefied',
+      'suspicious',
+      'tender',
+      'thirsty',
+      'trusting',
+      'unruffled',
+      'upbeat',
+      'vibrant',
+      'vigilant',
+      'vigorous',
+      'wizardly',
+      'wonderful',
+      'xenodochial',
+      'youthful',
+      'zealous',
+      'zen',
+    ];
+
+    const right = [
+      'albattani',
+      'allen',
+      'almeida',
+      'agnesi',
+      'archimedes',
+      'ardinghelli',
+      'aryabhata',
+      'austin',
+      'babbage',
+      'banach',
+      'bardeen',
+      'bartik',
+      'bassi',
+      'beaver',
+      'bell',
+      'benz',
+      'bhabha',
+      'bhaskara',
+      'blackwell',
+      'bohr',
+      'booth',
+      'borg',
+      'bose',
+      'boyd',
+      'brahmagupta',
+      'brattain',
+      'brown',
+      'carson',
+      'chandrasekhar',
+      'shannon',
+      'clarke',
+      'colden',
+      'cori',
+      'cray',
+      'curran',
+      'curie',
+      'darwin',
+      'davinci',
+      'dijkstra',
+      'dubinsky',
+      'easley',
+      'edison',
+      'einstein',
+      'elion',
+      'engelbart',
+      'euclid',
+      'euler',
+      'fermat',
+      'fermi',
+      'feynman',
+      'franklin',
+      'galileo',
+      'gates',
+      'goldberg',
+      'goldstine',
+      'goldwasser',
+      'golick',
+      'goodall',
+      'haibt',
+      'hamilton',
+      'hawking',
+      'heisenberg',
+      'hermann',
+      'heyrovsky',
+      'hodgkin',
+      'hoover',
+      'hopper',
+      'hugle',
+      'hypatia',
+      'jackson',
+      'jang',
+      'jennings',
+      'jepsen',
+      'johnson',
+      'joliot',
+      'jones',
+      'kalam',
+      'kare',
+      'keller',
+      'kepler',
+      'khorana',
+      'kilby',
+      'kirch',
+      'knuth',
+      'kowalevski',
+      'lalande',
+      'lamarr',
+      'lamport',
+      'leakey',
+      'leavitt',
+      'lewin',
+      'lichterman',
+      'liskov',
+      'lovelace',
+      'lumiere',
+      'mahavira',
+      'mayer',
+      'mccarthy',
+      'mcclintock',
+      'mclean',
+      'mcnulty',
+      'meitner',
+      'meninsky',
+      'mestorf',
+      'minsky',
+      'mirzakhani',
+      'morse',
+      'murdock',
+      'neumann',
+      'newton',
+      'nightingale',
+      'nobel',
+      'noether',
+      'northcutt',
+      'noyce',
+      'panini',
+      'pare',
+      'pasteur',
+      'payne',
+      'perlman',
+      'pike',
+      'poincare',
+      'poitras',
+      'ptolemy',
+      'raman',
+      'ramanujan',
+      'ride',
+      'montalcini',
+      'ritchie',
+      'roentgen',
+      'rosalind',
+      'saha',
+      'sammet',
+      'shaw',
+      'shirley',
+      'shockley',
+      'sinoussi',
+      'snyder',
+      'spence',
+      'stallman',
+      'stonebraker',
+      'swanson',
+      'swartz',
+      'swirles',
+      'tereshkova',
+      'tesla',
+      'thompson',
+      'torvalds',
+      'turing',
+      'varahamihira',
+      'visvesvaraya',
+      'volhard',
+      'villani',
+      'wescoff',
+      'wiles',
+      'williams',
+      'wilson',
+      'wing',
+      'wozniak',
+      'wright',
+      'yalow',
+      'yonath'
+    ];
+
+    return left[Math.floor(Math.random() * left.length)] + '-' +
+      right[Math.floor(Math.random() * left.length)] + '-' + Math.floor(10000000 + Math.random() * 90000000);
   }
 }

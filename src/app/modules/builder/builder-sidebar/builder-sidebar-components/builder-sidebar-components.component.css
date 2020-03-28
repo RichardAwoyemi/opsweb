@@ -1,0 +1,27 @@
+.component-icon:hover {
+  cursor: pointer;
+}
+
+.component-holder:nth-child(even) {
+  padding-left: 0.5em !important;
+}
+
+.component-holder:nth-child(odd) {
+  padding-right: 0.5em !important;
+}
+
+.input-group {
+  background-color: #ffffff;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-item:hover {
+  cursor: pointer !important;
+}
+
+.dropdown-menu {
+  min-width: 10px !important;
+}

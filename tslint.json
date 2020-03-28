@@ -29,7 +29,7 @@
     "label-position": true,
     "max-line-length": [
       true,
-      140
+      300
     ],
     "member-access": false,
     "member-ordering": [
@@ -72,6 +72,14 @@
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false
+      }
+    ],
     "no-unused-expression": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
@@ -119,9 +127,9 @@
     ],
     "extends": "tslint:latest",
     "cliOptions": {
-        "exclude": [
-          "/src/assets/js/*.js"
-        ]
+      "exclude": [
+        "/src/assets/js/*.js"
+      ]
     },
     "no-output-on-prefix": true,
     "use-input-property-decorator": true,

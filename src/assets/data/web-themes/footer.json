@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Default"
+  },
+  {
+    "name": "Stanley",
+    "footerStyle": {
+      "background-color": "#108EC8",
+      "color": "#FFFFFF"
+    }
+  }
+]

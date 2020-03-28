@@ -1,0 +1,149 @@
+<div id="hero-layout" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 1)">Hero</label>
+</div>
+<div class="form-group" style="margin-bottom: 1em; margin-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Position</label>
+</div>
+<div class="row">
+  <!-- Image on the right hand side, text on the left hand side -->
+  <div class="col-md-6">
+    <div (click)="setComponentLayout({'layout':0})"
+         [ngClass]="setComponentLayoutSelectorClass(0)" style="height: 80px">
+      <div style="width: 75%">
+        <img alt="hero-layout-0" src="../../../../../../assets/img/hero-layout-0.svg">
+      </div>
+    </div>
+  </div>
+  <!-- Image on the left hand side, text on the right hand side -->
+  <div class="col-md-6">
+    <div (click)="setComponentLayout({'layout':1})"
+         [ngClass]="setComponentLayoutSelectorClass(1)" style="height: 80px">
+      <div style="width: 75%">
+        <img alt="hero-layout-1" src="../../../../../../assets/img/hero-layout-1.svg">
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="col-md-12" style="padding-top: 2em">
+    <label (click)="resetHeroAlignment()" class="btn btn-xl btn-block btn-secondary">
+      <span>Reset To Default</span>
+    </label>
+  </div>
+</div>
+<hr>
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 1)">Heading</label>
+</div>
+<div class="form-group" style="margin-bottom: .3em; margin-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Top</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroHeadingPaddingTop()" (ngModelChange)="setHeroHeadingPaddingTop()"
+               [(ngModel)]="heroHeadingPaddingTop"
+               autocomplete="off"
+               class="form-control" max="300" min="0" name="number" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Left</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroHeadingPaddingLeft()" (ngModelChange)="setHeroHeadingPaddingLeft()"
+               [(ngModel)]="heroHeadingPaddingLeft"
+               autocomplete="off" class="form-control" max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Right</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroHeadingPaddingRight()" (ngModelChange)="setHeroHeadingPaddingRight()"
+               [(ngModel)]="heroHeadingPaddingRight"
+               autocomplete="off" class="form-control" max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Bottom</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroHeadingPaddingBottom()" (ngModelChange)="setHeroHeadingPaddingBottom()"
+               [(ngModel)]="heroHeadingPaddingBottom"
+               autocomplete="off" class="form-control" max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-top: 1em;">
+    <label (click)="resetHeroHeadingStyle()" class="btn btn-xl btn-block btn-secondary">
+      <span>Reset To Default</span>
+    </label>
+  </div>
+</div>
+<hr>
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 1)">Subheading</label>
+</div>
+<div class="form-group" style="margin-bottom: .3em; margin-top: 1em">
+  <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Top</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroSubheadingPaddingTop()" (ngModelChange)="setHeroSubheadingPaddingTop()"
+               [(ngModel)]="heroSubheadingPaddingTop"
+               autocomplete="off"
+               class="form-control" max="300" min="0" name="number" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Left</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroSubheadingPaddingLeft()" (ngModelChange)="setHeroSubheadingPaddingLeft()"
+               [(ngModel)]="heroSubheadingPaddingLeft"
+               autocomplete="off" class="form-control" max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Right</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroSubheadingPaddingRight()" (ngModelChange)="setHeroSubheadingPaddingRight()"
+               [(ngModel)]="heroSubheadingPaddingRight"
+               autocomplete="off" class="form-control" max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Bottom</label>
+      <label style="width: 100%">
+        <input (keyup)="setHeroSubheadingPaddingBottom()" (ngModelChange)="setHeroSubheadingPaddingBottom()"
+               [(ngModel)]="heroSubheadingPaddingBottom"
+               autocomplete="off" class="form-control" max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-top: 1em;">
+    <label (click)="resetHeroSubheadingStyle()" class="btn btn-xl btn-block btn-secondary">
+      <span>Reset To Default</span>
+    </label>
+  </div>
+</div>

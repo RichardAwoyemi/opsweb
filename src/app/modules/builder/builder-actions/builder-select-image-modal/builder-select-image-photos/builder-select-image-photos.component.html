@@ -1,0 +1,25 @@
+<div class="form-group input-group">
+  <label for="searchText" style="display: none"></label>
+  <input (keydown)="onEnterKeyPressed($event)" [(ngModel)]="searchText" class="form-control" id="searchText"
+         name="searchText" placeholder="Search for..." style="font-size: 14px" type="searchText">
+  <div class="input-group-append ml-4">
+    <button (click)="onSearchButtonClick()" class="btn btn-secondary" type="button">Go</button>
+  </div>
+</div>
+
+<div [ngStyle]="{ 'height': innerHeight + 'px' }" class="row sidebar-scroll"
+     style="padding-top: 30px; margin-bottom: -45px; margin-right: 1px">
+  <ng-container *ngIf="searchText?.trim().length > 0 && images != null">
+    <div *ngFor="let image of images; let i = index" class="col-lg-3">
+      <figure (click)="toggleSelection(i, image)" [ngStyle]="setImageSelection(i)" class="figure bg-gallery">
+        <img [src]="image['urls']['small']" alt="{{ image['description'] }}" class="figure-img img-fluid">
+        <figcaption class="figure-caption text-center" style="font-size: 11px">
+          Photo by <a class="caption-link" href="{{ image['user']['links']['html'] }}"
+                      target="_blank">{{ image['user']['username'] }}</a>
+          on <a class="caption-link" href="https://unsplash.com/?utm_source=opsonion&utm_medium=referral"
+                target="_blank">Unsplash</a>
+        </figcaption>
+      </figure>
+    </div>
+  </ng-container>
+</div>

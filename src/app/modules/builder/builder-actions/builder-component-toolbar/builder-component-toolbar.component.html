@@ -1,0 +1,17 @@
+<div class="component-toolbar-holder" style="display: flex; align-items: flex-start; justify-content: flex-end;">
+  <div *ngIf="toggleComponentToolbarVisibility()" class="component-toolbar">
+    <div aria-label="First group" class="btn-group mr-2" role="group">
+      <div class="component-toolbar-text">
+        <div style="display: inline-block">
+          {{ componentId }}
+        </div>
+      </div>
+      <button [attr.class]="'btn btn-secondary edit-component-button ' + componentName + '-edit-button'" type="button">
+        <i class="ti-pencil"></i>
+      </button>
+      <button (click)="deleteComponent()" class="btn btn-secondary" type="button">
+        <i class="ti-close"></i>
+      </button>
+    </div>
+  </div>
+</div>
