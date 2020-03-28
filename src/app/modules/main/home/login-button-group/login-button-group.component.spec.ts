@@ -2,13 +2,13 @@ import { LoginButtonGroupComponent } from './login-button-group.component';
 import { FormsModule } from '@angular/forms';
 import { async, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { MockStore } from '@ngrx/store/testing';
 
 describe('LoginButtonGroupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, Store],
+      imports: [FormsModule, MockStore],
       declarations: [LoginButtonGroupComponent]
     }).compileComponents().then(() => {
     });
