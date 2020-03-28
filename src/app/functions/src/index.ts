@@ -22,3 +22,44 @@ exports.countAllUsers = functions.https.onRequest((req: any, res: any) => {
     console.log('Request successful!');
   }).catch((error: any) => console.log('Request failed: ', error));
 });
+
+exports.getWebsiteNameById = functions.https.onRequest((req: any, res: any) => {
+  let websiteId = req.url.split("/");
+  websiteId = websiteId[websiteId.length - 1];
+  res.set('Access-Control-Allow-Origin', '*');
+  const website = admin.firestore().collection('websites').doc(websiteId).get();
+  return website.then(function (response: any) {
+    if (response.data()) {
+      res.end(`{ "websiteName": "${response.data()['name']}" }`);
+    } else {
+      res.end(`{ "websiteName": null }`);
+    }
+    console.log('Request successful!');
+  }).catch((error: any) => {
+    console.log('Request failed: ', error);
+    res.end(`{ "websiteId": null }`);
+  });
+});
+
+exports.getWebsiteIdByName = functions.https.onRequest((req: any, res: any) => {
+  let websiteName = req.url.split("/");
+  websiteName = websiteName[websiteName.length - 1];
+  res.set('Access-Control-Allow-Origin', '*');
+  console.log(`Website id request made for: ${websiteName}`);
+  const websitesRef = admin.firestore().collection('websites');
+  websitesRef.where('name', '==', websiteName).limit(1).get().then((snapshot: any) => {
+    if (snapshot.empty) {
+      console.log("Website id not found");
+      res.end(`{ "websiteId": null }`);
+    }
+    snapshot.forEach((doc: any) => {
+      console.log(`Website id found: ${doc.id}`);
+      res.end(`{ "websiteId": "${doc.id}" }`);
+    });
+    console.log('Request successful!');
+  })
+    .catch((error: any) => {
+      console.log('Request failed: ', JSON.stringify(error));
+      res.end(`{ "websiteId": null }`);
+    });
+});

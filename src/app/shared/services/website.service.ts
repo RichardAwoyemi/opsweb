@@ -97,12 +97,14 @@ export class WebsiteService {
     return this.afs.collection('websites', ref => ref.where('createdBy', '==', id)).valueChanges();
   }
 
-  getWebsite(id) {
+  getWebsiteByName(name) {
+    return this.afs.collection('websites', ref => ref.where('name', '==', name)).valueChanges();
+  }
+
+  getWebsiteById(id) {
     if (id) {
       return this.afs.collection('websites').doc(id).snapshotChanges().pipe(map(action => {
-        const data = action.payload.data();
-        const uid = action.payload.id;
-        return {uid, ...data};
+        return action.payload.data();
       }));
     }
   }

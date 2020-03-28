@@ -60,23 +60,21 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     const id = window.location.pathname.split('/')[2];
     if (id) {
       this.websiteService.websiteId.next(id);
-      this.websiteSubscription = this.websiteService.getWebsite(id).subscribe((response => {
-          if (response) {
+      this.websiteSubscription = this.websiteService.getWebsiteById(id).subscribe((response => {
+          if (response && response['pages']) {
             this.websiteService.websiteName.next(response['name']);
-            if (response['pages']) {
               this.builderComponentsService.pageComponents.next({
                 'pages': response['pages'],
                 'template': response['template']
               });
-            } else {
-              this.builderComponentsService.pageComponents.next(this.builderComponentsService.defaultPageComponents.getValue());
-              if (!this.authService.isLoggedIn()) {
-                this.toastrService.warning('All changes will not be saved until you create an account.');
-                localStorage.setItem('builderTourComplete', 'false');
-              }
+          } else {
+            this.builderComponentsService.pageComponents.next(this.builderComponentsService.defaultPageComponents.getValue());
+            if (!this.authService.isLoggedIn()) {
+              this.toastrService.warning('All changes will not be saved until you create an account.');
+              localStorage.setItem('builderTourComplete', 'false');
             }
-            this.websiteService.websiteLoaded.next(true);
           }
+          this.websiteService.websiteLoaded.next(true);
         }
       ));
     }

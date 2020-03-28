@@ -5,7 +5,6 @@ import { BuilderHeroService } from './builder-hero.service';
 import { ActiveComponents, ActiveElements, ActiveSettings, ActiveThemes } from '../../builder';
 import { IComponent } from '../../../../shared/models/component';
 import { BuilderComponentsService } from '../builder-components.service';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-builder-hero',
@@ -64,7 +63,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   constructor(
     private builderService: BuilderService,
-    private breakpointObserver: BreakpointObserver,
     private builderHeroService: BuilderHeroService,
     private builderComponentsService: BuilderComponentsService,
     private elementRef: ElementRef
@@ -220,7 +218,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                       this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
                       this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
                       this.builderHeroService.heroButtonText.next(this.componentDetail['heroButtonText']);
-                      this.setHeroHeadingStyle();
                     }
                   }
                 }
@@ -307,23 +304,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     }
   }
 
-  setHeroHeadingStyle() {
-    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      if (result.matches === true && this.websiteMode) {
-        const heroHeadingPaddingTop = this.heroHeadingStyle['padding-top'].replace('px', '');
-        const heroHeadingPaddingBottom = this.heroHeadingStyle['padding-bottom'].replace('px', '');
-        if (heroHeadingPaddingTop < 30) {
-          this.heroHeadingStyle['padding-top'] = '30px';
-        }
-        if (heroHeadingPaddingBottom < 30) {
-          this.heroHeadingStyle['padding-bottom'] = '30px';
-        }
-      } else {
-        this.heroHeadingStyle = this.builderHeroService.heroHeadingStyle.getValue();
-      }
-    });
-  }
-
   selectHeroHeading(event: any, elementId: string) {
     this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
     this.builderService.setSidebarOptionsSetting();
@@ -405,5 +385,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.activeEditComponentIdSubscription.unsubscribe();
     this.heroTextContainerClassSubscription.unsubscribe();
     this.heroButtonLinkSubscription.unsubscribe();
+    this.websiteModeSubscription.unsubscribe();
   }
 }

@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreditsService } from './shared/services/credits.service';
 
 const routes: Routes = [
-  {path: '', loadChildren: './modules/main/main.module#MainModule'}
+  { path: '', loadChildren: './modules/main/main.module#MainModule' }
 ];
 
 @NgModule({

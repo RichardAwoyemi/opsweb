@@ -213,38 +213,28 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     });
   }
 
-  setHeroImageOptionsStyle(key, value) {
-    const targetComponentLocation = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Hero);
-    for (let i = 0; i < targetComponentLocation.length; i++) {
-      const activePageIndex = targetComponentLocation[i]['activePageIndex'];
-      const activeComponentIndex = targetComponentLocation[i]['activeComponentIndex'];
-      this.pageComponents['pages'][activePageIndex]['components'][activeComponentIndex]['heroImageStyle'][key] = value;
-    }
-    this.builderComponentsService.pageComponents.next(this.pageComponents);
-  }
-
   openSelectImageModal() {
     this.modalService.open(BuilderSelectImageModalComponent, {windowClass: 'modal-holder', centered: true, size: 'lg'});
   }
 
   resetHeroImage() {
-    this.heroImageStyle['src'] = this.defaultHeroStyle['heroImageStyle']['src'];
-    this.setHeroImageOptionsStyle('src', this.heroImageStyle['src']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', 'src', this.defaultHeroStyle['heroImageStyle']['src']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', 'alt', this.defaultHeroStyle['heroImageStyle']['alt']);
     this.builderHeroService.heroImageUrl.next(this.heroImageStyle['src']);
     this.builderHeroService.heroImageAlt.next(this.heroImageStyle['alt']);
   }
 
   resetHeroImageSize() {
-    this.heroImageStyle['width'] = this.defaultHeroStyle['heroImageStyle']['width'];
-    this.setHeroImageOptionsStyle('width', this.heroImageStyle['width']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', 'width', this.defaultHeroStyle['heroImageStyle']['width']);
     this.builderHeroService.heroImageSize.next(this.heroImageStyle['width'].replace('%', ''));
   }
 
   setHeroImageSize() {
-    this.heroImageStyle['width'] = this.heroImageSize + '%';
+    this.heroImageStyle['width'] = this.heroImageSize + 'px';
     this.builderHeroService.heroImageStyle.next(this.heroImageStyle);
     this.builderHeroService.heroImageSize.next(this.heroImageSize);
-    this.setHeroImageOptionsStyle('width', this.heroImageStyle['src']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', 'src', this.heroImageStyle['src']);
+    this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', 'width', this.heroImageStyle['width']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 

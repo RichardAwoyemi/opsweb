@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class RouterService {
+  constructor(
+    public router: Router
+  ) {
+  }
+
   currentRoute = new BehaviorSubject<string>('/');
 
   static getCurrentRoute() {
@@ -17,6 +23,19 @@ export class RouterService {
     return currentRoute === '/' || currentRoute === '/login' || currentRoute === '/register' ||
       currentRoute === '/press' || currentRoute === '/legal' || currentRoute === '/forgot-password' ||
       currentRoute === '/verify-email' || currentRoute.includes('/invite/');
+  }
+
+  static checkIfIsOnDomain() {
+    const full = window.location.host;
+    const parts = full.split('.');
+    let result = true;
+    if (parts[0] && parts[1] && parts[2] && parts[1] !== 'netlify') {
+      result = false;
+      (window as any).Intercom('update', {
+        'hide_default_launcher': true
+      });
+    }
+    return result;
   }
 
   setCurrentRoute() {

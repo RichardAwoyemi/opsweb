@@ -281,17 +281,19 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
 
   resetNavbarLogoImageSize() {
     this.navbarLogoImageStyle['width'] = this.defaultNavbarStyle['navbarLogoImageStyle']['width'];
-    this.navbarBrandStyle['width'] = this.defaultNavbarStyle['navbarLogoImageStyle']['width'];
-    this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
+    this.navbarBrandStyle['width'] = this.defaultNavbarStyle['navbarBrandStyle']['width'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLogoImageStyle', this.navbarLogoImageStyle);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarLogoImageStyle);
+    this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
   setNavbarLogoImageSize() {
     this.navbarLogoImageStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
     this.navbarBrandStyle['width'] = this.navbarLogoImageSize + this.navbarLogoImageUnit;
-    this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLogoImageStyle', this.navbarLogoImageStyle);
+    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
+    this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 

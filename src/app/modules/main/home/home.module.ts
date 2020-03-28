@@ -9,9 +9,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeBuildButtonComponent } from './home-build-button/home-build-button.component';
 import { CommonModule } from '@angular/common';
 import { BrowserMockupModule } from '../../../shared/components/browser-mockup/browser-mockup.module';
+import { DomainGuard } from '../../core/guards/domain.guard';
+import { SubdomainGuard } from '../../core/guards/subdomain.guard';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent}
+  { path: '', component: HomeComponent, canActivate: [DomainGuard] },
+  { path: 'website', loadChildren: '../../website/website.module#WebsiteModule', canActivate: [SubdomainGuard] },
 ];
 
 @NgModule({

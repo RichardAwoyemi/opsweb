@@ -92,5 +92,6 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   ngOnDestroy() {
     this.activeLibrarySelectedImageSubscription.unsubscribe();
     this.activeLibrarySelectedImageAltTextSubscription.unsubscribe();
+    this.heroImageStyleSubscription.unsubscribe();
   }
 }
