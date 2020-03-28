@@ -1,0 +1,28 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setFontSize()" (ngModelChange)="setFontSize()"
+               [(ngModel)]="elementFontSize"
+               class="form-control form-control-lg"
+               max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <select (change)="onFontSizeUnitChange()" [(ngModel)]="elementFontUnit"
+                class="form-control form-control-lg">
+          <option *ngFor="let fontUnit of fontUnits | ssort"
+                  [attr.selected]="fontUnit == elementFontUnit ? true : null">{{ fontUnit }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</div>

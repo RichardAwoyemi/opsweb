@@ -1,0 +1,18 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="onFontNameChange()" [(ngModel)]="styleObjectFontName"
+            class="form-control form-control-lg">
+      <option *ngFor="let fontName of fontNames | ssort"
+              [attr.selected]="fontName == styleObjectFontName ? true : null"
+              [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+    </select>
+  </label>
+</div>

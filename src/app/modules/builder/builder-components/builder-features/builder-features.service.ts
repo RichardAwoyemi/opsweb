@@ -144,7 +144,7 @@ export class BuilderFeaturesService {
     }
   }
 
-  setNumberOfFeatures(componentId, number: number, orientation: string = null) {
+  setCountAndGetFeatures(number: number, orientation: string = null) {
     if (number && !isNaN(number) && number <= 8) {
       let multiplier: number;
       const breakpoint = this.featuresBreakpoint.getValue();
@@ -174,8 +174,8 @@ export class BuilderFeaturesService {
         }
       }
       return {
-        'featuresItemArray': featuresItemArray,
-        'featuresItemWidth': width,
+        'array': featuresItemArray,
+        'width': width,
       };
     }
   }

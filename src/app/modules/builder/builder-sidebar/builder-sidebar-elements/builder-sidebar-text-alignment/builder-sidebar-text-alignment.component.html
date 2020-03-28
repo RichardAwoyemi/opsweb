@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-6">
+    <label style="color: rgba(255, 255, 255, 0.65);">Position</label>
+  </div>
+  <div class="col-md-6 text-right">
+    <a (click)="resetAlignment()"
+      class="builder-sidebar-layout-select-heading-position-reset fw-600 fs-12" href="#">Reset</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group btn-group-full" style="display: flex; margin-bottom: 1em">
+      <button class="builder-sidebar-layout-select-heading-position-left btn btn-xs btn-secondary"
+        (click)="setAlignment('left')" type="button">
+        <i class="builder-sidebar-layout-select-heading-position-left ti-align-left"></i>
+      </button>
+      <button class="builder-sidebar-layout-select-heading-position-center btn btn-xs btn-secondary"
+        (click)="setAlignment('center')" type="button">
+        <i class="builder-sidebar-layout-select-heading-position-center ti-align-center"></i>
+      </button>
+      <button class="builder-sidebar-layout-select-heading-position-right btn btn-xs btn-secondary"
+        (click)="setAlignment('right')" type="button">
+        <i class="builder-sidebar-layout-select-heading-position-right ti-align-right"></i>
+      </button>
+      <button class="builder-sidebar-layout-select-heading-position-justify btn btn-xs btn-secondary"
+        (click)="setAlignment('justify')" type="button">
+        <i class="builder-sidebar-layout-select-heading-position-justify ti-align-justify"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group" style="margin-bottom: .3em;">
+      <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Top</label>
+          <label style="width: 100%">
+            <input [ngClass]="'builder-sidebar-layout-select-' + data.componentName + '-spacing-top form-control'"
+              (keyup)="setPadding('top', paddingTop)" (ngModelChange)="setPadding('top', paddingTop)"
+              [(ngModel)]="paddingTop" autocomplete="off" max="300" min="0" name="number" type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Left</label>
+          <label style="width: 100%">
+            <input [ngClass]="'builder-sidebar-layout-select-' + data.componentName + '-spacing-left form-control'"
+              (keyup)="setPadding('left', paddingLeft)" (ngModelChange)="setPadding('left', paddingLeft)"
+              [(ngModel)]="paddingLeft" autocomplete="off" max="300" min="0" name="number" style="width: 100%"
+              type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Right</label>
+          <label style="width: 100%">
+            <input [ngClass]="'builder-sidebar-layout-select-' + data.componentName + '-spacing-right form-control'"
+              (keyup)="setPadding('right', paddingRight)" (ngModelChange)="setPadding('right', paddingRight)"
+              [(ngModel)]="paddingRight" autocomplete="off" max="300" min="0" name="number" style="width: 100%"
+              type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Bottom</label>
+          <label style="width: 100%">
+            <input [ngClass]="'builder-sidebar-layout-select-' + data.componentName + '-spacing-bottom form-control'"
+              (keyup)="setPadding('bottom', paddingBottom)" (ngModelChange)="setPadding('bottom', paddingBottom)"
+              [(ngModel)]="paddingBottom" autocomplete="off" max="300" min="0" name="number" style="width: 100%"
+              type="number">
+          </label>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-top: 1em;">
+        <label [ngClass]="'builder-sidebar-layout-select-' + data.componentName + '-spacing-reset btn btn-xl btn-block btn-secondary'"
+          (click)="resetPaddingStyle()">
+          <span [ngClass]="'builder-sidebar-layout-select-' + data.componentName + '-spacing-reset'">Reset To Default</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

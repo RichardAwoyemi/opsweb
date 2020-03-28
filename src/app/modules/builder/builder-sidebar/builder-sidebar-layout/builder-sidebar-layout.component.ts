@@ -14,6 +14,7 @@ export class BuilderSidebarLayoutComponent implements OnInit, OnDestroy {
   featuresComponent: string = ActiveComponents.Features;
   headingComponent: string = ActiveComponents.Heading;
   activeEditComponent: string;
+
   private activeEditComponentSubscription: Subscription;
 
   constructor(
@@ -22,6 +23,8 @@ export class BuilderSidebarLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;

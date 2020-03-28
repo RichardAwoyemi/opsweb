@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BuilderSidebarColoursModule } from './builder-sidebar-colours/builder-sidebar-colours.module';
 import { BuilderSidebarLayoutModule } from './builder-sidebar-layout/builder-sidebar-layout.module';
 import { BuilderSidebarMenuComponent } from './builder-sidebar-menu/builder-sidebar-menu.component';
