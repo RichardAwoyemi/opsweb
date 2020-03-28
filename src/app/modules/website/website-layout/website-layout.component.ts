@@ -12,10 +12,10 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-website-layout',
   templateUrl: './website-layout.component.html',
-  encapsulation: ViewEncapsulation.ShadowDom
+  encapsulation: ViewEncapsulation.ShadowDom,
+  styleUrls: ['./website-layout.component.css']
 })
 export class WebsiteLayoutComponent implements AfterViewInit {
-
   activePage = 'Home';
   pageComponents: any;
   builderComponents: any;
@@ -119,7 +119,7 @@ export class WebsiteLayoutComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const shadowRoot = this.element.nativeElement.shadowRoot;
-    WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/js/page.min.js');
+    WebsiteLayoutComponent.addJsToShadowRoot(shadowRoot, 'assets/js/page.min.js');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/fonts.css');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/website.css');
     WebsiteLayoutComponent.addCssToShadowRoot(shadowRoot, 'assets/css/page.css');
