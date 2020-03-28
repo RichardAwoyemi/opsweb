@@ -12,7 +12,6 @@ import { BuilderActionsModule } from './builder-actions/builder-actions.module';
 import { BuilderShowcaseModule } from './builder-showcase/builder-showcase.module';
 import { BuilderSidebarModule } from './builder-sidebar/builder-sidebar.module';
 import { ToastrModule } from 'ngx-toastr';
-import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormUsernameInputModule } from '../../shared/components/form-username-input/form-username-input.module';
 
@@ -33,7 +32,6 @@ const routes: Routes = [
     BuilderSidebarModule,
     BuilderShowcaseModule,
     BuilderActionsModule,
-    ScrollToModule.forRoot(),
     ToastrModule.forRoot(),
     NgbPopoverModule,
     FormUsernameInputModule
