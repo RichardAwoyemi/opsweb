@@ -3,12 +3,13 @@ import { FormRegisterComponent } from './form-register.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 describe('FormRegister', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
+      imports: [FormsModule, AngularFireAuth],
       declarations: [FormRegisterComponent]
     }).compileComponents().then(() => {
     });
