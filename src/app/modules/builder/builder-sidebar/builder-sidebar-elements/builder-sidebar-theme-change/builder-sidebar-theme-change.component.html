@@ -1,0 +1,15 @@
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 0.65);">Theme</label>
+  <label style="width: 100%">
+    <select [ngClass]="data.componentName + '-theme-select form-control form-control-lg'"
+            (change)="onThemeChange()" [(ngModel)]="elementTheme">
+      <option *ngFor="let theme of elementThemes"
+              [attr.selected]="theme['name'] == elementTheme ? true : null">{{ theme['name'] }}</option>
+    </select>
+  </label>
+</div>
+<hr style="background-color: rgba(255, 255, 255, 0.1)">
+<div style="padding-bottom: 1em">
+  <button class="features-colours-reset btn btn-xl btn-block btn-secondary"
+          (click)="resetToDefault()" type="button">Reset to Default</button>
+</div>

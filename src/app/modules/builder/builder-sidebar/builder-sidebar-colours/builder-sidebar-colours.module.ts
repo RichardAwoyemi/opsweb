@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { FooterColourPickerComponent } from './footer-colour-picker/footer-colour-picker.component';
 import { FeaturesColourPickerComponent } from './features-colour-picker/features-colour-picker.component';
 import { HeroColourPickerComponent } from './hero-colour-picker/hero-colour-picker.component';
+import { BuilderSidebarElementModule } from '../builder-sidebar-elements/builder-sidebar-element.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { HeroColourPickerComponent } from './hero-colour-picker/hero-colour-pick
     NavbarColourPickerComponent
   ],
   imports: [
+    BuilderSidebarElementModule,
     CommonModule,
     ColorPickerModule,
     FormsModule

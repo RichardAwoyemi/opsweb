@@ -15,6 +15,9 @@ import { BuilderSidebarPaddingComponent } from './builder-sidebar-padding/builde
 import { BuilderSidebarTextAlignmentComponent } from './builder-sidebar-text-alignment/builder-sidebar-text-alignment.component';
 import { BuilderSidebarItemCountSliderComponent } from './builder-sidebar-item-count-slider/builder-sidebar-item-count-slider.component';
 import { BuilderSidebarFontSizeComponent } from './builder-sidebar-font-size/builder-sidebar-font-size.component';
+import { BuilderSidebarColourPickerComponent } from './builder-sidebar-colour-picker/builder-sidebar-colour-picker.component';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { BuilderSidebarThemeChangeComponent } from './builder-sidebar-theme-change/builder-sidebar-theme-change.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { BuilderSidebarFontSizeComponent } from './builder-sidebar-font-size/bui
     BuilderSidebarFontNameComponent,
     BuilderSidebarFontSizeComponent,
     BuilderSidebarElementDirective,
-    BuilderSidebarElementComponent
+    BuilderSidebarElementComponent,
+    BuilderSidebarColourPickerComponent,
+    BuilderSidebarThemeChangeComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +40,7 @@ import { BuilderSidebarFontSizeComponent } from './builder-sidebar-font-size/bui
     FormsModule,
     ArraySortModule,
     NgbDropdownModule,
+    ColorPickerModule,
     Ng5SliderModule
   ],
   entryComponents: [
@@ -44,7 +50,9 @@ import { BuilderSidebarFontSizeComponent } from './builder-sidebar-font-size/bui
     BuilderSidebarLineBreakComponent,
     BuilderSidebarHeadingComponent,
     BuilderSidebarFontNameComponent,
-    BuilderSidebarFontSizeComponent
+    BuilderSidebarFontSizeComponent,
+    BuilderSidebarColourPickerComponent,
+    BuilderSidebarThemeChangeComponent
   ],
   exports: [
     BuilderSidebarElementComponent

@@ -54,7 +54,6 @@ export class FeaturesOptionsPickerComponent implements OnInit {
       { component: BuilderSidebarHeadingComponent, data: { heading: 'Subheading' } },
       { component: BuilderSidebarFontNameComponent, data: this.subheadingData },
       { component: BuilderSidebarFontSizeComponent, data: this.subheadingData },
-      { component: BuilderSidebarLineBreakComponent }
     ];
   }
 }
