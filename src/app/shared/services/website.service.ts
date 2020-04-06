@@ -92,12 +92,19 @@ export class WebsiteService {
     return this.afs.collection('websites', (ref) => ref.where('name', '==', name).limit(1)).get();
   }
 
-  saveWebsite() {
+  saveWebsite(uid) {
     const id = this.websiteId.getValue();
+    const websiteName = this.websiteName.getValue();
     const pageComponents = this.builderComponentsService.pageComponents.getValue();
-    if (id && pageComponents) {
+    if (id && pageComponents && websiteName && uid) {
       const websiteRef: AngularFirestoreDocument<any> = this.afs.doc(`websites/${id}`);
-      return websiteRef.set(pageComponents, {
+      return websiteRef.set({
+        name: websiteName,
+        id: id,
+        createdBy: uid,
+        pages: pageComponents['pages'],
+        template: pageComponents['template']
+      }, {
         merge: true
       });
     }

@@ -29,7 +29,7 @@ export class RouterService {
     const full = window.location.host;
     const parts = full.split('.');
     let result = true;
-    if (parts[0] && parts[1] && parts[2] && parts[1] !== 'netlify') {
+    if (parts.length === 3 && parts[1] !== 'netlify') {
       result = false;
       (window as any).Intercom('update', {
         'hide_default_launcher': true
