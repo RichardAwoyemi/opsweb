@@ -89,7 +89,7 @@ exports.createWebsite = functions.firestore
       });
   });
 
-exports.deleteWebsites = functions.firestore
+exports.deleteWebsite = functions.firestore
   .document('websites/{websiteId}').onDelete(() => {
     const ref = admin.firestore().collection('counters').doc('websites');
     return admin.firestore().runTransaction(async (transaction: any) => {
