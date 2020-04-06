@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { WebsiteService } from '../../../../../shared/services/website.service';
+import { TemplateService } from '../../../../../shared/services/template.service';
 
 @Component({
   selector: 'app-navbar-colour-picker',
@@ -37,6 +38,7 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
   private builderComponentsSubscription: Subscription;
 
   constructor(
+    private templateService: TemplateService,
     private builderNavbarService: BuilderNavbarService,
     private builderComponentsService: BuilderComponentsService,
     private websiteService: WebsiteService
@@ -66,9 +68,9 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
       if (templateResponse) {
         this.navbarTemplate = templateResponse['template'];
 
-        this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
+        this.defaultNavbarStyleSubscription = this.templateService.getTemplateStyle(this.navbarTemplate).subscribe(response => {
           if (response) {
-            this.defaultNavbarStyle = response;
+            this.defaultNavbarStyle = response[ActiveComponents.Navbar];
           }
         });
       }
@@ -129,15 +131,15 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', ActiveThemes.Default);
     this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
 
-    this.navbarStyle['background-color'] = this.defaultNavbarStyle['navbarStyle']['background-color'];
+    this.navbarStyle['background-color'] = this.defaultNavbarStyle['style']['navbarStyle']['background-color'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', this.navbarStyle);
     this.builderNavbarService.navbarStyle.next(this.navbarStyle);
 
-    this.navbarBrandStyle['color'] = this.defaultNavbarStyle['navbarBrandStyle']['color'];
+    this.navbarBrandStyle['color'] = this.defaultNavbarStyle['style']['navbarBrandStyle']['color'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
 
-    this.navbarLinkStyle['color'] = this.defaultNavbarStyle['navbarLinkStyle']['color'];
+    this.navbarLinkStyle['color'] = this.defaultNavbarStyle['style']['navbarLinkStyle']['color'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
   }

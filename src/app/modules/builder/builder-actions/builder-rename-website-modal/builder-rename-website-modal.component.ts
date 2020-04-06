@@ -31,13 +31,13 @@ export class BuilderRenameWebsiteModalComponent implements IModalComponent, OnDe
       this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName.toLowerCase());
       this.websiteNameAvailabilitySubscription.unsubscribe();
     });
-    this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': false});
+    this.builderActionsService.renameRenameWebsiteModalStatus.next({ 'open': false });
   }
 
   onCloseButtonClick() {
     this.websiteService.websiteName.next(this.websiteName);
     document.getElementById('builder-header-website-name').innerText = this.websiteName.toLowerCase();
-    this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': false});
+    this.builderActionsService.renameRenameWebsiteModalStatus.next({ 'open': false });
     this.activeModal.dismiss();
   }
 

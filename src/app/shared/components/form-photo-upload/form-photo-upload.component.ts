@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
 import { IUser } from 'src/app/shared/models/user';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-form-photo-upload',
@@ -13,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./form-photo-upload.component.css']
 })
 export class FormPhotoUploadComponent implements OnInit {
+  isMobile: Observable<BreakpointState>;
   user: IUser = {
     credits: 0,
     displayName: null,
@@ -39,11 +42,13 @@ export class FormPhotoUploadComponent implements OnInit {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private formPhotoUploadService: FormPhotoUploadService,
+    private breakpointObserver: BreakpointObserver,
     private userStore: Store<fromUser.State>
   ) {
   }
 
   ngOnInit() {
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.userStore.select('user')
       .pipe()
       .subscribe(async (result: any) => {
@@ -62,7 +67,15 @@ export class FormPhotoUploadComponent implements OnInit {
     }
   }
 
+  setupUserProfilePhoto() {
+    if (this.isMobile['matches']) {
+      return { 'padding-bottom': '1em', 'text-align': 'center' };
+    } else {
+      return { 'text-align': 'center' };
+    }
+  }
+
   openCropImageModal() {
-    this.modalService.open(CropImageModalComponent, {windowClass: 'modal-holder', centered: true, size: 'lg'});
+    this.modalService.open(CropImageModalComponent, { windowClass: 'modal-holder', centered: true, size: 'lg' });
   }
 }

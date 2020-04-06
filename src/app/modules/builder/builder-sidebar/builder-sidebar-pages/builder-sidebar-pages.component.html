@@ -6,15 +6,15 @@
         <label style="color: rgba(255, 255, 255, 0.65)">Navigation</label>
       </div>
       <div class="col-md-6 text-right">
-        <a class="builder-sidebar-pages-page-add fw-600 fs-12"
-           (click)="openNewPageModal()" href="#">Add</a>
+        <a (click)="openNewPageModal()"
+           class="builder-sidebar-pages-page-add fw-600 fs-12" href="#">Add</a>
       </div>
     </div>
     <div [sortablejsOptions]="navbarMenuSortableOptions" [sortablejs]="navbarMenuOptions" style="padding-top: 1em">
-      <div *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index"
-           class="row page-row-color page-row-option justify-content-center align-items-center"
-           (dragstart)="onDragStart()"
+      <div (dragstart)="onDragStart()"
            (drop)="onDragExit()"
+           *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index"
+           class="row page-row-color page-row-option justify-content-center align-items-center"
            style="font-size: 0.8em">
         <div class="col-md-2" style="padding: 0.5em;">
           <button class="btn btn-square btn-options btn-block btn-lg btn-drag-menu" type="button">
@@ -32,9 +32,15 @@
                     ngbDropdownToggle style="margin-left: -15px; background-color: transparent" type="button"><i
               class="ti-more-alt"></i></button>
             <div aria-labelledby="pagesDropdown" ngbDropdownMenu>
-              <button class="builder-sidebar-pages-page-view" (click)="viewPage(navbarMenuOption)" ngbDropdownItem>View</button>
-              <button class="builder-sidebar-pages-page-rename" (click)="openRenamePageModal(navbarMenuOption, i)" ngbDropdownItem>Rename</button>
-              <button class="builder-sidebar-pages-page-delete" (click)="openDeletePageModal(navbarMenuOption, i)" ngbDropdownItem>Delete</button>
+              <button (click)="viewPage(navbarMenuOption)" class="builder-sidebar-pages-page-view" ngbDropdownItem>
+                View
+              </button>
+              <button (click)="openRenamePageModal(navbarMenuOption, i)" class="builder-sidebar-pages-page-rename"
+                      ngbDropdownItem>Rename
+              </button>
+              <button (click)="openDeletePageModal(navbarMenuOption, i)" class="builder-sidebar-pages-page-delete"
+                      ngbDropdownItem>Delete
+              </button>
             </div>
           </div>
         </div>
@@ -47,16 +53,16 @@
         <label style="color: rgba(255, 255, 255, 0.65)">Components</label>
       </div>
       <div class="col-md-6 text-right">
-        <a class="builder-sidebar-pages-add-component fw-600 fs-12"
-           (click)="openComponentsPanel()" href="#">Add</a>
+        <a (click)="openComponentsPanel()"
+           class="builder-sidebar-pages-add-component fw-600 fs-12" href="#">Add</a>
       </div>
     </div>
     <div [sortablejsOptions]="componentListSortableOptions" [sortablejs]="componentListOptions"
          style="padding-top: 1em">
-      <div *ngFor="let componentListOption of componentListOptions"
-           [attr.id]="componentListOption['componentId']"
-           (dragstart)="onDragStart()"
+      <div (dragstart)="onDragStart()"
            (drop)="onDragExit()"
+           *ngFor="let componentListOption of componentListOptions"
+           [attr.id]="componentListOption['componentId']"
            class="row page-row-color page-row-option justify-content-center align-items-center"
            style="font-size: 0.8em">
         <div class="col-md-2" style="padding: 0.5em;">
@@ -75,8 +81,8 @@
                     ngbDropdownToggle style="margin-left: -15px; background-color: transparent" type="button"><i
               class="ti-more-alt"></i></button>
             <div aria-labelledby="pagesDropdown" ngbDropdownMenu>
-              <button class="builder-sidebar-pages-delete-component"
-                      (click)="openDeleteComponentModal(componentListOption['componentId'])" ngbDropdownItem>Delete
+              <button (click)="openDeleteComponentModal(componentListOption['componentId'])"
+                      class="builder-sidebar-pages-delete-component" ngbDropdownItem>Delete
               </button>
             </div>
           </div>

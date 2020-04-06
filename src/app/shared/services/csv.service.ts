@@ -9,7 +9,7 @@ export class CsvService {
     const csv = data.map((row: { [x: string]: any; }) => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
     csv.unshift(header.join(','));
     const csvArray = csv.join('\r\n');
-    const blob = new Blob([csvArray], {type: 'text/csv'});
+    const blob = new Blob([csvArray], { type: 'text/csv' });
     FileSaver.saveAs(blob, fileName + '.csv');
   }
 }

@@ -14,6 +14,7 @@ import { BuilderComponentsService } from '../builder-components.service';
 import { BuilderFooterService } from '../builder-footer/builder-footer.service';
 import { ToastrService } from 'ngx-toastr';
 import { UtilService } from '../../../../shared/services/util.service';
+import { TemplateService } from 'src/app/shared/services/template.service';
 
 @Component({
   selector: 'app-builder-navbar',
@@ -56,11 +57,12 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   private navbarLogoTextSubscription: Subscription;
   private navbarLogoImageStyleSubscription: Subscription;
   private navbarThemeSubscription: Subscription;
-  private navbarTemplateSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
   private websiteModeSubscription: Subscription;
+  private templateServiceSubscription: Subscription;
 
   constructor(
+    private templateServce: TemplateService,
     private builderService: BuilderService,
     private toastrService: ToastrService,
     private elementRef: ElementRef,
@@ -87,11 +89,17 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-      if (!response) {
-        this.builderNavbarService.navbarTemplate.next(ActiveThemes.Default);
+    this.templateServiceSubscription = this.templateServce.activeTemplate.subscribe(response => {
+      if (response) {
+        this.builderNavbarService.setNavbarTemplateStyle(response[this.componentName]['style']);
       }
     });
+
+    // this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
+    //   if (!response) {
+    //     this.builderNavbarService.navbarTemplate.next(ActiveThemes.Default);
+    //   }
+    // });
 
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
@@ -173,10 +181,10 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
                 for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
                   if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
                     this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                    this.builderNavbarService.navbarStyle.next(this.componentDetail['navbarStyle']);
-                    this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['navbarLinkStyle']);
-                    this.builderNavbarService.navbarBrandStyle.next(this.componentDetail['navbarBrandStyle']);
-                    this.builderNavbarService.navbarLogoImageStyle.next(this.componentDetail['navbarLogoImageStyle']);
+                    this.builderNavbarService.navbarStyle.next(this.componentDetail['style']['navbarStyle']);
+                    this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['style']['navbarLinkStyle']);
+                    this.builderNavbarService.navbarBrandStyle.next(this.componentDetail['style']['navbarBrandStyle']);
+                    this.builderNavbarService.navbarLogoImageStyle.next(this.componentDetail['style']['navbarLogoImageStyle']);
                     this.builderNavbarService.navbarLayoutClass.next(this.componentDetail['navbarLayoutClass']);
                     this.builderNavbarService.navbarLogoText.next(this.componentDetail['navbarLogoText']);
                     this.builderNavbarService.navbarLogoImage.next(this.componentDetail['navbarLogoImage']);
@@ -238,7 +246,9 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   clearActiveEditComponent() {
-    this.builderService.clearActiveEditComponent();
+    if (this.activeElement.indexOf('navbar-link') === -1) {
+      this.builderService.clearActiveEditComponent();
+    }
   }
 
   selectNavbarLink(pageIndex: number, event: any, elementId: string) {
@@ -341,7 +351,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
 
   setNavbarOpenOption() {
     if (this.websiteMode) {
-      return {'show': this.navbarOpen};
+      return { 'show': this.navbarOpen };
     }
   }
 
@@ -357,11 +367,11 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     this.navbarLogoTextSubscription.unsubscribe();
     this.navbarLogoImageStyleSubscription.unsubscribe();
     this.navbarThemeSubscription.unsubscribe();
-    this.navbarTemplateSubscription.unsubscribe();
     this.builderComponentsSubscription.unsubscribe();
     this.activeEditComponentIdSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
     this.activeElementSubscription.unsubscribe();
     this.websiteModeSubscription.unsubscribe();
+    this.templateServiceSubscription.unsubscribe();
   }
 }

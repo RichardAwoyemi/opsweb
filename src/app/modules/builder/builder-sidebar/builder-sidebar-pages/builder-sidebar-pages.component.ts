@@ -118,9 +118,9 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   openNewPageModal() {
     const numberOfPages = this.pageComponents['pages'].length;
     if (numberOfPages + 1 > MAX_NUMBER_OF_PAGES) {
-      this.toastrService.warning('You cannot create more than 4 pages on your current plan.', 'Oops!');
+      this.toastrService.warning(`You cannot create more than ${MAX_NUMBER_OF_PAGES} pages on your current plan.`, 'Oops!');
     } else {
-      this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
+      this.modalService.open(BuilderNewPageModalComponent, { windowClass: 'modal-holder', centered: true });
     }
   }
 

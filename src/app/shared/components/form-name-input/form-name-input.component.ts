@@ -33,12 +33,12 @@ export class FormNameInputComponent implements OnInit, OnDestroy {
         if (result) {
           if (result.firstName) {
             this.firstName = result.firstName;
-            this.formNameInputService.showFirstNameInputError.next({'status': !this.firstName});
+            this.formNameInputService.showFirstNameInputError.next({ 'status': !this.firstName });
             this.userService.firstName.next(this.firstName);
           }
           if (result.lastName) {
             this.lastName = result.lastName;
-            this.formNameInputService.showLastNameInputError.next({'status': !this.lastName});
+            this.formNameInputService.showLastNameInputError.next({ 'status': !this.lastName });
             this.userService.lastName.next(this.lastName);
           }
         }

@@ -1,27 +1,13 @@
 <p [ngClass]="setButtonAlignment(position)">
-  <button (click)="googleSignIn()" *ngIf="!(isMobile | async)?.matches" class="btn btn-label btn-google"
+  <button (click)="googleSignIn()" class="btn btn-label btn-google"
           id="googleSignIn"
           type="button">
     <label>
       <fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon>
     </label> Sign in with Google
   </button>
-  <button (click)="mobileGoogleSignIn()" *ngIf="(isMobile | async)?.matches" class="btn btn-label btn-google"
-          id="mobileGoogleSignIn"
-          type="button">
-    <label>
-      <fa-icon [icon]="['fab', 'google']" size="xs"></fa-icon>
-    </label> Sign in with Google
-  </button>
-  <button (click)="facebookSignIn()" *ngIf="!(isMobile | async)?.matches" class="btn btn-label btn-facebook"
+  <button (click)="facebookSignIn()" class="btn btn-label btn-facebook"
           id="facebookSignIn"
-          type="button">
-    <label>
-      <fa-icon [icon]="['fab', 'facebook-f']" size="xs"></fa-icon>
-    </label> Sign in with Facebook
-  </button>
-  <button (click)="mobileFacebookSignIn()" *ngIf="(isMobile | async)?.matches" class="btn btn-label btn-facebook"
-          id="mobileFacebookSignIn"
           type="button">
     <label>
       <fa-icon [icon]="['fab', 'facebook-f']" size="xs"></fa-icon>
@@ -30,7 +16,7 @@
 </p>
 <p [ngClass]="setButtonAlignment(position)">
   <small>
-    <a class="text-muted small-2" id="emailLogin" routerLink="/register">or use your email address&nbsp;&nbsp;<fa-icon
+    <a class="text-muted small-2" id="emailSignIn" routerLink="/register">or use your email address&nbsp;&nbsp;<fa-icon
       [icon]="['fas', 'long-arrow-alt-right']" size="xs"></fa-icon>
     </a>
   </small>

@@ -75,7 +75,7 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
   }
 
   openCreateAccountModal() {
-    this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+    this.modalService.open(BuilderCreateAccountModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 
   signOut() {
@@ -99,7 +99,7 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
     if (this.websiteName !== event.target.innerHTML && !this.modalStatus) {
-      this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': true});
+      this.builderActionsService.renameRenameWebsiteModalStatus.next({ 'open': true });
       const modal = this.modalService.open(BuilderRenameWebsiteModalComponent, {
         windowClass: 'modal-holder',
         centered: true
@@ -121,9 +121,9 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
 
   openPublishModal() {
     if (!this.authService.isLoggedIn()) {
-      this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+      this.modalService.open(BuilderCreateAccountModalComponent, { windowClass: 'modal-holder', centered: true });
     } else {
-      this.modalService.open(BuilderPublishWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
+      this.modalService.open(BuilderPublishWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
     }
   }
 

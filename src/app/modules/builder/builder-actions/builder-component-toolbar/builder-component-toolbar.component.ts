@@ -56,7 +56,12 @@ export class BuilderComponentToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
+    if (this.activeEditComponentIdSubscription) {
+      this.activeEditComponentIdSubscription.unsubscribe();
+    }
+    if (this.activeEditComponentSubscription) {
+      this.activeEditComponentSubscription.unsubscribe();
+    }
+
   }
 }

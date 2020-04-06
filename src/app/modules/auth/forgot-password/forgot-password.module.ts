@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
-  {path: '', component: ForgotPasswordComponent, canActivate: [AnonymousGuard]}
+  { path: '', component: ForgotPasswordComponent, canActivate: [AnonymousGuard] }
 ];
 
 @NgModule({

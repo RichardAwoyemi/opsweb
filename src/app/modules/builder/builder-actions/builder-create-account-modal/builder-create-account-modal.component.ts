@@ -40,6 +40,6 @@ export class BuilderCreateAccountModalComponent implements IModalComponent {
 
   emailSignIn() {
     this.activeModal.dismiss();
-    this.modalService.open(BuilderRegisterAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+    this.modalService.open(BuilderRegisterAccountModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 }

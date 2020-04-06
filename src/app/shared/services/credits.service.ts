@@ -17,7 +17,7 @@ export class CreditsService {
     const documentPath = `users/${id}`;
     const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
     const increment = firestore.FieldValue.increment(value);
-    return documentRef.set({credits: increment}, {
+    return documentRef.set({ credits: increment }, {
       merge: true
     });
   }

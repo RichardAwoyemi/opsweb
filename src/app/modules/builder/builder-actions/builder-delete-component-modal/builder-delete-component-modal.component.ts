@@ -13,6 +13,14 @@ import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder
 })
 export class BuilderDeleteComponentModalComponent implements IModalComponent, OnInit, OnDestroy {
 
+  @Input() componentId;
+  pageComponents: any;
+  components: any;
+  activePage: string;
+  activePageIndex: number;
+  private pageComponentsSubscription: Subscription;
+  private activePageSettingSubscription: Subscription;
+
   constructor(
     private activeModal: NgbActiveModal,
     private builderComponentsService: BuilderComponentsService,
@@ -20,15 +28,6 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     private toastrService: ToastrService
   ) {
   }
-
-  @Input() componentId;
-  pageComponents: any;
-  components: any;
-  activePage: string;
-  activePageIndex: number;
-
-  private pageComponentsSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
 
   ngOnInit() {
     this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {

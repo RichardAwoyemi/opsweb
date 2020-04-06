@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
-import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
-import { ActiveTemplates } from '../../../builder';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { WebsiteService } from '../../../../../shared/services/website.service';
 import { Options } from 'ng5-slider';
+import { Subscription } from 'rxjs';
+import { TemplateService } from 'src/app/shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveTemplates } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-features-options-picker',
@@ -34,14 +35,14 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   options: Options = {
     showTicksValues: true,
     stepsArray: [
-      {value: 1},
-      {value: 2},
-      {value: 3},
-      {value: 4},
-      {value: 5},
-      {value: 6},
-      {value: 7},
-      {value: 8}
+      { value: 1 },
+      { value: 2 },
+      { value: 3 },
+      { value: 4 },
+      { value: 5 },
+      { value: 6 },
+      { value: 7 },
+      { value: 8 }
     ]
   };
 
@@ -59,7 +60,8 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     private builderFeaturesService: BuilderFeaturesService,
     private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
-    private websiteService: WebsiteService
+    private websiteService: WebsiteService,
+    private templateService: TemplateService
   ) {
   }
 
@@ -115,15 +117,15 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
       if (templateResponse) {
         this.featuresTemplate = templateResponse['template'];
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
+        this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(this.featuresTemplate).subscribe(response => {
           if (response) {
-            this.defaultFeaturesStyle = response;
+            this.defaultFeaturesStyle = response[ActiveComponents.Features];
           }
         });
       } else {
-        this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(ActiveTemplates.Default).subscribe(response => {
+        this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(ActiveTemplates.Default).subscribe(response => {
           if (response) {
-            this.defaultFeaturesStyle = response;
+            this.defaultFeaturesStyle = response[ActiveComponents.Features];
           }
         });
       }
@@ -175,25 +177,25 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   setNumberOfFeatures(value: number) {
     const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, value);
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
-    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresWidth', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetNumberOfFeatures() {
     const featuresComponent = this.builderFeaturesService.setNumberOfFeatures(this.activeEditComponentId, 3);
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresItemArray', featuresComponent['featuresItemArray']);
-    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, 'featuresStyle', 'width', featuresComponent['featuresItemWidth']);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresWidth', featuresComponent['featuresItemWidth']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFeaturesHeadingFontName() {
-    this.featuresHeadingStyle['font-family'] = this.defaultFeaturesStyle['featuresHeadingStyle']['font-family'];
+    this.featuresHeadingStyle['font-family'] = this.defaultFeaturesStyle['style']['featuresHeadingStyle']['font-family'];
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
   }
 
   resetFeaturesHeadingFontSize() {
-    this.featuresHeadingStyle['font-size'] = this.defaultFeaturesStyle['featuresHeadingStyle']['font-size'];
+    this.featuresHeadingStyle['font-size'] = this.defaultFeaturesStyle['style']['featuresHeadingStyle']['font-size'];
     this.featuresHeadingFontUnit = 'px';
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
@@ -231,13 +233,13 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFeaturesSubheadingFontName() {
-    this.featuresSubheadingStyle['font-family'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['font-family'];
+    this.featuresSubheadingStyle['font-family'] = this.defaultFeaturesStyle['style']['featuresSubheadingStyle']['font-family'];
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
   }
 
   resetFeaturesSubheadingFontSize() {
-    this.featuresSubheadingStyle['font-size'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['font-size'];
+    this.featuresSubheadingStyle['font-size'] = this.defaultFeaturesStyle['style']['featuresSubheadingStyle']['font-size'];
     this.featuresSubheadingFontUnit = 'px';
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);

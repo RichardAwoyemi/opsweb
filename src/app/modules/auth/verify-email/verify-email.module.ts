@@ -6,7 +6,7 @@ import { VerifyEmailComponent } from './verify-email.page';
 import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
-  {path: '', component: VerifyEmailComponent, canActivate: [AnonymousGuard]},
+  { path: '', component: VerifyEmailComponent, canActivate: [AnonymousGuard] },
 ];
 
 @NgModule({

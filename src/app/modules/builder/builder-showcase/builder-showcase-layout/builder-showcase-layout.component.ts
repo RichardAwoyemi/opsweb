@@ -97,22 +97,6 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.builderComponentsService.activeComponentIndex.next(componentIndex);
   }
 
-  addComponent(tempComponent) {
-    const activePageIndex = BuilderComponentsService.getActivePageIndex(this.pageComponents, tempComponent);
-    const activeComponentIndex = BuilderComponentsService.getActiveComponentIndex(this.pageComponents, tempComponent);
-    if (tempComponent['componentDetail']) {
-      let component = BuilderComponentsService.setupComponent(tempComponent);
-      if (component['componentName'] === ActiveComponentsPartialSelector.Features) {
-        component = BuilderComponentsService.setupFeaturesComponent(component, tempComponent);
-      }
-      this.pageComponents['pages'][activePageIndex]['components'].splice(activeComponentIndex, 0, component);
-      const componentsArrayWithoutPlaceholders = BuilderComponentsService.removePlaceholders(this.pageComponents['pages'][activePageIndex]['components']);
-      this.pageComponents['pages'][activePageIndex]['components'] = BuilderComponentsService.addPlaceholdersOnSinglePage(componentsArrayWithoutPlaceholders);
-      this.builderComponentsService.pageComponents.next(this.pageComponents);
-      StorageService.setItem('components', JSON.stringify(this.pageComponents));
-    }
-  }
-
   recycleShowcase(components) {
     this.builderComponents = [];
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
@@ -152,7 +136,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     if (e.data.for === 'opsonion') {
       switch (e.data.action) {
         case 'component-added':
-          this.addComponent(e.data.message);
+          this.builderComponentsService.addComponent(e.data.message);
           break;
         case 'recycle-showcase':
           this.recycleShowcase(e.data.data);
@@ -161,14 +145,13 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
           this.simpleModalService.displayMessage('Oops!', 'This component cannot be added twice to a single page.');
           break;
         case 'delete-component':
-          this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
+          this.modalService.open(BuilderDeleteComponentModalComponent, { windowClass: 'modal-holder', centered: true });
           break;
         case 'component-error':
           this.simpleModalService.displayMessage('Oops!', 'This item is not a valid component.');
           break;
-
       }
-      this.builderService.processIncomingMessages(e, this.activeEditComponent);
+      this.builderService.processIncomingMessages(e);
     }
   }
 

@@ -53,7 +53,7 @@ export class UserService {
     return this.afs.collection('users').doc(id).snapshotChanges().pipe(map(action => {
       const data = action.payload.data();
       const uid = action.payload.id;
-      return {uid, ...data};
+      return { uid, ...data };
     }));
   }
 

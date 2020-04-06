@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 import { BuilderComponentsService } from '../builder-components.service';
 import { UtilService } from '../../../../shared/services/util.service';
+import { TemplateService } from '../../../../shared/services/template.service';
 
 @Injectable()
 export class BuilderNavbarService {
@@ -18,12 +19,10 @@ export class BuilderNavbarService {
   navbarLayoutClass = new BehaviorSubject<Object>(null);
   navbarMenuOptions = new BehaviorSubject<any>(null);
 
-  private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
-  private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
-  private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
   private NAVBAR_THEME_PATH = './assets/data/web-themes/navbar.json';
 
   constructor(
+    private templateService: TemplateService,
     private httpClient: HttpClient,
     private builderComponentsService: BuilderComponentsService
   ) {
@@ -34,25 +33,12 @@ export class BuilderNavbarService {
   }
 
   setNavbarTemplate(templateId: string) {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        this.httpClient.get(this.DEFAULT_TEMPLATE_PATH).subscribe(response => {
-          this.setNavbarTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Quick:
-        this.httpClient.get(this.QUICK_TEMPLATE_PATH).subscribe(response => {
-          this.setNavbarTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Front:
-        this.httpClient.get(this.FRONT_TEMPLATE_PATH).subscribe(response => {
-          this.setNavbarTemplateStyle(response);
-        });
-        break;
-      default:
-        break;
-    }
+    this.templateService.getTemplateStyle(templateId).subscribe(response => {
+      if (response) {
+        const template = response['navbar']['style'];
+        this.setNavbarTemplateStyle(template);
+      }
+    });
   }
 
   setNavbarTheme(themeId: string) {
@@ -71,19 +57,6 @@ export class BuilderNavbarService {
         break;
       default:
         break;
-    }
-  }
-
-  getDefaultNavbarStyle(templateId): Observable<any> {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
-      case ActiveTemplates.Quick:
-        return this.httpClient.get(this.QUICK_TEMPLATE_PATH);
-      case ActiveTemplates.Front:
-        return this.httpClient.get(this.FRONT_TEMPLATE_PATH);
-      default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
     }
   }
 
@@ -119,6 +92,7 @@ export class BuilderNavbarService {
   }
 
   setNavbarTemplateStyle(template: any) {
+
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarTheme', ActiveThemes.Default);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarStyle', template['navbarStyle']);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', template['navbarLinkStyle']);
@@ -129,12 +103,6 @@ export class BuilderNavbarService {
     this.navbarLinkStyle.next(template['navbarLinkStyle']);
     this.navbarBrandStyle.next(template['navbarBrandStyle']);
     this.navbarLogoImageStyle.next(template['navbarLogoImageStyle']);
-  }
-
-  setComponentTemplate(templateId) {
-    this.navbarTheme.next(ActiveThemes.Default);
-    this.navbarTemplate.next(templateId);
-    this.setNavbarTemplate(templateId);
   }
 
   setNavbarMenuOptions(pageName, pageIndex) {

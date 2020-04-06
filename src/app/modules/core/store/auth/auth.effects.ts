@@ -16,7 +16,7 @@ export class AuthEffects {
     switchMap(() =>
       from(this.authService.googleSignIn()).pipe(
         map(() => AuthActions.signInSuccess()),
-        catchError(err => of(AuthActions.signInError({errorMessage: err.message, errorCode: err.code})))
+        catchError(err => of(AuthActions.signInError({ errorMessage: err.message, errorCode: err.code })))
       )
     )
   );
@@ -26,7 +26,7 @@ export class AuthEffects {
     switchMap(() =>
       from(this.authService.mobileGoogleSignIn()).pipe(
         map(() => AuthActions.signInSuccess()),
-        catchError(err => of(AuthActions.signInError({errorMessage: err.message, errorCode: err.code})))
+        catchError(err => of(AuthActions.signInError({ errorMessage: err.message, errorCode: err.code })))
       )
     )
   );
@@ -36,7 +36,7 @@ export class AuthEffects {
     switchMap(() =>
       from(this.authService.facebookSignIn()).pipe(
         map(() => AuthActions.signInSuccess()),
-        catchError(err => of(AuthActions.signInError({errorMessage: err.message, errorCode: err.code})))
+        catchError(err => of(AuthActions.signInError({ errorMessage: err.message, errorCode: err.code })))
       )
     )
   );
@@ -48,7 +48,7 @@ export class AuthEffects {
         map(() => {
           return AuthActions.signOutSuccess();
         }),
-        catchError(err => of(AuthActions.signOutError({errorMessage: err.message, errorCode: err.code})))
+        catchError(err => of(AuthActions.signOutError({ errorMessage: err.message, errorCode: err.code })))
       )
     )
   );
@@ -58,7 +58,7 @@ export class AuthEffects {
     switchMap(() =>
       from(this.authService.mobileFacebookSignIn()).pipe(
         map(() => AuthActions.signInSuccess()),
-        catchError(err => of(AuthActions.signInError({errorMessage: err.message, errorCode: err.code})))
+        catchError(err => of(AuthActions.signInError({ errorMessage: err.message, errorCode: err.code })))
       )
     )
   );
@@ -69,13 +69,13 @@ export class AuthEffects {
       this.afAuth.authState.pipe(
         map((data: IAuth) => {
           if (data) {
-            return AuthActions.dataReceived({payload: AuthService.parseData(data)});
+            return AuthActions.dataReceived({ payload: AuthService.parseData(data) });
           } else {
             return AuthActions.dataNotReceived();
           }
         }),
         catchError(err => {
-          return of(AuthActions.signInError({errorMessage: err.message, errorCode: err.code}));
+          return of(AuthActions.signInError({ errorMessage: err.message, errorCode: err.code }));
         })
       )
     )
@@ -88,13 +88,13 @@ export class AuthEffects {
         map((data: IAuth) => {
           if (data) {
             localStorage.setItem('uid', AuthService.parseData(data).uid);
-            return AuthActions.dataReceived({payload: AuthService.parseData(data)});
+            return AuthActions.dataReceived({ payload: AuthService.parseData(data) });
           } else {
             return AuthActions.dataNotReceived();
           }
         }),
         catchError(err => {
-          return of(AuthActions.signInError({errorMessage: err.message, errorCode: err.code}));
+          return of(AuthActions.signInError({ errorMessage: err.message, errorCode: err.code }));
         })
       )
     )

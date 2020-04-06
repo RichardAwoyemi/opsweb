@@ -40,8 +40,8 @@
     </div>
   </div>
   <div class="col-md-12" style="padding-top: 2em">
-    <label class="builder-sidebar-layout-select-footer-spacing-reset btn btn-xl btn-block btn-secondary"
-           (click)="resetFooterAlignment()">
+    <label (click)="resetFooterAlignment()"
+           class="builder-sidebar-layout-select-footer-spacing-reset btn btn-xl btn-block btn-secondary">
       <span class="builder-sidebar-layout-select-footer-spacing-reset">Reset To Default</span>
     </label>
   </div>
@@ -54,10 +54,10 @@
     <div class="form-group">
       <label>Top</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-spacing-top form-control"
-               (keyup)="setFooterPaddingTop()"
+        <input (keyup)="setFooterPaddingTop()"
                (ngModelChange)="setFooterPaddingTop()"
                [(ngModel)]="footerPaddingTop"
+               class="builder-sidebar-layout-select-footer-spacing-top form-control"
                max="300" min="0" name="number"
                type="number">
       </label>
@@ -67,10 +67,10 @@
     <div class="form-group">
       <label>Left</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-spacing-left form-control"
-               (keyup)="setFooterPaddingLeft()"
+        <input (keyup)="setFooterPaddingLeft()"
                (ngModelChange)="setFooterPaddingLeft()"
                [(ngModel)]="footerPaddingLeft"
+               class="builder-sidebar-layout-select-footer-spacing-left form-control"
                max="300" min="0" name="number"
                style="width: 100%" type="number">
       </label>
@@ -80,10 +80,10 @@
     <div class="form-group">
       <label>Right</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-spacing-right form-control"
-               (keyup)="setFooterPaddingRight()"
+        <input (keyup)="setFooterPaddingRight()"
                (ngModelChange)="setFooterPaddingRight()"
                [(ngModel)]="footerPaddingRight"
+               class="builder-sidebar-layout-select-footer-spacing-right form-control"
                max="300" min="0" name="number"
                style="width: 100%" type="number">
       </label>
@@ -93,10 +93,10 @@
     <div class="form-group">
       <label>Bottom</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-spacing-bottom form-control"
-               (keyup)="setFooterPaddingBottom()"
+        <input (keyup)="setFooterPaddingBottom()"
                (ngModelChange)="setFooterPaddingBottom()"
                [(ngModel)]="footerPaddingBottom"
+               class="builder-sidebar-layout-select-footer-spacing-bottom form-control"
                max="300" min="0" name="number"
                style="width: 100%" type="number">
       </label>
@@ -121,11 +121,11 @@
     <div class="form-group">
       <label>Top</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-copyright-spacing-top form-control"
-               (keyup)="setFooterCopyrightPaddingTop()"
+        <input (keyup)="setFooterCopyrightPaddingTop()"
                (ngModelChange)="setFooterCopyrightPaddingTop()"
                [(ngModel)]="footerCopyrightPaddingTop"
                autocomplete="off"
+               class="builder-sidebar-layout-select-footer-copyright-spacing-top form-control"
                max="300" min="0" name="number" type="number">
       </label>
     </div>
@@ -134,10 +134,10 @@
     <div class="form-group">
       <label>Left</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-copyright-spacing-left form-control"
-               (keyup)="setFooterCopyrightPaddingLeft()"
+        <input (keyup)="setFooterCopyrightPaddingLeft()"
                (ngModelChange)="setFooterCopyrightPaddingLeft()"
                [(ngModel)]="footerCopyrightPaddingLeft"
+               class="builder-sidebar-layout-select-footer-copyright-spacing-left form-control"
                max="300" min="0"
                name="number"
                style="width: 100%" type="number">
@@ -148,10 +148,10 @@
     <div class="form-group">
       <label>Right</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-copyright-spacing-right form-control"
-               (keyup)="setFooterCopyrightPaddingRight()"
+        <input (keyup)="setFooterCopyrightPaddingRight()"
                (ngModelChange)="setFooterCopyrightPaddingRight()"
                [(ngModel)]="footerCopyrightPaddingRight"
+               class="builder-sidebar-layout-select-footer-copyright-spacing-right form-control"
                max="300" min="0"
                name="number"
                style="width: 100%" type="number">
@@ -162,10 +162,10 @@
     <div class="form-group">
       <label>Bottom</label>
       <label style="width: 100%">
-        <input class="builder-sidebar-layout-select-footer-copyright-spacing-bottom form-control"
-               (keyup)="setFooterCopyrightPaddingBottom()"
+        <input (keyup)="setFooterCopyrightPaddingBottom()"
                (ngModelChange)="setFooterCopyrightPaddingBottom()"
                [(ngModel)]="footerCopyrightPaddingBottom"
+               class="builder-sidebar-layout-select-footer-copyright-spacing-bottom form-control"
                max="300" min="0"
                name="number"
                style="width: 100%" type="number">
@@ -192,11 +192,11 @@
       <div class="form-group">
         <label>Top</label>
         <label style="width: 100%">
-          <input class="form-control"
-                 (keyup)="setFooterSocialLinksMarginTop()"
+          <input (keyup)="setFooterSocialLinksMarginTop()"
                  (ngModelChange)="setFooterSocialLinksMarginTop()"
                  [(ngModel)]="footerSocialLinksMarginTop"
                  autocomplete="off"
+                 class="form-control"
                  max="300" min="0" name="number" type="number">
         </label>
       </div>
@@ -205,11 +205,11 @@
       <div class="form-group">
         <label>Left</label>
         <label style="width: 100%">
-          <input class="form-control"
-                 (keyup)="setFooterSocialLinksMarginLeft()"
+          <input (keyup)="setFooterSocialLinksMarginLeft()"
                  (ngModelChange)="setFooterSocialLinksMarginLeft()"
                  [(ngModel)]="footerSocialLinksMarginLeft"
-                 autocomplete="off" max="300" min="0" name="number"
+                 autocomplete="off"
+                 class="form-control" max="300" min="0" name="number"
                  style="width: 100%" type="number">
         </label>
       </div>
@@ -218,11 +218,11 @@
       <div class="form-group">
         <label>Right</label>
         <label style="width: 100%">
-          <input class="form-control"
-                 (keyup)="setFooterSocialLinksMarginRight()"
+          <input (keyup)="setFooterSocialLinksMarginRight()"
                  (ngModelChange)="setFooterSocialLinksMarginRight()"
                  [(ngModel)]="footerSocialLinksMarginRight"
-                 autocomplete="off" max="300" min="0" name="number"
+                 autocomplete="off"
+                 class="form-control" max="300" min="0" name="number"
                  style="width: 100%" type="number">
         </label>
       </div>
@@ -231,17 +231,17 @@
       <div class="form-group">
         <label>Bottom</label>
         <label style="width: 100%">
-          <input class="form-control"
-                 (keyup)="setFooterSocialLinksMarginBottom()"
+          <input (keyup)="setFooterSocialLinksMarginBottom()"
                  (ngModelChange)="setFooterSocialLinksMarginBottom()"
                  [(ngModel)]="footerSocialLinksMarginBottom"
-                 autocomplete="off" max="300" min="0" name="number"
+                 autocomplete="off"
+                 class="form-control" max="300" min="0" name="number"
                  style="width: 100%" type="number">
         </label>
       </div>
     </div>
     <div class="col-md-12" style="margin-top: 1em;">
-      <label class="btn btn-xl btn-block btn-secondary" (click)="resetFooterSocialLinksMarginStyle()">
+      <label (click)="resetFooterSocialLinksMarginStyle()" class="btn btn-xl btn-block btn-secondary">
         <span>Reset To Default</span>
       </label>
     </div>
@@ -305,7 +305,7 @@
       </div>
     </div>
     <div class="col-md-12" style="margin-top: 1em;">
-      <label class="btn btn-xl btn-block btn-secondary" (click)="resetFooterPageLinksPaddingStyle()">
+      <label (click)="resetFooterPageLinksPaddingStyle()" class="btn btn-xl btn-block btn-secondary">
         <span>Reset To Default</span>
       </label>
     </div>
