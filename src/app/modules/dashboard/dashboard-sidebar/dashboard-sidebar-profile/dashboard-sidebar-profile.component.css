@@ -1,0 +1,14 @@
+.sidebar-profile-button:hover {
+  cursor: pointer;
+  background-color: #EEEEEF;
+  border-radius: 5px;
+}
+
+.sidebar-profile-button {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.logo-sidebar:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,165 @@
+<div id="navbar-options" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 1)">Logo</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <ng-container *ngIf="isNavbarLogoImageNull() == false">
+        <a (click)="openDeleteImageModal()" class="fw-delete fs-12" href="#">Delete</a>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="isNavbarLogoImageNull() == true">
+  <label class="btn btn-xl btn-block btn-secondary btn-file">
+    <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
+    <span>Upload Image</span>
+  </label>
+  <div class="form-group" style="padding-top: 1em">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetNavbarBrandFontName()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <label style="width: 100%">
+      <select (change)="onNavbarBrandFontNameChange()" [(ngModel)]="navbarBrandFontName"
+              class="form-control form-control-lg">
+        <option *ngFor="let fontName of fontNames | ssort"
+                [attr.selected]="fontName == navbarBrandFontName ? true : null"
+                [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+      </select>
+    </label>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+      </div>
+      <div class="col-md-6 text-right">
+        <a (click)="resetNavbarBrandFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <input (keyup)="setNavbarBrandFontSize()" (ngModelChange)="setNavbarBrandFontSize()"
+                 [(ngModel)]="navbarBrandFontSize"
+                 class="form-control form-control-lg"
+                 max="300" min="0" name="number"
+                 style="width: 100%" type="number">
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label style="width: 100%">
+          <select (change)="onNavbarBrandFontUnitChange()" [(ngModel)]="navbarBrandFontUnit"
+                  class="form-control form-control-lg">
+            <option *ngFor="let fontUnit of fontUnits | ssort"
+                    [attr.selected]="fontUnit == navbarBrandFontUnit ? true : null">{{ fontUnit }}</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="isNavbarLogoImageNull() == false">
+  <div class="image-preview" style="margin-bottom: 1em; height: 150px;">
+    <img [attr.src]="navbarLogoImage" alt="navbarLogoImage" class="navbar-logo-image"/>
+  </div>
+  <label class="btn btn-xl btn-block btn-secondary btn-file">
+    <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
+    <span>Replace Image</span>
+  </label>
+  <div class="row" style="padding-top: 1em">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetNavbarLogoImageSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setNavbarLogoImageSize()" (ngModelChange)="setNavbarLogoImageSize()"
+               [(ngModel)]="navbarLogoImageSize"
+               class="form-control form-control-lg"
+               max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input [(ngModel)]="navbarLogoImageUnit" class="form-control form-control-lg" disabled>
+      </label>
+    </div>
+  </div>
+</ng-container>
+<hr>
+<div class="form-group" id="navbar-options-menu" style="padding-top: 1px">
+  <label style="color: rgba(255, 255, 255, 1)">Menu</label>
+</div>
+<div [sortablejsOptions]="options" [sortablejs]="navbarMenuOptions">
+  <div *ngFor="let navbarMenuOption of navbarMenuOptions"
+       class="row page-row-color page-row-option justify-content-center align-items-center" style="font-size: 0.8em">
+    <div class="col-md-3" style="padding: 0.5em">
+      <button class="btn btn-square btn-options btn-block btn-xl btn-drag-menu" type="button">
+        <i class="ti-menu"></i>
+      </button>
+    </div>
+    <div class="col-md-9 row-color h-100 d-table">
+      <div class="align-items-center d-table-cell align-middle">
+        {{ navbarMenuOption }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="form-group" style="padding-top: 1em">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Font</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetNavbarLinkFontName()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="onNavbarLinkFontNameChange()" [(ngModel)]="navbarLinkFontName"
+            class="form-control form-control-lg">
+      <option *ngFor="let fontName of fontNames | ssort"
+              [attr.selected]="fontName == navbarLinkFontName ? true : null"
+              [ngStyle]="{ 'font-family': fontName }">{{ fontName }}</option>
+    </select>
+  </label>
+</div>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetNavbarLinkFontSize()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <input (keyup)="setNavbarLinkFontSize()" (ngModelChange)="setNavbarLinkFontSize()"
+               [(ngModel)]="navbarLinkFontSize"
+               class="form-control form-control-lg"
+               max="300" min="0" name="number"
+               style="width: 100%" type="number">
+      </label>
+    </div>
+    <div class="col-md-6">
+      <label style="width: 100%">
+        <select (change)="onNavbarLinkFontUnitChange()" [(ngModel)]="navbarLinkFontUnit"
+                class="form-control form-control-lg">
+          <option *ngFor="let fontUnit of fontUnits | ssort"
+                  [attr.selected]="fontUnit == navbarLinkFontUnit ? true : null">{{ fontUnit }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</div>

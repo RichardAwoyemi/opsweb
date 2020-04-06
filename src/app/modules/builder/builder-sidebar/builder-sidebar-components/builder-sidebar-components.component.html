@@ -1,0 +1,44 @@
+<div id="components" style="margin-top: -30px; margin-bottom: 2px">&nbsp;</div>
+<div class="form-group input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i class="ti-search"></i></span>
+  </div>
+  <label for="search-components"></label>
+  <input (keyup)="searchText.trim();"
+         [(ngModel)]="searchText"
+         class="builder-sidebar-components-search form-control" id="search-components"
+         placeholder="Search Components" type="text">
+</div>
+<div class="row">
+  <ng-container *ngFor="let component of webComponents | filter: searchText | sort: 'name'">
+    <div class="col-md-6 component-holder">
+      <!--
+         JM - Do not call methods on the (drag) event handler as it will lead to performance issues, most notably a
+         a degraded UI experience when dragging and dropping components. Use (dragstart) or (dragEnd) instead.
+      -->
+      <div (click)="clearActiveComponent();"
+           (dragstart)="onComponentSelect(getComponent(component.selector))"
+           [attr.data-src]="'../assets/img/component-icon.svg'"
+           class="card text-white bg-img justify-content-center component-icon"
+           data-overlay="6" draggable="true"
+           style="height: 100px; margin-bottom: 1em">
+        <div #dropdown="ngbDropdown" ngbDropdown placement="bottom">
+          <div (click)="$event.stopPropagation(); dropdown.open();"
+               class="builder-sidebar-components-{{ component.name | lowercase }} card-body text-center flex-grow-0">
+            <img alt="{{ component.name | lowercase }}-component"
+                 class="builder-sidebar-components-{{ component.name | lowercase }}"
+                 src="../assets/img/{{ component.name | lowercase }}-component-icon.svg"
+                 style="height: 24px; width: 24px"/>
+            <div class="builder-sidebar-components-{{ component.name | lowercase }}card-title mb-0"
+                 style="font-size: 14px; padding-top: 1em; color: #EDF0F2"><span ngbDropdownToggle>
+              {{ component.name }}</span>
+              <div ngbDropdownMenu>
+                <button (click)="addComponent(component)" ngbDropdownItem>Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

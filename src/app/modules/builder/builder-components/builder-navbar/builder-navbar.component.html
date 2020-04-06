@@ -1,0 +1,62 @@
+<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
+                               [componentName]="componentName"></app-builder-component-toolbar>
+<div [attr.id]="componentId" [ngClass]="setContextMenu()">
+  <nav (click)="setActiveEditComponent();"
+       (dblclick)="clearActiveEditComponent();"
+       [ngClass]="setComponentClass()"
+       [ngStyle]="navbarStyle"
+       class="navbar navbar-expand-md navbar-showcase">
+    <span [ngStyle]="navbarBrandStyle" class="navbar-brand">
+      <ng-container *ngIf="isNavbarLogoImageNull() == true">
+        <span (blur)="removeLineBreaks($event); saveNavbarLogoBrandOption();"
+              (click)="selectNavbarLogoBrand($event, 'navbar-logo-brand')"
+              (keydown.enter)="saveNavbarLogoBrandOption(); $event.preventDefault()"
+              [attr.contenteditable]="setContentEditable()"
+              [class]="setActiveElementStyle(activeElement, 'navbar-logo-brand')"
+              [innerText]="navbarLogoText"
+              [ngClass]="setNavbarLogoBrandClass()"
+              id="'navbar-logo-brand'" style="padding: .5rem;"></span>
+      </ng-container>
+      <ng-container *ngIf="isNavbarLogoImageNull() == false">
+        <img (click)="selectNavbarLogoImage($event, 'navbar-logo-image')"
+             [attr.src]="navbarLogoImage"
+             [class]="setActiveElementStyle(activeElement, 'navbar-logo-image')"
+             [ngClass]="setNavbarLogoImageClass()"
+             [ngStyle]="navbarLogoImageStyle"
+             alt="navbarLogoImage"
+             id="navbar-logo-image"
+             style="padding: .5rem"/>
+      </ng-container>
+    </span>
+    <button (click)="toggleNavbar()" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-target="#navbarNav" data-toggle="collapse" type="button">
+      <span class="navbar-toggler-icon"><i class="ti-menu"></i></span>
+    </button>
+    <div [ngClass]="setNavbarOpenOption()" class="navbar-collapse collapse" id="navbarNav">
+      <ul [ngClass]="navbarLayoutClass">
+        <li *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index" class="nav-item">
+          <ng-container *ngIf="navbarMenuOption == 'Home'">
+            <a (blur)="removeLineBreaks($event); saveNavbarMenuOption(i, $event.target['innerText']);"
+               (click)="selectNavbarLink(i, $event, 'navbar-link-' + i)"
+               [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
+               [innerText]="navbarMenuOption"
+               [ngClass]="setNavbarLinkClass()"
+               [ngStyle]="navbarLinkStyle"
+               id="{{ 'navbar-link-home' }}" style="padding: .5rem"></a>
+          </ng-container>
+          <ng-container *ngIf="navbarMenuOption != 'Home'">
+            <a (blur)="removeLineBreaks($event); saveNavbarMenuOption(i, $event.target['innerText']);"
+               (click)="selectNavbarLink(i, $event, 'navbar-link-' + i)"
+               (keydown.enter)="$event.target.blur()"
+               [attr.contenteditable]="setContentEditable()"
+               [class]="setActiveElementStyle(activeElement, 'navbar-link-'+i)"
+               [innerText]="navbarMenuOption"
+               [ngClass]="setNavbarLinkClass()"
+               [ngStyle]="navbarLinkStyle"
+               id="{{ 'navbar-link-' + i }}" style="padding: .5rem"></a>
+          </ng-container>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

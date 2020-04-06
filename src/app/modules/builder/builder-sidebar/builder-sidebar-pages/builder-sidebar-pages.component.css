@@ -1,0 +1,21 @@
+.fw-600 {
+  color: #7193F0;
+  font-weight: normal !important;
+}
+
+.fw-600:hover {
+  text-decoration: underline;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-item:hover {
+  cursor: pointer !important;
+}
+
+.dropdown-menu {
+  min-width: 10px !important;
+}
+

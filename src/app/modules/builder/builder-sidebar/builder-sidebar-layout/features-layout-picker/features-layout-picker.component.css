@@ -1,0 +1,46 @@
+.layout-spacer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+  border-radius: 3px;
+  border: 2px solid #ffffff;
+  background-color: #ffffff;
+  padding: 1em;
+}
+
+.layout-spacer-active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+  border-radius: 3px;
+  border: 2px solid #4285F4;
+  background-color: #ffffff;
+  padding: 1em;
+}
+
+.layout-spacer:hover {
+  border: 2px solid #4285F4;
+  cursor: pointer !important;
+  transition: all .2s ease-in;
+}
+
+.btn-group.btn-group-full {
+  display: flex;
+}
+
+.btn-group-full .btn {
+  flex: 1
+}
+
+.fw-600:hover {
+  text-decoration: underline;
+}
+
+.fw-600 {
+  color: #7193F0;
+  font-weight: normal !important;
+}

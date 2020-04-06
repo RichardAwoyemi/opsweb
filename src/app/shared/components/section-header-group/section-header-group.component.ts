@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -15,7 +15,8 @@ export class SectionHeaderGroupComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.headerTopPadding$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(

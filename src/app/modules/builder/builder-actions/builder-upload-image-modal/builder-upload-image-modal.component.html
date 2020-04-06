@@ -1,0 +1,20 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Upload image</h5>
+  </div>
+  <div class="modal-body">
+    <div [ngStyle]="modalHeight" class="image-preview">
+      <image-cropper (imageCropped)="imageCropped($event)" [imageChangedEvent]="imageChangedEvent"
+                     [maintainAspectRatio]="false"
+                     format="png"></image-cropper>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="onConfirmButtonClick()"
+            class="builder-modal-image-upload-save btn btn-secondary" type="button">Save
+    </button>&nbsp;
+    <button (click)="onCloseButtonClick()"
+            class="builder-modal-image-upload-cancel btn btn-secondary" type="button">Cancel
+    </button>
+  </div>
+</div>

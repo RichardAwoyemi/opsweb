@@ -1,0 +1,59 @@
+<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
+                               [componentName]="componentName"></app-builder-component-toolbar>
+<div [attr.id]="componentId" [ngClass]="setContextMenu()">
+  <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
+       [ngStyle]="heroBackgroundStyle" class="jumbotron" style="margin-bottom: 0">
+    <div class="row row-grid align-items-center">
+      <div [ngClass]="setHeroImageContainerClass()">
+        <div (click)="selectHeroImage($event, 'hero-image')"
+             [class]="setActiveElementStyle(activeElement, 'hero-image')"
+             [ngClass]="setHeroClass('hero-image')"
+             [ngStyle]="setHeroImageStyle()"
+             id="hero-image">
+          <img [src]="heroImageUrl" alt="{{ heroImageAlt }}" class="img-fluid">
+        </div>
+      </div>
+      <div [ngClass]="setHeroTextContainerClass()">
+        <div (click)="selectHeroHeading($event, 'hero-heading')"
+             [class]="setActiveElementStyle(activeElement, 'hero-heading')"
+             [ngClass]="setHeroClass('hero-heading')"
+             id="hero-heading">
+          <h1 (blur)="removeLineBreaks($event); saveHeroHeadingTextOption($event.target['innerText']);"
+              (keydown.enter)="saveHeroHeadingTextOption($event.target['innerText']); $event.preventDefault()"
+              [attr.contenteditable]="setContentEditable()"
+              [innerText]="heroHeadingText"
+              [ngStyle]="heroHeadingStyle"
+              class="display-4 text-center text-md-left mb-3">
+          </h1>
+        </div>
+        <div (click)="selectHeroSubheading($event, 'hero-subheading')"
+             [class]="setActiveElementStyle(activeElement, 'hero-subheading')"
+             [ngClass]="setHeroClass('hero-subheading')"
+             id="hero-subheading"
+             style="display:inline-block">
+          <p (blur)="removeLineBreaks($event); saveHeroSubheadingTextOption($event.target['innerText']);"
+             (keydown.enter)="saveHeroSubheadingTextOption($event.target['innerText']); $event.preventDefault()"
+             [attr.contenteditable]="setContentEditable()"
+             [innerText]="heroSubheadingText"
+             [ngStyle]="heroSubheadingStyle"
+             class="lead text-center text-md-left"></p>
+        </div>
+        <div class="text-center text-md-left mt-5">
+          <div (click)="selectHeroButton($event, 'hero-button')"
+               [class]="setActiveElementStyle(activeElement, 'hero-button')"
+               [ngClass]="setHeroClass('hero-button')"
+               id="hero-button" style="display:inline-block">
+            <button [ngStyle]="heroButtonStyle"
+                    class="btn hero-button">
+              <span (blur)="removeLineBreaks($event); saveHeroButtonTextOption($event.target['innerText']);"
+                    (keydown.enter)="saveHeroButtonTextOption($event.target['innerText']); $event.preventDefault()"
+                    [attr.contenteditable]="setContentEditable()"
+                    [innerText]="heroButtonText">
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

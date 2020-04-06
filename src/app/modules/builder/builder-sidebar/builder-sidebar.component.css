@@ -1,0 +1,23 @@
+.bg-dark {
+  background-color: #0E1318 !important;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #7E7E7E;
+}
+
+.bd-content {
+  -ms-flex-order: 1;
+  order: 1;
+}
+
+.bd-example {
+  padding: 1.5rem;
+  margin-right: 0;
+  margin-left: 0;
+  border-width: .2rem;
+}
+
+.tab-padding {
+  padding: 2em 1em 1em;
+}
