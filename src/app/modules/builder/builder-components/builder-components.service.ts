@@ -8,7 +8,6 @@ import { SimpleModalService } from 'src/app/shared/components/simple-modal/simpl
 
 @Injectable()
 export class BuilderComponentsService {
-
   public static webComponents = [
     {
       'name': UtilService.toTitleCase(ActiveComponents.Navbar),
@@ -29,7 +28,6 @@ export class BuilderComponentsService {
   ];
 
   activeComponentIndex = new BehaviorSubject<number>(0);
-
   pageComponents = new BehaviorSubject<any>(null);
 
   constructor(
@@ -50,14 +48,6 @@ export class BuilderComponentsService {
         return UtilService.toTitleCase(ActiveComponents.Footer);
       default:
         return UtilService.toTitleCase(ActiveComponents.Placeholder);
-    }
-  }
-
-  static getTargetPageComponents(pageComponents, activePageIndex) {
-    for (let i = 0; i < pageComponents['pages'].length; i++) {
-      if (i === activePageIndex) {
-        return pageComponents['pages'][i];
-      }
     }
   }
 
@@ -156,85 +146,6 @@ export class BuilderComponentsService {
       tempOrderedComponentsArrayWithPlaceholders.push(component);
     }
     return tempOrderedComponentsArrayWithPlaceholders;
-  }
-
-  static setupFooterComponent(component, tempComponent) {
-    if (tempComponent) {
-      component['footerStyle'] = tempComponent['componentDetail']['footerStyle'];
-      component['footerSocialLinksContainerStyle'] = tempComponent['componentDetail']['footerSocialLinksContainerStyle'];
-      component['footerSocialLinksStyle'] = tempComponent['componentDetail']['footerSocialLinksStyle'];
-      component['footerCopyrightStyle'] = tempComponent['componentDetail']['footerCopyrightStyle'];
-      component['footerPageLinksStyle'] = tempComponent['componentDetail']['footerPageLinksStyle'];
-      component['footerComponentLayout'] = tempComponent['componentDetail']['footerComponentLayout'];
-      component['footerAlignmentClass'] = tempComponent['componentDetail']['footerAlignmentClass'];
-      component['footerSocialLinks'] = tempComponent['componentDetail']['footerSocialLinks'];
-      component['footerMenuOptions'] = tempComponent['componentDetail']['footerMenuOptions'];
-    }
-    return component;
-  }
-
-  static setupHeroComponent(component, tempComponent) {
-    if (tempComponent) {
-      component['heroButtonLink'] = tempComponent['componentDetail']['heroButtonLink'];
-      component['heroBackgroundStyle'] = tempComponent['componentDetail']['heroBackgroundStyle'];
-      component['heroHeadingStyle'] = tempComponent['componentDetail']['heroHeadingStyle'];
-      component['heroSubheadingStyle'] = tempComponent['componentDetail']['heroSubheadingStyle'];
-      component['heroImageStyle'] = tempComponent['componentDetail']['heroImageStyle'];
-      component['heroButtonStyle'] = tempComponent['componentDetail']['heroButtonStyle'];
-      component['heroComponentLayout'] = tempComponent['componentDetail']['heroComponentLayout'];
-      component['heroHeadingText'] = tempComponent['componentDetail']['heroHeadingText'];
-      component['heroSubheadingText'] = tempComponent['componentDetail']['heroSubheadingText'];
-      component['heroHeadingText'] = tempComponent['componentDetail']['heroHeadingText'];
-      component['heroSubheadingText'] = tempComponent['componentDetail']['heroSubheadingText'];
-      component['heroButtonText'] = tempComponent['componentDetail']['heroButtonText'];
-    }
-    return component;
-  }
-
-  static setupFeaturesComponent(component, tempComponent) {
-    if (tempComponent) {
-      component['featuresStyle'] = tempComponent['componentDetail']['featuresStyle'];
-      component['featuresHeadingStyle'] = tempComponent['componentDetail']['featuresHeadingStyle'];
-      component['featuresSubheadingStyle'] = tempComponent['componentDetail']['featuresSubheadingStyle'];
-    }
-    component['featuresItemArray'] = [
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Building a website has never been easier than this! Get started today, free of cost.'
-      },
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Make our amazing library of templates and themes your own with our extensive range of custom options.'
-      },
-      {
-        'heading': UtilService.generateRandomWord(),
-        'subheading': 'Grow with ease and whilst receiving useful analytics. Its just what you need to blossom.'
-      }
-    ];
-    return component;
-  }
-
-  static setupNavbarComponent(component, tempComponent) {
-    if (tempComponent) {
-      component['navbarStyle'] = tempComponent['componentDetail']['navbarStyle'];
-      component['navbarLinkStyle'] = tempComponent['componentDetail']['navbarLinkStyle'];
-      component['navbarLogoImageStyle'] = tempComponent['componentDetail']['navbarLogoImageStyle'];
-      component['navbarBrandStyle'] = tempComponent['componentDetail']['navbarBrandStyle'];
-      component['navbarLogoText'] = tempComponent['componentDetail']['navbarLogoText'];
-      component['navbarLogoImage'] = tempComponent['componentDetail']['navbarLogoImage'];
-      component['navbarMenuOptions'] = tempComponent['componentDetail']['navbarMenuOptions'];
-      component['navbarLayoutClass'] = tempComponent['componentDetail']['navbarLayoutClass'];
-    }
-    return component;
-  }
-
-  static setupComponent(componentToAdd) {
-    return {
-      'componentIndex': componentToAdd['componentIndex'],
-      'componentId': componentToAdd['componentId'],
-      'componentName': componentToAdd['componentName'],
-      'timestamp': componentToAdd['timestamp']
-    };
   }
 
   static getActivePageIndex(pageComponents, componentToAdd) {

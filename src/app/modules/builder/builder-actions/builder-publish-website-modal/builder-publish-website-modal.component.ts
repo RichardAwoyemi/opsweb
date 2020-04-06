@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { WebsiteService } from '../../../../shared/services/website.service';
 import { Router } from '@angular/router';
+import { UtilService } from '../../../../shared/services/util.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-builder-publish-website-modal',
@@ -14,8 +16,10 @@ export class BuilderPublishWebsiteModalComponent implements IModalComponent, OnI
   websiteId: string;
 
   private websiteIdSubscription: Subscription;
+  private authSubscription: Subscription;
 
   constructor(
+    public afAuth: AngularFireAuth,
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
     private websiteService: WebsiteService,
@@ -37,12 +41,21 @@ export class BuilderPublishWebsiteModalComponent implements IModalComponent, OnI
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
-    this.router.navigate(['website', this.websiteId]).then(() => {
+    this.authSubscription = this.afAuth.authState.subscribe(result => {
+      if (result) {
+        this.websiteService.saveWebsite(result.uid).then(() => {
+          this.router.navigate(['websites', this.websiteId]).then(() => {
+            this.toastrService.success(`Your website has been published.`, 'Great!');
+          });
+        }).catch(() => {
+          this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
+        });
+      }
     });
-    this.toastrService.success(`Your website has been published.`, 'Great!');
   }
 
   ngOnDestroy() {
-    this.websiteIdSubscription.unsubscribe();
+    UtilService.safeUnsubscribe(this.websiteIdSubscription);
+    UtilService.safeUnsubscribe(this.authSubscription);
   }
 }
