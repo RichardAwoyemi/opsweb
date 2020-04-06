@@ -6,7 +6,7 @@ import { SectionHeaderGroupModule } from '../../shared/components/section-header
 import { FormRegisterModule } from '../../shared/components/form-register/form-register.module';
 
 const routes: Routes = [
-  {path: '', component: InviteComponent}
+  { path: '', component: InviteComponent }
 ];
 
 @NgModule({

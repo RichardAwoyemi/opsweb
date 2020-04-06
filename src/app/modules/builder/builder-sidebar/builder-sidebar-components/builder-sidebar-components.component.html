@@ -4,9 +4,9 @@
     <span class="input-group-text"><i class="ti-search"></i></span>
   </div>
   <label for="search-components"></label>
-  <input class="builder-sidebar-components-search form-control"
-         id="search-components"
-         (keyup)="searchText.trim();" [(ngModel)]="searchText"
+  <input (keyup)="searchText.trim();"
+         [(ngModel)]="searchText"
+         class="builder-sidebar-components-search form-control" id="search-components"
          placeholder="Search Components" type="text">
 </div>
 <div class="row">
@@ -17,14 +17,14 @@
          a degraded UI experience when dragging and dropping components. Use (dragstart) or (dragEnd) instead.
       -->
       <div (click)="clearActiveComponent();"
-           (dragstart)="onComponentSelect(getComponent(component.selector))"
+           (dragstart)="onComponentSelect(getComponent(component.name))"
            [attr.data-src]="'../assets/img/component-icon.svg'"
            class="card text-white bg-img justify-content-center component-icon"
            data-overlay="6" draggable="true"
            style="height: 100px; margin-bottom: 1em">
         <div #dropdown="ngbDropdown" ngbDropdown placement="bottom">
-          <div class="builder-sidebar-components-{{ component.name | lowercase }} card-body text-center flex-grow-0"
-               (click)="$event.stopPropagation(); dropdown.open();">
+          <div (click)="$event.stopPropagation(); dropdown.open();"
+               class="builder-sidebar-components-{{ component.name | lowercase }} card-body text-center flex-grow-0">
             <img alt="{{ component.name | lowercase }}-component"
                  class="builder-sidebar-components-{{ component.name | lowercase }}"
                  src="../assets/img/{{ component.name | lowercase }}-component-icon.svg"

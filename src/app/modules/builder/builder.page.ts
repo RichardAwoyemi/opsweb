@@ -10,6 +10,7 @@ import { BuilderComponentsService } from './builder-components/builder-component
 import { ActiveComponents, ActiveElements } from './builder';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth/auth.service';
+import { TemplateService } from 'src/app/shared/services/template.service';
 
 @Component({
   selector: 'app-builder',
@@ -32,6 +33,7 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     private shepherdService: ShepherdService,
     private toastrService: ToastrService,
     private authService: AuthService,
+    private templateService: TemplateService,
     private builderComponentsService: BuilderComponentsService) {
   }
 
@@ -63,12 +65,14 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.websiteSubscription = this.websiteService.getWebsiteById(id).subscribe((response => {
           if (response && response['pages']) {
             this.websiteService.websiteName.next(response['name']);
-              this.builderComponentsService.pageComponents.next({
-                'pages': response['pages'],
-                'template': response['template']
-              });
+            this.builderComponentsService.pageComponents.next({
+              'pages': response['pages'],
+              'template': response['template']
+            });
           } else {
-            this.builderComponentsService.pageComponents.next(this.builderComponentsService.defaultPageComponents.getValue());
+            this.templateService.getWebsite('default').then(getWebsiteResponse => {
+              this.builderComponentsService.pageComponents.next(getWebsiteResponse);
+            });
             if (!this.authService.isLoggedIn()) {
               this.toastrService.warning('All changes will not be saved until you create an account.');
               localStorage.setItem('builderTourComplete', 'false');

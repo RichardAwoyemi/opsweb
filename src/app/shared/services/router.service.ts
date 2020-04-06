@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class RouterService {
+  currentRoute = new BehaviorSubject<string>('/');
+
   constructor(
     public router: Router
   ) {
   }
-
-  currentRoute = new BehaviorSubject<string>('/');
 
   static getCurrentRoute() {
     const currentRoute = localStorage.getItem('currentRoute');

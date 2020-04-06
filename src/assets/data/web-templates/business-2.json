@@ -1,148 +1,204 @@
 {
   "id": "business-2",
-  "navbarStyle": {
-    "background-color": "#FFFFFF",
-    "display": "flex",
-    "font-family": "'Poppins', sans-serif",
-    "padding": "2em"
+  "name": "Front",
+  "navbar": {
+    "style": {
+      "navbarStyle": {
+        "background-color": "#FFFFFF",
+        "display": "flex",
+        "font-family": "'Poppins', sans-serif",
+        "padding": "2em"
+      },
+      "navbarLinkStyle": {
+        "color": "rgb(119, 131, 143)",
+        "padding-bottom": "24px",
+        "padding-left": "14px",
+        "padding-right": "14px",
+        "padding-top": "24px",
+        "font-size": "16px",
+        "font-weight": "400",
+        "line-height": "24px",
+        "font-family": "'Poppins', sans-serif",
+        "display": "block"
+      },
+      "navbarLogoImageStyle": {
+        "height": "55px",
+        "padding-top": "4px",
+        "padding-left": "4px",
+        "padding-right": "4px",
+        "padding-bottom": "4px",
+        "width": "100px"
+      },
+      "navbarBrandStyle": {
+        "color": "#377DFF",
+        "margin-right": "1rem",
+        "font-size": "20px",
+        "line-height": "inherit",
+        "white-space": "nowrap",
+        "padding-top": "0px",
+        "padding-left": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "font-family": "'Poppins', sans-serif",
+        "width": "100px"
+      }
+    },
+    "details": {
+      "navbarLogoText": "Logo",
+      "navbarLayoutClass": "navbar-nav ml-auto",
+      "navbarLogoImage": "../assets/img/default-logo.svg",
+      "navbarTheme": "default"
+    }
   },
-  "navbarLinkStyle": {
-    "color": "rgb(119, 131, 143)",
-    "padding-bottom": "24px",
-    "padding-left": "14px",
-    "padding-right": "14px",
-    "padding-top": "24px",
-    "font-size": "16px",
-    "font-weight": "400",
-    "line-height": "24px",
-    "font-family": "'Poppins', sans-serif",
-    "display": "block"
+  "hero": {
+    "style": {
+      "heroBackgroundStyle": {
+        "color": "#FFFFFF"
+      },
+      "heroHeadingStyle": {
+        "font-family": "'Poppins', sans-serif",
+        "color": "#1e2022",
+        "font-weight": "300",
+        "line-height": "1.2",
+        "font-size": "56px",
+        "padding-top": "0px",
+        "padding-left": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px"
+      },
+      "heroSubheadingStyle": {
+        "font-family": "'Poppins', sans-serif",
+        "color": "#757575",
+        "line-height": "34px",
+        "font-weight": "300",
+        "font-size": "20px",
+        "padding-top": "0px",
+        "padding-left": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px"
+      },
+      "heroImageStyle": {
+        "width": "100%",
+        "src": "../assets/img/business-2-hero.svg",
+        "alt": "business-2-hero.svg",
+        "padding-top": "0px",
+        "padding-left": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px"
+      },
+      "heroButtonStyle": {
+        "color": "#377dff",
+        "font-family": "'Poppins', sans-serif",
+        "min-width": "9.6875rem",
+        "background": "rgba(55, 125, 255, 0.1)",
+        "border-color": "transparent",
+        "text-transform": "none",
+        "text-align": "center",
+        "font-size": "16px",
+        "font-weight": "500",
+        "border-radius": "0.3125rem"
+      }
+    },
+    "details": {
+      "heroComponentLayout": 0,
+      "heroHeadingText": "Unleash your genius",
+      "heroSubheadingText": "Build a beautiful, modern website with flexible components built from scratch.",
+      "heroButtonText": "Learn more",
+      "heroTheme": "default"
+    }
   },
-  "navbarLogoImageStyle": {
-    "height": "55px",
-    "padding-top": "4px",
-    "padding-left": "4px",
-    "padding-right": "4px",
-    "padding-bottom": "4px",
-    "width": "100px"
+  "footer": {
+    "style": {
+      "footerStyle": {
+        "padding-top": "16px",
+        "padding-left": "16px",
+        "padding-right": "16px",
+        "padding-bottom": "16px",
+        "display": "block",
+        "background-color": "#FFFFFF",
+        "color": "#8c98a4"
+      },
+      "footerSocialLinksContainerStyle": {
+        "margin-left": "0px"
+      },
+      "footerSocialLinksStyle": {
+        "font-family": "'Poppins', sans-serif",
+        "font-size": "14px"
+      },
+      "footerPageLinksStyle": {
+        "font-family": "'Poppins', sans-serif",
+        "font-size": "14px",
+        "padding-left": "0px",
+        "padding-bottom": "16px",
+        "padding-top": "4px",
+        "padding-right": "16px"
+      },
+      "footerCopyrightStyle": {
+        "font-family": "'Poppins', sans-serif",
+        "padding-top": "0px",
+        "padding-left": "0px",
+        "padding-right": "0px",
+        "padding-bottom": "0px",
+        "font-size": "14px"
+      }
+    },
+    "details": {
+      "footerAlignmentClass": "text-center",
+      "footerComponentLayout": {
+        "layout": 0
+      },
+      "footerSocialLinks": {
+        "facebookUrl": null,
+        "twitterUrl": null,
+        "instagramUrl": null,
+        "youtubeUrl": null,
+        "githubUrl": null,
+        "linkedinUrl": null
+      },
+      "footerMenuOptions": [
+        {
+          "page": "Home",
+          "visible": false
+        },
+        {
+          "page": "About",
+          "visible": true
+        }
+      ]
+    }
   },
-  "navbarBrandStyle": {
-    "color": "#377DFF",
-    "margin-right": "1rem",
-    "font-size": "20px",
-    "line-height": "inherit",
-    "white-space": "nowrap",
-    "padding-top": "0px",
-    "padding-left": "0px",
-    "padding-right": "0px",
-    "padding-bottom": "0px",
-    "font-family": "'Poppins', sans-serif",
-    "width": "100px"
-  },
-  "heroBackgroundStyle": {
-    "color": "#FFFFFF"
-  },
-  "heroHeadingStyle": {
-    "font-family": "'Poppins', sans-serif",
-    "color": "#1e2022",
-    "font-weight": "300",
-    "line-height": "1.2",
-    "font-size": "56px",
-    "padding-top": "0px",
-    "padding-left": "0px",
-    "padding-right": "0px",
-    "padding-bottom": "0px"
-  },
-  "heroSubheadingStyle": {
-    "font-family": "'Poppins', sans-serif",
-    "color": "#757575",
-    "line-height": "34px",
-    "font-weight": "300",
-    "font-size": "20px",
-    "padding-top": "0px",
-    "padding-left": "0px",
-    "padding-right": "0px",
-    "padding-bottom": "0px"
-  },
-  "heroImageStyle": {
-    "width": "100%",
-    "src": "../assets/img/business-2-hero.svg",
-    "alt": "business-2-hero.svg",
-    "padding-top": "0px",
-    "padding-left": "0px",
-    "padding-right": "0px",
-    "padding-bottom": "0px"
-  },
-  "heroButtonStyle": {
-    "color": "#377dff",
-    "font-family": "'Poppins', sans-serif",
-    "min-width": "9.6875rem",
-    "background": "rgba(55, 125, 255, 0.1)",
-    "border-color": "transparent",
-    "text-transform": "none",
-    "text-align": "center",
-    "font-size": "16px",
-    "font-weight": "500",
-    "border-radius": "0.3125rem"
-  },
-  "footerStyle": {
-    "padding-top": "16px",
-    "padding-left": "16px",
-    "padding-right": "16px",
-    "padding-bottom": "16px",
-    "display": "block",
-    "background-color": "#FFFFFF",
-    "color": "#8c98a4"
-  },
-  "footerSocialLinksContainerStyle": {
-    "margin-left": "0px"
-  },
-  "footerSocialLinksStyle": {
-    "font-family": "'Poppins', sans-serif",
-    "font-size": "14px"
-  },
-  "footerPageLinksStyle": {
-    "font-family": "'Poppins', sans-serif",
-    "font-size": "14px",
-    "padding-left": "0px",
-    "padding-bottom": "16px",
-    "padding-top": "4px",
-    "padding-right": "16px"
-  },
-  "footerCopyrightStyle": {
-    "font-family": "'Poppins', sans-serif",
-    "padding-top": "0px",
-    "padding-left": "0px",
-    "padding-right": "0px",
-    "padding-bottom": "0px",
-    "font-size": "14px"
-  },
-  "featuresHeadingStyle": {
-    "font-family": "'Poppins', sans-serif",
-    "font-size": "20px",
-    "font-weight": "bold",
-    "color": "#000",
-    "padding-left": "10px",
-    "padding-bottom": "5px",
-    "margin-bottom": "5px",
-    "padding-top": "0px",
-    "padding-right": "10px"
-  },
-  "featuresSubheadingStyle": {
-    "font-family": "'Poppins', sans-serif",
-    "font-size": "13px",
-    "color": "#757575",
-    "padding-left": "10px",
-    "padding-bottom": "0px",
-    "padding-top": "0px",
-    "padding-right": "10px"
-  },
-  "featuresStyle": {
-    "background-color": "#FFFFFF",
-    "padding-left": "10px",
-    "padding-bottom": "14px",
-    "padding-top": "14px",
-    "padding-right": "10px",
-    "width": "33.3%"
+  "features": {
+    "style": {
+      "featuresHeadingStyle": {
+        "font-family": "'Poppins', sans-serif",
+        "font-size": "20px",
+        "font-weight": "bold",
+        "color": "#000",
+        "padding-left": "10px",
+        "padding-bottom": "5px",
+        "margin-bottom": "5px",
+        "padding-top": "0px",
+        "padding-right": "10px"
+      },
+      "featuresSubheadingStyle": {
+        "font-family": "'Poppins', sans-serif",
+        "font-size": "13px",
+        "color": "#757575",
+        "padding-left": "10px",
+        "padding-bottom": "0px",
+        "padding-top": "0px",
+        "padding-right": "10px"
+      },
+      "featuresStyle": {
+        "background-color": "#FFFFFF",
+        "padding-left": "10px",
+        "padding-bottom": "14px",
+        "padding-top": "14px",
+        "padding-right": "10px"
+      }
+    },
+    "details": {
+      "featuresWidth": "33.3%"
+    }
   }
 }

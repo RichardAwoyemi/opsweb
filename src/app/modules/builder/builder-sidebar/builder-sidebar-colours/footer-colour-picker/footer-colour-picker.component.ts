@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { WebsiteService } from '../../../../../shared/services/website.service';
+import { TemplateService } from '../../../../../shared/services/template.service';
 
 @Component({
   selector: 'app-footer-colour-picker',
@@ -29,7 +30,8 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
   constructor(
     private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService,
-    private websiteService: WebsiteService
+    private websiteService: WebsiteService,
+    private templateService: TemplateService
   ) {
   }
 
@@ -56,9 +58,9 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
       if (templateResponse) {
         this.footerTemplate = templateResponse['template'];
 
-        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
+        this.defaultFooterStyleSubscription = this.templateService.getTemplateStyle(this.footerTemplate).subscribe(response => {
           if (response) {
-            this.defaultFooterStyle = response;
+            this.defaultFooterStyle = response[ActiveComponents.Footer];
           }
         });
       }
@@ -96,8 +98,8 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
 
   resetToDefault() {
     this.builderFooterService.footerTheme.next(ActiveThemes.Default);
-    this.footerStyle['background-color'] = this.defaultFooterStyle['footerStyle']['background-color'];
-    this.footerStyle['color'] = this.defaultFooterStyle['footerStyle']['color'];
+    this.footerStyle['background-color'] = this.defaultFooterStyle['style']['footerStyle']['background-color'];
+    this.footerStyle['color'] = this.defaultFooterStyle['style']['footerStyle']['color'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', ActiveThemes.Default);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);

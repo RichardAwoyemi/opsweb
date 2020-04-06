@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 import { BuilderComponentsService } from '../builder-components.service';
+import { TemplateService } from 'src/app/shared/services/template.service';
 
 @Injectable()
 export class BuilderHeroService {
-  constructor(
-    private httpClient: HttpClient,
-    private builderComponentsService: BuilderComponentsService
-  ) {
-  }
-
   heroHeadingStyle = new BehaviorSubject<Object>(null);
   heroBackgroundStyle = new BehaviorSubject<Object>(null);
   heroSubheadingStyle = new BehaviorSubject<Object>(null);
@@ -26,14 +21,17 @@ export class BuilderHeroService {
   heroHeadingText = new BehaviorSubject<string>(null);
   heroSubheadingText = new BehaviorSubject<string>(null);
   heroButtonText = new BehaviorSubject<string>(null);
-  heroComponentLayout = new BehaviorSubject<Object>({'layout': 0});
+  heroComponentLayout = new BehaviorSubject<number>(null);
   heroTextContainerClass = new BehaviorSubject(<string>('col-12 col-md-7 col-lg-6 order-md-1 pr-md-5'));
   heroImageContainerClass = new BehaviorSubject(<string>('col-12 col-md-5 col-lg-6 order-md-2'));
-
-  private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
-  private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
-  private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
   private HERO_THEME_PATH = './assets/data/web-themes/hero.json';
+
+  constructor(
+    private templateService: TemplateService,
+    private httpClient: HttpClient,
+    private builderComponentsService: BuilderComponentsService
+  ) {
+  }
 
   static validateHeroImageStyle(heroImageStyle) {
     if (!heroImageStyle['src'] || !heroImageStyle['alt']) {
@@ -51,29 +49,16 @@ export class BuilderHeroService {
     return this.httpClient.get(this.HERO_THEME_PATH);
   }
 
-  setHeroTemplate(templateId) {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        this.httpClient.get(this.DEFAULT_TEMPLATE_PATH).subscribe(response => {
-          this.setHeroTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Quick:
-        this.httpClient.get(this.QUICK_TEMPLATE_PATH).subscribe(response => {
-          this.setHeroTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Front:
-        this.httpClient.get(this.FRONT_TEMPLATE_PATH).subscribe(response => {
-          this.setHeroTemplateStyle(response);
-        });
-        break;
-      default:
-        break;
-    }
+  setHeroTemplate(templateId: string) {
+    this.templateService.getTemplateStyle(templateId).subscribe(response => {
+      if (response) {
+        const template = response['hero']['style'];
+        this.setHeroTemplateStyle(template, templateId);
+      }
+    });
   }
 
-  setHeroTemplateStyle(template: any) {
+  setHeroTemplateStyle(template: any, templateId: string) {
     this.heroBackgroundStyle.next(template['heroBackgroundStyle']);
     this.heroHeadingStyle.next(template['heroHeadingStyle']);
     this.heroSubheadingStyle.next(template['heroSubheadingStyle']);
@@ -82,8 +67,8 @@ export class BuilderHeroService {
     const heroImageStyle = this.heroImageStyle.getValue();
     if (BuilderHeroService.validateHeroImageStyle(heroImageStyle)) {
       this.heroImageStyle.next(template['heroImageStyle']);
-      this.heroImageUrl.next(`../assets/img/${template['id'].toLowerCase()}-hero.svg`);
-      this.heroImageAlt.next(`${template['id'].toLowerCase()}-hero.svg`);
+      this.heroImageUrl.next(`../assets/img/${templateId}-hero.svg`);
+      this.heroImageAlt.next(`${templateId.toLowerCase()}-hero.svg`);
     }
 
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroTheme', ActiveThemes.Default);
@@ -96,24 +81,6 @@ export class BuilderHeroService {
     }
   }
 
-  setComponentTemplate(templateId) {
-    this.heroTheme.next(ActiveThemes.Default);
-    this.heroTemplate.next(templateId);
-    this.setHeroTemplate(templateId);
-  }
-
-  getDefaultHeroStyle(templateId): Observable<any> {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
-      case ActiveTemplates.Quick:
-        return this.httpClient.get(this.QUICK_TEMPLATE_PATH);
-      case ActiveTemplates.Front:
-        return this.httpClient.get(this.FRONT_TEMPLATE_PATH);
-      default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
-    }
-  }
 
   setHeroTheme(themeId: string) {
     let response: any;

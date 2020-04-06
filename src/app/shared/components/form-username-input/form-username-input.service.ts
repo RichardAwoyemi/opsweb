@@ -3,5 +3,5 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class FormUsernameInputService {
-  usernameExists = new BehaviorSubject(<any>({'status': true}));
+  usernameExists = new BehaviorSubject(<any>({ 'status': true }));
 }

@@ -35,14 +35,14 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
     NgbPopoverModule,
     BuilderComponentsModule,
     SimpleModalModule,
-    SortablejsModule.forRoot({animation: 500}),
+    SortablejsModule.forRoot({ animation: 500 }),
     BuilderDynamicHtmlModule.forRoot({
       components: [
-        {component: BuilderNavbarComponent, selector: ActiveComponentsPartialSelector.Navbar},
-        {component: BuilderHeroComponent, selector: ActiveComponentsPartialSelector.Hero},
-        {component: BuilderPlaceholderComponent, selector: ActiveComponentsPartialSelector.Placeholder},
-        {component: BuilderFooterComponent, selector: ActiveComponentsPartialSelector.Footer},
-        {component: BuilderFeaturesComponent, selector: ActiveComponentsPartialSelector.Features}
+        { component: BuilderNavbarComponent, selector: ActiveComponentsPartialSelector.Navbar },
+        { component: BuilderHeroComponent, selector: ActiveComponentsPartialSelector.Hero },
+        { component: BuilderPlaceholderComponent, selector: ActiveComponentsPartialSelector.Placeholder },
+        { component: BuilderFooterComponent, selector: ActiveComponentsPartialSelector.Footer },
+        { component: BuilderFeaturesComponent, selector: ActiveComponentsPartialSelector.Features }
       ]
     }),
     RouterModule

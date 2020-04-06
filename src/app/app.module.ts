@@ -33,7 +33,7 @@ const routes: Routes = [
     AuthService,
     UtilService,
     CreditsService,
-    UserService
+    UserService,
   ],
   bootstrap: [AppComponent]
 })

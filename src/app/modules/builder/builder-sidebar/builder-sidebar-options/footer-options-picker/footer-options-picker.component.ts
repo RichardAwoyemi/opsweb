@@ -4,8 +4,9 @@ import { BuilderService } from '../../../builder.service';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { ActiveComponentsPartialSelector } from '../../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
 import { WebsiteService } from '../../../../../shared/services/website.service';
+import { TemplateService } from 'src/app/shared/services/template.service';
 
 @Component({
   selector: 'app-footer-options-picker',
@@ -56,6 +57,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   private footerSocialLinksSubscription: Subscription;
 
   constructor(
+    private templateService: TemplateService,
     private builderFooterService: BuilderFooterService,
     private builderService: BuilderService,
     private websiteService: WebsiteService,
@@ -105,9 +107,9 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       if (templateResponse) {
         this.footerTemplate = templateResponse['template'];
 
-        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
+        this.defaultFooterStyleSubscription = this.templateService.getTemplateStyle(this.footerTemplate).subscribe(response => {
           if (response) {
-            this.defaultFooterStyle = response;
+            this.defaultFooterStyle = response[ActiveComponents.Footer];
           }
         });
       }
@@ -231,7 +233,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterCopyrightFontName() {
-    this.footerCopyrightStyle['font-family'] = this.defaultFooterStyle['footerCopyrightStyle']['font-family'];
+    this.footerCopyrightStyle['font-family'] = this.defaultFooterStyle['style']['footerCopyrightStyle']['font-family'];
     const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
     this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
@@ -246,7 +248,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterCopyrightFontSize() {
-    this.footerCopyrightStyle['font-size'] = this.defaultFooterStyle['footerCopyrightStyle']['font-size'];
+    this.footerCopyrightStyle['font-size'] = this.defaultFooterStyle['style']['footerCopyrightStyle']['font-size'];
     this.footerCopyrightFontUnit = 'px';
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
@@ -278,7 +280,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterSocialLinksFontSize() {
-    this.footerSocialLinksStyle['font-size'] = this.defaultFooterStyle['footerSocialLinksStyle']['font-size'];
+    this.footerSocialLinksStyle['font-size'] = this.defaultFooterStyle['style']['footerSocialLinksStyle']['font-size'];
     this.footerSocialLinksFontUnit = 'px';
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
@@ -310,7 +312,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterPageLinksFontName() {
-    this.footerPageLinksStyle['font-family'] = this.defaultFooterStyle['footerPageLinksStyle']['font-family'];
+    this.footerPageLinksStyle['font-family'] = this.defaultFooterStyle['style']['footerPageLinksStyle']['font-family'];
     const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
     this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
@@ -325,7 +327,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterPagesLinkFontSize() {
-    this.footerPageLinksStyle['font-size'] = this.defaultFooterStyle['footerPageLinksStyle']['font-size'];
+    this.footerPageLinksStyle['font-size'] = this.defaultFooterStyle['style']['footerPageLinksStyle']['font-size'];
     this.footerPageLinksFontUnit = 'px';
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);

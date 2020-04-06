@@ -139,7 +139,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     if (numberOfPages + 1 > MAX_NUMBER_OF_PAGES) {
       this.toastrService.warning('You cannot create more than four pages.', 'Oops!');
     } else {
-      this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
+      this.modalService.open(BuilderNewPageModalComponent, { windowClass: 'modal-holder', centered: true });
     }
   }
 
@@ -182,9 +182,9 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
 
   openSaveWebsiteModal() {
     if (!this.authService.isLoggedIn()) {
-      this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+      this.modalService.open(BuilderCreateAccountModalComponent, { windowClass: 'modal-holder', centered: true });
     } else {
-      this.modalService.open(BuilderSaveWebsiteModalComponent, {windowClass: 'modal-holder', centered: true});
+      this.modalService.open(BuilderSaveWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
     }
   }
 

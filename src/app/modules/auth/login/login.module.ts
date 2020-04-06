@@ -10,7 +10,7 @@ import { SocialLoginButtonGroupModule } from 'src/app/shared/components/social-l
 import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent, canActivate: [AnonymousGuard]},
+  { path: '', component: LoginComponent, canActivate: [AnonymousGuard] },
 ];
 
 @NgModule({

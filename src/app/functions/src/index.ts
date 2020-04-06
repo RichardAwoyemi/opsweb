@@ -63,3 +63,53 @@ exports.getWebsiteIdByName = functions.https.onRequest((req: any, res: any) => {
       res.end(`{ "websiteId": null }`);
     });
 });
+
+exports.createWebsite = functions.firestore
+  .document('websites/{websiteId}').onCreate(() => {
+    const ref = admin.firestore().collection('counters').doc('websites');
+    return admin.firestore().runTransaction(async (transaction: any) => {
+      const doc = await transaction.get(ref);
+      if (!doc.exists) {
+        transaction.set(ref, { counter: 1 });
+        return 1;
+      }
+      const newCount = doc.data().counter + 1;
+      transaction.update(ref, {
+        counter: newCount,
+      });
+      return newCount;
+    })
+      .then((newCount: any) => {
+        console.log(
+          `Transaction successfully committed and new websites count is '${newCount}'.`
+        );
+      })
+      .catch((error: any) => {
+        console.log('Transaction failed: ', error);
+      });
+  });
+
+exports.deleteWebsites = functions.firestore
+  .document('websites/{websiteId}').onDelete(() => {
+    const ref = admin.firestore().collection('counters').doc('websites');
+    return admin.firestore().runTransaction(async (transaction: any) => {
+      const doc = await transaction.get(ref);
+      if (!doc.exists) {
+        transaction.set(ref, { counter: 0 });
+        return 0;
+      }
+      const newCount = doc.data().counter - 1;
+      transaction.update(ref, {
+        counter: newCount,
+      });
+      return newCount;
+    })
+      .then((newCount: any) => {
+        console.log(
+          `Transaction successfully committed and new websites count is '${newCount}'.`
+        );
+      })
+      .catch((error: any) => {
+        console.log('Transaction failed: ', error);
+      });
+  });

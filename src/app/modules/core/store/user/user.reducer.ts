@@ -31,11 +31,11 @@ const initialState: IUser = {
 
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.getData, state => ({...state})),
-  on(UserActions.dataReceived, (state, payload) => ({...state, ...payload.payload})),
-  on(UserActions.dataNotReceived, state => ({...state})),
-  on(UserActions.signOut, state => ({...state})),
-  on(UserActions.signOutSuccess, state => ({...state, ...initialState})),
+  on(UserActions.getData, state => ({ ...state })),
+  on(UserActions.dataReceived, (state, payload) => ({ ...state, ...payload.payload })),
+  on(UserActions.dataNotReceived, state => ({ ...state })),
+  on(UserActions.signOut, state => ({ ...state })),
+  on(UserActions.signOutSuccess, state => ({ ...state, ...initialState })),
 );
 
 export function reducer(state: IUser | undefined, action: Action) {

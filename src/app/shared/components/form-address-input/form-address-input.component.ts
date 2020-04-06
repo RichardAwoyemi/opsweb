@@ -44,7 +44,7 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
           if (this.user.streetAddress1) {
             this.streetAddress1 = this.user.streetAddress1;
             this.userService.streetAddress1.next(this.streetAddress1);
-            this.formAddressInputService.showStreetAddressInputError.next({'status': false});
+            this.formAddressInputService.showStreetAddressInputError.next({ 'status': false });
           }
           if (this.user.streetAddress2) {
             this.streetAddress2 = this.user.streetAddress2;
@@ -53,12 +53,12 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
           if (this.user.city) {
             this.city = this.user.city;
             this.userService.city.next(this.city);
-            this.formAddressInputService.showCityInputError.next({'status': false});
+            this.formAddressInputService.showCityInputError.next({ 'status': false });
           }
           if (this.user.postcode) {
             this.postcode = this.user.postcode;
             this.userService.postcode.next(this.postcode);
-            this.formAddressInputService.showPostcodeInputError.next({'status': false});
+            this.formAddressInputService.showPostcodeInputError.next({ 'status': false });
           }
         }
       });
@@ -110,13 +110,13 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
     if (this.streetAddress1) {
       this.streetAddress1 = this.streetAddress1.trim();
       if (this.streetAddress1.length > 5) {
-        this.formAddressInputService.showStreetAddressInputError.next({'status': false});
+        this.formAddressInputService.showStreetAddressInputError.next({ 'status': false });
       } else {
-        this.formAddressInputService.showStreetAddressInputError.next({'status': true});
+        this.formAddressInputService.showStreetAddressInputError.next({ 'status': true });
       }
       this.userService.streetAddress1.next(this.streetAddress1);
     } else {
-      this.formAddressInputService.showStreetAddressInputError.next({'status': true});
+      this.formAddressInputService.showStreetAddressInputError.next({ 'status': true });
     }
   }
 
@@ -130,20 +130,20 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
   checkCityInput() {
     if (this.city) {
       this.city = this.city.trim();
-      this.formAddressInputService.showCityInputError.next({'status': false});
+      this.formAddressInputService.showCityInputError.next({ 'status': false });
       this.userService.city.next(this.city);
     } else {
-      this.formAddressInputService.showCityInputError.next({'status': true});
+      this.formAddressInputService.showCityInputError.next({ 'status': true });
     }
   }
 
   checkPostcodeInput() {
     if (this.postcode) {
       this.postcode = this.postcode.trim();
-      this.formAddressInputService.showPostcodeInputError.next({'status': false});
+      this.formAddressInputService.showPostcodeInputError.next({ 'status': false });
       this.userService.postcode.next(this.postcode);
     } else {
-      this.formAddressInputService.showPostcodeInputError.next({'status': true});
+      this.formAddressInputService.showPostcodeInputError.next({ 'status': true });
     }
   }
 

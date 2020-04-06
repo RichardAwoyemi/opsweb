@@ -7,8 +7,8 @@
         <div style="padding: 12px">
           <div
             (blur)="saveFeaturesHeadingStyleText($event.target['innerText'], i);"
-            (keydown.enter)="saveFeaturesHeadingStyleText($event.target['innerText'], i); $event.preventDefault()"
             (click)="selectFeaturesElement($event, componentId+'-'+'heading'+'-'+i)"
+            (keydown.enter)="saveFeaturesHeadingStyleText($event.target['innerText'], i); $event.preventDefault()"
             [attr.contenteditable]="setContentEditable()"
             [class]="setActiveElement(componentId+'-'+'heading'+'-'+i)"
             [innerText]="feature['heading']"
@@ -17,8 +17,8 @@
           </div>
           <div
             (blur)="saveFeaturesSubheadingStyleText($event.target['innerText'], i);"
-            (keydown.enter)="saveFeaturesSubheadingStyleText($event.target['innerText'], i); $event.preventDefault()"
             (click)="selectFeaturesElement($event, componentId+'-'+'subheading'+'-'+i)"
+            (keydown.enter)="saveFeaturesSubheadingStyleText($event.target['innerText'], i); $event.preventDefault()"
             [attr.contenteditable]="setContentEditable()"
             [class]="setActiveElement(componentId+'-'+'subheading'+'-'+i)"
             [innerText]="feature['subheading']"

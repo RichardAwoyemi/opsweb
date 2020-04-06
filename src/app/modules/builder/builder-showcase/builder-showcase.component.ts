@@ -31,7 +31,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
   iframeHolderHeight = 184;
   iframeHeight = 180;
   activeShowcaseOrientation: string;
-  @ViewChild('iframe', {static: false}) iframe: ElementRef;
+  @ViewChild('iframe', { static: false }) iframe: ElementRef;
   private activeOrientationSubscription: Subscription;
   private previewModeSubscription: Subscription;
 
@@ -93,7 +93,8 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
     this.builderService.activeEditComponentId.next(null);
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
     this.builderService.activeElement.next(ActiveElements.Default);
-    window.postMessage({'for': 'opsonion', 'action': 'duplicate-component-deselected'}, '*');
+    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected' }, '*');
+    window.postMessage({ 'for': 'opsonion', 'action': 'deselect-text', }, '*');
     this.builderService.setSidebarComponentsSetting();
   }
 }

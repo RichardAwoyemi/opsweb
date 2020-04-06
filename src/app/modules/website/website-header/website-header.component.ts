@@ -27,7 +27,7 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
     this.websiteNameSubscription = this.websiteService.websiteName.subscribe(response => {
       if (response) {

@@ -38,18 +38,18 @@ export class LoginButtonGroupComponent implements OnInit {
   }
 
   googleSignIn() {
-    this.store.dispatch(authActions.googleSignIn());
-  }
-
-  mobileGoogleSignIn() {
-    this.store.dispatch(authActions.mobileGoogleSignIn());
+    if (this.isMobile['matches'] === true) {
+      this.store.dispatch(authActions.mobileGoogleSignIn());
+    } else {
+      this.store.dispatch(authActions.googleSignIn());
+    }
   }
 
   facebookSignIn() {
-    this.store.dispatch(authActions.facebookSignIn());
-  }
-
-  mobileFacebookSignIn() {
-    this.store.dispatch(authActions.mobileFacebookSignIn());
+    if (this.isMobile['matches'] === true) {
+      this.store.dispatch(authActions.mobileFacebookSignIn());
+    } else {
+      this.store.dispatch(authActions.facebookSignIn());
+    }
   }
 }

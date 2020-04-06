@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 import { ActiveComponents, ActiveSettings } from '../../builder';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   selector: 'app-builder-sidebar-menu',
@@ -102,27 +103,7 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
 
   setActiveEditSetting(settingName: string) {
     this.builderService.setActiveEditSetting(settingName);
-    if (settingName === ActiveSettings.Templates) {
-      this.builderService.setSidebarTemplatesSetting();
-    }
-    if (settingName === ActiveSettings.Colours) {
-      this.builderService.setSidebarColoursSetting();
-    }
-    if (settingName === ActiveSettings.Components) {
-      this.builderService.setSidebarComponentsSetting();
-    }
-    if (settingName === ActiveSettings.Layout) {
-      this.builderService.setSidebarLayoutSetting();
-    }
-    if (settingName === ActiveSettings.Options) {
-      this.builderService.setSidebarOptionsSetting();
-    }
-    if (settingName === ActiveSettings.Pages) {
-      this.builderService.setSidebarPagesSetting();
-    }
-    if (settingName === ActiveSettings.Data) {
-      this.builderService.setSidebarDataSetting();
-    }
+    this.builderService[`setSidebar${UtilService.titleCase(settingName)}Setting`]();
   }
 
   validateActiveEditComponent() {

@@ -5,7 +5,7 @@ import { UtilService } from './util.service';
 export interface ImgurResponse {
   data: any;
   success: boolean;
-  status: number;
+  status: any;
 }
 
 @Injectable()
@@ -24,6 +24,6 @@ export class ImgurService {
     formData.append('image', base64Img);
     formData.append('name', UtilService.generateRandomString(32));
     formData.append('type', 'base64');
-    return this.http.post<ImgurResponse>(`${this.IMGUR_UPLOAD_URL}`, formData, {headers});
+    return this.http.post<ImgurResponse>(`${this.IMGUR_UPLOAD_URL}`, formData, { headers });
   }
 }

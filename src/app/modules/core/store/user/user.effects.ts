@@ -28,7 +28,7 @@ export class UserEffects {
     switchMap(() => {
       return this.userService.getUserById(localStorage.getItem('uid')).pipe(
         map(
-          (data: IUser) => UserActions.dataReceived({payload: UserService.parseData(data)})
+          (data: IUser) => UserActions.dataReceived({ payload: UserService.parseData(data) })
         )
       );
     })

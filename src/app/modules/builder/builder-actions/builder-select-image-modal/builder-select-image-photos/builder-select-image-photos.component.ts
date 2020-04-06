@@ -49,7 +49,7 @@ export class BuilderSelectImagePhotosComponent implements OnInit, OnDestroy {
 
   setImageSelection(i: number) {
     if (i === this.selectedImageIndex) {
-      return {'background-color': '#dee6fc'};
+      return { 'background-color': '#dee6fc' };
     } else {
       return {};
     }

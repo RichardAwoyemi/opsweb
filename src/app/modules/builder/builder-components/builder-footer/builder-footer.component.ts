@@ -6,6 +6,8 @@ import { IComponent } from '../../../../shared/models/component';
 import { BuilderFooterService } from './builder-footer.service';
 import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
 import { BuilderComponentsService } from '../builder-components.service';
+import { TemplateService } from 'src/app/shared/services/template.service';
+import { UtilService } from '../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-hero',
@@ -57,8 +59,10 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   private activePageSettingSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
   private websiteModeSubscription: Subscription;
+  private templateServceSubscription: Subscription;
 
   constructor(
+    private templateServce: TemplateService,
     private builderService: BuilderService,
     private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
@@ -79,6 +83,12 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
 
     this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
       this.websiteMode = response;
+    });
+
+    this.templateServceSubscription = this.templateServce.activeTemplate.subscribe(response => {
+      if (response) {
+        this.builderFooterService.setFooterTemplateStyle(response[this.componentName]['style']);
+      }
     });
 
     this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
@@ -183,12 +193,12 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
                 for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
                   if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
                     this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                    this.builderFooterService.footerStyle.next(this.componentDetail['footerStyle']);
+                    this.builderFooterService.footerStyle.next(this.componentDetail['style']['footerStyle']);
                     this.builderFooterService.footerMenuOptions.next(this.componentDetail['footerMenuOptions']);
-                    this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['footerSocialLinksContainerStyle']);
-                    this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['footerSocialLinksStyle']);
-                    this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['footerPageLinksStyle']);
-                    this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['footerCopyrightStyle']);
+                    this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['style']['footerSocialLinksContainerStyle']);
+                    this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['style']['footerSocialLinksStyle']);
+                    this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['style']['footerPageLinksStyle']);
+                    this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['style']['footerCopyrightStyle']);
                     this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
                     this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
                     this.builderFooterService.footerSocialLinks.next(this.componentDetail['footerSocialLinks']);
@@ -294,7 +304,12 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
     }
   }
 
+  openUrlInNewTab(footerSocialLink: any) {
+    UtilService.openUrlInNewTab(footerSocialLink);
+  }
+
   ngOnDestroy() {
+    this.templateServceSubscription.unsubscribe();
     this.footerStyleSubscription.unsubscribe();
     this.footerPageLinksStyleSubscription.unsubscribe();
     this.footerSocialLinksStyleSubscription.unsubscribe();

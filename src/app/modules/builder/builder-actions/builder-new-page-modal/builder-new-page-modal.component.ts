@@ -83,7 +83,7 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
 
     const footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
-    footerMenuOptions.push({'page': UtilService.toTitleCase(this.pageName), 'visible': false});
+    footerMenuOptions.push({ 'page': UtilService.toTitleCase(this.pageName), 'visible': false });
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
     this.builderFooterService.footerMenuOptions.next(footerMenuOptions);
 
