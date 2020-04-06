@@ -52,7 +52,9 @@ import { CreditsService } from '../../../shared/services/credits.service';
     DashboardBodyWebsitesComponent,
     DashboardBodyRewardsComponent,
     DashboardBodyTemplatesComponent,
-    DashboardBodyComponent
+    DashboardBodyComponent,
+    SettingsProfileComponent,
+    SettingsBillingComponent
   ],
   entryComponents: [
     CropImageModalComponent

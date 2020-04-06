@@ -4,12 +4,14 @@ import { NGXLogger } from 'ngx-logger';
 import { BuilderComponentsService } from '../../modules/builder/builder-components/builder-components.service';
 import { map } from 'rxjs/operators';
 import { BuilderService } from '../../modules/builder/builder.service';
-import { ActiveTemplates } from '../../modules/builder/builder';
+import { ActiveStructures } from '../../modules/builder/builder';
 import { UtilService } from './util.service';
 import { IUser } from '../models/user';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Template } from '../models/template';
+import { TemplateService } from './template.service';
 
 @Injectable()
 export class WebsiteService {
@@ -26,6 +28,7 @@ export class WebsiteService {
     private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
     private toastrService: ToastrService,
+    private templateService: TemplateService,
     public logger: NGXLogger,
     private ngZone: NgZone,
     public router: Router
@@ -39,56 +42,33 @@ export class WebsiteService {
     this.toastrService.success('Your website has been created.', 'Great!');
   }
 
-  createWebsiteFromTemplate(template: string, user: IUser) {
+  async createWebsiteFromTemplate(template: Template, user: IUser) {
     const websiteName = UtilService.generateWebsiteName();
     const documentId = this.afs.createId();
     const documentPath = `websites/${documentId}`;
     const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-
-    const frontPageComponents = this.builderComponentsService.frontPageComponents.getValue();
-    const quickPageComponents = this.builderComponentsService.quickPageComponents.getValue();
-    const defaultPageComponents = this.builderComponentsService.defaultPageComponents.getValue();
-
-    this.websiteOwnershipSubscription = this.getWebsitesByUserId(user.uid).subscribe(websitesOwnedByUser => {
-      if (websitesOwnedByUser.length < this.MAX_NUMBER_OF_WEBSITES) {
-        switch (template['id']) {
-          case ActiveTemplates.Front:
+    await this.templateService.getWebsite(template['id'].toLowerCase(), ActiveStructures.Default).then(response => {
+      if (response) {
+        this.websiteOwnershipSubscription = this.getWebsitesByUserId(user.uid).subscribe(websitesOwnedByUser => {
+          if (websitesOwnedByUser.length < this.MAX_NUMBER_OF_WEBSITES) {
             documentRef.set({
               name: websiteName,
               id: documentId,
               createdBy: user.uid,
-              pages: frontPageComponents['pages'],
-              template: ActiveTemplates.Front
+              pages: response['pages'],
+              template: template['id']
             }, { merge: true });
-            break;
-          case ActiveTemplates.Quick:
-            documentRef.set({
-              name: websiteName,
-              id: documentId,
-              createdBy: user.uid,
-              pages: quickPageComponents['pages'],
-              template: ActiveTemplates.Quick
-            }, { merge: true });
-            break;
-          default:
-            documentRef.set({
-              name: websiteName,
-              id: documentId,
-              createdBy: user.uid,
-              pages: defaultPageComponents['pages'],
-              template: ActiveTemplates.Default
-            }, { merge: true });
-            break;
-        }
-        this.builderService.setSidebarComponentsSetting();
-        this.builderService.activePageIndex.next(0);
-        this.toastrService.success('Your website has been created.', 'Great!');
-        this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+            this.builderService.setSidebarComponentsSetting();
+            this.builderService.activePageIndex.next(0);
+            this.toastrService.success('Your website has been created.', 'Great!');
+            this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+            });
+          } else {
+            this.toastrService.warning('You cannot create more than 3 websites on your current plan.', 'Oops!');
+          }
+          this.websiteOwnershipSubscription.unsubscribe();
         });
-      } else {
-        this.toastrService.warning('You cannot create more than 3 websites on your current plan.', 'Oops!');
       }
-      this.websiteOwnershipSubscription.unsubscribe();
     });
   }
 

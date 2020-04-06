@@ -10,9 +10,9 @@ import { IUser } from '../../../../shared/models/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from '../../../core/store/user/user.reducer';
 import { Router } from '@angular/router';
-import { BuilderComponentsService } from '../../../builder/builder-components/builder-components.service';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../../builder/builder.service';
+import { TemplateService } from 'src/app/shared/services/template.service';
 
 @Component({
   selector: 'app-dashboard-create-website-modal',
@@ -33,7 +33,7 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
     private afs: AngularFirestore,
     private userStore: Store<fromUser.State>,
     private websiteService: WebsiteService,
-    private builderComponentsService: BuilderComponentsService,
+    private templateService: TemplateService,
     public router: Router
   ) {
   }
@@ -51,31 +51,33 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
 
   onConfirmButtonClick() {
     this.websiteName = this.websiteName.toLowerCase();
-    this.websiteAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.websiteName).subscribe(websitesWithSameName => {
+    this.websiteAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.websiteName).subscribe(async websitesWithSameName => {
       if (websitesWithSameName.size === 0) {
         const documentId = this.afs.createId();
         const documentPath = `websites/${documentId}`;
-        const defaultPageComponents = this.builderComponentsService.defaultPageComponents.getValue();
-        const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-        this.websiteOwnershipSubscription = this.websiteService.getWebsitesByUserId(this.user.uid).subscribe(websitesOwnedByUser => {
-          if (websitesOwnedByUser.length < 3) {
-            documentRef.set({
-              name: this.websiteName,
-              id: documentId,
-              createdBy: this.user.uid,
-              pages: defaultPageComponents['pages'],
-              template: defaultPageComponents['template']
-            }, { merge: true });
-            this.builderService.setSidebarComponentsSetting();
-            this.builderService.activePageIndex.next(0);
-            this.toastrService.success('Your website has been created.');
-            this.activeModal.close();
-            this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
-            });
-          } else {
-            this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
-          }
-          this.websiteOwnershipSubscription.unsubscribe();
+        await this.templateService.getWebsite('default').then(response => {
+          const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
+          this.websiteOwnershipSubscription = this.websiteService.getWebsitesByUserId(this.user.uid).subscribe(websitesOwnedByUser => {
+            if (websitesOwnedByUser.length < 3) {
+              documentRef.set({
+                name: this.websiteName,
+                id: documentId,
+                createdBy: this.user.uid,
+                pages: response['pages'],
+                template: response['template']
+              }, { merge: true }).then(() => {
+              });
+              this.builderService.setSidebarComponentsSetting();
+              this.builderService.activePageIndex.next(0);
+              this.toastrService.success('Your website has been created.');
+              this.activeModal.close();
+              this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+              });
+            } else {
+              this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
+            }
+            this.websiteOwnershipSubscription.unsubscribe();
+          });
         });
       } else {
         this.toastrService.error(`A website with this name already exists.`);

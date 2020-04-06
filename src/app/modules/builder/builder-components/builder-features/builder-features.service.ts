@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BuilderService } from '../../builder.service';
 import { UtilService } from '../../../../shared/services/util.service';
 import { BuilderComponentsService } from '../builder-components.service';
+import { TemplateService } from '../../../../shared/services/template.service';
 
 @Injectable()
 export class BuilderFeaturesService {
@@ -18,16 +19,14 @@ export class BuilderFeaturesService {
   featuresAlignmentClass = new BehaviorSubject<string>('text-center');
   featuresBreakpoint = new BehaviorSubject<string>(null);
 
-  private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
-  private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
-  private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
   private FEATURES_THEME_PATH = './assets/data/web-themes/features.json';
 
   constructor(
     private httpClient: HttpClient,
     private breakpointObserver: BreakpointObserver,
     private builderComponentsService: BuilderComponentsService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private templateService: TemplateService
   ) {
     this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium, Breakpoints.Large, Breakpoints.XLarge]).subscribe(result => {
       if (result.breakpoints[Breakpoints.XSmall] || result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset]) {
@@ -66,25 +65,12 @@ export class BuilderFeaturesService {
   }
 
   setFeaturesTemplate(templateId: string) {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        this.httpClient.get(this.DEFAULT_TEMPLATE_PATH).subscribe(response => {
-          this.setFeaturesTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Quick:
-        this.httpClient.get(this.QUICK_TEMPLATE_PATH).subscribe(response => {
-          this.setFeaturesTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Front:
-        this.httpClient.get(this.FRONT_TEMPLATE_PATH).subscribe(response => {
-          this.setFeaturesTemplateStyle(response);
-        });
-        break;
-      default:
-        break;
-    }
+    this.templateService.getTemplateStyle(templateId).subscribe(response => {
+      if (response) {
+        const template = response['features']['style'];
+        this.setFeaturesTemplateStyle(template);
+      }
+    });
   }
 
   setFeaturesTemplateStyle(template: any) {
@@ -131,19 +117,6 @@ export class BuilderFeaturesService {
     }
   }
 
-  getDefaultFeaturesStyle(templateId): Observable<any> {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
-      case ActiveTemplates.Quick:
-        return this.httpClient.get(this.QUICK_TEMPLATE_PATH);
-      case ActiveTemplates.Front:
-        return this.httpClient.get(this.FRONT_TEMPLATE_PATH);
-      default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
-    }
-  }
-
   setNumberOfFeatures(componentId, number: number, orientation: string = null) {
     if (number && !isNaN(number) && number <= 8) {
       let multiplier: number;
@@ -180,7 +153,7 @@ export class BuilderFeaturesService {
     }
   }
 
-  setFeaturesWidth(orientation: string = null) {
+  setFeaturesWidth(orientation: string = null, providedComponentId = null) {
     const featureComponents = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Features);
     const pageComponents = this.builderComponentsService.pageComponents.getValue();
     if (featureComponents.length > 0) {
@@ -188,8 +161,7 @@ export class BuilderFeaturesService {
         const activePageIndex = featureComponents[i]['activePageIndex'];
         const activeComponentIndex = featureComponents[i]['activeComponentIndex'];
         const component = pageComponents['pages'][activePageIndex]['components'][activeComponentIndex];
-        const componentId = component['componentId'];
-        const featuresStyle = component['featuresStyle'];
+        const componentId = providedComponentId || component['componentId'];
         const number = component['featuresItemArray'].length;
 
         let multiplier: number;
@@ -203,15 +175,9 @@ export class BuilderFeaturesService {
           multiplier = 1;
         }
 
-        featuresStyle['width'] = 100 * multiplier / number + '%';
-        this.builderComponentsService.setPageComponentById(componentId, 'featuresStyle', featuresStyle);
+        const featuresWidth = 100 * multiplier / number + '%';
+        this.builderComponentsService.setPageComponentById(componentId, 'featuresWidth', featuresWidth);
       }
     }
-  }
-
-  setComponentTemplate(templateId) {
-    this.featuresTheme.next(ActiveThemes.Default);
-    this.featuresTemplate.next(templateId);
-    this.setFeaturesTemplate(templateId);
   }
 }

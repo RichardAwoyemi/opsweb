@@ -17,7 +17,7 @@
          a degraded UI experience when dragging and dropping components. Use (dragstart) or (dragEnd) instead.
       -->
       <div (click)="clearActiveComponent();"
-           (dragstart)="onComponentSelect(getComponent(component.selector))"
+           (dragstart)="onComponentSelect(getComponent(component.name))"
            [attr.data-src]="'../assets/img/component-icon.svg'"
            class="card text-white bg-img justify-content-center component-icon"
            data-overlay="6" draggable="true"

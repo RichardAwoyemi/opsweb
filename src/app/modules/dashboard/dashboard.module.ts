@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardService } from './dashboard.service';
 import { DashboardActionsModule } from './dashboard-actions/dashboard-actions.module';
 import { WebsiteService } from '../../shared/services/website.service';
+import { DashboardTabsModule } from './dashboard-tabs/dashboard-tabs.module';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent }
@@ -21,7 +22,11 @@ const routes: Routes = [
     DashboardBodyModule,
     DashboardActionsModule,
     DashboardSidebarModule,
+    DashboardTabsModule,
     CommonModule
+  ],
+  exports: [
+    DashboardComponent
   ],
   providers: [
     DashboardService,

@@ -94,6 +94,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
     this.builderService.activeElement.next(ActiveElements.Default);
     window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected' }, '*');
+    window.postMessage({ 'for': 'opsonion', 'action': 'deselect-text', }, '*');
     this.builderService.setSidebarComponentsSetting();
   }
 }

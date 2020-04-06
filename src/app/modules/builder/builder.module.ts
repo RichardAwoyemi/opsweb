@@ -14,6 +14,7 @@ import { BuilderSidebarModule } from './builder-sidebar/builder-sidebar.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormUsernameInputModule } from '../../shared/components/form-username-input/form-username-input.module';
+import { BuilderComponentsDataService } from './builder-components/builder-components-data.service';
 
 const routes: Routes = [
   { path: '', component: BuilderComponent }
@@ -39,7 +40,8 @@ const routes: Routes = [
   providers: [
     BuilderService,
     DataService,
-    TemplateService
+    TemplateService,
+    BuilderComponentsDataService
   ]
 })
 

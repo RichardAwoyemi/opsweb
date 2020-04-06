@@ -3,7 +3,6 @@ import { BuilderService } from '../../builder.service';
 import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings, ActiveThemes } from '../../builder';
 import { Subscription } from 'rxjs';
 import { IComponent } from '../../../../shared/models/component';
-import { HttpClient } from '@angular/common/http';
 import { BuilderFeaturesService } from './builder-features.service';
 import { BuilderComponentsService } from '../builder-components.service';
 
@@ -30,6 +29,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   pageComponents: any;
   featuresTheme: string = ActiveThemes.Default;
   featuresTemplate: string;
+  featuresWidth: string;
 
   private featuresBreakpointSubscription: Subscription;
   private featuresStyleSubscription: Subscription;
@@ -44,9 +44,9 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   private componentsDetailSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
+  private featuresTemplateSubscription: Subscription;
 
   constructor(
-    private httpClient: HttpClient,
     private builderService: BuilderService,
     private builderFeaturesService: BuilderFeaturesService,
     private builderComponentsService: BuilderComponentsService,
@@ -117,11 +117,12 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
                 for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
                   if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
                     this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                    this.featuresStyle = this.componentDetail['featuresStyle'];
-                    this.featuresHeadingStyle = this.componentDetail['featuresHeadingStyle'];
-                    this.featuresSubheadingStyle = this.componentDetail['featuresSubheadingStyle'];
                     this.featuresItemArray = this.componentDetail['featuresItemArray'];
+                    this.featuresStyle = this.componentDetail['style']['featuresStyle'];
+                    this.featuresHeadingStyle = this.componentDetail['style']['featuresHeadingStyle'];
+                    this.featuresSubheadingStyle = this.componentDetail['style']['featuresSubheadingStyle'];
                     this.featuresTheme = this.componentDetail['featuresTheme'];
+                    this.featuresWidth = this.componentDetail['featuresWidth'];
                     this.componentIndex = this.componentDetail['componentIndex'];
                   }
                 }
@@ -195,13 +196,15 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   }
 
   clearActiveEditComponent() {
-    window.postMessage({
-      'for': 'opsonion',
-      'action': 'duplicate-component-deselected',
-      'message': this.componentId
-    }, '*');
-    this.componentActive = false;
-    this.builderService.clearActiveEditComponent();
+    if (this.activeElement.indexOf('heading') === -1 && this.activeElement.indexOf('subheading') === -1) {
+      window.postMessage({
+        'for': 'opsonion',
+        'action': 'duplicate-component-deselected',
+        'message': this.componentId
+      }, '*');
+      this.componentActive = false;
+      this.builderService.clearActiveEditComponent();
+    }
   }
 
   setFeaturesClass(element) {
@@ -247,9 +250,9 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   }
 
   setFeaturesInnerStyle() {
-    if (this.featuresStyle) {
+    if (this.featuresWidth) {
       return {
-        'width': this.featuresStyle['width']
+        'width': this.featuresWidth
       };
     }
   }
@@ -317,6 +320,9 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     }
     if (this.activePageSettingSubscription) {
       this.activePageSettingSubscription.unsubscribe();
+    }
+    if (this.featuresTemplateSubscription) {
+      this.featuresTemplateSubscription.unsubscribe();
     }
   }
 }

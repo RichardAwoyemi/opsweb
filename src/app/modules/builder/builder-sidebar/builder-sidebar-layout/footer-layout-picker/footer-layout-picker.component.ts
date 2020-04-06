@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { Subscription } from 'rxjs';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { ActiveComponentsPartialSelector } from '../../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
+import { TemplateService } from 'src/app/shared/services/template.service';
 
 @Component({
   selector: 'app-footer-layout-picker',
@@ -56,6 +57,7 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   private builderComponentsSubscription: Subscription;
 
   constructor(
+    private templateService: TemplateService,
     private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService
   ) {
@@ -65,9 +67,9 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
     this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
       this.footerTemplate = footerTemplateResponse;
 
-      this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
+      this.defaultFooterStyleSubscription = this.templateService.getTemplateStyle(this.footerTemplate).subscribe(response => {
         if (response) {
-          this.defaultFooterStyle = response;
+          this.defaultFooterStyle = response[ActiveComponents.Footer];
         }
       });
     });
@@ -240,10 +242,10 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterCopyrightPaddingStyle() {
-    this.footerCopyrightStyle['padding-top'] = this.defaultFooterStyle['footerCopyrightStyle']['padding-top'];
-    this.footerCopyrightStyle['padding-left'] = this.defaultFooterStyle['footerCopyrightStyle']['padding-left'];
-    this.footerCopyrightStyle['padding-right'] = this.defaultFooterStyle['footerCopyrightStyle']['padding-right'];
-    this.footerCopyrightStyle['padding-bottom'] = this.defaultFooterStyle['footerCopyrightStyle']['padding-bottom'];
+    this.footerCopyrightStyle['padding-top'] = this.defaultFooterStyle['style']['footerCopyrightStyle']['padding-top'];
+    this.footerCopyrightStyle['padding-left'] = this.defaultFooterStyle['style']['footerCopyrightStyle']['padding-left'];
+    this.footerCopyrightStyle['padding-right'] = this.defaultFooterStyle['style']['footerCopyrightStyle']['padding-right'];
+    this.footerCopyrightStyle['padding-bottom'] = this.defaultFooterStyle['style']['footerCopyrightStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerCopyrightStyle', this.footerCopyrightStyle);
     this.builderFooterService.footerCopyrightStyle.next(this.footerCopyrightStyle);
   }
@@ -273,10 +275,10 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterSocialLinksMarginStyle() {
-    this.footerSocialLinksStyle['margin-top'] = this.defaultFooterStyle['footerSocialLinksStyle']['margin-top'];
-    this.footerSocialLinksStyle['margin-left'] = this.defaultFooterStyle['footerSocialLinksStyle']['margin-left'];
-    this.footerSocialLinksStyle['margin-right'] = this.defaultFooterStyle['footerSocialLinksStyle']['margin-right'];
-    this.footerSocialLinksStyle['margin-bottom'] = this.defaultFooterStyle['footerSocialLinksStyle']['margin-bottom'];
+    this.footerSocialLinksStyle['margin-top'] = this.defaultFooterStyle['style']['footerSocialLinksStyle']['margin-top'];
+    this.footerSocialLinksStyle['margin-left'] = this.defaultFooterStyle['style']['footerSocialLinksStyle']['margin-left'];
+    this.footerSocialLinksStyle['margin-right'] = this.defaultFooterStyle['style']['footerSocialLinksStyle']['margin-right'];
+    this.footerSocialLinksStyle['margin-bottom'] = this.defaultFooterStyle['style']['footerSocialLinksStyle']['margin-bottom'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerSocialLinksStyle', this.footerSocialLinksStyle);
     this.builderFooterService.footerSocialLinksStyle.next(this.footerSocialLinksStyle);
   }
@@ -306,10 +308,10 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterPageLinksPaddingStyle() {
-    this.footerPageLinksStyle['padding-top'] = this.defaultFooterStyle['footerPageLinksStyle']['padding-top'];
-    this.footerPageLinksStyle['padding-left'] = this.defaultFooterStyle['footerPageLinksStyle']['padding-left'];
-    this.footerPageLinksStyle['padding-right'] = this.defaultFooterStyle['footerPageLinksStyle']['padding-right'];
-    this.footerPageLinksStyle['padding-bottom'] = this.defaultFooterStyle['footerPageLinksStyle']['padding-bottom'];
+    this.footerPageLinksStyle['padding-top'] = this.defaultFooterStyle['style']['footerPageLinksStyle']['padding-top'];
+    this.footerPageLinksStyle['padding-left'] = this.defaultFooterStyle['style']['footerPageLinksStyle']['padding-left'];
+    this.footerPageLinksStyle['padding-right'] = this.defaultFooterStyle['style']['footerPageLinksStyle']['padding-right'];
+    this.footerPageLinksStyle['padding-bottom'] = this.defaultFooterStyle['style']['footerPageLinksStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerPageLinksStyle', this.footerPageLinksStyle);
     this.builderFooterService.footerPageLinksStyle.next(this.footerPageLinksStyle);
   }
@@ -340,10 +342,10 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFooterPaddingStyle() {
-    this.footerStyle['padding-top'] = this.defaultFooterStyle['footerStyle']['padding-top'];
-    this.footerStyle['padding-left'] = this.defaultFooterStyle['footerStyle']['padding-left'];
-    this.footerStyle['padding-right'] = this.defaultFooterStyle['footerStyle']['padding-right'];
-    this.footerStyle['padding-bottom'] = this.defaultFooterStyle['footerStyle']['padding-bottom'];
+    this.footerStyle['padding-top'] = this.defaultFooterStyle['style']['footerStyle']['padding-top'];
+    this.footerStyle['padding-left'] = this.defaultFooterStyle['style']['footerStyle']['padding-left'];
+    this.footerStyle['padding-right'] = this.defaultFooterStyle['style']['footerStyle']['padding-right'];
+    this.footerStyle['padding-bottom'] = this.defaultFooterStyle['style']['footerStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }

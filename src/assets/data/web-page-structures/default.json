@@ -1,0 +1,21 @@
+{
+  "pages": [
+    {
+      "name": "Home",
+      "components": [
+        "navbar",
+        "hero",
+        "features",
+        "features",
+        "footer"
+      ]
+    },
+    {
+      "name": "About",
+      "components": [
+        "navbar",
+        "footer"
+      ]
+    }
+  ]
+}

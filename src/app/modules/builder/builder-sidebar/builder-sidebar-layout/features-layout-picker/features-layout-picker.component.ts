@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
 import { Subscription } from 'rxjs';
-import { ActiveTemplates } from '../../../builder';
+import { ActiveComponents, ActiveTemplates } from '../../../builder';
 import { BuilderService } from '../../../builder.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { WebsiteService } from '../../../../../shared/services/website.service';
+import { TemplateService } from '../../../../../shared/services/template.service';
 
 @Component({
   selector: 'app-features-layout-picker',
@@ -48,7 +49,8 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
     private builderFeaturesService: BuilderFeaturesService,
     private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
-    private websiteService: WebsiteService
+    private websiteService: WebsiteService,
+    private templateService: TemplateService
   ) {
   }
 
@@ -62,9 +64,9 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
     this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
       this.featuresTemplate = featuresTemplateResponse;
 
-      this.defaultFeaturesStyleSubscription = this.builderFeaturesService.getDefaultFeaturesStyle(this.featuresTemplate).subscribe(response => {
+      this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(this.featuresTemplate).subscribe(response => {
         if (response) {
-          this.defaultFeaturesStyle = response;
+          this.defaultFeaturesStyle = response[ActiveComponents.Features];
         }
       });
     });
@@ -133,9 +135,9 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.pageComponents['pages'].length; i++) {
           for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
             if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-              this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
-              this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['featuresHeadingStyle'];
-              this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['featuresSubheadingStyle'];
+              this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresStyle'];
+              this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresHeadingStyle'];
+              this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresSubheadingStyle'];
             }
           }
         }
@@ -148,11 +150,6 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
   }
 
   setFeaturesHeadingPaddingTop() {
@@ -184,10 +181,10 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFeaturesHeadingPaddingStyle() {
-    this.featuresHeadingStyle['padding-top'] = this.defaultFeaturesStyle['featuresHeadingStyle']['padding-top'];
-    this.featuresHeadingStyle['padding-left'] = this.defaultFeaturesStyle['featuresHeadingStyle']['padding-left'];
-    this.featuresHeadingStyle['padding-right'] = this.defaultFeaturesStyle['featuresHeadingStyle']['padding-right'];
-    this.featuresHeadingStyle['padding-bottom'] = this.defaultFeaturesStyle['featuresHeadingStyle']['padding-bottom'];
+    this.featuresHeadingStyle['padding-top'] = this.defaultFeaturesStyle['style']['featuresHeadingStyle']['padding-top'];
+    this.featuresHeadingStyle['padding-left'] = this.defaultFeaturesStyle['style']['featuresHeadingStyle']['padding-left'];
+    this.featuresHeadingStyle['padding-right'] = this.defaultFeaturesStyle['style']['featuresHeadingStyle']['padding-right'];
+    this.featuresHeadingStyle['padding-bottom'] = this.defaultFeaturesStyle['style']['featuresHeadingStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresHeadingStyle', this.featuresHeadingStyle);
     this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
   }
@@ -221,10 +218,10 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFeaturesSubheadingPaddingStyle() {
-    this.featuresSubheadingStyle['padding-top'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['padding-top'];
-    this.featuresSubheadingStyle['padding-left'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['padding-left'];
-    this.featuresSubheadingStyle['padding-right'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['padding-right'];
-    this.featuresSubheadingStyle['padding-bottom'] = this.defaultFeaturesStyle['featuresSubheadingStyle']['padding-bottom'];
+    this.featuresSubheadingStyle['padding-top'] = this.defaultFeaturesStyle['style']['featuresSubheadingStyle']['padding-top'];
+    this.featuresSubheadingStyle['padding-left'] = this.defaultFeaturesStyle['style']['featuresSubheadingStyle']['padding-left'];
+    this.featuresSubheadingStyle['padding-right'] = this.defaultFeaturesStyle['style']['featuresSubheadingStyle']['padding-right'];
+    this.featuresSubheadingStyle['padding-bottom'] = this.defaultFeaturesStyle['style']['featuresSubheadingStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresSubheadingStyle', this.featuresSubheadingStyle);
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
   }
@@ -258,10 +255,10 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetFeaturesPaddingStyle() {
-    this.featuresStyle['padding-top'] = this.defaultFeaturesStyle['featuresStyle']['padding-top'];
-    this.featuresStyle['padding-left'] = this.defaultFeaturesStyle['featuresStyle']['padding-left'];
-    this.featuresStyle['padding-right'] = this.defaultFeaturesStyle['featuresStyle']['padding-right'];
-    this.featuresStyle['padding-bottom'] = this.defaultFeaturesStyle['featuresStyle']['padding-bottom'];
+    this.featuresStyle['padding-top'] = this.defaultFeaturesStyle['style']['featuresStyle']['padding-top'];
+    this.featuresStyle['padding-left'] = this.defaultFeaturesStyle['style']['featuresStyle']['padding-left'];
+    this.featuresStyle['padding-right'] = this.defaultFeaturesStyle['style']['featuresStyle']['padding-right'];
+    this.featuresStyle['padding-bottom'] = this.defaultFeaturesStyle['style']['featuresStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'featuresStyle', this.featuresStyle);
     this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
   }

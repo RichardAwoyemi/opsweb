@@ -12,10 +12,11 @@
 <div class="row">
   <ng-container *ngFor="let template of selectedTemplates | filter: searchText | sort: 'name'">
     <div class="col-md-12">
-      <div (click)="setTemplate(template.id)"
-           [style.backgroundImage]="'url(' + '../assets/img/' + template.id + '.jpg)'"
-           class="builder-sidebar-templates-{{ template.name | lowercase }} card text-white bg-img justify-content-center template-icon"
-           data-overlay="6" style="height: 100px; margin-bottom: 1em">
+      <div
+        (click)="setTemplate(template.id)"
+        [style.backgroundImage]="'url(' + '../assets/img/' + template.id + '.jpg)'"
+        class="builder-sidebar-templates-{{ template.name | lowercase }} card text-white bg-img justify-content-center template-icon"
+        data-overlay="6" style="height: 100px; margin-bottom: 1em">
         <div class="builder-sidebar-templates-{{ template.name | lowercase }} card-body text-center flex-grow-0">
           <h5 class="builder-sidebar-templates-{{ template.name | lowercase }} card-title mb-0">{{ template.name }}</h5>
         </div>

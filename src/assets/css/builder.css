@@ -63,14 +63,14 @@ body::-webkit-scrollbar-thumb {
 
 /* Hero */
 
-.hero-image-preview, .hero-image-active,
+.hero-edit, .hero-image-preview, .hero-image-active,
 .hero-heading-preview, .hero-heading-active,
 .hero-subheading-preview, .hero-subheading-active,
 .hero-button-preview, .hero-button-active {
   border: 1px solid transparent;
 }
 
-.hero-image-active:hover, .hero-image-edit,
+.hero-edit:hover, .hero-image-active:hover, .hero-image-edit,
 .hero-heading-active:hover, .hero-heading-edit,
 .hero-subheading-active:hover, .hero-subheading-edit,
 .hero-button-active:hover, .hero-button-edit {

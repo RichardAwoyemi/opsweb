@@ -1,7 +1,7 @@
 <div id="rewards"></div>
-<div style="padding: 2em">
-  <h3>Rewards</h3>
-  <div class="row" style="padding-top: 1em">
+<div [ngStyle]="rewardsBodyPadding">
+  <h3 *ngIf="!isMobile">Rewards</h3>
+  <div [ngStyle]="rewardsTopPadding" class="row">
     <div class="col-md-8">
       <p class="lead">Share your referral link with friends</p>
       <p class="text-justify">When a friend joins Opsonion and creates a new website using your referral link,

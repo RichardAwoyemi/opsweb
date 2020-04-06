@@ -11,32 +11,28 @@
         <span *ngIf="toggleMenuItemVisibility(ACTIVE_COLOURS_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_COLOURS_SETTING)"
                   [ngClass]="toolbarButtonColoursStyle"
-                  class="toolbar-colours"
-                  href="#">
+                  class="toolbar-colours">
           Colours
           </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_COMPONENTS_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_COMPONENTS_SETTING)"
                   [ngClass]="toolbarButtonComponentsStyle"
-                  class="toolbar-components"
-                  href="#">
+                  class="toolbar-components">
           Components
         </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_LAYOUT_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_LAYOUT_SETTING)"
                   [ngClass]="toolbarButtonLayoutStyle"
-                  class="toolbar-layout"
-                  href="#">
+                  class="toolbar-layout">
           Layout
         </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_OPTIONS_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_OPTIONS_SETTING)"
                   [ngClass]="toolbarButtonOptionsStyle"
-                  class="toolbar-options"
-                  href="#">
+                  class="toolbar-options">
           Options
         </button>
         </span>

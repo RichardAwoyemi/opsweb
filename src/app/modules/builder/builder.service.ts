@@ -1,6 +1,6 @@
 import { HostListener, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ActiveComponents, ActiveOrientations } from './builder';
+import { ActiveComponents, ActiveElements, ActiveOrientations } from './builder';
 import { TourService } from '../../shared/services/tour.service';
 
 @Injectable()
@@ -72,6 +72,12 @@ export class BuilderService {
     }
   }
 
+  resetAll() {
+    this.resetMenu();
+    this.resetTabs();
+    this.resetToolbar();
+  }
+
   resetMenu() {
     this.sidebarTemplatesMenu.next(this.SIDEBAR_INACTIVE_MENU);
     this.sidebarPagesMenu.next(this.SIDEBAR_INACTIVE_MENU);
@@ -104,18 +110,14 @@ export class BuilderService {
   }
 
   setSidebarTemplatesSetting() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
+    this.resetAll();
     this.sidebarTemplatesMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarTemplatesTab.next(this.SIDEBAR_ACTIVE_TAB);
     this.triggerScrollTo('templates');
   }
 
   setSidebarComponentsSetting() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
+    this.resetAll();
     this.toolbarComponentsButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarComponentsMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarComponentsTab.next(this.SIDEBAR_ACTIVE_TAB);
@@ -123,9 +125,7 @@ export class BuilderService {
   }
 
   setSidebarColoursSetting() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
+    this.resetAll();
     this.toolbarColoursButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarColoursMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarColoursTab.next(this.SIDEBAR_ACTIVE_TAB);
@@ -133,9 +133,7 @@ export class BuilderService {
   }
 
   setSidebarLayoutSetting() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
+    this.resetAll();
     this.toolbarLayoutButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarLayoutMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarLayoutTab.next(this.SIDEBAR_ACTIVE_TAB);
@@ -143,9 +141,7 @@ export class BuilderService {
   }
 
   setSidebarOptionsSetting() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
+    this.resetAll();
     this.toolbarOptionsButton.next(this.TOOLBAR_ACTIVE_BUTTON);
     this.sidebarOptionsMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarOptionsTab.next(this.SIDEBAR_ACTIVE_TAB);
@@ -153,18 +149,14 @@ export class BuilderService {
   }
 
   setSidebarPagesSetting() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
+    this.resetAll();
     this.sidebarPagesMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarPagesTab.next(this.SIDEBAR_ACTIVE_TAB);
     this.triggerScrollTo('pages');
   }
 
   setSidebarDataSetting() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
+    this.resetAll();
     this.sidebarDataMenu.next(this.SIDEBAR_ACTIVE_MENU);
     this.sidebarDataTab.next(this.SIDEBAR_ACTIVE_TAB);
   }
@@ -177,108 +169,15 @@ export class BuilderService {
     this.setSidebarColoursSetting();
   }
 
-  processIncomingMessages(e: any, activeEditComponent: string) {
-    if (activeEditComponent === ActiveComponents.Navbar) {
-      this.processIncomingNavbarMessages(e);
-    }
-    if (activeEditComponent === ActiveComponents.Footer) {
-      this.processIncomingFooterMessages(e);
-    }
-    if (activeEditComponent === ActiveComponents.Features) {
-      this.processIncomingFeaturesMessages(e);
-    }
-  }
-
-  processIncomingNavbarMessages(e: any) {
-    if (e.data.action === 'navbar-options-logo') {
-      this.setSidebarOptionsSetting();
-      this.triggerScrollTo('navbar-options-logo');
-    }
-    if (e.data.action === 'navbar-options-menu') {
-      this.setSidebarOptionsSetting();
-      this.triggerScrollTo('navbar-options-menu');
-    }
-    if (e.data.action === 'navbar-layout-logo') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('navbar-layout-logo');
-    }
-    if (e.data.action === 'navbar-layout-menu') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('navbar-layout-menu');
-    }
-    if (e.data.action === 'navbar-colours') {
+  processIncomingMessages(e: any) {
+    if (e.data.action.includes('colour')) {
       this.setSidebarColoursSetting();
-      this.triggerScrollTo('navbar-colours');
     }
-  }
-
-  processIncomingFooterMessages(e: any) {
-    if (e.data.action === 'footer-options-copyright') {
+    if (e.data.action.includes('option')) {
       this.setSidebarOptionsSetting();
-      this.triggerScrollTo('footer-options-copyright');
     }
-    if (e.data.action === 'footer-layout-copyright') {
+    if (e.data.action.includes('layout') || e.data.action.includes('postion')) {
       this.setSidebarLayoutSetting();
-      this.triggerScrollTo('footer-layout-copyright');
-    }
-    if (e.data.action === 'footer-options-social') {
-      this.setSidebarOptionsSetting();
-      this.triggerScrollTo('footer-options-social');
-    }
-    if (e.data.action === 'footer-layout-social') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('footer-layout-social');
-    }
-    if (e.data.action === 'footer-options-menu') {
-      this.setSidebarOptionsSetting();
-      this.triggerScrollTo('footer-options-menu');
-    }
-    if (e.data.action === 'footer-layout-menu') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('footer-layout-menu');
-    }
-    if (e.data.action === 'footer-position') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('footer-layout');
-    }
-    if (e.data.action === 'footer-colours') {
-      this.setSidebarColoursSetting();
-      this.triggerScrollTo('footer-colours');
-    }
-  }
-
-  processIncomingFeaturesMessages(e: any) {
-    if (e.data.action === 'features-options-copyright') {
-      this.setSidebarOptionsSetting();
-      this.triggerScrollTo('features-options-copyright');
-    }
-    if (e.data.action === 'features-layout-copyright') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('features-layout-copyright');
-    }
-    if (e.data.action === 'features-options-social') {
-      this.setSidebarOptionsSetting();
-      this.triggerScrollTo('features-options-social');
-    }
-    if (e.data.action === 'features-layout-social') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('features-layout-social');
-    }
-    if (e.data.action === 'features-options-menu') {
-      this.setSidebarOptionsSetting();
-      this.triggerScrollTo('features-options-menu');
-    }
-    if (e.data.action === 'features-layout-menu') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('features-layout-menu');
-    }
-    if (e.data.action === 'features-position') {
-      this.setSidebarLayoutSetting();
-      this.triggerScrollTo('features-layout');
-    }
-    if (e.data.action === 'features-colours') {
-      this.setSidebarColoursSetting();
-      this.triggerScrollTo('features-colours');
     }
   }
 
@@ -301,6 +200,8 @@ export class BuilderService {
   clearActiveEditComponent() {
     this.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.activeEditComponent.next(ActiveComponents.Placeholder);
+    this.activeElement.next(ActiveElements.Default);
     this.setSidebarComponentsSetting();
+    window.postMessage({ 'for': 'opsonion', 'action': 'deselect-text', }, '*');
   }
 }

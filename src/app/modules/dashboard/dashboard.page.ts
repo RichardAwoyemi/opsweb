@@ -1,6 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterService } from '../../shared/services/router.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,15 +12,18 @@ export class DashboardComponent implements OnInit {
   sidebarClass = 'col-md-3';
   bodyClass = 'col-md-9';
   innerWidth: number;
+  isMobile: Observable<BreakpointState>;
 
   constructor(
     private routerService: RouterService,
     private ngxLoader: NgxUiLoaderService,
+    private breakpointObserver: BreakpointObserver
   ) {
   }
 
   ngOnInit() {
     this.ngxLoader.start();
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.innerWidth = window.innerWidth;
     this.setDashboardPanelSizes();
     this.routerService.currentRoute.next(window.location.pathname);

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DashboardCreateWebsiteModalComponent } from '../../dashboard-actions/dashboard-create-website-modal/dashboard-create-website-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { WebsiteService } from '../../../../shared/services/website.service';
 import { IUser } from '../../../../shared/models/user';
 import { Store } from '@ngrx/store';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { DashboardDeleteWebsiteModalComponent } from '../../dashboard-actions/dashboard-delete-website-modal/dashboard-delete-website-modal.component';
 import { DashboardRenameWebsiteModalComponent } from '../../dashboard-actions/dashboard-rename-website-modal/dashboard-rename-website.modal.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-dashboard-body-websites',
@@ -20,6 +21,7 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
   innerHeight: number;
   websites: any;
   user: any;
+  isMobile: Observable<BreakpointState>;
 
   private websitesSubscription: Subscription;
 
@@ -28,12 +30,14 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
     public router: Router,
     private websiteService: WebsiteService,
     private ngxLoader: NgxUiLoaderService,
-    private userStore: Store<fromUser.State>
+    private userStore: Store<fromUser.State>,
+    private breakpointObserver: BreakpointObserver
   ) {
   }
 
   ngOnInit() {
     this.ngxLoader.start();
+    this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.innerHeight = window.innerHeight;
     this.userStore.select('user')
       .pipe()

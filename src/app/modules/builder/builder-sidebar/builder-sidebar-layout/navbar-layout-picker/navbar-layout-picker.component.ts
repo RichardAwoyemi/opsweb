@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { Subscription } from 'rxjs';
-import { ActiveComponentsPartialSelector } from '../../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { TemplateService } from '../../../../../shared/services/template.service';
 
 @Component({
   selector: 'app-navbar-layout-picker',
@@ -39,6 +40,7 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
   private defaultNavbarStyleSubscription: Subscription;
 
   constructor(
+    private templateService: TemplateService,
     private builderNavbarService: BuilderNavbarService,
     private builderComponentsService: BuilderComponentsService
   ) {
@@ -115,9 +117,9 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
       if (navbarTemplateResponse) {
         this.navbarTemplate = navbarTemplateResponse;
 
-        this.defaultNavbarStyleSubscription = this.builderNavbarService.getDefaultNavbarStyle(this.navbarTemplate).subscribe(response => {
+        this.defaultNavbarStyleSubscription = this.templateService.getTemplateStyle(this.navbarTemplate).subscribe(response => {
           if (response) {
-            this.defaultNavbarStyle = response;
+            this.defaultNavbarStyle = response[ActiveComponents.Navbar];
           }
         });
       }
@@ -212,30 +214,30 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   resetNavbarLinkStyle() {
-    this.navbarLinkStyle['padding-top'] = this.defaultNavbarStyle['navbarLinkStyle']['padding-top'];
-    this.navbarLinkStyle['padding-left'] = this.defaultNavbarStyle['navbarLinkStyle']['padding-left'];
-    this.navbarLinkStyle['padding-right'] = this.defaultNavbarStyle['navbarLinkStyle']['padding-right'];
-    this.navbarLinkStyle['padding-bottom'] = this.defaultNavbarStyle['navbarLinkStyle']['padding-bottom'];
+    this.navbarLinkStyle['padding-top'] = this.defaultNavbarStyle['style']['navbarLinkStyle']['padding-top'];
+    this.navbarLinkStyle['padding-left'] = this.defaultNavbarStyle['style']['navbarLinkStyle']['padding-left'];
+    this.navbarLinkStyle['padding-right'] = this.defaultNavbarStyle['style']['navbarLinkStyle']['padding-right'];
+    this.navbarLinkStyle['padding-bottom'] = this.defaultNavbarStyle['style']['navbarLinkStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLinkStyle', this.navbarLinkStyle);
     this.builderNavbarService.navbarLinkStyle.next(this.navbarLinkStyle);
     this.setNavbarLayoutClass('navbar-nav ml-auto');
   }
 
   resetNavbarBrandStyle() {
-    this.navbarBrandStyle['padding-top'] = this.defaultNavbarStyle['navbarBrandStyle']['padding-top'];
-    this.navbarBrandStyle['padding-left'] = this.defaultNavbarStyle['navbarBrandStyle']['padding-left'];
-    this.navbarBrandStyle['padding-right'] = this.defaultNavbarStyle['navbarBrandStyle']['padding-right'];
-    this.navbarBrandStyle['padding-bottom'] = this.defaultNavbarStyle['navbarBrandStyle']['padding-bottom'];
+    this.navbarBrandStyle['padding-top'] = this.defaultNavbarStyle['style']['navbarBrandStyle']['padding-top'];
+    this.navbarBrandStyle['padding-left'] = this.defaultNavbarStyle['style']['navbarBrandStyle']['padding-left'];
+    this.navbarBrandStyle['padding-right'] = this.defaultNavbarStyle['style']['navbarBrandStyle']['padding-right'];
+    this.navbarBrandStyle['padding-bottom'] = this.defaultNavbarStyle['style']['navbarBrandStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarBrandStyle', this.navbarBrandStyle);
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
     this.setNavbarLayoutClass('navbar-nav ml-auto');
   }
 
   resetNavbarLogoImageStyle() {
-    this.navbarLogoImageStyle['padding-top'] = this.defaultNavbarStyle['navbarLogoImageStyle']['padding-top'];
-    this.navbarLogoImageStyle['padding-left'] = this.defaultNavbarStyle['navbarLogoImageStyle']['padding-left'];
-    this.navbarLogoImageStyle['padding-right'] = this.defaultNavbarStyle['navbarLogoImageStyle']['padding-right'];
-    this.navbarLogoImageStyle['padding-bottom'] = this.defaultNavbarStyle['navbarLogoImageStyle']['padding-bottom'];
+    this.navbarLogoImageStyle['padding-top'] = this.defaultNavbarStyle['style']['navbarLogoImageStyle']['padding-top'];
+    this.navbarLogoImageStyle['padding-left'] = this.defaultNavbarStyle['style']['navbarLogoImageStyle']['padding-left'];
+    this.navbarLogoImageStyle['padding-right'] = this.defaultNavbarStyle['style']['navbarLogoImageStyle']['padding-right'];
+    this.navbarLogoImageStyle['padding-bottom'] = this.defaultNavbarStyle['style']['navbarLogoImageStyle']['padding-bottom'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarLogoImageStyle', this.navbarLogoImageStyle);
     this.builderNavbarService.navbarLogoImageStyle.next(this.navbarLogoImageStyle);
     this.setNavbarLayoutClass('navbar-nav ml-auto');

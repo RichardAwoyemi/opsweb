@@ -3,7 +3,6 @@ let builderShowcaseId, componentIconClass, builderShowcase, currentElement, curr
 
 let singleUseComponents = [
   'app-builder-navbar',
-  'app-builder-hero',
   'app-builder-footer'
 ];
 
@@ -17,6 +16,9 @@ function listenForShowcaseMessages(e) {
   if (e.data) {
     if (e.data.action === 'component-selected') {
       componentToAdd = e.data.message;
+    }
+    if (e.data.action === 'deselect-text') {
+      builderShowcase.window.getSelection().removeAllRanges()
     }
     if (e.data.action === 'non-component-selected') {
       componentToAdd = 'non-component-selected';

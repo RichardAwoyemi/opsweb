@@ -36,6 +36,10 @@ export enum ActiveTemplates {
   Front = 'business-2'
 }
 
+export enum ActiveStructures {
+  Default = 'default',
+}
+
 export enum ActiveThemes {
   Default = 'Default',
   Stanley = 'Stanley'
