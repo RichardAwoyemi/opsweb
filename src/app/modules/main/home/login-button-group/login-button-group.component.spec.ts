@@ -15,6 +15,7 @@ describe('LoginButtonGroupComponent', () => {
       providers: [
         { provide: Store, useClass: TestStore }
       ],
+      declarations: [LoginButtonGroupComponent]
     }).compileComponents().then(() => {
     });
   }));
