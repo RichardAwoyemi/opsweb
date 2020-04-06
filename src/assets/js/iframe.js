@@ -12,19 +12,19 @@ function setupNavbarContextMenu() {
     "navbar-logo": {
       "name": "Logo",
       "items": {
-        "navbar-options-logo": {"name": "Edit Design"},
-        "navbar-layout-logo": {"name": "Set Position"}
+        "navbar-options-logo": { "name": "Edit Design" },
+        "navbar-layout-logo": { "name": "Set Position" }
       },
     },
     "navbar-menu": {
       "name": "Menu",
       "items": {
-        "navbar-options-menu": {"name": "Manage Items"},
-        "navbar-layout-menu": {"name": "Set Position"},
+        "navbar-options-menu": { "name": "Manage Items" },
+        "navbar-layout-menu": { "name": "Set Position" },
       },
     },
     "sep": "---------",
-    "delete-component": {name: "Delete"}
+    "delete-component": { name: "Delete" }
   };
 
   $(function () {
@@ -33,7 +33,7 @@ function setupNavbarContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
+        window.parent.window.postMessage({ "for": "opsonion", "action": `${ key }` }, '*')
       },
       items: navbarItems
     });
@@ -45,7 +45,7 @@ function setupNavbarContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
+        window.parent.window.postMessage({ "for": "opsonion", "action": `${ key }` }, '*')
       },
       items: navbarItems
     });
@@ -60,32 +60,32 @@ function setupHeroContextMenu() {
     "hero": {
       "name": "Hero",
       "items": {
-        "hero-layout": {"name": "Set Position"}
+        "hero-layout": { "name": "Set Position" }
       }
     },
     "hero-heading": {
       "name": "Heading",
       "items": {
-        "hero-options-heading": {"name": "Edit Design"},
-        "hero-layout-heading": {"name": "Set Position"}
+        "hero-options-heading": { "name": "Edit Design" },
+        "hero-layout-heading": { "name": "Set Position" }
       }
     },
     "hero-subheading": {
       "name": "Subheading",
       "items": {
-        "hero-options-subheading": {"name": "Edit Design"},
-        "hero-layout-subheading": {"name": "Set Position"}
+        "hero-options-subheading": { "name": "Edit Design" },
+        "hero-layout-subheading": { "name": "Set Position" }
       }
     },
     "hero-button": {
       "name": "Button",
       "items": {
-        "hero-options-button": {"name": "Edit Design"},
-        "hero-layout-button": {"name": "Set Position"}
+        "hero-options-button": { "name": "Edit Design" },
+        "hero-layout-button": { "name": "Set Position" }
       }
     },
     "sep1": "---------",
-    "delete-component": {name: "Delete"}
+    "delete-component": { name: "Delete" }
   };
 
   $(function () {
@@ -94,7 +94,7 @@ function setupHeroContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
+        window.parent.window.postMessage({ "for": "opsonion", "action": `${ key }` }, '*')
       },
       items: heroItems
     });
@@ -106,7 +106,7 @@ function setupHeroContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
+        window.parent.window.postMessage({ "for": "opsonion", "action": `${ key }` }, '*')
       },
       items: heroItems
     });
@@ -121,32 +121,32 @@ function setupFooterContextMenu() {
     "footer": {
       "name": "Footer",
       "items": {
-        "footer-position": {"name": "Set Position"},
+        "footer-position": { "name": "Set Position" },
       },
     },
     "footer-copyright": {
       "name": "Copyright",
       "items": {
-        "footer-options-copyright": {"name": "Edit Design"},
-        "footer-layout-copyright": {"name": "Set Position"}
+        "footer-options-copyright": { "name": "Edit Design" },
+        "footer-layout-copyright": { "name": "Set Position" }
       },
     },
     "footer-social": {
       "name": "Social",
       "items": {
-        "footer-options-social": {"name": "Manage Items"},
-        "footer-layout-social": {"name": "Set Position"},
+        "footer-options-social": { "name": "Manage Items" },
+        "footer-layout-social": { "name": "Set Position" },
       },
     },
     "footer-menu": {
       "name": "Menu",
       "items": {
-        "footer-options-menu": {"name": "Manage Items"},
-        "footer-layout-menu": {"name": "Set Position"},
+        "footer-options-menu": { "name": "Manage Items" },
+        "footer-layout-menu": { "name": "Set Position" },
       },
     },
     "sep": "---------",
-    "delete-component": {name: "Delete"}
+    "delete-component": { name: "Delete" }
   };
 
   $(function () {
@@ -155,7 +155,7 @@ function setupFooterContextMenu() {
       trigger: 'right',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
+        window.parent.window.postMessage({ "for": "opsonion", "action": `${ key }` }, '*')
       },
       items: footerItems
     });
@@ -167,7 +167,7 @@ function setupFooterContextMenu() {
       trigger: 'left',
       autoHide: true,
       callback: function (key) {
-        window.parent.window.postMessage({"for": "opsonion", "action": `${ key }`}, '*')
+        window.parent.window.postMessage({ "for": "opsonion", "action": `${ key }` }, '*')
       },
       items: footerItems
     });
