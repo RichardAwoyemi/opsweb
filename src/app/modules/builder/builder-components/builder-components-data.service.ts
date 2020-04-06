@@ -9,6 +9,7 @@ export class BuilderComponentsDataService {
   ) {
   }
 
+  // noinspection JSUnusedGlobalSymbols
   static getAdditionalFeaturesDetails(): any {
     return {
       'featuresItemArray': [
@@ -28,6 +29,7 @@ export class BuilderComponentsDataService {
     };
   }
 
+  // noinspection JSUnusedGlobalSymbols
   getAdditionalNavbarDetails(pageComponents = null): any {
     let pages = {};
     (pageComponents == null) ? pages = this.builderComponentsService.pageComponents.getValue() : pages = pageComponents;

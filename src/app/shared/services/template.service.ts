@@ -89,7 +89,8 @@ export class TemplateService {
       'style': template[ActiveComponents[componentName]]['style'],
       'timestamp': new Date().getTime(),
       ...template[ActiveComponents[componentName]]['details'],
-      ...(typeof this.builderComponentsDataService[`getAdditional${componentName}Details`] === 'function' ? this.builderComponentsDataService[`getAdditional${componentName}Details`](pages) : {})
+      ...(typeof this.builderComponentsDataService[`getAdditional${componentName}Details`] === 'function' ? this.builderComponentsDataService[`getAdditional${componentName}Details`](pages) : {}),
+      ...(typeof BuilderComponentsDataService[`getAdditional${componentName}Details`] === 'function' ? BuilderComponentsDataService[`getAdditional${componentName}Details`](pages) : {})
     };
   }
 
