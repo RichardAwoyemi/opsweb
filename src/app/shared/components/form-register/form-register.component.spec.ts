@@ -17,6 +17,9 @@ import { WebsiteService } from '../../services/website.service';
 import { BuilderComponentsService } from '../../../modules/builder/builder-components/builder-components.service';
 import { BuilderService } from '../../../modules/builder/builder.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { TemplateService } from '../../services/template.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BuilderComponentsDataService } from '../../../modules/builder/builder-components/builder-components-data.service';
 
 
 describe('FormRegister', () => {
@@ -54,16 +57,18 @@ describe('FormRegister', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, RouterTestingModule, LoggerTestingModule, ToastrModule.forRoot()],
+      imports: [FormsModule, RouterTestingModule, LoggerTestingModule, ToastrModule.forRoot(), HttpClientTestingModule],
       providers: [
         UtilService,
         UserService,
         WebsiteService,
         BuilderService,
         BuilderComponentsService,
+        BuilderComponentsDataService,
         CreditsService,
         NGXLogger,
         ToastrService,
+        TemplateService,
         { provide: AngularFireAuth, useValue: mockAngularFireAuth },
         { provide: LoggerConfig, useValue: { level: NgxLoggerLevel.ERROR } },
         { provide: AngularFirestore, useValue: mockAngularFireStore }
