@@ -8,14 +8,20 @@
   <div class="modal-body">
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#tab-library">Photos</a>
+        <a class="nav-link active" data-toggle="tab" href="#tab-graphics">Graphics</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab-unsplash">Photos</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#tab-upload">Upload</a>
       </li>
     </ul>
     <div class="tab-content p-4" style="margin-left: -1rem; margin-right: -1rem; padding-bottom: 0">
-      <div class="tab-pane fade show active" id="tab-library">
+      <div class="tab-pane fade show active" id="tab-graphics">
+        <app-builder-select-image-library></app-builder-select-image-library>
+      </div>
+      <div class="tab-pane fade show active" id="tab-unsplash">
         <app-builder-select-image-photos></app-builder-select-image-photos>
       </div>
       <div class="tab-pane fade" id="tab-upload">
