@@ -8,7 +8,7 @@ export class ImageLibraryService {
 
   activeImage = new BehaviorSubject<Object>(null);
   selectedTemplate: Subject<Template> = new Subject<Template>();
-  private IMAGE_DETAILS = './assets/lib/img-details.json';
+  private IMAGE_DETAILS = './assets/data/img-library/img-library.json';
 
   constructor(
     private httpClient: HttpClient,
