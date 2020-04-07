@@ -93,6 +93,7 @@
       "heroHeadingText": "Unleash your genius",
       "heroSubheadingText": "Build a beautiful, modern website with flexible components built from scratch.",
       "heroButtonText": "Learn more",
+      "heroButtonLink": "default",
       "heroTheme": "default"
     }
   },
