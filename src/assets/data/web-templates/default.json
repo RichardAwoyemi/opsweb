@@ -38,7 +38,7 @@
     "details": {
       "navbarLogoText": "Logo",
       "navbarLayoutClass": "navbar-nav ml-auto",
-      "navbarLogoImage": "../assets/img/default-logo.svg",
+      "navbarLogoImage": "https://s3-eu-west-1.amazonaws.com/media.opsonion.com/templates/default-logo.svg",
       "navbarTheme": "default"
     }
   },
