@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
+import { TemplateService } from '../../../../../shared/services/template.service';
 import { ActiveComponents, ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { TemplateService } from '../../../../../shared/services/template.service';
+import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderService } from '../../../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-hero-layout-picker',
@@ -26,14 +27,7 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
   heroSubheadingPaddingRight: number;
   heroSubheadingPaddingBottom: number;
   activeEditComponentId: string;
-
-  private heroComponentLayoutSubscription: Subscription;
-  private heroHeadingStyleSubscription: Subscription;
-  private heroSubheadingStyleSubscription: Subscription;
-  private defaultHeroStyleSubscription: Subscription;
-  private heroTemplateSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -44,17 +38,20 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponentId = response;
       }
     });
 
-    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(heroTemplateResponse => {
+    this.builderHeroService.heroTemplate.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(heroTemplateResponse => {
       if (heroTemplateResponse) {
         this.heroTemplate = heroTemplateResponse;
 
-        this.defaultHeroStyleSubscription = this.templateService.getTemplateStyle(this.heroTemplate).subscribe(response => {
+        this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultHeroStyle = response[ActiveComponents.Hero];
           }
@@ -62,7 +59,8 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroHeadingStyleSubscription = this.builderHeroService.heroHeadingStyle.subscribe(response => {
+    this.builderHeroService.heroHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroHeadingStyle = response;
         if (this.heroHeadingStyle['padding-top']) {
@@ -80,7 +78,8 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroSubheadingStyleSubscription = this.builderHeroService.heroSubheadingStyle.subscribe(response => {
+    this.builderHeroService.heroSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroSubheadingStyle = response;
         if (this.heroSubheadingStyle['padding-top']) {
@@ -98,7 +97,8 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
         for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -197,13 +197,8 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
     this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
   }
 
-  ngOnDestroy() {
-    this.heroComponentLayoutSubscription.unsubscribe();
-    this.heroHeadingStyleSubscription.unsubscribe();
-    this.heroSubheadingStyleSubscription.unsubscribe();
-    this.defaultHeroStyleSubscription.unsubscribe();
-    this.heroTemplateSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

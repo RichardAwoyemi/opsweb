@@ -1,17 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SortablejsOptions } from 'ngx-sortablejs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SimpleModalService } from '../../../../../shared/components/simple-modal/simple-modal.service';
-import { BuilderUploadImageModalComponent } from '../../../builder-actions/builder-upload-image-modal/builder-upload-image-modal.component';
-import { BuilderDeleteImageModalComponent } from '../../../builder-actions/builder-delete-image-modal/builder-delete-image-modal.component';
-import { BuilderService } from '../../../builder.service';
-import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates } from '../../../builder';
-import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { WebsiteService } from '../../../../../shared/services/website.service';
 import { TemplateService } from '../../../../../shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates } from '../../../builder';
+import { BuilderDeleteImageModalComponent } from '../../../builder-actions/builder-delete-image-modal/builder-delete-image-modal.component';
+import { BuilderUploadImageModalComponent } from '../../../builder-actions/builder-upload-image-modal/builder-upload-image-modal.component';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
+import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-navbar-options-picker',
@@ -40,18 +41,7 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
   options: SortablejsOptions;
   websiteChangeCount: number;
   pageComponents: any;
-
-  private navbarMenuOptionsSubscription: Subscription;
-  private navbarLogoImageSubscription: Subscription;
-  private fontNamesSubscription: Subscription;
-  private fontUnitsSubscription: Subscription;
-  private navbarBrandStyleSubscription: Subscription;
-  private navbarLogoImageStyleSubscription: Subscription;
-  private navbarLinkStyleSubscription: Subscription;
-  private navbarTemplateSubscription: Subscription;
-  private defaultNavbarStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -74,19 +64,22 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarMenuOptions = response;
       }
     });
 
-    this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
+    this.builderNavbarService.navbarLogoImage.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLogoImage = response;
       }
     });
 
-    this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
+    this.builderNavbarService.navbarLogoImageStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLogoImageStyle = response;
         if (this.navbarLogoImageStyle['width']) {
@@ -97,11 +90,13 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarTemplateResponse => {
+    this.builderNavbarService.navbarTemplate.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(navbarTemplateResponse => {
       if (navbarTemplateResponse) {
         this.navbarTemplate = navbarTemplateResponse;
 
-        this.defaultNavbarStyleSubscription = this.templateService.getTemplateStyle(this.navbarTemplate).subscribe(response => {
+        this.templateService.getTemplateStyle(this.navbarTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultNavbarStyle = response[ActiveComponents.Navbar];
           }
@@ -109,7 +104,8 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarBrandStyleSubscription = this.builderNavbarService.navbarBrandStyle.subscribe(response => {
+    this.builderNavbarService.navbarBrandStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarBrandStyle = response;
 
@@ -127,7 +123,8 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
+    this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLinkStyle = response;
 
@@ -145,25 +142,29 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
+    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontNames = response;
       }
     });
 
-    this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
+    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontUnits = response;
       }
     });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -299,17 +300,8 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderNavbarService.navbarBrandStyle.next(this.navbarBrandStyle);
   }
 
-  ngOnDestroy() {
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.navbarLogoImageSubscription.unsubscribe();
-    this.fontNamesSubscription.unsubscribe();
-    this.fontUnitsSubscription.unsubscribe();
-    this.navbarBrandStyleSubscription.unsubscribe();
-    this.navbarLogoImageStyleSubscription.unsubscribe();
-    this.navbarLinkStyleSubscription.unsubscribe();
-    this.navbarTemplateSubscription.unsubscribe();
-    this.defaultNavbarStyleSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

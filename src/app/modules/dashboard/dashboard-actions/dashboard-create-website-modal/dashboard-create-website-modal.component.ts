@@ -1,18 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IModalComponent } from '../../../../shared/models/modal';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { BuilderActionsService } from '../../../builder/builder-actions/builder-actions.service';
+import { Store } from '@ngrx/store';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from 'src/app/shared/services/template.service';
+import { IModalComponent } from '../../../../shared/models/modal';
+import { IUser } from '../../../../shared/models/user';
 import { UtilService } from '../../../../shared/services/util.service';
 import { WebsiteService } from '../../../../shared/services/website.service';
-import { ToastrService } from 'ngx-toastr';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { IUser } from '../../../../shared/models/user';
-import { Store } from '@ngrx/store';
-import * as fromUser from '../../../core/store/user/user.reducer';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BuilderActionsService } from '../../../builder/builder-actions/builder-actions.service';
 import { BuilderService } from '../../../builder/builder.service';
-import { TemplateService } from 'src/app/shared/services/template.service';
+import * as fromUser from '../../../core/store/user/user.reducer';
 
 @Component({
   selector: 'app-dashboard-create-website-modal',
@@ -22,9 +23,7 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
   user: IUser;
   disableSaveButton: boolean;
   websiteName: string;
-
-  private websiteAvailabilitySubscription: Subscription;
-  private websiteOwnershipSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -42,7 +41,8 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
     this.websiteName = UtilService.generateWebsiteName();
     this.userStore.select('user')
       .pipe()
-      .subscribe(async (result: IUser) => {
+      .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
         }
@@ -51,13 +51,15 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
 
   onConfirmButtonClick() {
     this.websiteName = this.websiteName.toLowerCase();
-    this.websiteAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.websiteName).subscribe(async websitesWithSameName => {
+    this.websiteService.checkIfWebsiteNameIsAvailable(this.websiteName).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(async websitesWithSameName => {
       if (websitesWithSameName.size === 0) {
         const documentId = this.afs.createId();
         const documentPath = `websites/${documentId}`;
         await this.templateService.getWebsite('default').then(response => {
           const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-          this.websiteOwnershipSubscription = this.websiteService.getWebsitesByUserId(this.user.uid).subscribe(websitesOwnedByUser => {
+          this.websiteService.getWebsitesByUserId(this.user.uid).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(websitesOwnedByUser => {
             if (websitesOwnedByUser.length < 3) {
               documentRef.set({
                 name: this.websiteName,
@@ -76,13 +78,11 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
             } else {
               this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
             }
-            this.websiteOwnershipSubscription.unsubscribe();
           });
         });
       } else {
         this.toastrService.error(`A website with this name already exists.`);
       }
-      this.websiteAvailabilitySubscription.unsubscribe();
     });
   }
 
@@ -94,12 +94,8 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
     this.activeModal.close();
   }
 
-  ngOnDestroy() {
-    if (this.websiteOwnershipSubscription) {
-      this.websiteOwnershipSubscription.unsubscribe();
-    }
-    if (this.websiteAvailabilitySubscription) {
-      this.websiteAvailabilitySubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

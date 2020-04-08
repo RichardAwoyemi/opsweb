@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
 import * as fromAuth from 'src/app/modules/core/store/auth/auth.reducer';
 import * as userActions from 'src/app/modules/core/store/user/user.actions';
@@ -11,6 +11,7 @@ import { IUser } from './shared/models/user';
 import { Router } from '@angular/router';
 import { RouterService } from './shared/services/router.service';
 import { AuthService } from './modules/auth/auth.service';
+import { takeUntil } from 'rxjs/operators';
 
 declare let window: any;
 
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit, OnDestroy {
   isMobile: Observable<BreakpointState>;
   referredBy: string;
   user: any;
-  private authSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
+
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -71,7 +73,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
-    this.authSubscription = this.afAuth.authState.subscribe(result => {
+    this.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         localStorage.setItem('uid', result.uid);
         this.authStore.dispatch(authActions.getData());
@@ -79,7 +82,8 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.userStore.select('user').pipe().subscribe(async (result: IUser) => {
+    this.userStore.select('user').pipe().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(async (result: IUser) => {
       if (result && this.authService.isLoggedIn()) {
         this.redirectUser();
       }
@@ -87,7 +91,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   processMobileLogin(response) {
-    this.isMobile.subscribe(result => {
+    this.isMobile.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result.matches && !this.referredBy && response && response.user.providerData[0].providerId === 'facebook.com' ||
         result.matches && response && response.user.providerData[0].providerId === 'google.com') {
         this.authService.mobileLogin(AppComponent.assignUserProfile(response.additionalUserInfo.profile, response.user.providerData[0].providerId), response.user.uid).then(() => {
@@ -97,7 +102,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   processMobileReferralLogin(response) {
-    this.isMobile.subscribe(result => {
+    this.isMobile.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result.matches && this.referredBy && response && response.user.providerData[0].providerId === 'facebook.com' ||
         result.matches && this.referredBy && response && response.user.providerData[0].providerId === 'google.com') {
         this.authService.mobileReferralLogin(AppComponent.assignUserProfile(response.additionalUserInfo.profile, response.user.providerData[0].providerId), response.user.uid, this.referredBy).then(() => {
@@ -115,9 +121,8 @@ export class AppComponent implements OnInit, OnDestroy {
     window.scroll(0, 0);
   }
 
-  ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BuilderService } from '../../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ActiveComponents } from '../../builder';
-import { Subscription } from 'rxjs';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-placeholder',
@@ -10,8 +11,7 @@ import { Subscription } from 'rxjs';
 export class BuilderPlaceholderComponent implements OnInit, OnDestroy {
   @Input() componentId: number;
   previewMode = false;
-  private previewModeSubscription: Subscription;
-  private activeEditComponentSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
   private activeEditComponent: string;
 
   constructor(
@@ -20,11 +20,13 @@ export class BuilderPlaceholderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       this.previewMode = response;
     });
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
       }
@@ -58,8 +60,8 @@ export class BuilderPlaceholderComponent implements OnInit, OnDestroy {
     this.builderService.setSidebarComponentsSetting();
   }
 
-  ngOnDestroy() {
-    this.previewModeSubscription.unsubscribe();
-    this.activeEditComponentSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

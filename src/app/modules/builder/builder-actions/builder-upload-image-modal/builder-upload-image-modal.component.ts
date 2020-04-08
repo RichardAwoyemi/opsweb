@@ -1,13 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
+import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
 import { ActiveComponentsPartialSelector } from '../../builder';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 
 @Component({
   selector: 'app-builder-upload-image-modal',
@@ -20,7 +21,7 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
   modalHeight: any;
   pageComponents: any;
 
-  private builderComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -37,7 +38,8 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
       'height': `${this.innerHeight}px`
     };
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -61,7 +63,8 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
   }
 
   uploadImageToImgur() {
-    this.imgurService.upload(this.croppedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
+    this.imgurService.upload(this.croppedImage.split('base64,')[1]).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((imgurResponse: ImgurResponse) => {
       if (imgurResponse.status === 200) {
         this.builderNavbarService.navbarLogoImage.next(imgurResponse.data.link);
         this.setNavbarOptionsStyle('navbarLogoImage', imgurResponse.data.link);
@@ -76,7 +79,8 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
     this.croppedImage = event.base64;
   }
 
-  ngOnDestroy() {
-    this.builderComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

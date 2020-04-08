@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
-import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from '../../../../../shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
 import { ActiveComponents, ActiveTemplates, ActiveThemes } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { WebsiteService } from '../../../../../shared/services/website.service';
-import { TemplateService } from '../../../../../shared/services/template.service';
+import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-hero-colour-picker',
@@ -23,18 +24,7 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
   defaultHeroStyle: any;
   pageComponents: any;
   activeEditComponentId: string;
-
-  private heroBackgroundStyleSubscription: Subscription;
-  private heroHeadingStyleSubscription: Subscription;
-  private heroSubheadingStyleSubscription: Subscription;
-  private heroButtonStyleSubscription: Subscription;
-  private heroThemeSubscription: Subscription;
-  private heroThemesSubscription: Subscription;
-  private heroTemplateSubscription: Subscription;
-  private defaultHeroStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -46,10 +36,12 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponentId = response;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(pageDetails => {
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(pageDetails => {
           if (pageDetails) {
             this.pageComponents = pageDetails;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -67,23 +59,27 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroThemeSubscription = this.builderHeroService.heroTheme.subscribe(response => {
+    this.builderHeroService.heroTheme.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroTheme = response;
       }
     });
 
-    this.heroThemesSubscription = this.builderHeroService.getHeroThemes().subscribe(response => {
+    this.builderHeroService.getHeroThemes().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroThemes = response;
       }
     });
 
-    this.heroTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(templateResponse => {
       if (templateResponse) {
         this.heroTemplate = templateResponse['template'];
 
-        this.defaultHeroStyleSubscription = this.templateService.getTemplateStyle(this.heroTemplate).subscribe(response => {
+        this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultHeroStyle = response[ActiveComponents.Hero];
           }
@@ -91,13 +87,15 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
     });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -161,17 +159,8 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
     this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
   }
 
-  ngOnDestroy() {
-    this.heroBackgroundStyleSubscription.unsubscribe();
-    this.heroHeadingStyleSubscription.unsubscribe();
-    this.heroSubheadingStyleSubscription.unsubscribe();
-    this.heroButtonStyleSubscription.unsubscribe();
-    this.heroThemeSubscription.unsubscribe();
-    this.heroThemesSubscription.unsubscribe();
-    this.heroTemplateSubscription.unsubscribe();
-    this.defaultHeroStyleSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

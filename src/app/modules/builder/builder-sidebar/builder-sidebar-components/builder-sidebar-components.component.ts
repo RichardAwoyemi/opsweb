@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActiveComponents } from '../../builder';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from '../../../../shared/services/template.service';
+import { ActiveComponents } from '../../builder';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,10 +23,7 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   heroTemplate: any;
   navbarMenuOptions: any;
   footerMenuOptions: any;
-
-  private activeEditComponentSubscription: Subscription;
-  private templateSubscription: Subscription;
-  private defaultStyleSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -37,15 +35,18 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.webComponents = BuilderComponentsService.webComponents;
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
       }
     });
 
-    this.templateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(pageComponentsResponse => {
       if (pageComponentsResponse) {
-        this.defaultStyleSubscription = this.templateService.getTemplateStyle(pageComponentsResponse['template']).subscribe(response => {
+        this.templateService.getTemplateStyle(pageComponentsResponse['template']).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultStyle = response;
           }
@@ -83,9 +84,8 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     }, '*');
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.templateSubscription.unsubscribe();
-    this.defaultStyleSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

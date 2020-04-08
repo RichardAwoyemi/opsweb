@@ -170,14 +170,16 @@ export class BuilderService {
   }
 
   processIncomingMessages(e: any) {
-    if (e.data.action.includes('colour')) {
-      this.setSidebarColoursSetting();
-    }
-    if (e.data.action.includes('option')) {
-      this.setSidebarOptionsSetting();
-    }
-    if (e.data.action.includes('layout') || e.data.action.includes('postion')) {
-      this.setSidebarLayoutSetting();
+    if (e.data.action){
+      if (e.data.action.includes('colour')) {
+        this.setSidebarColoursSetting();
+      }
+      if (e.data.action.includes('option')) {
+        this.setSidebarOptionsSetting();
+      }
+      if (e.data.action.includes('layout') || e.data.action.includes('postion')) {
+        this.setSidebarLayoutSetting();
+      }
     }
   }
 

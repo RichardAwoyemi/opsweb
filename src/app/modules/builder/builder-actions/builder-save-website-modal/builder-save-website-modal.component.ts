@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
 import { WebsiteService } from '../../../../shared/services/website.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { UtilService } from '../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-confirm-save-modal',
@@ -17,9 +17,7 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
   pageComponents: any;
   websiteName: string;
   uid: string;
-  private pageComponentsSubscription: Subscription;
-  private websiteNameSubscription: Subscription;
-  private authSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -32,13 +30,15 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
   }
 
   ngOnInit() {
-    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
     });
 
-    this.websiteNameSubscription = this.websiteService.websiteName.subscribe(response => {
+    this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteName = response;
       }
@@ -47,7 +47,8 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
-    this.authSubscription = this.afAuth.authState.subscribe(result => {
+    this.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.websiteService.saveWebsite(result.uid).then(() => {
           this.toastrService.success('Your website has been saved.', 'Great!');
@@ -62,9 +63,9 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
     this.activeModal.dismiss();
   }
 
-  ngOnDestroy() {
-    UtilService.safeUnsubscribe(this.pageComponentsSubscription);
-    UtilService.safeUnsubscribe(this.websiteNameSubscription);
-    UtilService.safeUnsubscribe(this.authSubscription);
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
+
 }

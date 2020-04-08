@@ -1,9 +1,10 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveSettings } from '../../builder';
-import { debounce } from '../../../../shared/decorators/debounce.decorator';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UtilService } from 'src/app/shared/services/util.service';
+import { debounce } from '../../../../shared/decorators/debounce.decorator';
+import { ActiveComponents, ActiveSettings } from '../../builder';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-sidebar-menu',
@@ -29,14 +30,8 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
   ACTIVE_OPTIONS_SETTING: string = ActiveSettings.Options;
   ACTIVE_PAGES_SETTING: string = ActiveSettings.Pages;
   ACTIVE_DATA_SETTING: string = ActiveSettings.Data;
-  private sidebarTemplatesMenuSubscription: Subscription;
-  private sidebarComponentsMenuSubscription: Subscription;
-  private sidebarColoursMenuSubscription: Subscription;
-  private sidebarLayoutMenuSubscription: Subscription;
-  private sidebarOptionsMenuSubscription: Subscription;
-  private sidebarPagesMenuSubscription: Subscription;
-  private sidebarDataMenuSubscription: Subscription;
-  private activeEditComponentSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
+
 
   constructor(
     private builderService: BuilderService
@@ -46,49 +41,57 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.sidebarTemplatesMenuSubscription = this.builderService.sidebarTemplatesMenu.subscribe(response => {
+    this.builderService.sidebarTemplatesMenu.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.sidebarTemplatesMenu = response;
       }
     });
 
-    this.sidebarComponentsMenuSubscription = this.builderService.sidebarComponentsMenu.subscribe(response => {
+    this.builderService.sidebarComponentsMenu.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.sidebarComponentsMenu = response;
       }
     });
 
-    this.sidebarColoursMenuSubscription = this.builderService.sidebarColoursMenu.subscribe(response => {
+    this.builderService.sidebarColoursMenu.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.sidebarColoursMenu = response;
       }
     });
 
-    this.sidebarLayoutMenuSubscription = this.builderService.sidebarLayoutMenu.subscribe(response => {
+    this.builderService.sidebarLayoutMenu.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.sidebarLayoutMenu = response;
       }
     });
 
-    this.sidebarOptionsMenuSubscription = this.builderService.sidebarOptionsMenu.subscribe(response => {
+    this.builderService.sidebarOptionsMenu.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.sidebarOptionsMenu = response;
       }
     });
 
-    this.sidebarPagesMenuSubscription = this.builderService.sidebarPagesMenu.subscribe(response => {
+    this.builderService.sidebarPagesMenu.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.sidebarPagesMenu = response;
       }
     });
 
-    this.sidebarDataMenuSubscription = this.builderService.sidebarDataMenu.subscribe(response => {
+    this.builderService.sidebarDataMenu.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.sidebarDataMenu = response;
       }
     });
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
       }
@@ -110,14 +113,8 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
     return !(this.activeEditComponent === ActiveComponents.Placeholder || !this.activeEditComponent);
   }
 
-  ngOnDestroy() {
-    this.sidebarTemplatesMenuSubscription.unsubscribe();
-    this.sidebarComponentsMenuSubscription.unsubscribe();
-    this.sidebarColoursMenuSubscription.unsubscribe();
-    this.sidebarLayoutMenuSubscription.unsubscribe();
-    this.sidebarOptionsMenuSubscription.unsubscribe();
-    this.sidebarPagesMenuSubscription.unsubscribe();
-    this.sidebarDataMenuSubscription.unsubscribe();
-    this.activeEditComponentSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

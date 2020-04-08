@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { TemplateService } from '../../../../../shared/services/template.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar-layout-picker',
@@ -30,14 +31,7 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
   navbarTemplate: any;
   defaultNavbarStyle: any;
   pageComponents: any;
-
-  private navbarLinkStyleSubscription: Subscription;
-  private navbarBrandStyleSubscription: Subscription;
-  private navbarLogoImageStyleSubscription: Subscription;
-  private navbarLogoImageSubscription: Subscription;
-  private navbarTemplateSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private defaultNavbarStyleSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -47,19 +41,22 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
+    this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLinkStyle = response;
       }
     });
 
-    this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
+    this.builderNavbarService.navbarLogoImage.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLogoImage = response;
       }
     });
 
-    this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
+    this.builderNavbarService.navbarLogoImageStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLogoImageStyle = response;
         if (this.navbarLogoImageStyle['padding-top']) {
@@ -77,7 +74,8 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
+    this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLinkStyle = response;
         if (this.navbarLinkStyle['padding-top']) {
@@ -95,7 +93,8 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarBrandStyleSubscription = this.builderNavbarService.navbarBrandStyle.subscribe(response => {
+    this.builderNavbarService.navbarBrandStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarBrandStyle = response;
         if (this.navbarBrandStyle['padding-top']) {
@@ -113,11 +112,13 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarTemplateResponse => {
+    this.builderNavbarService.navbarTemplate.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(navbarTemplateResponse => {
       if (navbarTemplateResponse) {
         this.navbarTemplate = navbarTemplateResponse;
 
-        this.defaultNavbarStyleSubscription = this.templateService.getTemplateStyle(this.navbarTemplate).subscribe(response => {
+        this.templateService.getTemplateStyle(this.navbarTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultNavbarStyle = response[ActiveComponents.Navbar];
           }
@@ -125,7 +126,8 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -243,13 +245,8 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
     this.setNavbarLayoutClass('navbar-nav ml-auto');
   }
 
-  ngOnDestroy() {
-    this.navbarLinkStyleSubscription.unsubscribe();
-    this.navbarBrandStyleSubscription.unsubscribe();
-    this.navbarLogoImageStyleSubscription.unsubscribe();
-    this.navbarLogoImageSubscription.unsubscribe();
-    this.navbarTemplateSubscription.unsubscribe();
-    this.defaultNavbarStyleSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

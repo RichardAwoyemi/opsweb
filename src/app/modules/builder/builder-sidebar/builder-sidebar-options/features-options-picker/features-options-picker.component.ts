@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Options } from 'ng5-slider';
-import { Subscription } from 'rxjs';
 import { TemplateService } from 'src/app/shared/services/template.service';
 import { WebsiteService } from '../../../../../shared/services/website.service';
 import { ActiveComponents, ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
 import { BuilderService } from '../../../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-features-options-picker',
@@ -45,16 +46,7 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
       { value: 8 }
     ]
   };
-
-  private activeEditComponentIdSubscription: Subscription;
-  private fontNamesSubscription: Subscription;
-  private fontUnitsSubscription: Subscription;
-  private featuresHeadingStyleSubscription: Subscription;
-  private featuresSubheadingStyleSubscription: Subscription;
-  private featuresTemplateSubscription: Subscription;
-  private defaultFeaturesStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
@@ -66,10 +58,12 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(activeEditComponentIdResponse => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(activeEditComponentIdResponse => {
       if (activeEditComponentIdResponse) {
         this.activeEditComponentId = activeEditComponentIdResponse;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.pageComponents = response;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -90,40 +84,47 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.featuresHeadingStyleSubscription = this.builderFeaturesService.featuresHeadingStyle.subscribe(response => {
+    this.builderFeaturesService.featuresHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.featuresHeadingStyle = response;
       }
     });
 
-    this.featuresSubheadingStyleSubscription = this.builderFeaturesService.featuresSubheadingStyle.subscribe(response => {
+    this.builderFeaturesService.featuresSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.featuresSubheadingStyle = response;
       }
     });
 
-    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
+    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontNames = response;
       }
     });
 
-    this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
+    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontUnits = response;
       }
     });
 
-    this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(templateResponse => {
       if (templateResponse) {
         this.featuresTemplate = templateResponse['template'];
-        this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(this.featuresTemplate).subscribe(response => {
+        this.templateService.getTemplateStyle(this.featuresTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = response[ActiveComponents.Features];
           }
         });
       } else {
-        this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(ActiveTemplates.Default).subscribe(response => {
+        this.templateService.getTemplateStyle(ActiveTemplates.Default).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultFeaturesStyle = response[ActiveComponents.Features];
           }
@@ -131,13 +132,15 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
     });
 
-    this.featuresHeadingStyleSubscription = this.builderFeaturesService.featuresHeadingStyle.subscribe(response => {
+    this.builderFeaturesService.featuresHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.featuresHeadingStyle = response;
 
@@ -155,7 +158,8 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.featuresSubheadingStyleSubscription = this.builderFeaturesService.featuresSubheadingStyle.subscribe(response => {
+    this.builderFeaturesService.featuresSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.featuresSubheadingStyle = response;
 
@@ -277,16 +281,8 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
-
-  ngOnDestroy() {
-    this.featuresHeadingStyleSubscription.unsubscribe();
-    this.featuresSubheadingStyleSubscription.unsubscribe();
-    this.fontNamesSubscription.unsubscribe();
-    this.fontUnitsSubscription.unsubscribe();
-    this.featuresTemplateSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.defaultFeaturesStyleSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

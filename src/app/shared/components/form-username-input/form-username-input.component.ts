@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { FormUsernameInputService } from './form-username-input.service';
 import { SimpleModalService } from '../simple-modal/simple-modal.service';
 import { UserService } from '../../services/user.service';
 import { IUser } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-form-username-input',
@@ -17,7 +18,7 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
   showUsernameError = false;
   username: string;
   uid: string;
-  private usernameSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private userService: UserService,
@@ -31,7 +32,7 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
-      .subscribe(async (result: IUser) => {
+    .subscribe(async (result: IUser) => {
         if (result) {
           if (result.username) {
             this.username = result.username;
@@ -45,7 +46,8 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.usernameSubscription = this.userService.username.subscribe((response => {
+    this.userService.username.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.username = response;
         this.formUsernameInputService.usernameExists.next({ 'status': false });
@@ -58,7 +60,8 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
     if (this.username) {
       this.showUsernameError = false;
       this.username = this.username.replace(/[^\w\s]/gi, '').trim().replace(/\b\w/g, (s) => s.toLowerCase());
-      this.usernameSubscription = this.userService.getUserByUsername(this.username).subscribe((result) => {
+      this.userService.getUserByUsername(this.username).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((result) => {
         if (result) {
           if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
             (result[0]['uid'] !== this.uid)) {
@@ -96,9 +99,8 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
     this.formUsernameInputService.usernameExists.next({ 'status': true });
   }
 
-  ngOnDestroy() {
-    if (this.usernameSubscription) {
-      this.usernameSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

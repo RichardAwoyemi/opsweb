@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
 import { TemplateService } from 'src/app/shared/services/template.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-footer-layout-picker',
@@ -43,18 +44,7 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   linkedinUrl: string;
   footerMenuOptions: string[];
   pageComponents: any;
-
-  private footerStyleSubscription: Subscription;
-  private footerCopyrightStyleSubscription: Subscription;
-  private footerSocialLinksStyleSubscription: Subscription;
-  private footerPageLinksStyleSubscription: Subscription;
-  private footerAlignmentClassSubscription: Subscription;
-  private footerSocialLinksContainerStyleSubscription: Subscription;
-  private footerTemplateSubscription: Subscription;
-  private defaultFooterStyleSubscription: Subscription;
-  private footerComponentLayoutSubscription: Subscription;
-  private footerMenuOptionsSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -64,41 +54,48 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.footerTemplateSubscription = this.builderFooterService.footerTemplate.subscribe(footerTemplateResponse => {
+    this.builderFooterService.footerTemplate.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(footerTemplateResponse => {
       this.footerTemplate = footerTemplateResponse;
 
-      this.defaultFooterStyleSubscription = this.templateService.getTemplateStyle(this.footerTemplate).subscribe(response => {
+      this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
         if (response) {
           this.defaultFooterStyle = response[ActiveComponents.Footer];
         }
       });
     });
 
-    this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+    this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerMenuOptions = response;
       }
     });
 
-    this.footerAlignmentClassSubscription = this.builderFooterService.footerAlignmentClass.subscribe(response => {
+    this.builderFooterService.footerAlignmentClass.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerAlignmentClass = response;
       }
     });
 
-    this.footerSocialLinksContainerStyleSubscription = this.builderFooterService.footerSocialLinksContainerStyle.subscribe(response => {
+    this.builderFooterService.footerSocialLinksContainerStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerSocialLinksContainerStyle = response;
       }
     });
 
-    this.footerComponentLayoutSubscription = this.builderFooterService.footerComponentLayout.subscribe(response => {
+    this.builderFooterService.footerComponentLayout.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerComponentLayout = response;
       }
     });
 
-    this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
+    this.builderFooterService.footerStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerStyle = response;
         if (this.footerStyle['padding-top']) {
@@ -116,7 +113,8 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerCopyrightStyleSubscription = this.builderFooterService.footerCopyrightStyle.subscribe(response => {
+    this.builderFooterService.footerCopyrightStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerCopyrightStyle = response;
         if (this.footerCopyrightStyle['padding-top']) {
@@ -134,7 +132,8 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerSocialLinksStyleSubscription = this.builderFooterService.footerSocialLinksStyle.subscribe(response => {
+    this.builderFooterService.footerSocialLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerSocialLinksStyle = response;
         if (this.footerSocialLinksStyle['margin-top']) {
@@ -152,7 +151,8 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerPageLinksStyleSubscription = this.builderFooterService.footerPageLinksStyle.subscribe(response => {
+    this.builderFooterService.footerPageLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerPageLinksStyle = response;
         if (this.footerPageLinksStyle['padding-top']) {
@@ -170,7 +170,8 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -358,17 +359,8 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.footerStyleSubscription.unsubscribe();
-    this.footerCopyrightStyleSubscription.unsubscribe();
-    this.footerSocialLinksStyleSubscription.unsubscribe();
-    this.footerPageLinksStyleSubscription.unsubscribe();
-    this.footerAlignmentClassSubscription.unsubscribe();
-    this.footerSocialLinksContainerStyleSubscription.unsubscribe();
-    this.footerTemplateSubscription.unsubscribe();
-    this.defaultFooterStyleSubscription.unsubscribe();
-    this.footerComponentLayoutSubscription.unsubscribe();
-    this.footerMenuOptionsSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

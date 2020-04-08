@@ -1,8 +1,9 @@
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from '../../../shared/services/website.service';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-website-header',
@@ -14,14 +15,15 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
   id: string;
   websiteName: string;
 
-  private websiteNameSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public router: Router,
     private websiteService: WebsiteService,
     private route: ActivatedRoute) {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap
+    .subscribe(params => {
       this.id = params.get('id');
     });
   }
@@ -29,7 +31,8 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
-    this.websiteNameSubscription = this.websiteService.websiteName.subscribe(response => {
+    this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteName = `${response}.opsonion.com`;
       }
@@ -46,8 +49,9 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.websiteNameSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   redirectToWebsite() {

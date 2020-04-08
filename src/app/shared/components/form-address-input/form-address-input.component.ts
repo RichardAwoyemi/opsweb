@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormAddressInputService } from './form-address-input.service';
-import { UserService } from '../../services/user.service';
-import { IUser } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
-import { Subscription } from 'rxjs';
+import { IUser } from 'src/app/shared/models/user';
+import { UserService } from '../../services/user.service';
+import { FormAddressInputService } from './form-address-input.service';
 
 @Component({
   selector: 'app-form-address-input',
@@ -19,14 +20,7 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
   showStreetAddressInputError: any;
   showCityInputError: any;
   showPostcodeInputError: any;
-
-  private streetAddress1Subscription: Subscription;
-  private streetAddress2Subscription: Subscription;
-  private streetAddressInputErrorSubscription: Subscription;
-  private citySubscription: Subscription;
-  private cityInputErrorSubscription: Subscription;
-  private postcodeSubscription: Subscription;
-  private postcodeInputErrorSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     public formAddressInputService: FormAddressInputService,
@@ -38,7 +32,7 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
-      .subscribe(async (result: IUser) => {
+    .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
           if (this.user.streetAddress1) {
@@ -63,43 +57,50 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.streetAddressInputErrorSubscription = this.formAddressInputService.showStreetAddressInputError.subscribe(response => {
+    this.formAddressInputService.showStreetAddressInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.showStreetAddressInputError = response;
       }
     });
 
-    this.streetAddress1Subscription = this.userService.streetAddress1.subscribe(response => {
+    this.userService.streetAddress1.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.streetAddress1 = response;
       }
     });
 
-    this.streetAddress2Subscription = this.userService.streetAddress2.subscribe(response => {
+    this.userService.streetAddress2.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.streetAddress2 = response;
       }
     });
 
-    this.cityInputErrorSubscription = this.formAddressInputService.showCityInputError.subscribe(response => {
+    this.formAddressInputService.showCityInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.showCityInputError = response;
       }
     });
 
-    this.citySubscription = this.userService.city.subscribe(response => {
+    this.userService.city.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.city = response;
       }
     });
 
-    this.postcodeInputErrorSubscription = this.formAddressInputService.showPostcodeInputError.subscribe(response => {
+    this.formAddressInputService.showPostcodeInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.showPostcodeInputError = response;
       }
     });
 
-    this.postcodeSubscription = this.userService.postcode.subscribe(response => {
+    this.userService.postcode.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.postcode = response;
       }
@@ -147,13 +148,8 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.streetAddress1Subscription.unsubscribe();
-    this.streetAddress2Subscription.unsubscribe();
-    this.streetAddressInputErrorSubscription.unsubscribe();
-    this.citySubscription.unsubscribe();
-    this.cityInputErrorSubscription.unsubscribe();
-    this.postcodeSubscription.unsubscribe();
-    this.postcodeInputErrorSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

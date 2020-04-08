@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BuilderService } from '../../builder.service';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
+import { debounce } from '../../../../shared/decorators/debounce.decorator';
+import { AuthService } from '../../../auth/auth.service';
+import { ActiveComponents, ActiveElements, MAX_NUMBER_OF_PAGES } from '../../builder';
+import { BuilderCreateAccountModalComponent } from '../../builder-actions/builder-create-account-modal/builder-create-account-modal.component';
 import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
-import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
-import { ActiveComponents, ActiveElements, MAX_NUMBER_OF_PAGES } from '../../builder';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { BuilderSaveWebsiteModalComponent } from '../../builder-actions/builder-save-website-modal/builder-save-website-modal.component';
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../../../auth/auth.service';
-import { BuilderCreateAccountModalComponent } from '../../builder-actions/builder-create-account-modal/builder-create-account-modal.component';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-showcase-toolbar',
@@ -34,14 +35,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   dropdownMenuClass = 'dropdown-menu';
   ariaExpandedAttribute = 'false';
   pageComponents = 'false';
-
-  private navbarMenuOptionsSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private fullScreenModeSubscription: Subscription;
-  private activePageIndexSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
-  private activeOrientationSubscription: Subscription;
-  private previewModeSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -72,7 +66,8 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       this.previewMode = response;
       if (this.previewMode) {
         this.previewButtonIcon = 'btn-icon-active';
@@ -81,7 +76,8 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
       }
     }));
 
-    this.fullScreenModeSubscription = this.builderService.fullScreenMode.subscribe((response => {
+    this.builderService.fullScreenMode.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       this.fullScreenMode = response;
       if (this.fullScreenMode) {
         this.fullScreenButtonIcon = 'btn-icon-active';
@@ -90,31 +86,36 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
       }
     }));
 
-    this.activeOrientationSubscription = this.builderService.activeOrientation.subscribe((response => {
+    this.builderService.activeOrientation.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.activeToolbarOrientation = response;
       }
     }));
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((response => {
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.activePage = response;
       }
     }));
 
-    this.activePageIndexSubscription = this.builderService.activePageIndex.subscribe((response => {
+    this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.activePageIndex = response;
       }
     }));
 
-    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe((response => {
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.navbarMenuOptions = response;
       }
@@ -211,13 +212,8 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
-    this.fullScreenModeSubscription.unsubscribe();
-    this.activePageIndexSubscription.unsubscribe();
-    this.activeOrientationSubscription.unsubscribe();
-    this.previewModeSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

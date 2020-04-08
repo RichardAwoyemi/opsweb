@@ -30,10 +30,12 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   }
 
   ngOnInit() {
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {
+    this.activePageSettingSubscription = this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((activePageSettingsResponse => {
       if (activePageSettingsResponse) {
         this.activePage = activePageSettingsResponse;
-        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
+        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
           if (response) {
             this.pageComponents = response;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {

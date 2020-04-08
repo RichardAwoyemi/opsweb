@@ -4,7 +4,8 @@ import { RouterService } from '../../shared/services/router.service';
 import { BuilderService } from '../builder/builder.service';
 import { AuthService } from '../auth/auth.service';
 import { WebsiteService } from '../../shared/services/website.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-website',
@@ -15,7 +16,7 @@ export class WebsiteComponent implements OnInit, AfterViewChecked, OnDestroy {
   innerHeight: number;
   websiteId: string;
 
-  private websiteIdSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     public router: Router,
@@ -31,7 +32,8 @@ export class WebsiteComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngOnInit() {
     this.builderService.websiteMode.next(true);
     this.builderService.previewMode.next(true);
-    this.websiteIdSubscription = this.websiteService.websiteId.subscribe(response => {
+    this.websiteService.websiteId.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteId = response;
       }
@@ -48,7 +50,8 @@ export class WebsiteComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.changeDetector.detectChanges();
   }
 
-  ngOnDestroy() {
-    this.websiteIdSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

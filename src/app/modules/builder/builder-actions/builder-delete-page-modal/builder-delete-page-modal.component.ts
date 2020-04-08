@@ -1,13 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { Subscription } from 'rxjs';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { ToastrService } from 'ngx-toastr';
-import { BuilderService } from '../../builder.service';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
 import { ActiveComponentsPartialSelector } from '../../builder';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-delete-page-modal',
@@ -19,9 +20,7 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
   navbarMenuOptions: any;
   footerMenuOptions: any;
   pageComponents: any;
-  private navbarMenuOptionsSubscription: Subscription;
-  private footerMenuOptionsSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -34,19 +33,22 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
   }
 
   ngOnInit() {
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarMenuOptions = response;
       }
     });
 
-    this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+    this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerMenuOptions = response;
       }
     });
 
-    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -67,9 +69,8 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
     this.toastrService.success('Your page has been deleted.', 'Great!');
   }
 
-  ngOnDestroy() {
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
-    this.footerMenuOptionsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -20,7 +20,6 @@ export class AuthService {
   constructor(
     public afAuth: AngularFireAuth,
     public router: Router,
-    private utilService: UtilService,
     private firebaseService: FirebaseService,
     private userService: UserService,
     private websiteService: WebsiteService,

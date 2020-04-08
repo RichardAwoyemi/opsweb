@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderService } from '../../../builder.service';
@@ -9,6 +9,7 @@ import { ActiveComponents, ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { WebsiteService } from '../../../../../shared/services/website.service';
 import { TemplateService } from '../../../../../shared/services/template.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-hero-options-picker',
@@ -42,21 +43,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   heroButtonStyle: any;
   pageComponents: any;
   activeEditComponentId: string;
-
-  private heroImageSizeSubscription: Subscription;
-  private fontNamesSubscription: Subscription;
-  private fontUnitsSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private defaultHeroStyleSubscription: Subscription;
-  private heroTemplateSubscription: Subscription;
-  private heroHeadingStyleSubscription: Subscription;
-  private heroSubheadingStyleSubscription: Subscription;
-  private heroButtonStyleSubscription: Subscription;
-  private heroImageStyleSubscription: Subscription;
-  private heroMenuOptionSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private modalService: NgbModal,
@@ -70,10 +57,12 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponentId = response;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(pageDetails => {
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(pageDetails => {
           if (pageDetails) {
             this.pageComponents = pageDetails;
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -94,17 +83,20 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
+    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontNames = response;
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(navbarMenuOptionsResponse => {
       if (navbarMenuOptionsResponse) {
         this.navbarMenuOptions = navbarMenuOptionsResponse;
 
-        this.heroMenuOptionSubscription = this.builderHeroService.heroButtonLink.subscribe(response => {
+        this.builderHeroService.heroButtonLink.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.menuOption = response;
           } else {
@@ -118,29 +110,34 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
+    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontNames = response;
       }
     });
 
-    this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
+    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontUnits = response;
       }
     });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
     });
 
-    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(heroTemplateResponse => {
+    this.builderHeroService.heroTemplate.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(heroTemplateResponse => {
       if (heroTemplateResponse) {
         this.heroTemplate = heroTemplateResponse;
 
-        this.defaultHeroStyleSubscription = this.templateService.getTemplateStyle(this.heroTemplate).subscribe(response => {
+        this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultHeroStyle = response[ActiveComponents.Hero];
           }
@@ -148,7 +145,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroHeadingStyleSubscription = this.builderHeroService.heroHeadingStyle.subscribe(response => {
+    this.builderHeroService.heroHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroHeadingStyle = response;
 
@@ -166,7 +164,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroSubheadingStyleSubscription = this.builderHeroService.heroSubheadingStyle.subscribe(response => {
+    this.builderHeroService.heroSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroSubheadingStyle = response;
 
@@ -184,7 +183,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroButtonStyleSubscription = this.builderHeroService.heroButtonStyle.subscribe(response => {
+    this.builderHeroService.heroButtonStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroButtonStyle = response;
 
@@ -202,7 +202,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroButtonStyleSubscription = this.builderHeroService.heroButtonStyle.subscribe(response => {
+    this.builderHeroService.heroButtonStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroButtonStyle = response;
 
@@ -220,7 +221,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.heroImageStyleSubscription = this.builderHeroService.heroImageStyle.subscribe(response => {
+    this.builderHeroService.heroImageStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroImageStyle = response;
         this.heroImageUrl = response['src'];
@@ -228,7 +230,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -407,22 +410,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderHeroService.heroButtonLink.next(this.menuOption);
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.heroImageSizeSubscription.unsubscribe();
-    this.fontNamesSubscription.unsubscribe();
-    this.fontUnitsSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.defaultHeroStyleSubscription.unsubscribe();
-    this.heroTemplateSubscription.unsubscribe();
-    this.heroHeadingStyleSubscription.unsubscribe();
-    this.heroSubheadingStyleSubscription.unsubscribe();
-    this.heroButtonStyleSubscription.unsubscribe();
-    this.heroImageStyleSubscription.unsubscribe();
-    if (this.heroMenuOptionSubscription) {
-      this.heroMenuOptionSubscription.unsubscribe();
-    }
-    this.builderComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

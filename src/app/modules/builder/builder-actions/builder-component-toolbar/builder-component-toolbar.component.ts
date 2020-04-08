@@ -3,7 +3,8 @@ import { BuilderService } from '../../builder.service';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderDeleteComponentModalComponent } from '../builder-delete-component-modal/builder-delete-component-modal.component';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-builder-component-toolbar',
@@ -15,9 +16,7 @@ export class BuilderComponentToolbarComponent implements OnInit, OnDestroy {
   activeEditComponent: string;
   activeEditComponentId: string;
   activeRoute: string;
-
-  private activeEditComponentSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -28,12 +27,14 @@ export class BuilderComponentToolbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activeRoute = this.router.url;
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
       }
     });
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       this.activeEditComponentId = response;
     });
   }
@@ -55,13 +56,8 @@ export class BuilderComponentToolbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (this.activeEditComponentIdSubscription) {
-      this.activeEditComponentIdSubscription.unsubscribe();
-    }
-    if (this.activeEditComponentSubscription) {
-      this.activeEditComponentSubscription.unsubscribe();
-    }
-
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

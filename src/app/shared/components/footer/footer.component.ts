@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { RouterService } from '../../services/router.service';
 
@@ -8,11 +9,11 @@ import { RouterService } from '../../services/router.service';
   selector: 'app-footer',
   templateUrl: './footer.component.html'
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, OnDestroy {
   isMobile: Observable<BreakpointState>;
   today: number = Date.now();
   copyrightMessage = ' Opsonion. All rights reserved.';
-  footerSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
   currentRoute: string;
 
   constructor(
@@ -24,7 +25,8 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
-    this.footerSubscription = this.routerService.currentRoute.subscribe(result => {
+    this.routerService.currentRoute.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.currentRoute = result;
       }
@@ -37,5 +39,10 @@ export class FooterComponent implements OnInit {
 
   checkIfIsOnDomain() {
     return RouterService.checkIfIsOnDomain();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { Template } from '../../../../shared/models/template';
 import { DataService } from '../../../../shared/services/data.service';
@@ -10,6 +10,7 @@ import { WebsiteService } from '../../../../shared/services/website.service';
 import { ActiveTemplates } from '../../builder';
 import { BuilderChangeTemplateModalComponent } from '../../builder-actions/builder-change-template-modal/builder-change-template-modal.component';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-builder-sidebar-templates',
@@ -23,12 +24,7 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
   pageComponents: any;
   private webTemplates: Template[];
   private selectedTemplate: Template;
-
-  private webTemplateSubscription: Subscription;
-  private templateSubscription: Subscription;
-  private selectedTemplateSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private dataService: DataService,
@@ -50,7 +46,8 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
   }
 
   setupWebTemplateSubscriptions() {
-    this.webTemplateSubscription = this.dataService.getAllWebTemplates().subscribe(response => {
+    this.dataService.getAllWebTemplates().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.webTemplates = response;
         this.webTemplates.push({ id: ActiveTemplates.Default, name: 'Default' });
@@ -59,19 +56,22 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.selectedTemplateSubscription = this.templateService.selectedTemplate.subscribe(response => {
+    this.templateService.selectedTemplate.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.selectedTemplate = response;
       }
     });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
     });
 
-    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -98,14 +98,8 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  ngOnDestroy() {
-    this.webTemplateSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.selectedTemplateSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
-    if (this.templateSubscription) {
-      this.templateSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,20 +1,15 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderNavbarService } from './builder-navbar.service';
-import {
-  ActiveComponents,
-  ActiveComponentsPartialSelector,
-  ActiveElements,
-  ActiveSettings,
-  ActiveThemes
-} from '../../builder';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from 'src/app/shared/services/template.service';
 import { IComponent } from '../../../../shared/models/component';
+import { UtilService } from '../../../../shared/services/util.service';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings, ActiveThemes } from '../../builder';
+import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
 import { BuilderFooterService } from '../builder-footer/builder-footer.service';
-import { ToastrService } from 'ngx-toastr';
-import { UtilService } from '../../../../shared/services/util.service';
-import { TemplateService } from 'src/app/shared/services/template.service';
+import { BuilderNavbarService } from './builder-navbar.service';
 
 @Component({
   selector: 'app-builder-navbar',
@@ -42,24 +37,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   activePageSetting: string;
   websiteMode: boolean;
   navbarOpen: boolean;
-
-  private activeEditComponentSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private navbarStyleSubscription: Subscription;
-  private navbarBrandStyleSubscription: Subscription;
-  private navbarLinkStyleSubscription: Subscription;
-  private navbarLayoutClassSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
-  private previewModeSubscription: Subscription;
-  private activeElementSubscription: Subscription;
-  private navbarLogoImageSubscription: Subscription;
-  private navbarLogoTextSubscription: Subscription;
-  private navbarLogoImageStyleSubscription: Subscription;
-  private navbarThemeSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private websiteModeSubscription: Subscription;
-  private templateServiceSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateServce: TemplateService,
@@ -75,102 +53,113 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   ngOnInit() {
     this.navbarOpen = false;
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       this.previewMode = response;
     });
 
-    this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
+    this.builderService.websiteMode.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       this.websiteMode = response;
     });
 
-    this.navbarThemeSubscription = this.builderNavbarService.navbarTheme.subscribe(response => {
+    this.builderNavbarService.navbarTheme.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (!response) {
         this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
       }
     });
 
-    this.templateServiceSubscription = this.templateServce.activeTemplate.subscribe(response => {
+    this.templateServce.activeTemplate.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.builderNavbarService.setNavbarTemplateStyle(response[this.componentName]['style']);
       }
     });
 
-    // this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-    //   if (!response) {
-    //     this.builderNavbarService.navbarTemplate.next(ActiveThemes.Default);
-    //   }
-    // });
-
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
       }
     });
 
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeEditComponentId = response;
       }
     });
 
-    this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
+    this.builderNavbarService.navbarLogoImage.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLogoImage = response;
       }
     });
 
-    this.navbarLogoTextSubscription = this.builderNavbarService.navbarLogoText.subscribe(response => {
+    this.builderNavbarService.navbarLogoText.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLogoText = response;
       }
     });
 
-    this.navbarStyleSubscription = this.builderNavbarService.navbarStyle.subscribe(response => {
+    this.builderNavbarService.navbarStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarStyle = response;
       }
     });
 
-    this.navbarBrandStyleSubscription = this.builderNavbarService.navbarBrandStyle.subscribe(response => {
+    this.builderNavbarService.navbarBrandStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarBrandStyle = response;
       }
     });
 
-    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
+    this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLinkStyle = response;
       }
     });
 
-    this.navbarLayoutClassSubscription = this.builderNavbarService.navbarLayoutClass.subscribe(response => {
+    this.builderNavbarService.navbarLayoutClass.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLayoutClass = response;
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarMenuOptions = response;
       }
     });
 
-    this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
+    this.builderNavbarService.navbarLogoImageStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.navbarLogoImageStyle = response;
       }
     });
 
-    this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
+    this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.activeElement = response;
       }
     });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(activePageSettingResponse => {
       if (activePageSettingResponse) {
         this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.pageComponents = response;
             this.builderNavbarService.navbarTemplate.next(this.pageComponents['template']);
@@ -355,23 +344,8 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     }
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.navbarStyleSubscription.unsubscribe();
-    this.navbarBrandStyleSubscription.unsubscribe();
-    this.navbarLinkStyleSubscription.unsubscribe();
-    this.navbarLayoutClassSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.previewModeSubscription.unsubscribe();
-    this.navbarLogoImageSubscription.unsubscribe();
-    this.navbarLogoTextSubscription.unsubscribe();
-    this.navbarLogoImageStyleSubscription.unsubscribe();
-    this.navbarThemeSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
-    this.activeElementSubscription.unsubscribe();
-    this.websiteModeSubscription.unsubscribe();
-    this.templateServiceSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

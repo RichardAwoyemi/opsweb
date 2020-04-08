@@ -1,16 +1,17 @@
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DashboardCreateWebsiteModalComponent } from '../../dashboard-actions/dashboard-create-website-modal/dashboard-create-website-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
-import { WebsiteService } from '../../../../shared/services/website.service';
-import { IUser } from '../../../../shared/models/user';
-import { Store } from '@ngrx/store';
-import * as fromUser from '../../../core/store/user/user.reducer';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Observable, Subject } from 'rxjs';
+import { IUser } from '../../../../shared/models/user';
+import { WebsiteService } from '../../../../shared/services/website.service';
+import * as fromUser from '../../../core/store/user/user.reducer';
+import { DashboardCreateWebsiteModalComponent } from '../../dashboard-actions/dashboard-create-website-modal/dashboard-create-website-modal.component';
 import { DashboardDeleteWebsiteModalComponent } from '../../dashboard-actions/dashboard-delete-website-modal/dashboard-delete-website-modal.component';
 import { DashboardRenameWebsiteModalComponent } from '../../dashboard-actions/dashboard-rename-website-modal/dashboard-rename-website.modal.component';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard-body-websites',
@@ -23,7 +24,7 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
   user: any;
   isMobile: Observable<BreakpointState>;
 
-  private websitesSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private modalService: NgbModal,
@@ -41,10 +42,12 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
     this.userStore.select('user')
       .pipe()
-      .subscribe(async (result: IUser) => {
+      .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
-          this.websitesSubscription = this.websiteService.getWebsitesByUserId(this.user['uid']).subscribe(response => {
+          this.websiteService.getWebsitesByUserId(this.user['uid']).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
             if (response) {
               this.websites = response;
             }
@@ -86,9 +89,8 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
     modal.componentInstance.websiteName = name;
   }
 
-  ngOnDestroy() {
-    if (this.websitesSubscription) {
-      this.websitesSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

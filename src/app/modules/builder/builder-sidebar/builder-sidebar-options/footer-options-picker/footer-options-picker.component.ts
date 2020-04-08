@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from 'src/app/shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
-import { WebsiteService } from '../../../../../shared/services/website.service';
-import { TemplateService } from 'src/app/shared/services/template.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-footer-options-picker',
@@ -41,20 +42,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   youtubeUrl: string;
   githubUrl: string;
   linkedinUrl: string;
-
-  private fontNamesSubscription: Subscription;
-  private fontUnitsSubscription: Subscription;
-  private footerStyleSubscription: Subscription;
-  private footerCopyrightStyleSubscription: Subscription;
-  private footerSocialLinksStyleSubscription: Subscription;
-  private footerPageLinksStyleSubscription: Subscription;
-  private footerTemplateSubscription: Subscription;
-  private defaultFooterStyleSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private footerMenuOptionsSubscription: Subscription;
-  private footerSocialLinksSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -67,11 +55,13 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(navbarMenuOptionsResponse => {
       if (navbarMenuOptionsResponse) {
         this.navbarMenuOptions = navbarMenuOptionsResponse;
 
-        this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+        this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.footerMenuOptions = response;
           } else {
@@ -87,27 +77,32 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
+    this.builderFooterService.footerSocialLinks.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       this.footerSocialLinks = response;
     });
 
-    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
+    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontNames = response;
       }
     });
 
-    this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
+    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.fontUnits = response;
       }
     });
 
-    this.footerTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(templateResponse => {
       if (templateResponse) {
         this.footerTemplate = templateResponse['template'];
 
-        this.defaultFooterStyleSubscription = this.templateService.getTemplateStyle(this.footerTemplate).subscribe(response => {
+        this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
           if (response) {
             this.defaultFooterStyle = response[ActiveComponents.Footer];
           }
@@ -115,7 +110,8 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerCopyrightStyleSubscription = this.builderFooterService.footerCopyrightStyle.subscribe(response => {
+    this.builderFooterService.footerCopyrightStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerCopyrightStyle = response;
 
@@ -133,7 +129,8 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerPageLinksStyleSubscription = this.builderFooterService.footerPageLinksStyle.subscribe(response => {
+    this.builderFooterService.footerPageLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerPageLinksStyle = response;
 
@@ -151,7 +148,8 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerSocialLinksStyleSubscription = this.builderFooterService.footerSocialLinksStyle.subscribe(response => {
+    this.builderFooterService.footerSocialLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerSocialLinksStyle = response;
 
@@ -166,7 +164,8 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
+    this.builderFooterService.footerSocialLinks.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response['facebookUrl']) {
         this.footerSocialLinks['facebookUrl'] = response['facebookUrl'];
         this.facebookUrl = response['facebookUrl'];
@@ -194,19 +193,22 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
+    this.builderFooterService.footerStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.footerStyle = response;
       }
     });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
     });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.pageComponents = response;
       }
@@ -414,21 +416,8 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.fontNamesSubscription.unsubscribe();
-    this.fontUnitsSubscription.unsubscribe();
-    this.footerStyleSubscription.unsubscribe();
-    this.footerCopyrightStyleSubscription.unsubscribe();
-    this.footerSocialLinksStyleSubscription.unsubscribe();
-    this.footerPageLinksStyleSubscription.unsubscribe();
-    this.footerTemplateSubscription.unsubscribe();
-    this.defaultFooterStyleSubscription.unsubscribe();
-    this.footerSocialLinksSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    if (this.footerMenuOptionsSubscription) {
-      this.footerMenuOptionsSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

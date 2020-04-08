@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromUser from '../../../../core/store/user/user.reducer';
-import { IUser } from '../../../../../shared/models/user';
-import { FormUsernameInputService } from '../../../../../shared/components/form-username-input/form-username-input.service';
-import { Subscription } from 'rxjs';
-import { UserService } from '../../../../../shared/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormNameInputService } from '../../../../../shared/components/form-name-input/form-name-input.service';
-import { FormDobInputService } from '../../../../../shared/components/form-dob-input/form-dob-input.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { FormAddressInputService } from '../../../../../shared/components/form-address-input/form-address-input.service';
+import { FormDobInputService } from '../../../../../shared/components/form-dob-input/form-dob-input.service';
+import { FormNameInputService } from '../../../../../shared/components/form-name-input/form-name-input.service';
+import { FormUsernameInputService } from '../../../../../shared/components/form-username-input/form-username-input.service';
+import { IUser } from '../../../../../shared/models/user';
+import { UserService } from '../../../../../shared/services/user.service';
+import * as fromUser from '../../../../core/store/user/user.reducer';
 
 @Component({
   selector: 'app-settings-profile',
@@ -35,25 +36,8 @@ export class SettingsProfileComponent implements OnInit, OnDestroy {
   showStreetAddressInputError: any;
   showCityInputError: any;
   showPostcodeInputError: any;
+  ngUnsubscribe = new Subject<void>();
 
-  private usernameExistsSubscription: Subscription;
-  private usernameSubscription: Subscription;
-  private firstNameSubscription: Subscription;
-  private lastNameSubscription: Subscription;
-  private streetAddress1Subscription: Subscription;
-  private streetAddress2Subscription: Subscription;
-  private citySubscription: Subscription;
-  private postcodeSubscription: Subscription;
-  private dobDaySubscription: Subscription;
-  private dobMonthSubscription: Subscription;
-  private dobYearSubscription: Subscription;
-  private showFirstNameInputErrorSubscription: Subscription;
-  private showLastNameInputErrorSubscription: Subscription;
-  private showDobDayInputErrorSubscription: Subscription;
-  private showDobMonthInputErrorSubscription: Subscription;
-  private showDobYearInputErrorSubscription: Subscription;
-  private showStreetAddressInputErrorSubscription: Subscription;
-  private showCityInputErrorSubscription: Subscription;
 
   constructor(
     private userStore: Store<fromUser.State>,
@@ -69,7 +53,8 @@ export class SettingsProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
-      .subscribe(async (result: IUser) => {
+      .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
           if (result.username) {
@@ -78,115 +63,134 @@ export class SettingsProfileComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.usernameExistsSubscription = this.formUsernameInputService.usernameExists.subscribe((response => {
+    this.formUsernameInputService.usernameExists.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.usernameExists = response;
       }
     }));
 
-    this.usernameSubscription = this.userService.username.subscribe((response => {
+    this.userService.username.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.username = response;
       }
     }));
 
-    this.firstNameSubscription = this.userService.firstName.subscribe((response => {
+    this.userService.firstName.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.firstName = response;
       }
     }));
 
-    this.lastNameSubscription = this.userService.lastName.subscribe((response => {
+    this.userService.lastName.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.lastName = response;
       }
     }));
 
-    this.streetAddress1Subscription = this.userService.streetAddress1.subscribe((response => {
+    this.userService.streetAddress1.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.streetAddress1 = response;
       }
     }));
 
-    this.streetAddress2Subscription = this.userService.streetAddress2.subscribe((response => {
+    this.userService.streetAddress2.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.streetAddress2 = response;
       }
     }));
 
-    this.citySubscription = this.userService.city.subscribe((response => {
+    this.userService.city.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.city = response;
       }
     }));
 
-    this.postcodeSubscription = this.userService.postcode.subscribe((response => {
+    this.userService.postcode.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.postcode = response;
       }
     }));
 
-    this.dobDaySubscription = this.userService.dobDay.subscribe((response => {
+    this.userService.dobDay.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.dobDay = response;
       }
     }));
 
-    this.dobMonthSubscription = this.userService.dobMonth.subscribe((response => {
+    this.userService.dobMonth.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.dobMonth = response;
       }
     }));
 
-    this.dobYearSubscription = this.userService.dobYear.subscribe((response => {
+    this.userService.dobYear.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((response => {
       if (response) {
         this.dobYear = response;
       }
     }));
 
-    this.showFirstNameInputErrorSubscription = this.formNameInputService.showFirstNameInputError.subscribe(result => {
+    this.formNameInputService.showFirstNameInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showFirstNameInputError = result;
       }
     });
 
-    this.showLastNameInputErrorSubscription = this.formNameInputService.showLastNameInputError.subscribe(result => {
+    this.formNameInputService.showLastNameInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showLastNameInputError = result;
       }
     });
 
-    this.showDobDayInputErrorSubscription = this.formDobInputService.showDobDayInputError.subscribe(result => {
+    this.formDobInputService.showDobDayInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showDobDayInputError = result;
       }
     });
 
-    this.showDobMonthInputErrorSubscription = this.formDobInputService.showDobMonthInputError.subscribe(result => {
+    this.formDobInputService.showDobMonthInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showDobMonthInputError = result;
       }
     });
 
-    this.showDobYearInputErrorSubscription = this.formDobInputService.showDobYearInputError.subscribe(result => {
+    this.formDobInputService.showDobYearInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showDobYearInputError = result;
       }
     });
 
-    this.showStreetAddressInputErrorSubscription = this.formAddressInputService.showStreetAddressInputError.subscribe(result => {
+    this.formAddressInputService.showStreetAddressInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showStreetAddressInputError = result;
       }
     });
 
-    this.showCityInputErrorSubscription = this.formAddressInputService.showCityInputError.subscribe(result => {
+    this.formAddressInputService.showCityInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showCityInputError = result;
       }
     });
 
-    this.postcodeSubscription = this.formAddressInputService.showPostcodeInputError.subscribe(result => {
+    this.formAddressInputService.showPostcodeInputError.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(result => {
       if (result) {
         this.showPostcodeInputError = result;
       }
@@ -209,24 +213,8 @@ export class SettingsProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.usernameExistsSubscription.unsubscribe();
-    this.usernameSubscription.unsubscribe();
-    this.firstNameSubscription.unsubscribe();
-    this.lastNameSubscription.unsubscribe();
-    this.streetAddress1Subscription.unsubscribe();
-    this.streetAddress2Subscription.unsubscribe();
-    this.citySubscription.unsubscribe();
-    this.postcodeSubscription.unsubscribe();
-    this.dobDaySubscription.unsubscribe();
-    this.dobMonthSubscription.unsubscribe();
-    this.dobYearSubscription.unsubscribe();
-    this.showFirstNameInputErrorSubscription.unsubscribe();
-    this.showLastNameInputErrorSubscription.unsubscribe();
-    this.showDobDayInputErrorSubscription.unsubscribe();
-    this.showDobMonthInputErrorSubscription.unsubscribe();
-    this.showDobYearInputErrorSubscription.unsubscribe();
-    this.showStreetAddressInputErrorSubscription.unsubscribe();
-    this.showCityInputErrorSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
