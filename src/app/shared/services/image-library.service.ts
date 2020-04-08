@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ImageLibraryService {
-
   activeImage = new BehaviorSubject<Object>(null);
   selectedTemplate: Subject<Template> = new Subject<Template>();
   private IMAGE_DETAILS = './assets/data/img-library/img-library.json';
