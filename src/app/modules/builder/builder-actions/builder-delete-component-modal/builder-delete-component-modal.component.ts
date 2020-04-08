@@ -1,11 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { IModalComponent } from '../../../../shared/models/modal';
-import { Subscription } from 'rxjs';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderService } from '../../builder.service';
-import { ToastrService } from 'ngx-toastr';
-import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder';
 
 @Component({
   selector: 'app-builder-delete-component-modal',
@@ -18,8 +19,7 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   components: any;
   activePage: string;
   activePageIndex: number;
-  private pageComponentsSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -30,11 +30,11 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   }
 
   ngOnInit() {
-    this.activePageSettingSubscription = this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((activePageSettingsResponse => {
       if (activePageSettingsResponse) {
         this.activePage = activePageSettingsResponse;
-        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((response => {
           if (response) {
             this.pageComponents = response;
@@ -83,8 +83,8 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     this.activeModal.dismiss();
   }
 
-  ngOnDestroy() {
-    this.activePageSettingSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
