@@ -95,12 +95,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       }
     });
 
-    // this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-    //   if (!response) {
-    //     this.builderNavbarService.navbarTemplate.next(ActiveThemes.Default);
-    //   }
-    // });
-
     this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
       if (response) {
         this.activeEditComponent = response;
@@ -175,23 +169,18 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
             this.pageComponents = response;
             this.builderNavbarService.navbarTemplate.next(this.pageComponents['template']);
             this.componentId = this.elementRef.nativeElement['id'];
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              const pageName = this.pageComponents['pages'][i]['name'];
-              if (pageName === this.activePageSetting) {
-                for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                  if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                    this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                    this.builderNavbarService.navbarStyle.next(this.componentDetail['style']['navbarStyle']);
-                    this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['style']['navbarLinkStyle']);
-                    this.builderNavbarService.navbarBrandStyle.next(this.componentDetail['style']['navbarBrandStyle']);
-                    this.builderNavbarService.navbarLogoImageStyle.next(this.componentDetail['style']['navbarLogoImageStyle']);
-                    this.builderNavbarService.navbarLayoutClass.next(this.componentDetail['navbarLayoutClass']);
-                    this.builderNavbarService.navbarLogoText.next(this.componentDetail['navbarLogoText']);
-                    this.builderNavbarService.navbarLogoImage.next(this.componentDetail['navbarLogoImage']);
-                    this.builderNavbarService.navbarMenuOptions.next(this.componentDetail['navbarMenuOptions']);
-                    this.builderNavbarService.navbarTheme.next(this.componentDetail['navbarTheme']);
-                  }
-                }
+            for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
+              if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
+                this.componentDetail = this.pageComponents['pages'][0]['components'][j];
+                this.builderNavbarService.navbarStyle.next(this.componentDetail['style']['navbarStyle']);
+                this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['style']['navbarLinkStyle']);
+                this.builderNavbarService.navbarBrandStyle.next(this.componentDetail['style']['navbarBrandStyle']);
+                this.builderNavbarService.navbarLogoImageStyle.next(this.componentDetail['style']['navbarLogoImageStyle']);
+                this.builderNavbarService.navbarLayoutClass.next(this.componentDetail['navbarLayoutClass']);
+                this.builderNavbarService.navbarLogoText.next(this.componentDetail['navbarLogoText']);
+                this.builderNavbarService.navbarLogoImage.next(this.componentDetail['navbarLogoImage']);
+                this.builderNavbarService.navbarMenuOptions.next(this.componentDetail['navbarMenuOptions']);
+                this.builderNavbarService.navbarTheme.next(this.componentDetail['navbarTheme']);
               }
             }
           }

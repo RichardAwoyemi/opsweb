@@ -25,10 +25,12 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
   navbarMenuOptions: any;
   pageComponents: any;
   activeTemplate: any;
+  footerMenuOptions: any;
 
   private activeTemplateSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
+  private footerMenuOptionsSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
@@ -48,6 +50,12 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
     this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
       if (response) {
         this.navbarMenuOptions = response;
+      }
+    });
+
+    this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
+      if (response) {
+        this.footerMenuOptions = response;
       }
     });
 
@@ -77,29 +85,31 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
     for (let index = 0; index < singleComponentPerPage.length; index++) {
       const componentName = singleComponentPerPage[index];
       if (this.builderComponentsService.checkIfComponentExists(ActiveComponentsPartialSelector[componentName])) {
-        tempPageComponents.push(this.templateService.getComponent(componentName, this.activeTemplate, componentIndex));
+        const componentNameLower = componentName.toLowerCase();
+        const position = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector[componentName])[0];
+        let component = this.pageComponents['pages'][position['activePageIndex']]['components'][position['activeComponentIndex']];
+        component['componentIndex'] = componentIndex;
+        const menuOptions = this[`get${componentName}MenuOptions`]();
+        this[`${componentNameLower}MenuOptions`].push(menuOptions);
+        component[`${componentNameLower}MenuOptions`] = this[`${componentNameLower}MenuOptions`];
+        tempPageComponents.push(component);
         componentIndex = componentIndex + 2;
       }
     }
 
-
-
-
-    const pageComponents = { pages: [{ name: this.pageName, components: tempPageComponents }] };
-    tempPageComponents = this.templateService.generatePagePlaceholders(pageComponents);
-    this.pageComponents['pages'].push(pageComponents['pages'][0]);
+    const pageComponents = { pages: [{ name: UtilService.titleCase(this.pageName), components: tempPageComponents }] };
+    const newPage = this.templateService.generatePagePlaceholders(pageComponents);
+    this.pageComponents['pages'].push(newPage['pages'][0]);
     this.builderComponentsService.pageComponents.next(this.pageComponents);
-
-    this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
-    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
-
-    const footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
-    footerMenuOptions.push({ 'page': UtilService.toTitleCase(this.pageName), 'visible': false });
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
-    this.builderFooterService.footerMenuOptions.next(footerMenuOptions);
-
     this.toastrService.success('Your new page has been created.', 'Great!');
+  }
+
+  getFooterMenuOptions(): any {
+    return { 'page': UtilService.toTitleCase(this.pageName), 'visible': false };
+  }
+
+  getNavbarMenuOptions(): any {
+    return UtilService.toTitleCase(this.pageName);
   }
 
   validatePageName() {

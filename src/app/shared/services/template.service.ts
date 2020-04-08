@@ -76,11 +76,10 @@ export class TemplateService {
     return await Promise.resolve(pageComponents);
   }
 
-  getComponent(componentNameStr: string, template: any = null, index: number = null, pageComponents = null) {
+  getComponent(componentNameStr: string, template, index: number = null, pageComponents = null) {
     let pages = {};
     const componentName = UtilService.toTitleCase(componentNameStr);
     (pageComponents == null) ? pages = this.builderComponentsService.pageComponents.getValue() : pages = pageComponents;
-    template = template || pages['template'];
 
     return {
       ...(index == null ? {} : { 'componentIndex': index }),
