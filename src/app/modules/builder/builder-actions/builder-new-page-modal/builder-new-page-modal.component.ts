@@ -10,6 +10,8 @@ import { ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { Template } from '../../../../shared/models/template';
+import { TemplateService } from '../../../../shared/services/template.service';
 
 @Component({
   selector: 'app-builder-new-page-modal',
@@ -22,13 +24,16 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
   disableSaveButton = false;
   navbarMenuOptions: any;
   pageComponents: any;
+  activeTemplate: any;
+
+  private activeTemplateSubscription: Subscription;
   private navbarMenuOptionsSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
-    private builderService: BuilderService,
+    private templateService: TemplateService,
     private builderComponentsService: BuilderComponentsService,
     private builderActionsService: BuilderActionsService,
     private toastrService: ToastrService,
@@ -51,6 +56,12 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
         this.pageComponents = response;
       }
     }));
+
+    this.activeTemplateSubscription = this.templateService.getTemplateStyle(this.pageComponents['template']).subscribe(response => {
+      if (response) {
+        this.activeTemplate = response;
+      }
+    });
   }
 
   onCloseButtonClick() {
@@ -59,23 +70,24 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
 
   onConfirmButtonClick(): void {
     this.activeModal.dismiss();
-    const navbarComponentPosition = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
-    const footerComponentPosition = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Footer);
-    const navbarComponent = this.builderComponentsService.getComponent(navbarComponentPosition[0]['activePageIndex'], navbarComponentPosition[0]['activeComponentIndex']);
-    const footerComponent = this.builderComponentsService.getComponent(footerComponentPosition[0]['activePageIndex'], footerComponentPosition[0]['activeComponentIndex']);
-    navbarComponent['timestamp'] = new Date().getTime();
-    footerComponent['timestamp'] = new Date().getTime();
+    let tempPageComponents = [];
+    const singleComponentPerPage = ['Navbar', 'Footer'];
+    let componentIndex = 1;
 
-    let tempPageComponents = [
-      navbarComponent,
-      footerComponent,
-    ];
-    tempPageComponents = BuilderComponentsService.addPlaceholdersOnSinglePage(tempPageComponents);
+    for (let index = 0; index < singleComponentPerPage.length; index++) {
+      const componentName = singleComponentPerPage[index];
+      if (this.builderComponentsService.checkIfComponentExists(ActiveComponentsPartialSelector[componentName])) {
+        tempPageComponents.push(this.templateService.getComponent(componentName, this.activeTemplate, componentIndex));
+        componentIndex = componentIndex + 2;
+      }
+    }
 
-    const pageComponents = {};
-    pageComponents['name'] = this.pageName;
-    pageComponents['components'] = tempPageComponents;
-    this.pageComponents['pages'].push(pageComponents);
+
+
+
+    const pageComponents = { pages: [{ name: this.pageName, components: tempPageComponents }] };
+    tempPageComponents = this.templateService.generatePagePlaceholders(pageComponents);
+    this.pageComponents['pages'].push(pageComponents['pages'][0]);
     this.builderComponentsService.pageComponents.next(this.pageComponents);
 
     this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
@@ -98,5 +110,6 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
   ngOnDestroy() {
     this.navbarMenuOptionsSubscription.unsubscribe();
     this.pageComponentsSubscription.unsubscribe();
+    this.activeTemplateSubscription.unsubscribe();
   }
 }
