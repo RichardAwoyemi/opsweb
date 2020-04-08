@@ -67,7 +67,7 @@ export class BuilderHeroService {
     const heroImageStyle = this.heroImageStyle.getValue();
     if (BuilderHeroService.validateHeroImageStyle(heroImageStyle)) {
       this.heroImageStyle.next(template['heroImageStyle']);
-      this.heroImageUrl.next(`../assets/img/${templateId}-hero.svg`);
+      this.heroImageUrl.next(`https://s3-eu-west-1.amazonaws.com/media.opsonion.com/templates/${templateId}-hero.svg`);
       this.heroImageAlt.next(`${templateId.toLowerCase()}-hero.svg`);
     }
 
