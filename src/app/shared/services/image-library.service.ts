@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Template } from '../models/template';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ImageLibraryService {
-  activeImage = new BehaviorSubject<Object>(null);
-  selectedTemplate: Subject<Template> = new Subject<Template>();
-  private IMAGE_DETAILS = './assets/data/img-library/img-library.json';
+  private IMAGE_LIBRARY = './assets/data/img-library/img-library.json';
 
   constructor(
     private httpClient: HttpClient,
@@ -15,7 +12,7 @@ export class ImageLibraryService {
   }
 
   getImageDetails() {
-    return this.httpServiceRequest(this.IMAGE_DETAILS);
+    return this.httpServiceRequest(this.IMAGE_LIBRARY);
   }
 
   private httpServiceRequest(location): Observable<any> {

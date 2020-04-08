@@ -11,8 +11,6 @@ import { BuilderActionsService } from '../../builder-actions.service';
   templateUrl: './builder-select-image-library.component.html'
 })
 export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
-
-  private imageLibraryObject: any;
   filteredLibraryObject: any;
   selectedImage: any;
   images: any;
@@ -20,6 +18,7 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
   selectedImageIndex: number;
   searchText: string;
   activeLibrarySearchText: string;
+  private imageLibraryObject: any;
 
   private imageLibrarySubscription: Subscription;
   private activeLibrarySearchTextSubscription: Subscription;
@@ -37,8 +36,10 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
     this.imageLibrarySubscription = this.imageLibraryService.getImageDetails().subscribe(response => {
       if (response) {
         this.imageLibraryObject = Object.keys(response).map(i => response[i]);
-        var keys = Object.keys(this.imageLibraryObject);
-        keys.sort(function (a, b) { return Math.random() - 0.5; });
+        const keys = Object.keys(this.imageLibraryObject);
+        keys.sort(function () {
+          return Math.random() - 0.5;
+        });
       }
     });
 
