@@ -23,16 +23,15 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   settingsName: string = ActiveSettings.Pages;
   activeEditSetting: string;
   activePage: string;
-  navbarMenuOptions: any;
   componentListOptions: any;
   pageComponents: any;
   activePageIndex: number;
+  menuOptions: any;
 
-  navbarMenuSortableOptions: SortablejsOptions;
+  menuSortableOptions: any;
   componentListSortableOptions: SortablejsOptions;
 
   private activeEditSettingSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private activePageIndexSubscription: Subscription;
   private pageComponentsSubscription: Subscription;
@@ -40,18 +39,13 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private builderService: BuilderService,
-    private builderNavbarService: BuilderNavbarService,
-    private builderFooterService: BuilderFooterService,
     private toastrService: ToastrService,
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService
   ) {
-    this.navbarMenuSortableOptions = {
-      onUpdate: function () {
-        const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
-        builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
-        builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
-        builderFooterService.mapNavbarAndFooterMenuOptions(navbarMenuOptions, builderFooterService.footerMenuOptions.getValue());
+    this.menuSortableOptions = {
+      onUpdate: function (e: any) {
+        builderComponentsService.reorderPages(e.target.innerText.split('\n'));
       }
     };
 
@@ -80,12 +74,6 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
-
     this.activePageIndexSubscription = this.builderService.activePageIndex.subscribe(response => {
       if (response) {
         this.activePageIndex = response;
@@ -98,6 +86,7 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
         this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
           if (response) {
             this.pageComponents = response;
+            this.menuOptions = this.builderComponentsService.getPageArray(this.pageComponents);
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               if (this.pageComponents['pages'][i]['name'] === this.activePage) {
                 this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
@@ -150,8 +139,8 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  viewPage(navbarMenuOption) {
-    this.builderService.activePageSetting.next(navbarMenuOption);
+  viewPage(menuOption) {
+    this.builderService.activePageSetting.next(menuOption);
   }
 
   openComponentsPanel() {
@@ -183,7 +172,6 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.activeEditSettingSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
     this.activePageIndexSubscription.unsubscribe();
     this.pageComponentsSubscription.unsubscribe();

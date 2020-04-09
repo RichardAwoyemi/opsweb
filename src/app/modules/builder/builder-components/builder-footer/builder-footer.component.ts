@@ -190,8 +190,8 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
             for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
               if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
                 this.componentDetail = this.pageComponents['pages'][0]['components'][j];
+                this.builderFooterService.refreshFooterOptions(this.builderComponentsService.getPageArray(), this.componentDetail['footerMenuOptions']);
                 this.builderFooterService.footerStyle.next(this.componentDetail['style']['footerStyle']);
-                this.builderFooterService.footerMenuOptions.next(this.componentDetail['footerMenuOptions']);
                 this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['style']['footerSocialLinksContainerStyle']);
                 this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['style']['footerSocialLinksStyle']);
                 this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['style']['footerPageLinksStyle']);

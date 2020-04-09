@@ -171,6 +171,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
             this.componentId = this.elementRef.nativeElement['id'];
             for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
               if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
+                this.builderNavbarService.navbarMenuOptions.next(this.builderComponentsService.getPageArray());
                 this.componentDetail = this.pageComponents['pages'][0]['components'][j];
                 this.builderNavbarService.navbarStyle.next(this.componentDetail['style']['navbarStyle']);
                 this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['style']['navbarLinkStyle']);
@@ -179,7 +180,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
                 this.builderNavbarService.navbarLayoutClass.next(this.componentDetail['navbarLayoutClass']);
                 this.builderNavbarService.navbarLogoText.next(this.componentDetail['navbarLogoText']);
                 this.builderNavbarService.navbarLogoImage.next(this.componentDetail['navbarLogoImage']);
-                this.builderNavbarService.navbarMenuOptions.next(this.componentDetail['navbarMenuOptions']);
                 this.builderNavbarService.navbarTheme.next(this.componentDetail['navbarTheme']);
               }
             }

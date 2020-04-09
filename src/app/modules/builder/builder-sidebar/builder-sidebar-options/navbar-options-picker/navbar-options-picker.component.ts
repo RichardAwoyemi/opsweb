@@ -64,11 +64,8 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
     private simpleModalService: SimpleModalService
   ) {
     this.options = {
-      onUpdate: function () {
-        const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
-        builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
-        builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
-        builderFooterService.mapNavbarAndFooterMenuOptions(navbarMenuOptions, builderFooterService.footerMenuOptions.getValue());
+      onUpdate: function (e: any) {
+        builderComponentsService.reorderPages(e.target.innerText.split('\n'));
       }
     };
   }
