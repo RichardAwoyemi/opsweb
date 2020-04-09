@@ -18,7 +18,7 @@ import { TemplateService } from '../../../../../shared/services/template.service
 export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   heroImageUrl: string;
   heroImageAlt: string;
-  navbarMenuOptions: any;
+  menuOptions: any;
   menuOption: string;
   heroHeadingFontName = 'Avenir Next Medium';
   heroSubheadingFontName = 'Avenir Next Regular';
@@ -46,7 +46,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   private heroImageSizeSubscription: Subscription;
   private fontNamesSubscription: Subscription;
   private fontUnitsSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
   private websiteChangeCountSubscription: Subscription;
   private defaultHeroStyleSubscription: Subscription;
   private heroTemplateSubscription: Subscription;
@@ -54,7 +53,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   private heroSubheadingStyleSubscription: Subscription;
   private heroButtonStyleSubscription: Subscription;
   private heroImageStyleSubscription: Subscription;
-  private heroMenuOptionSubscription: Subscription;
   private builderComponentsSubscription: Subscription;
   private activeEditComponentIdSubscription: Subscription;
 
@@ -64,8 +62,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     private builderHeroService: BuilderHeroService,
     private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
-    private websiteService: WebsiteService,
-    private builderNavbarService: BuilderNavbarService
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -86,32 +83,10 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
                   this.heroImageUrl = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['src'];
                   this.heroImageAlt = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['alt'];
                   this.heroImageSize = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['width'].replace('%', '');
+                  this.menuOptions = this.builderComponentsService.getPageArray();
+                  this.menuOption = this.pageComponents['pages'][i]['components'][j]['heroButtonLink'] || this.menuOptions[Math.min(1, this.pageComponents['pages'].length - 1)];
                 }
               }
-            }
-          }
-        });
-      }
-    });
-
-    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
-      if (response) {
-        this.fontNames = response;
-      }
-    });
-
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
-      if (navbarMenuOptionsResponse) {
-        this.navbarMenuOptions = navbarMenuOptionsResponse;
-
-        this.heroMenuOptionSubscription = this.builderHeroService.heroButtonLink.subscribe(response => {
-          if (response) {
-            this.menuOption = response;
-          } else {
-            if (this.navbarMenuOptions.length > 0) {
-              this.menuOption = this.navbarMenuOptions[1];
-            } else {
-              this.menuOption = this.navbarMenuOptions[0];
             }
           }
         });
@@ -181,24 +156,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
 
         const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
         this.heroSubheadingFontName = heroFontNames[0].replace(/'/g, '');
-      }
-    });
-
-    this.heroButtonStyleSubscription = this.builderHeroService.heroButtonStyle.subscribe(response => {
-      if (response) {
-        this.heroButtonStyle = response;
-
-        if (this.heroButtonStyle['font-size']) {
-          if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
-            this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
-          }
-          if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-            this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
-          }
-        }
-
-        const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
-        this.heroButtonFontName = heroFontNames[0].replace(/'/g, '');
       }
     });
 
@@ -393,11 +350,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetHeroButtonLink() {
-    if (this.navbarMenuOptions.length > 0) {
-      this.menuOption = this.navbarMenuOptions[1];
-    } else {
-      this.menuOption = this.navbarMenuOptions[0];
-    }
+    this.menuOption = this.menuOptions[Math.min(1, this.pageComponents['pages'].length - 1)]
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'heroButtonLink', this.menuOption);
     this.builderHeroService.heroButtonLink.next(this.menuOption);
   }
@@ -412,7 +365,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.heroImageSizeSubscription.unsubscribe();
     this.fontNamesSubscription.unsubscribe();
     this.fontUnitsSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
     this.websiteChangeCountSubscription.unsubscribe();
     this.defaultHeroStyleSubscription.unsubscribe();
     this.heroTemplateSubscription.unsubscribe();
@@ -420,9 +372,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.heroSubheadingStyleSubscription.unsubscribe();
     this.heroButtonStyleSubscription.unsubscribe();
     this.heroImageStyleSubscription.unsubscribe();
-    if (this.heroMenuOptionSubscription) {
-      this.heroMenuOptionSubscription.unsubscribe();
-    }
     this.builderComponentsSubscription.unsubscribe();
   }
 }
