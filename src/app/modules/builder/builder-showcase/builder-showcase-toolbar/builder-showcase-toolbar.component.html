@@ -7,8 +7,8 @@
         <div [attr.class]="dropdownMenuClass"
              style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0; left: 0; will-change: transform;"
              x-placement="bottom-start">
-          <ng-container *ngFor="let navbarMenuOption of navbarMenuOptions; let i = index">
-            <a (click)="setActivePage(navbarMenuOption, i)" class="dropdown-item" href="#">{{ navbarMenuOption }}</a>
+          <ng-container *ngFor="let menuOption of menuOptions; let i = index">
+            <a (click)="setActivePage(menuOption, i)" class="dropdown-item" href="#">{{ menuOption }}</a>
           </ng-container>
         </div>
       </div>

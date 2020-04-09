@@ -26,7 +26,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   previewButtonIcon = 'btn-icon';
   fullScreenButtonIcon = 'btn-icon';
   dropdownClass = 'dropdown';
-  navbarMenuOptions = Array<String>();
+  menuOptions = Array<String>();
   previewMode: boolean;
   fullScreenMode: boolean;
   activePageIndex: number;
@@ -35,7 +35,6 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   ariaExpandedAttribute = 'false';
   pageComponents = 'false';
 
-  private navbarMenuOptionsSubscription: Subscription;
   private activePageSettingSubscription: Subscription;
   private fullScreenModeSubscription: Subscription;
   private activePageIndexSubscription: Subscription;
@@ -111,14 +110,12 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
       if (response) {
         this.pageComponents = response;
+        this.menuOptions = [];
+        for (let index = 0; index < this.pageComponents['pages'].length; index++) {
+          this.menuOptions.push(this.pageComponents['pages'][index]['name']);
+        }
       }
     });
-
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe((response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    }));
   }
 
   openDeletePageModal() {
@@ -163,11 +160,11 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.ariaExpandedAttribute = 'true';
   }
 
-  setActivePage(navbarMenuOption: string, i: number) {
+  setActivePage(menuOption: string, i: number) {
     this.dropdownClass = 'dropdown';
     this.dropdownMenuClass = 'dropdown-menu';
     this.ariaExpandedAttribute = 'false';
-    this.builderService.activePageSetting.next(navbarMenuOption);
+    this.builderService.activePageSetting.next(menuOption);
     this.builderService.activePageIndex.next(i);
   }
 
@@ -212,7 +209,6 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.navbarMenuOptionsSubscription.unsubscribe();
     this.activePageSettingSubscription.unsubscribe();
     this.fullScreenModeSubscription.unsubscribe();
     this.activePageIndexSubscription.unsubscribe();
