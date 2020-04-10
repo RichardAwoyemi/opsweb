@@ -4,21 +4,23 @@ import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
+import { element } from 'protractor';
 
 @Component({
-  selector: 'app-sidebar-item-count-slider',
-  templateUrl: './builder-sidebar-item-count-slider.component.html'
+  selector: 'app-sidebar-links-dropdown',
+  templateUrl: './builder-sidebar-links-dropdown.component.html'
 })
 
-export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy {
+export class BuilderSidebarLinksDropdownComponent implements OnInit, OnDestroy {
+
+  menuOption: any;
+  menuOptions: any;
+  websiteChangeCount: number;
+  activeEditComponentId: string;
+  ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
   @Input() elementSettings: any;
-  websiteChangeCount: number;
-  activeEditComponentId: string;
-  elementArraySize: number;
-  ngUnsubscribe = new Subject<void>();
-
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -40,10 +42,11 @@ export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy
         const pageComponent = response;
         const component = pageComponent['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
         if (this.elementSettings.name in component) {
-          this.elementArraySize = component[this.elementSettings.name].length;
+          this.menuOption = component[this.elementSettings.name];
         } else {
-          this.elementArraySize = component['style'][this.elementSettings.name].length;
+          this.menuOption = component['style'][this.elementSettings.name];
         }
+        this.menuOptions = this.builderComponentsService.getPages();
       }
     });
 
@@ -54,12 +57,18 @@ export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy
     });
   }
 
-  setElementCount(value: number) {
-    this.data.componentService[this.data.updateElementCountFunction](this.activeEditComponentId, value);
+  resetDropdownLink() {
+    const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
+    if (this.elementSettings.name in defaultTemplate['details']) {
+      this.menuOption = defaultTemplate['details'][this.elementSettings.name];
+    } else {
+      this.menuOption = defaultTemplate['style'][this.elementSettings.name];
+    }
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.menuOption);
   }
 
-  resetElementCount() {
-    this.setElementCount(3);
+  setDropdownLink() {
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.menuOption);
   }
 
   ngOnDestroy(): void {

@@ -8,12 +8,11 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImgurService } from '../../../../shared/services/imgur.service';
 import { FormsModule } from '@angular/forms';
 import { ArraySortModule } from '../../../../shared/pipes/array-sort/array-sort.module';
-import { HeroOptionsPickerComponent } from './hero-options-picker/hero-options-picker.component';
 import { FooterOptionsPickerComponent } from './footer-options-picker/footer-options-picker.component';
-import { FeaturesOptionsPickerComponent } from './features-options-picker/features-options-picker.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { Ng5SliderModule } from 'ng5-slider';
 import { BuilderSidebarElementModule } from '../builder-sidebar-elements/builder-sidebar-element.module';
+import { BuilderSidebarCompmonentsModule } from '../builder-sidebar-components/builder-sidebar-components.module';
 
 @NgModule({
   declarations: [
@@ -21,10 +20,9 @@ import { BuilderSidebarElementModule } from '../builder-sidebar-elements/builder
     BuilderUploadImageModalComponent,
     NavbarOptionsPickerComponent,
     FooterOptionsPickerComponent,
-    FeaturesOptionsPickerComponent,
-    HeroOptionsPickerComponent
   ],
   imports: [
+    BuilderSidebarCompmonentsModule,
     BuilderSidebarElementModule,
     CommonModule,
     SortablejsModule,

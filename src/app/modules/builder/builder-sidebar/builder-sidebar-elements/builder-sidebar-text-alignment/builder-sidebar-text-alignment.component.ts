@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { ActiveTemplates } from '../../../builder';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
+import { ActiveTemplates } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-sidebar-text-alignment',
@@ -17,13 +18,10 @@ export class BuilderSidebarTextAlignmentComponent implements OnInit, OnDestroy {
   defaultStyle: any;
   websiteChangeCount: number;
   activeEditComponentId: string;
-  private elementSubscription: Subscription;
-  private templateSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private defaultStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
+  @Input() elementSettings: any;
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -33,36 +31,25 @@ export class BuilderSidebarTextAlignmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(activeEditComponentIdResponse => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe)).subscribe(activeEditComponentIdResponse => {
       if (activeEditComponentIdResponse) {
         this.activeEditComponentId = activeEditComponentIdResponse;
       }
     });
 
-    this.templateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
-      if (templateResponse) {
-        this.currentTemplate = templateResponse['template'];
-        this.defaultStyleSubscription = this.data.componentService[this.data.defaultStyleFunctionName](this.currentTemplate).subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
-      } else {
-        this.defaultStyleSubscription = this.data.componentService[this.data.defaultStyleFunctionName](ActiveTemplates.Default).subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response && this.data.componentIndex) {
+        const pageComponents = response;
+        const component = pageComponents['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
+        if (this.elementSettings.name in component) {
+          this.styleObject = component[this.elementSettings.name];
+        } else {
+          this.styleObject = component['style'][this.elementSettings.name];
+        }
       }
     });
 
-    this.elementSubscription = this.data.componentService[this.data.elementName].subscribe(response => {
-      if (response) {
-        this.styleObject = response;
-      }
-    });
-
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -71,23 +58,21 @@ export class BuilderSidebarTextAlignmentComponent implements OnInit, OnDestroy {
 
   setAlignment(alignment: string) {
     this.styleObject['text-align'] = alignment;
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
     this.data.componentService[this.data.elementName].next(this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetAlignment() {
-    this.styleObject['text-align'] = this.defaultStyle[this.data.elementName]['text-align'];
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
+    const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
+    this.styleObject['text-align'] = defaultTemplate['style'][this.elementSettings.name]['text-align'];
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
     this.builderComponentsService[this.data.elementName].next(this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
-  ngOnDestroy() {
-    this.elementSubscription.unsubscribe();
-    this.templateSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.defaultStyleSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

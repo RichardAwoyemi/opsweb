@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
-import { ActiveComponentsPartialSelector, ActiveSettings, MAX_NUMBER_OF_PAGES } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveSettings, MAX_NUMBER_OF_PAGES, ActiveComponents, ActiveElements } from '../../builder';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
 import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
@@ -141,8 +141,8 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   }
 
   openComponentsPanel() {
-    this.builderService.setActiveEditSetting(ActiveSettings.Components);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.activeEditSetting.next(ActiveSettings.Components);
+    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 
   openDeleteComponentModal(componentId) {

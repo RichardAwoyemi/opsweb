@@ -10,12 +10,12 @@ import { BuilderSidebarOptionsModule } from './builder-sidebar-options/builder-s
 import { FilterPipe } from '../../../shared/pipes/filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { BuilderSidebarPagesComponent } from './builder-sidebar-pages/builder-sidebar-pages.component';
-import { BuilderSidebarDataComponent } from './builder-sidebar-data/builder-sidebar-data.component';
 import { SortablejsModule } from 'ngx-sortablejs';
 import { NgbDropdownModule, NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.module';
 import { UnsplashService } from '../../../shared/services/unsplash.service';
 import { ImageLibraryService } from 'src/app/shared/services/image-library.service';
+import { BuilderSidebarCompmonentsModule } from './builder-sidebar-components/builder-sidebar-components.module';
 
 @NgModule({
   declarations: [
@@ -24,13 +24,13 @@ import { ImageLibraryService } from 'src/app/shared/services/image-library.servi
     BuilderSidebarComponentsComponent,
     BuilderSidebarTemplatesComponent,
     BuilderSidebarPagesComponent,
-    BuilderSidebarDataComponent,
     FilterPipe
   ],
   imports: [
+    BuilderSidebarCompmonentsModule,
+    BuilderSidebarLayoutModule,
     BuilderSidebarColoursModule,
     BuilderSidebarOptionsModule,
-    BuilderSidebarLayoutModule,
     CommonModule,
     FormsModule,
     SortablejsModule,

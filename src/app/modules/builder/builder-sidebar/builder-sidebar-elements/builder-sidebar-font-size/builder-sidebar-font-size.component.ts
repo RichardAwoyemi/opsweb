@@ -1,9 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
+import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
-import { ActiveTemplates } from '../../../builder';
 
 @Component({
   selector: 'app-sidebar-font-size',
@@ -13,6 +14,8 @@ import { ActiveTemplates } from '../../../builder';
 export class BuilderSidebarFontSizeComponent implements OnInit, OnDestroy {
 
   @Input() data: any;
+  @Input() elementSettings: any;
+
   styleObject: any;
   fontUnits: any;
   elementFontSize: number;
@@ -25,13 +28,8 @@ export class BuilderSidebarFontSizeComponent implements OnInit, OnDestroy {
   elementCount: number;
   element: any;
 
-  private activeEditComponentIdSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private fontUnitsSubscription: Subscription;
-  private elementSubscription: Subscription;
-  private templateSubscription: Subscription;
-  private defaultStyleSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
+
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -42,50 +40,32 @@ export class BuilderSidebarFontSizeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(activeEditComponentIdResponse => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe)).subscribe(activeEditComponentIdResponse => {
       if (activeEditComponentIdResponse) {
         this.activeEditComponentId = activeEditComponentIdResponse;
       }
     });
 
-    this.elementSubscription = this.data.componentService[this.data.elementName].subscribe(response => {
-      if (response) {
-        this.styleObject = response;
-        if (this.styleObject['font-size']) {
-          if (this.styleObject['font-size'].indexOf('px') > -1) {
-            this.elementFontSize = this.styleObject['font-size'].replace('px', '');
-          }
-          if (this.styleObject['font-size'].indexOf('em') > -1) {
-            this.elementFontSize = this.styleObject['font-size'].replace('em', '');
-          }
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response && this.data.componentIndex) {
+        const pageComponents = response;
+        const component = pageComponents['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
+        if (this.elementSettings.name in component) {
+          this.styleObject = component[this.elementSettings.name];
+        } else {
+          this.styleObject = component['style'][this.elementSettings.name];
+          this.elementFontSize = this.styleObject['font-size'].replace('px', '').replace('em', '');
         }
-    }
-  });
+      }
+    });
 
-  this.templateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
-    if (templateResponse) {
-      this.currentTemplate = templateResponse['template'];
-      this.defaultStyleSubscription = this.data.componentService[this.data.defaultStyleFunctionName](this.currentTemplate).subscribe(response => {
-        if (response) {
-          this.defaultStyle = response;
-        }
-      });
-    } else {
-      this.defaultStyleSubscription = this.data.componentService[this.data.defaultStyleFunctionName](ActiveTemplates.Default).subscribe(response => {
-        if (response) {
-          this.defaultStyle = response;
-        }
-      });
-    }
-  });
-
-    this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
+    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
       if (response) {
         this.fontUnits = response;
       }
     });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -93,16 +73,16 @@ export class BuilderSidebarFontSizeComponent implements OnInit, OnDestroy {
   }
 
   resetFontSize() {
-    this.styleObject['font-size'] = this.defaultStyle[this.data.elementName]['font-size'];
+
+    const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
+    this.styleObject['font-size'] = defaultTemplate['style'][this.elementSettings.name]['font-size'];
     this.elementFontUnit = 'px';
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
-    this.data.componentService[this.data.elementName].next(this.styleObject);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
   }
 
   setFontSize() {
     this.styleObject['font-size'] = this.elementFontSize + this.elementFontUnit;
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
-    this.data.componentService[this.data.elementName].next(this.styleObject);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
@@ -119,18 +99,12 @@ export class BuilderSidebarFontSizeComponent implements OnInit, OnDestroy {
     }
 
     this.styleObject['font-size'] = this.elementFontSize + this.elementFontUnit;
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
-    this.data.componentService[this.data.elementName].next(this.styleObject);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
-  ngOnDestroy() {
-    this.templateSubscription.unsubscribe();
-    this.defaultStyleSubscription.unsubscribe();
-    this.elementSubscription.unsubscribe();
-    this.fontUnitsSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

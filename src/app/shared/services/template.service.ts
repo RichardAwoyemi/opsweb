@@ -65,6 +65,7 @@ export class TemplateService {
       await this.getRequestedJson(`${this.TEMPLATE_FOLDER}${templateId}.json`).then(async styleResponse => {
         styleTemplate = styleResponse;
         pageComponents['template'] = templateId;
+        this.builderComponentsService.activeTemplate.next(UtilService.shallowClone(styleTemplate));
         pageComponents = this.generatePagePlaceholders(pageComponents);
         pageComponents = this.generatePageComponents(pageComponents, styleTemplate);
         this.builderComponentsService.pageComponents.next(pageComponents);
@@ -79,7 +80,7 @@ export class TemplateService {
     let pages = {};
     const componentName = UtilService.toTitleCase(tempComponentName);
     (pageComponents == null) ? pages = this.builderComponentsService.pageComponents.getValue() : pages = pageComponents;
-    return {
+    return UtilService.shallowClone({
       ...(index == null ? {} : { 'componentIndex': index }),
       'componentType': ActiveComponents[componentName],
       'componentId': `${ActiveComponents[componentName]}-${UtilService.generateRandomString(8)}`,
@@ -90,7 +91,7 @@ export class TemplateService {
       ...template[ActiveComponents[componentName]]['details'],
       ...(typeof this.builderComponentsDataService[`getAdditional${componentName}Details`] === 'function' ? this.builderComponentsDataService[`getAdditional${componentName}Details`](pages) : {}),
       ...(typeof BuilderComponentsDataService[`getAdditional${componentName}Details`] === 'function' ? BuilderComponentsDataService[`getAdditional${componentName}Details`](pages) : {})
-    };
+    });
   }
 
   updateTemplate(templateId) {
@@ -103,11 +104,12 @@ export class TemplateService {
           for (let i = 0; i < pageComponents['pages'].length; i++) {
             for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
               if (pageComponents.pages[i].components[j]['style']) {
-                pageComponents.pages[i].components[j]['style'] = JSON.parse(JSON.stringify(newStyle[pageComponents.pages[i].components[j].componentType]['style']));
+                pageComponents.pages[i].components[j]['style'] = UtilService.shallowClone(newStyle[pageComponents.pages[i].components[j].componentType]['style']);
               }
             }
           }
           this.builderComponentsService.pageComponents.next(pageComponents);
+          this.builderComponentsService.activeTemplate.next(UtilService.shallowClone(response));
         }
       });
     }

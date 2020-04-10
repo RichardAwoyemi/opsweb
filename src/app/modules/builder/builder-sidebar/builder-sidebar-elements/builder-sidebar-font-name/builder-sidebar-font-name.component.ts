@@ -25,6 +25,7 @@ export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {
   ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
+  @Input() elementSettings: any;
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -46,28 +47,17 @@ export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.data.componentService[this.data.elementName].pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
-      if (response) {
-        this.styleObject = response;
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response && this.data.componentIndex) {
+        const pageComponent = response;
+        const component = pageComponent['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
+        if (this.elementSettings.name in component) {
+          this.styleObject = component[this.elementSettings.name];
+        } else {
+          this.styleObject = component['style'][this.elementSettings.name];
+        }
         const splitFontName = this.styleObject['font-family'].split(',');
         this.styleObjectFontName = splitFontName[0].replace(/'/g, '');
-      }
-    });
-
-    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe(templateResponse => {
-      if (templateResponse) {
-        this.currentTemplate = templateResponse['template'];
-        this.data.componentService[this.data.defaultStyleFunctionName](this.currentTemplate).pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
-      } else {
-        this.data.componentService[this.data.defaultStyleFunctionName](ActiveTemplates.Default).pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
       }
     });
 
@@ -80,13 +70,14 @@ export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {
 
   onFontNameChange() {
     this.styleObject['font-family'] = this.styleObjectFontName;
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetFontName() {
-    this.styleObject['font-family'] = this.defaultStyle[this.data.elementName]['font-family'];
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
+    const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
+    this.styleObject['font-family'] = defaultTemplate['style'][this.elementSettings.name]['font-family'];
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
     this.data.componentService[this.data.elementName].next(this.styleObject);
   }
 

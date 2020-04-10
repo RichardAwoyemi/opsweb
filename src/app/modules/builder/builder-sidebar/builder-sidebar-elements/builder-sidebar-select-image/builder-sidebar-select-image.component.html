@@ -1,0 +1,18 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 1)">{{elementSettings.sectionHeader}}</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetImage()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+    <div *ngIf="styleObject.alt && styleObject.src" class="col-md-12">
+      <div class="image-preview" style="margin-bottom: 1em; height: 150px; margin-top: 1em">
+        <img [attr.alt]="styleObject.alt" [attr.src]="styleObject.src" class="hero-image"/>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <a (click)="openSelectImageModal()" class="btn btn-xl btn-block btn-secondary">Select Image</a>
+    </div>
+  </div>
+</div>

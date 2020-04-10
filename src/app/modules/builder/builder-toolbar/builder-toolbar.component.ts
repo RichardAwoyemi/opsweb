@@ -3,6 +3,7 @@ import { ActiveComponents, ActiveOrientations, ActiveSettings } from 'src/app/mo
 import { BuilderService } from '../builder.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   selector: 'app-builder-toolbar',
@@ -23,10 +24,10 @@ export class BuilderToolbarComponent implements OnInit, OnDestroy {
   toolbarButtonMobileOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   toolbarButtonTabletOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   toolbarClass = 'toolbar no-select';
-  private toolbarButtonColoursStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  private toolbarButtonComponentsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  private toolbarButtonLayoutStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  private toolbarButtonOptionsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  toolbarButtonColoursStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  toolbarButtonComponentsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  toolbarButtonLayoutStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  toolbarButtonOptionsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -103,26 +104,11 @@ export class BuilderToolbarComponent implements OnInit, OnDestroy {
   }
 
   setActiveEditSetting(settingName: string) {
-    this.builderService.setActiveEditSetting(settingName);
-    if (settingName === ActiveSettings.Colours) {
-      this.builderService.setSidebarColoursSetting();
-      this.setPrimaryToolbarButtonClass(ActiveSettings.Colours);
-      this.builderService.triggerScrollTo(`${this.activeEditComponent}-colours}`);
-    }
-    if (settingName === ActiveSettings.Components) {
-      this.builderService.setSidebarComponentsSetting();
-      this.setPrimaryToolbarButtonClass(ActiveSettings.Components);
-      this.builderService.triggerScrollTo('components');
-    }
-    if (settingName === ActiveSettings.Layout) {
-      this.builderService.setSidebarLayoutSetting();
-      this.setPrimaryToolbarButtonClass(ActiveSettings.Layout);
-      this.builderService.triggerScrollTo(`${this.activeEditComponent}-layout}`);
-    }
-    if (settingName === ActiveSettings.Options) {
-      this.builderService.setSidebarOptionsSetting();
-      this.setPrimaryToolbarButtonClass(ActiveSettings.Options);
-      this.builderService.triggerScrollTo(`${this.activeEditComponent}-options}`);
+    this.builderService.activeEditSetting.next(settingName);
+    if ([ActiveSettings.Colours,ActiveSettings.Components, ActiveSettings.Layout, ActiveSettings.Options]
+      .includes(ActiveSettings[UtilService.toTitleCase(settingName)])) {
+      this.builderService.setSidebarSetting(settingName);
+      this.setPrimaryToolbarButtonClass(settingName);
     }
   }
 

@@ -7,7 +7,7 @@
       <a (click)="resetFontName()" class="fw-600 fs-12" href="#">Reset</a>
     </div>
   </div>
-  <label style="width: 100%">
+  <label *ngIf="styleObjectFontName" style="width: 100%">
     <select (change)="onFontNameChange()" [(ngModel)]="styleObjectFontName"
             class="form-control form-control-lg">
       <option *ngFor="let fontName of fontNames | ssort"

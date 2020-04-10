@@ -9,7 +9,7 @@ import { RouterService } from '../../shared/services/router.service';
 import { UtilService } from '../../shared/services/util.service';
 import { WebsiteService } from '../../shared/services/website.service';
 import { AuthService } from '../auth/auth.service';
-import { ActiveComponents, ActiveElements } from './builder';
+import { ActiveComponents, ActiveElements, ActiveSettings } from './builder';
 import { BuilderComponentsService } from './builder-components/builder-components.service';
 import { BuilderService } from './builder.service';
 
@@ -43,8 +43,8 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routerService.setCurrentRoute();
     this.websiteService.websiteName.next(UtilService.generateWebsiteName());
     this.builderService.setActiveEditComponent(ActiveComponents.Placeholder);
-    this.builderService.setActiveEditSetting(ActiveElements.Default);
-    this.builderService.setSidebarTemplatesSetting();
+    this.builderService.activeEditSetting.next(ActiveElements.Default);
+    this.builderService.setSidebarSetting(ActiveSettings.Templates);
 
     this.ngxLoader.start();
     this.builderService.websiteMode.next(false);

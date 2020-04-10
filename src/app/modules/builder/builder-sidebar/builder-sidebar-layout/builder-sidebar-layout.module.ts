@@ -4,21 +4,19 @@ import { BuilderSidebarLayoutComponent } from './builder-sidebar-layout.componen
 import { NavbarLayoutPickerComponent } from './navbar-layout-picker/navbar-layout-picker.component';
 import { FormsModule } from '@angular/forms';
 import { FooterLayoutPickerComponent } from './footer-layout-picker/footer-layout-picker.component';
-import { FeaturesLayoutPickerComponent } from './features-layout-picker/features-layout-picker.component';
-import { HeroLayoutPickerComponent } from './hero-layout-picker/hero-layout-picker.component';
 import { BuilderSidebarElementModule } from '../builder-sidebar-elements/builder-sidebar-element.module';
+import { BuilderSidebarCompmonentsModule } from '../builder-sidebar-components/builder-sidebar-components.module';
 
 @NgModule({
   declarations: [
     BuilderSidebarLayoutComponent,
     NavbarLayoutPickerComponent,
     FooterLayoutPickerComponent,
-    FeaturesLayoutPickerComponent,
-    HeroLayoutPickerComponent,
     FooterLayoutPickerComponent
   ],
   imports: [
     BuilderSidebarElementModule,
+    BuilderSidebarCompmonentsModule,
     CommonModule,
     FormsModule
   ],
@@ -26,8 +24,6 @@ import { BuilderSidebarElementModule } from '../builder-sidebar-elements/builder
     BuilderSidebarLayoutComponent,
     NavbarLayoutPickerComponent,
     FooterLayoutPickerComponent,
-    FeaturesLayoutPickerComponent,
-    HeroLayoutPickerComponent,
     FooterLayoutPickerComponent
   ],
   providers: []

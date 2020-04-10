@@ -10,7 +10,7 @@
              [ngClass]="setHeroClass('hero-image')"
              [ngStyle]="setHeroImageStyle()"
              id="{{componentId}}-hero-image">
-          <img [src]="heroImageUrl" alt="{{ heroImageAlt }}" class="img-fluid">
+          <img *ngIf="heroImageStyle" [src]="heroImageStyle.src" alt="{{ heroImageStyle['alt'] }}" class="img-fluid">
         </div>
       </div>
       <div [ngClass]="setHeroTextContainerClass()">

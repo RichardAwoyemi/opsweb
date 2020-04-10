@@ -7,6 +7,7 @@ import { IModalComponent } from '../../../../shared/models/modal';
 import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderActionsService } from '../builder-actions.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   selector: 'app-builder-select-image-modal',
@@ -47,7 +48,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
       .subscribe(response => {
         const pageComponent = response;
         const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
-        const targetComponent = pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex];
+        const targetComponent = UtilService.shallowClone(pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex]);
         if (targetComponent.hasOwnProperty(this.parentKey)) {
           this.componentParentKey = targetComponent[this.parentKey];
         } else {
@@ -74,7 +75,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   }
 
   uploadImageToImgur() {
-    this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).pipe(takeUntil(this.ngUnsubscribe))
+    this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1])
       .subscribe((imgurResponse: ImgurResponse) => {
         if (imgurResponse.status === 200) {
           this.activeLibrarySelectedImage = imgurResponse.data.link;
@@ -88,7 +89,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
       this.builderComponentsService.setPageComponentByIdAndKey(this.componentId, this.parentKey, this.childKeySrc, this.activeLibrarySelectedImage);
     }
     if (this.activeLibrarySelectedImageAltText) {
-      this.builderComponentsService.setPageComponentByIdAndKey(this.componentId, this.parentKey, this.childKeyAlt, this.activeLibrarySelectedImage);
+      this.builderComponentsService.setPageComponentByIdAndKey(this.componentId, this.parentKey, this.childKeyAlt, this.activeLibrarySelectedImageAltText);
     }
     this.toastrService.success('Your image has been updated.', 'Great!');
   }

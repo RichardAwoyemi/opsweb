@@ -22,7 +22,6 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
   sidebarLayoutMenu: string = this.SIDEBAR_INACTIVE_MENU;
   sidebarOptionsMenu: string = this.SIDEBAR_INACTIVE_MENU;
   sidebarPagesMenu: string = this.SIDEBAR_INACTIVE_MENU;
-  sidebarDataMenu: string = this.SIDEBAR_INACTIVE_MENU;
   ACTIVE_TEMPLATES_SETTING: string = ActiveSettings.Templates;
   ACTIVE_COMPONENTS_SETTING: string = ActiveSettings.Components;
   ACTIVE_COLOURS_SETTING: string = ActiveSettings.Colours;
@@ -82,13 +81,6 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.builderService.sidebarDataMenu.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarDataMenu = response;
-        }
-      });
-
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
@@ -104,8 +96,8 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
   }
 
   setActiveEditSetting(settingName: string) {
-    this.builderService.setActiveEditSetting(settingName);
-    this.builderService[`setSidebar${UtilService.titleCase(settingName)}Setting`]();
+    this.builderService.activeEditSetting.next(settingName);
+    this.builderService.setSidebarSetting(settingName);
   }
 
   validateActiveEditComponent() {

@@ -1,27 +1,30 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, Input } from '@angular/core';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
-import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderActionsService } from '../../builder-actions.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { takeUntil } from 'rxjs/operators';
+import { UtilService } from '../../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-builder-select-image-upload',
   templateUrl: './builder-select-image-upload.component.html',
   styleUrls: ['./builder-select-image-upload.component.css']
 })
-export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
-  heroImageUrl: string;
-  heroImageAlt: string;
+export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy  {
+  @Input() componentId: any;
+  @Input() parentKey: string;
+
+  imageObject: any;
   imageHeight: number;
   innerHeight: number;
   croppedImage: any;
-  imageChangedEvent: any;
+  imageChangedEvent = null;
   ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private builderHeroService: BuilderHeroService,
+    private builderComponentsService: BuilderComponentsService,
     private builderActionsService: BuilderActionsService
   ) {
   }
@@ -30,19 +33,24 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight - 284;
     this.imageHeight = window.innerHeight - 385;
 
-    this.builderHeroService.heroImageStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroImageUrl = response['src'];
-        this.heroImageAlt = response['alt'];
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        const pageComponent = response;
+        const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
+        const targetComponent = UtilService.shallowClone(pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex]);
+        if (targetComponent.hasOwnProperty(this.parentKey)) {
+          this.imageObject = targetComponent[this.parentKey];
+        } else {
+          this.imageObject = targetComponent['style'][this.parentKey];
+        }
+      });
+
   }
 
   fileChangeEvent(event) {
     if (event.target.files && event.target.files.length) {
       this.imageChangedEvent = event;
-      this.heroImageUrl = event.base64;
+      this.imageObject['src'] = event.base64;
       this.builderActionsService.activeLibrarySelectedImage.next(event.base64);
     }
   }
@@ -61,13 +69,13 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
 
   onCropImageButtonClick() {
     this.imageChangedEvent = null;
-    this.heroImageUrl = this.croppedImage;
+    this.imageObject['src'] = this.croppedImage;
     this.builderActionsService.activeLibrarySelectedImage.next(this.croppedImage);
   }
 
 
   setHeroImageAlt() {
-    this.builderActionsService.activeLibrarySelectedImageAlt.next(this.heroImageAlt);
+    this.builderActionsService.activeLibrarySelectedImageAlt.next(this.imageObject['alt']);
   }
 
   ngOnDestroy(): void {

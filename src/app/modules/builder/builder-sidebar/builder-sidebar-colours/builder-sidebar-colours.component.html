@@ -5,8 +5,8 @@
   <app-footer-colour-picker *ngIf="activeEditComponent == footer"></app-footer-colour-picker>
 </div>
 <div class="features-colour-picker">
-  <app-features-colour-picker *ngIf="activeEditComponent == features"></app-features-colour-picker>
+  <app-sidebar-features-component *ngIf="activeEditComponent == features" setting='colours'></app-sidebar-features-component>
 </div>
 <div class="hero-colour-picker">
-  <app-hero-colour-picker *ngIf="activeEditComponent == hero"></app-hero-colour-picker>
+  <app-sidebar-hero-component *ngIf="activeEditComponent == hero" setting='colours'></app-sidebar-hero-component>
 </div>

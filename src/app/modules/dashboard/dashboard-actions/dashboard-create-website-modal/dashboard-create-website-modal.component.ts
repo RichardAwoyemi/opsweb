@@ -14,6 +14,7 @@ import { WebsiteService } from '../../../../shared/services/website.service';
 import { BuilderActionsService } from '../../../builder/builder-actions/builder-actions.service';
 import { BuilderService } from '../../../builder/builder.service';
 import * as fromUser from '../../../core/store/user/user.reducer';
+import { ActiveSettings } from 'src/app/modules/builder/builder';
 
 @Component({
   selector: 'app-dashboard-create-website-modal',
@@ -69,7 +70,7 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
                     template: response['template']
                   }, { merge: true }).then(() => {
                   });
-                  this.builderService.setSidebarComponentsSetting();
+                  this.builderService.setSidebarSetting(ActiveSettings.Components);
                   this.builderService.activePageIndex.next(0);
                   this.toastrService.success('Your website has been created.');
                   this.activeModal.close();

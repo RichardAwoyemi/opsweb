@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ActiveComponents } from '../../builder';
+import { ActiveComponents, ActiveSettings } from '../../builder';
 import { BuilderService } from '../../builder.service';
 
 @Component({
@@ -51,13 +51,13 @@ export class BuilderPlaceholderComponent implements OnInit, OnDestroy {
 
   setActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 
   clearActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 
   ngOnDestroy(): void {

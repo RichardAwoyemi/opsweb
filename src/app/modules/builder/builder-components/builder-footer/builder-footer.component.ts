@@ -215,7 +215,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.clearActiveEditComponent();
     } else {
       this.builderService.setActiveEditComponent(this.componentName, this.componentId);
-      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+      this.builderService.activeEditSetting.next(ActiveSettings.Colours);
     }
   }
 
@@ -246,9 +246,9 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
 
   selectFooterCopyright(event: any, elementId: string) {
     this.builderService.setActiveEditComponent(ActiveComponents.Footer);
-    this.builderService.setSidebarOptionsSetting();
+    this.builderService.setSidebarSetting(ActiveSettings.Options);
     this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
+    this.builderService.activeEditSetting.next(ActiveSettings.Options);
     this.builderService.triggerScrollTo('footer-options-copyright');
     event.stopPropagation();
   }

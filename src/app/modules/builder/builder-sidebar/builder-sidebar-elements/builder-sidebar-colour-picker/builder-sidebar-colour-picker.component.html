@@ -1,10 +1,10 @@
-<div class="form-group">
-  <label style="color: rgba(255, 255, 255, 0.65);">{{data.colourSectionHeader}}</label>
+<div *ngIf="styleObject" class="form-group">
+  <label *ngIf="elementSettings.sectionHeader" style="color: rgba(255, 255, 255, 0.65);">{{elementSettings.sectionHeader}}</label>
   <div style="width: 100%">
     <span class="features-colour-select-background form-control form-control-lg colour-picker"
           (colorPickerChange)="setElementColour()"
-          [(colorPicker)]="styleObject[data.colourProperty]"
+          [(colorPicker)]="styleObject[elementSettings.colourProperty]"
           [cpPositionOffset]="'0%'"
-          [cpPosition]="'bottom'" [style.background]="styleObject[data.colourProperty]"></span>
+          [cpPosition]="'bottom'" [style.background]="styleObject[elementSettings.colourProperty]"></span>
   </div>
 </div>

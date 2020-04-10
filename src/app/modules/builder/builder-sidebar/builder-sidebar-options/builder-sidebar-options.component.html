@@ -6,8 +6,8 @@
   <app-footer-options-picker *ngIf="activeEditComponent == footerComponent"></app-footer-options-picker>
 </div>
 <div class="features-options-picker">
-  <app-features-options-picker *ngIf="activeEditComponent == featuresComponent"></app-features-options-picker>
+  <app-sidebar-features-component *ngIf="activeEditComponent == featuresComponent" setting='options'></app-sidebar-features-component>
 </div>
 <div class="hero-options-picker">
-  <app-hero-options-picker *ngIf="activeEditComponent == heroComponent"></app-hero-options-picker>
+  <app-sidebar-hero-component *ngIf="activeEditComponent == heroComponent" setting='options'></app-sidebar-hero-component>
 </div>

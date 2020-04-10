@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { ActiveTemplates } from '../../../builder';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-sidebar-colour-picker',
@@ -13,17 +13,12 @@ import { WebsiteService } from 'src/app/shared/services/website.service';
 export class BuilderSidebarColourPickerComponent implements OnInit, OnDestroy {
 
   styleObject: any;
-  currentTemplate: any;
-  defaultStyle: any;
   websiteChangeCount: number;
   activeEditComponentId: string;
-  private elementSubscription: Subscription;
-  private templateSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private defaultStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
+  @Input() elementSettings: any;
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -34,36 +29,25 @@ export class BuilderSidebarColourPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(activeEditComponentIdResponse => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe)).subscribe(activeEditComponentIdResponse => {
       if (activeEditComponentIdResponse) {
         this.activeEditComponentId = activeEditComponentIdResponse;
       }
     });
 
-    this.templateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
-      if (templateResponse) {
-        this.currentTemplate = templateResponse['template'];
-        this.defaultStyleSubscription = this.data.componentService[this.data.defaultStyleFunctionName](this.currentTemplate).subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
-      } else {
-        this.defaultStyleSubscription = this.data.componentService[this.data.defaultStyleFunctionName](ActiveTemplates.Default).subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response && this.data.componentIndex) {
+        const pageComponent = response;
+        const component = pageComponent['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
+        if (this.elementSettings.name in component) {
+          this.styleObject = component[this.elementSettings.name];
+        } else {
+          this.styleObject = component['style'][this.elementSettings.name];
+        }
       }
     });
 
-    this.elementSubscription = this.data.componentService[this.data.elementName].subscribe(response => {
-      if (response) {
-        this.styleObject = response;
-      }
-    });
-
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
       if (response) {
         this.websiteChangeCount = response['value'];
       }
@@ -71,15 +55,13 @@ export class BuilderSidebarColourPickerComponent implements OnInit, OnDestroy {
   }
 
   setElementColour() {
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.data.elementName, this.styleObject);
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
-  ngOnDestroy() {
-    this.elementSubscription.unsubscribe();
-    this.templateSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.defaultStyleSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

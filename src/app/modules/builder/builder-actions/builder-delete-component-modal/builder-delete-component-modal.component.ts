@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IModalComponent } from '../../../../shared/models/modal';
-import { ActiveComponents, ActiveComponentsPartialSelector } from '../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveSettings } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderService } from '../../builder.service';
 
@@ -73,7 +73,8 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
     }
 
     this.builderComponentsService.pageComponents.next(pageComponents);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.setSidebarSetting(ActiveSettings.Components);
+    this.builderService.activeEditSetting.next(ActiveSettings.Components);
     this.toastrService.success('Your component has been deleted.', 'Great!');
     this.activeModal.dismiss();
   }

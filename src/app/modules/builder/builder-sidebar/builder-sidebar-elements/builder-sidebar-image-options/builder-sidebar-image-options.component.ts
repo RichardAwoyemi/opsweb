@@ -6,19 +6,19 @@ import { BuilderComponentsService } from '../../../builder-components/builder-co
 import { BuilderService } from '../../../builder.service';
 
 @Component({
-  selector: 'app-sidebar-item-count-slider',
-  templateUrl: './builder-sidebar-item-count-slider.component.html'
+  selector: 'app-sidebar-image-options',
+  templateUrl: './builder-sidebar-image-options.component.html'
 })
 
-export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy {
+export class BuilderSidebarImageOptionsComponent implements OnInit, OnDestroy {
+
+  styleObject: any;
+  websiteChangeCount: number;
+  activeEditComponentId: string;
+  ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
   @Input() elementSettings: any;
-  websiteChangeCount: number;
-  activeEditComponentId: string;
-  elementArraySize: number;
-  ngUnsubscribe = new Subject<void>();
-
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -40,9 +40,9 @@ export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy
         const pageComponent = response;
         const component = pageComponent['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
         if (this.elementSettings.name in component) {
-          this.elementArraySize = component[this.elementSettings.name].length;
+          this.styleObject = component[this.elementSettings.name];
         } else {
-          this.elementArraySize = component['style'][this.elementSettings.name].length;
+          this.styleObject = component['style'][this.elementSettings.name];
         }
       }
     });
@@ -54,12 +54,26 @@ export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy
     });
   }
 
-  setElementCount(value: number) {
-    this.data.componentService[this.data.updateElementCountFunction](this.activeEditComponentId, value);
+  setOptionValue(optionValue) {
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, optionValue);
   }
 
-  resetElementCount() {
-    this.setElementCount(3);
+  setComponentLayoutSelectorClass(optionValue) {
+    if (optionValue === this.styleObject) {
+      return 'layout-spacer-active';
+    } else {
+      return 'layout-spacer';
+    }
+  }
+
+  resetOptionValue() {
+    const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
+    if (this.elementSettings.name in defaultTemplate['details']) {
+      this.styleObject = defaultTemplate['details'][this.elementSettings.name];
+    } else {
+      this.styleObject = defaultTemplate['style'][this.elementSettings.name];
+    }
+    this.setOptionValue(this.styleObject);
   }
 
   ngOnDestroy(): void {

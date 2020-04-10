@@ -197,7 +197,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.clearActiveEditComponent();
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+      this.builderService.activeEditSetting.next(ActiveSettings.Colours);
     }
   }
 
@@ -247,9 +247,9 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.activePageIndex.next(pageIndex);
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-      this.builderService.setSidebarOptionsSetting();
+      this.builderService.setSidebarSetting(ActiveSettings.Options);
       this.builderService.activeElement.next(elementId);
-      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.activeEditSetting.next(ActiveSettings.Options);
       this.builderService.triggerScrollTo('navbar-options-menu');
     }
     event.stopPropagation();
@@ -289,9 +289,9 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-      this.builderService.setSidebarOptionsSetting();
+      this.builderService.setSidebarSetting(ActiveSettings.Options);
       this.builderService.activeElement.next(elementId);
-      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.activeEditSetting.next(ActiveSettings.Options);
       this.builderService.triggerScrollTo('navbar-options');
     }
     event.stopPropagation();
@@ -326,7 +326,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
-      this.builderService.setSidebarOptionsSetting();
+      this.builderService.setSidebarSetting(ActiveSettings.Options);
       this.builderService.activeElement.next(elementId);
       this.builderService.triggerScrollTo('navbar-options-logo');
     }

@@ -19,13 +19,13 @@
     </ul>
     <div class="tab-content p-4" style="margin-left: -1rem; margin-right: -1rem; padding-bottom: 0">
       <div class="tab-pane fade show active" id="tab-graphics">
-        <app-builder-select-image-library></app-builder-select-image-library>
+        <app-builder-select-image-library componentId="{{componentId}}" parentKey="{{parentKey}}"></app-builder-select-image-library>
       </div>
       <div class="tab-pane fade" id="tab-unsplash">
-        <app-builder-select-image-photos></app-builder-select-image-photos>
+        <app-builder-select-image-photos componentId="{{componentId}}" parentKey="{{parentKey}}"></app-builder-select-image-photos>
       </div>
       <div class="tab-pane fade" id="tab-upload">
-        <app-builder-select-image-upload></app-builder-select-image-upload>
+        <app-builder-select-image-upload componentId="{{componentId}}" parentKey="{{parentKey}}"></app-builder-select-image-upload>
       </div>
     </div>
   </div>

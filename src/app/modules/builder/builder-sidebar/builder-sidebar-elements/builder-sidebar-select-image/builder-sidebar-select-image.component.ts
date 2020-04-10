@@ -2,31 +2,29 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
-import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
+import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-sidebar-padding',
-  templateUrl: './builder-sidebar-padding.component.html'
+  selector: 'app-sidebar-select-image',
+  styleUrls: ['./builder-sidebar-select-image.component.css'], 
+  templateUrl: './builder-sidebar-select-image.component.html'
 })
 
-export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
+export class BuilderSidebarSelectImageComponent implements OnInit, OnDestroy {
 
   styleObject: any;
-  currentTemplate: any;
   websiteChangeCount: number;
   activeEditComponentId: string;
-  paddingTop: number;
-  paddingLeft: number;
-  paddingRight: number;
-  paddingBottom: number;
   ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
   @Input() elementSettings: any;
 
   constructor(
+    private modalService: NgbModal,
     private builderComponentsService: BuilderComponentsService,
     private websiteService: WebsiteService,
     private builderService: BuilderService
@@ -34,6 +32,7 @@ export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe)).subscribe(activeEditComponentIdResponse => {
       if (activeEditComponentIdResponse) {
         this.activeEditComponentId = activeEditComponentIdResponse;
@@ -49,10 +48,6 @@ export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
         } else {
           this.styleObject = component['style'][this.elementSettings.name];
         }
-        this.paddingTop = this.styleObject['padding-top'].replace('px', '');
-        this.paddingLeft = this.styleObject['padding-left'].replace('px', '');
-        this.paddingRight = this.styleObject['padding-right'].replace('px', '');
-        this.paddingBottom = this.styleObject['padding-bottom'].replace('px', '');
       }
     });
 
@@ -63,23 +58,26 @@ export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
     });
   }
 
-  setPadding(position: string, value: number) {
-    this.styleObject[`padding-${position}`] = `${value}px`;
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
-    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+  openSelectImageModal() {
+    const modalRef = this.modalService.open(BuilderSelectImageModalComponent, {
+      windowClass: 'modal-holder',
+      centered: true,
+      size: 'lg'
+    });
+    modalRef.componentInstance.componentId = this.activeEditComponentId;
+    modalRef.componentInstance.parentKey = this.elementSettings.name;
   }
 
-  resetPaddingStyle() {
+  resetImage() {
     const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
+    this.styleObject = defaultTemplate['style'][this.elementSettings.name];
+    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, this.elementSettings.name, 'src', this.styleObject['src']);
+    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, this.elementSettings.name, 'alt', this.styleObject['alt']);
+  }
 
-    for (let i of ['padding-top', 'padding-left', 'padding-right', 'padding-bottom']) {
-      this.styleObject[i] = defaultTemplate['style'][this.elementSettings.name][i];
-    }
-    this.paddingTop = this.styleObject['padding-top'].replace('px', '');
-    this.paddingLeft = this.styleObject['padding-left'].replace('px', '');
-    this.paddingRight = this.styleObject['padding-right'].replace('px', '');
-    this.paddingBottom = this.styleObject['padding-bottom'].replace('px', '');
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
+
+  setOptionValue(optionValue) {
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, optionValue);
   }
 
   ngOnDestroy(): void {

@@ -29,6 +29,7 @@ export class BuilderComponentsService {
 
   activeComponentIndex = new BehaviorSubject<number>(0);
   pageComponents = new BehaviorSubject<any>(null);
+  activeTemplate = new BehaviorSubject<any>(null);
 
   constructor(
     private simpleModalService: SimpleModalService,
@@ -228,6 +229,8 @@ export class BuilderComponentsService {
     }
     const pageComponents = { ...originalPageComponents, ...newPageOrder };
     this.pageComponents.next(pageComponents);
+    this.builderService.activePageIndex.next(this.getPageIndex(this.builderService.activePageSetting.getValue()));
+    console.log(this.builderService.activePageIndex.getValue());
   }
 
   deleteComponentByName(componentName) {

@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { AuthService } from '../../../auth/auth.service';
-import { ActiveComponents, ActiveElements, MAX_NUMBER_OF_PAGES } from '../../builder';
+import { ActiveComponents, ActiveElements, MAX_NUMBER_OF_PAGES, ActiveSettings } from '../../builder';
 import { BuilderCreateAccountModalComponent } from '../../builder-actions/builder-create-account-modal/builder-create-account-modal.component';
 import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
@@ -146,7 +146,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.setSidebarSetting(ActiveSettings.Components);
     this.builderService.previewMode.next(!this.previewMode);
   }
 

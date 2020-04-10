@@ -14,8 +14,7 @@ import { BuilderHeroService } from './builder-hero.service';
 export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   innerHeight: number;
   heroHeadingStyle: any;
-  heroImageUrl: string;
-  heroImageAlt: string;
+  heroImageStyle: any;
   heroSubheadingStyle: any;
   heroBackgroundStyle: any;
   heroButtonStyle: any;
@@ -93,7 +92,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
             .subscribe(response => {
               if (response) {
                 this.pageComponents = response;
-                this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
                 if (this.elementRef.nativeElement['id']) {
                   this.componentId = this.elementRef.nativeElement['id'];
                   for (let i = 0; i < this.pageComponents['pages'].length; i++) {
@@ -106,8 +104,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
                           this.heroHeadingStyle = this.componentDetail['style']['heroHeadingStyle'];
                           this.heroSubheadingStyle = this.componentDetail['style']['heroSubheadingStyle'];
                           this.heroButtonStyle = this.componentDetail['style']['heroButtonStyle'];
-                          this.heroImageUrl = this.componentDetail['style']['heroImageStyle']['src'];
-                          this.heroImageAlt = this.componentDetail['style']['heroImageStyle']['alt'];
+                          this.heroImageStyle = this.componentDetail['style']['heroImageStyle'];
                           this.heroComponentLayout = this.componentDetail['heroComponentLayout'];
                           this.heroImageSize = this.componentDetail['style']['heroImageStyle']['width'].replace('%', '');
                           this.heroTheme = this.componentDetail['heroTheme'];
@@ -139,24 +136,8 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
       }, '*');
       this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
-      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
-      this.setComponentStyle();
+      this.builderService.activeEditSetting.next(ActiveSettings.Colours);
     }
-  }
-
-  setComponentStyle() {
-    this.builderHeroService.heroBackgroundStyle.next(this.heroBackgroundStyle);
-    this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
-    this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
-    this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
-    this.builderHeroService.heroImageUrl.next(this.heroImageUrl);
-    this.builderHeroService.heroImageAlt.next(this.heroImageAlt);
-    this.builderHeroService.heroComponentLayout.next(this.heroComponentLayout);
-    this.builderHeroService.heroTheme.next(this.heroTheme);
-    this.builderHeroService.heroButtonLink.next(this.heroButtonLink);
-    this.builderHeroService.heroHeadingText.next(this.heroHeadingText);
-    this.builderHeroService.heroSubheadingText.next(this.heroSubheadingText);
-    this.builderHeroService.heroButtonText.next(this.heroButtonText);
   }
 
   setComponentClass() {
@@ -223,10 +204,9 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.activeElement.next(elementId);
       this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
       this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
-      this.builderService.setSidebarOptionsSetting();
-      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.setSidebarSetting(ActiveSettings.Options);
+      this.builderService.activeEditSetting.next(ActiveSettings.Options);
       this.builderService.triggerScrollTo('hero-options');
-      this.setComponentStyle();
       window.postMessage({ 'for': 'opsonion', 'action': 'element-selected', 'message': elementId }, '*');
       event.stopPropagation();
     }
@@ -261,19 +241,16 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   saveHeroHeadingTextOption(heroHeadingText) {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderHeroService.heroHeadingText.next(heroHeadingText);
     this.builderComponentsService.setPageComponentById(this.componentId, 'heroHeadingText', heroHeadingText);
   }
 
   saveHeroSubheadingTextOption(heroSubheadingText) {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderHeroService.heroHeadingText.next(heroSubheadingText);
     this.builderComponentsService.setPageComponentById(this.componentId, 'heroSubheadingText', heroSubheadingText);
   }
 
   saveHeroButtonTextOption(heroButtonText) {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderHeroService.heroButtonText.next(heroButtonText);
     this.builderComponentsService.setPageComponentById(this.componentId, 'heroButtonText', heroButtonText);
   }
 

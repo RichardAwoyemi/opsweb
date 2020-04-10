@@ -18,6 +18,10 @@ import { BuilderSidebarFontSizeComponent } from './builder-sidebar-font-size/bui
 import { BuilderSidebarColourPickerComponent } from './builder-sidebar-colour-picker/builder-sidebar-colour-picker.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { BuilderSidebarThemeChangeComponent } from './builder-sidebar-theme-change/builder-sidebar-theme-change.component';
+import { BuilderSidebarImageOptionsComponent } from './builder-sidebar-image-options/builder-sidebar-image-options.component';
+import { BuilderSidebarSelectImageComponent } from './builder-sidebar-select-image/builder-sidebar-select-image.component';
+import { BuilderSidebarImageSizeComponent } from './builder-sidebar-image-size/builder-sidebar-image-size.component';
+import { BuilderSidebarLinksDropdownComponent } from './builder-sidebar-links-dropdown/builder-sidebar-links-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,11 @@ import { BuilderSidebarThemeChangeComponent } from './builder-sidebar-theme-chan
     BuilderSidebarElementDirective,
     BuilderSidebarElementComponent,
     BuilderSidebarColourPickerComponent,
-    BuilderSidebarThemeChangeComponent
+    BuilderSidebarThemeChangeComponent,
+    BuilderSidebarImageOptionsComponent,
+    BuilderSidebarSelectImageComponent,
+    BuilderSidebarImageSizeComponent,
+    BuilderSidebarLinksDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +60,11 @@ import { BuilderSidebarThemeChangeComponent } from './builder-sidebar-theme-chan
     BuilderSidebarFontNameComponent,
     BuilderSidebarFontSizeComponent,
     BuilderSidebarColourPickerComponent,
-    BuilderSidebarThemeChangeComponent
+    BuilderSidebarThemeChangeComponent,
+    BuilderSidebarImageOptionsComponent,
+    BuilderSidebarSelectImageComponent,
+    BuilderSidebarImageSizeComponent,
+    BuilderSidebarLinksDropdownComponent
   ],
   exports: [
     BuilderSidebarElementComponent

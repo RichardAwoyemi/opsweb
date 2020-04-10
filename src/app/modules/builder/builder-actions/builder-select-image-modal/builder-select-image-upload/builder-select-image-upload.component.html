@@ -20,7 +20,7 @@
     </ng-container>
     <ng-container *ngIf="!imageChangedEvent">
       <div class="image-preview">
-        <img [ngStyle]="{ 'max-height': imageHeight + 'px' }" [src]="heroImageUrl" alt="{{ heroImageAlt }}">
+        <img [ngStyle]="{ 'max-height': imageHeight + 'px' }" [src]="imageObject.src" alt="{{ imageObject.alt }}">
       </div>
       <div style="padding-top: 20px;">
         <label class="btn btn-lg btn-secondary btn-file">
@@ -38,7 +38,7 @@
   </div>
   <div class="col-md-8">
     <label for="img-alt-text" style="display: none"></label>
-    <input (ngModelChange)="setHeroImageAlt()" [(ngModel)]="heroImageAlt" class="form-control form-control-lg"
+    <input (ngModelChange)="setHeroImageAlt()" [(ngModel)]="imageObject.alt" class="form-control form-control-lg"
            id="img-alt-text" type="text">
   </div>
   <div class="col-md-12">&nbsp;</div>

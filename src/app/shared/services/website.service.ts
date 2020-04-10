@@ -4,7 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { BuilderComponentsService } from '../../modules/builder/builder-components/builder-components.service';
 import { map } from 'rxjs/operators';
 import { BuilderService } from '../../modules/builder/builder.service';
-import { ActiveStructures } from '../../modules/builder/builder';
+import { ActiveStructures, ActiveSettings } from '../../modules/builder/builder';
 import { UtilService } from './util.service';
 import { IUser } from '../models/user';
 import { ToastrService } from 'ngx-toastr';
@@ -58,7 +58,7 @@ export class WebsiteService {
               pages: response['pages'],
               template: template['id']
             }, { merge: true });
-            this.builderService.setSidebarComponentsSetting();
+            this.builderService.setSidebarSetting(ActiveSettings.Components);
             this.builderService.activePageIndex.next(0);
             this.toastrService.success('Your website has been created.', 'Great!');
             this.router.navigateByUrl(`/builder/${documentId}`).then(() => {

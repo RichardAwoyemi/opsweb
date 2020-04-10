@@ -447,6 +447,9 @@ export class UtilService {
 
   static openUrlInNewTab(url: any) {
     window.open(url, '_blank');
+  }
 
+  static shallowClone(obj): any{
+    return JSON.parse(JSON.stringify(obj));
   }
 }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from '../../../../shared/services/template.service';
-import { ActiveComponents } from '../../builder';
+import { ActiveComponents, ActiveSettings } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderService } from '../../builder.service';
 
@@ -54,7 +54,7 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   clearActiveComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeEditComponentId.next(null);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 
   getComponent(componentToAdd: string) {

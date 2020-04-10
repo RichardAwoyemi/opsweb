@@ -1,0 +1,16 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">{{elementSettings.sectionHeader}}</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetDropdownLink()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <label style="width: 100%">
+    <select (change)="setDropdownLink()" [(ngModel)]="menuOption" class="form-control form-control-lg">
+      <option *ngFor="let option of menuOptions"
+              [attr.selected]="option == menuOption ? true : null">{{ option }}</option>
+    </select>
+  </label>
+</div>

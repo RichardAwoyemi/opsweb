@@ -6,19 +6,21 @@ import { BuilderComponentsService } from '../../../builder-components/builder-co
 import { BuilderService } from '../../../builder.service';
 
 @Component({
-  selector: 'app-sidebar-item-count-slider',
-  templateUrl: './builder-sidebar-item-count-slider.component.html'
+  selector: 'app-sidebar-image-size',
+  templateUrl: './builder-sidebar-image-size.component.html'
 })
 
-export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy {
+export class BuilderSidebarImageSizeComponent implements OnInit, OnDestroy {
+
+  imageSize: number;
+  imageUnit = '%';
+  styleObject: any;
+  websiteChangeCount: number;
+  activeEditComponentId: string;
+  ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
   @Input() elementSettings: any;
-  websiteChangeCount: number;
-  activeEditComponentId: string;
-  elementArraySize: number;
-  ngUnsubscribe = new Subject<void>();
-
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
@@ -40,10 +42,11 @@ export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy
         const pageComponent = response;
         const component = pageComponent['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
         if (this.elementSettings.name in component) {
-          this.elementArraySize = component[this.elementSettings.name].length;
+          this.styleObject = component[this.elementSettings.name];
         } else {
-          this.elementArraySize = component['style'][this.elementSettings.name].length;
+          this.styleObject = component['style'][this.elementSettings.name];
         }
+        this.imageSize = this.styleObject['width'].replace('%', '');
       }
     });
 
@@ -54,12 +57,16 @@ export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy
     });
   }
 
-  setElementCount(value: number) {
-    this.data.componentService[this.data.updateElementCountFunction](this.activeEditComponentId, value);
+  resetImageSize() {
+    const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
+    this.styleObject['width'] = defaultTemplate['style'][this.elementSettings.name]['width'];
+    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, this.elementSettings.name, 'width', this.styleObject['width']);
   }
 
-  resetElementCount() {
-    this.setElementCount(3);
+  setImageSize() {
+    this.styleObject['width'] = this.imageSize + '%';
+    this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, this.elementSettings.name, 'width', this.styleObject['width']);
+    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   ngOnDestroy(): void {

@@ -8,6 +8,7 @@ import { BuilderSidebarItem } from './builder-sidebar-items';
 })
 export class BuilderSidebarElementComponent implements OnInit {
   @Input() element: BuilderSidebarItem;
+  @Input() baseData: any;
   @ViewChild(BuilderSidebarElementDirective, {static: true}) sidebarElementHost: BuilderSidebarElementDirective;
 
   constructor(
@@ -24,6 +25,7 @@ export class BuilderSidebarElementComponent implements OnInit {
     const viewContainerRef = this.sidebarElementHost.viewContainerRef;
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(componentFactory);
-    (componentRef.instance).data = this.element.data;
+    (componentRef.instance).data = this.baseData;
+    (componentRef.instance).elementSettings = this.element.elementInfo;
   }
 }

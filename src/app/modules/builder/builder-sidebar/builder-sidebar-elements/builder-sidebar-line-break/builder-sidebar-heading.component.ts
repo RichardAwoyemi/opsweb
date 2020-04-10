@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 
 export class BuilderSidebarLineBreakComponent {
   @Input() data: any;
+  @Input() elementSettings: any;
 }

@@ -1,17 +1,20 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, Input } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
 import { ImageLibraryService } from '../../../../../shared/services/image-library.service';
 import { UtilService } from '../../../../../shared/services/util.service';
-import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderActionsService } from '../../builder-actions.service';
 import { takeUntil } from 'rxjs/operators';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 
 @Component({
   selector: 'app-builder-select-image-library',
   templateUrl: './builder-select-image-library.component.html'
 })
 export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
+  @Input() componentId: any;
+  @Input() parentKey: string;
+
   filteredLibraryObject: any;
   selectedImage: any;
   images: any;
@@ -22,11 +25,8 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
   imageLibraryObject: any;
   ngUnsubscribe = new Subject<void>();
 
-  private imageLibrarySubscription: Subscription;
-  private activeLibrarySearchTextSubscription: Subscription;
-
   constructor(
-    private builderHeroService: BuilderHeroService,
+    private builderComponentsService: BuilderComponentsService,
     private builderActionsService: BuilderActionsService,
     private imageLibraryService: ImageLibraryService,
   ) {
@@ -35,7 +35,7 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight - 360;
 
-    this.imageLibrarySubscription = this.imageLibraryService.getImageDetails()
+    this.imageLibraryService.getImageDetails()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
@@ -47,7 +47,7 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.activeLibrarySearchTextSubscription = this.builderActionsService.activeLibrarySelectedImage
+    this.builderActionsService.activeLibrarySelectedImage
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         this.activeLibrarySearchText = response;
@@ -86,8 +86,17 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
         this.images = null;
       }
     }
-    this.builderActionsService.activeLibrarySelectedImage.next(this.builderHeroService.heroImageUrl.getValue());
-    this.builderActionsService.activeLibrarySelectedImageAlt.next(this.builderHeroService.heroImageAlt.getValue());
+    const pageComponent = this.builderComponentsService.pageComponents.getValue();
+    const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
+    const targetComponent = UtilService.shallowClone(pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex]);
+    let componentParentKey = {};
+    if (targetComponent.hasOwnProperty(this.parentKey)) {
+      componentParentKey = targetComponent[this.parentKey];
+    } else {
+      componentParentKey = targetComponent['style'][this.parentKey];
+    }
+    this.builderActionsService.activeLibrarySelectedImage.next(componentParentKey['src']);
+    this.builderActionsService.activeLibrarySelectedImageAlt.next(componentParentKey['alt']);
   }
 
   onSearchButtonClick() {

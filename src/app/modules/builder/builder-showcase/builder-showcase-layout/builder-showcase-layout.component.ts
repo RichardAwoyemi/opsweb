@@ -105,8 +105,8 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.builderService.activeEditComponentId.next(null);
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderComponentsService.activeComponentIndex.next(null);
-    this.builderService.setActiveEditSetting(ActiveSettings.Components);
-    this.builderService.setSidebarComponentsSetting();
+    this.builderService.activeEditSetting.next(ActiveSettings.Components);
+    this.builderService.setSidebarSetting(ActiveSettings.Components);
 
     let pageIndex = null;
     for (let i = 0; i < components.length; i++) {

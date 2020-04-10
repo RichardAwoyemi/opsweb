@@ -1,7 +1,8 @@
 import { HostListener, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ActiveComponents, ActiveElements, ActiveOrientations } from './builder';
+import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings } from './builder';
 import { TourService } from '../../shared/services/tour.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Injectable()
 export class BuilderService {
@@ -105,62 +106,16 @@ export class BuilderService {
     this.toolbarOptionsButton.next(this.TOOLBAR_INACTIVE_BUTTON);
   }
 
-  setActiveEditSetting(settingName: string) {
-    this.activeEditSetting.next(settingName);
-  }
-
-  setSidebarTemplatesSetting() {
+  setSidebarSetting(tempSetting) {
+    const includeButtonTab = ['Layout', 'Colours', 'Options', 'Components'];
+    const setting = UtilService.toTitleCase(tempSetting);
     this.resetAll();
-    this.sidebarTemplatesMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarTemplatesTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo('templates');
-  }
-
-  setSidebarComponentsSetting() {
-    this.resetAll();
-    this.toolbarComponentsButton.next(this.TOOLBAR_ACTIVE_BUTTON);
-    this.sidebarComponentsMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarComponentsTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo('components');
-  }
-
-  setSidebarColoursSetting() {
-    this.resetAll();
-    this.toolbarColoursButton.next(this.TOOLBAR_ACTIVE_BUTTON);
-    this.sidebarColoursMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarColoursTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-colours`);
-  }
-
-  setSidebarLayoutSetting() {
-    this.resetAll();
-    this.toolbarLayoutButton.next(this.TOOLBAR_ACTIVE_BUTTON);
-    this.sidebarLayoutMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarLayoutTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-layout`);
-  }
-
-  setSidebarOptionsSetting() {
-    this.resetAll();
-    this.toolbarOptionsButton.next(this.TOOLBAR_ACTIVE_BUTTON);
-    this.sidebarOptionsMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarOptionsTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-options`);
-  }
-
-  // noinspection JSUnusedGlobalSymbols
-  setSidebarPagesSetting() {
-    this.resetAll();
-    this.sidebarPagesMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarPagesTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo('pages');
-  }
-
-  // noinspection JSUnusedGlobalSymbols
-  setSidebarDataSetting() {
-    this.resetAll();
-    this.sidebarDataMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarDataTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this[`sidebar${setting}Menu`].next(this.SIDEBAR_ACTIVE_MENU);
+    this[`sidebar${setting}Tab`].next(this.SIDEBAR_ACTIVE_TAB);
+    if (includeButtonTab.includes(setting)) {
+      this[`toolbar${setting}Button`].next(this.TOOLBAR_ACTIVE_BUTTON);
+    }
+    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-${setting.toLowerCase()}`);
   }
 
   setActiveEditComponent(componentName: string, componentId: string = null) {
@@ -168,19 +123,19 @@ export class BuilderService {
       this.activeEditComponentId.next(componentId);
     }
     this.activeEditComponent.next(componentName);
-    this.setSidebarColoursSetting();
+    this.setSidebarSetting(ActiveSettings.Colours);
   }
 
   processIncomingMessages(e: any) {
     if (e.data.action) {
       if (e.data.action.includes('colour')) {
-        this.setSidebarColoursSetting();
+        this.setSidebarSetting(UtilService.toTitleCase(ActiveSettings.Colours));
       }
       if (e.data.action.includes('option')) {
-        this.setSidebarOptionsSetting();
+        this.setSidebarSetting(UtilService.toTitleCase(ActiveSettings.Options));
       }
       if (e.data.action.includes('layout') || e.data.action.includes('postion')) {
-        this.setSidebarLayoutSetting();
+        this.setSidebarSetting(UtilService.toTitleCase(ActiveSettings.Layout));
       }
     }
   }
@@ -205,7 +160,7 @@ export class BuilderService {
     this.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.activeEditComponent.next(ActiveComponents.Placeholder);
     this.activeElement.next(ActiveElements.Default);
-    this.setSidebarComponentsSetting();
+    this.setSidebarSetting(ActiveSettings.Components);
     window.postMessage({ 'for': 'opsonion', 'action': 'deselect-text', }, '*');
   }
 }

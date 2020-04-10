@@ -18,7 +18,6 @@ export class BuilderSidebarComponent implements OnInit, OnDestroy {
   sidebarLayoutTab = 'tab-pane fade tab-padding';
   sidebarOptionsTab = 'tab-pane fade tab-padding';
   sidebarPagesTab = 'tab-pane fade tab-padding';
-  sidebarDataTab = 'tab-pane fade tab-padding';
   ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -68,13 +67,6 @@ export class BuilderSidebarComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         if (response) {
           this.sidebarPagesTab = response;
-        }
-      });
-
-    this.builderService.sidebarDataTab.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarDataTab = response;
         }
       });
   }

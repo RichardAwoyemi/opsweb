@@ -148,8 +148,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       }, '*');
       this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(this.componentName, this.componentId);
-      this.builderService.setActiveEditSetting(ActiveSettings.Colours);
-      this.setComponentStyle();
+      this.builderService.activeEditSetting.next(ActiveSettings.Colours);
     }
   }
 
@@ -162,14 +161,13 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       }, '*');
       this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(ActiveComponents.Features, this.componentId);
-      this.builderService.setActiveEditSetting(ActiveSettings.Options);
-      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeEditSetting.next(ActiveSettings.Options);
+      this.builderService.setSidebarSetting(ActiveSettings.Options);
       if (elementId.indexOf('subheading') > -1) {
         this.builderService.triggerScrollTo('features-subheading-options');
       } else if (elementId.indexOf('heading') > -1) {
         this.builderService.triggerScrollTo('features-heading-options');
       }
-      this.setComponentStyle();
       window.postMessage({ 'for': 'opsonion', 'action': 'element-selected', 'message': elementId }, '*');
       event.stopPropagation();
     }
@@ -181,15 +179,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
 
   setContextMenu() {
     return BuilderService.setContextMenu(this.previewMode, this.activeEditComponent, this.componentName);
-  }
-
-  setComponentStyle() {
-    this.builderFeaturesService.featuresHeadingStyle.next(this.featuresHeadingStyle);
-    this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
-    this.builderFeaturesService.featuresStyle.next(this.featuresStyle);
-    this.builderFeaturesService.featuresItemArray.next(this.featuresItemArray);
-    this.builderFeaturesService.featuresTheme.next(this.featuresTheme);
-    this.builderFeaturesService.featuresTemplate.next(this.featuresTemplate);
   }
 
   clearActiveEditComponent() {
@@ -220,7 +209,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   @HostListener('window:message', ['$event'])
   onMessage(e) {
     if (e.data.for === 'opsonion') {
-      if (e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
+      if (e.data.action === 'clear-active-components' || e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
         this.componentActive = false;
       }
 

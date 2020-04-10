@@ -43,48 +43,9 @@ export class BuilderFeaturesService {
     return this.httpClient.get(this.FEATURES_THEME_PATH);
   }
 
-  setFeaturesTheme(themeId: string, componentId) {
-    let response: any;
-    switch (themeId) {
-      case ActiveThemes.Default:
-        this.setFeaturesThemeStyle(themeId, componentId);
-        break;
-      case ActiveThemes.Stanley:
-        this.httpClient.get(this.FEATURES_THEME_PATH).subscribe((themes: Array<any>) => {
-          response = themes.filter(theme => {
-            return theme.name === ActiveThemes.Stanley;
-          });
-          this.setFeaturesThemeStyle(response[0], componentId);
-        });
-        break;
-      default:
-        break;
-    }
-  }
-
-  setFeaturesThemeStyle(theme: any, componentId: string) {
-    if (theme) {
-      if (theme['featuresHeadingStyle']) {
-        const featuresHeadingStyle = { ...this.featuresHeadingStyle.getValue(), ...theme['featuresHeadingStyle'] };
-        this.builderComponentsService.setPageComponentById(componentId, 'featuresHeadingStyle', featuresHeadingStyle);
-        this.featuresHeadingStyle.next(featuresHeadingStyle);
-      }
-      if (theme['featuresSubheadingStyle']) {
-        const featuresSubheadingStyle = { ...this.featuresSubheadingStyle.getValue(), ...theme['featuresSubheadingStyle'] };
-        this.builderComponentsService.setPageComponentById(componentId, 'featuresSubheadingStyle', featuresSubheadingStyle);
-        this.featuresSubheadingStyle.next(featuresSubheadingStyle);
-      }
-      if (theme['featuresStyle']) {
-        const featuresStyle = { ...this.featuresStyle.getValue(), ...theme['featuresStyle'] };
-        this.builderComponentsService.setPageComponentById(componentId, 'featuresStyle', featuresStyle);
-        this.featuresStyle.next(featuresStyle);
-      }
-      this.builderComponentsService.setPageComponentById(componentId, 'featuresTheme', theme['name']);
-      this.featuresTheme.next(theme['name']);
-    }
-  }
-
-  setNumberOfFeatures(componentId, number: number, orientation: string = null) {
+  setNumberOfFeatures(activeEditComponentId: string, number: number, orientation: string = null) {
+    const componentIndexArray = this.builderComponentsService.getActiveTargetComponentById(activeEditComponentId);
+    const tempFeaturesItemArray = this.builderComponentsService.pageComponents.getValue()['pages'][componentIndexArray.activePageIndex]['components'][componentIndexArray.activeComponentIndex]['featuresItemArray'];
     if (number && !isNaN(number) && number <= 8) {
       let multiplier: number;
       const breakpoint = this.featuresBreakpoint.getValue();
@@ -96,7 +57,6 @@ export class BuilderFeaturesService {
       } else if (breakpoint === 'large' || showcaseOrientation === 'desktop') {
         multiplier = 1;
       }
-      const tempFeaturesItemArray = this.featuresItemArray.getValue();
       const numberOfFeatures = Object.keys(tempFeaturesItemArray).length;
       const width = 100 * multiplier / number + '%';
       let i = 0;
@@ -113,14 +73,12 @@ export class BuilderFeaturesService {
           i++;
         }
       }
-      return {
-        'array': featuresItemArray,
-        'width': width,
-      };
+      this.builderComponentsService.setPageComponentById(activeEditComponentId, 'featuresItemArray', featuresItemArray);
+      this.builderComponentsService.setPageComponentById(activeEditComponentId, 'featuresWidth', width);
     }
   }
 
-  setFeaturesWidth(orientation: string = null, providedComponentId = null) {
+  setFeaturesWidth(orientation: string = null) {
     const featureComponents = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Features);
     const pageComponents = this.builderComponentsService.pageComponents.getValue();
     if (featureComponents.length > 0) {
@@ -128,7 +86,7 @@ export class BuilderFeaturesService {
         const activePageIndex = featureComponents[i]['activePageIndex'];
         const activeComponentIndex = featureComponents[i]['activeComponentIndex'];
         const component = pageComponents['pages'][activePageIndex]['components'][activeComponentIndex];
-        const componentId = providedComponentId || component['componentId'];
+        const componentId = component['componentId'];
         const number = component['featuresItemArray'].length;
 
         let multiplier: number;
