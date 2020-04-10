@@ -30,7 +30,9 @@ export enum ActiveComponentsPartialSelector {
 }
 
 export enum ActiveTemplates {
-  Default = 'default'
+  Default = 'default',
+  Quick = 'business-1',
+  Front = 'business-2'
 }
 
 export enum ActiveStructures {
