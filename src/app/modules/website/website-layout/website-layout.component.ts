@@ -1,13 +1,14 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { BuilderComponentsService } from '../../builder/builder-components/builder-components.service';
-import { Subscription } from 'rxjs';
-import { WebsiteService } from '../../../shared/services/website.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BuilderService } from '../../builder/builder.service';
 import { ToastrService } from 'ngx-toastr';
-import { RouterService } from '../../../shared/services/router.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
+import { RouterService } from '../../../shared/services/router.service';
+import { WebsiteService } from '../../../shared/services/website.service';
+import { BuilderComponentsService } from '../../builder/builder-components/builder-components.service';
+import { BuilderService } from '../../builder/builder.service';
 
 @Component({
   selector: 'app-website-layout',
@@ -21,10 +22,7 @@ export class WebsiteLayoutComponent implements AfterViewInit, OnDestroy {
   builderComponents: any;
   id: string;
   document: any;
-  private pageComponentsSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private websiteSubscription: Subscription;
-  private websiteNameSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -58,13 +56,14 @@ export class WebsiteLayoutComponent implements AfterViewInit, OnDestroy {
   }
 
   setupInternalWebsite() {
-    this.route.paramMap.subscribe(params => {
-      if (params.get('id')) {
-        this.id = params.get('id');
-        this.websiteService.websiteId.next(this.id);
-        this.setupWebsite();
-      }
-    });
+    this.route.paramMap
+      .subscribe(params => {
+        if (params.get('id')) {
+          this.id = params.get('id');
+          this.websiteService.websiteId.next(this.id);
+          this.setupWebsite();
+        }
+      });
   }
 
   setupExternalWebsite() {
@@ -72,49 +71,53 @@ export class WebsiteLayoutComponent implements AfterViewInit, OnDestroy {
     const parts = full.split('.');
     if (parts[0] && parts[1] && parts[2]) {
       const websiteName = parts[0];
-      this.websiteNameSubscription = this.websiteService.getWebsiteByName(websiteName).subscribe(response => {
-        if (response[0]) {
-          this.id = response[0]['id'];
-          this.websiteService.websiteId.next(response[0]['id']);
-          this.setupWebsite();
-        } else {
-          window.location.href = environment.domainUrl;
-        }
-      });
+      this.websiteService.getWebsiteByName(websiteName).pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(response => {
+          if (response[0]) {
+            this.id = response[0]['id'];
+            this.websiteService.websiteId.next(response[0]['id']);
+            this.setupWebsite();
+          } else {
+            window.location.href = environment.domainUrl;
+          }
+        });
     }
   }
 
   setupWebsite() {
     this.ngxLoader.start();
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageResponse => {
-        if (activePageResponse) {
-          this.activePage = activePageResponse;
-          this.websiteSubscription = this.websiteService.getWebsiteById(this.id).subscribe((websiteResponse => {
-            if (websiteResponse) {
-              this.websiteService.websiteName.next(websiteResponse['name']);
-              if (websiteResponse['pages']) {
-                this.builderComponentsService.pageComponents.next({
-                  'pages': websiteResponse['pages'],
-                  'template': websiteResponse['template']
-                });
-                this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((pageComponentsResponse => {
-                  if (pageComponentsResponse) {
-                    this.pageComponents = pageComponentsResponse;
-                    this.setPageComponents();
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(activePageResponse => {
+          if (activePageResponse) {
+            this.activePage = activePageResponse;
+            this.websiteService.getWebsiteById(this.id).pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe((websiteResponse => {
+                if (websiteResponse) {
+                  this.websiteService.websiteName.next(websiteResponse['name']);
+                  if (websiteResponse['pages']) {
+                    this.builderComponentsService.pageComponents.next({
+                      'pages': websiteResponse['pages'],
+                      'template': websiteResponse['template']
+                    });
+                    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+                      .subscribe((pageComponentsResponse => {
+                        if (pageComponentsResponse) {
+                          this.pageComponents = pageComponentsResponse;
+                          this.setPageComponents();
+                        }
+                      }));
                   }
-                }));
-              }
-            } else {
-              this.toastrSevice.warning('This website cannot be found.', 'Oops!');
-              this.router.navigate(['home']).then(() => {
-              });
-            }
-          }));
-        } else {
+                } else {
+                  this.toastrSevice.warning('This website cannot be found.', 'Oops!');
+                  this.router.navigate(['home']).then(() => {
+                  });
+                }
+              }));
+          } else {
+          }
+          this.ngxLoader.stop();
         }
-        this.ngxLoader.stop();
-      }
-    );
+      );
   }
 
   ngAfterViewInit() {
@@ -143,18 +146,8 @@ export class WebsiteLayoutComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (this.pageComponentsSubscription) {
-      this.pageComponentsSubscription.unsubscribe();
-    }
-    if (this.activePageSettingSubscription) {
-      this.activePageSettingSubscription.unsubscribe();
-    }
-    if (this.websiteSubscription) {
-      this.websiteSubscription.unsubscribe();
-    }
-    if (this.websiteNameSubscription) {
-      this.websiteNameSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

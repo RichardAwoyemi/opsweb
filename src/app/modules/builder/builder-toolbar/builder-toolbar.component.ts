@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../builder.service';
 import { ActiveComponents, ActiveOrientations, ActiveSettings } from 'src/app/modules/builder/builder';
+import { BuilderService } from '../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-builder-toolbar',
@@ -26,15 +27,7 @@ export class BuilderToolbarComponent implements OnInit, OnDestroy {
   private toolbarButtonComponentsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   private toolbarButtonLayoutStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
   private toolbarButtonOptionsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  private activeEditComponentSubscription: Subscription;
-  private previewModeSubscription: Subscription;
-  private toolbarButtonColourSubscription: Subscription;
-  private toolbarButtonComponentsSubscription: Subscription;
-  private toolbarButtonLayoutSubscription: Subscription;
-  private toolbarButtonOptionsSubscription: Subscription;
-  private toolbarButtonDesktopOrientationSubscription: Subscription;
-  private toolbarButtonTabletOrientationSubscription: Subscription;
-  private toolbarButtonMobileOrientationSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService
@@ -42,62 +35,71 @@ export class BuilderToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      this.previewMode = response;
-      if (response) {
-        this.toolbarClass = 'toolbar-preview no-select';
-      } else {
-        this.toolbarClass = 'toolbar no-select';
-      }
-    });
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.previewMode = response;
+        if (response) {
+          this.toolbarClass = 'toolbar-preview no-select';
+        } else {
+          this.toolbarClass = 'toolbar no-select';
+        }
+      });
 
-    this.toolbarButtonColourSubscription = this.builderService.toolbarColoursButton.subscribe(response => {
-      if (response) {
-        this.toolbarButtonColoursStyle = response;
-      }
-    });
+    this.builderService.toolbarColoursButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonColoursStyle = response;
+        }
+      });
 
-    this.toolbarButtonComponentsSubscription = this.builderService.toolbarComponentsButton.subscribe(response => {
-      if (response) {
-        this.toolbarButtonComponentsStyle = response;
-      }
-    });
+    this.builderService.toolbarComponentsButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonComponentsStyle = response;
+        }
+      });
 
-    this.toolbarButtonLayoutSubscription = this.builderService.toolbarLayoutButton.subscribe(response => {
-      if (response) {
-        this.toolbarButtonLayoutStyle = response;
-      }
-    });
+    this.builderService.toolbarLayoutButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonLayoutStyle = response;
+        }
+      });
 
-    this.toolbarButtonOptionsSubscription = this.builderService.toolbarOptionsButton.subscribe(response => {
-      if (response) {
-        this.toolbarButtonOptionsStyle = response;
-      }
-    });
+    this.builderService.toolbarOptionsButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonOptionsStyle = response;
+        }
+      });
 
-    this.toolbarButtonDesktopOrientationSubscription = this.builderService.toolbarDesktopOrientationButton.subscribe(response => {
-      if (response) {
-        this.toolbarButtonDesktopOrientation = response;
-      }
-    });
+    this.builderService.toolbarDesktopOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonDesktopOrientation = response;
+        }
+      });
 
-    this.toolbarButtonTabletOrientationSubscription = this.builderService.toolbarTabletOrientationButton.subscribe(response => {
-      if (response) {
-        this.toolbarButtonTabletOrientation = response;
-      }
-    });
+    this.builderService.toolbarTabletOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonTabletOrientation = response;
+        }
+      });
 
-    this.toolbarButtonMobileOrientationSubscription = this.builderService.toolbarMobileOrientationButton.subscribe(response => {
-      if (response) {
-        this.toolbarButtonMobileOrientation = response;
-      }
-    });
+    this.builderService.toolbarMobileOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonMobileOrientation = response;
+        }
+      });
   }
 
   setActiveEditSetting(settingName: string) {
@@ -186,15 +188,8 @@ export class BuilderToolbarComponent implements OnInit, OnDestroy {
     this.builderService.previewMode.next(!this.previewMode);
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.previewModeSubscription.unsubscribe();
-    this.toolbarButtonColourSubscription.unsubscribe();
-    this.toolbarButtonComponentsSubscription.unsubscribe();
-    this.toolbarButtonLayoutSubscription.unsubscribe();
-    this.toolbarButtonOptionsSubscription.unsubscribe();
-    this.toolbarButtonDesktopOrientationSubscription.unsubscribe();
-    this.toolbarButtonTabletOrientationSubscription.unsubscribe();
-    this.toolbarButtonMobileOrientationSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

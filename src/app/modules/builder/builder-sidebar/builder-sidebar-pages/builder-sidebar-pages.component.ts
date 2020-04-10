@@ -1,18 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActiveComponentsPartialSelector, ActiveSettings, MAX_NUMBER_OF_PAGES } from '../../builder';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderRenamePageModalComponent } from '../../builder-actions/builder-rename-page-modal/builder-rename-page-modal.component';
-import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
-import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { SortablejsOptions } from 'ngx-sortablejs';
-import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
-import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
+import { ActiveComponentsPartialSelector, ActiveSettings, MAX_NUMBER_OF_PAGES } from '../../builder';
+import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
+import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
+import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
+import { BuilderRenamePageModalComponent } from '../../builder-actions/builder-rename-page-modal/builder-rename-page-modal.component';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-sidebar-pages',
@@ -31,10 +30,7 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   menuSortableOptions: any;
   componentListSortableOptions: SortablejsOptions;
 
-  private activeEditSettingSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private activePageIndexSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private modalService: NgbModal,
@@ -68,22 +64,23 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditSettingSubscription = this.builderService.activeEditSetting.subscribe(response => {
-      if (response) {
-        this.activeEditSetting = response;
-      }
-    });
+    this.builderService.activeEditSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditSetting = response;
+        }
+      });
 
-    this.activePageIndexSubscription = this.builderService.activePageIndex.subscribe(response => {
+    this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
       if (response) {
         this.activePageIndex = response;
       }
     });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe)).subscribe((activePageSettingsResponse => {
       if (activePageSettingsResponse) {
         this.activePage = activePageSettingsResponse;
-        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe((response => {
           if (response) {
             this.pageComponents = response;
             this.menuOptions = this.builderComponentsService.getPageArray(this.pageComponents);
@@ -93,7 +90,7 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
                   return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
                 });
               }
-            }
+            };
           }
         }));
       }
@@ -170,10 +167,8 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     }, '*');
   }
 
-  ngOnDestroy() {
-    this.activeEditSettingSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
-    this.activePageIndexSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

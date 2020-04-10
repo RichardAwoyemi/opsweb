@@ -1,8 +1,10 @@
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from '../../../shared/services/website.service';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-website-header',
@@ -14,26 +16,28 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
   id: string;
   websiteName: string;
 
-  private websiteNameSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public router: Router,
     private websiteService: WebsiteService,
     private route: ActivatedRoute) {
-    this.route.paramMap.subscribe(params => {
-      this.id = params.get('id');
-    });
+    this.route.paramMap
+      .subscribe(params => {
+        this.id = params.get('id');
+      });
   }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
-    this.websiteNameSubscription = this.websiteService.websiteName.subscribe(response => {
-      if (response) {
-        this.websiteName = `${response}.opsonion.com`;
-      }
-    });
+    this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteName = `${response}.opsonion.com`;
+        }
+      });
   }
 
   redirectToDashboard() {
@@ -46,12 +50,17 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.websiteNameSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   redirectToWebsite() {
-    window.open('https://www.google.com', '_blank');
+    if (this.websiteName) {
+      window.open(this.websiteName, '_blank');
+    } else {
+      window.open(environment.domainUrl, '_blank');
+    }
     window.focus();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { FormDobInputService } from './form-dob-input.service';
 import { NGXLogger } from 'ngx-logger';
 import { UtilService } from '../../services/util.service';
@@ -8,6 +8,7 @@ import { UserService } from '../../services/user.service';
 import { IUser } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-form-dob-input',
@@ -23,14 +24,7 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
   private showDobDayInputError: any;
   private showDobMonthInputError: any;
   private showDobYearInputError: any;
-
-  private datesSubscription: Subscription;
-  private dobDaySubscription: Subscription;
-  private dobDayInputErrorSubscription: Subscription;
-  private dobMonthSubscription: Subscription;
-  private dobMonthInputErrorSubscription: Subscription;
-  private dobYearSubscription: Subscription;
-  private dobYearInputErrorSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private utilService: UtilService,
@@ -45,6 +39,7 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
@@ -74,56 +69,64 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
 
     const lastYear = (new Date().getFullYear() - 18).toString();
     this.years = UtilService.createYearRange('1930', lastYear);
-    this.datesSubscription = this.dataService.getAllDates().subscribe(data => {
-      if (data) {
-        this.dates = Object.values(data);
-      }
-    });
+    this.dataService.getAllDates().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(data => {
+        if (data) {
+          this.dates = Object.values(data);
+        }
+      });
 
-    this.datesSubscription = this.dataService.getAllDates().subscribe(data => {
-      if (data) {
-        this.dates = Object.values(data);
-      }
-    });
+    this.dataService.getAllDates().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(data => {
+        if (data) {
+          this.dates = Object.values(data);
+        }
+      });
 
-    this.dobDayInputErrorSubscription = this.formDobInputService.showDobDayInputError.subscribe(response => {
-      if (response) {
-        this.showDobDayInputError = response;
-      }
-    });
+    this.formDobInputService.showDobDayInputError.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.showDobDayInputError = response;
+        }
+      });
 
-    this.dobMonthInputErrorSubscription = this.formDobInputService.showDobMonthInputError.subscribe(response => {
-      if (response) {
-        this.showDobMonthInputError = response;
-      }
-    });
+    this.formDobInputService.showDobMonthInputError.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.showDobMonthInputError = response;
+        }
+      });
 
-    this.dobYearInputErrorSubscription = this.formDobInputService.showDobYearInputError.subscribe(response => {
-      if (response) {
-        this.showDobYearInputError = response;
-      }
-    });
+    this.formDobInputService.showDobYearInputError.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.showDobYearInputError = response;
+        }
+      });
 
-    this.dobDaySubscription = this.userService.dobDay.subscribe((response => {
-      if (response) {
-        this.dobDay = response;
-        this.formDobInputService.showDobDayInputError.next({ 'status': this.dobDay === 'Day' });
-      }
-    }));
+    this.userService.dobDay.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.dobDay = response;
+          this.formDobInputService.showDobDayInputError.next({ 'status': this.dobDay === 'Day' });
+        }
+      }));
 
-    this.dobMonthSubscription = this.userService.dobMonth.subscribe((response => {
-      if (response) {
-        this.dobMonth = response;
-        this.formDobInputService.showDobMonthInputError.next({ 'status': this.dobMonth === 'Month' });
-      }
-    }));
+    this.userService.dobMonth.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.dobMonth = response;
+          this.formDobInputService.showDobMonthInputError.next({ 'status': this.dobMonth === 'Month' });
+        }
+      }));
 
-    this.dobYearSubscription = this.userService.dobYear.subscribe((response => {
-      if (response) {
-        this.dobYear = response;
-        this.formDobInputService.showDobYearInputError.next({ 'status': this.dobYear === 'Month' });
-      }
-    }));
+    this.userService.dobYear.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.dobYear = response;
+          this.formDobInputService.showDobYearInputError.next({ 'status': this.dobYear === 'Month' });
+        }
+      }));
   }
 
   counter(i: number) {
@@ -140,13 +143,8 @@ export class FormDobInputComponent implements OnInit, OnDestroy {
     this.formDobInputService.showDobYearInputError.next({ 'status': this.dobYear === 'Year' });
   }
 
-  ngOnDestroy() {
-    this.datesSubscription.unsubscribe();
-    this.dobDaySubscription.unsubscribe();
-    this.dobDayInputErrorSubscription.unsubscribe();
-    this.dobMonthSubscription.unsubscribe();
-    this.dobMonthInputErrorSubscription.unsubscribe();
-    this.dobYearSubscription.unsubscribe();
-    this.dobYearInputErrorSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

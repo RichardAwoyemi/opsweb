@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormNameInputService } from './form-name-input.service';
-import { IUser } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import * as fromUser from 'src/app/modules/core/store/user/user.reducer';
-import { Subscription } from 'rxjs';
+import { IUser } from 'src/app/shared/models/user';
 import { UserService } from '../../services/user.service';
+import { FormNameInputService } from './form-name-input.service';
 
 @Component({
   selector: 'app-form-name-input',
@@ -15,9 +16,7 @@ export class FormNameInputComponent implements OnInit, OnDestroy {
   lastName: string;
   showFirstNameInputError: any;
   showLastNameInputError: any;
-
-  private showFirstNameInputErrorSubscription: Subscription;
-  private showLastNameInputErrorSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     public formNameInputService: FormNameInputService,
@@ -44,17 +43,19 @@ export class FormNameInputComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.showFirstNameInputErrorSubscription = this.formNameInputService.showFirstNameInputError.subscribe(result => {
-      if (result) {
-        this.showFirstNameInputError = result;
-      }
-    });
+    this.formNameInputService.showFirstNameInputError.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.showFirstNameInputError = result;
+        }
+      });
 
-    this.showLastNameInputErrorSubscription = this.formNameInputService.showLastNameInputError.subscribe(result => {
-      if (result) {
-        this.showLastNameInputError = result;
-      }
-    });
+    this.formNameInputService.showLastNameInputError.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.showLastNameInputError = result;
+        }
+      });
   }
 
   onChangeUpdateFirstName() {
@@ -67,8 +68,8 @@ export class FormNameInputComponent implements OnInit, OnDestroy {
     this.formNameInputService.checkLastNameInput(this.lastName);
   }
 
-  ngOnDestroy() {
-    this.showFirstNameInputErrorSubscription.unsubscribe();
-    this.showLastNameInputErrorSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

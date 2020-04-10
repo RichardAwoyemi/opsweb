@@ -1,15 +1,16 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { BuilderActionsService } from '../builder-actions.service';
-import { Subscription } from 'rxjs';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
-import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
-import { BuilderService } from '../../builder.service';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
+import { UtilService } from '../../../../shared/services/util.service';
 import { ActiveComponentsPartialSelector, ActiveElements } from '../../builder';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
+import { BuilderService } from '../../builder.service';
+import { BuilderActionsService } from '../builder-actions.service';
 
 @Component({
   selector: 'app-builder-rename-page-modal',
@@ -25,8 +26,7 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
   pageComponents: any;
   activePageSetting: string;
 
-  private navbarMenuOptionsSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -42,17 +42,19 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     this.displayError = false;
     this.disableSaveButton = true;
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarMenuOptions = response;
+        }
+      });
 
-    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   onCloseButtonClick() {
@@ -85,8 +87,8 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     this.disableSaveButton = BuilderActionsService.togglePageModalSaveButton(this.pageName, this.navbarMenuOptions);
   }
 
-  ngOnDestroy() {
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

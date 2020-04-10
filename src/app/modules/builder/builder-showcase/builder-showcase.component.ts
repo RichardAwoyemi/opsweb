@@ -10,12 +10,13 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../builder.service';
-import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { debounce } from '../../../shared/decorators/debounce.decorator';
 import { IframeService } from '../../../shared/services/iframe.service';
 import { ActiveComponents, ActiveElements, ActiveSettings } from '../builder';
-import { debounce } from '../../../shared/decorators/debounce.decorator';
+import { BuilderService } from '../builder.service';
+import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
 
 @Component({
   selector: 'app-builder-showcase',
@@ -32,8 +33,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
   iframeHeight = 180;
   activeShowcaseOrientation: string;
   @ViewChild('iframe', { static: false }) iframe: ElementRef;
-  private activeOrientationSubscription: Subscription;
-  private previewModeSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -44,23 +44,25 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.activeOrientationSubscription = this.builderService.activeOrientation.subscribe((response => {
-      if (response) {
-        this.activeShowcaseOrientation = response;
-      }
-    }));
+    this.builderService.activeOrientation.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.activeShowcaseOrientation = response;
+        }
+      }));
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      if (response) {
-        this.showcaseHeight = 74;
-        this.iframeHolderHeight = 132;
-        this.iframeHeight = 128;
-      } else {
-        this.showcaseHeight = 122;
-        this.iframeHolderHeight = 184;
-        this.iframeHeight = 180;
-      }
-    });
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.showcaseHeight = 74;
+          this.iframeHolderHeight = 132;
+          this.iframeHeight = 128;
+        } else {
+          this.showcaseHeight = 122;
+          this.iframeHolderHeight = 184;
+          this.iframeHeight = 180;
+        }
+      });
   }
 
   ngAfterViewInit() {
@@ -77,9 +79,9 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
     this.document.body.appendChild(this.componentReference.location.nativeElement);
   }
 
-  ngOnDestroy() {
-    this.activeOrientationSubscription.unsubscribe();
-    this.previewModeSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   @HostListener('window:resize', ['$event'])

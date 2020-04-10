@@ -179,12 +179,6 @@ export class UtilService {
     return greeting;
   }
 
-  static safeUnsubscribe(subs) {
-    if (subs) {
-      subs.unsubscribe();
-    }
-  }
-
   static generateWebsiteName() {
     const left = [
       'admiring',

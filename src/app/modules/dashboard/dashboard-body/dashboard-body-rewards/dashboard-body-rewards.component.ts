@@ -1,13 +1,14 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IUser } from '../../../../shared/models/user';
-import * as fromUser from '../../../core/store/user/user.reducer';
 import { Store } from '@ngrx/store';
-import { UtilService } from '../../../../shared/services/util.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IUser } from '../../../../shared/models/user';
 import { CreditsService } from '../../../../shared/services/credits.service';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Subscription } from 'rxjs';
+import { UtilService } from '../../../../shared/services/util.service';
+import * as fromUser from '../../../core/store/user/user.reducer';
 
 @Component({
   selector: 'app-dashboard-body-rewards',
@@ -26,7 +27,7 @@ export class DashboardBodyRewardsComponent implements OnInit, OnDestroy {
   whatsappShareUrl: string;
   twitterShareUrl: string;
   emailShareUrl: string;
-  isMobileSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
   rewardsBodyPadding: any;
   rewardsTopPadding: any;
 
@@ -41,18 +42,20 @@ export class DashboardBodyRewardsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ngxLoader.start();
-    this.isMobileSubscription = this.breakpointObserver.observe([Breakpoints.Handset]).subscribe((result) => {
-      if (result.matches === false) {
-        this.rewardsBodyPadding = { 'padding': '2em' };
-        this.rewardsTopPadding = { 'padding-top': '1em' };
-        this.isMobile = false;
-      } else {
-        this.isMobile = true;
-      }
-    });
+    this.breakpointObserver.observe([Breakpoints.Handset]).pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result) => {
+        if (result.matches === false) {
+          this.rewardsBodyPadding = { 'padding': '2em' };
+          this.rewardsTopPadding = { 'padding-top': '1em' };
+          this.isMobile = false;
+        } else {
+          this.isMobile = true;
+        }
+      });
     this.innerHeight = window.innerHeight;
     this.userStore.select('user')
       .pipe()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
@@ -80,7 +83,8 @@ export class DashboardBodyRewardsComponent implements OnInit, OnDestroy {
     this.toastrService.success('Your referral link has been copied.', 'Great!');
   }
 
-  ngOnDestroy() {
-    this.isMobileSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

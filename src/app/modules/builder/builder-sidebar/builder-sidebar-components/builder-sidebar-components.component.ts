@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActiveComponents } from '../../builder';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from '../../../../shared/services/template.service';
+import { ActiveComponents } from '../../builder';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,18 +15,11 @@ import { TemplateService } from '../../../../shared/services/template.service';
 export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   searchText: string;
   activeEditComponent: string;
-  featuresTemplate: any;
   webComponents: any;
   defaultStyle: any;
-  footerTemplate: any;
-  navbarTemplate: any;
-  heroTemplate: any;
   navbarMenuOptions: any;
   footerMenuOptions: any;
-
-  private activeEditComponentSubscription: Subscription;
-  private templateSubscription: Subscription;
-  private defaultStyleSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -37,21 +31,24 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.webComponents = BuilderComponentsService.webComponents;
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
-    this.templateSubscription = this.builderComponentsService.pageComponents.subscribe(pageComponentsResponse => {
-      if (pageComponentsResponse) {
-        this.defaultStyleSubscription = this.templateService.getTemplateStyle(pageComponentsResponse['template']).subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(pageComponentsResponse => {
+        if (pageComponentsResponse) {
+          this.templateService.getTemplateStyle(pageComponentsResponse['template']).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultStyle = response;
+              }
+            });
+        }
+      });
   }
 
   clearActiveComponent() {
@@ -83,9 +80,8 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     }, '*');
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.templateSubscription.unsubscribe();
-    this.defaultStyleSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

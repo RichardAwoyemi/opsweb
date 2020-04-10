@@ -1,10 +1,11 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { UtilService } from '../../../../../shared/services/util.service';
-import { UnsplashService } from '../../../../../shared/services/unsplash.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
-import { BuilderActionsService } from '../../builder-actions.service';
-import { Subscription } from 'rxjs';
+import { UnsplashService } from '../../../../../shared/services/unsplash.service';
+import { UtilService } from '../../../../../shared/services/util.service';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
+import { BuilderActionsService } from '../../builder-actions.service';
 
 @Component({
   selector: 'app-builder-select-image-photos',
@@ -17,7 +18,7 @@ export class BuilderSelectImagePhotosComponent implements OnInit, OnDestroy {
   images: any;
   innerHeight: number;
   activeLibrarySearchText: string;
-  private activeLibrarySearchTextSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private unsplashService: UnsplashService,
@@ -29,7 +30,8 @@ export class BuilderSelectImagePhotosComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight - 360;
 
-    this.activeLibrarySearchTextSubscription = this.builderActionsService.activeLibrarySelectedImage.subscribe(response => {
+    this.builderActionsService.activeLibrarySelectedImage.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       this.activeLibrarySearchText = response;
     });
   }
@@ -79,7 +81,8 @@ export class BuilderSelectImagePhotosComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
   }
 
-  ngOnDestroy() {
-    this.activeLibrarySearchTextSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
