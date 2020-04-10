@@ -1,10 +1,11 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounce } from '../../../../../shared/decorators/debounce.decorator';
 import { ImageLibraryService } from '../../../../../shared/services/image-library.service';
 import { UtilService } from '../../../../../shared/services/util.service';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderActionsService } from '../../builder-actions.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-builder-select-image-library',
@@ -18,7 +19,8 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
   selectedImageIndex: number;
   searchText: string;
   activeLibrarySearchText: string;
-  private imageLibraryObject: any;
+  imageLibraryObject: any;
+  ngUnsubscribe = new Subject<void>();
 
   private imageLibrarySubscription: Subscription;
   private activeLibrarySearchTextSubscription: Subscription;
@@ -33,19 +35,23 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight - 360;
 
-    this.imageLibrarySubscription = this.imageLibraryService.getImageDetails().subscribe(response => {
-      if (response) {
-        this.imageLibraryObject = Object.keys(response).map(i => response[i]);
-        const keys = Object.keys(this.imageLibraryObject);
-        keys.sort(function () {
-          return Math.random() - 0.5;
-        });
-      }
-    });
+    this.imageLibrarySubscription = this.imageLibraryService.getImageDetails()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.imageLibraryObject = Object.keys(response).map(i => response[i]);
+          const keys = Object.keys(this.imageLibraryObject);
+          keys.sort(function () {
+            return Math.random() - 0.5;
+          });
+        }
+      });
 
-    this.activeLibrarySearchTextSubscription = this.builderActionsService.activeLibrarySelectedImage.subscribe(response => {
-      this.activeLibrarySearchText = response;
-    });
+    this.activeLibrarySearchTextSubscription = this.builderActionsService.activeLibrarySelectedImage
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.activeLibrarySearchText = response;
+      });
   }
 
   searchImages() {
@@ -96,7 +102,7 @@ export class BuilderSelectImageLibraryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    UtilService.safeUnsubscribe(this.imageLibrarySubscription);
-    UtilService.safeUnsubscribe(this.activeLibrarySearchTextSubscription);
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
