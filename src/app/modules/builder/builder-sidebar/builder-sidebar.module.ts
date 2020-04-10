@@ -15,6 +15,7 @@ import { SortablejsModule } from 'ngx-sortablejs';
 import { NgbDropdownModule, NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArraySortModule } from '../../../shared/pipes/array-sort/array-sort.module';
 import { UnsplashService } from '../../../shared/services/unsplash.service';
+import { ImageLibraryService } from 'src/app/shared/services/image-library.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { UnsplashService } from '../../../shared/services/unsplash.service';
     FilterPipe
   ],
   providers: [
-    UnsplashService
+    UnsplashService,
+    ImageLibraryService
   ]
 })
 
