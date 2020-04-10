@@ -78,6 +78,39 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
                     }
                   }
                 }
+
+                if (this.heroHeadingStyle) {
+                  if (this.heroHeadingStyle['font-size']) {
+                    if (this.heroHeadingStyle['font-size'].indexOf('px') > -1) {
+                      this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('px', '');
+                    }
+                    if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
+                      this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('em', '');
+                    }
+                  }
+                }
+
+                if (this.heroSubheadingStyle) {
+                  if (this.heroSubheadingStyle['font-size']) {
+                    if (this.heroSubheadingStyle['font-size'].indexOf('px') > -1) {
+                      this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('px', '');
+                    }
+                    if (this.heroSubheadingStyle['font-size'].indexOf('em') > -1) {
+                      this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('em', '');
+                    }
+                  }
+                }
+
+                if (this.heroButtonStyle) {
+                  if (this.heroButtonStyle['font-size']) {
+                    if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
+                      this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
+                    }
+                    if (this.heroButtonStyle['font-size'].indexOf('em') > -1) {
+                      this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
+                    }
+                  }
+                }
               }
             });
         }
@@ -86,6 +119,12 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
       if (response) {
         this.fontUnits = response;
+      }
+    });
+
+    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response) {
+        this.fontNames = response;
       }
     });
 
@@ -107,79 +146,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
                 this.defaultHeroStyle = response[ActiveComponents.Hero];
               }
             });
-        }
-      });
-
-    this.builderHeroService.heroHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.heroHeadingStyle = response;
-
-          if (this.heroHeadingStyle['font-size']) {
-            if (this.heroHeadingStyle['font-size'].indexOf('px') > -1) {
-              this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('px', '');
-            }
-            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-              this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('em', '');
-            }
-          }
-
-          const heroFontNames = this.heroHeadingStyle['font-family'].split(',');
-          this.heroHeadingFontName = heroFontNames[0].replace(/'/g, '');
-        }
-      });
-
-    this.builderHeroService.heroSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.heroSubheadingStyle = response;
-
-          if (this.heroSubheadingStyle['font-size']) {
-            if (this.heroSubheadingStyle['font-size'].indexOf('px') > -1) {
-              this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('px', '');
-            }
-            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-              this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('em', '');
-            }
-          }
-
-          const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
-          this.heroSubheadingFontName = heroFontNames[0].replace(/'/g, '');
-        }
-      });
-
-    this.builderHeroService.heroButtonStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.heroButtonStyle = response;
-
-          if (this.heroButtonStyle['font-size']) {
-            if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
-              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
-            }
-            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
-            }
-          }
-
-          const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
-          this.heroButtonFontName = heroFontNames[0].replace(/'/g, '');
-        }
-      });
-
-    this.builderHeroService.heroImageStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.heroImageStyle = response;
-          this.heroImageUrl = response['src'];
-          this.heroImageAlt = response['alt'];
-        }
-      });
-
-    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.pageComponents = response;
         }
       });
   }
