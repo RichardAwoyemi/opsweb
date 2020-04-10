@@ -6,8 +6,8 @@ import { UtilService } from '../../../../shared/services/util.service';
 import { ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { TemplateService } from '../../../../shared/services/template.service';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderService } from '../../builder.service';
 import { BuilderActionsService } from '../builder-actions.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,15 +22,15 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
   displayError = false;
   disableSaveButton = false;
   navbarMenuOptions: any;
+  footerMenuOptions: any;
   pageComponents: any;
   ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
-    private builderService: BuilderService,
+    private templateService: TemplateService,
     private builderComponentsService: BuilderComponentsService,
-    private builderActionsService: BuilderActionsService,
     private toastrService: ToastrService,
     private activeModal: NgbActiveModal
   ) {
@@ -47,12 +47,17 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
         }
       });
 
-    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((response => {
-        if (response) {
-          this.pageComponents = response;
-        }
-      }));
+    this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response) {
+        this.footerMenuOptions = response;
+      }
+    });
+
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe((response => {
+      if (response) {
+        this.pageComponents = response;
+      }
+    }));
   }
 
   onCloseButtonClick() {
@@ -61,35 +66,38 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
 
   onConfirmButtonClick(): void {
     this.activeModal.dismiss();
-    const navbarComponentPosition = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Navbar);
-    const footerComponentPosition = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Footer);
-    const navbarComponent = this.builderComponentsService.getComponent(navbarComponentPosition[0]['activePageIndex'], navbarComponentPosition[0]['activeComponentIndex']);
-    const footerComponent = this.builderComponentsService.getComponent(footerComponentPosition[0]['activePageIndex'], footerComponentPosition[0]['activeComponentIndex']);
-    navbarComponent['timestamp'] = new Date().getTime();
-    footerComponent['timestamp'] = new Date().getTime();
+    const tempPageComponents = [];
+    const singleComponentPerPage = ['Navbar', 'Footer'];
+    let componentIndex = 1;
 
-    let tempPageComponents = [
-      navbarComponent,
-      footerComponent,
-    ];
-    tempPageComponents = BuilderComponentsService.addPlaceholdersOnSinglePage(tempPageComponents);
+    for (let index = 0; index < singleComponentPerPage.length; index++) {
+      const componentName = singleComponentPerPage[index];
+      if (this.builderComponentsService.checkIfComponentExists(ActiveComponentsPartialSelector[componentName])) {
+        const componentNameLower = componentName.toLowerCase();
+        const position = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector[componentName])[0];
+        const component = this.pageComponents['pages'][position['activePageIndex']]['components'][position['activeComponentIndex']];
+        component['componentIndex'] = componentIndex;
+        const menuOptions = this[`get${componentName}MenuOptions`]();
+        this[`${componentNameLower}MenuOptions`].push(menuOptions);
+        component[`${componentNameLower}MenuOptions`] = this[`${componentNameLower}MenuOptions`];
+        tempPageComponents.push(component);
+        componentIndex = componentIndex + 2;
+      }
+    }
 
-    const pageComponents = {};
-    pageComponents['name'] = this.pageName;
-    pageComponents['components'] = tempPageComponents;
-    this.pageComponents['pages'].push(pageComponents);
+    const pageComponents = { pages: [{ name: UtilService.titleCase(this.pageName), components: tempPageComponents }] };
+    const newPage = this.templateService.generatePagePlaceholders(pageComponents);
+    this.pageComponents['pages'].push(newPage['pages'][0]);
     this.builderComponentsService.pageComponents.next(this.pageComponents);
-
-    this.navbarMenuOptions.push(UtilService.toTitleCase(this.pageName));
-    this.builderNavbarService.navbarMenuOptions.next(this.navbarMenuOptions);
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.navbarMenuOptions);
-
-    const footerMenuOptions = this.builderFooterService.footerMenuOptions.getValue();
-    footerMenuOptions.push({ 'page': UtilService.toTitleCase(this.pageName), 'visible': false });
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', footerMenuOptions);
-    this.builderFooterService.footerMenuOptions.next(footerMenuOptions);
-
     this.toastrService.success('Your new page has been created.', 'Great!');
+  }
+
+  getFooterMenuOptions(): any {
+    return { 'page': UtilService.toTitleCase(this.pageName), 'visible': false };
+  }
+
+  getNavbarMenuOptions(): any {
+    return UtilService.toTitleCase(this.pageName);
   }
 
   validatePageName() {

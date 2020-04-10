@@ -1,15 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
 import { Subject } from 'rxjs';
-import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
-import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderService } from '../../../builder.service';
-import { ActiveComponents, ActiveTemplates } from '../../../builder';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { WebsiteService } from '../../../../../shared/services/website.service';
-import { TemplateService } from '../../../../../shared/services/template.service';
 import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from '../../../../../shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveTemplates } from '../../../builder';
+import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-hero-options-picker',
@@ -19,7 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   heroImageUrl: string;
   heroImageAlt: string;
-  navbarMenuOptions: any;
+  menuOptions: any;
   menuOption: string;
   heroHeadingFontName = 'Avenir Next Medium';
   heroSubheadingFontName = 'Avenir Next Regular';
@@ -51,8 +50,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
     private builderHeroService: BuilderHeroService,
     private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService,
-    private websiteService: WebsiteService,
-    private builderNavbarService: BuilderNavbarService
+    private websiteService: WebsiteService
   ) {
   }
 
@@ -75,6 +73,8 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
                       this.heroImageUrl = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['src'];
                       this.heroImageAlt = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['alt'];
                       this.heroImageSize = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['width'].replace('%', '');
+                      this.menuOptions = this.builderComponentsService.getPages();
+                      this.menuOption = this.pageComponents['pages'][i]['components'][j]['heroButtonLink'] || this.menuOptions[Math.min(1, this.pageComponents['pages'].length - 1)];
                     }
                   }
                 }
@@ -83,46 +83,11 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.fontNames = response;
-        }
-      });
-
-    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(navbarMenuOptionsResponse => {
-        if (navbarMenuOptionsResponse) {
-          this.navbarMenuOptions = navbarMenuOptionsResponse;
-
-          this.builderHeroService.heroButtonLink.pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(response => {
-              if (response) {
-                this.menuOption = response;
-              } else {
-                if (this.navbarMenuOptions.length > 0) {
-                  this.menuOption = this.navbarMenuOptions[1];
-                } else {
-                  this.menuOption = this.navbarMenuOptions[0];
-                }
-              }
-            });
-        }
-      });
-
-    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.fontNames = response;
-        }
-      });
-
-    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.fontUnits = response;
-        }
-      });
+    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response) {
+        this.fontUnits = response;
+      }
+    });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
@@ -202,25 +167,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.builderHeroService.heroButtonStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.heroButtonStyle = response;
-
-          if (this.heroButtonStyle['font-size']) {
-            if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
-              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
-            }
-            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
-            }
-          }
-
-          const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
-          this.heroButtonFontName = heroFontNames[0].replace(/'/g, '');
-        }
-      });
-
     this.builderHeroService.heroImageStyle.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
@@ -239,7 +185,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   openSelectImageModal() {
-
     const modalRef = this.modalService.open(BuilderSelectImageModalComponent, {
       windowClass: 'modal-holder',
       centered: true,
@@ -396,11 +341,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetHeroButtonLink() {
-    if (this.navbarMenuOptions.length > 0) {
-      this.menuOption = this.navbarMenuOptions[1];
-    } else {
-      this.menuOption = this.navbarMenuOptions[0];
-    }
+    this.menuOption = this.menuOptions[Math.min(1, this.pageComponents['pages'].length - 1)];
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'heroButtonLink', this.menuOption);
     this.builderHeroService.heroButtonLink.next(this.menuOption);
   }

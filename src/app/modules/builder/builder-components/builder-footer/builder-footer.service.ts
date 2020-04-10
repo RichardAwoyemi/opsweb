@@ -107,19 +107,23 @@ export class BuilderFooterService {
     this.footerMenuOptions.next(footerMenuOptions);
   }
 
-  mapNavbarAndFooterMenuOptions(navbarMenuOptions, footerMenuOptions) {
-    const newFooterMenuOptions = [];
-    for (let i = 0; i < navbarMenuOptions.length; i++) {
-      for (let j = 0; j < footerMenuOptions.length; j++) {
-        if (navbarMenuOptions[i] === footerMenuOptions[j]['page']) {
-          newFooterMenuOptions.push({
-            'page': footerMenuOptions[j]['page'],
-            'visible': footerMenuOptions[j]['visible']
-          });
+  updateFooterMenuOptions(newPages = this.builderComponentsService.getPages(), oldPages = this.footerMenuOptions.getValue()) {
+    const footerMenuOptions = [];
+    for (let i = 0; i < newPages.length; i++) {
+      let footerMenuOption = oldPages.filter(option => {
+        let footerMenuOptionVisibility = false;
+        if (option) {
+          footerMenuOptionVisibility = option['page'] === newPages[i];
         }
+        return footerMenuOptionVisibility;
+      });
+      if (footerMenuOption.length > 0) {
+        footerMenuOption = footerMenuOption[0];
+      } else {
+        footerMenuOption = { 'page': newPages[i], 'visible': false };
       }
+      footerMenuOptions.push(footerMenuOption);
     }
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', newFooterMenuOptions);
-    this.footerMenuOptions.next(newFooterMenuOptions);
+    this.footerMenuOptions.next(footerMenuOptions);
   }
 }

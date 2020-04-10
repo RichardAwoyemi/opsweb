@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SortablejsOptions } from 'ngx-sortablejs';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
 import { ActiveComponentsPartialSelector, ActiveSettings, MAX_NUMBER_OF_PAGES } from '../../builder';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
@@ -9,11 +11,7 @@ import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-d
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { BuilderRenamePageModalComponent } from '../../builder-actions/builder-rename-page-modal/builder-rename-page-modal.component';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderService } from '../../builder.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-builder-sidebar-pages',
@@ -24,12 +22,12 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   settingsName: string = ActiveSettings.Pages;
   activeEditSetting: string;
   activePage: string;
-  navbarMenuOptions: any;
   componentListOptions: any;
   pageComponents: any;
   activePageIndex: number;
+  menuOptions: any;
 
-  navbarMenuSortableOptions: SortablejsOptions;
+  menuSortableOptions: any;
   componentListSortableOptions: SortablejsOptions;
 
   ngUnsubscribe = new Subject<void>();
@@ -37,18 +35,13 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private builderService: BuilderService,
-    private builderNavbarService: BuilderNavbarService,
-    private builderFooterService: BuilderFooterService,
     private toastrService: ToastrService,
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService
   ) {
-    this.navbarMenuSortableOptions = {
-      onUpdate: function () {
-        const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
-        builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
-        builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
-        builderFooterService.mapNavbarAndFooterMenuOptions(navbarMenuOptions, builderFooterService.footerMenuOptions.getValue());
+    this.menuSortableOptions = {
+      onUpdate: function (e: any) {
+        builderComponentsService.reorderPages(e.target.innerText.split('\n'));
       }
     };
 
@@ -78,39 +71,30 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.navbarMenuOptions = response;
-        }
-      });
+    this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
+      if (response) {
+        this.activePageIndex = response;
+      }
+    });
 
-    this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.activePageIndex = response;
-        }
-      });
-
-    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((activePageSettingsResponse => {
-        if (activePageSettingsResponse) {
-          this.activePage = activePageSettingsResponse;
-          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((response => {
-              if (response) {
-                this.pageComponents = response;
-                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-                  if (this.pageComponents['pages'][i]['name'] === this.activePage) {
-                    this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
-                      return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
-                    });
-                  }
-                }
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe)).subscribe((activePageSettingsResponse => {
+      if (activePageSettingsResponse) {
+        this.activePage = activePageSettingsResponse;
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe((response => {
+          if (response) {
+            this.pageComponents = response;
+            this.menuOptions = this.builderComponentsService.getPages(this.pageComponents);
+            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+              if (this.pageComponents['pages'][i]['name'] === this.activePage) {
+                this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
+                  return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
+                });
               }
-            }));
-        }
-      }));
+            }
+          }
+        }));
+      }
+    }));
   }
 
   getComponentCleanName(component: any) {
@@ -152,8 +136,8 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  viewPage(navbarMenuOption) {
-    this.builderService.activePageSetting.next(navbarMenuOption);
+  viewPage(menuOption) {
+    this.builderService.activePageSetting.next(menuOption);
   }
 
   openComponentsPanel() {

@@ -12,7 +12,6 @@ import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-d
 import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { BuilderSaveWebsiteModalComponent } from '../../builder-actions/builder-save-website-modal/builder-save-website-modal.component';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderService } from '../../builder.service';
 
 @Component({
@@ -27,7 +26,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
   previewButtonIcon = 'btn-icon';
   fullScreenButtonIcon = 'btn-icon';
   dropdownClass = 'dropdown';
-  navbarMenuOptions = Array<String>();
+  menuOptions = Array<String>();
   previewMode: boolean;
   fullScreenMode: boolean;
   activePageIndex: number;
@@ -44,7 +43,6 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     private simpleModalService: SimpleModalService,
     private toastrService: ToastrService,
     private authService: AuthService,
-    private builderNavbarService: BuilderNavbarService
   ) {
   }
 
@@ -111,15 +109,9 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         if (response) {
           this.pageComponents = response;
+          this.menuOptions = this.builderComponentsService.getPages(this.pageComponents);
         }
       });
-
-    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((response => {
-        if (response) {
-          this.navbarMenuOptions = response;
-        }
-      }));
   }
 
   openDeletePageModal() {
@@ -164,11 +156,11 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.ariaExpandedAttribute = 'true';
   }
 
-  setActivePage(navbarMenuOption: string, i: number) {
+  setActivePage(menuOption: string, i: number) {
     this.dropdownClass = 'dropdown';
     this.dropdownMenuClass = 'dropdown-menu';
     this.ariaExpandedAttribute = 'false';
-    this.builderService.activePageSetting.next(navbarMenuOption);
+    this.builderService.activePageSetting.next(menuOption);
     this.builderService.activePageIndex.next(i);
   }
 

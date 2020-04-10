@@ -212,6 +212,24 @@ export class BuilderComponentsService {
     }
   }
 
+  getPages(pageComponents = this.pageComponents.getValue()): Array<String> {
+    const menuOptions = [];
+    for (let i = 0; i < pageComponents['pages'].length; i++) {
+      menuOptions.push(pageComponents['pages'][i]['name']);
+    }
+    return menuOptions;
+  }
+
+  reorderPages(menuOptions) {
+    const originalPageComponents = this.pageComponents.getValue();
+    const newPageOrder = { pages: [] };
+    for (let i = 0; i < menuOptions.length; i++) {
+      newPageOrder.pages.push(originalPageComponents['pages'].filter(page => page.name === menuOptions[i])[0]);
+    }
+    const pageComponents = { ...originalPageComponents, ...newPageOrder };
+    this.pageComponents.next(pageComponents);
+  }
+
   deleteComponentByName(componentName) {
     let pageComponents = this.pageComponents.getValue();
     const targetComponents = this.getTargetComponentByName(componentName);

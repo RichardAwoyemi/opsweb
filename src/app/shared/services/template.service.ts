@@ -75,9 +75,9 @@ export class TemplateService {
     return await Promise.resolve(pageComponents);
   }
 
-  getComponent(componentNameStr: string, template: any, index: number = null, pageComponents = null) {
+  getComponent(tempComponentName: string, template, index: number = null, pageComponents = null) {
     let pages = {};
-    const componentName = UtilService.toTitleCase(componentNameStr);
+    const componentName = UtilService.toTitleCase(tempComponentName);
     (pageComponents == null) ? pages = this.builderComponentsService.pageComponents.getValue() : pages = pageComponents;
     return {
       ...(index == null ? {} : { 'componentIndex': index }),
@@ -121,7 +121,7 @@ export class TemplateService {
     }
   }
 
-  private generatePagePlaceholders(pageComponents): any {
+  generatePagePlaceholders(pageComponents): any {
     for (let i = 0; i < pageComponents['pages'].length; i++) {
       for (let j = pageComponents['pages'][i]['components'].length; j >= 0; j--) {
         const placeholder = {

@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from 'src/app/shared/services/template.service';
 import { IComponent } from '../../../../shared/models/component';
 import { UtilService } from '../../../../shared/services/util.service';
-import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings } from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
 import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
@@ -187,24 +187,19 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
                 this.pageComponents = response;
                 this.builderFooterService.footerTemplate.next(this.pageComponents['template']);
                 this.componentId = this.elementRef.nativeElement['id'];
-                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-                  const pageName = this.pageComponents['pages'][i]['name'];
-                  if (pageName === this.activePageSetting) {
-                    for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                      if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                        this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                        this.builderFooterService.footerStyle.next(this.componentDetail['style']['footerStyle']);
-                        this.builderFooterService.footerMenuOptions.next(this.componentDetail['footerMenuOptions']);
-                        this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['style']['footerSocialLinksContainerStyle']);
-                        this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['style']['footerSocialLinksStyle']);
-                        this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['style']['footerPageLinksStyle']);
-                        this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['style']['footerCopyrightStyle']);
-                        this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
-                        this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
-                        this.builderFooterService.footerSocialLinks.next(this.componentDetail['footerSocialLinks']);
-                        this.builderFooterService.footerTheme.next(this.componentDetail['footerTheme']);
-                      }
-                    }
+                for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
+                  if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
+                    this.componentDetail = this.pageComponents['pages'][0]['components'][j];
+                    this.builderFooterService.updateFooterMenuOptions(this.builderComponentsService.getPages(), this.componentDetail['footerMenuOptions']);
+                    this.builderFooterService.footerStyle.next(this.componentDetail['style']['footerStyle']);
+                    this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['style']['footerSocialLinksContainerStyle']);
+                    this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['style']['footerSocialLinksStyle']);
+                    this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['style']['footerPageLinksStyle']);
+                    this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['style']['footerCopyrightStyle']);
+                    this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
+                    this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
+                    this.builderFooterService.footerSocialLinks.next(this.componentDetail['footerSocialLinks']);
+                    this.builderFooterService.footerTheme.next(this.componentDetail['footerTheme']);
                   }
                 }
               }
