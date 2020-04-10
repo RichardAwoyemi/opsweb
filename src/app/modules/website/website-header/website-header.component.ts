@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from '../../../shared/services/website.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-website-header',
@@ -55,7 +56,11 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
   }
 
   redirectToWebsite() {
-    window.open('https://www.google.com', '_blank');
+    if (this.websiteName) {
+      window.open(this.websiteName, '_blank');
+    } else {
+      window.open(environment.domainUrl, '_blank');
+    }
     window.focus();
   }
 }
