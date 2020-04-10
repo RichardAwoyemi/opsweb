@@ -148,6 +148,21 @@ export class BuilderService {
     this.triggerScrollTo(`${this.activeEditComponent.getValue()}-options`);
   }
 
+  // noinspection JSUnusedGlobalSymbols
+  setSidebarPagesSetting() {
+    this.resetAll();
+    this.sidebarPagesMenu.next(this.SIDEBAR_ACTIVE_MENU);
+    this.sidebarPagesTab.next(this.SIDEBAR_ACTIVE_TAB);
+    this.triggerScrollTo('pages');
+  }
+
+  // noinspection JSUnusedGlobalSymbols
+  setSidebarDataSetting() {
+    this.resetAll();
+    this.sidebarDataMenu.next(this.SIDEBAR_ACTIVE_MENU);
+    this.sidebarDataTab.next(this.SIDEBAR_ACTIVE_TAB);
+  }
+
   setActiveEditComponent(componentName: string, componentId: string = null) {
     if (componentId != null) {
       this.activeEditComponentId.next(componentId);

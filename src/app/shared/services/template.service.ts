@@ -14,7 +14,6 @@ import { UtilService } from './util.service';
 
 @Injectable()
 export class TemplateService {
-
   static selectedTemplates: Template[];
   static availableTemplates: Template[];
   activeTemplate = new BehaviorSubject<Object>(null);
