@@ -54,7 +54,7 @@ export class SettingsProfileComponent implements OnInit, OnDestroy {
     this.userStore.select('user')
       .pipe()
       .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
           if (result.username) {
@@ -64,137 +64,137 @@ export class SettingsProfileComponent implements OnInit, OnDestroy {
       });
 
     this.formUsernameInputService.usernameExists.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.usernameExists = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.usernameExists = response;
+        }
+      }));
 
     this.userService.username.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.username = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.username = response;
+        }
+      }));
 
     this.userService.firstName.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.firstName = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.firstName = response;
+        }
+      }));
 
     this.userService.lastName.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.lastName = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.lastName = response;
+        }
+      }));
 
     this.userService.streetAddress1.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.streetAddress1 = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.streetAddress1 = response;
+        }
+      }));
 
     this.userService.streetAddress2.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.streetAddress2 = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.streetAddress2 = response;
+        }
+      }));
 
     this.userService.city.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.city = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.city = response;
+        }
+      }));
 
     this.userService.postcode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.postcode = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.postcode = response;
+        }
+      }));
 
     this.userService.dobDay.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.dobDay = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.dobDay = response;
+        }
+      }));
 
     this.userService.dobMonth.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.dobMonth = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.dobMonth = response;
+        }
+      }));
 
     this.userService.dobYear.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.dobYear = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.dobYear = response;
+        }
+      }));
 
     this.formNameInputService.showFirstNameInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showFirstNameInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showFirstNameInputError = result;
+        }
+      });
 
     this.formNameInputService.showLastNameInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showLastNameInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showLastNameInputError = result;
+        }
+      });
 
     this.formDobInputService.showDobDayInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showDobDayInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showDobDayInputError = result;
+        }
+      });
 
     this.formDobInputService.showDobMonthInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showDobMonthInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showDobMonthInputError = result;
+        }
+      });
 
     this.formDobInputService.showDobYearInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showDobYearInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showDobYearInputError = result;
+        }
+      });
 
     this.formAddressInputService.showStreetAddressInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showStreetAddressInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showStreetAddressInputError = result;
+        }
+      });
 
     this.formAddressInputService.showCityInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showCityInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showCityInputError = result;
+        }
+      });
 
     this.formAddressInputService.showPostcodeInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showPostcodeInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showPostcodeInputError = result;
+        }
+      });
   }
 
   setUserPersonalDetails() {

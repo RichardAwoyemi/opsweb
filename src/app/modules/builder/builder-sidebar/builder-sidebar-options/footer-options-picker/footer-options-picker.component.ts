@@ -56,163 +56,163 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(navbarMenuOptionsResponse => {
-      if (navbarMenuOptionsResponse) {
-        this.navbarMenuOptions = navbarMenuOptionsResponse;
+      .subscribe(navbarMenuOptionsResponse => {
+        if (navbarMenuOptionsResponse) {
+          this.navbarMenuOptions = navbarMenuOptionsResponse;
 
-        this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.footerMenuOptions = response;
-          } else {
-            for (let i = 0; i < this.navbarMenuOptions.length; i++) {
-              const footerMenuOption = {};
-              footerMenuOption['page'] = this.navbarMenuOptions[i];
-              footerMenuOption['visible'] = false;
-              this.footerMenuOptions.push(footerMenuOption);
-            }
-            this.builderFooterService.footerMenuOptions.next(this.footerMenuOptions);
-          }
-        });
-      }
-    });
+          this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.footerMenuOptions = response;
+              } else {
+                for (let i = 0; i < this.navbarMenuOptions.length; i++) {
+                  const footerMenuOption = {};
+                  footerMenuOption['page'] = this.navbarMenuOptions[i];
+                  footerMenuOption['visible'] = false;
+                  this.footerMenuOptions.push(footerMenuOption);
+                }
+                this.builderFooterService.footerMenuOptions.next(this.footerMenuOptions);
+              }
+            });
+        }
+      });
 
     this.builderFooterService.footerSocialLinks.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.footerSocialLinks = response;
-    });
+      .subscribe(response => {
+        this.footerSocialLinks = response;
+      });
 
     this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontNames = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontNames = response;
+        }
+      });
 
     this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontUnits = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontUnits = response;
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(templateResponse => {
-      if (templateResponse) {
-        this.footerTemplate = templateResponse['template'];
+      .subscribe(templateResponse => {
+        if (templateResponse) {
+          this.footerTemplate = templateResponse['template'];
 
-        this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultFooterStyle = response[ActiveComponents.Footer];
-          }
-        });
-      }
-    });
+          this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultFooterStyle = response[ActiveComponents.Footer];
+              }
+            });
+        }
+      });
 
     this.builderFooterService.footerCopyrightStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerCopyrightStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.footerCopyrightStyle = response;
 
-        if (this.footerCopyrightStyle['font-size']) {
-          if (this.footerCopyrightStyle['font-size'].indexOf('px') > -1) {
-            this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('px', '');
+          if (this.footerCopyrightStyle['font-size']) {
+            if (this.footerCopyrightStyle['font-size'].indexOf('px') > -1) {
+              this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('px', '');
+            }
+            if (this.footerCopyrightStyle['font-size'].indexOf('em') > -1) {
+              this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.footerCopyrightStyle['font-size'].indexOf('em') > -1) {
-            this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('em', '');
-          }
+
+          const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
+          this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
         }
-
-        const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
-        this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderFooterService.footerPageLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerPageLinksStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.footerPageLinksStyle = response;
 
-        if (this.footerPageLinksStyle['font-size']) {
-          if (this.footerPageLinksStyle['font-size'].indexOf('px') > -1) {
-            this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('px', '');
+          if (this.footerPageLinksStyle['font-size']) {
+            if (this.footerPageLinksStyle['font-size'].indexOf('px') > -1) {
+              this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('px', '');
+            }
+            if (this.footerPageLinksStyle['font-size'].indexOf('em') > -1) {
+              this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.footerPageLinksStyle['font-size'].indexOf('em') > -1) {
-            this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('em', '');
-          }
+
+          const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
+          this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
         }
-
-        const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
-        this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderFooterService.footerSocialLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerSocialLinksStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.footerSocialLinksStyle = response;
 
-        if (this.footerSocialLinksStyle['font-size']) {
-          if (this.footerSocialLinksStyle['font-size'].indexOf('px') > -1) {
-            this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('px', '');
-          }
-          if (this.footerSocialLinksStyle['font-size'].indexOf('em') > -1) {
-            this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('em', '');
+          if (this.footerSocialLinksStyle['font-size']) {
+            if (this.footerSocialLinksStyle['font-size'].indexOf('px') > -1) {
+              this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('px', '');
+            }
+            if (this.footerSocialLinksStyle['font-size'].indexOf('em') > -1) {
+              this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('em', '');
+            }
           }
         }
-      }
-    });
+      });
 
     this.builderFooterService.footerSocialLinks.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response['facebookUrl']) {
-        this.footerSocialLinks['facebookUrl'] = response['facebookUrl'];
-        this.facebookUrl = response['facebookUrl'];
-      }
-      if (response['twitterUrl']) {
-        this.footerSocialLinks['twitterUrl'] = response['twitterUrl'];
-        this.twitterUrl = response['twitterUrl'];
+      .subscribe(response => {
+        if (response['facebookUrl']) {
+          this.footerSocialLinks['facebookUrl'] = response['facebookUrl'];
+          this.facebookUrl = response['facebookUrl'];
+        }
+        if (response['twitterUrl']) {
+          this.footerSocialLinks['twitterUrl'] = response['twitterUrl'];
+          this.twitterUrl = response['twitterUrl'];
 
-      }
-      if (response['instagramUrl']) {
-        this.footerSocialLinks['instagramUrl'] = response['instagramUrl'];
-        this.instagramUrl = response['instagramUrl'];
-      }
-      if (response['youtubeUrl']) {
-        this.footerSocialLinks['youtubeUrl'] = response['youtubeUrl'];
-        this.youtubeUrl = response['youtubeUrl'];
-      }
-      if (response['githubUrl']) {
-        this.footerSocialLinks['githubUrl'] = response['githubUrl'];
-        this.githubUrl = response['githubUrl'];
-      }
-      if (response['linkedinUrl']) {
-        this.footerSocialLinks['linkedinUrl'] = response['linkedinUrl'];
-        this.linkedinUrl = response['linkedinUrl'];
-      }
-    });
+        }
+        if (response['instagramUrl']) {
+          this.footerSocialLinks['instagramUrl'] = response['instagramUrl'];
+          this.instagramUrl = response['instagramUrl'];
+        }
+        if (response['youtubeUrl']) {
+          this.footerSocialLinks['youtubeUrl'] = response['youtubeUrl'];
+          this.youtubeUrl = response['youtubeUrl'];
+        }
+        if (response['githubUrl']) {
+          this.footerSocialLinks['githubUrl'] = response['githubUrl'];
+          this.githubUrl = response['githubUrl'];
+        }
+        if (response['linkedinUrl']) {
+          this.footerSocialLinks['linkedinUrl'] = response['linkedinUrl'];
+          this.linkedinUrl = response['linkedinUrl'];
+        }
+      });
 
     this.builderFooterService.footerStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.footerStyle = response;
+        }
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   setFooterSocialLinks(key, value) {

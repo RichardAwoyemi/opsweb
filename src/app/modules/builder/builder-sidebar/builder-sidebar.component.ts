@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { BuilderService } from '../builder.service';
 import { debounce } from '../../../shared/decorators/debounce.decorator';
@@ -30,53 +30,53 @@ export class BuilderSidebarComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
 
     this.builderService.sidebarTemplatesTab.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarTemplatesTab = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarTemplatesTab = response;
+        }
+      });
 
     this.builderService.sidebarComponentsTab.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarComponentsTab = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarComponentsTab = response;
+        }
+      });
 
     this.builderService.sidebarColoursTab.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarColoursTab = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarColoursTab = response;
+        }
+      });
 
     this.builderService.sidebarLayoutTab.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarLayoutTab = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarLayoutTab = response;
+        }
+      });
 
     this.builderService.sidebarOptionsTab.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarOptionsTab = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarOptionsTab = response;
+        }
+      });
 
     this.builderService.sidebarPagesTab.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarPagesTab = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarPagesTab = response;
+        }
+      });
 
     this.builderService.sidebarDataTab.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarDataTab = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarDataTab = response;
+        }
+      });
   }
 
   @HostListener('window:resize', ['$event'])

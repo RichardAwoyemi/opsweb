@@ -13,7 +13,6 @@ export class BuilderSidebarLayoutComponent implements OnInit, OnDestroy {
   heroComponent: string = ActiveComponents.Hero;
   footerComponent: string = ActiveComponents.Footer;
   featuresComponent: string = ActiveComponents.Features;
-  headingComponent: string = ActiveComponents.Heading;
   activeEditComponent: string;
   ngUnsubscribe = new Subject<void>();
 
@@ -24,11 +23,11 @@ export class BuilderSidebarLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
   }
 
   ngOnDestroy(): void {

@@ -39,67 +39,67 @@ export class NavbarColourPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderNavbarService.navbarStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarStyle = response;
+        }
+      });
 
     this.builderNavbarService.navbarBrandStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarBrandStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarBrandStyle = response;
+        }
+      });
 
     this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarLinkStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarLinkStyle = response;
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(templateResponse => {
-      if (templateResponse) {
-        this.navbarTemplate = templateResponse['template'];
+      .subscribe(templateResponse => {
+        if (templateResponse) {
+          this.navbarTemplate = templateResponse['template'];
 
-        this.templateService.getTemplateStyle(this.navbarTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultNavbarStyle = response[ActiveComponents.Navbar];
-          }
-        });
-      }
-    });
+          this.templateService.getTemplateStyle(this.navbarTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultNavbarStyle = response[ActiveComponents.Navbar];
+              }
+            });
+        }
+      });
 
     this.builderNavbarService.navbarTheme.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarTheme = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarTheme = response;
+        }
+      });
 
     this.builderNavbarService.getNavbarThemes().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarThemes = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarThemes = response;
+        }
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   onThemeChange() {

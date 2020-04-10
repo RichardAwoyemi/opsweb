@@ -51,7 +51,7 @@ export class FormPhotoUploadComponent implements OnInit {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.userStore.select('user')
       .pipe()
-    .subscribe(async (result: any) => {
+      .subscribe(async (result: any) => {
         if (result) {
           this.user = result;
         }

@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -32,11 +32,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.routerService.currentRoute.next(window.location.pathname);
     this.routerService.currentRoute.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.currentRoute = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.currentRoute = result;
+        }
+      });
   }
 
   checkLoggedOutRoute() {

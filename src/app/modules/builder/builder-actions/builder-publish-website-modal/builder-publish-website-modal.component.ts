@@ -28,11 +28,11 @@ export class BuilderPublishWebsiteModalComponent implements IModalComponent, OnI
 
   ngOnInit() {
     this.websiteService.websiteId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteId = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteId = response;
+        }
+      });
   }
 
   onCloseButtonClick() {
@@ -42,17 +42,17 @@ export class BuilderPublishWebsiteModalComponent implements IModalComponent, OnI
   onConfirmButtonClick() {
     this.activeModal.dismiss();
     this.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.websiteService.saveWebsite(result.uid).then(() => {
-          this.router.navigate(['websites', this.websiteId]).then(() => {
-            this.toastrService.success(`Your website has been published.`, 'Great!');
+      .subscribe(result => {
+        if (result) {
+          this.websiteService.saveWebsite(result.uid).then(() => {
+            this.router.navigate(['websites', this.websiteId]).then(() => {
+              this.toastrService.success(`Your website has been published.`, 'Great!');
+            });
+          }).catch(() => {
+            this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
           });
-        }).catch(() => {
-          this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
-        });
-      }
-    });
+        }
+      });
   }
 
   ngOnDestroy(): void {

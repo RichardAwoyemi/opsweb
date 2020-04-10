@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { Template } from '../../../../shared/models/template';
 import { DataService } from '../../../../shared/services/data.service';
@@ -47,35 +47,35 @@ export class BuilderSidebarTemplatesComponent implements OnInit, OnDestroy {
 
   setupWebTemplateSubscriptions() {
     this.dataService.getAllWebTemplates().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.webTemplates = response;
-        this.webTemplates.push({ id: ActiveTemplates.Default, name: 'Default' });
-        TemplateService.parseSelectedTemplates([].concat.apply([], this.webTemplates));
-        TemplateService.parseAvailableTemplates([].concat.apply([], this.webTemplates));
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.webTemplates = response;
+          this.webTemplates.push({ id: ActiveTemplates.Default, name: 'Default' });
+          TemplateService.parseSelectedTemplates([].concat.apply([], this.webTemplates));
+          TemplateService.parseAvailableTemplates([].concat.apply([], this.webTemplates));
+        }
+      });
 
     this.templateService.selectedTemplate.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.selectedTemplate = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.selectedTemplate = response;
+        }
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   @HostListener('window:resize', ['$event'])

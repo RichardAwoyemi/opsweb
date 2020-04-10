@@ -43,18 +43,18 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     this.disableSaveButton = true;
 
     this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarMenuOptions = response;
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   onCloseButtonClick() {

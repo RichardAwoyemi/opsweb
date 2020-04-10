@@ -28,7 +28,7 @@ export class FormNameInputComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           if (result.firstName) {
             this.firstName = result.firstName;
@@ -44,18 +44,18 @@ export class FormNameInputComponent implements OnInit, OnDestroy {
       });
 
     this.formNameInputService.showFirstNameInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showFirstNameInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showFirstNameInputError = result;
+        }
+      });
 
     this.formNameInputService.showLastNameInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.showLastNameInputError = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.showLastNameInputError = result;
+        }
+      });
   }
 
   onChangeUpdateFirstName() {

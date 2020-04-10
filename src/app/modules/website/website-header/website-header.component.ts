@@ -23,20 +23,20 @@ export class WebsiteHeaderComponent implements OnInit, OnDestroy {
     private websiteService: WebsiteService,
     private route: ActivatedRoute) {
     this.route.paramMap
-    .subscribe(params => {
-      this.id = params.get('id');
-    });
+      .subscribe(params => {
+        this.id = params.get('id');
+      });
   }
 
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
     this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteName = `${response}.opsonion.com`;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteName = `${response}.opsonion.com`;
+        }
+      });
   }
 
   redirectToDashboard() {

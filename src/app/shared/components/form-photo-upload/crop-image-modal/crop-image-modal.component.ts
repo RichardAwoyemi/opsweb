@@ -33,7 +33,7 @@ export class CropImageModalComponent implements OnInit {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
-    .subscribe(async (result: any) => {
+      .subscribe(async (result: any) => {
         if (result) {
           this.user = result;
         }
@@ -64,17 +64,17 @@ export class CropImageModalComponent implements OnInit {
     this.logger.debug('Saving image');
     if (this.croppedImage) {
       this.imgurService.upload(this.croppedImage.split('base64,')[1])
-    .subscribe((imgurResponse: ImgurResponse) => {
-        if (imgurResponse) {
-          this.logger.debug('Picture uploaded to imgur');
-          this.logger.debug(imgurResponse);
-          this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
-            this.toastrService.success('Your photo has been updated.', 'Great!')
-          ).catch((error) => {
-            this.toastrService.error(error, 'Oops!');
-          });
-        }
-      });
+        .subscribe((imgurResponse: ImgurResponse) => {
+          if (imgurResponse) {
+            this.logger.debug('Picture uploaded to imgur');
+            this.logger.debug(imgurResponse);
+            this.userService.setUserPhoto(this.user.uid, imgurResponse.data.link).then(() =>
+              this.toastrService.success('Your photo has been updated.', 'Great!')
+            ).catch((error) => {
+              this.toastrService.error(error, 'Oops!');
+            });
+          }
+        });
     }
   }
 }

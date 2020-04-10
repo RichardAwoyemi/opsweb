@@ -34,9 +34,9 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
 
   onConfirmButtonClick() {
     this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName.toLowerCase()).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(websites => {
-      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteId, this.newWebsiteName.toLowerCase());
-    });
+      .subscribe(websites => {
+        this.websiteService.renameWebsite(websites, this.activeModal, this.websiteId, this.newWebsiteName.toLowerCase());
+      });
   }
 
   onCloseButtonClick() {

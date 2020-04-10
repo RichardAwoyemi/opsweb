@@ -31,32 +31,32 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
 
   ngOnInit() {
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
 
     this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteName = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteName = response;
+        }
+      });
   }
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
     this.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.websiteService.saveWebsite(result.uid).then(() => {
-          this.toastrService.success('Your website has been saved.', 'Great!');
-        }).catch(() => {
-          this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
-        });
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.websiteService.saveWebsite(result.uid).then(() => {
+            this.toastrService.success('Your website has been saved.', 'Great!');
+          }).catch(() => {
+            this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
+          });
+        }
+      });
   }
 
   onCloseButtonClick() {

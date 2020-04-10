@@ -34,26 +34,26 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   ngOnInit() {
     this.builderActionsService.activeLibrarySelectedImage.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.activeLibrarySelectedImage = response;
-    });
+      .subscribe(response => {
+        this.activeLibrarySelectedImage = response;
+      });
 
     this.builderActionsService.activeLibrarySelectedImageAlt.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      (response) ? this.activeLibrarySelectedImageAltText = response : this.activeLibrarySelectedImageAltText = 'componentId';
-    });
+      .subscribe(response => {
+        (response) ? this.activeLibrarySelectedImageAltText = response : this.activeLibrarySelectedImageAltText = 'componentId';
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      const pageComponent = response;
-      const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
-      const targetComponent = pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex];
-      if (targetComponent.hasOwnProperty(this.parentKey)) {
-        this.componentParentKey = targetComponent[this.parentKey];
-      } else {
-        this.componentParentKey = targetComponent['style'][this.parentKey];
-      }
-    });
+      .subscribe(response => {
+        const pageComponent = response;
+        const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
+        const targetComponent = pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex];
+        if (targetComponent.hasOwnProperty(this.parentKey)) {
+          this.componentParentKey = targetComponent[this.parentKey];
+        } else {
+          this.componentParentKey = targetComponent['style'][this.parentKey];
+        }
+      });
   }
 
   async onConfirmButtonClick() {
@@ -75,12 +75,12 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   uploadImageToImgur() {
     this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status === 200) {
-        this.activeLibrarySelectedImage = imgurResponse.data.link;
-        this.updateImage();
-      }
-    });
+      .subscribe((imgurResponse: ImgurResponse) => {
+        if (imgurResponse.status === 200) {
+          this.activeLibrarySelectedImage = imgurResponse.data.link;
+          this.updateImage();
+        }
+      });
   }
 
   updateImage() {

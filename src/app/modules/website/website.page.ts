@@ -4,7 +4,7 @@ import { RouterService } from '../../shared/services/router.service';
 import { BuilderService } from '../builder/builder.service';
 import { AuthService } from '../auth/auth.service';
 import { WebsiteService } from '../../shared/services/website.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -33,11 +33,11 @@ export class WebsiteComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.builderService.websiteMode.next(true);
     this.builderService.previewMode.next(true);
     this.websiteService.websiteId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteId = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteId = response;
+        }
+      });
     this.routerService.currentRoute.next(window.location.pathname);
     this.routerService.setCurrentRoute();
   }

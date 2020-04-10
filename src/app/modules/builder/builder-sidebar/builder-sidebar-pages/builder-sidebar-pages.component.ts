@@ -72,45 +72,45 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditSetting = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditSetting = response;
+        }
+      });
 
     this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarMenuOptions = response;
+        }
+      });
 
     this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activePageIndex = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activePageIndex = response;
+        }
+      });
 
     this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((activePageSettingsResponse => {
-      if (activePageSettingsResponse) {
-        this.activePage = activePageSettingsResponse;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-          if (response) {
-            this.pageComponents = response;
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              if (this.pageComponents['pages'][i]['name'] === this.activePage) {
-                this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
-                  return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
-                });
+      .subscribe((activePageSettingsResponse => {
+        if (activePageSettingsResponse) {
+          this.activePage = activePageSettingsResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response => {
+              if (response) {
+                this.pageComponents = response;
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  if (this.pageComponents['pages'][i]['name'] === this.activePage) {
+                    this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
+                      return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
+                    });
+                  }
+                }
               }
-            }
-          }
-        }));
-      }
-    }));
+            }));
+        }
+      }));
   }
 
   getComponentCleanName(component: any) {

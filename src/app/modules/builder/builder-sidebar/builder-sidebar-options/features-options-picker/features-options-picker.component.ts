@@ -59,123 +59,123 @@ export class FeaturesOptionsPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(activeEditComponentIdResponse => {
-      if (activeEditComponentIdResponse) {
-        this.activeEditComponentId = activeEditComponentIdResponse;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.pageComponents = response;
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-                  if (this.pageComponents['pages'][i]['components'][j]['featuresItemArray']) {
-                    this.numberOfFeatures = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'].length;
-                    this.featuresItemArray = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'];
-                  }
-                  if (this.pageComponents['pages'][i]['components'][j]['featuresStyle']) {
-                    this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
+      .subscribe(activeEditComponentIdResponse => {
+        if (activeEditComponentIdResponse) {
+          this.activeEditComponentId = activeEditComponentIdResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.pageComponents = response;
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                      if (this.pageComponents['pages'][i]['components'][j]['featuresItemArray']) {
+                        this.numberOfFeatures = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'].length;
+                        this.featuresItemArray = this.pageComponents['pages'][i]['components'][j]['featuresItemArray'];
+                      }
+                      if (this.pageComponents['pages'][i]['components'][j]['featuresStyle']) {
+                        this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['featuresStyle'];
+                      }
+                    }
                   }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
 
     this.builderFeaturesService.featuresHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.featuresHeadingStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.featuresHeadingStyle = response;
+        }
+      });
 
     this.builderFeaturesService.featuresSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.featuresSubheadingStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.featuresSubheadingStyle = response;
+        }
+      });
 
     this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontNames = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontNames = response;
+        }
+      });
 
     this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontUnits = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontUnits = response;
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(templateResponse => {
-      if (templateResponse) {
-        this.featuresTemplate = templateResponse['template'];
-        this.templateService.getTemplateStyle(this.featuresTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultFeaturesStyle = response[ActiveComponents.Features];
-          }
-        });
-      } else {
-        this.templateService.getTemplateStyle(ActiveTemplates.Default).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultFeaturesStyle = response[ActiveComponents.Features];
-          }
-        });
-      }
-    });
+      .subscribe(templateResponse => {
+        if (templateResponse) {
+          this.featuresTemplate = templateResponse['template'];
+          this.templateService.getTemplateStyle(this.featuresTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultFeaturesStyle = response[ActiveComponents.Features];
+              }
+            });
+        } else {
+          this.templateService.getTemplateStyle(ActiveTemplates.Default).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultFeaturesStyle = response[ActiveComponents.Features];
+              }
+            });
+        }
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
     this.builderFeaturesService.featuresHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.featuresHeadingStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.featuresHeadingStyle = response;
 
-        if (this.featuresHeadingStyle['font-size']) {
-          if (this.featuresHeadingStyle['font-size'].indexOf('px') > -1) {
-            this.featuresHeadingFontSize = this.featuresHeadingStyle['font-size'].replace('px', '');
+          if (this.featuresHeadingStyle['font-size']) {
+            if (this.featuresHeadingStyle['font-size'].indexOf('px') > -1) {
+              this.featuresHeadingFontSize = this.featuresHeadingStyle['font-size'].replace('px', '');
+            }
+            if (this.featuresHeadingStyle['font-size'].indexOf('em') > -1) {
+              this.featuresHeadingFontSize = this.featuresHeadingStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.featuresHeadingStyle['font-size'].indexOf('em') > -1) {
-            this.featuresHeadingFontSize = this.featuresHeadingStyle['font-size'].replace('em', '');
-          }
+
+          const featuresFontNames = this.featuresHeadingStyle['font-family'].split(',');
+          this.featuresHeadingFontName = featuresFontNames[0].replace(/'/g, '');
         }
-
-        const featuresFontNames = this.featuresHeadingStyle['font-family'].split(',');
-        this.featuresHeadingFontName = featuresFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderFeaturesService.featuresSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.featuresSubheadingStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.featuresSubheadingStyle = response;
 
-        if (this.featuresSubheadingStyle['font-size']) {
-          if (this.featuresSubheadingStyle['font-size'].indexOf('px') > -1) {
-            this.featuresSubheadingFontSize = this.featuresSubheadingStyle['font-size'].replace('px', '');
+          if (this.featuresSubheadingStyle['font-size']) {
+            if (this.featuresSubheadingStyle['font-size'].indexOf('px') > -1) {
+              this.featuresSubheadingFontSize = this.featuresSubheadingStyle['font-size'].replace('px', '');
+            }
+            if (this.featuresSubheadingStyle['font-size'].indexOf('em') > -1) {
+              this.featuresSubheadingFontSize = this.featuresSubheadingStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.featuresSubheadingStyle['font-size'].indexOf('em') > -1) {
-            this.featuresSubheadingFontSize = this.featuresSubheadingStyle['font-size'].replace('em', '');
-          }
+
+          const featuresFontNames = this.featuresSubheadingStyle['font-family'].split(',');
+          this.featuresSubheadingFontName = featuresFontNames[0].replace(/'/g, '');
         }
-
-        const featuresFontNames = this.featuresSubheadingStyle['font-family'].split(',');
-        this.featuresSubheadingFontName = featuresFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
   }
 
   setNumberOfFeatures(value: number) {

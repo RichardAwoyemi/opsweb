@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { FormUsernameInputService } from './form-username-input.service';
 import { SimpleModalService } from '../simple-modal/simple-modal.service';
 import { UserService } from '../../services/user.service';
@@ -32,7 +32,7 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           if (result.username) {
             this.username = result.username;
@@ -47,12 +47,12 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
       });
 
     this.userService.username.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.username = response;
-        this.formUsernameInputService.usernameExists.next({ 'status': false });
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.username = response;
+          this.formUsernameInputService.usernameExists.next({ 'status': false });
+        }
+      }));
   }
 
   onClickCheckUsernameAvailability() {
@@ -61,34 +61,34 @@ export class FormUsernameInputComponent implements OnInit, OnDestroy {
       this.showUsernameError = false;
       this.username = this.username.replace(/[^\w\s]/gi, '').trim().replace(/\b\w/g, (s) => s.toLowerCase());
       this.userService.getUserByUsername(this.username).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((result) => {
-        if (result) {
-          if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
-            (result[0]['uid'] !== this.uid)) {
-            this.logger.debug('Username belongs to another user');
-            this.formUsernameInputService.usernameExists.next({ 'status': true });
-            if (!messageDisplayed) {
-              this.simpleModalService.displayMessage('Oops!', 'This username is already in use.');
-              messageDisplayed = true;
+        .subscribe((result) => {
+          if (result) {
+            if ((result.length > 0) && (result[0]['username'] === this.username.toLowerCase().trim()) &&
+              (result[0]['uid'] !== this.uid)) {
+              this.logger.debug('Username belongs to another user');
+              this.formUsernameInputService.usernameExists.next({ 'status': true });
+              if (!messageDisplayed) {
+                this.simpleModalService.displayMessage('Oops!', 'This username is already in use.');
+                messageDisplayed = true;
+              }
+            } else {
+              this.logger.debug('Username does not belong to another user');
+              this.formUsernameInputService.usernameExists.next({ 'status': false });
+              if (!messageDisplayed) {
+                this.simpleModalService.displayMessage('Great!', 'This username is available to use.');
+                messageDisplayed = true;
+              }
+              this.userService.username.next(this.username);
             }
           } else {
-            this.logger.debug('Username does not belong to another user');
-            this.formUsernameInputService.usernameExists.next({ 'status': false });
+            this.logger.debug('Username could not be determined');
+            this.formUsernameInputService.usernameExists.next({ 'status': true });
             if (!messageDisplayed) {
-              this.simpleModalService.displayMessage('Great!', 'This username is available to use.');
+              this.simpleModalService.displayMessage('Oops!', 'An error has occurred. Please try again.');
               messageDisplayed = true;
             }
-            this.userService.username.next(this.username);
           }
-        } else {
-          this.logger.debug('Username could not be determined');
-          this.formUsernameInputService.usernameExists.next({ 'status': true });
-          if (!messageDisplayed) {
-            this.simpleModalService.displayMessage('Oops!', 'An error has occurred. Please try again.');
-            messageDisplayed = true;
-          }
-        }
-      });
+        });
     } else {
       this.showUsernameError = true;
     }

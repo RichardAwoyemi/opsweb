@@ -36,70 +36,70 @@ export class BuilderToolbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
     this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.previewMode = response;
-      if (response) {
-        this.toolbarClass = 'toolbar-preview no-select';
-      } else {
-        this.toolbarClass = 'toolbar no-select';
-      }
-    });
+      .subscribe(response => {
+        this.previewMode = response;
+        if (response) {
+          this.toolbarClass = 'toolbar-preview no-select';
+        } else {
+          this.toolbarClass = 'toolbar no-select';
+        }
+      });
 
     this.builderService.toolbarColoursButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.toolbarButtonColoursStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonColoursStyle = response;
+        }
+      });
 
     this.builderService.toolbarComponentsButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.toolbarButtonComponentsStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonComponentsStyle = response;
+        }
+      });
 
     this.builderService.toolbarLayoutButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.toolbarButtonLayoutStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonLayoutStyle = response;
+        }
+      });
 
     this.builderService.toolbarOptionsButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.toolbarButtonOptionsStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonOptionsStyle = response;
+        }
+      });
 
     this.builderService.toolbarDesktopOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.toolbarButtonDesktopOrientation = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonDesktopOrientation = response;
+        }
+      });
 
     this.builderService.toolbarTabletOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.toolbarButtonTabletOrientation = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonTabletOrientation = response;
+        }
+      });
 
     this.builderService.toolbarMobileOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.toolbarButtonMobileOrientation = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.toolbarButtonMobileOrientation = response;
+        }
+      });
   }
 
   setActiveEditSetting(settingName: string) {

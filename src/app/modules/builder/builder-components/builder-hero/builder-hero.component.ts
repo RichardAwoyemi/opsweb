@@ -53,77 +53,77 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.innerHeight = window.innerHeight;
 
     this.builderService.websiteMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteMode = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteMode = response;
+        }
+      });
 
     this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.previewMode = response;
-    });
+      .subscribe(response => {
+        this.previewMode = response;
+      });
 
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+        }
+      });
 
     this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeElement = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeElement = response;
+        }
+      });
 
     this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(activePageSettingResponse => {
-      if (activePageSettingResponse) {
-        this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.pageComponents = response;
-            this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
-            if (this.elementRef.nativeElement['id']) {
-              this.componentId = this.elementRef.nativeElement['id'];
-              for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-                const pageName = this.pageComponents['pages'][i]['name'];
-                if (pageName === this.activePageSetting) {
-                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                      this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                      this.heroBackgroundStyle = this.componentDetail['style']['heroBackgroundStyle'];
-                      this.heroHeadingStyle = this.componentDetail['style']['heroHeadingStyle'];
-                      this.heroSubheadingStyle = this.componentDetail['style']['heroSubheadingStyle'];
-                      this.heroButtonStyle = this.componentDetail['style']['heroButtonStyle'];
-                      this.heroImageUrl = this.componentDetail['style']['heroImageStyle']['src'];
-                      this.heroImageAlt = this.componentDetail['style']['heroImageStyle']['alt'];
-                      this.heroComponentLayout = this.componentDetail['heroComponentLayout'];
-                      this.heroImageSize = this.componentDetail['style']['heroImageStyle']['width'].replace('%', '');
-                      this.heroTheme = this.componentDetail['heroTheme'];
-                      this.heroButtonLink = this.componentDetail['heroButtonLink'];
-                      this.heroHeadingText = this.componentDetail['heroHeadingText'];
-                      this.heroSubheadingText = this.componentDetail['heroSubheadingText'];
-                      this.heroButtonText = this.componentDetail['heroButtonText'];
+      .subscribe(activePageSettingResponse => {
+        if (activePageSettingResponse) {
+          this.activePageSetting = activePageSettingResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.pageComponents = response;
+                this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
+                if (this.elementRef.nativeElement['id']) {
+                  this.componentId = this.elementRef.nativeElement['id'];
+                  for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                    const pageName = this.pageComponents['pages'][i]['name'];
+                    if (pageName === this.activePageSetting) {
+                      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                          this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                          this.heroBackgroundStyle = this.componentDetail['style']['heroBackgroundStyle'];
+                          this.heroHeadingStyle = this.componentDetail['style']['heroHeadingStyle'];
+                          this.heroSubheadingStyle = this.componentDetail['style']['heroSubheadingStyle'];
+                          this.heroButtonStyle = this.componentDetail['style']['heroButtonStyle'];
+                          this.heroImageUrl = this.componentDetail['style']['heroImageStyle']['src'];
+                          this.heroImageAlt = this.componentDetail['style']['heroImageStyle']['alt'];
+                          this.heroComponentLayout = this.componentDetail['heroComponentLayout'];
+                          this.heroImageSize = this.componentDetail['style']['heroImageStyle']['width'].replace('%', '');
+                          this.heroTheme = this.componentDetail['heroTheme'];
+                          this.heroButtonLink = this.componentDetail['heroButtonLink'];
+                          this.heroHeadingText = this.componentDetail['heroHeadingText'];
+                          this.heroSubheadingText = this.componentDetail['heroSubheadingText'];
+                          this.heroButtonText = this.componentDetail['heroButtonText'];
+                        }
+                      }
                     }
                   }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
   }
 
   setActiveEditComponent() {

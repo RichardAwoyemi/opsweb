@@ -24,7 +24,6 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
   navbarLogoImage: any;
   fontNames: any;
   fontUnits: any;
-  imageUnits: any;
   navbarBrandFontName = 'Avenir Next Regular';
   navbarLinkFontName = 'Avenir Next Regular';
   navbarBrandFontUnit = 'px';
@@ -65,110 +64,110 @@ export class NavbarOptionsPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarMenuOptions = response;
+        }
+      });
 
     this.builderNavbarService.navbarLogoImage.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarLogoImage = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarLogoImage = response;
+        }
+      });
 
     this.builderNavbarService.navbarLogoImageStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarLogoImageStyle = response;
-        if (this.navbarLogoImageStyle['width']) {
-          if (this.navbarLogoImageStyle['width'].indexOf('px') > -1) {
-            this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.navbarLogoImageStyle = response;
+          if (this.navbarLogoImageStyle['width']) {
+            if (this.navbarLogoImageStyle['width'].indexOf('px') > -1) {
+              this.navbarLogoImageSize = this.navbarLogoImageStyle['width'].replace('px', '');
+            }
           }
         }
-      }
-    });
+      });
 
     this.builderNavbarService.navbarTemplate.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(navbarTemplateResponse => {
-      if (navbarTemplateResponse) {
-        this.navbarTemplate = navbarTemplateResponse;
+      .subscribe(navbarTemplateResponse => {
+        if (navbarTemplateResponse) {
+          this.navbarTemplate = navbarTemplateResponse;
 
-        this.templateService.getTemplateStyle(this.navbarTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultNavbarStyle = response[ActiveComponents.Navbar];
-          }
-        });
-      }
-    });
+          this.templateService.getTemplateStyle(this.navbarTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultNavbarStyle = response[ActiveComponents.Navbar];
+              }
+            });
+        }
+      });
 
     this.builderNavbarService.navbarBrandStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarBrandStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.navbarBrandStyle = response;
 
-        if (this.navbarBrandStyle['font-size']) {
-          if (this.navbarBrandStyle['font-size'].indexOf('px') > -1) {
-            this.navbarBrandFontSize = this.navbarBrandStyle['font-size'].replace('px', '');
+          if (this.navbarBrandStyle['font-size']) {
+            if (this.navbarBrandStyle['font-size'].indexOf('px') > -1) {
+              this.navbarBrandFontSize = this.navbarBrandStyle['font-size'].replace('px', '');
+            }
+            if (this.navbarBrandStyle['font-size'].indexOf('em') > -1) {
+              this.navbarBrandFontSize = this.navbarBrandStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.navbarBrandStyle['font-size'].indexOf('em') > -1) {
-            this.navbarBrandFontSize = this.navbarBrandStyle['font-size'].replace('em', '');
-          }
+
+          const footerFontNames = this.navbarBrandStyle['font-family'].split(',');
+          this.navbarBrandFontName = footerFontNames[0].replace(/'/g, '');
         }
-
-        const footerFontNames = this.navbarBrandStyle['font-family'].split(',');
-        this.navbarBrandFontName = footerFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarLinkStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.navbarLinkStyle = response;
 
-        if (this.navbarLinkStyle['font-size']) {
-          if (this.navbarLinkStyle['font-size'].indexOf('px') > -1) {
-            this.navbarLinkFontSize = this.navbarLinkStyle['font-size'].replace('px', '');
+          if (this.navbarLinkStyle['font-size']) {
+            if (this.navbarLinkStyle['font-size'].indexOf('px') > -1) {
+              this.navbarLinkFontSize = this.navbarLinkStyle['font-size'].replace('px', '');
+            }
+            if (this.navbarLinkStyle['font-size'].indexOf('em') > -1) {
+              this.navbarLinkFontSize = this.navbarLinkStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.navbarLinkStyle['font-size'].indexOf('em') > -1) {
-            this.navbarLinkFontSize = this.navbarLinkStyle['font-size'].replace('em', '');
-          }
+
+          const footerFontNames = this.navbarLinkStyle['font-family'].split(',');
+          this.navbarLinkFontName = footerFontNames[0].replace(/'/g, '');
         }
-
-        const footerFontNames = this.navbarLinkStyle['font-family'].split(',');
-        this.navbarLinkFontName = footerFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontNames = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontNames = response;
+        }
+      });
 
     this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontUnits = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontUnits = response;
+        }
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   fileChangeEvent(event: any): void {

@@ -1,4 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentFactoryResolver, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ComponentFactoryResolver,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { debounce } from '../../../shared/decorators/debounce.decorator';
@@ -34,24 +45,24 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit() {
     this.innerHeight = window.innerHeight;
     this.builderService.activeOrientation.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.activeShowcaseOrientation = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.activeShowcaseOrientation = response;
+        }
+      }));
 
     this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.showcaseHeight = 74;
-        this.iframeHolderHeight = 132;
-        this.iframeHeight = 128;
-      } else {
-        this.showcaseHeight = 122;
-        this.iframeHolderHeight = 184;
-        this.iframeHeight = 180;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.showcaseHeight = 74;
+          this.iframeHolderHeight = 132;
+          this.iframeHeight = 128;
+        } else {
+          this.showcaseHeight = 122;
+          this.iframeHolderHeight = 184;
+          this.iframeHeight = 180;
+        }
+      });
   }
 
   ngAfterViewInit() {
@@ -72,7 +83,7 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-  
+
   @HostListener('window:resize', ['$event'])
   @debounce()
   onResize() {

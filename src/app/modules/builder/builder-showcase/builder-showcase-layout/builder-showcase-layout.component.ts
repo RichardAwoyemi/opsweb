@@ -48,33 +48,33 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((activePageResponse => {
-      if (activePageResponse) {
-        this.activePage = activePageResponse;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-          if (response) {
-            this.pageComponents = response;
-            this.setPageComponents();
-            BuilderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
-          }
-        }));
-      }
-    }));
+      .subscribe((activePageResponse => {
+        if (activePageResponse) {
+          this.activePage = activePageResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response => {
+              if (response) {
+                this.pageComponents = response;
+                this.setPageComponents();
+                BuilderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
+              }
+            }));
+        }
+      }));
 
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
     this.websiteService.websiteLoaded.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteLoaded = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteLoaded = response;
+        }
+      });
   }
 
   setPageComponents() {

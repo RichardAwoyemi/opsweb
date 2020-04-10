@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
 import { TemplateService } from 'src/app/shared/services/template.service';
@@ -55,127 +55,127 @@ export class FooterLayoutPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderFooterService.footerTemplate.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(footerTemplateResponse => {
-      this.footerTemplate = footerTemplateResponse;
+      .subscribe(footerTemplateResponse => {
+        this.footerTemplate = footerTemplateResponse;
 
-      this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-        if (response) {
-          this.defaultFooterStyle = response[ActiveComponents.Footer];
-        }
+        this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(response => {
+            if (response) {
+              this.defaultFooterStyle = response[ActiveComponents.Footer];
+            }
+          });
       });
-    });
 
     this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerMenuOptions = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.footerMenuOptions = response;
+        }
+      });
 
     this.builderFooterService.footerAlignmentClass.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerAlignmentClass = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.footerAlignmentClass = response;
+        }
+      });
 
     this.builderFooterService.footerSocialLinksContainerStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerSocialLinksContainerStyle = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.footerSocialLinksContainerStyle = response;
+        }
+      });
 
     this.builderFooterService.footerComponentLayout.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerComponentLayout = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.footerComponentLayout = response;
+        }
+      });
 
     this.builderFooterService.footerStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerStyle = response;
-        if (this.footerStyle['padding-top']) {
-          this.footerPaddingTop = this.footerStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.footerStyle = response;
+          if (this.footerStyle['padding-top']) {
+            this.footerPaddingTop = this.footerStyle['padding-top'].replace('px', '');
+          }
+          if (this.footerStyle['padding-left']) {
+            this.footerPaddingLeft = this.footerStyle['padding-left'].replace('px', '');
+          }
+          if (this.footerStyle['padding-right']) {
+            this.footerPaddingRight = this.footerStyle['padding-right'].replace('px', '');
+          }
+          if (this.footerStyle['padding-bottom']) {
+            this.footerPaddingBottom = this.footerStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.footerStyle['padding-left']) {
-          this.footerPaddingLeft = this.footerStyle['padding-left'].replace('px', '');
-        }
-        if (this.footerStyle['padding-right']) {
-          this.footerPaddingRight = this.footerStyle['padding-right'].replace('px', '');
-        }
-        if (this.footerStyle['padding-bottom']) {
-          this.footerPaddingBottom = this.footerStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderFooterService.footerCopyrightStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerCopyrightStyle = response;
-        if (this.footerCopyrightStyle['padding-top']) {
-          this.footerCopyrightPaddingTop = this.footerCopyrightStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.footerCopyrightStyle = response;
+          if (this.footerCopyrightStyle['padding-top']) {
+            this.footerCopyrightPaddingTop = this.footerCopyrightStyle['padding-top'].replace('px', '');
+          }
+          if (this.footerCopyrightStyle['padding-left']) {
+            this.footerCopyrightPaddingLeft = this.footerCopyrightStyle['padding-left'].replace('px', '');
+          }
+          if (this.footerCopyrightStyle['padding-right']) {
+            this.footerCopyrightPaddingRight = this.footerCopyrightStyle['padding-right'].replace('px', '');
+          }
+          if (this.footerCopyrightStyle['padding-bottom']) {
+            this.footerCopyrightPaddingBottom = this.footerCopyrightStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.footerCopyrightStyle['padding-left']) {
-          this.footerCopyrightPaddingLeft = this.footerCopyrightStyle['padding-left'].replace('px', '');
-        }
-        if (this.footerCopyrightStyle['padding-right']) {
-          this.footerCopyrightPaddingRight = this.footerCopyrightStyle['padding-right'].replace('px', '');
-        }
-        if (this.footerCopyrightStyle['padding-bottom']) {
-          this.footerCopyrightPaddingBottom = this.footerCopyrightStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderFooterService.footerSocialLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerSocialLinksStyle = response;
-        if (this.footerSocialLinksStyle['margin-top']) {
-          this.footerSocialLinksMarginTop = this.footerSocialLinksStyle['margin-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.footerSocialLinksStyle = response;
+          if (this.footerSocialLinksStyle['margin-top']) {
+            this.footerSocialLinksMarginTop = this.footerSocialLinksStyle['margin-top'].replace('px', '');
+          }
+          if (this.footerSocialLinksStyle['margin-left']) {
+            this.footerSocialLinksMarginLeft = this.footerSocialLinksStyle['margin-left'].replace('px', '');
+          }
+          if (this.footerSocialLinksStyle['margin-right']) {
+            this.footerSocialLinksMarginRight = this.footerSocialLinksStyle['margin-right'].replace('px', '');
+          }
+          if (this.footerSocialLinksStyle['margin-bottom']) {
+            this.footerSocialLinksMarginBottom = this.footerSocialLinksStyle['margin-bottom'].replace('px', '');
+          }
         }
-        if (this.footerSocialLinksStyle['margin-left']) {
-          this.footerSocialLinksMarginLeft = this.footerSocialLinksStyle['margin-left'].replace('px', '');
-        }
-        if (this.footerSocialLinksStyle['margin-right']) {
-          this.footerSocialLinksMarginRight = this.footerSocialLinksStyle['margin-right'].replace('px', '');
-        }
-        if (this.footerSocialLinksStyle['margin-bottom']) {
-          this.footerSocialLinksMarginBottom = this.footerSocialLinksStyle['margin-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderFooterService.footerPageLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerPageLinksStyle = response;
-        if (this.footerPageLinksStyle['padding-top']) {
-          this.footerPageLinksPaddingTop = this.footerPageLinksStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.footerPageLinksStyle = response;
+          if (this.footerPageLinksStyle['padding-top']) {
+            this.footerPageLinksPaddingTop = this.footerPageLinksStyle['padding-top'].replace('px', '');
+          }
+          if (this.footerPageLinksStyle['padding-left']) {
+            this.footerPageLinksPaddingLeft = this.footerPageLinksStyle['padding-left'].replace('px', '');
+          }
+          if (this.footerPageLinksStyle['padding-right']) {
+            this.footerPageLinksPaddingRight = this.footerPageLinksStyle['padding-right'].replace('px', '');
+          }
+          if (this.footerPageLinksStyle['padding-bottom']) {
+            this.footerPageLinksPaddingBottom = this.footerPageLinksStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.footerPageLinksStyle['padding-left']) {
-          this.footerPageLinksPaddingLeft = this.footerPageLinksStyle['padding-left'].replace('px', '');
-        }
-        if (this.footerPageLinksStyle['padding-right']) {
-          this.footerPageLinksPaddingRight = this.footerPageLinksStyle['padding-right'].replace('px', '');
-        }
-        if (this.footerPageLinksStyle['padding-bottom']) {
-          this.footerPageLinksPaddingBottom = this.footerPageLinksStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   resetFooterAlignment() {

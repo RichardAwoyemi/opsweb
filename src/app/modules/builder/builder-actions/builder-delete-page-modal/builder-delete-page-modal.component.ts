@@ -34,25 +34,25 @@ export class BuilderDeletePageModalComponent implements IModalComponent, OnInit,
 
   ngOnInit() {
     this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.navbarMenuOptions = response;
+        }
+      });
 
     this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.footerMenuOptions = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.footerMenuOptions = response;
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      }));
   }
 
   onCloseButtonClick() {

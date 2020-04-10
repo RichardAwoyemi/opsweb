@@ -29,9 +29,9 @@ export class BuilderRenameWebsiteModalComponent implements IModalComponent, OnDe
 
   onConfirmButtonClick() {
     this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(websites => {
-      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName.toLowerCase());
-    });
+      .subscribe(websites => {
+        this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName.toLowerCase());
+      });
     this.builderActionsService.renameRenameWebsiteModalStatus.next({ 'open': false });
   }
 

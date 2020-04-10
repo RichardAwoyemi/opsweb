@@ -65,23 +65,23 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.websiteService.websiteId.next(id);
       this.websiteService.getWebsiteById(id).pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((response => {
-          if (response && response['pages']) {
-            this.websiteService.websiteName.next(response['name']);
-            this.builderComponentsService.pageComponents.next({
-              'pages': response['pages'],
-              'template': response['template']
-            });
-          } else {
-            this.templateService.getWebsite('default').then(getWebsiteResponse => {
-              this.builderComponentsService.pageComponents.next(getWebsiteResponse);
-            });
-            if (!this.authService.isLoggedIn()) {
-              this.toastrService.warning('All changes will not be saved until you create an account.');
-              localStorage.setItem('builderTourComplete', 'false');
+            if (response && response['pages']) {
+              this.websiteService.websiteName.next(response['name']);
+              this.builderComponentsService.pageComponents.next({
+                'pages': response['pages'],
+                'template': response['template']
+              });
+            } else {
+              this.templateService.getWebsite('default').then(getWebsiteResponse => {
+                this.builderComponentsService.pageComponents.next(getWebsiteResponse);
+              });
+              if (!this.authService.isLoggedIn()) {
+                this.toastrService.warning('All changes will not be saved until you create an account.');
+                localStorage.setItem('builderTourComplete', 'false');
+              }
             }
+            this.websiteService.websiteLoaded.next(true);
           }
-          this.websiteService.websiteLoaded.next(true);
-        }
         ));
     }
     this.ngxLoader.stop();

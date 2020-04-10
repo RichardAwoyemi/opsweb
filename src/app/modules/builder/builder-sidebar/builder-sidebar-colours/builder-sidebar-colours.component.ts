@@ -24,11 +24,11 @@ export class BuilderSidebarColoursComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
   }
 
   ngOnDestroy(): void {

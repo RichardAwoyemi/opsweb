@@ -39,11 +39,11 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
     };
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   onCloseButtonClick() {
@@ -64,15 +64,15 @@ export class BuilderUploadImageModalComponent implements IModalComponent, OnInit
 
   uploadImageToImgur() {
     this.imgurService.upload(this.croppedImage.split('base64,')[1]).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status === 200) {
-        this.builderNavbarService.navbarLogoImage.next(imgurResponse.data.link);
-        this.setNavbarOptionsStyle('navbarLogoImage', imgurResponse.data.link);
-        this.toastrService.success('Your image has been uploaded.', 'Great!');
-      } else {
-        this.toastrService.error('An error occurred while trying to upload your image. Please try again.', 'Oops!');
-      }
-    });
+      .subscribe((imgurResponse: ImgurResponse) => {
+        if (imgurResponse.status === 200) {
+          this.builderNavbarService.navbarLogoImage.next(imgurResponse.data.link);
+          this.setNavbarOptionsStyle('navbarLogoImage', imgurResponse.data.link);
+          this.toastrService.success('Your image has been uploaded.', 'Great!');
+        } else {
+          this.toastrService.error('An error occurred while trying to upload your image. Please try again.', 'Oops!');
+        }
+      });
   }
 
   imageCropped(event: ImageCroppedEvent) {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderSelectImageModalComponent } from '../../../builder-actions/builder-select-image-modal/builder-select-image-modal.component';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderService } from '../../../builder.service';
@@ -58,184 +58,184 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(pageDetails => {
-          if (pageDetails) {
-            this.pageComponents = pageDetails;
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-                  this.heroSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroSubheadingStyle'];
-                  this.heroHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroHeadingStyle'];
-                  this.heroButtonStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroButtonStyle'];
-                  this.heroImageStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle'];
-                  this.heroImageUrl = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['src'];
-                  this.heroImageAlt = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['alt'];
-                  this.heroImageSize = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['width'].replace('%', '');
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(pageDetails => {
+              if (pageDetails) {
+                this.pageComponents = pageDetails;
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                      this.heroSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroSubheadingStyle'];
+                      this.heroHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroHeadingStyle'];
+                      this.heroButtonStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroButtonStyle'];
+                      this.heroImageStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle'];
+                      this.heroImageUrl = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['src'];
+                      this.heroImageAlt = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['alt'];
+                      this.heroImageSize = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['width'].replace('%', '');
+                    }
+                  }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
 
     this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontNames = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontNames = response;
+        }
+      });
 
     this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(navbarMenuOptionsResponse => {
-      if (navbarMenuOptionsResponse) {
-        this.navbarMenuOptions = navbarMenuOptionsResponse;
+      .subscribe(navbarMenuOptionsResponse => {
+        if (navbarMenuOptionsResponse) {
+          this.navbarMenuOptions = navbarMenuOptionsResponse;
 
-        this.builderHeroService.heroButtonLink.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.menuOption = response;
-          } else {
-            if (this.navbarMenuOptions.length > 0) {
-              this.menuOption = this.navbarMenuOptions[1];
-            } else {
-              this.menuOption = this.navbarMenuOptions[0];
-            }
-          }
-        });
-      }
-    });
+          this.builderHeroService.heroButtonLink.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.menuOption = response;
+              } else {
+                if (this.navbarMenuOptions.length > 0) {
+                  this.menuOption = this.navbarMenuOptions[1];
+                } else {
+                  this.menuOption = this.navbarMenuOptions[0];
+                }
+              }
+            });
+        }
+      });
 
     this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontNames = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontNames = response;
+        }
+      });
 
     this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.fontUnits = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.fontUnits = response;
+        }
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
     this.builderHeroService.heroTemplate.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(heroTemplateResponse => {
-      if (heroTemplateResponse) {
-        this.heroTemplate = heroTemplateResponse;
+      .subscribe(heroTemplateResponse => {
+        if (heroTemplateResponse) {
+          this.heroTemplate = heroTemplateResponse;
 
-        this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultHeroStyle = response[ActiveComponents.Hero];
-          }
-        });
-      }
-    });
+          this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultHeroStyle = response[ActiveComponents.Hero];
+              }
+            });
+        }
+      });
 
     this.builderHeroService.heroHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroHeadingStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.heroHeadingStyle = response;
 
-        if (this.heroHeadingStyle['font-size']) {
-          if (this.heroHeadingStyle['font-size'].indexOf('px') > -1) {
-            this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('px', '');
+          if (this.heroHeadingStyle['font-size']) {
+            if (this.heroHeadingStyle['font-size'].indexOf('px') > -1) {
+              this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('px', '');
+            }
+            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
+              this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-            this.heroHeadingFontSize = this.heroHeadingStyle['font-size'].replace('em', '');
-          }
+
+          const heroFontNames = this.heroHeadingStyle['font-family'].split(',');
+          this.heroHeadingFontName = heroFontNames[0].replace(/'/g, '');
         }
-
-        const heroFontNames = this.heroHeadingStyle['font-family'].split(',');
-        this.heroHeadingFontName = heroFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderHeroService.heroSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroSubheadingStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.heroSubheadingStyle = response;
 
-        if (this.heroSubheadingStyle['font-size']) {
-          if (this.heroSubheadingStyle['font-size'].indexOf('px') > -1) {
-            this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('px', '');
+          if (this.heroSubheadingStyle['font-size']) {
+            if (this.heroSubheadingStyle['font-size'].indexOf('px') > -1) {
+              this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('px', '');
+            }
+            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
+              this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-            this.heroSubheadingFontSize = this.heroSubheadingStyle['font-size'].replace('em', '');
-          }
+
+          const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
+          this.heroSubheadingFontName = heroFontNames[0].replace(/'/g, '');
         }
-
-        const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
-        this.heroSubheadingFontName = heroFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderHeroService.heroButtonStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroButtonStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.heroButtonStyle = response;
 
-        if (this.heroButtonStyle['font-size']) {
-          if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
-            this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
+          if (this.heroButtonStyle['font-size']) {
+            if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
+              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
+            }
+            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
+              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-            this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
-          }
+
+          const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
+          this.heroButtonFontName = heroFontNames[0].replace(/'/g, '');
         }
-
-        const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
-        this.heroButtonFontName = heroFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderHeroService.heroButtonStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroButtonStyle = response;
+      .subscribe(response => {
+        if (response) {
+          this.heroButtonStyle = response;
 
-        if (this.heroButtonStyle['font-size']) {
-          if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
-            this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
+          if (this.heroButtonStyle['font-size']) {
+            if (this.heroButtonStyle['font-size'].indexOf('px') > -1) {
+              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('px', '');
+            }
+            if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
+              this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
+            }
           }
-          if (this.heroHeadingStyle['font-size'].indexOf('em') > -1) {
-            this.heroButtonFontSize = this.heroButtonStyle['font-size'].replace('em', '');
-          }
+
+          const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
+          this.heroButtonFontName = heroFontNames[0].replace(/'/g, '');
         }
-
-        const heroFontNames = this.heroSubheadingStyle['font-family'].split(',');
-        this.heroButtonFontName = heroFontNames[0].replace(/'/g, '');
-      }
-    });
+      });
 
     this.builderHeroService.heroImageStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroImageStyle = response;
-        this.heroImageUrl = response['src'];
-        this.heroImageAlt = response['alt'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.heroImageStyle = response;
+          this.heroImageUrl = response['src'];
+          this.heroImageAlt = response['alt'];
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   openSelectImageModal() {

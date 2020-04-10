@@ -42,7 +42,7 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
     this.userStore.select('user')
       .pipe()
       .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
         }
@@ -52,38 +52,38 @@ export class DashboardCreateWebsiteModalComponent implements IModalComponent, On
   onConfirmButtonClick() {
     this.websiteName = this.websiteName.toLowerCase();
     this.websiteService.checkIfWebsiteNameIsAvailable(this.websiteName).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async websitesWithSameName => {
-      if (websitesWithSameName.size === 0) {
-        const documentId = this.afs.createId();
-        const documentPath = `websites/${documentId}`;
-        await this.templateService.getWebsite('default').then(response => {
-          const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
-          this.websiteService.getWebsitesByUserId(this.user.uid).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(websitesOwnedByUser => {
-            if (websitesOwnedByUser.length < 3) {
-              documentRef.set({
-                name: this.websiteName,
-                id: documentId,
-                createdBy: this.user.uid,
-                pages: response['pages'],
-                template: response['template']
-              }, { merge: true }).then(() => {
+      .subscribe(async websitesWithSameName => {
+        if (websitesWithSameName.size === 0) {
+          const documentId = this.afs.createId();
+          const documentPath = `websites/${documentId}`;
+          await this.templateService.getWebsite('default').then(response => {
+            const documentRef: AngularFirestoreDocument<any> = this.afs.doc(documentPath);
+            this.websiteService.getWebsitesByUserId(this.user.uid).pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe(websitesOwnedByUser => {
+                if (websitesOwnedByUser.length < 3) {
+                  documentRef.set({
+                    name: this.websiteName,
+                    id: documentId,
+                    createdBy: this.user.uid,
+                    pages: response['pages'],
+                    template: response['template']
+                  }, { merge: true }).then(() => {
+                  });
+                  this.builderService.setSidebarComponentsSetting();
+                  this.builderService.activePageIndex.next(0);
+                  this.toastrService.success('Your website has been created.');
+                  this.activeModal.close();
+                  this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
+                  });
+                } else {
+                  this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
+                }
               });
-              this.builderService.setSidebarComponentsSetting();
-              this.builderService.activePageIndex.next(0);
-              this.toastrService.success('Your website has been created.');
-              this.activeModal.close();
-              this.router.navigateByUrl(`/builder/${documentId}`).then(() => {
-              });
-            } else {
-              this.toastrService.error(`You cannot create more than 3 websites on your current plan.`);
-            }
           });
-        });
-      } else {
-        this.toastrService.error(`A website with this name already exists.`);
-      }
-    });
+        } else {
+          this.toastrService.error(`A website with this name already exists.`);
+        }
+      });
   }
 
   validateWebsiteName() {

@@ -29,7 +29,6 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
   ACTIVE_LAYOUT_SETTING: string = ActiveSettings.Layout;
   ACTIVE_OPTIONS_SETTING: string = ActiveSettings.Options;
   ACTIVE_PAGES_SETTING: string = ActiveSettings.Pages;
-  ACTIVE_DATA_SETTING: string = ActiveSettings.Data;
   ngUnsubscribe = new Subject<void>();
 
 
@@ -42,60 +41,60 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
 
     this.builderService.sidebarTemplatesMenu.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarTemplatesMenu = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarTemplatesMenu = response;
+        }
+      });
 
     this.builderService.sidebarComponentsMenu.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarComponentsMenu = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarComponentsMenu = response;
+        }
+      });
 
     this.builderService.sidebarColoursMenu.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarColoursMenu = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarColoursMenu = response;
+        }
+      });
 
     this.builderService.sidebarLayoutMenu.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarLayoutMenu = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarLayoutMenu = response;
+        }
+      });
 
     this.builderService.sidebarOptionsMenu.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarOptionsMenu = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarOptionsMenu = response;
+        }
+      });
 
     this.builderService.sidebarPagesMenu.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarPagesMenu = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarPagesMenu = response;
+        }
+      });
 
     this.builderService.sidebarDataMenu.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.sidebarDataMenu = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.sidebarDataMenu = response;
+        }
+      });
 
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
   }
 
   @HostListener('window:resize', ['$event'])

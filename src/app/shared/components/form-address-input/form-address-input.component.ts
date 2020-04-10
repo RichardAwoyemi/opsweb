@@ -32,7 +32,7 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
           if (this.user.streetAddress1) {
@@ -58,53 +58,53 @@ export class FormAddressInputComponent implements OnInit, OnDestroy {
       });
 
     this.formAddressInputService.showStreetAddressInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.showStreetAddressInputError = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.showStreetAddressInputError = response;
+        }
+      });
 
     this.userService.streetAddress1.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.streetAddress1 = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.streetAddress1 = response;
+        }
+      });
 
     this.userService.streetAddress2.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.streetAddress2 = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.streetAddress2 = response;
+        }
+      });
 
     this.formAddressInputService.showCityInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.showCityInputError = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.showCityInputError = response;
+        }
+      });
 
     this.userService.city.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.city = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.city = response;
+        }
+      });
 
     this.formAddressInputService.showPostcodeInputError.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.showPostcodeInputError = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.showPostcodeInputError = response;
+        }
+      });
 
     this.userService.postcode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.postcode = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.postcode = response;
+        }
+      });
   }
 
   checkStreetAddress1Input() {

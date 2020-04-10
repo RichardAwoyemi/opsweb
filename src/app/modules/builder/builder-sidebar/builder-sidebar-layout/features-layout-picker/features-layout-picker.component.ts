@@ -48,108 +48,108 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
-
-    this.builderFeaturesService.featuresTemplate.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(featuresTemplateResponse => {
-      this.featuresTemplate = featuresTemplateResponse;
-
-      this.templateService.getTemplateStyle(this.featuresTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
+      .subscribe(response => {
         if (response) {
-          this.defaultFeaturesStyle = response[ActiveComponents.Features];
+          this.activeEditComponentId = response;
         }
       });
-    });
+
+    this.builderFeaturesService.featuresTemplate.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(featuresTemplateResponse => {
+        this.featuresTemplate = featuresTemplateResponse;
+
+        this.templateService.getTemplateStyle(this.featuresTemplate).pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(response => {
+            if (response) {
+              this.defaultFeaturesStyle = response[ActiveComponents.Features];
+            }
+          });
+      });
 
     this.builderFeaturesService.featuresAlignmentClass.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.featuresAlignmentClass = response;
-    });
+      .subscribe(response => {
+        this.featuresAlignmentClass = response;
+      });
 
     this.builderFeaturesService.featuresHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.featuresHeadingStyle = response;
-        if (this.featuresHeadingStyle['padding-top']) {
-          this.featuresHeadingPaddingTop = this.featuresHeadingStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.featuresHeadingStyle = response;
+          if (this.featuresHeadingStyle['padding-top']) {
+            this.featuresHeadingPaddingTop = this.featuresHeadingStyle['padding-top'].replace('px', '');
+          }
+          if (this.featuresHeadingStyle['padding-left']) {
+            this.featuresHeadingPaddingLeft = this.featuresHeadingStyle['padding-left'].replace('px', '');
+          }
+          if (this.featuresHeadingStyle['padding-right']) {
+            this.featuresHeadingPaddingRight = this.featuresHeadingStyle['padding-right'].replace('px', '');
+          }
+          if (this.featuresHeadingStyle['padding-bottom']) {
+            this.featuresHeadingPaddingBottom = this.featuresHeadingStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.featuresHeadingStyle['padding-left']) {
-          this.featuresHeadingPaddingLeft = this.featuresHeadingStyle['padding-left'].replace('px', '');
-        }
-        if (this.featuresHeadingStyle['padding-right']) {
-          this.featuresHeadingPaddingRight = this.featuresHeadingStyle['padding-right'].replace('px', '');
-        }
-        if (this.featuresHeadingStyle['padding-bottom']) {
-          this.featuresHeadingPaddingBottom = this.featuresHeadingStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderFeaturesService.featuresSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.featuresSubheadingStyle = response;
-        if (this.featuresSubheadingStyle['padding-top']) {
-          this.featuresSubheadingPaddingTop = this.featuresSubheadingStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.featuresSubheadingStyle = response;
+          if (this.featuresSubheadingStyle['padding-top']) {
+            this.featuresSubheadingPaddingTop = this.featuresSubheadingStyle['padding-top'].replace('px', '');
+          }
+          if (this.featuresSubheadingStyle['padding-left']) {
+            this.featuresSubheadingPaddingLeft = this.featuresSubheadingStyle['padding-left'].replace('px', '');
+          }
+          if (this.featuresSubheadingStyle['padding-right']) {
+            this.featuresSubheadingPaddingRight = this.featuresSubheadingStyle['padding-right'].replace('px', '');
+          }
+          if (this.featuresSubheadingStyle['padding-bottom']) {
+            this.featuresSubheadingPaddingBottom = this.featuresSubheadingStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.featuresSubheadingStyle['padding-left']) {
-          this.featuresSubheadingPaddingLeft = this.featuresSubheadingStyle['padding-left'].replace('px', '');
-        }
-        if (this.featuresSubheadingStyle['padding-right']) {
-          this.featuresSubheadingPaddingRight = this.featuresSubheadingStyle['padding-right'].replace('px', '');
-        }
-        if (this.featuresSubheadingStyle['padding-bottom']) {
-          this.featuresSubheadingPaddingBottom = this.featuresSubheadingStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderFeaturesService.featuresStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.featuresStyle = response;
-        if (this.featuresStyle['padding-top']) {
-          this.featuresPaddingTop = this.featuresStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.featuresStyle = response;
+          if (this.featuresStyle['padding-top']) {
+            this.featuresPaddingTop = this.featuresStyle['padding-top'].replace('px', '');
+          }
+          if (this.featuresStyle['padding-left']) {
+            this.featuresPaddingLeft = this.featuresStyle['padding-left'].replace('px', '');
+          }
+          if (this.featuresStyle['padding-right']) {
+            this.featuresPaddingRight = this.featuresStyle['padding-right'].replace('px', '');
+          }
+          if (this.featuresStyle['padding-bottom']) {
+            this.featuresPaddingBottom = this.featuresStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.featuresStyle['padding-left']) {
-          this.featuresPaddingLeft = this.featuresStyle['padding-left'].replace('px', '');
-        }
-        if (this.featuresStyle['padding-right']) {
-          this.featuresPaddingRight = this.featuresStyle['padding-right'].replace('px', '');
-        }
-        if (this.featuresStyle['padding-bottom']) {
-          this.featuresPaddingBottom = this.featuresStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-        for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-          for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-            if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-              this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresStyle'];
-              this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresHeadingStyle'];
-              this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresSubheadingStyle'];
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+          for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+            for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+              if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresStyle'];
+                this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresHeadingStyle'];
+                this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresSubheadingStyle'];
+              }
             }
           }
         }
-      }
-    });
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
   }
 

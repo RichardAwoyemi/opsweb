@@ -13,7 +13,6 @@ import { BuilderService } from '../../builder.service';
   templateUrl: './builder-delete-component-modal.component.html'
 })
 export class BuilderDeleteComponentModalComponent implements IModalComponent, OnInit, OnDestroy {
-
   @Input() componentId;
   pageComponents: any;
   components: any;
@@ -31,25 +30,25 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
 
   ngOnInit() {
     this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((activePageSettingsResponse => {
-      if (activePageSettingsResponse) {
-        this.activePage = activePageSettingsResponse;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-          if (response) {
-            this.pageComponents = response;
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              if (this.pageComponents['pages'][i]['name'] === this.activePage) {
-                this.activePageIndex = i;
-                this.components = this.pageComponents['pages'][i]['components'].filter(function (a) {
-                  return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
-                });
+      .subscribe((activePageSettingsResponse => {
+        if (activePageSettingsResponse) {
+          this.activePage = activePageSettingsResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response => {
+              if (response) {
+                this.pageComponents = response;
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  if (this.pageComponents['pages'][i]['name'] === this.activePage) {
+                    this.activePageIndex = i;
+                    this.components = this.pageComponents['pages'][i]['components'].filter(function (a) {
+                      return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
+                    });
+                  }
+                }
               }
-            }
-          }
-        }));
-      }
-    }));
+            }));
+        }
+      }));
   }
 
   onConfirmButtonClick() {

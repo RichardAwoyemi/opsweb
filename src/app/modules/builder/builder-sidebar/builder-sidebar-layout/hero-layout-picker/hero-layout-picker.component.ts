@@ -39,79 +39,79 @@ export class HeroLayoutPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+        }
+      });
 
     this.builderHeroService.heroTemplate.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(heroTemplateResponse => {
-      if (heroTemplateResponse) {
-        this.heroTemplate = heroTemplateResponse;
+      .subscribe(heroTemplateResponse => {
+        if (heroTemplateResponse) {
+          this.heroTemplate = heroTemplateResponse;
 
-        this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultHeroStyle = response[ActiveComponents.Hero];
-          }
-        });
-      }
-    });
+          this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultHeroStyle = response[ActiveComponents.Hero];
+              }
+            });
+        }
+      });
 
     this.builderHeroService.heroHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroHeadingStyle = response;
-        if (this.heroHeadingStyle['padding-top']) {
-          this.heroHeadingPaddingTop = this.heroHeadingStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.heroHeadingStyle = response;
+          if (this.heroHeadingStyle['padding-top']) {
+            this.heroHeadingPaddingTop = this.heroHeadingStyle['padding-top'].replace('px', '');
+          }
+          if (this.heroHeadingStyle['padding-left']) {
+            this.heroHeadingPaddingLeft = this.heroHeadingStyle['padding-left'].replace('px', '');
+          }
+          if (this.heroHeadingStyle['padding-right']) {
+            this.heroHeadingPaddingRight = this.heroHeadingStyle['padding-right'].replace('px', '');
+          }
+          if (this.heroHeadingStyle['padding-bottom']) {
+            this.heroHeadingPaddingBottom = this.heroHeadingStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.heroHeadingStyle['padding-left']) {
-          this.heroHeadingPaddingLeft = this.heroHeadingStyle['padding-left'].replace('px', '');
-        }
-        if (this.heroHeadingStyle['padding-right']) {
-          this.heroHeadingPaddingRight = this.heroHeadingStyle['padding-right'].replace('px', '');
-        }
-        if (this.heroHeadingStyle['padding-bottom']) {
-          this.heroHeadingPaddingBottom = this.heroHeadingStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderHeroService.heroSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroSubheadingStyle = response;
-        if (this.heroSubheadingStyle['padding-top']) {
-          this.heroSubheadingPaddingTop = this.heroSubheadingStyle['padding-top'].replace('px', '');
+      .subscribe(response => {
+        if (response) {
+          this.heroSubheadingStyle = response;
+          if (this.heroSubheadingStyle['padding-top']) {
+            this.heroSubheadingPaddingTop = this.heroSubheadingStyle['padding-top'].replace('px', '');
+          }
+          if (this.heroSubheadingStyle['padding-left']) {
+            this.heroSubheadingPaddingLeft = this.heroSubheadingStyle['padding-left'].replace('px', '');
+          }
+          if (this.heroSubheadingStyle['padding-right']) {
+            this.heroSubheadingPaddingRight = this.heroSubheadingStyle['padding-right'].replace('px', '');
+          }
+          if (this.heroSubheadingStyle['padding-bottom']) {
+            this.heroSubheadingPaddingBottom = this.heroSubheadingStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.heroSubheadingStyle['padding-left']) {
-          this.heroSubheadingPaddingLeft = this.heroSubheadingStyle['padding-left'].replace('px', '');
-        }
-        if (this.heroSubheadingStyle['padding-right']) {
-          this.heroSubheadingPaddingRight = this.heroSubheadingStyle['padding-right'].replace('px', '');
-        }
-        if (this.heroSubheadingStyle['padding-bottom']) {
-          this.heroSubheadingPaddingBottom = this.heroSubheadingStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-        for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-          for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-            if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-              this.heroSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroSubheadingStyle'];
-              this.heroHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroHeadingStyle'];
-              this.heroComponentLayout = this.pageComponents['pages'][i]['components'][j]['heroComponentLayout'];
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+          for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+            for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+              if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                this.heroSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroSubheadingStyle'];
+                this.heroHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroHeadingStyle'];
+                this.heroComponentLayout = this.pageComponents['pages'][i]['components'][j]['heroComponentLayout'];
+              }
             }
           }
         }
-      }
-    });
+      });
   }
 
   setComponentLayout(heroComponentLayout: any) {

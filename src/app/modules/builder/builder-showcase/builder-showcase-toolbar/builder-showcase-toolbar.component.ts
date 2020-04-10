@@ -67,59 +67,59 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
 
     this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      this.previewMode = response;
-      if (this.previewMode) {
-        this.previewButtonIcon = 'btn-icon-active';
-      } else {
-        this.previewButtonIcon = 'btn-icon';
-      }
-    }));
+      .subscribe((response => {
+        this.previewMode = response;
+        if (this.previewMode) {
+          this.previewButtonIcon = 'btn-icon-active';
+        } else {
+          this.previewButtonIcon = 'btn-icon';
+        }
+      }));
 
     this.builderService.fullScreenMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      this.fullScreenMode = response;
-      if (this.fullScreenMode) {
-        this.fullScreenButtonIcon = 'btn-icon-active';
-      } else {
-        this.fullScreenButtonIcon = 'btn-icon';
-      }
-    }));
+      .subscribe((response => {
+        this.fullScreenMode = response;
+        if (this.fullScreenMode) {
+          this.fullScreenButtonIcon = 'btn-icon-active';
+        } else {
+          this.fullScreenButtonIcon = 'btn-icon';
+        }
+      }));
 
     this.builderService.activeOrientation.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.activeToolbarOrientation = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.activeToolbarOrientation = response;
+        }
+      }));
 
     this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.activePage = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.activePage = response;
+        }
+      }));
 
     this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.activePageIndex = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.activePageIndex = response;
+        }
+      }));
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
 
     this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.navbarMenuOptions = response;
+        }
+      }));
   }
 
   openDeletePageModal() {

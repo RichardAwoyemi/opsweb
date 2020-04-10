@@ -57,13 +57,13 @@ export class WebsiteLayoutComponent implements AfterViewInit, OnDestroy {
 
   setupInternalWebsite() {
     this.route.paramMap
-    .subscribe(params => {
-      if (params.get('id')) {
-        this.id = params.get('id');
-        this.websiteService.websiteId.next(this.id);
-        this.setupWebsite();
-      }
-    });
+      .subscribe(params => {
+        if (params.get('id')) {
+          this.id = params.get('id');
+          this.websiteService.websiteId.next(this.id);
+          this.setupWebsite();
+        }
+      });
   }
 
   setupExternalWebsite() {
@@ -72,52 +72,52 @@ export class WebsiteLayoutComponent implements AfterViewInit, OnDestroy {
     if (parts[0] && parts[1] && parts[2]) {
       const websiteName = parts[0];
       this.websiteService.getWebsiteByName(websiteName).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-        if (response[0]) {
-          this.id = response[0]['id'];
-          this.websiteService.websiteId.next(response[0]['id']);
-          this.setupWebsite();
-        } else {
-          window.location.href = environment.domainUrl;
-        }
-      });
+        .subscribe(response => {
+          if (response[0]) {
+            this.id = response[0]['id'];
+            this.websiteService.websiteId.next(response[0]['id']);
+            this.setupWebsite();
+          } else {
+            window.location.href = environment.domainUrl;
+          }
+        });
     }
   }
 
   setupWebsite() {
     this.ngxLoader.start();
     this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(activePageResponse => {
-        if (activePageResponse) {
-          this.activePage = activePageResponse;
-          this.websiteService.getWebsiteById(this.id).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((websiteResponse => {
-            if (websiteResponse) {
-              this.websiteService.websiteName.next(websiteResponse['name']);
-              if (websiteResponse['pages']) {
-                this.builderComponentsService.pageComponents.next({
-                  'pages': websiteResponse['pages'],
-                  'template': websiteResponse['template']
-                });
-                this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((pageComponentsResponse => {
-                  if (pageComponentsResponse) {
-                    this.pageComponents = pageComponentsResponse;
-                    this.setPageComponents();
+      .subscribe(activePageResponse => {
+          if (activePageResponse) {
+            this.activePage = activePageResponse;
+            this.websiteService.getWebsiteById(this.id).pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe((websiteResponse => {
+                if (websiteResponse) {
+                  this.websiteService.websiteName.next(websiteResponse['name']);
+                  if (websiteResponse['pages']) {
+                    this.builderComponentsService.pageComponents.next({
+                      'pages': websiteResponse['pages'],
+                      'template': websiteResponse['template']
+                    });
+                    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+                      .subscribe((pageComponentsResponse => {
+                        if (pageComponentsResponse) {
+                          this.pageComponents = pageComponentsResponse;
+                          this.setPageComponents();
+                        }
+                      }));
                   }
-                }));
-              }
-            } else {
-              this.toastrSevice.warning('This website cannot be found.', 'Oops!');
-              this.router.navigate(['home']).then(() => {
-              });
-            }
-          }));
-        } else {
+                } else {
+                  this.toastrSevice.warning('This website cannot be found.', 'Oops!');
+                  this.router.navigate(['home']).then(() => {
+                  });
+                }
+              }));
+          } else {
+          }
+          this.ngxLoader.stop();
         }
-        this.ngxLoader.stop();
-      }
-    );
+      );
   }
 
   ngAfterViewInit() {

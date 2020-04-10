@@ -32,16 +32,16 @@ export class DashboardBodyTemplatesComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
 
     this.dataService.getAllWebTemplates().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.webTemplates = [].concat.apply([], response);
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.webTemplates = [].concat.apply([], response);
+        }
+      });
 
     this.userStore.select('user')
       .pipe()
       .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
         }

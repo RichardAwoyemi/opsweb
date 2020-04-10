@@ -28,15 +28,15 @@ export class BuilderComponentToolbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activeRoute = this.router.url;
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.activeEditComponentId = response;
-    });
+      .subscribe(response => {
+        this.activeEditComponentId = response;
+      });
   }
 
   deleteComponent() {

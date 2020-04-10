@@ -43,20 +43,20 @@ export class DashboardBodyRewardsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxLoader.start();
     this.breakpointObserver.observe([Breakpoints.Handset]).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((result) => {
-      if (result.matches === false) {
-        this.rewardsBodyPadding = { 'padding': '2em' };
-        this.rewardsTopPadding = { 'padding-top': '1em' };
-        this.isMobile = false;
-      } else {
-        this.isMobile = true;
-      }
-    });
+      .subscribe((result) => {
+        if (result.matches === false) {
+          this.rewardsBodyPadding = { 'padding': '2em' };
+          this.rewardsTopPadding = { 'padding-top': '1em' };
+          this.isMobile = false;
+        } else {
+          this.isMobile = true;
+        }
+      });
     this.innerHeight = window.innerHeight;
     this.userStore.select('user')
       .pipe()
       .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
           this.referralId = this.user.referralId;

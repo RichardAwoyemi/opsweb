@@ -27,11 +27,11 @@ export class DashboardBodyComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
     this.dashboardService.activeSidebarSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.activeSidebar = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.activeSidebar = response;
+        }
+      }));
   }
 
   @HostListener('window:resize', ['$event'])

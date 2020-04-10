@@ -43,15 +43,15 @@ export class DashboardBodyWebsitesComponent implements OnInit, OnDestroy {
     this.userStore.select('user')
       .pipe()
       .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
           this.websiteService.getWebsitesByUserId(this.user['uid']).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-            if (response) {
-              this.websites = response;
-            }
-          });
+            .subscribe(response => {
+              if (response) {
+                this.websites = response;
+              }
+            });
         }
       });
     this.ngxLoader.stop();

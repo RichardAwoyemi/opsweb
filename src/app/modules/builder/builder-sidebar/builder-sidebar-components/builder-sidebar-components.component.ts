@@ -15,12 +15,8 @@ import { BuilderService } from '../../builder.service';
 export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   searchText: string;
   activeEditComponent: string;
-  featuresTemplate: any;
   webComponents: any;
   defaultStyle: any;
-  footerTemplate: any;
-  navbarTemplate: any;
-  heroTemplate: any;
   navbarMenuOptions: any;
   footerMenuOptions: any;
   ngUnsubscribe = new Subject<void>();
@@ -36,23 +32,23 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
     this.webComponents = BuilderComponentsService.webComponents;
 
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(pageComponentsResponse => {
-      if (pageComponentsResponse) {
-        this.templateService.getTemplateStyle(pageComponentsResponse['template']).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultStyle = response;
-          }
-        });
-      }
-    });
+      .subscribe(pageComponentsResponse => {
+        if (pageComponentsResponse) {
+          this.templateService.getTemplateStyle(pageComponentsResponse['template']).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultStyle = response;
+              }
+            });
+        }
+      });
   }
 
   clearActiveComponent() {

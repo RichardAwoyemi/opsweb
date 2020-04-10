@@ -44,32 +44,32 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
     this.userStore.select('user')
       .pipe()
       .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (result: IUser) => {
+      .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
         }
       });
 
     this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.websiteName = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.websiteName = response;
+        }
+      }));
 
     this.websiteService.websiteLoaded.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.websiteLoaded = response;
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.websiteLoaded = response;
+        }
+      }));
 
     this.builderActionsService.renameRenameWebsiteModalStatus.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((response => {
-      if (response) {
-        this.modalStatus = response['open'];
-      }
-    }));
+      .subscribe((response => {
+        if (response) {
+          this.modalStatus = response['open'];
+        }
+      }));
   }
 
   isLoggedIn() {

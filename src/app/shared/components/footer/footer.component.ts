@@ -26,11 +26,11 @@ export class FooterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
     this.routerService.currentRoute.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        this.currentRoute = result;
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          this.currentRoute = result;
+        }
+      });
   }
 
   checkLoggedOutRoute() {

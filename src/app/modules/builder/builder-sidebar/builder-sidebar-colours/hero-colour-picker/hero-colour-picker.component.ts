@@ -37,69 +37,69 @@ export class HeroColourPickerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(pageDetails => {
-          if (pageDetails) {
-            this.pageComponents = pageDetails;
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-                  this.heroSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroSubheadingStyle'];
-                  this.heroHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroHeadingStyle'];
-                  this.heroButtonStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroButtonStyle'];
-                  this.heroBackgroundStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroBackgroundStyle'];
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(pageDetails => {
+              if (pageDetails) {
+                this.pageComponents = pageDetails;
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                      this.heroSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroSubheadingStyle'];
+                      this.heroHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroHeadingStyle'];
+                      this.heroButtonStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroButtonStyle'];
+                      this.heroBackgroundStyle = this.pageComponents['pages'][i]['components'][j]['style']['heroBackgroundStyle'];
+                    }
+                  }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
 
     this.builderHeroService.heroTheme.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroTheme = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.heroTheme = response;
+        }
+      });
 
     this.builderHeroService.getHeroThemes().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.heroThemes = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.heroThemes = response;
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(templateResponse => {
-      if (templateResponse) {
-        this.heroTemplate = templateResponse['template'];
+      .subscribe(templateResponse => {
+        if (templateResponse) {
+          this.heroTemplate = templateResponse['template'];
 
-        this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.defaultHeroStyle = response[ActiveComponents.Hero];
-          }
-        });
-      }
-    });
+          this.templateService.getTemplateStyle(this.heroTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultHeroStyle = response[ActiveComponents.Hero];
+              }
+            });
+        }
+      });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
 
     this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
   }
 
   onThemeChange() {

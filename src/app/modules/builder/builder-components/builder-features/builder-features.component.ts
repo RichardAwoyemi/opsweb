@@ -45,90 +45,90 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.innerHeight = window.innerHeight;
 
     this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.previewMode = response;
-    });
+      .subscribe(response => {
+        this.previewMode = response;
+      });
 
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+        }
+      });
 
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
     this.builderFeaturesService.featuresBreakpoint.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.setFeaturesWidth();
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.setFeaturesWidth();
+        }
+      });
 
     this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeElement = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeElement = response;
+        }
+      });
 
     this.builderService.toolbarMobileOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setFeaturesWidth(ActiveOrientations.Mobile);
-      }
-    });
+      .subscribe(response => {
+        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+          this.setFeaturesWidth(ActiveOrientations.Mobile);
+        }
+      });
 
     this.builderService.toolbarDesktopOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setFeaturesWidth(ActiveOrientations.Desktop);
-      }
-    });
+      .subscribe(response => {
+        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+          this.setFeaturesWidth(ActiveOrientations.Desktop);
+        }
+      });
 
     this.builderService.toolbarTabletOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setFeaturesWidth(ActiveOrientations.Tablet);
-      }
-    });
+      .subscribe(response => {
+        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+          this.setFeaturesWidth(ActiveOrientations.Tablet);
+        }
+      });
 
     this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(activePageSettingResponse => {
-      if (activePageSettingResponse) {
-        this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-          if (response) {
-            this.pageComponents = response;
-            this.featuresTemplate = this.pageComponents['template'];
-            this.componentId = this.elementRef.nativeElement['id'];
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              const pageName = this.pageComponents['pages'][i]['name'];
-              if (pageName === this.activePageSetting) {
-                for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                  if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                    this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                    this.featuresItemArray = this.componentDetail['featuresItemArray'];
-                    this.featuresStyle = this.componentDetail['style']['featuresStyle'];
-                    this.featuresHeadingStyle = this.componentDetail['style']['featuresHeadingStyle'];
-                    this.featuresSubheadingStyle = this.componentDetail['style']['featuresSubheadingStyle'];
-                    this.featuresTheme = this.componentDetail['featuresTheme'];
-                    this.featuresWidth = this.componentDetail['featuresWidth'];
-                    this.componentIndex = this.componentDetail['componentIndex'];
+      .subscribe(activePageSettingResponse => {
+        if (activePageSettingResponse) {
+          this.activePageSetting = activePageSettingResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.pageComponents = response;
+                this.featuresTemplate = this.pageComponents['template'];
+                this.componentId = this.elementRef.nativeElement['id'];
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  const pageName = this.pageComponents['pages'][i]['name'];
+                  if (pageName === this.activePageSetting) {
+                    for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                      if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                        this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                        this.featuresItemArray = this.componentDetail['featuresItemArray'];
+                        this.featuresStyle = this.componentDetail['style']['featuresStyle'];
+                        this.featuresHeadingStyle = this.componentDetail['style']['featuresHeadingStyle'];
+                        this.featuresSubheadingStyle = this.componentDetail['style']['featuresSubheadingStyle'];
+                        this.featuresTheme = this.componentDetail['featuresTheme'];
+                        this.featuresWidth = this.componentDetail['featuresWidth'];
+                        this.componentIndex = this.componentDetail['componentIndex'];
+                      }
+                    }
                   }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
   }
 
   setFeaturesWidth(orientation: string = null) {

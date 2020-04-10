@@ -21,16 +21,16 @@ export class BuilderPlaceholderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      this.previewMode = response;
-    });
+      .subscribe(response => {
+        this.previewMode = response;
+      });
 
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
   }
 
   onDragOver(e) {

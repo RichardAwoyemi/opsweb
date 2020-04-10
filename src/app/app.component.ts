@@ -74,42 +74,42 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset]);
 
     this.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result) {
-        localStorage.setItem('uid', result.uid);
-        this.authStore.dispatch(authActions.getData());
-        this.userStore.dispatch(userActions.getData());
-      }
-    });
+      .subscribe(result => {
+        if (result) {
+          localStorage.setItem('uid', result.uid);
+          this.authStore.dispatch(authActions.getData());
+          this.userStore.dispatch(userActions.getData());
+        }
+      });
 
     this.userStore.select('user').pipe().pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(async (result: IUser) => {
-      if (result && this.authService.isLoggedIn()) {
-        this.redirectUser();
-      }
-    });
+      .subscribe(async (result: IUser) => {
+        if (result && this.authService.isLoggedIn()) {
+          this.redirectUser();
+        }
+      });
   }
 
   processMobileLogin(response) {
     this.isMobile.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result.matches && !this.referredBy && response && response.user.providerData[0].providerId === 'facebook.com' ||
-        result.matches && response && response.user.providerData[0].providerId === 'google.com') {
-        this.authService.mobileLogin(AppComponent.assignUserProfile(response.additionalUserInfo.profile, response.user.providerData[0].providerId), response.user.uid).then(() => {
-        });
-      }
-    });
+      .subscribe(result => {
+        if (result.matches && !this.referredBy && response && response.user.providerData[0].providerId === 'facebook.com' ||
+          result.matches && response && response.user.providerData[0].providerId === 'google.com') {
+          this.authService.mobileLogin(AppComponent.assignUserProfile(response.additionalUserInfo.profile, response.user.providerData[0].providerId), response.user.uid).then(() => {
+          });
+        }
+      });
   }
 
   processMobileReferralLogin(response) {
     this.isMobile.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(result => {
-      if (result.matches && this.referredBy && response && response.user.providerData[0].providerId === 'facebook.com' ||
-        result.matches && this.referredBy && response && response.user.providerData[0].providerId === 'google.com') {
-        this.authService.mobileReferralLogin(AppComponent.assignUserProfile(response.additionalUserInfo.profile, response.user.providerData[0].providerId), response.user.uid, this.referredBy).then(() => {
-        });
-      }
-    });
+      .subscribe(result => {
+        if (result.matches && this.referredBy && response && response.user.providerData[0].providerId === 'facebook.com' ||
+          result.matches && this.referredBy && response && response.user.providerData[0].providerId === 'google.com') {
+          this.authService.mobileReferralLogin(AppComponent.assignUserProfile(response.additionalUserInfo.profile, response.user.providerData[0].providerId), response.user.uid, this.referredBy).then(() => {
+          });
+        }
+      });
   }
 
   redirectUser() {
