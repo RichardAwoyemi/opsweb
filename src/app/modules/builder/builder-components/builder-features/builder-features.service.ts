@@ -67,14 +67,17 @@ export class BuilderFeaturesService {
       if (theme['featuresHeadingStyle']) {
         const featuresHeadingStyle = { ...this.featuresHeadingStyle.getValue(), ...theme['featuresHeadingStyle'] };
         this.builderComponentsService.setPageComponentById(componentId, 'featuresHeadingStyle', featuresHeadingStyle);
+        this.featuresHeadingStyle.next(featuresHeadingStyle);
       }
       if (theme['featuresSubheadingStyle']) {
         const featuresSubheadingStyle = { ...this.featuresSubheadingStyle.getValue(), ...theme['featuresSubheadingStyle'] };
         this.builderComponentsService.setPageComponentById(componentId, 'featuresSubheadingStyle', featuresSubheadingStyle);
+        this.featuresSubheadingStyle.next(featuresSubheadingStyle);
       }
       if (theme['featuresStyle']) {
         const featuresStyle = { ...this.featuresStyle.getValue(), ...theme['featuresStyle'] };
         this.builderComponentsService.setPageComponentById(componentId, 'featuresStyle', featuresStyle);
+        this.featuresStyle.next(featuresStyle);
       }
       this.builderComponentsService.setPageComponentById(componentId, 'featuresTheme', theme['name']);
       this.featuresTheme.next(theme['name']);
@@ -111,8 +114,8 @@ export class BuilderFeaturesService {
         }
       }
       return {
-        'featuresItemArray': featuresItemArray,
-        'featuresItemWidth': width,
+        'array': featuresItemArray,
+        'width': width,
       };
     }
   }

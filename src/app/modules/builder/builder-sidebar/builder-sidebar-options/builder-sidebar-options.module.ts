@@ -13,6 +13,7 @@ import { FooterOptionsPickerComponent } from './footer-options-picker/footer-opt
 import { FeaturesOptionsPickerComponent } from './features-options-picker/features-options-picker.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { Ng5SliderModule } from 'ng5-slider';
+import { BuilderSidebarElementModule } from '../builder-sidebar-elements/builder-sidebar-element.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { Ng5SliderModule } from 'ng5-slider';
     HeroOptionsPickerComponent
   ],
   imports: [
+    BuilderSidebarElementModule,
     CommonModule,
     SortablejsModule,
     ImageCropperModule,

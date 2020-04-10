@@ -1,0 +1,10 @@
+<div class="form-group">
+  <label style="color: rgba(255, 255, 255, 0.65);">{{data.colourSectionHeader}}</label>
+  <div style="width: 100%">
+    <span class="features-colour-select-background form-control form-control-lg colour-picker"
+          (colorPickerChange)="setElementColour()"
+          [(colorPicker)]="styleObject[data.colourProperty]"
+          [cpPositionOffset]="'0%'"
+          [cpPosition]="'bottom'" [style.background]="styleObject[data.colourProperty]"></span>
+  </div>
+</div>

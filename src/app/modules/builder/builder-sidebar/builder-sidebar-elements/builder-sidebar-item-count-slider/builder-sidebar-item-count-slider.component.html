@@ -1,0 +1,14 @@
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">Items</label>
+    </div>
+    <div class="col-md-6 text-right">
+      <a (click)="resetElementCount()" class="fw-600 fs-12" href="#">Reset</a>
+    </div>
+  </div>
+  <div style="width: 100%; margin-top: 1.5em">
+    <ng5-slider (valueChange)="setElementCount($event)" [(value)]="elementCount"
+                [options]="this.data.sliderOptions" class="custom-slider"></ng5-slider>
+  </div>
+</div>
