@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { Subscription } from 'rxjs';
-import { BuilderActionsService } from '../builder-actions.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
 import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderActionsService } from '../builder-actions.service';
 
 @Component({
   selector: 'app-builder-select-image-modal',
@@ -16,9 +17,8 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   parentKey: string;
   childKeySrc = 'src';
   childKeyAlt = 'alt';
-  private activeLibrarySelectedImageSubscription: Subscription;
-  private activeLibrarySelectedImageAltTextSubscription: Subscription;
-  private pageComponentSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
+
   private activeLibrarySelectedImage: any;
   private activeLibrarySelectedImageAltText: any;
   private componentParentKey: any;
@@ -33,24 +33,27 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   }
 
   ngOnInit() {
-    this.activeLibrarySelectedImageSubscription = this.builderActionsService.activeLibrarySelectedImage.subscribe(response => {
-      this.activeLibrarySelectedImage = response;
-    });
+    this.builderActionsService.activeLibrarySelectedImage.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.activeLibrarySelectedImage = response;
+      });
 
-    this.activeLibrarySelectedImageAltTextSubscription = this.builderActionsService.activeLibrarySelectedImageAlt.subscribe(response => {
-      (response) ? this.activeLibrarySelectedImageAltText = response : this.activeLibrarySelectedImageAltText = 'componentId';
-    });
+    this.builderActionsService.activeLibrarySelectedImageAlt.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        (response) ? this.activeLibrarySelectedImageAltText = response : this.activeLibrarySelectedImageAltText = 'componentId';
+      });
 
-    this.pageComponentSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      const pageComponent = response;
-      const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
-      const targetComponent = pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex];
-      if (targetComponent.hasOwnProperty(this.parentKey)) {
-        this.componentParentKey = targetComponent[this.parentKey];
-      } else {
-        this.componentParentKey = targetComponent['style'][this.parentKey];
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        const pageComponent = response;
+        const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
+        const targetComponent = pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex];
+        if (targetComponent.hasOwnProperty(this.parentKey)) {
+          this.componentParentKey = targetComponent[this.parentKey];
+        } else {
+          this.componentParentKey = targetComponent['style'][this.parentKey];
+        }
+      });
   }
 
   async onConfirmButtonClick() {
@@ -71,12 +74,13 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   }
 
   uploadImageToImgur() {
-    this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status === 200) {
-        this.activeLibrarySelectedImage = imgurResponse.data.link;
-        this.updateImage();
-      }
-    });
+    this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((imgurResponse: ImgurResponse) => {
+        if (imgurResponse.status === 200) {
+          this.activeLibrarySelectedImage = imgurResponse.data.link;
+          this.updateImage();
+        }
+      });
   }
 
   updateImage() {
@@ -93,9 +97,8 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
     this.activeModal.dismiss();
   }
 
-  ngOnDestroy() {
-    this.activeLibrarySelectedImageSubscription.unsubscribe();
-    this.activeLibrarySelectedImageAltTextSubscription.unsubscribe();
-    this.pageComponentSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

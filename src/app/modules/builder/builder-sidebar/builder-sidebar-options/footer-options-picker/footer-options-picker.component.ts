@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from 'src/app/shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
-import { WebsiteService } from '../../../../../shared/services/website.service';
-import { TemplateService } from 'src/app/shared/services/template.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-footer-options-picker',
@@ -41,20 +42,7 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   youtubeUrl: string;
   githubUrl: string;
   linkedinUrl: string;
-
-  private fontNamesSubscription: Subscription;
-  private fontUnitsSubscription: Subscription;
-  private footerStyleSubscription: Subscription;
-  private footerCopyrightStyleSubscription: Subscription;
-  private footerSocialLinksStyleSubscription: Subscription;
-  private footerPageLinksStyleSubscription: Subscription;
-  private footerTemplateSubscription: Subscription;
-  private defaultFooterStyleSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private footerMenuOptionsSubscription: Subscription;
-  private footerSocialLinksSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -67,150 +55,164 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(navbarMenuOptionsResponse => {
-      if (navbarMenuOptionsResponse) {
-        this.navbarMenuOptions = navbarMenuOptionsResponse;
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(navbarMenuOptionsResponse => {
+        if (navbarMenuOptionsResponse) {
+          this.navbarMenuOptions = navbarMenuOptionsResponse;
 
-        this.footerMenuOptionsSubscription = this.builderFooterService.footerMenuOptions.subscribe(response => {
-          if (response) {
-            this.footerMenuOptions = response;
-          } else {
-            for (let i = 0; i < this.navbarMenuOptions.length; i++) {
-              const footerMenuOption = {};
-              footerMenuOption['page'] = this.navbarMenuOptions[i];
-              footerMenuOption['visible'] = false;
-              this.footerMenuOptions.push(footerMenuOption);
+          this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.footerMenuOptions = response;
+              } else {
+                for (let i = 0; i < this.navbarMenuOptions.length; i++) {
+                  const footerMenuOption = {};
+                  footerMenuOption['page'] = this.navbarMenuOptions[i];
+                  footerMenuOption['visible'] = false;
+                  this.footerMenuOptions.push(footerMenuOption);
+                }
+                this.builderFooterService.footerMenuOptions.next(this.footerMenuOptions);
+              }
+            });
+        }
+      });
+
+    this.builderFooterService.footerSocialLinks.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.footerSocialLinks = response;
+      });
+
+    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.fontNames = response;
+        }
+      });
+
+    this.builderService.fontUnits.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.fontUnits = response;
+        }
+      });
+
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(templateResponse => {
+        if (templateResponse) {
+          this.footerTemplate = templateResponse['template'];
+
+          this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultFooterStyle = response[ActiveComponents.Footer];
+              }
+            });
+        }
+      });
+
+    this.builderFooterService.footerCopyrightStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.footerCopyrightStyle = response;
+
+          if (this.footerCopyrightStyle['font-size']) {
+            if (this.footerCopyrightStyle['font-size'].indexOf('px') > -1) {
+              this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('px', '');
             }
-            this.builderFooterService.footerMenuOptions.next(this.footerMenuOptions);
+            if (this.footerCopyrightStyle['font-size'].indexOf('em') > -1) {
+              this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('em', '');
+            }
           }
-        });
-      }
-    });
 
-    this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
-      this.footerSocialLinks = response;
-    });
+          const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
+          this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
+        }
+      });
 
-    this.fontNamesSubscription = this.builderService.fontNames.subscribe(response => {
-      if (response) {
-        this.fontNames = response;
-      }
-    });
+    this.builderFooterService.footerPageLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.footerPageLinksStyle = response;
 
-    this.fontUnitsSubscription = this.builderService.fontUnits.subscribe(response => {
-      if (response) {
-        this.fontUnits = response;
-      }
-    });
-
-    this.footerTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
-      if (templateResponse) {
-        this.footerTemplate = templateResponse['template'];
-
-        this.defaultFooterStyleSubscription = this.templateService.getTemplateStyle(this.footerTemplate).subscribe(response => {
-          if (response) {
-            this.defaultFooterStyle = response[ActiveComponents.Footer];
+          if (this.footerPageLinksStyle['font-size']) {
+            if (this.footerPageLinksStyle['font-size'].indexOf('px') > -1) {
+              this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('px', '');
+            }
+            if (this.footerPageLinksStyle['font-size'].indexOf('em') > -1) {
+              this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('em', '');
+            }
           }
-        });
-      }
-    });
 
-    this.footerCopyrightStyleSubscription = this.builderFooterService.footerCopyrightStyle.subscribe(response => {
-      if (response) {
-        this.footerCopyrightStyle = response;
+          const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
+          this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
+        }
+      });
 
-        if (this.footerCopyrightStyle['font-size']) {
-          if (this.footerCopyrightStyle['font-size'].indexOf('px') > -1) {
-            this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('px', '');
-          }
-          if (this.footerCopyrightStyle['font-size'].indexOf('em') > -1) {
-            this.footerCopyrightFontSize = this.footerCopyrightStyle['font-size'].replace('em', '');
+    this.builderFooterService.footerSocialLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.footerSocialLinksStyle = response;
+
+          if (this.footerSocialLinksStyle['font-size']) {
+            if (this.footerSocialLinksStyle['font-size'].indexOf('px') > -1) {
+              this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('px', '');
+            }
+            if (this.footerSocialLinksStyle['font-size'].indexOf('em') > -1) {
+              this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('em', '');
+            }
           }
         }
+      });
 
-        const footerFontNames = this.footerCopyrightStyle['font-family'].split(',');
-        this.footerCopyrightFontName = footerFontNames[0].replace(/'/g, '');
-      }
-    });
-
-    this.footerPageLinksStyleSubscription = this.builderFooterService.footerPageLinksStyle.subscribe(response => {
-      if (response) {
-        this.footerPageLinksStyle = response;
-
-        if (this.footerPageLinksStyle['font-size']) {
-          if (this.footerPageLinksStyle['font-size'].indexOf('px') > -1) {
-            this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('px', '');
-          }
-          if (this.footerPageLinksStyle['font-size'].indexOf('em') > -1) {
-            this.footerPageLinksFontSize = this.footerPageLinksStyle['font-size'].replace('em', '');
-          }
+    this.builderFooterService.footerSocialLinks.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response['facebookUrl']) {
+          this.footerSocialLinks['facebookUrl'] = response['facebookUrl'];
+          this.facebookUrl = response['facebookUrl'];
         }
+        if (response['twitterUrl']) {
+          this.footerSocialLinks['twitterUrl'] = response['twitterUrl'];
+          this.twitterUrl = response['twitterUrl'];
 
-        const footerFontNames = this.footerPageLinksStyle['font-family'].split(',');
-        this.footerPageLinkFontName = footerFontNames[0].replace(/'/g, '');
-      }
-    });
-
-    this.footerSocialLinksStyleSubscription = this.builderFooterService.footerSocialLinksStyle.subscribe(response => {
-      if (response) {
-        this.footerSocialLinksStyle = response;
-
-        if (this.footerSocialLinksStyle['font-size']) {
-          if (this.footerSocialLinksStyle['font-size'].indexOf('px') > -1) {
-            this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('px', '');
-          }
-          if (this.footerSocialLinksStyle['font-size'].indexOf('em') > -1) {
-            this.footerSocialLinksFontSize = this.footerSocialLinksStyle['font-size'].replace('em', '');
-          }
         }
-      }
-    });
+        if (response['instagramUrl']) {
+          this.footerSocialLinks['instagramUrl'] = response['instagramUrl'];
+          this.instagramUrl = response['instagramUrl'];
+        }
+        if (response['youtubeUrl']) {
+          this.footerSocialLinks['youtubeUrl'] = response['youtubeUrl'];
+          this.youtubeUrl = response['youtubeUrl'];
+        }
+        if (response['githubUrl']) {
+          this.footerSocialLinks['githubUrl'] = response['githubUrl'];
+          this.githubUrl = response['githubUrl'];
+        }
+        if (response['linkedinUrl']) {
+          this.footerSocialLinks['linkedinUrl'] = response['linkedinUrl'];
+          this.linkedinUrl = response['linkedinUrl'];
+        }
+      });
 
-    this.footerSocialLinksSubscription = this.builderFooterService.footerSocialLinks.subscribe(response => {
-      if (response['facebookUrl']) {
-        this.footerSocialLinks['facebookUrl'] = response['facebookUrl'];
-        this.facebookUrl = response['facebookUrl'];
-      }
-      if (response['twitterUrl']) {
-        this.footerSocialLinks['twitterUrl'] = response['twitterUrl'];
-        this.twitterUrl = response['twitterUrl'];
+    this.builderFooterService.footerStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.footerStyle = response;
+        }
+      });
 
-      }
-      if (response['instagramUrl']) {
-        this.footerSocialLinks['instagramUrl'] = response['instagramUrl'];
-        this.instagramUrl = response['instagramUrl'];
-      }
-      if (response['youtubeUrl']) {
-        this.footerSocialLinks['youtubeUrl'] = response['youtubeUrl'];
-        this.youtubeUrl = response['youtubeUrl'];
-      }
-      if (response['githubUrl']) {
-        this.footerSocialLinks['githubUrl'] = response['githubUrl'];
-        this.githubUrl = response['githubUrl'];
-      }
-      if (response['linkedinUrl']) {
-        this.footerSocialLinks['linkedinUrl'] = response['linkedinUrl'];
-        this.linkedinUrl = response['linkedinUrl'];
-      }
-    });
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
-    this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
-      if (response) {
-        this.footerStyle = response;
-      }
-    });
-
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
-
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   setFooterSocialLinks(key, value) {
@@ -414,21 +416,8 @@ export class FooterOptionsPickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.fontNamesSubscription.unsubscribe();
-    this.fontUnitsSubscription.unsubscribe();
-    this.footerStyleSubscription.unsubscribe();
-    this.footerCopyrightStyleSubscription.unsubscribe();
-    this.footerSocialLinksStyleSubscription.unsubscribe();
-    this.footerPageLinksStyleSubscription.unsubscribe();
-    this.footerTemplateSubscription.unsubscribe();
-    this.defaultFooterStyleSubscription.unsubscribe();
-    this.footerSocialLinksSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    if (this.footerMenuOptionsSubscription) {
-      this.footerMenuOptionsSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

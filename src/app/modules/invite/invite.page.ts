@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../../shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUser } from '../../shared/models/user';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-invite',
@@ -36,7 +37,7 @@ export class InviteComponent implements OnInit, OnDestroy {
     referredBy: null
   };
 
-  private referredBySubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private ngxLoader: NgxUiLoaderService,
@@ -52,10 +53,12 @@ export class InviteComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxLoader.start();
     this.isMobile = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]);
-    this.referredBySubscription = this.route.params.subscribe(params => {
+    this.route.params.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(params => {
       this.referredById = params['id'];
       if (this.referredById) {
-        this.userService.getUserByReferralId(this.referredById).subscribe(data => {
+        this.userService.getUserByReferralId(this.referredById).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(data => {
           if (data[0]) {
             this.referredByUser = UserService.parseData(data[0]);
           } else {
@@ -67,7 +70,8 @@ export class InviteComponent implements OnInit, OnDestroy {
     this.ngxLoader.stop();
   }
 
-  ngOnDestroy() {
-    this.referredBySubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -6,7 +6,6 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BuilderService } from '../../builder.service';
 import { UtilService } from '../../../../shared/services/util.service';
 import { BuilderComponentsService } from '../builder-components.service';
-import { TemplateService } from '../../../../shared/services/template.service';
 
 @Injectable()
 export class BuilderFeaturesService {
@@ -25,8 +24,7 @@ export class BuilderFeaturesService {
     private httpClient: HttpClient,
     private breakpointObserver: BreakpointObserver,
     private builderComponentsService: BuilderComponentsService,
-    private builderService: BuilderService,
-    private templateService: TemplateService
+    private builderService: BuilderService
   ) {
     this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium, Breakpoints.Large, Breakpoints.XLarge]).subscribe(result => {
       if (result.breakpoints[Breakpoints.XSmall] || result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset]) {
@@ -61,40 +59,6 @@ export class BuilderFeaturesService {
         break;
       default:
         break;
-    }
-  }
-
-  setFeaturesTemplate(templateId: string) {
-    this.templateService.getTemplateStyle(templateId).subscribe(response => {
-      if (response) {
-        const template = response['features']['style'];
-        this.setFeaturesTemplateStyle(template);
-      }
-    });
-  }
-
-  setFeaturesTemplateStyle(template: any) {
-    this.featuresHeadingStyle.next(template['featuresHeadingStyle']);
-    this.featuresSubheadingStyle.next(template['featuresSubheadingStyle']);
-    this.featuresStyle.next(template['featuresStyle']);
-    if (template) {
-      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresTheme', ActiveThemes.Default);
-      if (template['featuresHeadingStyle']) {
-        const featuresHeadingStyle = { ...this.featuresHeadingStyle.getValue(), ...template['featuresHeadingStyle'] };
-        this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresHeadingStyle', featuresHeadingStyle);
-      }
-      if (template['featuresSubheadingStyle']) {
-        const featuresSubheadingStyle = { ...this.featuresSubheadingStyle.getValue(), ...template['featuresSubheadingStyle'] };
-        this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Features, 'featuresSubheadingStyle', featuresSubheadingStyle);
-      }
-      if (template['featuresStyle']) {
-        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'background-color', template['featuresStyle']['background-color']);
-        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-left', template['featuresStyle']['padding-left']);
-        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-bottom', template['featuresStyle']['padding-bottom']);
-        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-bottom', template['featuresStyle']['padding-bottom']);
-        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-top', template['featuresStyle']['padding-top']);
-        this.builderComponentsService.setPageComponentsByNameAndKey(ActiveComponentsPartialSelector.Features, 'featuresStyle', 'padding-right', template['featuresStyle']['padding-right']);
-      }
     }
   }
 

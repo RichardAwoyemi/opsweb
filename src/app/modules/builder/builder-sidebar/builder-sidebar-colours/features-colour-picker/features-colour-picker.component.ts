@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActiveComponents, ActiveTemplates, ActiveThemes } from '../../../builder';
-import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../../builder.service';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { WebsiteService } from '../../../../../shared/services/website.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from '../../../../../shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveTemplates, ActiveThemes } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-features-colour-picker',
@@ -24,15 +25,7 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   websiteChangeCount: number;
   activeEditComponentId: string;
   activePageSetting: string;
-
-  private featuresThemesSubscription: Subscription;
-  private featuresThemeSubscription: Subscription;
-  private featuresTemplateSubscription: Subscription;
-  private defaultFeaturesStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
@@ -44,68 +37,77 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(pageDetails => {
-          if (pageDetails) {
-            this.pageComponents = pageDetails;
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-                  this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresStyle'];
-                  this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresHeadingStyle'];
-                  this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresSubheadingStyle'];
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(pageDetails => {
+              if (pageDetails) {
+                this.pageComponents = pageDetails;
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                      this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresStyle'];
+                      this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresHeadingStyle'];
+                      this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresSubheadingStyle'];
+                    }
+                  }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(response => {
-      if (response) {
-        this.activePageSetting = response;
-      }
-    });
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activePageSetting = response;
+        }
+      });
 
-    this.featuresThemeSubscription = this.builderFeaturesService.featuresTheme.subscribe(response => {
-      if (response) {
-        this.featuresTheme = response;
-      } else {
-        this.featuresTheme = ActiveThemes.Default;
-      }
-    });
+    this.builderFeaturesService.featuresTheme.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.featuresTheme = response;
+        } else {
+          this.featuresTheme = ActiveThemes.Default;
+        }
+      });
 
-    this.featuresThemesSubscription = this.builderFeaturesService.getFeaturesThemes().subscribe(response => {
-      if (response) {
-        this.featuresThemes = response;
-      }
-    });
+    this.builderFeaturesService.getFeaturesThemes().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.featuresThemes = response;
+        }
+      });
 
-    this.featuresTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
-      if (templateResponse) {
-        this.featuresTemplate = templateResponse['template'];
-        this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(this.featuresTemplate).subscribe(response => {
-          if (response) {
-            this.defaultFeaturesStyle = response[ActiveComponents.Features];
-          }
-        });
-      } else {
-        this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(ActiveTemplates.Default).subscribe(response => {
-          if (response) {
-            this.defaultFeaturesStyle = response[ActiveComponents.Features];
-          }
-        });
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(templateResponse => {
+        if (templateResponse) {
+          this.featuresTemplate = templateResponse['template'];
+          this.templateService.getTemplateStyle(this.featuresTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultFeaturesStyle = response[ActiveComponents.Features];
+              }
+            });
+        } else {
+          this.templateService.getTemplateStyle(ActiveTemplates.Default).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultFeaturesStyle = response[ActiveComponents.Features];
+              }
+            });
+        }
+      });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
   }
 
   onThemeChange() {
@@ -144,16 +146,8 @@ export class FeaturesColourPickerComponent implements OnInit, OnDestroy {
     this.setFeaturesSubheadingStyle();
   }
 
-  ngOnDestroy() {
-    this.featuresThemesSubscription.unsubscribe();
-    this.featuresThemeSubscription.unsubscribe();
-    this.featuresTemplateSubscription.unsubscribe();
-    if (this.defaultFeaturesStyleSubscription) {
-      this.defaultFeaturesStyleSubscription.unsubscribe();
-    }
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

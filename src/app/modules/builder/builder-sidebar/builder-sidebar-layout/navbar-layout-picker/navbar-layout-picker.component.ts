@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BuilderNavbarService } from '../../../builder-components/builder-navbar/builder-navbar.service';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ActiveComponents, ActiveComponentsPartialSelector } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { TemplateService } from '../../../../../shared/services/template.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar-layout-picker',
@@ -30,14 +31,7 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
   navbarTemplate: any;
   defaultNavbarStyle: any;
   pageComponents: any;
-
-  private navbarLinkStyleSubscription: Subscription;
-  private navbarBrandStyleSubscription: Subscription;
-  private navbarLogoImageStyleSubscription: Subscription;
-  private navbarLogoImageSubscription: Subscription;
-  private navbarTemplateSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private defaultNavbarStyleSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private templateService: TemplateService,
@@ -47,89 +41,97 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
-      if (response) {
-        this.navbarLinkStyle = response;
-      }
-    });
+    this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLinkStyle = response;
+        }
+      });
 
-    this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
-      if (response) {
-        this.navbarLogoImage = response;
-      }
-    });
+    this.builderNavbarService.navbarLogoImage.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLogoImage = response;
+        }
+      });
 
-    this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
-      if (response) {
-        this.navbarLogoImageStyle = response;
-        if (this.navbarLogoImageStyle['padding-top']) {
-          this.navbarLogoImagePaddingTop = this.navbarLogoImageStyle['padding-top'].replace('px', '');
-        }
-        if (this.navbarLogoImageStyle['padding-left']) {
-          this.navbarLogoImagePaddingLeft = this.navbarLogoImageStyle['padding-left'].replace('px', '');
-        }
-        if (this.navbarLogoImageStyle['padding-right']) {
-          this.navbarLogoImagePaddingRight = this.navbarLogoImageStyle['padding-right'].replace('px', '');
-        }
-        if (this.navbarLogoImageStyle['padding-bottom']) {
-          this.navbarLogoImagePaddingBottom = this.navbarLogoImageStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
-
-    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
-      if (response) {
-        this.navbarLinkStyle = response;
-        if (this.navbarLinkStyle['padding-top']) {
-          this.navbarLinkPaddingTop = this.navbarLinkStyle['padding-top'].replace('px', '');
-        }
-        if (this.navbarLinkStyle['padding-left']) {
-          this.navbarLinkPaddingLeft = this.navbarLinkStyle['padding-left'].replace('px', '');
-        }
-        if (this.navbarLinkStyle['padding-right']) {
-          this.navbarLinkPaddingRight = this.navbarLinkStyle['padding-right'].replace('px', '');
-        }
-        if (this.navbarLinkStyle['padding-bottom']) {
-          this.navbarLinkPaddingBottom = this.navbarLinkStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
-
-    this.navbarBrandStyleSubscription = this.builderNavbarService.navbarBrandStyle.subscribe(response => {
-      if (response) {
-        this.navbarBrandStyle = response;
-        if (this.navbarBrandStyle['padding-top']) {
-          this.navbarBrandPaddingTop = this.navbarBrandStyle['padding-top'].replace('px', '');
-        }
-        if (this.navbarBrandStyle['padding-left']) {
-          this.navbarBrandPaddingLeft = this.navbarBrandStyle['padding-left'].replace('px', '');
-        }
-        if (this.navbarBrandStyle['padding-right']) {
-          this.navbarBrandPaddingRight = this.navbarBrandStyle['padding-right'].replace('px', '');
-        }
-        if (this.navbarBrandStyle['padding-bottom']) {
-          this.navbarBrandPaddingBottom = this.navbarBrandStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
-
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(navbarTemplateResponse => {
-      if (navbarTemplateResponse) {
-        this.navbarTemplate = navbarTemplateResponse;
-
-        this.defaultNavbarStyleSubscription = this.templateService.getTemplateStyle(this.navbarTemplate).subscribe(response => {
-          if (response) {
-            this.defaultNavbarStyle = response[ActiveComponents.Navbar];
+    this.builderNavbarService.navbarLogoImageStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLogoImageStyle = response;
+          if (this.navbarLogoImageStyle['padding-top']) {
+            this.navbarLogoImagePaddingTop = this.navbarLogoImageStyle['padding-top'].replace('px', '');
           }
-        });
-      }
-    });
+          if (this.navbarLogoImageStyle['padding-left']) {
+            this.navbarLogoImagePaddingLeft = this.navbarLogoImageStyle['padding-left'].replace('px', '');
+          }
+          if (this.navbarLogoImageStyle['padding-right']) {
+            this.navbarLogoImagePaddingRight = this.navbarLogoImageStyle['padding-right'].replace('px', '');
+          }
+          if (this.navbarLogoImageStyle['padding-bottom']) {
+            this.navbarLogoImagePaddingBottom = this.navbarLogoImageStyle['padding-bottom'].replace('px', '');
+          }
+        }
+      });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+    this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLinkStyle = response;
+          if (this.navbarLinkStyle['padding-top']) {
+            this.navbarLinkPaddingTop = this.navbarLinkStyle['padding-top'].replace('px', '');
+          }
+          if (this.navbarLinkStyle['padding-left']) {
+            this.navbarLinkPaddingLeft = this.navbarLinkStyle['padding-left'].replace('px', '');
+          }
+          if (this.navbarLinkStyle['padding-right']) {
+            this.navbarLinkPaddingRight = this.navbarLinkStyle['padding-right'].replace('px', '');
+          }
+          if (this.navbarLinkStyle['padding-bottom']) {
+            this.navbarLinkPaddingBottom = this.navbarLinkStyle['padding-bottom'].replace('px', '');
+          }
+        }
+      });
+
+    this.builderNavbarService.navbarBrandStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarBrandStyle = response;
+          if (this.navbarBrandStyle['padding-top']) {
+            this.navbarBrandPaddingTop = this.navbarBrandStyle['padding-top'].replace('px', '');
+          }
+          if (this.navbarBrandStyle['padding-left']) {
+            this.navbarBrandPaddingLeft = this.navbarBrandStyle['padding-left'].replace('px', '');
+          }
+          if (this.navbarBrandStyle['padding-right']) {
+            this.navbarBrandPaddingRight = this.navbarBrandStyle['padding-right'].replace('px', '');
+          }
+          if (this.navbarBrandStyle['padding-bottom']) {
+            this.navbarBrandPaddingBottom = this.navbarBrandStyle['padding-bottom'].replace('px', '');
+          }
+        }
+      });
+
+    this.builderNavbarService.navbarTemplate.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(navbarTemplateResponse => {
+        if (navbarTemplateResponse) {
+          this.navbarTemplate = navbarTemplateResponse;
+
+          this.templateService.getTemplateStyle(this.navbarTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultNavbarStyle = response[ActiveComponents.Navbar];
+              }
+            });
+        }
+      });
+
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
   }
 
   setNavbarLayoutClass(navbarLayoutClass: string) {
@@ -243,13 +245,8 @@ export class NavbarLayoutPickerComponent implements OnInit, OnDestroy {
     this.setNavbarLayoutClass('navbar-nav ml-auto');
   }
 
-  ngOnDestroy() {
-    this.navbarLinkStyleSubscription.unsubscribe();
-    this.navbarBrandStyleSubscription.unsubscribe();
-    this.navbarLogoImageStyleSubscription.unsubscribe();
-    this.navbarLogoImageSubscription.unsubscribe();
-    this.navbarTemplateSubscription.unsubscribe();
-    this.defaultNavbarStyleSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

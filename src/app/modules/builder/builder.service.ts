@@ -148,19 +148,6 @@ export class BuilderService {
     this.triggerScrollTo(`${this.activeEditComponent.getValue()}-options`);
   }
 
-  setSidebarPagesSetting() {
-    this.resetAll();
-    this.sidebarPagesMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarPagesTab.next(this.SIDEBAR_ACTIVE_TAB);
-    this.triggerScrollTo('pages');
-  }
-
-  setSidebarDataSetting() {
-    this.resetAll();
-    this.sidebarDataMenu.next(this.SIDEBAR_ACTIVE_MENU);
-    this.sidebarDataTab.next(this.SIDEBAR_ACTIVE_TAB);
-  }
-
   setActiveEditComponent(componentName: string, componentId: string = null) {
     if (componentId != null) {
       this.activeEditComponentId.next(componentId);
@@ -170,14 +157,16 @@ export class BuilderService {
   }
 
   processIncomingMessages(e: any) {
-    if (e.data.action.includes('colour')) {
-      this.setSidebarColoursSetting();
-    }
-    if (e.data.action.includes('option')) {
-      this.setSidebarOptionsSetting();
-    }
-    if (e.data.action.includes('layout') || e.data.action.includes('postion')) {
-      this.setSidebarLayoutSetting();
+    if (e.data.action) {
+      if (e.data.action.includes('colour')) {
+        this.setSidebarColoursSetting();
+      }
+      if (e.data.action.includes('option')) {
+        this.setSidebarOptionsSetting();
+      }
+      if (e.data.action.includes('layout') || e.data.action.includes('postion')) {
+        this.setSidebarLayoutSetting();
+      }
     }
   }
 

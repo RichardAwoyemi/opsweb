@@ -1,11 +1,11 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderHeroService } from './builder-hero.service';
-import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { IComponent } from '../../../../shared/models/component';
+import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
+import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
-import { UtilService } from '../../../../shared/services/util.service';
+import { BuilderHeroService } from './builder-hero.service';
 
 @Component({
   selector: 'app-builder-hero',
@@ -39,30 +39,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   pageComponents: any;
   websiteMode = false;
   componentActive = false;
-
-  private heroTemplateSubscription: Subscription;
-  private heroImageSizeSubscription: Subscription;
-  private activeEditComponentSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private heroButtonStyleSubscription: Subscription;
-  private heroHeadingStyleSubscription: Subscription;
-  private heroSubheadingStyleSubscription: Subscription;
-  private heroImageUrlSubscription: Subscription;
-  private heroImageAltSubscription: Subscription;
-  private heroBackgroundStyleSubscription: Subscription;
-  private heroThemeSubscription: Subscription;
-  private heroButtonLinkSubscription: Subscription;
-  private previewModeSubscription: Subscription;
-  private heroHeadingTextSubscription: Subscription;
-  private heroButtonTextSubscription: Subscription;
-  private heroSubheadingTextSubscription: Subscription;
-  private heroComponentLayoutSubscription: Subscription;
-  private heroImageContainerClassSubscription: Subscription;
-  private heroTextContainerClassSubscription: Subscription;
-  private activeElementSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private websiteModeSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -75,71 +52,78 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.websiteModeSubscription = this.builderService.websiteMode.subscribe(response => {
-      if (response) {
-        this.websiteMode = response;
-      }
-    });
+    this.builderService.websiteMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteMode = response;
+        }
+      });
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      this.previewMode = response;
-    });
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.previewMode = response;
+      });
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+        }
+      });
 
-    this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
-      if (response) {
-        this.activeElement = response;
-      }
-    });
+    this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeElement = response;
+        }
+      });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
-      if (activePageSettingResponse) {
-        this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-          if (response) {
-            this.pageComponents = response;
-            this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
-            if (this.elementRef.nativeElement['id']) {
-              this.componentId = this.elementRef.nativeElement['id'];
-              for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-                const pageName = this.pageComponents['pages'][i]['name'];
-                if (pageName === this.activePageSetting) {
-                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                      this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                      this.heroBackgroundStyle = this.componentDetail['style']['heroBackgroundStyle'];
-                      this.heroHeadingStyle = this.componentDetail['style']['heroHeadingStyle'];
-                      this.heroSubheadingStyle = this.componentDetail['style']['heroSubheadingStyle'];
-                      this.heroButtonStyle = this.componentDetail['style']['heroButtonStyle'];
-                      this.heroImageUrl = this.componentDetail['style']['heroImageStyle']['src'];
-                      this.heroImageAlt = this.componentDetail['style']['heroImageStyle']['alt'];
-                      this.heroComponentLayout = this.componentDetail['heroComponentLayout'];
-                      this.heroImageSize = this.componentDetail['style']['heroImageStyle']['width'].replace('%', '');
-                      this.heroTheme = this.componentDetail['heroTheme'];
-                      this.heroButtonLink = this.componentDetail['heroButtonLink'];
-                      this.heroHeadingText = this.componentDetail['heroHeadingText'];
-                      this.heroSubheadingText = this.componentDetail['heroSubheadingText'];
-                      this.heroButtonText = this.componentDetail['heroButtonText'];
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(activePageSettingResponse => {
+        if (activePageSettingResponse) {
+          this.activePageSetting = activePageSettingResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.pageComponents = response;
+                this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
+                if (this.elementRef.nativeElement['id']) {
+                  this.componentId = this.elementRef.nativeElement['id'];
+                  for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                    const pageName = this.pageComponents['pages'][i]['name'];
+                    if (pageName === this.activePageSetting) {
+                      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                          this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                          this.heroBackgroundStyle = this.componentDetail['style']['heroBackgroundStyle'];
+                          this.heroHeadingStyle = this.componentDetail['style']['heroHeadingStyle'];
+                          this.heroSubheadingStyle = this.componentDetail['style']['heroSubheadingStyle'];
+                          this.heroButtonStyle = this.componentDetail['style']['heroButtonStyle'];
+                          this.heroImageUrl = this.componentDetail['style']['heroImageStyle']['src'];
+                          this.heroImageAlt = this.componentDetail['style']['heroImageStyle']['alt'];
+                          this.heroComponentLayout = this.componentDetail['heroComponentLayout'];
+                          this.heroImageSize = this.componentDetail['style']['heroImageStyle']['width'].replace('%', '');
+                          this.heroTheme = this.componentDetail['heroTheme'];
+                          this.heroButtonLink = this.componentDetail['heroButtonLink'];
+                          this.heroHeadingText = this.componentDetail['heroHeadingText'];
+                          this.heroSubheadingText = this.componentDetail['heroSubheadingText'];
+                          this.heroButtonText = this.componentDetail['heroButtonText'];
+                        }
+                      }
                     }
                   }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
   }
 
   setActiveEditComponent() {
@@ -311,29 +295,8 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     }
   }
 
-  ngOnDestroy() {
-    UtilService.safeUnsubscribe(this.activeEditComponentSubscription);
-    UtilService.safeUnsubscribe(this.heroBackgroundStyleSubscription);
-    UtilService.safeUnsubscribe(this.heroButtonStyleSubscription);
-    UtilService.safeUnsubscribe(this.heroHeadingStyleSubscription);
-    UtilService.safeUnsubscribe(this.heroSubheadingStyleSubscription);
-    UtilService.safeUnsubscribe(this.heroImageUrlSubscription);
-    UtilService.safeUnsubscribe(this.heroImageAltSubscription);
-    UtilService.safeUnsubscribe(this.heroHeadingTextSubscription);
-    UtilService.safeUnsubscribe(this.heroThemeSubscription);
-    UtilService.safeUnsubscribe(this.heroTemplateSubscription);
-    UtilService.safeUnsubscribe(this.heroButtonTextSubscription);
-    UtilService.safeUnsubscribe(this.heroSubheadingTextSubscription);
-    UtilService.safeUnsubscribe(this.previewModeSubscription);
-    UtilService.safeUnsubscribe(this.heroComponentLayoutSubscription);
-    UtilService.safeUnsubscribe(this.heroImageContainerClassSubscription);
-    UtilService.safeUnsubscribe(this.activeElementSubscription);
-    UtilService.safeUnsubscribe(this.builderComponentsSubscription);
-    UtilService.safeUnsubscribe(this.activePageSettingSubscription);
-    UtilService.safeUnsubscribe(this.heroImageSizeSubscription);
-    UtilService.safeUnsubscribe(this.activeEditComponentIdSubscription);
-    UtilService.safeUnsubscribe(this.heroTextContainerClassSubscription);
-    UtilService.safeUnsubscribe(this.heroButtonLinkSubscription);
-    UtilService.safeUnsubscribe(this.websiteModeSubscription);
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

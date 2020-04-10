@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
-import { WebsiteService } from '../../../../shared/services/website.service';
-import { Router } from '@angular/router';
-import { UtilService } from '../../../../shared/services/util.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
+import { WebsiteService } from '../../../../shared/services/website.service';
 
 @Component({
   selector: 'app-builder-publish-website-modal',
@@ -15,8 +15,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class BuilderPublishWebsiteModalComponent implements IModalComponent, OnInit, OnDestroy {
   websiteId: string;
 
-  private websiteIdSubscription: Subscription;
-  private authSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -28,11 +27,12 @@ export class BuilderPublishWebsiteModalComponent implements IModalComponent, OnI
   }
 
   ngOnInit() {
-    this.websiteIdSubscription = this.websiteService.websiteId.subscribe(response => {
-      if (response) {
-        this.websiteId = response;
-      }
-    });
+    this.websiteService.websiteId.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteId = response;
+        }
+      });
   }
 
   onCloseButtonClick() {
@@ -41,21 +41,22 @@ export class BuilderPublishWebsiteModalComponent implements IModalComponent, OnI
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
-    this.authSubscription = this.afAuth.authState.subscribe(result => {
-      if (result) {
-        this.websiteService.saveWebsite(result.uid).then(() => {
-          this.router.navigate(['websites', this.websiteId]).then(() => {
-            this.toastrService.success(`Your website has been published.`, 'Great!');
+    this.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.websiteService.saveWebsite(result.uid).then(() => {
+            this.router.navigate(['websites', this.websiteId]).then(() => {
+              this.toastrService.success(`Your website has been published.`, 'Great!');
+            });
+          }).catch(() => {
+            this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
           });
-        }).catch(() => {
-          this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
-        });
-      }
-    });
+        }
+      });
   }
 
-  ngOnDestroy() {
-    UtilService.safeUnsubscribe(this.websiteIdSubscription);
-    UtilService.safeUnsubscribe(this.authSubscription);
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

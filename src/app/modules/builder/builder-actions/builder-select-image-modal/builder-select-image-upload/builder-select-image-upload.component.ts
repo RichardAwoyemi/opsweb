@@ -1,8 +1,9 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
-import { debounce } from '../../../../../shared/decorators/debounce.decorator';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { debounce } from '../../../../../shared/decorators/debounce.decorator';
+import { BuilderHeroService } from '../../../builder-components/builder-hero/builder-hero.service';
 import { BuilderActionsService } from '../../builder-actions.service';
 
 @Component({
@@ -17,8 +18,7 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
   innerHeight: number;
   croppedImage: any;
   imageChangedEvent: any;
-
-  private heroImageStyleSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderHeroService: BuilderHeroService,
@@ -30,7 +30,8 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight - 284;
     this.imageHeight = window.innerHeight - 385;
 
-    this.heroImageStyleSubscription = this.builderHeroService.heroImageStyle.subscribe(response => {
+    this.builderHeroService.heroImageStyle.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(response => {
       if (response) {
         this.heroImageUrl = response['src'];
         this.heroImageAlt = response['alt'];
@@ -69,7 +70,8 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy {
     this.builderActionsService.activeLibrarySelectedImageAlt.next(this.heroImageAlt);
   }
 
-  ngOnDestroy() {
-    this.heroImageStyleSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

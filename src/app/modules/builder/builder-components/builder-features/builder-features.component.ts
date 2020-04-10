@@ -1,10 +1,11 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { BuilderService } from '../../builder.service';
-import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings, ActiveThemes } from '../../builder';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { IComponent } from '../../../../shared/models/component';
-import { BuilderFeaturesService } from './builder-features.service';
+import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings, ActiveThemes } from '../../builder';
+import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
+import { BuilderFeaturesService } from './builder-features.service';
 
 @Component({
   selector: 'app-builder-features',
@@ -30,21 +31,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   featuresTheme: string = ActiveThemes.Default;
   featuresTemplate: string;
   featuresWidth: string;
-
-  private featuresBreakpointSubscription: Subscription;
-  private featuresStyleSubscription: Subscription;
-  private activeEditComponentSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private previewModeSubscription: Subscription;
-  private featuresItemArraySubscription: Subscription;
-  private featuresThemeSubscription: Subscription;
-  private featuresHeadingStyleSubscription: Subscription;
-  private featuresSubheadingStyleSubscription: Subscription;
-  private activeElementSubscription: Subscription;
-  private componentsDetailSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private featuresTemplateSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -57,81 +44,91 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      this.previewMode = response;
-    });
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.previewMode = response;
+      });
 
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+        }
+      });
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
-    this.featuresBreakpointSubscription = this.builderFeaturesService.featuresBreakpoint.subscribe(response => {
-      if (response) {
-        this.setFeaturesWidth();
-      }
-    });
+    this.builderFeaturesService.featuresBreakpoint.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.setFeaturesWidth();
+        }
+      });
 
-    this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
-      if (response) {
-        this.activeElement = response;
-      }
-    });
+    this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeElement = response;
+        }
+      });
 
-    this.builderService.toolbarMobileOrientationButton.subscribe(response => {
-      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setFeaturesWidth(ActiveOrientations.Mobile);
-      }
-    });
+    this.builderService.toolbarMobileOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+          this.setFeaturesWidth(ActiveOrientations.Mobile);
+        }
+      });
 
-    this.builderService.toolbarDesktopOrientationButton.subscribe(response => {
-      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setFeaturesWidth(ActiveOrientations.Desktop);
-      }
-    });
+    this.builderService.toolbarDesktopOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+          this.setFeaturesWidth(ActiveOrientations.Desktop);
+        }
+      });
 
-    this.builderService.toolbarTabletOrientationButton.subscribe(response => {
-      if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-        this.setFeaturesWidth(ActiveOrientations.Tablet);
-      }
-    });
+    this.builderService.toolbarTabletOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
+          this.setFeaturesWidth(ActiveOrientations.Tablet);
+        }
+      });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
-      if (activePageSettingResponse) {
-        this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-          if (response) {
-            this.pageComponents = response;
-            this.featuresTemplate = this.pageComponents['template'];
-            this.componentId = this.elementRef.nativeElement['id'];
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              const pageName = this.pageComponents['pages'][i]['name'];
-              if (pageName === this.activePageSetting) {
-                for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                  if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                    this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                    this.featuresItemArray = this.componentDetail['featuresItemArray'];
-                    this.featuresStyle = this.componentDetail['style']['featuresStyle'];
-                    this.featuresHeadingStyle = this.componentDetail['style']['featuresHeadingStyle'];
-                    this.featuresSubheadingStyle = this.componentDetail['style']['featuresSubheadingStyle'];
-                    this.featuresTheme = this.componentDetail['featuresTheme'];
-                    this.featuresWidth = this.componentDetail['featuresWidth'];
-                    this.componentIndex = this.componentDetail['componentIndex'];
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(activePageSettingResponse => {
+        if (activePageSettingResponse) {
+          this.activePageSetting = activePageSettingResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.pageComponents = response;
+                this.featuresTemplate = this.pageComponents['template'];
+                this.componentId = this.elementRef.nativeElement['id'];
+                for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                  const pageName = this.pageComponents['pages'][i]['name'];
+                  if (pageName === this.activePageSetting) {
+                    for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                      if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                        this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                        this.featuresItemArray = this.componentDetail['featuresItemArray'];
+                        this.featuresStyle = this.componentDetail['style']['featuresStyle'];
+                        this.featuresHeadingStyle = this.componentDetail['style']['featuresHeadingStyle'];
+                        this.featuresSubheadingStyle = this.componentDetail['style']['featuresSubheadingStyle'];
+                        this.featuresTheme = this.componentDetail['featuresTheme'];
+                        this.featuresWidth = this.componentDetail['featuresWidth'];
+                        this.componentIndex = this.componentDetail['componentIndex'];
+                      }
+                    }
                   }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
   }
 
   setFeaturesWidth(orientation: string = null) {
@@ -281,48 +278,8 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
     this.builderComponentsService.setPageComponentById(this.componentId, 'featuresItemArray', this.featuresItemArray);
   }
 
-  ngOnDestroy() {
-    if (this.featuresBreakpointSubscription) {
-      this.featuresBreakpointSubscription.unsubscribe();
-    }
-    if (this.featuresHeadingStyleSubscription) {
-      this.featuresHeadingStyleSubscription.unsubscribe();
-    }
-    if (this.featuresSubheadingStyleSubscription) {
-      this.featuresSubheadingStyleSubscription.unsubscribe();
-    }
-    if (this.featuresStyleSubscription) {
-      this.featuresStyleSubscription.unsubscribe();
-    }
-    if (this.featuresThemeSubscription) {
-      this.featuresThemeSubscription.unsubscribe();
-    }
-    if (this.activeEditComponentIdSubscription) {
-      this.activeEditComponentIdSubscription.unsubscribe();
-    }
-    if (this.previewModeSubscription) {
-      this.previewModeSubscription.unsubscribe();
-    }
-    if (this.activeEditComponentSubscription) {
-      this.activeEditComponentSubscription.unsubscribe();
-    }
-    if (this.featuresItemArraySubscription) {
-      this.featuresItemArraySubscription.unsubscribe();
-    }
-    if (this.componentsDetailSubscription) {
-      this.componentsDetailSubscription.unsubscribe();
-    }
-    if (this.builderComponentsSubscription) {
-      this.builderComponentsSubscription.unsubscribe();
-    }
-    if (this.activeElementSubscription) {
-      this.activeElementSubscription.unsubscribe();
-    }
-    if (this.activePageSettingSubscription) {
-      this.activePageSettingSubscription.unsubscribe();
-    }
-    if (this.featuresTemplateSubscription) {
-      this.featuresTemplateSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
-import { Subscription } from 'rxjs';
-import { ActiveComponents, ActiveTemplates } from '../../../builder';
-import { BuilderService } from '../../../builder.service';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
-import { WebsiteService } from '../../../../../shared/services/website.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from '../../../../../shared/services/template.service';
+import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveTemplates } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
+import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-features-layout-picker',
@@ -34,16 +35,7 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
   pageComponents: any;
   activeEditComponentId: string;
   websiteChangeCount: number;
-
-  private featuresHeadingStyleSubscription: Subscription;
-  private featuresSubheadingStyleSubscription: Subscription;
-  private featuresStyleSubscription: Subscription;
-  private featuresAlignmentClassSubscription: Subscription;
-  private featuresTemplateSubscription: Subscription;
-  private defaultFeaturesStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderFeaturesService: BuilderFeaturesService,
@@ -55,100 +47,109 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
-
-    this.featuresTemplateSubscription = this.builderFeaturesService.featuresTemplate.subscribe(featuresTemplateResponse => {
-      this.featuresTemplate = featuresTemplateResponse;
-
-      this.defaultFeaturesStyleSubscription = this.templateService.getTemplateStyle(this.featuresTemplate).subscribe(response => {
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
         if (response) {
-          this.defaultFeaturesStyle = response[ActiveComponents.Features];
+          this.activeEditComponentId = response;
         }
       });
-    });
 
-    this.featuresAlignmentClassSubscription = this.builderFeaturesService.featuresAlignmentClass.subscribe(response => {
-      this.featuresAlignmentClass = response;
-    });
+    this.builderFeaturesService.featuresTemplate.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(featuresTemplateResponse => {
+        this.featuresTemplate = featuresTemplateResponse;
 
-    this.featuresHeadingStyleSubscription = this.builderFeaturesService.featuresHeadingStyle.subscribe(response => {
-      if (response) {
-        this.featuresHeadingStyle = response;
-        if (this.featuresHeadingStyle['padding-top']) {
-          this.featuresHeadingPaddingTop = this.featuresHeadingStyle['padding-top'].replace('px', '');
-        }
-        if (this.featuresHeadingStyle['padding-left']) {
-          this.featuresHeadingPaddingLeft = this.featuresHeadingStyle['padding-left'].replace('px', '');
-        }
-        if (this.featuresHeadingStyle['padding-right']) {
-          this.featuresHeadingPaddingRight = this.featuresHeadingStyle['padding-right'].replace('px', '');
-        }
-        if (this.featuresHeadingStyle['padding-bottom']) {
-          this.featuresHeadingPaddingBottom = this.featuresHeadingStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+        this.templateService.getTemplateStyle(this.featuresTemplate).pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(response => {
+            if (response) {
+              this.defaultFeaturesStyle = response[ActiveComponents.Features];
+            }
+          });
+      });
 
-    this.featuresSubheadingStyleSubscription = this.builderFeaturesService.featuresSubheadingStyle.subscribe(response => {
-      if (response) {
-        this.featuresSubheadingStyle = response;
-        if (this.featuresSubheadingStyle['padding-top']) {
-          this.featuresSubheadingPaddingTop = this.featuresSubheadingStyle['padding-top'].replace('px', '');
-        }
-        if (this.featuresSubheadingStyle['padding-left']) {
-          this.featuresSubheadingPaddingLeft = this.featuresSubheadingStyle['padding-left'].replace('px', '');
-        }
-        if (this.featuresSubheadingStyle['padding-right']) {
-          this.featuresSubheadingPaddingRight = this.featuresSubheadingStyle['padding-right'].replace('px', '');
-        }
-        if (this.featuresSubheadingStyle['padding-bottom']) {
-          this.featuresSubheadingPaddingBottom = this.featuresSubheadingStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+    this.builderFeaturesService.featuresAlignmentClass.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.featuresAlignmentClass = response;
+      });
 
-    this.featuresStyleSubscription = this.builderFeaturesService.featuresStyle.subscribe(response => {
-      if (response) {
-        this.featuresStyle = response;
-        if (this.featuresStyle['padding-top']) {
-          this.featuresPaddingTop = this.featuresStyle['padding-top'].replace('px', '');
+    this.builderFeaturesService.featuresHeadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.featuresHeadingStyle = response;
+          if (this.featuresHeadingStyle['padding-top']) {
+            this.featuresHeadingPaddingTop = this.featuresHeadingStyle['padding-top'].replace('px', '');
+          }
+          if (this.featuresHeadingStyle['padding-left']) {
+            this.featuresHeadingPaddingLeft = this.featuresHeadingStyle['padding-left'].replace('px', '');
+          }
+          if (this.featuresHeadingStyle['padding-right']) {
+            this.featuresHeadingPaddingRight = this.featuresHeadingStyle['padding-right'].replace('px', '');
+          }
+          if (this.featuresHeadingStyle['padding-bottom']) {
+            this.featuresHeadingPaddingBottom = this.featuresHeadingStyle['padding-bottom'].replace('px', '');
+          }
         }
-        if (this.featuresStyle['padding-left']) {
-          this.featuresPaddingLeft = this.featuresStyle['padding-left'].replace('px', '');
-        }
-        if (this.featuresStyle['padding-right']) {
-          this.featuresPaddingRight = this.featuresStyle['padding-right'].replace('px', '');
-        }
-        if (this.featuresStyle['padding-bottom']) {
-          this.featuresPaddingBottom = this.featuresStyle['padding-bottom'].replace('px', '');
-        }
-      }
-    });
+      });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-        for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-          for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-            if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
-              this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresStyle'];
-              this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresHeadingStyle'];
-              this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresSubheadingStyle'];
+    this.builderFeaturesService.featuresSubheadingStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.featuresSubheadingStyle = response;
+          if (this.featuresSubheadingStyle['padding-top']) {
+            this.featuresSubheadingPaddingTop = this.featuresSubheadingStyle['padding-top'].replace('px', '');
+          }
+          if (this.featuresSubheadingStyle['padding-left']) {
+            this.featuresSubheadingPaddingLeft = this.featuresSubheadingStyle['padding-left'].replace('px', '');
+          }
+          if (this.featuresSubheadingStyle['padding-right']) {
+            this.featuresSubheadingPaddingRight = this.featuresSubheadingStyle['padding-right'].replace('px', '');
+          }
+          if (this.featuresSubheadingStyle['padding-bottom']) {
+            this.featuresSubheadingPaddingBottom = this.featuresSubheadingStyle['padding-bottom'].replace('px', '');
+          }
+        }
+      });
+
+    this.builderFeaturesService.featuresStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.featuresStyle = response;
+          if (this.featuresStyle['padding-top']) {
+            this.featuresPaddingTop = this.featuresStyle['padding-top'].replace('px', '');
+          }
+          if (this.featuresStyle['padding-left']) {
+            this.featuresPaddingLeft = this.featuresStyle['padding-left'].replace('px', '');
+          }
+          if (this.featuresStyle['padding-right']) {
+            this.featuresPaddingRight = this.featuresStyle['padding-right'].replace('px', '');
+          }
+          if (this.featuresStyle['padding-bottom']) {
+            this.featuresPaddingBottom = this.featuresStyle['padding-bottom'].replace('px', '');
+          }
+        }
+      });
+
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+          for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+            for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+              if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.activeEditComponentId) {
+                this.featuresStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresStyle'];
+                this.featuresHeadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresHeadingStyle'];
+                this.featuresSubheadingStyle = this.pageComponents['pages'][i]['components'][j]['style']['featuresSubheadingStyle'];
+              }
             }
           }
         }
-      }
-    });
+      });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
 
   }
 
@@ -275,16 +276,8 @@ export class FeaturesLayoutPickerComponent implements OnInit, OnDestroy {
     this.builderFeaturesService.featuresSubheadingStyle.next(this.featuresSubheadingStyle);
   }
 
-  ngOnDestroy() {
-    this.featuresHeadingStyleSubscription.unsubscribe();
-    this.featuresSubheadingStyleSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.featuresStyleSubscription.unsubscribe();
-    this.featuresAlignmentClassSubscription.unsubscribe();
-    this.featuresTemplateSubscription.unsubscribe();
-    this.defaultFeaturesStyleSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
