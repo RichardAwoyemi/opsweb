@@ -107,23 +107,23 @@ export class BuilderFooterService {
     this.footerMenuOptions.next(footerMenuOptions);
   }
 
-  refreshFooterOptions(newPageArray = this.builderComponentsService.getPageArray(), oldPageArray = this.footerMenuOptions.getValue()) {
-    const newFooterMenuOptions = [];
-    for (let i = 0; i < newPageArray.length; i++) {
-      let matchedOption = oldPageArray.filter(option => {
-        let optionBoolean = false;
+  updateFooterMenuOptions(newPages = this.builderComponentsService.getPages(), oldPages = this.footerMenuOptions.getValue()) {
+    const footerMenuOptions = [];
+    for (let i = 0; i < newPages.length; i++) {
+      let footerMenuOption = oldPages.filter(option => {
+        let footerMenuOptionVisibility = false;
         if (option) {
-          optionBoolean = option['page'] === newPageArray[i];
+          footerMenuOptionVisibility = option['page'] === newPages[i];
         }
-        return optionBoolean;
+        return footerMenuOptionVisibility;
       });
-      if (matchedOption.length > 0) {
-        matchedOption = matchedOption[0];
+      if (footerMenuOption.length > 0) {
+        footerMenuOption = footerMenuOption[0];
       } else {
-        matchedOption = { 'page': newPageArray[i], 'visible': false };
+        footerMenuOption = { 'page': newPages[i], 'visible': false };
       }
-      newFooterMenuOptions.push(matchedOption);
+      footerMenuOptions.push(footerMenuOption);
     }
-    this.footerMenuOptions.next(newFooterMenuOptions);
+    this.footerMenuOptions.next(footerMenuOptions);
   }
 }

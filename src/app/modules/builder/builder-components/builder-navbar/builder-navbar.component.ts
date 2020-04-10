@@ -5,7 +5,13 @@ import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from 'src/app/shared/services/template.service';
 import { IComponent } from '../../../../shared/models/component';
 import { UtilService } from '../../../../shared/services/util.service';
-import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings, ActiveThemes } from '../../builder';
+import {
+  ActiveComponents,
+  ActiveComponentsPartialSelector,
+  ActiveElements,
+  ActiveSettings,
+  ActiveThemes
+} from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
 import { BuilderFooterService } from '../builder-footer/builder-footer.service';
@@ -166,7 +172,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
                 this.componentId = this.elementRef.nativeElement['id'];
                 for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
                   if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
-                    this.builderNavbarService.navbarMenuOptions.next(this.builderComponentsService.getPageArray());
+                    this.builderNavbarService.navbarMenuOptions.next(this.builderComponentsService.getPages());
                     this.componentDetail = this.pageComponents['pages'][0]['components'][j];
                     this.builderNavbarService.navbarStyle.next(this.componentDetail['style']['navbarStyle']);
                     this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['style']['navbarLinkStyle']);

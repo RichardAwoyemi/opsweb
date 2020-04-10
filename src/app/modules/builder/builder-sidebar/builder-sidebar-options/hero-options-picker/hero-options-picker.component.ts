@@ -73,7 +73,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
                       this.heroImageUrl = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['src'];
                       this.heroImageAlt = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['alt'];
                       this.heroImageSize = this.pageComponents['pages'][i]['components'][j]['style']['heroImageStyle']['width'].replace('%', '');
-                      this.menuOptions = this.builderComponentsService.getPageArray();
+                      this.menuOptions = this.builderComponentsService.getPages();
                       this.menuOption = this.pageComponents['pages'][i]['components'][j]['heroButtonLink'] || this.menuOptions[Math.min(1, this.pageComponents['pages'].length - 1)];
                     }
                   }
@@ -185,7 +185,6 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   openSelectImageModal() {
-
     const modalRef = this.modalService.open(BuilderSelectImageModalComponent, {
       windowClass: 'modal-holder',
       centered: true,
@@ -342,7 +341,7 @@ export class HeroOptionsPickerComponent implements OnInit, OnDestroy {
   }
 
   resetHeroButtonLink() {
-    this.menuOption = this.menuOptions[Math.min(1, this.pageComponents['pages'].length - 1)]
+    this.menuOption = this.menuOptions[Math.min(1, this.pageComponents['pages'].length - 1)];
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, 'heroButtonLink', this.menuOption);
     this.builderHeroService.heroButtonLink.next(this.menuOption);
   }

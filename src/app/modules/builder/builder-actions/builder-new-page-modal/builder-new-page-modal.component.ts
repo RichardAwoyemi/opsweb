@@ -6,10 +6,8 @@ import { UtilService } from '../../../../shared/services/util.service';
 import { ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
-import { Template } from '../../../../shared/models/template';
 import { TemplateService } from '../../../../shared/services/template.service';
 import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderService } from '../../builder.service';
 import { BuilderActionsService } from '../builder-actions.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -68,7 +66,7 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
 
   onConfirmButtonClick(): void {
     this.activeModal.dismiss();
-    let tempPageComponents = [];
+    const tempPageComponents = [];
     const singleComponentPerPage = ['Navbar', 'Footer'];
     let componentIndex = 1;
 
@@ -77,7 +75,7 @@ export class BuilderNewPageModalComponent implements IModalComponent, OnInit, On
       if (this.builderComponentsService.checkIfComponentExists(ActiveComponentsPartialSelector[componentName])) {
         const componentNameLower = componentName.toLowerCase();
         const position = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector[componentName])[0];
-        let component = this.pageComponents['pages'][position['activePageIndex']]['components'][position['activeComponentIndex']];
+        const component = this.pageComponents['pages'][position['activePageIndex']]['components'][position['activeComponentIndex']];
         component['componentIndex'] = componentIndex;
         const menuOptions = this[`get${componentName}MenuOptions`]();
         this[`${componentNameLower}MenuOptions`].push(menuOptions);

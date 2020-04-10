@@ -212,7 +212,7 @@ export class BuilderComponentsService {
     }
   }
 
-  getPageArray(pageComponents = this.pageComponents.getValue()): Array<String> {
+  getPages(pageComponents = this.pageComponents.getValue()): Array<String> {
     const menuOptions = [];
     for (let i = 0; i < pageComponents['pages'].length; i++) {
       menuOptions.push(pageComponents['pages'][i]['name']);
@@ -222,11 +222,11 @@ export class BuilderComponentsService {
 
   reorderPages(menuOptions) {
     const originalPageComponents = this.pageComponents.getValue();
-    let newPageOrder = {pages: []};
+    const newPageOrder = { pages: [] };
     for (let i = 0; i < menuOptions.length; i++) {
       newPageOrder.pages.push(originalPageComponents['pages'].filter(page => page.name === menuOptions[i])[0]);
     }
-    const pageComponents = {...originalPageComponents, ...newPageOrder};
+    const pageComponents = { ...originalPageComponents, ...newPageOrder };
     this.pageComponents.next(pageComponents);
   }
 

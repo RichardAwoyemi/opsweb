@@ -109,7 +109,7 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         if (response) {
           this.pageComponents = response;
-          this.menuOptions = this.builderComponentsService.getPageArray(this.pageComponents);
+          this.menuOptions = this.builderComponentsService.getPages(this.pageComponents);
         }
       });
   }

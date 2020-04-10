@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from 'src/app/shared/services/template.service';
 import { IComponent } from '../../../../shared/models/component';
 import { UtilService } from '../../../../shared/services/util.service';
-import { ActiveComponents, ActiveElements, ActiveSettings, ActiveComponentsPartialSelector } from '../../builder';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings } from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
 import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
@@ -190,7 +190,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
                 for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
                   if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
                     this.componentDetail = this.pageComponents['pages'][0]['components'][j];
-                    this.builderFooterService.refreshFooterOptions(this.builderComponentsService.getPageArray(), this.componentDetail['footerMenuOptions']);
+                    this.builderFooterService.updateFooterMenuOptions(this.builderComponentsService.getPages(), this.componentDetail['footerMenuOptions']);
                     this.builderFooterService.footerStyle.next(this.componentDetail['style']['footerStyle']);
                     this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['style']['footerSocialLinksContainerStyle']);
                     this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['style']['footerSocialLinksStyle']);

@@ -83,14 +83,14 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
         this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe((response => {
           if (response) {
             this.pageComponents = response;
-            this.menuOptions = this.builderComponentsService.getPageArray(this.pageComponents);
+            this.menuOptions = this.builderComponentsService.getPages(this.pageComponents);
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               if (this.pageComponents['pages'][i]['name'] === this.activePage) {
                 this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
                   return a['componentName'] !== ActiveComponentsPartialSelector.Placeholder;
                 });
               }
-            };
+            }
           }
         }));
       }
