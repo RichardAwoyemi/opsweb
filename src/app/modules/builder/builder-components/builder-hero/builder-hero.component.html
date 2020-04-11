@@ -1,59 +1,71 @@
 <app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
                                [componentName]="componentName"></app-builder-component-toolbar>
-<div [attr.id]="componentId" [ngClass]="setContextMenu()">
-  <div (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
-       [ngStyle]="heroBackgroundStyle" class="jumbotron" style="margin-bottom: 0">
-    <div class="row row-grid align-items-center">
-      <div [ngClass]="setHeroImageContainerClass()">
+<div class="builder-components hero-click outer-container" [attr.id]="componentId" [ngClass]="setContextMenu()">
+  <div class="builder-components hero-click jumbotron"
+       (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
+       [ngStyle]="heroBackgroundStyle" style="margin-bottom: 0">
+    <div class="builder-components hero-click inner-container row row-grid align-items-center">
+      <div class="builder-components hero-img-click img-container"
+           [ngClass]="setHeroImageContainerClass()">
         <div (click)="selectHeroElement($event, componentId + '-' +'hero-image')"
              [class]="setActiveElement('hero-image')"
              [ngClass]="setHeroClass('hero-image')"
              [ngStyle]="setHeroImageStyle()"
              id="{{componentId}}-hero-image">
-          <img [src]="heroImageUrl" alt="{{ heroImageAlt }}" class="img-fluid">
+          <img class="builder-components hero-img-click img-fluid"
+               [src]="heroImageUrl" alt="{{ heroImageAlt }}">
         </div>
       </div>
-      <div [ngClass]="setHeroTextContainerClass()">
-        <div (click)="selectHeroElement($event, componentId + '-' + 'hero-heading')"
+      <div class="builder-components hero-text-contents"
+           [ngClass]="setHeroTextContainerClass()">
+        <div class="builder-components hero-heading-click heading-container"
+             (click)="selectHeroElement($event, componentId + '-' + 'hero-heading')"
              [class]="setActiveElement('hero-heading')"
              [ngClass]="setHeroClass('hero-heading')"
              id="{{componentId}}-hero-heading">
-          <h1 (blur)="removeLineBreaks($event); saveHeroHeadingTextOption($event.target['innerText']);"
+          <h1 class="builder-components hero-heading-click"
+              (blur)="removeLineBreaks($event); saveHeroHeadingTextOption($event.target['innerText']);"
               (keydown.enter)="saveHeroHeadingTextOption($event.target['innerText']); $event.preventDefault()"
               [attr.contenteditable]="setContentEditable()"
               [innerText]="heroHeadingText"
-              [ngStyle]="heroHeadingStyle"
-              class="display-4 text-center text-md-left mb-3">
+              [ngStyle]="heroHeadingStyle">
           </h1>
         </div>
-        <div (click)="selectHeroElement($event, componentId + '-' +'hero-subheading')"
+        <div class="builder-components hero-subheading-click subheading-container"
+             (click)="selectHeroElement($event, componentId + '-' +'hero-subheading')"
              [class]="setActiveElement('hero-subheading')"
              [ngClass]="setHeroClass('hero-subheading')"
              id="{{componentId}}-hero-subheading"
              style="display:inline-block">
-          <p (blur)="removeLineBreaks($event); saveHeroSubheadingTextOption($event.target['innerText']);"
+          <p class="builder-components hero-subheading-click lead text-center text-md-left"
+             (blur)="removeLineBreaks($event); saveHeroSubheadingTextOption($event.target['innerText']);"
              (keydown.enter)="saveHeroSubheadingTextOption($event.target['innerText']); $event.preventDefault()"
              [attr.contenteditable]="setContentEditable()"
              [innerText]="heroSubheadingText"
-             [ngStyle]="heroSubheadingStyle"
-             class="lead text-center text-md-left"></p>
+             [ngStyle]="heroSubheadingStyle"></p>
         </div>
-        <div class="text-center text-md-left mt-5">
-          <div (click)="selectHeroButton($event, componentId + '-' +'hero-button')"
+        <div class="builder-components hero-button-click button-outer-container text-center text-md-left mt-5">
+          <div class="builder-components hero-button-click button-container"
+               (click)="selectHeroButton($event, componentId + '-' +'hero-button')"
                [class]="setActiveElement('hero-button')"
                [ngClass]="setHeroClass('hero-button')"
                id="{{componentId}}-hero-button" style="display:inline-block">
-            <button [ngStyle]="heroButtonStyle"
-                    class="btn hero-button">
-              <span (blur)="removeLineBreaks($event); saveHeroButtonTextOption($event.target['innerText']);"
+            <button class="builder-components hero-button-click btn hero-button"
+                    [ngStyle]="heroButtonStyle">
+              <span class="builder-components hero-button-click"
+                    (blur)="removeLineBreaks($event); saveHeroButtonTextOption($event.target['innerText']);"
                     (keydown.enter)="saveHeroButtonTextOption($event.target['innerText']); $event.preventDefault()"
                     [attr.contenteditable]="setContentEditable()"
                     [innerText]="heroButtonText">
               </span>
             </button>
           </div>
+        
         </div>
+
       </div>
+
     </div>
   </div>
 </div>
+<!-- TAGGED --> 

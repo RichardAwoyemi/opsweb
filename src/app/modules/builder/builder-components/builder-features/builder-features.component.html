@@ -5,7 +5,7 @@
     <div [ngStyle]="setFeaturesOuterStyle()" class="row feature-item" style="margin: 0.03em;">
       <div *ngFor="let feature of featuresItemArray; let i = index" [ngStyle]="setFeaturesInnerStyle()">
         <div style="padding: 12px">
-          <div
+          <div class="features-heading-click"
             (blur)="saveFeaturesHeadingStyleText($event.target['innerText'], i);"
             (click)="selectFeaturesElement($event, componentId+'-'+'heading'+'-'+i)"
             (keydown.enter)="saveFeaturesHeadingStyleText($event.target['innerText'], i); $event.preventDefault()"
@@ -15,7 +15,7 @@
             [ngClass]="setFeaturesClass('features-heading')"
             [ngStyle]="featuresHeadingStyle" id="{{ componentId+'-'+'heading'+'-'+i }}">
           </div>
-          <div
+          <div class="features-subheading-click"
             (blur)="saveFeaturesSubheadingStyleText($event.target['innerText'], i);"
             (click)="selectFeaturesElement($event, componentId+'-'+'subheading'+'-'+i)"
             (keydown.enter)="saveFeaturesSubheadingStyleText($event.target['innerText'], i); $event.preventDefault()"
@@ -29,3 +29,4 @@
     </div>
   </div>
 </div>
+<!-- TAGGED -->
