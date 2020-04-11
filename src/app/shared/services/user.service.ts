@@ -50,11 +50,9 @@ export class UserService {
   }
 
   getUserById(id) {
-    return this.afs.collection('users').doc(id).snapshotChanges().pipe(map(action => {
-      const data = action.payload.data();
-      const uid = action.payload.id;
-      return { uid, ...data };
-    }));
+    if (id) {
+      return this.afs.collection('users', ref => ref.where('uid', '==', id).limit(1)).valueChanges();
+    }
   }
 
   setUserData(user) {
