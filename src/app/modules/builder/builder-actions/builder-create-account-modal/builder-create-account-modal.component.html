@@ -8,6 +8,17 @@
     </button>
   </div>
   <div class="modal-body">
+    <button (click)="googleSignIn()"
+            class="btn btn-lg btn-block btn-secondary" type="button">
+      Continue with Google
+    </button>
+    <button (click)="facebookSignIn()"
+            class="btn btn-lg btn-block btn-secondary" type="button">Continue with Facebook
+    </button>
+    <button (click)="emailSignIn()"
+            class="btn btn-lg btn-block btn-secondary" type="button">
+      Continue with Email
+    </button>
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary builder-modal create-account-close-button"

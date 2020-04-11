@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../builder';
+import { ActiveComponentsPartialSelector, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
 import { BuilderComponentsService } from '../builder-components.service';
+import { TemplateService } from '../../../../shared/services/template.service';
 
 @Injectable()
 export class BuilderFooterService {
@@ -16,14 +17,12 @@ export class BuilderFooterService {
   footerPageLinksStyle = new BehaviorSubject<Object>(null);
   footerCopyrightStyle = new BehaviorSubject<Object>(null);
   footerMenuOptions = new BehaviorSubject<any>([null]);
-  footerComponentLayout = new BehaviorSubject<any>({'layout': 0});
+  footerComponentLayout = new BehaviorSubject<any>({ 'layout': 0 });
 
-  private DEFAULT_TEMPLATE_PATH = './assets/data/web-templates/default.json';
-  private QUICK_TEMPLATE_PATH = './assets/data/web-templates/business-1.json';
-  private FRONT_TEMPLATE_PATH = './assets/data/web-templates/business-2.json';
   private FOOTER_THEME_PATH = './assets/data/web-themes/footer.json';
 
   constructor(
+    private templateService: TemplateService,
     private httpClient: HttpClient,
     private builderComponentsService: BuilderComponentsService
   ) {
@@ -34,25 +33,12 @@ export class BuilderFooterService {
   }
 
   setFooterTemplate(templateId: string) {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        this.httpClient.get(this.DEFAULT_TEMPLATE_PATH).subscribe(response => {
-          this.setFooterTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Quick:
-        this.httpClient.get(this.QUICK_TEMPLATE_PATH).subscribe(response => {
-          this.setFooterTemplateStyle(response);
-        });
-        break;
-      case ActiveTemplates.Front:
-        this.httpClient.get(this.FRONT_TEMPLATE_PATH).subscribe(response => {
-          this.setFooterTemplateStyle(response);
-        });
-        break;
-      default:
-        break;
-    }
+    this.templateService.getTemplateStyle(templateId).subscribe(response => {
+      if (response) {
+        const template = response['footer']['style'];
+        this.setFooterTemplateStyle(template);
+      }
+    });
   }
 
   setFooterTheme(themeId: string) {
@@ -108,24 +94,6 @@ export class BuilderFooterService {
     this.footerSocialLinksContainerStyle.next(template['footerSocialLinksContainerStyle']);
   }
 
-  getDefaultFooterStyle(templateId): Observable<any> {
-    switch (templateId) {
-      case ActiveTemplates.Default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
-      case ActiveTemplates.Quick:
-        return this.httpClient.get(this.QUICK_TEMPLATE_PATH);
-      case ActiveTemplates.Front:
-        return this.httpClient.get(this.FRONT_TEMPLATE_PATH);
-      default:
-        return this.httpClient.get(this.DEFAULT_TEMPLATE_PATH);
-    }
-  }
-
-  setComponentTemplate(templateId) {
-    this.footerTheme.next(ActiveThemes.Default);
-    this.footerTemplate.next(templateId);
-    this.setFooterTemplate(templateId);
-  }
 
   setFooterMenuOptions(pageName, pageIndex) {
     const footerMenuOptions = this.footerMenuOptions.getValue();
@@ -139,16 +107,23 @@ export class BuilderFooterService {
     this.footerMenuOptions.next(footerMenuOptions);
   }
 
-  mapNavbarAndFooterMenuOptions(navbarMenuOptions, footerMenuOptions) {
-    const newFooterMenuOptions = [];
-    for (let i = 0; i < navbarMenuOptions.length; i++) {
-      for (let j = 0; j < footerMenuOptions.length; j++) {
-        if (navbarMenuOptions[i] === footerMenuOptions[j]['page']) {
-          newFooterMenuOptions.push({'page': footerMenuOptions[j]['page'], 'visible': footerMenuOptions[j]['visible']});
+  updateFooterMenuOptions(newPages = this.builderComponentsService.getPages(), oldPages = this.footerMenuOptions.getValue()) {
+    const footerMenuOptions = [];
+    for (let i = 0; i < newPages.length; i++) {
+      let footerMenuOption = oldPages.filter(option => {
+        let footerMenuOptionVisibility = false;
+        if (option) {
+          footerMenuOptionVisibility = option['page'] === newPages[i];
         }
+        return footerMenuOptionVisibility;
+      });
+      if (footerMenuOption.length > 0) {
+        footerMenuOption = footerMenuOption[0];
+      } else {
+        footerMenuOption = { 'page': newPages[i], 'visible': false };
       }
+      footerMenuOptions.push(footerMenuOption);
     }
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', newFooterMenuOptions);
-    this.footerMenuOptions.next(newFooterMenuOptions);
+    this.footerMenuOptions.next(footerMenuOptions);
   }
 }

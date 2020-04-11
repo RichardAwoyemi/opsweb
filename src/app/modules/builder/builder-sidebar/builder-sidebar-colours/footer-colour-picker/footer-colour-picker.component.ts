@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
-import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
-import { Subscription } from 'rxjs';
-import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from '../../../../../shared/services/template.service';
 import { WebsiteService } from '../../../../../shared/services/website.service';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveTemplates, ActiveThemes } from '../../../builder';
+import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
+import { BuilderFooterService } from '../../../builder-components/builder-footer/builder-footer.service';
 
 @Component({
   selector: 'app-footer-colour-picker',
@@ -17,64 +19,65 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
   footerTheme: string = ActiveThemes.Default;
   pageComponents: any;
   websiteChangeCount: number;
-
-  private footerStyleSubscription: Subscription;
-  private footerThemeSubscription: Subscription;
-  private footerThemesSubscription: Subscription;
-  private footerTemplateSubscription: Subscription;
-  private defaultFooterStyleSubscription: Subscription;
-  private websiteChangeCountSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService,
-    private websiteService: WebsiteService
+    private websiteService: WebsiteService,
+    private templateService: TemplateService
   ) {
   }
 
   ngOnInit() {
-    this.footerStyleSubscription = this.builderFooterService.footerStyle.subscribe(response => {
-      if (response) {
-        this.footerStyle = response;
-      }
-    });
+    this.builderFooterService.footerStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.footerStyle = response;
+        }
+      });
 
-    this.footerThemeSubscription = this.builderFooterService.footerTheme.subscribe(response => {
-      if (response) {
-        this.footerTheme = response;
-      }
-    });
+    this.builderFooterService.footerTheme.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.footerTheme = response;
+        }
+      });
 
-    this.footerThemesSubscription = this.builderFooterService.getFooterThemes().subscribe(response => {
-      if (response) {
-        this.footerThemes = response;
-      }
-    });
+    this.builderFooterService.getFooterThemes().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.footerThemes = response;
+        }
+      });
 
-    this.footerTemplateSubscription = this.builderComponentsService.pageComponents.subscribe(templateResponse => {
-      if (templateResponse) {
-        this.footerTemplate = templateResponse['template'];
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(templateResponse => {
+        if (templateResponse) {
+          this.footerTemplate = templateResponse['template'];
 
-        this.defaultFooterStyleSubscription = this.builderFooterService.getDefaultFooterStyle(this.footerTemplate).subscribe(response => {
-          if (response) {
-            this.defaultFooterStyle = response;
-          }
-        });
-      }
-    });
+          this.templateService.getTemplateStyle(this.footerTemplate).pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.defaultFooterStyle = response[ActiveComponents.Footer];
+              }
+            });
+        }
+      });
 
-    this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
 
-    this.websiteChangeCountSubscription = this.websiteService.getWebsiteChangeCount().subscribe(response => {
-      if (response) {
-        this.websiteChangeCount = response['value'];
-      }
-    });
+    this.websiteService.getWebsiteChangeCount().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteChangeCount = response['value'];
+        }
+      });
   }
 
   onThemeChange() {
@@ -96,20 +99,15 @@ export class FooterColourPickerComponent implements OnInit, OnDestroy {
 
   resetToDefault() {
     this.builderFooterService.footerTheme.next(ActiveThemes.Default);
-    this.footerStyle['background-color'] = this.defaultFooterStyle['footerStyle']['background-color'];
-    this.footerStyle['color'] = this.defaultFooterStyle['footerStyle']['color'];
+    this.footerStyle['background-color'] = this.defaultFooterStyle['style']['footerStyle']['background-color'];
+    this.footerStyle['color'] = this.defaultFooterStyle['style']['footerStyle']['color'];
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerTheme', ActiveThemes.Default);
     this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerStyle', this.footerStyle);
     this.builderFooterService.footerStyle.next(this.footerStyle);
   }
 
-  ngOnDestroy() {
-    this.footerStyleSubscription.unsubscribe();
-    this.footerThemeSubscription.unsubscribe();
-    this.footerThemesSubscription.unsubscribe();
-    this.footerTemplateSubscription.unsubscribe();
-    this.defaultFooterStyleSubscription.unsubscribe();
-    this.websiteChangeCountSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

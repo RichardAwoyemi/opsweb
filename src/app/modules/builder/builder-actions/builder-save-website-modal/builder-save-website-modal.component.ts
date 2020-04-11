@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
 import { WebsiteService } from '../../../../shared/services/website.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { Subscription } from 'rxjs';
 import { BuilderService } from '../../builder.service';
 
 @Component({
@@ -14,10 +16,11 @@ import { BuilderService } from '../../builder.service';
 export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit, OnDestroy {
   pageComponents: any;
   websiteName: string;
-  private pageComponentsSubscription: Subscription;
-  private websiteNameSubscription: Subscription;
+  uid: string;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
+    public afAuth: AngularFireAuth,
     private activeModal: NgbActiveModal,
     private websiteService: WebsiteService,
     private builderService: BuilderService,
@@ -27,34 +30,42 @@ export class BuilderSaveWebsiteModalComponent implements IModalComponent, OnInit
   }
 
   ngOnInit() {
-    this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-      if (response) {
-        this.pageComponents = response;
-      }
-    });
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.pageComponents = response;
+        }
+      });
 
-    this.websiteNameSubscription = this.websiteService.websiteName.subscribe(response => {
-      if (response) {
-        this.websiteName = response;
-      }
-    });
+    this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteName = response;
+        }
+      });
   }
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
-    this.websiteService.saveWebsite().then(() => {
-      this.toastrService.success('Your website has been saved.', 'Great!');
-    }).catch(() => {
-      this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
-    });
+    this.afAuth.authState.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.websiteService.saveWebsite(result.uid).then(() => {
+            this.toastrService.success('Your website has been saved.', 'Great!');
+          }).catch(() => {
+            this.toastrService.error('Your website could not be saved. Please try again.', 'Oops!');
+          });
+        }
+      });
   }
 
   onCloseButtonClick() {
     this.activeModal.dismiss();
   }
 
-  ngOnDestroy() {
-    this.pageComponentsSubscription.unsubscribe();
-    this.websiteNameSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
+
 }

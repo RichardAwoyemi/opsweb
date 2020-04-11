@@ -165,6 +165,20 @@ export class UtilService {
     return splitStr.join(' ');
   }
 
+  static generateGreeting() {
+    const date = new Date();
+    const hrs = date.getHours();
+    let greeting = null;
+    if (hrs < 12) {
+      greeting = 'Good morning';
+    } else if (hrs >= 12 && hrs <= 17) {
+      greeting = 'Good afternoon';
+    } else if (hrs >= 17 && hrs <= 24) {
+      greeting = 'Good evening';
+    }
+    return greeting;
+  }
+
   static generateWebsiteName() {
     const left = [
       'admiring',
@@ -429,5 +443,10 @@ export class UtilService {
 
     return left[Math.floor(Math.random() * left.length)] + '-' +
       right[Math.floor(Math.random() * left.length)] + '-' + Math.floor(10000000 + Math.random() * 90000000);
+  }
+
+  static openUrlInNewTab(url: any) {
+    window.open(url, '_blank');
+
   }
 }

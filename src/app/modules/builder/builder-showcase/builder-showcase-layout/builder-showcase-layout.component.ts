@@ -1,14 +1,15 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings } from '../../builder';
-import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
-import { SortablejsOptions } from 'ngx-sortablejs';
-import { BuilderService } from '../../builder.service';
-import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SessionStorageService } from '../../../../shared/services/session-storage.service';
+import { SortablejsOptions } from 'ngx-sortablejs';
+import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
+import { StorageService } from '../../../../shared/services/storage.service';
 import { WebsiteService } from '../../../../shared/services/website.service';
+import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings } from '../../builder';
+import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderService } from '../../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-builder-showcase-layout',
@@ -22,15 +23,12 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   pageComponents: any;
   websiteLoaded = false;
   activePage = 'Home';
-  private activeEditComponentSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
-  private websiteLoadedSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService,
-    private sessionStorageService: SessionStorageService,
+    private sessionStorageService: StorageService,
     private modalService: NgbModal,
     private websiteService: WebsiteService,
     private builderService: BuilderService
@@ -49,30 +47,34 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageResponse => {
-      if (activePageResponse) {
-        this.activePage = activePageResponse;
-        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
-          if (response) {
-            this.pageComponents = response;
-            this.setPageComponents();
-            this.builderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
-          }
-        }));
-      }
-    }));
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((activePageResponse => {
+        if (activePageResponse) {
+          this.activePage = activePageResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((response => {
+              if (response) {
+                this.pageComponents = response;
+                this.setPageComponents();
+                BuilderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
+              }
+            }));
+        }
+      }));
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
-    this.websiteLoadedSubscription = this.websiteService.websiteLoaded.subscribe(response => {
-      if (response) {
-        this.websiteLoaded = response;
-      }
-    });
+    this.websiteService.websiteLoaded.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteLoaded = response;
+        }
+      });
   }
 
   setPageComponents() {
@@ -97,22 +99,6 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     this.builderComponentsService.activeComponentIndex.next(componentIndex);
   }
 
-  addComponent(tempComponent) {
-    const activePageIndex = BuilderComponentsService.getActivePageIndex(this.pageComponents, tempComponent);
-    const activeComponentIndex = BuilderComponentsService.getActiveComponentIndex(this.pageComponents, tempComponent);
-    if (tempComponent['componentDetail']) {
-      let component = BuilderComponentsService.setupComponent(tempComponent);
-      if (component['componentName'] === ActiveComponentsPartialSelector.Features) {
-        component = BuilderComponentsService.setupFeaturesComponent(component, tempComponent);
-      }
-      this.pageComponents['pages'][activePageIndex]['components'].splice(activeComponentIndex, 0, component);
-      const componentsArrayWithoutPlaceholders = BuilderComponentsService.removePlaceholders(this.pageComponents['pages'][activePageIndex]['components']);
-      this.pageComponents['pages'][activePageIndex]['components'] = BuilderComponentsService.addPlaceholdersOnSinglePage(componentsArrayWithoutPlaceholders);
-      this.builderComponentsService.pageComponents.next(this.pageComponents);
-      this.sessionStorageService.setItem('components', JSON.stringify(this.pageComponents));
-    }
-  }
-
   recycleShowcase(components) {
     this.builderComponents = [];
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
@@ -135,7 +121,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
               }
             }
           }
-          this.sessionStorageService.setItem('components', JSON.stringify(this.pageComponents['pages'][j]['components']));
+          StorageService.setItem('components', JSON.stringify(this.pageComponents['pages'][j]['components']));
         }
       }
     }
@@ -152,7 +138,7 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
     if (e.data.for === 'opsonion') {
       switch (e.data.action) {
         case 'component-added':
-          this.addComponent(e.data.message);
+          this.builderComponentsService.addComponent(e.data.message);
           break;
         case 'recycle-showcase':
           this.recycleShowcase(e.data.data);
@@ -161,21 +147,18 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
           this.simpleModalService.displayMessage('Oops!', 'This component cannot be added twice to a single page.');
           break;
         case 'delete-component':
-          this.modalService.open(BuilderDeleteComponentModalComponent, {windowClass: 'modal-holder', centered: true});
+          this.modalService.open(BuilderDeleteComponentModalComponent, { windowClass: 'modal-holder', centered: true });
           break;
         case 'component-error':
           this.simpleModalService.displayMessage('Oops!', 'This item is not a valid component.');
           break;
-
       }
-      this.builderService.processIncomingMessages(e, this.activeEditComponent);
+      this.builderService.processIncomingMessages(e);
     }
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
-    this.websiteLoadedSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

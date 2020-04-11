@@ -1,28 +1,30 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { Subscription } from 'rxjs';
-import { BuilderActionsService } from '../builder-actions.service';
-import { BuilderHeroService } from '../../builder-components/builder-hero/builder-hero.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../../environments/environment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
 import { ImgurResponse, ImgurService } from '../../../../shared/services/imgur.service';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { ActiveComponentsPartialSelector } from '../../builder';
+import { BuilderActionsService } from '../builder-actions.service';
 
 @Component({
   selector: 'app-builder-select-image-modal',
   templateUrl: './builder-select-image-modal.component.html'
 })
 export class BuilderSelectImageModalComponent implements IModalComponent, OnInit, OnDestroy {
-  private activeLibrarySelectedImageSubscription: Subscription;
-  private activeLibrarySelectedImageAltTextSubscription: Subscription;
+  componentId: string;
+  parentKey: string;
+  childKeySrc = 'src';
+  childKeyAlt = 'alt';
+  ngUnsubscribe = new Subject<void>();
+
   private activeLibrarySelectedImage: any;
   private activeLibrarySelectedImageAltText: any;
+  private componentParentKey: any;
 
   constructor(
     private activeModal: NgbActiveModal,
-    private builderHeroService: BuilderHeroService,
     private builderActionsService: BuilderActionsService,
     private builderComponentsService: BuilderComponentsService,
     private toastrService: ToastrService,
@@ -31,19 +33,35 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   }
 
   ngOnInit() {
-    this.activeLibrarySelectedImageSubscription = this.builderActionsService.activeLibrarySelectedImage.subscribe(response => {
-      this.activeLibrarySelectedImage = response;
-    });
+    this.builderActionsService.activeLibrarySelectedImage.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.activeLibrarySelectedImage = response;
+      });
 
-    this.activeLibrarySelectedImageAltTextSubscription = this.builderActionsService.activeLibrarySelectedImageAlt.subscribe(response => {
-      this.activeLibrarySelectedImageAltText = response;
-    });
+    this.builderActionsService.activeLibrarySelectedImageAlt.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        (response) ? this.activeLibrarySelectedImageAltText = response : this.activeLibrarySelectedImageAltText = 'componentId';
+      });
+
+    this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        const pageComponent = response;
+        const targetComponentLocation = this.builderComponentsService.getActiveTargetComponentById(this.componentId);
+        const targetComponent = pageComponent['pages'][targetComponentLocation.activePageIndex]['components'][targetComponentLocation.activeComponentIndex];
+        if (targetComponent.hasOwnProperty(this.parentKey)) {
+          this.componentParentKey = targetComponent[this.parentKey];
+        } else {
+          this.componentParentKey = targetComponent['style'][this.parentKey];
+        }
+      });
   }
 
   async onConfirmButtonClick() {
-    if (this.activeLibrarySelectedImage) {
-      if (this.activeLibrarySelectedImage !== this.builderHeroService.heroImageUrl.getValue() || this.activeLibrarySelectedImageAltText !== this.builderHeroService.heroImageAlt.getValue()) {
+    if (this.componentParentKey[this.childKeySrc] && this.activeLibrarySelectedImageAltText) {
+      if (this.activeLibrarySelectedImage.includes('base64')) {
         this.uploadImage();
+      } else {
+        this.updateImage();
       }
     }
     this.activeModal.dismiss();
@@ -51,30 +69,27 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
   uploadImage() {
     if (this.activeLibrarySelectedImage.includes('base64')) {
-      if (!environment.production) {
-        this.uploadImageToImgur();
-      }
-    } else {
-      this.updateImage();
+      this.uploadImageToImgur();
     }
   }
 
   uploadImageToImgur() {
-    this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).subscribe((imgurResponse: ImgurResponse) => {
-      if (imgurResponse.status === 200) {
-        this.activeLibrarySelectedImage = imgurResponse.data.link;
-        this.updateImage();
-      }
-    });
+    this.imgurService.upload(this.activeLibrarySelectedImage.split('base64,')[1]).pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((imgurResponse: ImgurResponse) => {
+        if (imgurResponse.status === 200) {
+          this.activeLibrarySelectedImage = imgurResponse.data.link;
+          this.updateImage();
+        }
+      });
   }
 
   updateImage() {
-    const heroImageStyle = this.builderHeroService.heroImageStyle.getValue();
-    heroImageStyle['src'] = this.activeLibrarySelectedImage;
-    heroImageStyle['alt'] = this.activeLibrarySelectedImageAltText;
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Hero, 'heroImageStyle', heroImageStyle);
-    this.builderHeroService.heroImageUrl.next(this.activeLibrarySelectedImage);
-    this.builderHeroService.heroImageAlt.next(this.activeLibrarySelectedImageAltText);
+    if (this.activeLibrarySelectedImage) {
+      this.builderComponentsService.setPageComponentByIdAndKey(this.componentId, this.parentKey, this.childKeySrc, this.activeLibrarySelectedImage);
+    }
+    if (this.activeLibrarySelectedImageAltText) {
+      this.builderComponentsService.setPageComponentByIdAndKey(this.componentId, this.parentKey, this.childKeyAlt, this.activeLibrarySelectedImage);
+    }
     this.toastrService.success('Your image has been updated.', 'Great!');
   }
 
@@ -82,8 +97,8 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
     this.activeModal.dismiss();
   }
 
-  ngOnDestroy() {
-    this.activeLibrarySelectedImageSubscription.unsubscribe();
-    this.activeLibrarySelectedImageAltTextSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

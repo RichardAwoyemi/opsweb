@@ -1,10 +1,11 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { BuilderService } from '../../builder.service';
-import { Subscription } from 'rxjs';
-import { WebsiteService } from '../../../../shared/services/website.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
+import { WebsiteService } from '../../../../shared/services/website.service';
+import { BuilderService } from '../../builder.service';
 import { BuilderActionsService } from '../builder-actions.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class BuilderRenameWebsiteModalComponent implements IModalComponent, OnDe
   @Input() websiteName;
   @Input() newWebsiteName;
 
-  private websiteNameAvailabilitySubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private afs: AngularFirestore,
@@ -27,23 +28,22 @@ export class BuilderRenameWebsiteModalComponent implements IModalComponent, OnDe
   }
 
   onConfirmButtonClick() {
-    this.websiteNameAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).subscribe(websites => {
-      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName.toLowerCase());
-      this.websiteNameAvailabilitySubscription.unsubscribe();
-    });
-    this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': false});
+    this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName).pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(websites => {
+        this.websiteService.renameWebsite(websites, this.activeModal, this.websiteService.websiteId.getValue(), this.newWebsiteName.toLowerCase());
+      });
+    this.builderActionsService.renameRenameWebsiteModalStatus.next({ 'open': false });
   }
 
   onCloseButtonClick() {
     this.websiteService.websiteName.next(this.websiteName);
     document.getElementById('builder-header-website-name').innerText = this.websiteName.toLowerCase();
-    this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': false});
+    this.builderActionsService.renameRenameWebsiteModalStatus.next({ 'open': false });
     this.activeModal.dismiss();
   }
 
-  ngOnDestroy() {
-    if (this.websiteNameAvailabilitySubscription) {
-      this.websiteNameAvailabilitySubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

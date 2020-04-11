@@ -5,7 +5,7 @@ import { BuilderHeroComponent } from './builder-hero/builder-hero.component';
 import { BuilderNavbarService } from './builder-navbar/builder-navbar.service';
 import { BuilderHeroService } from './builder-hero/builder-hero.service';
 import { BuilderPlaceholderComponent } from './builder-placeholder/builder-placeholder.component';
-import { SessionStorageService } from '../../../shared/services/session-storage.service';
+import { StorageService } from '../../../shared/services/storage.service';
 import { BuilderFooterComponent } from './builder-footer/builder-footer.component';
 import { BuilderActionsModule } from '../builder-actions/builder-actions.module';
 import { BuilderFooterService } from './builder-footer/builder-footer.service';
@@ -36,7 +36,7 @@ import { BuilderFeaturesComponent } from './builder-features/builder-features.co
     BuilderHeroService,
     BuilderFooterService,
     BuilderFeaturesService,
-    SessionStorageService
+    StorageService
   ],
   entryComponents: [
     BuilderNavbarComponent,

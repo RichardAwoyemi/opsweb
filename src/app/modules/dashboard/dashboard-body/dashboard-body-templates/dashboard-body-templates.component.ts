@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Template } from '../../../../shared/models/template';
-import { DataService } from '../../../../shared/services/data.service';
-import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromUser from '../../../core/store/user/user.reducer';
-import { IUser } from '../../../../shared/models/user';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Template } from '../../../../shared/models/template';
+import { IUser } from '../../../../shared/models/user';
+import { DataService } from '../../../../shared/services/data.service';
+import * as fromUser from '../../../core/store/user/user.reducer';
 
 @Component({
   selector: 'app-dashboard-body-templates',
@@ -16,7 +17,7 @@ export class DashboardBodyTemplatesComponent implements OnInit, OnDestroy {
   innerHeight: number;
   searchText: string;
   webTemplates: Template[];
-  private webTemplateSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private dataService: DataService,
@@ -30,14 +31,16 @@ export class DashboardBodyTemplatesComponent implements OnInit, OnDestroy {
 
     this.innerHeight = window.innerHeight;
 
-    this.webTemplateSubscription = this.dataService.getAllWebTemplates().subscribe(response => {
-      if (response) {
-        this.webTemplates = [].concat.apply([], response);
-      }
-    });
+    this.dataService.getAllWebTemplates().pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.webTemplates = [].concat.apply([], response);
+        }
+      });
 
     this.userStore.select('user')
       .pipe()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
@@ -47,7 +50,8 @@ export class DashboardBodyTemplatesComponent implements OnInit, OnDestroy {
     this.ngxLoader.stop();
   }
 
-  ngOnDestroy() {
-    this.webTemplateSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

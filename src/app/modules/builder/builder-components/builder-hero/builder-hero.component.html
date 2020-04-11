@@ -2,31 +2,28 @@
                                [componentName]="componentName"></app-builder-component-toolbar>
 <div class="builder-components hero-click outer-container" [attr.id]="componentId" [ngClass]="setContextMenu()">
   <div class="builder-components hero-click jumbotron"
-        (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
-        [ngStyle]="heroBackgroundStyle" style="margin-bottom: 0">
+       (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" [ngClass]="setComponentClass()"
+       [ngStyle]="heroBackgroundStyle" style="margin-bottom: 0">
     <div class="builder-components hero-click inner-container row row-grid align-items-center">
-
-      <div class="builder-components hero-img-click img-container" 
-          [ngClass]="setHeroImageContainerClass()">
-        <div (click)="selectHeroImage($event, 'hero-image')"
-             [class]="setActiveElementStyle(activeElement, 'hero-image')"
+      <div class="builder-components hero-img-click img-container"
+           [ngClass]="setHeroImageContainerClass()">
+        <div (click)="selectHeroElement($event, componentId + '-' +'hero-image')"
+             [class]="setActiveElement('hero-image')"
              [ngClass]="setHeroClass('hero-image')"
              [ngStyle]="setHeroImageStyle()"
-             id="hero-image">
-            <img class="builder-components hero-img-click img-fluid"
-                  [src]="heroImageUrl" alt="{{ heroImageAlt }}">
+             id="{{componentId}}-hero-image">
+          <img class="builder-components hero-img-click img-fluid"
+               [src]="heroImageUrl" alt="{{ heroImageAlt }}">
         </div>
       </div>
-
-      <div class="builder-components hero-text-contents" 
-          [ngClass]="setHeroTextContainerClass()">
-
+      <div class="builder-components hero-text-contents"
+           [ngClass]="setHeroTextContainerClass()">
         <div class="builder-components hero-heading-click heading-container"
-             (click)="selectHeroHeading($event, 'hero-heading')"
-             [class]="setActiveElementStyle(activeElement, 'hero-heading')"
+             (click)="selectHeroElement($event, componentId + '-' + 'hero-heading')"
+             [class]="setActiveElement('hero-heading')"
              [ngClass]="setHeroClass('hero-heading')"
-             id="hero-heading">
-          <h1 class="builder-components hero-heading-click display-4 text-center text-md-left mb-3"
+             id="{{componentId}}-hero-heading">
+          <h1 class="builder-components hero-heading-click"
               (blur)="removeLineBreaks($event); saveHeroHeadingTextOption($event.target['innerText']);"
               (keydown.enter)="saveHeroHeadingTextOption($event.target['innerText']); $event.preventDefault()"
               [attr.contenteditable]="setContentEditable()"
@@ -34,12 +31,11 @@
               [ngStyle]="heroHeadingStyle">
           </h1>
         </div>
-
         <div class="builder-components hero-subheading-click subheading-container"
-             (click)="selectHeroSubheading($event, 'hero-subheading')"
-             [class]="setActiveElementStyle(activeElement, 'hero-subheading')"
+             (click)="selectHeroElement($event, componentId + '-' +'hero-subheading')"
+             [class]="setActiveElement('hero-subheading')"
              [ngClass]="setHeroClass('hero-subheading')"
-             id="hero-subheading"
+             id="{{componentId}}-hero-subheading"
              style="display:inline-block">
           <p class="builder-components hero-subheading-click lead text-center text-md-left"
              (blur)="removeLineBreaks($event); saveHeroSubheadingTextOption($event.target['innerText']);"
@@ -48,13 +44,12 @@
              [innerText]="heroSubheadingText"
              [ngStyle]="heroSubheadingStyle"></p>
         </div>
-
         <div class="builder-components hero-button-click button-outer-container text-center text-md-left mt-5">
           <div class="builder-components hero-button-click button-container"
-               (click)="selectHeroButton($event, 'hero-button')"
-               [class]="setActiveElementStyle(activeElement, 'hero-button')"
+               (click)="selectHeroButton($event, componentId + '-' +'hero-button')"
+               [class]="setActiveElement('hero-button')"
                [ngClass]="setHeroClass('hero-button')"
-               id="hero-button" style="display:inline-block">
+               id="{{componentId}}-hero-button" style="display:inline-block">
             <button class="builder-components hero-button-click btn hero-button"
                     [ngStyle]="heroButtonStyle">
               <span class="builder-components hero-button-click"

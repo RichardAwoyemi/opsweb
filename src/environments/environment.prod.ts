@@ -2,6 +2,7 @@ import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
   production: true,
+  domainUrl: 'https://opsonion.com',
   firebaseConfig: {
     apiKey: 'AIzaSyC1_kUGqJtNyOnvRcXxTrBcHb_3YdRr1bk',
     authDomain: 'opsonion-live.firebaseapp.com',

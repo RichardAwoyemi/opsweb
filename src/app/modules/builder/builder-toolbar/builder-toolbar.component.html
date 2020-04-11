@@ -9,34 +9,30 @@
       <div *ngIf="!previewMode">
         <div *ngIf="activeEditComponent">
         <span *ngIf="toggleMenuItemVisibility(ACTIVE_COLOURS_SETTING)">
-          <button class="toolbar-colours" 
-                  (click)="setActiveEditSetting(ACTIVE_COLOURS_SETTING)" 
+          <button (click)="setActiveEditSetting(ACTIVE_COLOURS_SETTING)"
                   [ngClass]="toolbarButtonColoursStyle"
-                  href="#">
+                  class="toolbar-colours">
           Colours
           </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_COMPONENTS_SETTING)">
-          <button class="toolbar-components"
-                  (click)="setActiveEditSetting(ACTIVE_COMPONENTS_SETTING)"
+          <button (click)="setActiveEditSetting(ACTIVE_COMPONENTS_SETTING)"
                   [ngClass]="toolbarButtonComponentsStyle"
-                  href="#">
+                  class="toolbar-components">
           Components
         </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_LAYOUT_SETTING)">
-          <button class="toolbar-layout"
-                  (click)="setActiveEditSetting(ACTIVE_LAYOUT_SETTING)" 
+          <button (click)="setActiveEditSetting(ACTIVE_LAYOUT_SETTING)"
                   [ngClass]="toolbarButtonLayoutStyle"
-                  href="#">
+                  class="toolbar-layout">
           Layout
         </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_OPTIONS_SETTING)">
-          <button class="toolbar-options"
-                  (click)="setActiveEditSetting(ACTIVE_OPTIONS_SETTING)" 
+          <button (click)="setActiveEditSetting(ACTIVE_OPTIONS_SETTING)"
                   [ngClass]="toolbarButtonOptionsStyle"
-                  href="#">
+                  class="toolbar-options">
           Options
         </button>
         </span>
@@ -45,13 +41,13 @@
     </div>
     <div class="col-md-3">
       <div class="text-right">
-        <button class="toolbar-orientation-desktop"
-                (click)="setSecondaryToolbarButtonClass(ACTIVE_DESKTOP_ORIENTATION)"
-                [ngClass]="toolbarButtonDesktopOrientation">
-          <svg class="toolbar-orientation-desktop"
-                aria-hidden="true" focusable="false" height="23"
-                style="transform: translate(0px, 0px); margin-bottom: 3px"
-                width="33">
+        <button (click)="setSecondaryToolbarButtonClass(ACTIVE_DESKTOP_ORIENTATION)"
+                [ngClass]="toolbarButtonDesktopOrientation"
+                class="toolbar-orientation-desktop">
+          <svg aria-hidden="true"
+               class="toolbar-orientation-desktop" focusable="false" height="23"
+               style="transform: translate(0px, 0px); margin-bottom: 3px"
+               width="33">
             <path class="toolbar-orientation-desktop"
                   d="M7 4h19v14H7z" fill="currentColor" opacity=".3"></path>
             <path class="toolbar-orientation-desktop"
@@ -59,13 +55,13 @@
                   fill="currentColor"></path>
           </svg>
         </button>&nbsp;
-        <button class="toolbar-orientation-tablet"
-                (click)="setSecondaryToolbarButtonClass(ACTIVE_TABLET_ORIENTATION)"
-                [ngClass]="toolbarButtonTabletOrientation">
-          <svg class="toolbar-orientation-tablet"
-                aria-hidden="true" focusable="false" height="24"
-                style="transform: translate(0px, 0px); margin-bottom: 3px"
-                width="20">
+        <button (click)="setSecondaryToolbarButtonClass(ACTIVE_TABLET_ORIENTATION)"
+                [ngClass]="toolbarButtonTabletOrientation"
+                class="toolbar-orientation-tablet">
+          <svg aria-hidden="true"
+               class="toolbar-orientation-tablet" focusable="false" height="24"
+               style="transform: translate(0px, 0px); margin-bottom: 3px"
+               width="20">
             <path class="toolbar-orientation-tablet"
                   d="M17 1H3c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 21H9v-2h2v2zm6-2.952H3V3h14v16.048z"
                   fill="currentColor"></path>
@@ -73,12 +69,12 @@
                   d="M4 4h12v14H4z" fill="currentColor" opacity=".3"></path>
           </svg>
         </button>&nbsp;
-        <button class="toolbar-orientation-mobile"
-                (click)="setSecondaryToolbarButtonClass(ACTIVE_MOBILE_ORIENTATION)"
-                [ngClass]="toolbarButtonMobileOrientation">
-          <svg class="toolbar-orientation-mobile"
-                aria-hidden="true" focusable="false" height="20"
-                style="transform: translate(0px, 0px); margin-bottom: 3px" width="14">
+        <button (click)="setSecondaryToolbarButtonClass(ACTIVE_MOBILE_ORIENTATION)"
+                [ngClass]="toolbarButtonMobileOrientation"
+                class="toolbar-orientation-mobile">
+          <svg aria-hidden="true"
+               class="toolbar-orientation-mobile" focusable="false" height="20"
+               style="transform: translate(0px, 0px); margin-bottom: 3px" width="14">
             <path class="toolbar-orientation-mobile"
                   d="M4 4h6v10H4z" fill="currentColor" opacity=".3"></path>
             <path class="toolbar-orientation-mobile"
@@ -86,7 +82,7 @@
                   fill="currentColor"></path>
           </svg>
         </button>
-        </div>
       </div>
+    </div>
   </div>
 </div>

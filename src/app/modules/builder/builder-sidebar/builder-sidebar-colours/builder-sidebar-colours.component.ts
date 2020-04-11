@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ActiveComponents } from 'src/app/modules/builder/builder';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-sidebar-colours',
@@ -14,7 +15,7 @@ export class BuilderSidebarColoursComponent implements OnInit, OnDestroy {
   features: string = ActiveComponents.Features;
   hero: string = ActiveComponents.Hero;
   activeEditComponent: string;
-  private activeEditComponentSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService
@@ -22,14 +23,16 @@ export class BuilderSidebarColoursComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

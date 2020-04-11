@@ -4,8 +4,7 @@ export enum ActiveSettings {
   Colours = 'colours',
   Layout = 'layout',
   Options = 'options',
-  Pages = 'pages',
-  Data = 'data'
+  Pages = 'pages'
 }
 
 export enum ActiveElements {
@@ -31,9 +30,11 @@ export enum ActiveComponentsPartialSelector {
 }
 
 export enum ActiveTemplates {
-  Default = 'default',
-  Quick = 'business-1',
-  Front = 'business-2'
+  Default = 'default'
+}
+
+export enum ActiveStructures {
+  Default = 'default'
 }
 
 export enum ActiveThemes {
@@ -46,3 +47,5 @@ export enum ActiveOrientations {
   Tablet = 'tablet',
   Mobile = 'mobile'
 }
+
+export const MAX_NUMBER_OF_PAGES = 4;

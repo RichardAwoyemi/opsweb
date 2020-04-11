@@ -10,9 +10,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeModule } from './modules/main/home/home.module';
 import { BuilderModule } from './modules/builder/builder.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreditsService } from './shared/services/credits.service';
 
 const routes: Routes = [
-  {path: '', loadChildren: './modules/main/main.module#MainModule'}
+  { path: '', loadChildren: './modules/main/main.module#MainModule' }
 ];
 
 @NgModule({
@@ -31,7 +32,8 @@ const routes: Routes = [
   providers: [
     AuthService,
     UtilService,
-    UserService
+    CreditsService,
+    UserService,
   ],
   bootstrap: [AppComponent]
 })

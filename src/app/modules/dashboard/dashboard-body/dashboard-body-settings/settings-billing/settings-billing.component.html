@@ -8,7 +8,7 @@
     <div style="padding-bottom: 0.5em">
       You currently have no credit cards on file.
     </div>
-    <button class="btn btn-xs btn-secondary">Add Card</button>
+    <button (click)="openAddCardModal()" class="btn btn-xs btn-secondary">Add Card</button>
   </div>
 </div>
 <br>
@@ -22,7 +22,7 @@
     <div style="padding-bottom: 0.5em">
       You currently have no active subscriptions.
     </div>
-    <button class="btn btn-xs btn-secondary">Upgrade</button>
+    <button (click)="openUpgradeSubscriptionModal()" class="btn btn-xs btn-secondary">Upgrade</button>
   </div>
 </div>
 <br>
@@ -36,6 +36,6 @@
     <div style="padding-bottom: 0.5em">
       You currently have <strong>0</strong> Opsonion Credits.
     </div>
-    <button class="btn btn-xs btn-secondary">Redeem Code</button>
+    <button (click)="openRedeemCodeModal()" class="btn btn-xs btn-secondary">Redeem Code</button>
   </div>
 </div>

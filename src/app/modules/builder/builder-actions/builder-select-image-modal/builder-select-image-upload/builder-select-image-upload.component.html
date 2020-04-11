@@ -40,7 +40,7 @@
   <div class="col-md-8">
     <label for="img-alt-text" style="display: none"></label>
     <input class="builder-modal image-select-upload-description form-control form-control-lg"
-          [(ngModel)]="heroImageAlt" id="img-alt-text" type="text">
+          (ngModelChange)="setHeroImageAlt()" [(ngModel)]="heroImageAlt" id="img-alt-text" type="text">
   </div>
   <div class="col-md-12">&nbsp;</div>
 </div>

@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderNavbarService } from './builder-navbar.service';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from 'src/app/shared/services/template.service';
+import { IComponent } from '../../../../shared/models/component';
+import { UtilService } from '../../../../shared/services/util.service';
 import {
   ActiveComponents,
   ActiveComponentsPartialSelector,
@@ -9,11 +12,10 @@ import {
   ActiveSettings,
   ActiveThemes
 } from '../../builder';
-import { IComponent } from '../../../../shared/models/component';
+import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
 import { BuilderFooterService } from '../builder-footer/builder-footer.service';
-import { ToastrService } from 'ngx-toastr';
-import { UtilService } from '../../../../shared/services/util.service';
+import { BuilderNavbarService } from './builder-navbar.service';
 
 @Component({
   selector: 'app-builder-navbar',
@@ -39,25 +41,12 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   pageComponents: any;
   componentDetail: any;
   activePageSetting: string;
-
-  private activeEditComponentSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private navbarStyleSubscription: Subscription;
-  private navbarBrandStyleSubscription: Subscription;
-  private navbarLinkStyleSubscription: Subscription;
-  private navbarLayoutClassSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
-  private previewModeSubscription: Subscription;
-  private activeElementSubscription: Subscription;
-  private navbarLogoImageSubscription: Subscription;
-  private navbarLogoTextSubscription: Subscription;
-  private navbarLogoImageStyleSubscription: Subscription;
-  private navbarThemeSubscription: Subscription;
-  private navbarTemplateSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
+  websiteMode: boolean;
+  navbarOpen: boolean;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
+    private templateService: TemplateService,
     private builderService: BuilderService,
     private toastrService: ToastrService,
     private elementRef: ElementRef,
@@ -68,119 +57,137 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   ngOnInit() {
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      this.previewMode = response;
-    });
+    this.navbarOpen = false;
 
-    this.navbarThemeSubscription = this.builderNavbarService.navbarTheme.subscribe(response => {
-      if (!response) {
-        this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
-      }
-    });
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.previewMode = response;
+      });
 
-    this.navbarTemplateSubscription = this.builderNavbarService.navbarTemplate.subscribe(response => {
-      if (!response) {
-        this.builderNavbarService.navbarTemplate.next(ActiveThemes.Default);
-      }
-    });
+    this.builderService.websiteMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.websiteMode = response;
+      });
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderNavbarService.navbarTheme.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (!response) {
+          this.builderNavbarService.navbarTheme.next(ActiveThemes.Default);
+        }
+      });
 
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
+    this.templateService.activeTemplate.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.builderNavbarService.setNavbarTemplateStyle(response[this.componentName]['style']);
+        }
+      });
 
-    this.navbarLogoImageSubscription = this.builderNavbarService.navbarLogoImage.subscribe(response => {
-      if (response) {
-        this.navbarLogoImage = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
-    this.navbarLogoTextSubscription = this.builderNavbarService.navbarLogoText.subscribe(response => {
-      if (response) {
-        this.navbarLogoText = response;
-      }
-    });
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+        }
+      });
 
-    this.navbarStyleSubscription = this.builderNavbarService.navbarStyle.subscribe(response => {
-      if (response) {
-        this.navbarStyle = response;
-      }
-    });
+    this.builderNavbarService.navbarLogoImage.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLogoImage = response;
+        }
+      });
 
-    this.navbarBrandStyleSubscription = this.builderNavbarService.navbarBrandStyle.subscribe(response => {
-      if (response) {
-        this.navbarBrandStyle = response;
-      }
-    });
+    this.builderNavbarService.navbarLogoText.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLogoText = response;
+        }
+      });
 
-    this.navbarLinkStyleSubscription = this.builderNavbarService.navbarLinkStyle.subscribe(response => {
-      if (response) {
-        this.navbarLinkStyle = response;
-      }
-    });
+    this.builderNavbarService.navbarStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarStyle = response;
+        }
+      });
 
-    this.navbarLayoutClassSubscription = this.builderNavbarService.navbarLayoutClass.subscribe(response => {
-      if (response) {
-        this.navbarLayoutClass = response;
-      }
-    });
+    this.builderNavbarService.navbarBrandStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarBrandStyle = response;
+        }
+      });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
+    this.builderNavbarService.navbarLinkStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLinkStyle = response;
+        }
+      });
 
-    this.navbarLogoImageStyleSubscription = this.builderNavbarService.navbarLogoImageStyle.subscribe(response => {
-      if (response) {
-        this.navbarLogoImageStyle = response;
-      }
-    });
+    this.builderNavbarService.navbarLayoutClass.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLayoutClass = response;
+        }
+      });
 
-    this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
-      if (response) {
-        this.activeElement = response;
-      }
-    });
+    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarMenuOptions = response;
+        }
+      });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
-      if (activePageSettingResponse) {
-        this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-          if (response) {
-            this.pageComponents = response;
-            this.builderNavbarService.navbarTemplate.next(this.pageComponents['template']);
-            this.componentId = this.elementRef.nativeElement['id'];
-            for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-              const pageName = this.pageComponents['pages'][i]['name'];
-              if (pageName === this.activePageSetting) {
-                for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                  if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                    this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                    this.builderNavbarService.navbarStyle.next(this.componentDetail['navbarStyle']);
-                    this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['navbarLinkStyle']);
-                    this.builderNavbarService.navbarBrandStyle.next(this.componentDetail['navbarBrandStyle']);
-                    this.builderNavbarService.navbarLogoImageStyle.next(this.componentDetail['navbarLogoImageStyle']);
+    this.builderNavbarService.navbarLogoImageStyle.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.navbarLogoImageStyle = response;
+        }
+      });
+
+    this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeElement = response;
+        }
+      });
+
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(activePageSettingResponse => {
+        if (activePageSettingResponse) {
+          this.activePageSetting = activePageSettingResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.pageComponents = response;
+                this.builderNavbarService.navbarTemplate.next(this.pageComponents['template']);
+                this.componentId = this.elementRef.nativeElement['id'];
+                for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
+                  if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Navbar) {
+                    this.builderNavbarService.navbarMenuOptions.next(this.builderComponentsService.getPages());
+                    this.componentDetail = this.pageComponents['pages'][0]['components'][j];
+                    this.builderNavbarService.navbarStyle.next(this.componentDetail['style']['navbarStyle']);
+                    this.builderNavbarService.navbarLinkStyle.next(this.componentDetail['style']['navbarLinkStyle']);
+                    this.builderNavbarService.navbarBrandStyle.next(this.componentDetail['style']['navbarBrandStyle']);
+                    this.builderNavbarService.navbarLogoImageStyle.next(this.componentDetail['style']['navbarLogoImageStyle']);
                     this.builderNavbarService.navbarLayoutClass.next(this.componentDetail['navbarLayoutClass']);
                     this.builderNavbarService.navbarLogoText.next(this.componentDetail['navbarLogoText']);
                     this.builderNavbarService.navbarLogoImage.next(this.componentDetail['navbarLogoImage']);
-                    this.builderNavbarService.navbarMenuOptions.next(this.componentDetail['navbarMenuOptions']);
                     this.builderNavbarService.navbarTheme.next(this.componentDetail['navbarTheme']);
                   }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
   }
 
   setActiveEditComponent() {
@@ -229,31 +236,39 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   clearActiveEditComponent() {
-    this.builderService.clearActiveEditComponent();
+    if (this.activeElement.indexOf('navbar-link') === -1) {
+      this.builderService.clearActiveEditComponent();
+    }
   }
 
-  selectNavbarLink(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('navbar-options-menu');
+  selectNavbarLink(pageIndex: number, event: any, elementId: string) {
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next(this.navbarMenuOptions[pageIndex]);
+      this.builderService.activePageIndex.next(pageIndex);
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeElement.next(elementId);
+      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.triggerScrollTo('navbar-options-menu');
+    }
     event.stopPropagation();
   }
 
   saveNavbarMenuOption(pageIndex: number, pageName: string) {
     if (pageName !== this.navbarMenuOptions[pageIndex]) {
-      this.navbarMenuOptions[pageIndex] = pageName;
+      const oldPageName = this.navbarMenuOptions[pageIndex];
 
       this.builderFooterService.setFooterMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
       this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', this.builderFooterService.footerMenuOptions.getValue());
       this.builderNavbarService.setNavbarMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
+      this.navbarMenuOptions[pageIndex] = pageName;
       this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.builderNavbarService.navbarMenuOptions.getValue());
 
-      this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), pageIndex);
+      this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), oldPageName);
       this.builderService.activeElement.next(ActiveElements.Default);
       this.builderService.activePageSetting.next('Home');
-      this.builderService.activePageIndex.next(0);
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
 
       this.toastrService.success('Your page has been renamed.', 'Great!');
     }
@@ -269,11 +284,16 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   selectNavbarLogoBrand(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('navbar-options');
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next('Home');
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeElement.next(elementId);
+      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.triggerScrollTo('navbar-options');
+    }
     event.stopPropagation();
   }
 
@@ -301,29 +321,32 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
   }
 
   selectNavbarLogoImage(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.triggerScrollTo('navbar-options-logo');
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next('Home');
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
+    } else {
+      this.builderService.setActiveEditComponent(ActiveComponents.Navbar);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.activeElement.next(elementId);
+      this.builderService.triggerScrollTo('navbar-options-logo');
+    }
     event.stopPropagation();
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.navbarStyleSubscription.unsubscribe();
-    this.navbarBrandStyleSubscription.unsubscribe();
-    this.navbarLinkStyleSubscription.unsubscribe();
-    this.navbarLayoutClassSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.previewModeSubscription.unsubscribe();
-    this.navbarLogoImageSubscription.unsubscribe();
-    this.navbarLogoTextSubscription.unsubscribe();
-    this.navbarLogoImageStyleSubscription.unsubscribe();
-    this.navbarThemeSubscription.unsubscribe();
-    this.navbarTemplateSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
-    this.activeElementSubscription.unsubscribe();
+  toggleNavbar() {
+    if (this.websiteMode) {
+      this.navbarOpen = !this.navbarOpen;
+    }
+  }
+
+  setNavbarOpenOption() {
+    if (this.websiteMode) {
+      return { 'show': this.navbarOpen };
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

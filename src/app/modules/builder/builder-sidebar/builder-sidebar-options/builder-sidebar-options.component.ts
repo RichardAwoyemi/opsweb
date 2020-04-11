@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ActiveComponents } from '../../builder';
 import { BuilderService } from '../../builder.service';
 
@@ -11,10 +12,9 @@ export class BuilderSidebarOptionsComponent implements OnInit, OnDestroy {
   navbarComponent: string = ActiveComponents.Navbar;
   footerComponent: string = ActiveComponents.Footer;
   featuresComponent: string = ActiveComponents.Features;
-  headingComponent: string = ActiveComponents.Heading;
   heroComponent: string = ActiveComponents.Hero;
   activeEditComponent: string;
-  private activeEditComponentSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService
@@ -22,14 +22,16 @@ export class BuilderSidebarOptionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

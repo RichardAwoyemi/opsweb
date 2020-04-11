@@ -3,14 +3,10 @@ jobs:
   build:
     working_directory: ~/opsonion-web
     docker:
-      - image: node:10.12.0-stretch
+      - image: node:10.13.0-stretch
         env:
           - DISPLAY=:99
           - CHROME_BIN=/usr/bin/google-chrome
-          - AWS_ACCESS_KEY_ID=AKIAJSKDPYHGG3W7OZKQ
-          - AWS_SECRET_ACCESS_KEY=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
-          - AWS_BUCKET_TARGET=opsonion.com
-          - FIREBASE_TOKEN=1/MXC8JhRwX2z3pg3FWQl1U9SW6OPjkxC6QY_32bKqzZ0
     steps:
       - checkout
       - restore_cache:

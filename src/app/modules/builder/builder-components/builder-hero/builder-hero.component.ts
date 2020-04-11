@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderHeroService } from './builder-hero.service';
-import { ActiveComponents, ActiveElements, ActiveSettings, ActiveThemes } from '../../builder';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { IComponent } from '../../../../shared/models/component';
+import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
+import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
+import { BuilderHeroService } from './builder-hero.service';
 
 @Component({
   selector: 'app-builder-hero',
@@ -18,9 +19,10 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   heroSubheadingStyle: any;
   heroBackgroundStyle: any;
   heroButtonStyle: any;
+  heroTheme: string;
   activeEditComponent: string;
   activeEditComponentId: string;
-  previewMode = false;
+  previewMode: boolean;
   componentName: string = ActiveComponents.Hero;
   componentId: string;
   heroHeadingText: string;
@@ -29,33 +31,15 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   heroComponentLayout: any;
   heroImageContainerClass: string;
   heroTextContainerClass: string;
-  heroImageSize = 100;
+  heroButtonLink: string;
+  heroImageSize: number;
   activeElement: string;
   componentDetail: any;
   activePageSetting: string;
   pageComponents: any;
-
-  private heroTemplateSubscription: Subscription;
-  private heroImageSizeSubscription: Subscription;
-  private activeEditComponentSubscription: Subscription;
-  private activeEditComponentIdSubscription: Subscription;
-  private heroButtonStyleSubscription: Subscription;
-  private heroHeadingStyleSubscription: Subscription;
-  private heroSubheadingStyleSubscription: Subscription;
-  private heroImageUrlSubscription: Subscription;
-  private heroImageAltSubscription: Subscription;
-  private heroBackgroundStyleSubscription: Subscription;
-  private heroThemeSubscription: Subscription;
-  private previewModeSubscription: Subscription;
-  private heroHeadingTextSubscription: Subscription;
-  private heroButtonTextSubscription: Subscription;
-  private heroSubheadingTextSubscription: Subscription;
-  private heroComponentLayoutSubscription: Subscription;
-  private heroImageContainerClassSubscription: Subscription;
-  private heroTextContainerClassSubscription: Subscription;
-  private activeElementSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private builderComponentsSubscription: Subscription;
+  websiteMode = false;
+  componentActive = false;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -68,164 +52,115 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.activeEditComponentSubscription = this.builderService.activeEditComponent.subscribe(response => {
-      if (response) {
-        this.activeEditComponent = response;
-      }
-    });
+    this.builderService.websiteMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.websiteMode = response;
+        }
+      });
 
-    this.activeEditComponentIdSubscription = this.builderService.activeEditComponentId.subscribe(response => {
-      if (response) {
-        this.activeEditComponentId = response;
-      }
-    });
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.previewMode = response;
+      });
 
-    this.activeElementSubscription = this.builderService.activeElement.subscribe(response => {
-      if (response) {
-        this.activeElement = response;
-      }
-    });
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponent = response;
+        }
+      });
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      this.previewMode = response;
-    });
+    this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditComponentId = response;
+        }
+      });
 
+    this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeElement = response;
+        }
+      });
 
-    this.heroImageSizeSubscription = this.builderHeroService.heroImageSize.subscribe(response => {
-      if (response) {
-        this.heroImageSize = response;
-      }
-    });
-
-    this.heroHeadingStyleSubscription = this.builderHeroService.heroHeadingStyle.subscribe(response => {
-      if (response) {
-        this.heroHeadingStyle = response;
-      }
-    });
-
-    this.heroButtonStyleSubscription = this.builderHeroService.heroButtonStyle.subscribe(response => {
-      if (response) {
-        this.heroButtonStyle = response;
-      }
-    });
-
-    this.heroSubheadingStyleSubscription = this.builderHeroService.heroSubheadingStyle.subscribe(response => {
-      if (response) {
-        this.heroSubheadingStyle = response;
-      }
-    });
-
-    this.heroBackgroundStyleSubscription = this.builderHeroService.heroBackgroundStyle.subscribe(response => {
-      if (response) {
-        this.heroBackgroundStyle = response;
-      }
-    });
-
-    this.heroTemplateSubscription = this.builderHeroService.heroTemplate.subscribe(response => {
-      if (!response) {
-        this.builderHeroService.heroTemplate.next(ActiveThemes.Default);
-      }
-    });
-
-    this.heroThemeSubscription = this.builderHeroService.heroTheme.subscribe(response => {
-      if (!response) {
-        this.builderHeroService.heroTheme.next(ActiveThemes.Default);
-      }
-    });
-
-    this.heroImageUrlSubscription = this.builderHeroService.heroImageUrl.subscribe(response => {
-      if (response) {
-        this.heroImageUrl = response;
-      }
-    });
-
-    this.heroImageAltSubscription = this.builderHeroService.heroImageAlt.subscribe(response => {
-      if (response) {
-        this.heroImageAlt = response;
-      }
-    });
-
-    this.heroHeadingTextSubscription = this.builderHeroService.heroHeadingText.subscribe(response => {
-      if (response) {
-        this.heroHeadingText = response;
-      }
-    });
-
-    this.heroSubheadingTextSubscription = this.builderHeroService.heroSubheadingText.subscribe(response => {
-      if (response) {
-        this.heroSubheadingText = response;
-      }
-    });
-
-    this.heroButtonTextSubscription = this.builderHeroService.heroButtonText.subscribe(response => {
-      if (response) {
-        this.heroButtonText = response;
-      }
-    });
-
-    this.heroComponentLayoutSubscription = this.builderHeroService.heroComponentLayout.subscribe(response => {
-      this.heroComponentLayout = response;
-    });
-
-    this.heroImageContainerClassSubscription = this.builderHeroService.heroImageContainerClass.subscribe(response => {
-      this.heroImageContainerClass = response;
-    });
-
-    this.heroTextContainerClassSubscription = this.builderHeroService.heroTextContainerClass.subscribe(response => {
-      this.heroTextContainerClass = response;
-    });
-
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe(activePageSettingResponse => {
-      if (activePageSettingResponse) {
-        this.activePageSetting = activePageSettingResponse;
-        this.builderComponentsSubscription = this.builderComponentsService.pageComponents.subscribe(response => {
-          if (response) {
-            this.pageComponents = response;
-            this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
-            if (this.elementRef.nativeElement['id']) {
-              this.componentId = this.elementRef.nativeElement['id'];
-              for (let i = 0; i < this.pageComponents['pages'].length; i++) {
-                const pageName = this.pageComponents['pages'][i]['name'];
-                if (pageName === this.activePageSetting) {
-                  for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
-                    if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
-                      this.componentDetail = this.pageComponents['pages'][i]['components'][j];
-                      this.builderHeroService.heroBackgroundStyle.next(this.componentDetail['heroBackgroundStyle']);
-                      this.builderHeroService.heroHeadingStyle.next(this.componentDetail['heroHeadingStyle']);
-                      this.builderHeroService.heroSubheadingStyle.next(this.componentDetail['heroSubheadingStyle']);
-                      this.builderHeroService.heroImageStyle.next(this.componentDetail['heroImageStyle']);
-                      this.builderHeroService.heroButtonStyle.next(this.componentDetail['heroButtonStyle']);
-                      this.builderHeroService.heroImageUrl.next(this.componentDetail['heroImageStyle']['src']);
-                      this.builderHeroService.heroImageAlt.next(this.componentDetail['heroImageStyle']['alt']);
-                      this.builderHeroService.heroComponentLayout.next(this.componentDetail['heroComponentLayout']);
-                      this.builderHeroService.heroTheme.next(this.componentDetail['heroTheme']);
-                      this.builderHeroService.heroHeadingText.next(this.componentDetail['heroHeadingText']);
-                      this.builderHeroService.heroSubheadingText.next(this.componentDetail['heroSubheadingText']);
-                      this.builderHeroService.heroButtonText.next(this.componentDetail['heroButtonText']);
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(activePageSettingResponse => {
+        if (activePageSettingResponse) {
+          this.activePageSetting = activePageSettingResponse;
+          this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(response => {
+              if (response) {
+                this.pageComponents = response;
+                this.builderHeroService.heroTemplate.next(this.pageComponents['template']);
+                if (this.elementRef.nativeElement['id']) {
+                  this.componentId = this.elementRef.nativeElement['id'];
+                  for (let i = 0; i < this.pageComponents['pages'].length; i++) {
+                    const pageName = this.pageComponents['pages'][i]['name'];
+                    if (pageName === this.activePageSetting) {
+                      for (let j = 0; j < this.pageComponents['pages'][i]['components'].length; j++) {
+                        if (this.pageComponents['pages'][i]['components'][j]['componentId'] === this.componentId) {
+                          this.componentDetail = this.pageComponents['pages'][i]['components'][j];
+                          this.heroBackgroundStyle = this.componentDetail['style']['heroBackgroundStyle'];
+                          this.heroHeadingStyle = this.componentDetail['style']['heroHeadingStyle'];
+                          this.heroSubheadingStyle = this.componentDetail['style']['heroSubheadingStyle'];
+                          this.heroButtonStyle = this.componentDetail['style']['heroButtonStyle'];
+                          this.heroImageUrl = this.componentDetail['style']['heroImageStyle']['src'];
+                          this.heroImageAlt = this.componentDetail['style']['heroImageStyle']['alt'];
+                          this.heroComponentLayout = this.componentDetail['heroComponentLayout'];
+                          this.heroImageSize = this.componentDetail['style']['heroImageStyle']['width'].replace('%', '');
+                          this.heroTheme = this.componentDetail['heroTheme'];
+                          this.heroButtonLink = this.componentDetail['heroButtonLink'];
+                          this.heroHeadingText = this.componentDetail['heroHeadingText'];
+                          this.heroSubheadingText = this.componentDetail['heroSubheadingText'];
+                          this.heroButtonText = this.componentDetail['heroButtonText'];
+                        }
+                      }
                     }
                   }
                 }
               }
-            }
-          }
-        });
-      }
-    });
+            });
+        }
+      });
   }
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    if (this.activeEditComponent === ActiveComponents.Hero) {
+    if (this.activeEditComponentId === this.componentId) {
       this.clearActiveEditComponent();
     } else {
+      window.postMessage({
+        'for': 'opsonion',
+        'action': 'duplicate-component-selected',
+        'message': this.componentId
+      }, '*');
+      this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
       this.builderService.setActiveEditSetting(ActiveSettings.Colours);
+      this.setComponentStyle();
     }
   }
 
+  setComponentStyle() {
+    this.builderHeroService.heroBackgroundStyle.next(this.heroBackgroundStyle);
+    this.builderHeroService.heroHeadingStyle.next(this.heroHeadingStyle);
+    this.builderHeroService.heroSubheadingStyle.next(this.heroSubheadingStyle);
+    this.builderHeroService.heroButtonStyle.next(this.heroButtonStyle);
+    this.builderHeroService.heroImageUrl.next(this.heroImageUrl);
+    this.builderHeroService.heroImageAlt.next(this.heroImageAlt);
+    this.builderHeroService.heroComponentLayout.next(this.heroComponentLayout);
+    this.builderHeroService.heroTheme.next(this.heroTheme);
+    this.builderHeroService.heroButtonLink.next(this.heroButtonLink);
+    this.builderHeroService.heroHeadingText.next(this.heroHeadingText);
+    this.builderHeroService.heroSubheadingText.next(this.heroSubheadingText);
+    this.builderHeroService.heroButtonText.next(this.heroButtonText);
+  }
+
   setComponentClass() {
-    return BuilderService.setComponentClass(this.previewMode, this.activeEditComponent, this.componentName);
+    return BuilderService.setComponentClass(this.previewMode, this.activeEditComponent, this.componentName, this.componentActive);
   }
 
   setContextMenu() {
@@ -233,50 +168,68 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   }
 
   clearActiveEditComponent() {
-    this.builderService.clearActiveEditComponent();
+    if (this.activeElement.indexOf('heading') === -1 && this.activeElement.indexOf('subheading') === -1 && this.activeElement.indexOf('button') === -1) {
+      window.postMessage({
+        'for': 'opsonion',
+        'action': 'duplicate-component-deselected',
+        'message': this.componentId
+      }, '*');
+      this.componentActive = false;
+      this.builderService.clearActiveEditComponent();
+    }
   }
 
   setHeroTextContainerClass() {
-    if (this.heroComponentLayout['layout'] === 0) {
-      this.builderHeroService.heroTextContainerClass.next('col-12 col-md-7 col-lg-6 order-md-1 pr-md-5');
+    if (this.heroComponentLayout === 0) {
+      this.heroTextContainerClass = 'col-12 col-md-7 col-lg-6 order-md-1 pr-md-5';
       return this.heroTextContainerClass;
     }
-    if (this.heroComponentLayout['layout'] === 1) {
-      this.builderHeroService.heroTextContainerClass.next('col-12 col-md-7 col-lg-6 order-md-2 pr-md-5');
+    if (this.heroComponentLayout === 1) {
+      this.heroTextContainerClass = 'col-12 col-md-7 col-lg-6 order-md-2 pr-md-5';
       return this.heroTextContainerClass;
     }
   }
 
   setHeroImageContainerClass() {
-    if (this.heroComponentLayout['layout'] === 0) {
-      this.builderHeroService.heroImageContainerClass.next('col-12 col-md-5 col-lg-6 order-md-2');
+    if (this.heroComponentLayout === 0) {
+      this.heroImageContainerClass = 'col-12 col-md-5 col-lg-6 order-md-2';
       return this.heroImageContainerClass;
     }
-    if (this.heroComponentLayout['layout'] === 1) {
-      this.builderHeroService.heroImageContainerClass.next('col-12 col-md-5 col-lg-6 order-md-1');
+    if (this.heroComponentLayout === 1) {
+      this.heroImageContainerClass = 'col-12 col-md-5 col-lg-6 order-md-1';
       return this.heroImageContainerClass;
     }
   }
 
   setHeroImageStyle() {
-    return {'width': this.heroImageSize + '%'};
+    return { 'width': this.heroImageSize + '%' };
   }
 
-  setActiveElementStyle(activeElement, element) {
-    if (activeElement === element && !this.previewMode) {
-      if (element.indexOf(element) > -1) {
-        return element + '-edit';
-      }
+  setActiveElement(elementName: string) {
+    if (this.activeElement === (this.componentId + '-' + elementName) && !this.previewMode) {
+      return elementName + '-edit';
+    } else {
+      return '';
     }
   }
 
-  selectHeroImage(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-options');
-    event.stopPropagation();
+  selectHeroElement(event: any, elementId: string) {
+    if (!this.previewMode) {
+      window.postMessage({
+        'for': 'opsonion',
+        'action': 'duplicate-component-selected',
+        'message': this.componentId
+      }, '*');
+      this.builderService.activeElement.next(elementId);
+      this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
+      this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
+      this.builderService.setSidebarOptionsSetting();
+      this.builderService.setActiveEditSetting(ActiveSettings.Options);
+      this.builderService.triggerScrollTo('hero-options');
+      this.setComponentStyle();
+      window.postMessage({ 'for': 'opsonion', 'action': 'element-selected', 'message': elementId }, '*');
+      event.stopPropagation();
+    }
   }
 
   setHeroClass(element) {
@@ -288,30 +241,13 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     }
   }
 
-  selectHeroHeading(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-options-heading');
-    event.stopPropagation();
-  }
-
-  selectHeroSubheading(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-options-subheading');
-    event.stopPropagation();
-  }
-
   selectHeroButton(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
-    this.builderService.setSidebarOptionsSetting();
-    this.builderService.activeElement.next(elementId);
-    this.builderService.setActiveEditSetting(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('hero-options-button');
+    if (this.websiteMode) {
+      this.builderService.activePageSetting.next(this.heroButtonLink);
+      this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex(this.heroButtonLink));
+    } else {
+      this.selectHeroElement(event, elementId);
+    }
     event.stopPropagation();
   }
 
@@ -341,27 +277,26 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
     this.builderComponentsService.setPageComponentById(this.componentId, 'heroButtonText', heroButtonText);
   }
 
-  ngOnDestroy() {
-    this.activeEditComponentSubscription.unsubscribe();
-    this.heroBackgroundStyleSubscription.unsubscribe();
-    this.heroButtonStyleSubscription.unsubscribe();
-    this.heroHeadingStyleSubscription.unsubscribe();
-    this.heroSubheadingStyleSubscription.unsubscribe();
-    this.heroImageUrlSubscription.unsubscribe();
-    this.heroImageAltSubscription.unsubscribe();
-    this.heroHeadingTextSubscription.unsubscribe();
-    this.heroThemeSubscription.unsubscribe();
-    this.heroTemplateSubscription.unsubscribe();
-    this.heroButtonTextSubscription.unsubscribe();
-    this.heroSubheadingTextSubscription.unsubscribe();
-    this.previewModeSubscription.unsubscribe();
-    this.heroComponentLayoutSubscription.unsubscribe();
-    this.heroImageContainerClassSubscription.unsubscribe();
-    this.activeElementSubscription.unsubscribe();
-    this.builderComponentsSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
-    this.heroImageSizeSubscription.unsubscribe();
-    this.activeEditComponentIdSubscription.unsubscribe();
-    this.heroTextContainerClassSubscription.unsubscribe();
+
+  @HostListener('window:message', ['$event'])
+  onMessage(e) {
+    if (e.data.for === 'opsonion') {
+      if (e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
+        this.componentActive = false;
+      }
+
+      if (e.data.action === 'duplicate-component-selected') {
+        this.componentActive = e.data.message === this.componentId;
+      }
+
+      if (e.data.action === 'element-selected') {
+        this.builderService.activeElement.next(e.data.message);
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,11 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IModalComponent } from '../../../../shared/models/modal';
-import { ToastrService } from 'ngx-toastr';
-import { BuilderActionsService } from '../../../builder/builder-actions/builder-actions.service';
-import { WebsiteService } from '../../../../shared/services/website.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Subscription } from 'rxjs';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IModalComponent } from '../../../../shared/models/modal';
+import { WebsiteService } from '../../../../shared/services/website.service';
+import { BuilderActionsService } from '../../../builder/builder-actions/builder-actions.service';
 
 @Component({
   selector: 'app-dashboard-rename-website-modal',
@@ -17,8 +18,7 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
   @Input() websiteId;
   newWebsiteName: string;
   disableSaveButton: boolean;
-
-  private websiteNameAvailabilitySubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private afs: AngularFirestore,
@@ -33,10 +33,10 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
   }
 
   onConfirmButtonClick() {
-    this.websiteNameAvailabilitySubscription = this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName.toLowerCase()).subscribe(websites => {
-      this.websiteService.renameWebsite(websites, this.activeModal, this.websiteId, this.newWebsiteName.toLowerCase());
-      this.websiteNameAvailabilitySubscription.unsubscribe();
-    });
+    this.websiteService.checkIfWebsiteNameIsAvailable(this.newWebsiteName.toLowerCase()).pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(websites => {
+        this.websiteService.renameWebsite(websites, this.activeModal, this.websiteId, this.newWebsiteName.toLowerCase());
+      });
   }
 
   onCloseButtonClick() {
@@ -48,9 +48,8 @@ export class DashboardRenameWebsiteModalComponent implements IModalComponent, On
     this.disableSaveButton = BuilderActionsService.toggleWebsiteModalSaveButton(this.websiteName.toLowerCase());
   }
 
-  ngOnDestroy() {
-    if (this.websiteNameAvailabilitySubscription) {
-      this.websiteNameAvailabilitySubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

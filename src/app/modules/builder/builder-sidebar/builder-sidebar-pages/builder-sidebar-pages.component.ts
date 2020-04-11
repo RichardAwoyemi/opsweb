@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActiveComponentsPartialSelector, ActiveSettings } from '../../builder';
-import { Subscription } from 'rxjs';
-import { BuilderService } from '../../builder.service';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
-import { BuilderRenamePageModalComponent } from '../../builder-actions/builder-rename-page-modal/builder-rename-page-modal.component';
-import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
-import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
-import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { SortablejsOptions } from 'ngx-sortablejs';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { SimpleModalService } from '../../../../shared/components/simple-modal/simple-modal.service';
+import { ActiveComponentsPartialSelector, ActiveSettings, MAX_NUMBER_OF_PAGES } from '../../builder';
 import { BuilderDeleteComponentModalComponent } from '../../builder-actions/builder-delete-component-modal/builder-delete-component-modal.component';
-import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
+import { BuilderDeletePageModalComponent } from '../../builder-actions/builder-delete-page-modal/builder-delete-page-modal.component';
+import { BuilderNewPageModalComponent } from '../../builder-actions/builder-new-page-modal/builder-new-page-modal.component';
+import { BuilderRenamePageModalComponent } from '../../builder-actions/builder-rename-page-modal/builder-rename-page-modal.component';
+import { BuilderComponentsService } from '../../builder-components/builder-components.service';
+import { BuilderService } from '../../builder.service';
 
 @Component({
   selector: 'app-builder-sidebar-pages',
@@ -22,34 +22,26 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   settingsName: string = ActiveSettings.Pages;
   activeEditSetting: string;
   activePage: string;
-  navbarMenuOptions: any;
   componentListOptions: any;
   pageComponents: any;
   activePageIndex: number;
+  menuOptions: any;
 
-  navbarMenuSortableOptions: SortablejsOptions;
+  menuSortableOptions: any;
   componentListSortableOptions: SortablejsOptions;
 
-  private activeEditSettingSubscription: Subscription;
-  private navbarMenuOptionsSubscription: Subscription;
-  private activePageSettingSubscription: Subscription;
-  private activePageIndexSubscription: Subscription;
-  private pageComponentsSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private modalService: NgbModal,
     private builderService: BuilderService,
-    private builderNavbarService: BuilderNavbarService,
-    private builderFooterService: BuilderFooterService,
+    private toastrService: ToastrService,
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService
   ) {
-    this.navbarMenuSortableOptions = {
-      onUpdate: function () {
-        const navbarMenuOptions = builderNavbarService.navbarMenuOptions.getValue();
-        builderNavbarService.navbarMenuOptions.next(navbarMenuOptions);
-        builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', navbarMenuOptions);
-        builderFooterService.mapNavbarAndFooterMenuOptions(navbarMenuOptions, builderFooterService.footerMenuOptions.getValue());
+    this.menuSortableOptions = {
+      onUpdate: function (e: any) {
+        builderComponentsService.reorderPages(e.target.innerText.split('\n'));
       }
     };
 
@@ -72,30 +64,26 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeEditSettingSubscription = this.builderService.activeEditSetting.subscribe(response => {
-      if (response) {
-        this.activeEditSetting = response;
-      }
-    });
+    this.builderService.activeEditSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.activeEditSetting = response;
+        }
+      });
 
-    this.navbarMenuOptionsSubscription = this.builderNavbarService.navbarMenuOptions.subscribe(response => {
-      if (response) {
-        this.navbarMenuOptions = response;
-      }
-    });
-
-    this.activePageIndexSubscription = this.builderService.activePageIndex.subscribe(response => {
+    this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
       if (response) {
         this.activePageIndex = response;
       }
     });
 
-    this.activePageSettingSubscription = this.builderService.activePageSetting.subscribe((activePageSettingsResponse => {
+    this.builderService.activePageSetting.pipe(takeUntil(this.ngUnsubscribe)).subscribe((activePageSettingsResponse => {
       if (activePageSettingsResponse) {
         this.activePage = activePageSettingsResponse;
-        this.pageComponentsSubscription = this.builderComponentsService.pageComponents.subscribe((response => {
+        this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe)).subscribe((response => {
           if (response) {
             this.pageComponents = response;
+            this.menuOptions = this.builderComponentsService.getPages(this.pageComponents);
             for (let i = 0; i < this.pageComponents['pages'].length; i++) {
               if (this.pageComponents['pages'][i]['name'] === this.activePage) {
                 this.componentListOptions = this.pageComponents['pages'][i]['components'].filter(function (a) {
@@ -114,7 +102,12 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   }
 
   openNewPageModal() {
-    this.modalService.open(BuilderNewPageModalComponent, {windowClass: 'modal-holder', centered: true});
+    const numberOfPages = this.pageComponents['pages'].length;
+    if (numberOfPages + 1 > MAX_NUMBER_OF_PAGES) {
+      this.toastrService.warning(`You cannot create more than ${MAX_NUMBER_OF_PAGES} pages on your current plan.`, 'Oops!');
+    } else {
+      this.modalService.open(BuilderNewPageModalComponent, { windowClass: 'modal-holder', centered: true });
+    }
   }
 
   openRenamePageModal(pageName, pageIndex) {
@@ -143,8 +136,8 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  viewPage(navbarMenuOption) {
-    this.builderService.activePageSetting.next(navbarMenuOption);
+  viewPage(menuOption) {
+    this.builderService.activePageSetting.next(menuOption);
   }
 
   openComponentsPanel() {
@@ -174,11 +167,8 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
     }, '*');
   }
 
-  ngOnDestroy() {
-    this.activeEditSettingSubscription.unsubscribe();
-    this.navbarMenuOptionsSubscription.unsubscribe();
-    this.activePageSettingSubscription.unsubscribe();
-    this.activePageIndexSubscription.unsubscribe();
-    this.pageComponentsSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

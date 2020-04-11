@@ -8,7 +8,7 @@
                class="form-control" name="streetAddress1" placeholder="Street Address"
                type="text">
       </label>
-      <div *ngIf="formAddressInputService.showStreetAddress1InputError">
+      <div *ngIf="showStreetAddressInputError['status'] && !streetAddress1">
         <small class="text-danger">Street Address is
           required
         </small>
@@ -44,7 +44,7 @@
       </label>
     </div>
     <div class="col-md-12">
-      <div *ngIf="formAddressInputService.showCityInputError">
+      <div *ngIf="showCityInputError['status'] && !city">
         <small class="text-danger">City is
           required
         </small>
@@ -64,14 +64,11 @@
       </label>
     </div>
     <div class="col-md-12">
-      <div *ngIf="formAddressInputService.showPostcodeInputError">
+      <div *ngIf="showPostcodeInputError['status'] && !postcode">
         <small class="text-danger">Postal Code is
           required
         </small>
       </div>
     </div>
   </div>
-</div>
-<div class="form-group">
-  <div><span class="text-danger">*</span> Indicates required field.</div>
 </div>

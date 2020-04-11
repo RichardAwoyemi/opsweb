@@ -15,7 +15,7 @@ Log "Started checking codebase for open subs"
 RED='\033[0;31m'
 DEFAULT="\033[0m"
 
-for f in $(find ././../src/app/modules -name '*.ts'); do
+for f in $(find ././../src/app -name '*.ts'); do
   noOfSubscriptions=$(grep -o ': Subscription' ${f} | wc -l)
   if [[ noOfSubscriptions -gt 0 ]]; then
     grep -o -P '(?<=private).*(?=Subscription)' ${f} | while read -r line ; do

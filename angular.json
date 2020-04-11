@@ -24,11 +24,14 @@
               "src/_redirects"
             ],
             "scripts": [
+              "src/assets/js/page.min.js",
               "src/assets/js/script.js",
               "src/assets/js/gtag.js",
               "src/assets/js/builder.js"
             ],
             "styles": [
+              "src/assets/css/fonts.css",
+              "src/assets/css/page.css",
               "src/styles.css",
               "src/assets/css/themify.css",
               "node_modules/ngx-toastr/toastr.css",

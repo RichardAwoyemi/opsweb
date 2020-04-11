@@ -1,17 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BuilderCreateAccountModalComponent } from '../builder-actions/builder-create-account-modal/builder-create-account-modal.component';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/auth.service';
-import { BuilderService } from '../builder.service';
-import { Subscription } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { IUser } from '../../../shared/models/user';
-import * as fromUser from '../../core/store/user/user.reducer';
-import { BuilderRenameWebsiteModalComponent } from '../builder-actions/builder-rename-website-modal/builder-rename-website-modal.component';
-import { WebsiteService } from '../../../shared/services/website.service';
-import { BuilderActionsService } from '../builder-actions/builder-actions.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SimpleModalService } from '../../../shared/components/simple-modal/simple-modal.service';
+import { IUser } from '../../../shared/models/user';
+import { WebsiteService } from '../../../shared/services/website.service';
+import { AuthService } from '../../auth/auth.service';
+import * as fromUser from '../../core/store/user/user.reducer';
+import { BuilderActionsService } from '../builder-actions/builder-actions.service';
+import { BuilderCreateAccountModalComponent } from '../builder-actions/builder-create-account-modal/builder-create-account-modal.component';
+import { BuilderPublishWebsiteModalComponent } from '../builder-actions/builder-publish-website-modal/builder-publish-website-modal.component';
+import { BuilderRenameWebsiteModalComponent } from '../builder-actions/builder-rename-website-modal/builder-rename-website-modal.component';
+import { BuilderService } from '../builder.service';
 
 @Component({
   selector: 'app-builder-header',
@@ -24,10 +26,7 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
   photoURL = '/assets/img/anonymous.jpg';
   user: IUser;
   modalStatus = false;
-
-  websiteNameSubscription: Subscription;
-  websiteLoadedSubscription: Subscription;
-  modalStatusSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private modalService: NgbModal,
@@ -44,29 +43,33 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userStore.select('user')
       .pipe()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async (result: IUser) => {
         if (result) {
           this.user = result;
         }
       });
 
-    this.websiteNameSubscription = this.websiteService.websiteName.subscribe((response => {
-      if (response) {
-        this.websiteName = response;
-      }
-    }));
+    this.websiteService.websiteName.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.websiteName = response;
+        }
+      }));
 
-    this.websiteLoadedSubscription = this.websiteService.websiteLoaded.subscribe((response => {
-      if (response) {
-        this.websiteLoaded = response;
-      }
-    }));
+    this.websiteService.websiteLoaded.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.websiteLoaded = response;
+        }
+      }));
 
-    this.modalStatusSubscription = this.builderActionsService.renameRenameWebsiteModalStatus.subscribe((response => {
-      if (response) {
-        this.modalStatus = response['open'];
-      }
-    }));
+    this.builderActionsService.renameRenameWebsiteModalStatus.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.modalStatus = response['open'];
+        }
+      }));
   }
 
   isLoggedIn() {
@@ -74,7 +77,7 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
   }
 
   openCreateAccountModal() {
-    this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+    this.modalService.open(BuilderCreateAccountModalComponent, { windowClass: 'modal-holder', centered: true });
   }
 
   signOut() {
@@ -98,7 +101,7 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
     if (this.websiteName !== event.target.innerHTML && !this.modalStatus) {
-      this.builderActionsService.renameRenameWebsiteModalStatus.next({'open': true});
+      this.builderActionsService.renameRenameWebsiteModalStatus.next({ 'open': true });
       const modal = this.modalService.open(BuilderRenameWebsiteModalComponent, {
         windowClass: 'modal-holder',
         centered: true
@@ -120,13 +123,14 @@ export class BuilderHeaderComponent implements OnInit, OnDestroy {
 
   openPublishModal() {
     if (!this.authService.isLoggedIn()) {
-      this.modalService.open(BuilderCreateAccountModalComponent, {windowClass: 'modal-holder', centered: true});
+      this.modalService.open(BuilderCreateAccountModalComponent, { windowClass: 'modal-holder', centered: true });
+    } else {
+      this.modalService.open(BuilderPublishWebsiteModalComponent, { windowClass: 'modal-holder', centered: true });
     }
   }
 
   ngOnDestroy(): void {
-    this.websiteNameSubscription.unsubscribe();
-    this.websiteLoadedSubscription.unsubscribe();
-    this.modalStatusSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class FormUsernameInputService {
-  usernameExists = true;
+  usernameExists = new BehaviorSubject(<any>({ 'status': true }));
 }

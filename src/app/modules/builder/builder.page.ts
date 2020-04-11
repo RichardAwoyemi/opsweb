@@ -1,13 +1,17 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { BuilderService } from './builder.service';
-import { Subscription } from 'rxjs';
-import { RouterService } from '../../shared/services/router.service';
 import { ShepherdService } from 'angular-shepherd';
+import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from 'src/app/shared/services/template.service';
+import { RouterService } from '../../shared/services/router.service';
 import { UtilService } from '../../shared/services/util.service';
 import { WebsiteService } from '../../shared/services/website.service';
-import { BuilderComponentsService } from './builder-components/builder-components.service';
+import { AuthService } from '../auth/auth.service';
 import { ActiveComponents, ActiveElements } from './builder';
+import { BuilderComponentsService } from './builder-components/builder-components.service';
+import { BuilderService } from './builder.service';
 
 @Component({
   selector: 'app-builder',
@@ -19,8 +23,7 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   sidebarClass = 'col-md-3';
   showcaseClass = 'col-md-9';
   websiteName: string;
-  previewModeSubscription: Subscription;
-  websiteSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private ngxLoader: NgxUiLoaderService,
@@ -28,6 +31,9 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     private routerService: RouterService,
     private websiteService: WebsiteService,
     private shepherdService: ShepherdService,
+    private toastrService: ToastrService,
+    private authService: AuthService,
+    private templateService: TemplateService,
     private builderComponentsService: BuilderComponentsService) {
   }
 
@@ -41,34 +47,42 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.builderService.setSidebarTemplatesSetting();
 
     this.ngxLoader.start();
-    this.previewModeSubscription = this.builderService.previewMode.subscribe((response => {
-      if (response) {
-        this.previewMode = response;
-        this.showcaseClass = 'col-md-12';
-      } else {
-        this.previewMode = false;
-        this.setBuilderPanelSizes();
-      }
-    }));
+    this.builderService.websiteMode.next(false);
+    this.builderService.previewMode.next(false);
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.previewMode = response;
+          this.showcaseClass = 'col-md-12';
+        } else {
+          this.previewMode = false;
+          this.setBuilderPanelSizes();
+        }
+      }));
 
     const id = window.location.pathname.split('/')[2];
     if (id) {
       this.websiteService.websiteId.next(id);
-      this.websiteSubscription = this.websiteService.getWebsite(id).subscribe((response => {
-          if (response) {
-            this.websiteService.websiteName.next(response['name']);
-            if (response['pages']) {
+      this.websiteService.getWebsiteById(id).pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((response => {
+            if (response && response['pages']) {
+              this.websiteService.websiteName.next(response['name']);
               this.builderComponentsService.pageComponents.next({
                 'pages': response['pages'],
                 'template': response['template']
               });
             } else {
-              this.builderComponentsService.pageComponents.next(this.builderComponentsService.defaultPageComponents.getValue());
+              this.templateService.getWebsite('default').then(getWebsiteResponse => {
+                this.builderComponentsService.pageComponents.next(getWebsiteResponse);
+              });
+              if (!this.authService.isLoggedIn()) {
+                this.toastrService.warning('All changes will not be saved until you create an account.');
+                localStorage.setItem('builderTourComplete', 'false');
+              }
             }
             this.websiteService.websiteLoaded.next(true);
           }
-        }
-      ));
+        ));
     }
     this.ngxLoader.stop();
   }
@@ -104,8 +118,8 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.previewModeSubscription.unsubscribe();
-    this.websiteSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

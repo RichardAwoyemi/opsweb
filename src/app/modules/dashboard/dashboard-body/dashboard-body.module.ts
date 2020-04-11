@@ -19,6 +19,8 @@ import { FormsModule } from '@angular/forms';
 import { BuilderSidebarModule } from '../../builder/builder-sidebar/builder-sidebar.module';
 import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { CropImageModalComponent } from '../../../shared/components/form-photo-upload/crop-image-modal/crop-image-modal.component';
+import { CreditsService } from '../../../shared/services/credits.service';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,15 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     DashboardBodyWebsitesComponent,
     DashboardBodyRewardsComponent,
     DashboardBodyTemplatesComponent,
-    DashboardBodyComponent
+    DashboardBodyComponent,
+    SettingsProfileComponent,
+    SettingsBillingComponent
+  ],
+  entryComponents: [
+    CropImageModalComponent
+  ],
+  providers: [
+    CreditsService
   ]
 })
 

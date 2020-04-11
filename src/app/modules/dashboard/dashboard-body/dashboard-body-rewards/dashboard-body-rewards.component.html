@@ -1,7 +1,7 @@
 <div id="rewards"></div>
-<div style="padding: 2em">
-  <h3>Rewards</h3>
-  <div class="row" style="padding-top: 1em">
+<div [ngStyle]="rewardsBodyPadding">
+  <h3 *ngIf="!isMobile">Rewards</h3>
+  <div [ngStyle]="rewardsTopPadding" class="row">
     <div class="col-md-8">
       <p class="lead">Share your referral link with friends</p>
       <p class="text-justify">When a friend joins Opsonion and creates a new website using your referral link,
@@ -18,25 +18,27 @@
       <div class="small mt-3 opacity-70">or share with:</div>
       <div style="padding-top: 1em">
         <a class="share-popup" href="{{ facebookShareUrl }}" target="_blank">
-          <img alt="facebook-icon" class="social-media-icon" src="../assets/img/facebook.png">
+          <img alt="facebook-icon" class="social-media-icon" src="../../../../../assets/img/facebook.png">
         </a>
         &nbsp;
         <a href="{{ whatsappShareUrl }}" target="_blank">
-          <img alt="whatsapp-icon" class="social-media-icon" src="../assets/img/whatsapp.png">
+          <img alt="whatsapp-icon" class="social-media-icon" src="../../../../../assets/img/whatsapp.png">
         </a>
         &nbsp;
         <a href="{{ twitterShareUrl }}" target="_blank">
-          <img alt="twitter-icon" class="social-media-icon" src="../assets/img/twitter.png">
+          <img alt="twitter-icon" class="social-media-icon" src="../../../../../assets/img/twitter.png">
         </a>
         &nbsp;
         <a href="{{ emailShareUrl }}">
-          <img alt="mail-icon" class="social-media-icon" src="../assets/img/email.png">
+          <img alt="mail-icon" class="social-media-icon" src="../../../../../assets/img/email.png">
         </a>
       </div>
     </div>
     <div class="col-md-12">
       <hr>
-      <p>You currently have <strong>0</strong> Opsonion Credits.</p>
+      <p *ngIf="credits === 0">You currently have no Opsonion Credits.</p>
+      <p *ngIf="credits === 1">You currently have <strong>{{ credits }}</strong> Opsonion Credit.</p>
+      <p *ngIf="credits > 1">You currently have <strong>{{ credits }}</strong> Opsonion Credit.</p>
     </div>
   </div>
 </div>

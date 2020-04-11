@@ -1,6 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { debounce } from '../../../shared/decorators/debounce.decorator';
-import { Subscription } from 'rxjs';
 import { ActiveSidebarSettings } from '../dashboard';
 import { DashboardService } from '../dashboard.service';
 
@@ -16,7 +17,7 @@ export class DashboardBodyComponent implements OnInit, OnDestroy {
   ACTIVE_SIDEBAR_SETTINGS: string = ActiveSidebarSettings.AccountSettings;
   ACTIVE_SIDEBAR_REWARDS: string = ActiveSidebarSettings.Rewards;
 
-  private activeSidebarSettingSubscription: Subscription;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private dashboardService: DashboardService
@@ -25,11 +26,12 @@ export class DashboardBodyComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.activeSidebarSettingSubscription = this.dashboardService.activeSidebarSetting.subscribe((response => {
-      if (response) {
-        this.activeSidebar = response;
-      }
-    }));
+    this.dashboardService.activeSidebarSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.activeSidebar = response;
+        }
+      }));
   }
 
   @HostListener('window:resize', ['$event'])
@@ -38,7 +40,8 @@ export class DashboardBodyComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
   }
 
-  ngOnDestroy() {
-    this.activeSidebarSettingSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

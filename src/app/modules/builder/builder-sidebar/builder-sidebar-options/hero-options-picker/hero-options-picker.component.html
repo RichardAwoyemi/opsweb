@@ -200,8 +200,8 @@
   </div>
   <label style="width: 100%">
     <select (change)="setHeroButtonLink()" [(ngModel)]="menuOption" class="form-control form-control-lg">
-      <option *ngFor="let navbarMenuOption of navbarMenuOptions"
-              [attr.selected]="navbarMenuOption == menuOption ? true : null">{{ navbarMenuOption }}</option>
+      <option *ngFor="let option of menuOptions"
+              [attr.selected]="option == menuOption ? true : null">{{ option }}</option>
     </select>
   </label>
 </div>

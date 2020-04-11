@@ -10,12 +10,13 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { debounce } from '../../../shared/decorators/debounce.decorator';
+import { IframeService } from '../../../shared/services/iframe.service';
+import { ActiveComponents, ActiveElements, ActiveSettings } from '../builder';
 import { BuilderService } from '../builder.service';
 import { BuilderShowcaseLayoutComponent } from './builder-showcase-layout/builder-showcase-layout.component';
-import { BuilderShowcaseService } from './builder-showcase.service';
-import { ActiveComponents, ActiveElements, ActiveSettings } from '../builder';
-import { debounce } from '../../../shared/decorators/debounce.decorator';
 
 @Component({
   selector: 'app-builder-showcase',
@@ -31,9 +32,8 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
   iframeHolderHeight = 184;
   iframeHeight = 180;
   activeShowcaseOrientation: string;
-  @ViewChild('iframe', {static: false}) iframe: ElementRef;
-  private activeOrientationSubscription: Subscription;
-  private previewModeSubscription: Subscription;
+  @ViewChild('iframe', { static: false }) iframe: ElementRef;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     private builderService: BuilderService,
@@ -44,47 +44,44 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.activeOrientationSubscription = this.builderService.activeOrientation.subscribe((response => {
-      if (response) {
-        this.activeShowcaseOrientation = response;
-      }
-    }));
+    this.builderService.activeOrientation.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response => {
+        if (response) {
+          this.activeShowcaseOrientation = response;
+        }
+      }));
 
-    this.previewModeSubscription = this.builderService.previewMode.subscribe(response => {
-      if (response) {
-        this.showcaseHeight = 74;
-        this.iframeHolderHeight = 132;
-        this.iframeHeight = 128;
-      } else {
-        this.showcaseHeight = 122;
-        this.iframeHolderHeight = 184;
-        this.iframeHeight = 180;
-      }
-    });
+    this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        if (response) {
+          this.showcaseHeight = 74;
+          this.iframeHolderHeight = 132;
+          this.iframeHeight = 128;
+        } else {
+          this.showcaseHeight = 122;
+          this.iframeHolderHeight = 184;
+          this.iframeHeight = 180;
+        }
+      });
   }
 
   ngAfterViewInit() {
     this.document = this.iframe.nativeElement.contentDocument || this.iframe.nativeElement.contentWindow;
-    BuilderShowcaseService.loadIframeCss(this.document, 'assets/css/page.min.css');
-    BuilderShowcaseService.loadIframeCss(this.document, 'assets/css/themify.css');
-    BuilderShowcaseService.loadIframeCss(this.document, 'assets/css/builder.css');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://code.jquery.com/jquery-3.4.1.min.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
-    BuilderShowcaseService.loadIframeCss(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js');
-    BuilderShowcaseService.loadIframeJs(this.document, 'assets/js/iframe.js');
-
+    IframeService.loadIframeCss(this.document, 'assets/css/page.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/themify.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/website.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/builder.css');
+    IframeService.loadIframeCss(this.document, 'assets/css/fonts.css');
+    IframeService.loadIframeJs(this.document, 'assets/js/page.min.js');
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(BuilderShowcaseLayoutComponent);
     this.componentReference = this.viewContainerRef.createComponent(componentFactory);
     this.componentReference.changeDetectorRef.detectChanges();
     this.document.body.appendChild(this.componentReference.location.nativeElement);
   }
 
-  ngOnDestroy() {
-    this.activeOrientationSubscription.unsubscribe();
-    this.previewModeSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -98,7 +95,8 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
     this.builderService.activeEditComponentId.next(null);
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
     this.builderService.activeElement.next(ActiveElements.Default);
-    window.postMessage({'for': 'opsonion', 'action': 'duplicate-component-deselected'}, '*');
+    window.postMessage({ 'for': 'opsonion', 'action': 'duplicate-component-deselected' }, '*');
+    window.postMessage({ 'for': 'opsonion', 'action': 'deselect-text', }, '*');
     this.builderService.setSidebarComponentsSetting();
   }
 }

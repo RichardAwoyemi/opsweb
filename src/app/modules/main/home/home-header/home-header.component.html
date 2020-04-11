@@ -11,8 +11,13 @@
         <p *ngIf="(isMobile | async)?.matches" class="lead mt-5 mb-8">{{ subtitle }}</p>
         <p *ngIf="!(isMobile | async)?.matches" [innerHTML]="subtitle" class="lead mt-5 mb-8"
            style="font-size: 23px; padding-top: 0.5em"></p>
-        <p class="gap-xy">
+        <p *ngIf="!(isMobile | async)?.matches" class="gap-xy">
           <app-home-build-button position="center"></app-home-build-button>
+        </p>
+        <p *ngIf="(isMobile | async)?.matches" class="gap-xy">
+          <button (click)="router.navigate(['/register']);" class="btn btn-xl btn-primary" type="button">Create an
+            Account
+          </button>
         </p>
       </div>
     </div>

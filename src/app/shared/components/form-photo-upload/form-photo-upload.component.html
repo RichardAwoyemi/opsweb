@@ -1,7 +1,8 @@
-<div *ngIf="user.photoURL" style="padding-bottom: 1em; text-align: center">
-  <img alt="avatar" class="avatar avatar-xl" src="{{ user.photoURL }}">
+<div [ngStyle]="setupUserProfilePhoto()">
+  <img *ngIf="user.photoURL" alt="avatar" class="avatar avatar-xl" src="{{ user.photoURL }}">
+  <img *ngIf="!user.photoURL" alt="avatar" class="avatar avatar-xl" src="../../../../assets/img/anonymous.jpg">
 </div>
-<div style="text-align: center">
+<div *ngIf="!(isMobile | async)?.matches" style="text-align: center">
   <label class="btn btn-xs btn-secondary btn-file">
     <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
     <span>Upload</span>
