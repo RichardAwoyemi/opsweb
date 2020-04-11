@@ -15,7 +15,8 @@
                        format="png"></image-cropper>
       </div>
       <div style="padding-top: 20px;">
-        <button (click)="onCropImageButtonClick()" class="btn btn-secondary" type="button">Crop Image</button>&nbsp;
+        <button class="builder-modal image-select-upload-crop btn btn-secondary"
+                (click)="onCropImageButtonClick()"  type="button">Crop Image</button>&nbsp;
       </div>
     </ng-container>
     <ng-container *ngIf="!imageChangedEvent">
@@ -25,7 +26,7 @@
       <div style="padding-top: 20px;">
         <label class="btn btn-lg btn-secondary btn-file">
           <input (change)="fileChangeEvent($event)" accept="image/x-png,image/gif,image/jpeg" type="file"/>
-          <span>Replace Image</span>
+          <span class="builder-modal image-select-upload-replace">Replace Image</span>
         </label>
       </div>
     </ng-container>
@@ -38,8 +39,10 @@
   </div>
   <div class="col-md-8">
     <label for="img-alt-text" style="display: none"></label>
-    <input [(ngModel)]="heroImageAlt" class="form-control form-control-lg" id="img-alt-text" type="text">
+    <input class="builder-modal image-select-upload-description form-control form-control-lg"
+          [(ngModel)]="heroImageAlt" id="img-alt-text" type="text">
   </div>
   <div class="col-md-12">&nbsp;</div>
 </div>
 <br>
+<!-- TAGGED -->

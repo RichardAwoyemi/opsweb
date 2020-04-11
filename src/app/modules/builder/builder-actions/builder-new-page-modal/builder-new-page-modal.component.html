@@ -1,8 +1,9 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">Create new page</h5>
-    <button (click)="onCloseButtonClick()" class="close" type="button">
-      <span class="builder-modal-page-new-close" aria-hidden="true">&times;</span>
+    <button class="builder-modal page-new-cross close" 
+            (click)="onCloseButtonClick()" type="button">
+      <span class="builder-modal page-new-cross" aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
@@ -18,10 +19,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="builder-modal-page-new-save btn btn-secondary" 
+    <button class="builder-modal page-new-save btn btn-secondary" 
             (click)="onConfirmButtonClick()" type="button"
             [disabled]="disableSaveButton">Save</button>&nbsp;
-    <button class="builder-modal-page-new-cancel btn btn-secondary" 
+    <button class="builder-modal page-new-cancel btn btn-secondary" 
             (click)="onCloseButtonClick()" type="button">Cancel</button>
   </div>
 </div>
+<!-- TAGGED -->

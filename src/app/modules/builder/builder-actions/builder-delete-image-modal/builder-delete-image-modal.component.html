@@ -1,17 +1,19 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">Delete image</h5>
-    <button (click)="onCloseButtonClick()" class="close" type="button">
-      <span class="builder-modal-image-delete-close" aria-hidden="true">&times;</span>
+    <button class="builder-modal image-delete-cross close" 
+            (click)="onCloseButtonClick()" type="button">
+      <span class="builder-modal image-delete-cross" aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     Are you sure you want to delete this image?
   </div>
   <div class="modal-footer">
-    <button class="builder-modal-image-delete-yes btn btn-secondary" 
+    <button class="builder-modal image-delete-yes btn btn-secondary" 
             (click)="onConfirmButtonClick()" type="button">Yes</button>&nbsp;
-    <button class="builder-modal-image-delete-no btn btn-secondary" 
+    <button class="builder-modal image-delete-no btn btn-secondary" 
             (click)="onCloseButtonClick()" type="button">No</button>
   </div>
 </div>
+<!-- TAGGED -->

@@ -1,17 +1,19 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">Change template</h5>
-    <button (click)="onCloseButtonClick()" class="close" type="button">
-      <span class="builder-modal-template-change-close" aria-hidden="true">&times;</span>
+    <button class="builder-modal template-change-cross close"
+            (click)="onCloseButtonClick()"  type="button">
+      <span class="builder-modal template-change-cross" aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     Are you sure you want to change template? Please note that all of your design changes will be lost.
   </div>
   <div class="modal-footer">
-    <button class="builder-modal-template-change-yes btn btn-secondary" 
+    <button class="builder-modal template-change-yes btn btn-secondary" 
             (click)="onConfirmButtonClick()" type="button">Yes</button>&nbsp;
-    <button class="builder-modal-template-change-no btn btn-secondary" 
+    <button class="builder-modal template-change-no btn btn-secondary" 
             (click)="onCloseButtonClick()" type="button">No</button>
   </div>
 </div>
+<!-- TAGGED -->

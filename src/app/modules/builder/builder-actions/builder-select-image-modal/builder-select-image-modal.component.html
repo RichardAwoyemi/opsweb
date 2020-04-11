@@ -1,17 +1,20 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">Select image</h5>
-    <button (click)="onCloseButtonClick()" class="close" type="button">
-      <span class="builder-modal-image-select-cancel" aria-hidden="true">&times;</span>
+    <button class="builder-modal image-select-cross"
+            (click)="onCloseButtonClick()" class="close" type="button">
+      <span class="builder-modal image-select-cross" aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#tab-library">Photos</a>
+        <a class="builder-modal image-select-tab-photo nav-link active" 
+            data-toggle="tab" href="#tab-library">Photos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#tab-upload">Upload</a>
+        <a class="builder-modal image-select-tab-upload nav-link" 
+            data-toggle="tab" href="#tab-upload">Upload</a>
       </li>
     </ul>
     <div class="tab-content p-4" style="margin-left: -1rem; margin-right: -1rem; padding-bottom: 0">
@@ -24,9 +27,10 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="builder-modal-image-select-save btn btn-secondary"
+    <button class="builder-modal image-select-save btn btn-secondary"
             (click)="onConfirmButtonClick()" type="button">Save</button>&nbsp;
-    <button class="builder-modal-image-select-cancel btn btn-secondary" 
+    <button class="builder-modal image-select-cancel btn btn-secondary" 
             (click)="onCloseButtonClick()" type="button">Cancel</button>
   </div>
 </div>
+<!-- TAGGED -->

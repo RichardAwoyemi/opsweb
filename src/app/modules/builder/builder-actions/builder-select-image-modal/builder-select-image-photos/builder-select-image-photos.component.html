@@ -1,9 +1,11 @@
 <div class="form-group input-group">
   <label for="searchText" style="display: none"></label>
-  <input (keydown)="onEnterKeyPressed($event)" [(ngModel)]="searchText" class="form-control" id="searchText"
-         name="searchText" placeholder="Search for..." style="font-size: 14px" type="searchText">
+  <input class="builder-modal image-select-photo-input form-control"
+          (keydown)="onEnterKeyPressed($event)" [(ngModel)]="searchText" id="searchText"
+          name="searchText" placeholder="Search for..." style="font-size: 14px" type="searchText">
   <div class="input-group-append ml-4">
-    <button (click)="onSearchButtonClick()" class="btn btn-secondary" type="button">Go</button>
+    <button class="builder-modal image-select-photo-search btn btn-secondary"
+            (click)="onSearchButtonClick()" type="button">Search</button>
   </div>
 </div>
 
@@ -23,3 +25,4 @@
     </div>
   </ng-container>
 </div>
+<!-- TAGGED -->
