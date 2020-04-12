@@ -7,11 +7,10 @@ import { UtilService } from '../../../../shared/services/util.service';
 import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings } from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
-import { BuilderNavbarService } from '../builder-navbar/builder-navbar.service';
 import { BuilderFooterService } from './builder-footer.service';
 
 @Component({
-  selector: 'app-builder-hero',
+  selector: 'app-builder-footer',
   templateUrl: './builder-footer.component.html'
 })
 export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
@@ -25,6 +24,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   previewMode: boolean;
   footerStyle: any;
   navbarMenuOptions: any;
+  footerTheme: string;
   footerMenuOptions: any;
   footerMenuOptionsCount: number;
   footerSocialLinksStyle: any;
@@ -35,7 +35,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   footerAlignmentClass: string;
   footerSocialLinksContainerStyle: any;
   footerSocialLinks: any;
-  footerComponentLayout: any;
+  footerComponentLayout: number;
   activeElement: string;
   copyrightText: string;
   activePageSetting: string;
@@ -45,9 +45,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private templateService: TemplateService,
     private builderService: BuilderService,
-    private builderNavbarService: BuilderNavbarService,
     private builderFooterService: BuilderFooterService,
     private builderComponentsService: BuilderComponentsService,
     private elementRef: ElementRef,
@@ -70,32 +68,6 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
         this.websiteMode = response;
       });
 
-    this.templateService.activeTemplate.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.builderFooterService.setFooterTemplateStyle(response[this.componentName]['style']);
-        }
-      });
-
-    this.builderFooterService.footerComponentLayout.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.footerComponentLayout = response;
-        }
-      });
-
-    this.builderFooterService.footerSocialLinksContainerStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        this.footerSocialLinksContainerStyle = response;
-      });
-
-    this.builderFooterService.footerAlignmentClass.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.footerAlignmentClass = response;
-        }
-      });
-
     this.builderService.previewMode.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
@@ -103,70 +75,10 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
         }
       });
 
-    this.builderFooterService.footerStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.footerStyle = response;
-        }
-      });
-
-    this.builderFooterService.footerSocialLinks.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.footerSocialLinks = response;
-        }
-      });
-
-    this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
+      this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
           this.activeElement = response;
-        }
-      });
-
-    this.builderFooterService.footerPageLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.footerPageLinksStyle = response;
-          this.footerPageLinksContainerStyle = {
-            'padding-top': this.footerPageLinksStyle['padding-top'],
-            'padding-bottom': this.footerPageLinksStyle['padding-bottom']
-          };
-          this.footerPageLinksListStyle = {
-            'font-family': this.footerPageLinksStyle['font-family'],
-            'font-size': this.footerPageLinksStyle['font-size'],
-            'padding-left': this.footerPageLinksStyle['padding-left'],
-            'padding-right': this.footerPageLinksStyle['padding-right']
-          };
-        }
-      });
-
-    this.builderFooterService.footerSocialLinksStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.footerSocialLinksStyle = response;
-        }
-      });
-
-    this.builderFooterService.footerCopyrightStyle.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.footerCopyrightStyle = response;
-        }
-      });
-
-    this.builderFooterService.footerMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        this.footerMenuOptionsCount = 0;
-        if (response) {
-          this.footerMenuOptions = response;
-          for (let i = 0; i < this.footerMenuOptions.length; i++) {
-            if (this.footerMenuOptions[i]) {
-              if (this.footerMenuOptions[i]['visible'] === true) {
-                this.footerMenuOptionsCount++;
-              }
-            }
-          }
         }
       });
 
@@ -185,21 +97,25 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
             .subscribe(response => {
               if (response) {
                 this.pageComponents = response;
-                this.builderFooterService.footerTemplate.next(this.pageComponents['template']);
                 this.componentId = this.elementRef.nativeElement['id'];
                 for (let j = 0; j < this.pageComponents['pages'][0]['components'].length; j++) {
                   if (this.pageComponents['pages'][0]['components'][j]['componentName'] === ActiveComponentsPartialSelector.Footer) {
                     this.componentDetail = this.pageComponents['pages'][0]['components'][j];
-                    this.builderFooterService.updateFooterMenuOptions(this.builderComponentsService.getPages(), this.componentDetail['footerMenuOptions']);
-                    this.builderFooterService.footerStyle.next(this.componentDetail['style']['footerStyle']);
-                    this.builderFooterService.footerSocialLinksContainerStyle.next(this.componentDetail['style']['footerSocialLinksContainerStyle']);
-                    this.builderFooterService.footerSocialLinksStyle.next(this.componentDetail['style']['footerSocialLinksStyle']);
-                    this.builderFooterService.footerPageLinksStyle.next(this.componentDetail['style']['footerPageLinksStyle']);
-                    this.builderFooterService.footerCopyrightStyle.next(this.componentDetail['style']['footerCopyrightStyle']);
-                    this.builderFooterService.footerComponentLayout.next(this.componentDetail['footerComponentLayout']);
-                    this.builderFooterService.footerAlignmentClass.next(this.componentDetail['footerAlignmentClass']);
-                    this.builderFooterService.footerSocialLinks.next(this.componentDetail['footerSocialLinks']);
-                    this.builderFooterService.footerTheme.next(this.componentDetail['footerTheme']);
+                    if (this.builderComponentsService.getPages().length !== this.componentDetail['footerMenuOptions'].length) {
+                      this.footerMenuOptions = this.builderFooterService.updateFooterMenuOptions(this.builderComponentsService.getPages(), this.componentDetail['footerMenuOptions']);
+                      this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', this.footerMenuOptions);
+                    } else {
+                      this.footerMenuOptions = this.componentDetail['footerMenuOptions'];
+                    }
+                    this.footerStyle = this.componentDetail['style']['footerStyle'];
+                    this.footerSocialLinksContainerStyle = this.componentDetail['style']['footerSocialLinksContainerStyle'];
+                    this.footerSocialLinksStyle = this.componentDetail['style']['footerSocialLinksStyle'];
+                    this.footerPageLinksStyle = this.componentDetail['style']['footerPageLinksStyle'];
+                    this.footerCopyrightStyle = this.componentDetail['style']['footerCopyrightStyle'];
+                    this.footerComponentLayout = this.componentDetail['footerComponentLayout'];
+                    this.footerAlignmentClass = this.componentDetail['footerAlignmentClass'];
+                    this.footerSocialLinks = this.componentDetail['footerSocialLinks'];
+                    this.footerTheme = this.componentDetail['footerTheme'];
                   }
                 }
               }
@@ -277,7 +193,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   }
 
   checkFooterSocialLinks() {
-    return !!(this.footerSocialLinks['facebookUrl'] || this.footerSocialLinks['twitterUrl'] || this.footerSocialLinks['youtubeUrl'] || this.footerSocialLinks['youtubeUrl']);
+    return Object.values(this.footerSocialLinks).some(link => (!!link));
   }
 
   checkPageLinkStyle(footerMenuOption) {
@@ -301,6 +217,21 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
 
   openUrlInNewTab(footerSocialLink: any) {
     UtilService.openUrlInNewTab(footerSocialLink);
+  }
+
+  setSocialsClass(socialLinks) {
+    return 'ti-' + socialLinks.replace('Url', '');
+  }
+
+  setContainerStyle(styleObj) {
+    let styleContainer = {}
+    styleContainer['padding-top'] = styleObj['padding-top'] || null;
+    styleContainer['padding-bottom'] = styleObj['padding-bottom'] || null;
+    return styleContainer;
+  }
+
+  setPagesLayoutOneClass() {
+    return (this.checkFooterSocialLinks()) ? 'col-md-4 text-center' : 'col-md-8 text-right';
   }
 
   ngOnDestroy(): void {

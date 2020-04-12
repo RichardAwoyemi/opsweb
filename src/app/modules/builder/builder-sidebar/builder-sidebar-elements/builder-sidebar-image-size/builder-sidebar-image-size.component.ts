@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   selector: 'app-sidebar-image-size',
@@ -13,11 +14,14 @@ import { BuilderService } from '../../../builder.service';
 export class BuilderSidebarImageSizeComponent implements OnInit, OnDestroy {
 
   imageSize: number;
-  imageUnit = '%';
+  sizeUnit = '%';
+  maxValue = 100;
+  minValue = 0;
   styleObject: any;
   websiteChangeCount: number;
   activeEditComponentId: string;
   ngUnsubscribe = new Subject<void>();
+  condition = true;
 
   @Input() data: any;
   @Input() elementSettings: any;
@@ -46,7 +50,23 @@ export class BuilderSidebarImageSizeComponent implements OnInit, OnDestroy {
         } else {
           this.styleObject = component['style'][this.elementSettings.name];
         }
-        this.imageSize = this.styleObject['width'].replace('%', '');
+
+        if (this.elementSettings.condition) {
+          for (let i = 0; i < this.elementSettings.condition.length; i++) {
+            const criteria = this.elementSettings.condition[i];
+            if (this.condition || this.elementSettings.any) {
+              this.condition = (!!UtilService.getDeepProp(component, criteria.property) === criteria.exists);
+              if (this.condition && this.elementSettings.any) { break; }
+            }
+          }
+        }
+
+        this.sizeUnit = this.elementSettings.sizeUnit || this.sizeUnit;
+        this.maxValue = this.elementSettings.maxValue || this.maxValue;
+        this.minValue = this.elementSettings.minValue || this.minValue;
+        if (this.styleObject) {
+          this.imageSize = this.styleObject['width'].replace(this.sizeUnit, '');
+        }
       }
     });
 
@@ -64,7 +84,7 @@ export class BuilderSidebarImageSizeComponent implements OnInit, OnDestroy {
   }
 
   setImageSize() {
-    this.styleObject['width'] = this.imageSize + '%';
+    this.styleObject['width'] = this.imageSize + this.sizeUnit;
     this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, this.elementSettings.name, 'width', this.styleObject['width']);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }

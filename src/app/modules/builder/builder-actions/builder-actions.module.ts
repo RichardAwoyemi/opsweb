@@ -10,7 +10,6 @@ import { SimpleModalModule } from '../../../shared/components/simple-modal/simpl
 import { BlockNonAlphabetCharactersDirective } from '../../../shared/directives/block-non-alphabet-characters.directive';
 import { BuilderRenamePageModalComponent } from './builder-rename-page-modal/builder-rename-page-modal.component';
 import { BuilderActionsService } from './builder-actions.service';
-import { BuilderDeleteImageModalComponent } from './builder-delete-image-modal/builder-delete-image-modal.component';
 import { BuilderCreateAccountModalComponent } from './builder-create-account-modal/builder-create-account-modal.component';
 import { BuilderSaveWebsiteModalComponent } from './builder-save-website-modal/builder-save-website-modal.component';
 import { BuilderRenameWebsiteModalComponent } from './builder-rename-website-modal/builder-rename-website-modal.component';
@@ -28,7 +27,6 @@ import { BuilderSelectImageLibraryComponent } from './builder-select-image-modal
     BuilderDeletePageModalComponent,
     BuilderNewPageModalComponent,
     BuilderDeleteComponentModalComponent,
-    BuilderDeleteImageModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
     BuilderRenamePageModalComponent,
@@ -52,7 +50,6 @@ import { BuilderSelectImageLibraryComponent } from './builder-select-image-modal
   exports: [
     BuilderDeletePageModalComponent,
     BuilderNewPageModalComponent,
-    BuilderDeleteImageModalComponent,
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,
     BuilderComponentToolbarComponent,
@@ -70,7 +67,6 @@ import { BuilderSelectImageLibraryComponent } from './builder-select-image-modal
   ],
   entryComponents: [
     BuilderDeletePageModalComponent,
-    BuilderDeleteImageModalComponent,
     BuilderNewPageModalComponent,
     BuilderDeleteComponentModalComponent,
     BuilderChangeTemplateModalComponent,

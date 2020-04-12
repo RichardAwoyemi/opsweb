@@ -1,4 +1,4 @@
-<div class="row" style="padding-top: 1em">
+<div *ngIf="condition" class="row" style="padding-top: 1em">
   <div class="col-md-6">
     <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
   </div>
@@ -10,13 +10,13 @@
       <input (keyup)="setImageSize()" (ngModelChange)="setImageSize()"
              [(ngModel)]="imageSize"
              class="form-control form-control-lg"
-             max="100" min="0" name="number"
+             max="{{maxValue}}" min="{{minValue}}" name="number"
              style="width: 100%" type="number">
     </label>
   </div>
   <div class="col-md-6">
     <label style="width: 100%">
-      <input [(ngModel)]="imageUnit" class="form-control form-control-lg" disabled>
+      <input [(ngModel)]="sizeUnit" class="form-control form-control-lg" disabled>
     </label>
   </div>
 </div>

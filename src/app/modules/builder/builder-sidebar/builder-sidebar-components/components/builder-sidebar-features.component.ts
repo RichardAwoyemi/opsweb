@@ -23,7 +23,7 @@ import { BuilderSidebarFontSizeComponent } from '../../builder-sidebar-elements/
 
 export class SidebarFeaturesComponent implements OnInit, OnDestroy {
 
-  @Input() setting;
+  @Input() settings;
 
   sidebar: any;
   baseData: any;
@@ -81,21 +81,7 @@ export class SidebarFeaturesComponent implements OnInit, OnDestroy {
       getThemesFunction: 'getFeaturesThemes',
     };
 
-    switch (this.setting) {
-      case 'layout':
-        this.sidebar = [
-          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Features' } },
-          { component: BuilderSidebarPaddingComponent, elementInfo: { name: 'featuresStyle' } },
-          { component: BuilderSidebarLineBreakComponent },
-          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Heading' } },
-          { component: BuilderSidebarTextAlignmentComponent, elementInfo: { name: 'featuresHeadingStyle' } },
-          { component: BuilderSidebarPaddingComponent, elementInfo: { name: 'featuresHeadingStyle' } },
-          { component: BuilderSidebarLineBreakComponent },
-          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Subheading' } },
-          { component: BuilderSidebarTextAlignmentComponent, elementInfo: { name: 'featuresSubheadingStyle' } },
-          { component: BuilderSidebarPaddingComponent, elementInfo: { name: 'featuresSubheadingStyle' } }
-        ];
-        break;
+    switch (this.settings) {
       case 'colours':
         this.sidebar = [
           { component: BuilderSidebarColourPickerComponent, elementInfo: { name: 'featuresStyle', colourProperty: 'background-color', sectionHeader: 'Background' } },
@@ -111,15 +97,25 @@ export class SidebarFeaturesComponent implements OnInit, OnDestroy {
           },
         ];
         break;
+      case 'layout':
+        this.sidebar = [
+          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Features', includeLineBreak: false } },
+          { component: BuilderSidebarPaddingComponent, elementInfo: { name: 'featuresStyle' } },
+          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Heading' } },
+          { component: BuilderSidebarTextAlignmentComponent, elementInfo: { name: 'featuresHeadingStyle', childKey: 'text-align', buttonClass: 'btn-xs' } },
+          { component: BuilderSidebarPaddingComponent, elementInfo: { name: 'featuresHeadingStyle' } },
+          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Subheading' } },
+          { component: BuilderSidebarTextAlignmentComponent, elementInfo: { name: 'featuresSubheadingStyle', childKey: 'text-align', buttonClass: 'btn-xs' } },
+          { component: BuilderSidebarPaddingComponent, elementInfo: { name: 'featuresSubheadingStyle' } }
+        ];
+        break;
       case 'options':
         this.sidebar = [
-          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Features' } },
+          { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Features', includeLineBreak: false } },
           { component: BuilderSidebarItemCountSliderComponent, elementInfo: { name: 'featuresItemArray', sliderOptions: this.featuresCountSliderOptions } },
-          { component: BuilderSidebarLineBreakComponent },
           { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Heading' } },
           { component: BuilderSidebarFontNameComponent, elementInfo: { name: 'featuresHeadingStyle' } },
           { component: BuilderSidebarFontSizeComponent, elementInfo: { name: 'featuresHeadingStyle' } },
-          { component: BuilderSidebarLineBreakComponent },
           { component: BuilderSidebarHeadingComponent, elementInfo: { name: 'Subheading' } },
           { component: BuilderSidebarFontNameComponent, elementInfo: { name: 'featuresSubheadingStyle' } },
           { component: BuilderSidebarFontSizeComponent, elementInfo: { name: 'featuresSubheadingStyle' } },

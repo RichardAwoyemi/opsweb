@@ -1,12 +1,4 @@
-<div class="navbar-colour-picker">
-  <app-navbar-colour-picker *ngIf="activeEditComponent == navbar"></app-navbar-colour-picker>
-</div>
-<div class="footer-colour-picker">
-  <app-footer-colour-picker *ngIf="activeEditComponent == footer"></app-footer-colour-picker>
-</div>
-<div class="features-colour-picker">
-  <app-sidebar-features-component *ngIf="activeEditComponent == features" setting='colours'></app-sidebar-features-component>
-</div>
-<div class="hero-colour-picker">
-  <app-sidebar-hero-component *ngIf="activeEditComponent == hero" setting='colours'></app-sidebar-hero-component>
-</div>
+  <app-sidebar-navbar-component *ngIf="activeEditComponent == navbar" settings='colours'></app-sidebar-navbar-component>
+  <app-sidebar-footer-component *ngIf="activeEditComponent == footer" settings='colours'></app-sidebar-footer-component>
+  <app-sidebar-features-component *ngIf="activeEditComponent == features" settings='colours'></app-sidebar-features-component>
+  <app-sidebar-hero-component *ngIf="activeEditComponent == hero" settings='colours'></app-sidebar-hero-component>

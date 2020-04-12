@@ -1,8 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveComponentsPartialSelector, ActiveThemes } from '../../builder';
 import { HttpClient } from '@angular/common/http';
-import { BuilderComponentsService } from '../builder-components.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class BuilderHeroService {

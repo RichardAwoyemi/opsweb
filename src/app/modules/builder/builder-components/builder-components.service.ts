@@ -230,7 +230,6 @@ export class BuilderComponentsService {
     const pageComponents = { ...originalPageComponents, ...newPageOrder };
     this.pageComponents.next(pageComponents);
     this.builderService.activePageIndex.next(this.getPageIndex(this.builderService.activePageSetting.getValue()));
-    console.log(this.builderService.activePageIndex.getValue());
   }
 
   deleteComponentByName(componentName) {

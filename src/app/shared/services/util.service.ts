@@ -12,6 +12,12 @@ export class UtilService {
     );
   }
 
+  static camelCaseToSelector(str: string) {
+    return str.replace(/[A-Z]/g, function(match) {
+      return '-' + match.toLowerCase();
+    });
+  }
+
   static isNullOrWhitespace(text: any): boolean {
     return !text || !text.trim();
   }
@@ -449,7 +455,14 @@ export class UtilService {
     window.open(url, '_blank');
   }
 
-  static shallowClone(obj): any{
+  static shallowClone(obj): any {
     return JSON.parse(JSON.stringify(obj));
+  }
+
+  static getDeepProp(obj, props) {
+    return props.split('.').reduce(function (acc, p) {
+      if (acc == null) { return; }
+      return acc[p];
+    }, obj);
   }
 }

@@ -6,7 +6,7 @@
        [ngClass]="setComponentClass()"
        [ngStyle]="navbarStyle"
        class="navbar navbar-expand-md navbar-showcase">
-    <span [ngStyle]="navbarBrandStyle" class="navbar-brand">
+    <span class="navbar-brand">
       <ng-container *ngIf="isNavbarLogoImageNull() == true">
         <span (blur)="removeLineBreaks($event); saveNavbarLogoBrandOption();"
               (click)="selectNavbarLogoBrand($event, 'navbar-logo-brand')"
@@ -15,15 +15,16 @@
               [class]="setActiveElementStyle(activeElement, 'navbar-logo-brand')"
               [innerText]="navbarLogoText"
               [ngClass]="setNavbarLogoBrandClass()"
+              [ngStyle]="navbarBrandStyle"
               id="'navbar-logo-brand'" style="padding: .5rem;"></span>
       </ng-container>
       <ng-container *ngIf="isNavbarLogoImageNull() == false">
         <img (click)="selectNavbarLogoImage($event, 'navbar-logo-image')"
-             [attr.src]="navbarLogoImage"
+             [attr.src]="navbarLogoImage['src']"
              [class]="setActiveElementStyle(activeElement, 'navbar-logo-image')"
              [ngClass]="setNavbarLogoImageClass()"
              [ngStyle]="navbarLogoImageStyle"
-             alt="navbarLogoImage"
+             alt="{{navbarLogoImage.alt}}"
              id="navbar-logo-image"
              style="padding: .5rem"/>
       </ng-container>

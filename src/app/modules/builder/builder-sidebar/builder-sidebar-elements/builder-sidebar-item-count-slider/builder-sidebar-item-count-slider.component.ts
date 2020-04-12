@@ -40,9 +40,13 @@ export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy
         const pageComponent = response;
         const component = pageComponent['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
         if (this.elementSettings.name in component) {
-          this.elementArraySize = component[this.elementSettings.name].length;
+          if (component[this.elementSettings.name]){
+            this.elementArraySize = component[this.elementSettings.name].length || 1;
+          }
         } else {
-          this.elementArraySize = component['style'][this.elementSettings.name].length;
+          if (component['style'][this.elementSettings.name]) {
+            this.elementArraySize = component['style'][this.elementSettings.name].length;
+          }
         }
       }
     });

@@ -1,0 +1,17 @@
+<div class="form-group" style="padding-bottom: 0; margin-bottom: 0">
+  <div class="row">
+    <div class="col-md-6">
+      <label style="color: rgba(255, 255, 255, 0.65);">{{elementSettings.sectionHeader}}</label>
+    </div>
+  </div>
+</div>
+<div class="input-group" *ngFor="let field of elementSettings.fieldSettings; let i = index"
+  style="margin-bottom: 1em;">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i [class]="field.prependClass"></i></span>
+  </div>
+  <label style="margin-bottom: 0;">
+    <input (keyup)="onInputChange(field, i)" (ngModelChange)="onInputChange('field, i')" [(ngModel)]="fieldArray[i]"
+      class="form-control" placeholder="{{field?.placeholder}}" type="text">
+  </label>
+</div>

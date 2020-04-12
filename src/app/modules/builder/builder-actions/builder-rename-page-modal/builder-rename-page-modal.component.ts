@@ -5,10 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IModalComponent } from '../../../../shared/models/modal';
 import { UtilService } from '../../../../shared/services/util.service';
-import { ActiveComponentsPartialSelector, ActiveElements } from '../../builder';
+import { ActiveElements } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
-import { BuilderFooterService } from '../../builder-components/builder-footer/builder-footer.service';
-import { BuilderNavbarService } from '../../builder-components/builder-navbar/builder-navbar.service';
 import { BuilderService } from '../../builder.service';
 import { BuilderActionsService } from '../builder-actions.service';
 
@@ -22,7 +20,7 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
   pageName: string;
   displayError = false;
   disableSaveButton = false;
-  navbarMenuOptions: any;
+  pages: any;
   pageComponents: any;
   activePageSetting: string;
 
@@ -33,8 +31,6 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     private toastrService: ToastrService,
     private builderService: BuilderService,
     private builderComponentsService: BuilderComponentsService,
-    private builderNavbarService: BuilderNavbarService,
-    private builderFooterService: BuilderFooterService
   ) {
   }
 
@@ -42,17 +38,11 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
     this.displayError = false;
     this.disableSaveButton = true;
 
-    this.builderNavbarService.navbarMenuOptions.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.navbarMenuOptions = response;
-        }
-      });
-
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
           this.pageComponents = response;
+          this.pages = this.builderComponentsService.getPages();
         }
       });
   }
@@ -63,14 +53,7 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
 
   onConfirmButtonClick() {
     this.activeModal.dismiss();
-    const pageIndex = this.activePageIndex;
     const pageName = this.pageName;
-    this.navbarMenuOptions[pageIndex] = pageName;
-
-    this.builderFooterService.setFooterMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Footer, 'footerMenuOptions', this.builderFooterService.footerMenuOptions.getValue());
-    this.builderNavbarService.setNavbarMenuOptions(UtilService.toTitleCase(pageName), pageIndex);
-    this.builderComponentsService.setPageComponentsByName(ActiveComponentsPartialSelector.Navbar, 'navbarMenuOptions', this.builderNavbarService.navbarMenuOptions.getValue());
 
     this.builderComponentsService.renamePage(UtilService.toTitleCase(pageName), this.activePage);
     this.builderService.activeElement.next(ActiveElements.Default);
@@ -82,9 +65,9 @@ export class BuilderRenamePageModalComponent implements IModalComponent, OnInit,
 
   validatePageName() {
     if (this.pageName.toLowerCase().trim() !== this.activePage.toLowerCase().trim()) {
-      this.displayError = BuilderActionsService.togglePageModalErrorMessage(this.pageName, this.navbarMenuOptions);
+      this.displayError = BuilderActionsService.togglePageModalErrorMessage(this.pageName, this.pages);
     }
-    this.disableSaveButton = BuilderActionsService.togglePageModalSaveButton(this.pageName, this.navbarMenuOptions);
+    this.disableSaveButton = BuilderActionsService.togglePageModalSaveButton(this.pageName, this.pages);
   }
 
   ngOnDestroy(): void {

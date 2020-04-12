@@ -19,7 +19,15 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   childKeySrc = 'src';
   childKeyAlt = 'alt';
   ngUnsubscribe = new Subject<void>();
-
+  library = true;
+  photos = true;
+  upload = true;
+  libraryTabClass = null;
+  photosTabClass = null;
+  uploadTabClass = null;
+  libraryPaneClass = null;
+  photosPaneClass = null;
+  uploadPaneClass = null;
   private activeLibrarySelectedImage: any;
   private activeLibrarySelectedImageAltText: any;
   private componentParentKey: any;
@@ -34,6 +42,9 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
   }
 
   ngOnInit() {
+    (this.library) ? this.libraryTabClass = 'active' : (this.photos) ? this.photosTabClass = 'active' : this.uploadTabClass = 'active';
+    (this.library) ? this.libraryPaneClass = 'show active' : (this.photos) ? this.photosPaneClass = 'show active' : this.uploadPaneClass = 'show active';
+
     this.builderActionsService.activeLibrarySelectedImage.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         this.activeLibrarySelectedImage = response;
@@ -41,7 +52,7 @@ export class BuilderSelectImageModalComponent implements IModalComponent, OnInit
 
     this.builderActionsService.activeLibrarySelectedImageAlt.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
-        (response) ? this.activeLibrarySelectedImageAltText = response : this.activeLibrarySelectedImageAltText = 'componentId';
+        this.activeLibrarySelectedImageAltText = response || 'website image';
       });
 
     this.builderComponentsService.pageComponents.pipe(takeUntil(this.ngUnsubscribe))

@@ -5,20 +5,24 @@ import { WebsiteService } from 'src/app/shared/services/website.service';
 import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
+import { UtilService } from '../../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-sidebar-text-alignment',
+  styleUrls: ['builder-sidebar-text-alignment.component.css'],
   templateUrl: './builder-sidebar-text-alignment.component.html'
 })
 
 export class BuilderSidebarTextAlignmentComponent implements OnInit, OnDestroy {
 
   styleObject: any;
+  buttonProperties: any;
   currentTemplate: any;
   defaultStyle: any;
   websiteChangeCount: number;
   activeEditComponentId: string;
   ngUnsubscribe = new Subject<void>();
+  childKeyProvided: boolean;
 
   @Input() data: any;
   @Input() elementSettings: any;
@@ -31,6 +35,10 @@ export class BuilderSidebarTextAlignmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.setupButtons();
+
+    this.elementSettings.childKey ? this.childKeyProvided = true : this.childKeyProvided = false;
+
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe)).subscribe(activeEditComponentIdResponse => {
       if (activeEditComponentIdResponse) {
         this.activeEditComponentId = activeEditComponentIdResponse;
@@ -56,18 +64,40 @@ export class BuilderSidebarTextAlignmentComponent implements OnInit, OnDestroy {
     });
   }
 
+  setupButtons(){
+    this.buttonProperties = {
+      left: {visible: true, value: 'left'},
+      center: {visible: true, value: 'center'},
+      right: {visible: true, value: 'right'},
+      justify: {visible: true, value: 'justify'},
+    };
+    if (this.elementSettings.buttonProperties){
+      for (const prop in this.buttonProperties) {
+        if (this.buttonProperties.hasOwnProperty(prop)){
+          this.buttonProperties[prop] = {...this.buttonProperties[prop], ...this.elementSettings.buttonProperties[prop]};
+        }
+      }
+    }
+  }
+
   setAlignment(alignment: string) {
-    this.styleObject['text-align'] = alignment;
+    if (this.childKeyProvided) {
+      this.styleObject[this.elementSettings.childKey] = alignment;
+    } else {
+      this.styleObject = alignment;
+    }
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
-    this.data.componentService[this.data.elementName].next(this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 
   resetAlignment() {
     const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
-    this.styleObject['text-align'] = defaultTemplate['style'][this.elementSettings.name]['text-align'];
+    if (this.childKeyProvided) {
+      this.styleObject[this.elementSettings.childKey] = defaultTemplate['style'][this.elementSettings.name]['text-align'];
+    } else {
+      this.styleObject = defaultTemplate['style'][this.elementSettings.name]['text-align'];
+    }
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
-    this.builderComponentsService[this.data.elementName].next(this.styleObject);
     this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
   }
 

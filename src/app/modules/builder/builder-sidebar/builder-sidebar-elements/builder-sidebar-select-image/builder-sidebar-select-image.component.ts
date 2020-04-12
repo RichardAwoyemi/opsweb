@@ -9,7 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sidebar-select-image',
-  styleUrls: ['./builder-sidebar-select-image.component.css'], 
+  styleUrls: ['./builder-sidebar-select-image.component.css'],
   templateUrl: './builder-sidebar-select-image.component.html'
 })
 
@@ -66,11 +66,18 @@ export class BuilderSidebarSelectImageComponent implements OnInit, OnDestroy {
     });
     modalRef.componentInstance.componentId = this.activeEditComponentId;
     modalRef.componentInstance.parentKey = this.elementSettings.name;
+    if (this.elementSettings.hasOwnProperty('library')) { modalRef.componentInstance['library'] = this.elementSettings.library; }
+    if (this.elementSettings.hasOwnProperty('photos')) { modalRef.componentInstance['photos'] = this.elementSettings.photos; }
+    if (this.elementSettings.hasOwnProperty('upload')) { modalRef.componentInstance['upload'] = this.elementSettings.upload; }
   }
 
   resetImage() {
     const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
-    this.styleObject = defaultTemplate['style'][this.elementSettings.name];
+    if (this.elementSettings.name in defaultTemplate['details']) {
+      this.styleObject = defaultTemplate['details'][this.elementSettings.name];
+    } else {
+      this.styleObject = defaultTemplate['style'][this.elementSettings.name];
+    }
     this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, this.elementSettings.name, 'src', this.styleObject['src']);
     this.builderComponentsService.setPageComponentByIdAndKey(this.activeEditComponentId, this.elementSettings.name, 'alt', this.styleObject['alt']);
   }

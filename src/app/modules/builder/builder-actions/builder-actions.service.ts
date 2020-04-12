@@ -8,13 +8,13 @@ export class BuilderActionsService {
   activeLibrarySearchText = new BehaviorSubject<string>(null);
   renameRenameWebsiteModalStatus = new BehaviorSubject<any>({ 'open': false });
 
-  static togglePageModalErrorMessage(pageName: string, navbarMenuOptions: any): boolean {
+  static togglePageModalErrorMessage(pageName: string, pages: any): boolean {
     pageName = pageName.trim();
     if (pageName.length === 0) {
       return false;
     } else {
-      for (let i = 0; i < navbarMenuOptions.length; i++) {
-        if (pageName.toLowerCase() === navbarMenuOptions[i].toLowerCase().trim()) {
+      for (let i = 0; i < pages.length; i++) {
+        if (pageName.toLowerCase() === pages[i].toLowerCase().trim()) {
           return true;
         }
       }
@@ -27,13 +27,13 @@ export class BuilderActionsService {
     return websiteName.length === 0;
   }
 
-  static togglePageModalSaveButton(pageName: string, navbarMenuOptions: any) {
+  static togglePageModalSaveButton(pageName: string, pages: any) {
     pageName = pageName.trim();
     if (pageName.length === 0) {
       return true;
     } else {
-      for (let i = 0; i < navbarMenuOptions.length; i++) {
-        if (pageName.toLowerCase() === navbarMenuOptions[i].toLowerCase().trim()) {
+      for (let i = 0; i < pages.length; i++) {
+        if (pageName.toLowerCase() === pages[i].toLowerCase().trim()) {
           return true;
         }
       }

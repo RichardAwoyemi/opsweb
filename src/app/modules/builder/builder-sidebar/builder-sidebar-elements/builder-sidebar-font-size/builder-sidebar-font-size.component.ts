@@ -54,6 +54,9 @@ export class BuilderSidebarFontSizeComponent implements OnInit, OnDestroy {
           this.styleObject = component[this.elementSettings.name];
         } else {
           this.styleObject = component['style'][this.elementSettings.name];
+        }
+
+        if (this.styleObject) {
           this.elementFontSize = this.styleObject['font-size'].replace('px', '').replace('em', '');
         }
       }

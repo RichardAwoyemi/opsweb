@@ -94,15 +94,6 @@ footer > div {
   font-family: unset !important;
 }
 
-.footer-page-links span:last-child {
-  padding-right: 0 !important;
-  margin-right: 0 !important;
-}
-
-.footer-social-links span:last-child {
-  padding-right: 0 !important;
-  margin-right: 0 !important;
-}
 
 .footer-page-links:hover {
   cursor: pointer;

@@ -23,7 +23,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     BuilderComponent,
-    BuilderHeaderComponent
+    BuilderHeaderComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

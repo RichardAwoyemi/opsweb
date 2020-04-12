@@ -1,0 +1,15 @@
+<div [sortablejsOptions]="options" [sortablejs]="menuOptions" [ngStyle]='elementSettings?.containerStyle'>
+  <div *ngFor="let option of menuOptions"
+       class="row page-row-color page-row-option justify-content-center align-items-center" style="font-size: 0.8em">
+    <div class="col-md-3" style="padding: 0.5em">
+      <button class="btn btn-square btn-options btn-block btn-xl btn-drag-menu" type="button">
+        <i class="ti-menu"></i>
+      </button>
+    </div>
+    <div class="col-md-9 row-color h-100 d-table">
+      <div class="align-items-center d-table-cell align-middle">
+        {{ option }}
+      </div>
+    </div>
+  </div>
+</div>

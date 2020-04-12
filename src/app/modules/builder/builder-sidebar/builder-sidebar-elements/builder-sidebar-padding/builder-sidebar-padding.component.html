@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="this.condition"  class="row" [ngStyle]='elementSettings?.containerStyle'>
   <div class="col-md-12">
     <div class="form-group" style="margin-bottom: .3em;">
       <label style="color: rgba(255, 255, 255, 0.65)">Spacing</label>

@@ -52,6 +52,7 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy  {
       this.imageChangedEvent = event;
       this.imageObject['src'] = event.base64;
       this.builderActionsService.activeLibrarySelectedImage.next(event.base64);
+      this.builderActionsService.activeLibrarySelectedImageAlt.next(this.imageObject.alt);
     }
   }
 
@@ -74,7 +75,7 @@ export class BuilderSelectImageUploadComponent implements OnInit, OnDestroy  {
   }
 
 
-  setHeroImageAlt() {
+  setImageAlt() {
     this.builderActionsService.activeLibrarySelectedImageAlt.next(this.imageObject['alt']);
   }
 

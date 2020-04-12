@@ -1,117 +1,63 @@
-<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
-                               [componentName]="componentName"></app-builder-component-toolbar>
+<app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId" [componentName]="componentName">
+</app-builder-component-toolbar>
 <div [attr.id]="componentId" [ngClass]="setContextMenu()">
   <!-- Default --->
-  <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()"
-          *ngIf="footerComponentLayout['layout'] === 0"
-          [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
-    <div *ngIf="checkFooterSocialLinks() === true"
-         [ngClass]="footerAlignmentClass">
-      <div [ngStyle]="footerSocialLinksContainerStyle" class="footer-social-links">
-        <span (click)="openUrlInNewTab(footerSocialLinks['facebookUrl'])" *ngIf="footerSocialLinks['facebookUrl']"
-              [attr.data-href]="footerSocialLinks['facebookUrl']" [ngStyle]="footerSocialLinksStyle"><i
-          class="ti-facebook"></i></span>
-        <span (click)="openUrlInNewTab(footerSocialLinks['twitterUrl'])" *ngIf="footerSocialLinks['twitterUrl']"
-              [attr.data-href]="footerSocialLinks['twitterUrl']" [ngStyle]="footerSocialLinksStyle"><i
-          class="ti-twitter-alt"></i></span>
-        <span (click)="openUrlInNewTab(footerSocialLinks['instagramUrl'])" *ngIf="footerSocialLinks['instagramUrl']"
-              [attr.data-href]="footerSocialLinks['instagramUrl']" [ngStyle]="footerSocialLinksStyle"><i
-          class="ti-instagram"></i></span>
-        <span (click)="openUrlInNewTab(footerSocialLinks['youtubeUrl'])" *ngIf="footerSocialLinks['youtubeUrl']"
-              [attr.data-href]="footerSocialLinks['youtubeUrl']" [ngStyle]="footerSocialLinksStyle"><i
-          class="ti-youtube"></i></span>
-        <span (click)="openUrlInNewTab(footerSocialLinks['githubUrl'])" *ngIf="footerSocialLinks['githubUrl']"
-              [attr.data-href]="footerSocialLinks['githubUrl']" [ngStyle]="footerSocialLinksStyle"><i
-          class="ti-github"></i></span>
-        <span (click)="openUrlInNewTab(footerSocialLinks['linkedinUrl'])" *ngIf="footerSocialLinks['linkedinUrl']"
-              [attr.data-href]="footerSocialLinks['linkedinUrl']" [ngStyle]="footerSocialLinksStyle"><i
-          class="ti-linkedin"></i></span>
-      </div>
+  <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" *ngIf="footerComponentLayout === 0"
+    [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
+    <div *ngIf="checkFooterSocialLinks()" [ngClass]="footerAlignmentClass">
+      <ng-container *ngTemplateOutlet="footerSocialsTemplate"></ng-container>
     </div>
-    <div *ngIf="checkIfVisibleFooterMenuOptions()" [ngClass]="footerAlignmentClass">
-      <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
-        <ng-container *ngFor="let footerMenuOption of footerMenuOptions; let i = index">
-              <span (click)="selectFooterLink(i, footerMenuOption)"
-                    *ngIf="checkPageLinkStyle(footerMenuOption)"
-                    [innerText]="displayFooterMenuOption(footerMenuOption)"
-                    [ngStyle]="footerPageLinksListStyle"></span>
-        </ng-container>
-      </div>
+    <div *ngIf="checkIfVisibleFooterMenuOptions()" [ngClass]="footerAlignmentClass" class="footer-page-links"
+      [ngStyle]="setContainerStyle(footerPageLinksStyle)">
+      <ng-container *ngFor="let footerMenuOption of footerMenuOptions; let i = index">
+        <span (click)="selectFooterLink(i, footerMenuOption)" *ngIf="checkPageLinkStyle(footerMenuOption)"
+          [innerText]="displayFooterMenuOption(footerMenuOption)" [ngStyle]="footerPageLinksStyle"></span>
+      </ng-container>
     </div>
     <div [ngClass]="footerAlignmentClass">
       <div [ngStyle]="footerCopyrightStyle">
-        <span
-          (click)="selectFooterCopyright($event, 'footer-copyright')"
-          [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
-          [innerText]="copyrightText"
+        <span (click)="selectFooterCopyright($event, 'footer-copyright')"
+          [class]="setActiveElementStyle(activeElement, 'footer-copyright')" [innerText]="copyrightText"
           [ngClass]="setFooterCopyrightClass()" id="footer-copyright-1"></span>
       </div>
     </div>
   </footer>
   <!-- Layout 1 --->
-  <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()"
-          *ngIf="footerComponentLayout['layout'] === 1"
-          [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
+  <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" *ngIf="footerComponentLayout === 1"
+    [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
     <div class="row">
       <div class="col-md-4 text-left">
         <div [ngStyle]="footerCopyrightStyle">
           <span (click)="selectFooterCopyright($event, 'footer-copyright')"
-                [class]="setActiveElementStyle(activeElement, 'footer-copyright')"
-                [ngClass]="setFooterCopyrightClass()"
-                id="footer-copyright-2">
+            [class]="setActiveElementStyle(activeElement, 'footer-copyright')" [ngClass]="setFooterCopyrightClass()"
+            id="footer-copyright-2">
             Copyright &copy; {{ today | date: 'yyyy' }}
           </span>
         </div>
       </div>
-      <ng-container *ngIf="checkFooterSocialLinks() === true">
-        <div class="col-md-4 text-center">
-          <div *ngIf="checkIfVisibleFooterMenuOptions()">
-            <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
-              <ng-container *ngFor="let footerMenuOption of footerMenuOptions">
-              <span *ngIf="checkPageLinkStyle(footerMenuOption)"
-                    [innerText]="displayFooterMenuOption(footerMenuOption)"
-                    [ngStyle]="footerPageLinksListStyle"></span>
-              </ng-container>
-            </div>
+      <ng-container>
+        <div [class]="setPagesLayoutOneClass()">
+          <div *ngIf="checkIfVisibleFooterMenuOptions()" class="footer-page-links"
+          [ngStyle]="setContainerStyle(footerPageLinksStyle)">
+            <ng-container *ngFor="let footerMenuOption of footerMenuOptions">
+              <span *ngIf="checkPageLinkStyle(footerMenuOption)" [innerText]="displayFooterMenuOption(footerMenuOption)"
+                [ngStyle]="footerPageLinksStyle"></span>
+            </ng-container>
           </div>
         </div>
         <div class="col-md-4 text-right">
-          <div [ngStyle]="footerSocialLinksContainerStyle" class="footer-social-links">
-              <span *ngIf="footerSocialLinks['facebookUrl']" [attr.data-href]="footerSocialLinks['facebookUrl']"
-                    [ngStyle]="checkSocialLinkStyle(footerSocialLinks['facebookUrl'])"><i
-                class="ti-facebook"></i></span>
-            <span *ngIf="footerSocialLinks['twitterUrl']" [attr.data-href]="footerSocialLinks['twitterUrl']"
-                  [ngStyle]="checkSocialLinkStyle(footerSocialLinks['twitterUrl'])"><i
-              class="ti-twitter-alt"></i></span>
-            <span *ngIf="footerSocialLinks['instagramUrl']" [attr.data-href]="footerSocialLinks['instagramUrl']"
-                  [ngStyle]="checkSocialLinkStyle(footerSocialLinks['instagramUrl'])"><i
-              class="ti-instagram"></i></span>
-            <span *ngIf="footerSocialLinks['youtubeUrl']" [attr.data-href]="footerSocialLinks['youtubeUrl']"
-                  [ngStyle]="checkSocialLinkStyle(footerSocialLinks['youtubeUrl'])"><i
-              class="ti-youtube"></i></span>
-            <span *ngIf="footerSocialLinks['githubUrl']" [attr.data-href]="footerSocialLinks['githubUrl']"
-                  [ngStyle]="checkSocialLinkStyle(footerSocialLinks['githubUrl'])"><i
-              class="ti-github"></i></span>
-            <span *ngIf="footerSocialLinks['linkedinUrl']" [attr.data-href]="footerSocialLinks['linkedinUrl']"
-                  [ngStyle]="checkSocialLinkStyle(footerSocialLinks['linkedinUrl'])"><i
-              class="ti-linkedin"></i></span>
-          </div>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="!checkFooterSocialLinks()">
-        <div class="col-md-8 text-right">
-          <div *ngIf="checkIfVisibleFooterMenuOptions()">
-            <div [ngStyle]="footerPageLinksContainerStyle" class="footer-page-links">
-              <ng-container *ngFor="let footerMenuOption of footerMenuOptions; let i = index">
-              <span (click)="selectFooterLink(i, footerMenuOption)"
-                    *ngIf="checkPageLinkStyle(footerMenuOption)"
-                    [innerText]="displayFooterMenuOption(footerMenuOption)"
-                    [ngStyle]="footerPageLinksListStyle"></span>
-              </ng-container>
-            </div>
-          </div>
+          <ng-container *ngTemplateOutlet="footerSocialsTemplate"></ng-container>
         </div>
       </ng-container>
     </div>
   </footer>
 </div>
+
+
+<ng-template #footerSocialsTemplate>
+  <div [ngStyle]="footerSocialLinksContainerStyle" class="footer-social-links">
+    <ng-container *ngFor="let social of footerSocialLinks | keyvalue" >
+      <span (click)="openUrlInNewTab(social.value)" *ngIf="!!social.value" [attr.data-href]="social.value"
+        [ngStyle]="footerSocialLinksStyle"><i [class]="setSocialsClass(social.key)"></i></span></ng-container>
+  </div>
+</ng-template>

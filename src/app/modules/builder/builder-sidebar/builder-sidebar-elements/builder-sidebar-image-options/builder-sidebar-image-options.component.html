@@ -2,18 +2,12 @@
   <label style="color: rgba(255, 255, 255, 0.65)">{{elementSettings.sectionHeader}}</label>
 </div>
 <div class="row">
-  <div *ngFor="let option of elementSettings.optionSettings" class="col-md-6">
-    <div (click)="setOptionValue(option.value)" [ngClass]="setComponentLayoutSelectorClass(option.value)"
+  <div *ngFor="let option of elementSettings.optionSettings; let i = index" class="col-md-6" style="margin-bottom: 1em;">
+    <div (click)="setOptionValue(option?.update, i)" [ngClass]="setComponentLayoutSelectorClass(i)"
       style="height: 80px">
       <div style="width: 75%">
         <img alt="{{option.alt}}" src="{{option.src}}">
       </div>
     </div>
-  </div>
-  <br>
-  <div class="col-md-12" style="padding-top: 2em">
-    <label (click)="resetOptionValue()" class="btn btn-xl btn-block btn-secondary">
-      <span>Reset To Default</span>
-    </label>
   </div>
 </div>

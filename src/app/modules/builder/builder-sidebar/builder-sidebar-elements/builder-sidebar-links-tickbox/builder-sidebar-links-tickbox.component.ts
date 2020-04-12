@@ -2,26 +2,20 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
-import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
+import { element } from 'protractor';
 
 @Component({
-  selector: 'app-sidebar-font-name',
-  templateUrl: './builder-sidebar-font-name.component.html'
+  selector: 'app-sidebar-links-tickbox',
+  templateUrl: './builder-sidebar-links-tickbox.component.html'
 })
 
-export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {
+export class BuilderSidebarLinksTickboxComponent implements OnInit, OnDestroy {
 
-  styleObject: any;
-  styleObjectFontName: string;
-  fontUnits: any;
-  currentTemplate: any;
-  defaultStyle: any;
+  menuOptions: any;
   websiteChangeCount: number;
   activeEditComponentId: string;
-  fontNames: any;
-
   ngUnsubscribe = new Subject<void>();
 
   @Input() data: any;
@@ -35,15 +29,10 @@ export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.builderService.activeEditComponentId.pipe(takeUntil(this.ngUnsubscribe)).subscribe(activeEditComponentIdResponse => {
       if (activeEditComponentIdResponse) {
         this.activeEditComponentId = activeEditComponentIdResponse;
-      }
-    });
-
-    this.builderService.fontNames.pipe(takeUntil(this.ngUnsubscribe)).subscribe(response => {
-      if (response) {
-        this.fontNames = response;
       }
     });
 
@@ -52,14 +41,9 @@ export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {
         const pageComponent = response;
         const component = pageComponent['pages'][this.data.pageIndex]['components'][this.data.componentIndex];
         if (this.elementSettings.name in component) {
-          this.styleObject = component[this.elementSettings.name];
+          this.menuOptions = component[this.elementSettings.name];
         } else {
-          this.styleObject = component['style'][this.elementSettings.name];
-        }
-
-        if (this.styleObject) {
-          const splitFontName = this.styleObject['font-family'].split(',');
-          this.styleObjectFontName = splitFontName[0].replace(/'/g, '');
+          this.menuOptions = component['style'][this.elementSettings.name];
         }
       }
     });
@@ -71,16 +55,13 @@ export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFontNameChange() {
-    this.styleObject['font-family'] = this.styleObjectFontName;
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
-    this.websiteService.setWebsiteChangeCount(this.websiteChangeCount, 1);
+  toggleTickbox(i) {
+    this.menuOptions[i][this.elementSettings.valueKey] = !this.menuOptions[i][this.elementSettings.valueKey];
+    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.menuOptions);
   }
 
-  resetFontName() {
-    const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
-    this.styleObject['font-family'] = defaultTemplate['style'][this.elementSettings.name]['font-family'];
-    this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
+  setTickboxClass(value) {
+    return (value) ? 'ti-check' : 'ti-close';
   }
 
   ngOnDestroy(): void {

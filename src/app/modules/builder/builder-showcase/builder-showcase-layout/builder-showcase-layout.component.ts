@@ -10,6 +10,7 @@ import { BuilderComponentsService } from '../../builder-components/builder-compo
 import { BuilderService } from '../../builder.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TemplateService } from 'src/app/shared/services/template.service';
 
 @Component({
   selector: 'app-builder-showcase-layout',
@@ -28,10 +29,10 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private builderComponentsService: BuilderComponentsService,
     private simpleModalService: SimpleModalService,
-    private sessionStorageService: StorageService,
     private modalService: NgbModal,
     private websiteService: WebsiteService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
+    private templateService: TemplateService
   ) {
     this.options = {
       onUpdate: function (e: any) {
@@ -57,6 +58,9 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
                 this.pageComponents = response;
                 this.setPageComponents();
                 BuilderComponentsService.addComponentsToSessionStorage(this.pageComponents, this.activePage);
+                if (!this.builderComponentsService.activeTemplate.getValue()) {
+                  this.templateService.getTemplateStyle(this.pageComponents['template']).subscribe(template => this.builderComponentsService.activeTemplate.next(template));
+                }
               }
             }));
         }

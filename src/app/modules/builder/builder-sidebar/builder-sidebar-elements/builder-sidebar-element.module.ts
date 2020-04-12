@@ -22,24 +22,34 @@ import { BuilderSidebarImageOptionsComponent } from './builder-sidebar-image-opt
 import { BuilderSidebarSelectImageComponent } from './builder-sidebar-select-image/builder-sidebar-select-image.component';
 import { BuilderSidebarImageSizeComponent } from './builder-sidebar-image-size/builder-sidebar-image-size.component';
 import { BuilderSidebarLinksDropdownComponent } from './builder-sidebar-links-dropdown/builder-sidebar-links-dropdown.component';
+import { BuilderSidebarSortPagesComponent } from './builder-sidebar-sort-pages/builder-sidebar-sort-pages.component';
+import { BuilderSidebarFormInputComponent } from './builder-sidebar-form-input/builder-sidebar-form-input.component';
+import { BuilderSidebarLinksTickboxComponent } from './builder-sidebar-links-tickbox/builder-sidebar-links-tickbox.component';
+
+const COMPONENTS = [
+  BuilderSidebarItemCountSliderComponent,
+  BuilderSidebarTextAlignmentComponent,
+  BuilderSidebarPaddingComponent,
+  BuilderSidebarLineBreakComponent,
+  BuilderSidebarHeadingComponent,
+  BuilderSidebarFontNameComponent,
+  BuilderSidebarFontSizeComponent,
+  BuilderSidebarColourPickerComponent,
+  BuilderSidebarThemeChangeComponent,
+  BuilderSidebarImageOptionsComponent,
+  BuilderSidebarSelectImageComponent,
+  BuilderSidebarImageSizeComponent,
+  BuilderSidebarSortPagesComponent,
+  BuilderSidebarLinksDropdownComponent,
+  BuilderSidebarFormInputComponent,
+  BuilderSidebarLinksTickboxComponent
+];
 
 @NgModule({
   declarations: [
-    BuilderSidebarItemCountSliderComponent,
-    BuilderSidebarTextAlignmentComponent,
-    BuilderSidebarPaddingComponent,
-    BuilderSidebarLineBreakComponent,
-    BuilderSidebarHeadingComponent,
-    BuilderSidebarFontNameComponent,
-    BuilderSidebarFontSizeComponent,
+    ...COMPONENTS,
     BuilderSidebarElementDirective,
     BuilderSidebarElementComponent,
-    BuilderSidebarColourPickerComponent,
-    BuilderSidebarThemeChangeComponent,
-    BuilderSidebarImageOptionsComponent,
-    BuilderSidebarSelectImageComponent,
-    BuilderSidebarImageSizeComponent,
-    BuilderSidebarLinksDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -51,21 +61,7 @@ import { BuilderSidebarLinksDropdownComponent } from './builder-sidebar-links-dr
     ColorPickerModule,
     Ng5SliderModule
   ],
-  entryComponents: [
-    BuilderSidebarItemCountSliderComponent,
-    BuilderSidebarTextAlignmentComponent,
-    BuilderSidebarPaddingComponent,
-    BuilderSidebarLineBreakComponent,
-    BuilderSidebarHeadingComponent,
-    BuilderSidebarFontNameComponent,
-    BuilderSidebarFontSizeComponent,
-    BuilderSidebarColourPickerComponent,
-    BuilderSidebarThemeChangeComponent,
-    BuilderSidebarImageOptionsComponent,
-    BuilderSidebarSelectImageComponent,
-    BuilderSidebarImageSizeComponent,
-    BuilderSidebarLinksDropdownComponent
-  ],
+  entryComponents: COMPONENTS,
   exports: [
     BuilderSidebarElementComponent
   ]

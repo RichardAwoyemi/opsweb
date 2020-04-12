@@ -2,9 +2,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
-import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
+import { UtilService } from '../../../../../shared/services/util.service';
 
 @Component({
   selector: 'app-sidebar-padding',
@@ -13,6 +13,7 @@ import { BuilderService } from '../../../builder.service';
 
 export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
 
+  condition = true;
   styleObject: any;
   currentTemplate: any;
   websiteChangeCount: number;
@@ -22,6 +23,7 @@ export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
   paddingRight: number;
   paddingBottom: number;
   ngUnsubscribe = new Subject<void>();
+  padArray = ['paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom'];
 
   @Input() data: any;
   @Input() elementSettings: any;
@@ -29,7 +31,7 @@ export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
   constructor(
     private builderComponentsService: BuilderComponentsService,
     private websiteService: WebsiteService,
-    private builderService: BuilderService
+    private builderService: BuilderService,
   ) {
   }
 
@@ -49,10 +51,23 @@ export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
         } else {
           this.styleObject = component['style'][this.elementSettings.name];
         }
-        this.paddingTop = this.styleObject['padding-top'].replace('px', '');
-        this.paddingLeft = this.styleObject['padding-left'].replace('px', '');
-        this.paddingRight = this.styleObject['padding-right'].replace('px', '');
-        this.paddingBottom = this.styleObject['padding-bottom'].replace('px', '');
+
+        if (this.elementSettings.condition) {
+          for (let i = 0; i < this.elementSettings.condition.length; i++) {
+            const criteria = this.elementSettings.condition[i];
+            if (this.condition || this.elementSettings.any) {
+              this.condition = (!!UtilService.getDeepProp(component, criteria.property) === criteria.exists);
+              if (this.condition && this.elementSettings.any) { break; }
+            }
+          }
+        }
+
+        if (this.styleObject) {
+          this.padArray.forEach(pad => {
+            this[pad] = this.styleObject[UtilService.camelCaseToSelector(pad)].replace('px', '');
+          });
+        }
+
       }
     });
 
@@ -72,13 +87,11 @@ export class BuilderSidebarPaddingComponent implements OnInit, OnDestroy {
   resetPaddingStyle() {
     const defaultTemplate = this.builderComponentsService.activeTemplate.getValue()[this.data.componentName];
 
-    for (let i of ['padding-top', 'padding-left', 'padding-right', 'padding-bottom']) {
-      this.styleObject[i] = defaultTemplate['style'][this.elementSettings.name][i];
+    for (const pad of this.padArray) {
+      const selectorIndex = UtilService.camelCaseToSelector(pad);
+      this.styleObject[selectorIndex] = defaultTemplate['style'][this.elementSettings.name][selectorIndex];
+      this[pad] = this.styleObject[selectorIndex].replace('px', '');
     }
-    this.paddingTop = this.styleObject['padding-top'].replace('px', '');
-    this.paddingLeft = this.styleObject['padding-left'].replace('px', '');
-    this.paddingRight = this.styleObject['padding-right'].replace('px', '');
-    this.paddingBottom = this.styleObject['padding-bottom'].replace('px', '');
     this.builderComponentsService.setPageComponentById(this.activeEditComponentId, this.elementSettings.name, this.styleObject);
   }
 

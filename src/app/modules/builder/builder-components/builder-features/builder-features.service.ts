@@ -1,23 +1,15 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActiveComponentsPartialSelector, ActiveThemes } from '../../builder';
-import { HttpClient } from '@angular/common/http';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { BuilderService } from '../../builder.service';
 import { UtilService } from '../../../../shared/services/util.service';
+import { ActiveComponentsPartialSelector } from '../../builder';
+import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
 
 @Injectable()
 export class BuilderFeaturesService {
-  featuresHeadingStyle = new BehaviorSubject<Object>({});
-  featuresSubheadingStyle = new BehaviorSubject<Object>({});
-  featuresStyle = new BehaviorSubject<Object>({});
-  featuresTemplate = new BehaviorSubject<string>(null);
-  featuresTheme = new BehaviorSubject<string>(null);
-  featuresItemArray = new BehaviorSubject<Object>({});
-  featuresAlignmentClass = new BehaviorSubject<string>('text-center');
   featuresBreakpoint = new BehaviorSubject<string>(null);
-
   private FEATURES_THEME_PATH = './assets/data/web-themes/features.json';
 
   constructor(
