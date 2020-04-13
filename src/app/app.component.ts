@@ -31,12 +31,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     public afAuth: AngularFireAuth,
     public router: Router,
-    private routerService: RouterService,
     private authService: AuthService,
     private authStore: Store<fromAuth.State>,
     private userStore: Store<fromUser.State>
   ) {
-    this.afAuth.auth.getRedirectResult().then((result) => {
+    this.afAuth.getRedirectResult().then((result) => {
       if (result.user && this.authService.isLoggedIn()) {
         this.referredBy = JSON.parse(localStorage.getItem('referredBy'));
         if (this.referredBy) {

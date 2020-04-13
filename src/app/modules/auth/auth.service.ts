@@ -46,14 +46,14 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    const user = this.afAuth.auth.currentUser;
+    const user = this.afAuth.currentUser;
     return !!user;
   }
 
   facebookSignIn() {
     const provider = new auth.FacebookAuthProvider();
     let firstName = null, lastName = null;
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+    return this.afAuth.signInWithPopup(provider).then(async (result) => {
       if (result) {
         firstName = result.additionalUserInfo.profile['first_name'];
         lastName = result.additionalUserInfo.profile['last_name'];
@@ -72,7 +72,7 @@ export class AuthService {
   facebookSignInWithBuilder(pageComponents) {
     const provider = new auth.FacebookAuthProvider();
     let firstName = null, lastName = null;
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+    return this.afAuth.signInWithPopup(provider).then(async (result) => {
       if (result) {
         firstName = result.additionalUserInfo.profile['first_name'];
         lastName = result.additionalUserInfo.profile['last_name'];
@@ -93,7 +93,7 @@ export class AuthService {
   facebookSignInWithReferral(referredByUser) {
     const provider = new auth.FacebookAuthProvider();
     let firstName = null, lastName = null;
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+    return this.afAuth.signInWithPopup(provider).then(async (result) => {
       if (result) {
         firstName = result.additionalUserInfo.profile['first_name'];
         lastName = result.additionalUserInfo.profile['last_name'];
@@ -111,20 +111,20 @@ export class AuthService {
 
   mobileFacebookSignIn() {
     const provider = new auth.FacebookAuthProvider();
-    return this.afAuth.auth.signInWithRedirect(provider);
+    return this.afAuth.signInWithRedirect(provider);
   }
 
   mobileFacebookSignInWithReferral(referredByUser) {
     const provider = new auth.FacebookAuthProvider();
     localStorage.setItem('referredBy', JSON.stringify(referredByUser));
-    return this.afAuth.auth.signInWithRedirect(provider);
+    return this.afAuth.signInWithRedirect(provider);
   }
 
   googleSignIn() {
     const provider = new auth.GoogleAuthProvider();
     let firstName = null;
     let lastName = null;
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+    return this.afAuth.signInWithPopup(provider).then(async (result) => {
       if (result) {
         firstName = result.additionalUserInfo.profile['given_name'];
         lastName = result.additionalUserInfo.profile['family_name'];
@@ -148,7 +148,7 @@ export class AuthService {
     const provider = new auth.GoogleAuthProvider();
     let firstName = null;
     let lastName = null;
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+    return this.afAuth.signInWithPopup(provider).then(async (result) => {
       if (result) {
         firstName = result.additionalUserInfo.profile['given_name'];
         lastName = result.additionalUserInfo.profile['family_name'];
@@ -174,7 +174,7 @@ export class AuthService {
     const provider = new auth.GoogleAuthProvider();
     let firstName = null;
     let lastName = null;
-    return this.afAuth.auth.signInWithPopup(provider).then(async (result) => {
+    return this.afAuth.signInWithPopup(provider).then(async (result) => {
       firstName = result.additionalUserInfo.profile['given_name'];
       lastName = result.additionalUserInfo.profile['family_name'];
       const path = `/users/${result.user.uid}/`;
@@ -190,17 +190,17 @@ export class AuthService {
 
   mobileGoogleSignIn() {
     const provider = new auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithRedirect(provider);
+    return this.afAuth.signInWithRedirect(provider);
   }
 
   mobileGoogleSignInWithReferral(referredByUser) {
     const provider = new auth.GoogleAuthProvider();
     localStorage.setItem('referredBy', JSON.stringify(referredByUser));
-    return this.afAuth.auth.signInWithRedirect(provider);
+    return this.afAuth.signInWithRedirect(provider);
   }
 
   register(email, password, firstName, lastName) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
+    return this.afAuth.createUserWithEmailAndPassword(email, password).then(async (result) => {
       if (result) {
         const path = `/users/${result.user.uid}/`;
         firstName = UtilService.toTitleCase(firstName);
@@ -220,7 +220,7 @@ export class AuthService {
   }
 
   registerWithBuilder(email, password, firstName, lastName, pageComponents) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
+    return this.afAuth.createUserWithEmailAndPassword(email, password).then(async (result) => {
       if (result) {
         const path = `/users/${result.user.uid}/`;
         firstName = UtilService.toTitleCase(firstName);
@@ -241,7 +241,7 @@ export class AuthService {
   }
 
   registerWithReferral(email, password, firstName, lastName, referredByUser) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(async (result) => {
+    return this.afAuth.createUserWithEmailAndPassword(email, password).then(async (result) => {
       if (result) {
         const path = `/users/${result.user.uid}/`;
         firstName = UtilService.toTitleCase(firstName);
@@ -262,7 +262,7 @@ export class AuthService {
 
   signIn(email, password) {
     return new Promise<any>((resolve, reject) => {
-      return this.afAuth.auth.signInWithEmailAndPassword(email, password).then(res => {
+      return this.afAuth.signInWithEmailAndPassword(email, password).then(res => {
         resolve(res);
       }, err => reject(err));
     }).then(() => {
@@ -309,21 +309,21 @@ export class AuthService {
   }
 
   sendVerificationMail() {
-    return this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
-      this.ngZone.run(() => {
-        this.router.navigate(['verify-email']).then(() => {
-        });
+    return this.afAuth.currentUser.then((user) => {
+      return user.sendEmailVerification().then(() => {
+        this.router.navigate(['verify-email']);
       });
-    }).then(() => {
     });
   }
 
   checkAccountType() {
-    return this.afAuth.auth.currentUser.providerData;
+    return this.afAuth.currentUser.then((user) => {
+      return user.providerData;
+    });
   }
 
   resetPassword(email) {
-    return this.afAuth.auth.sendPasswordResetEmail(email).then(() => {
+    return this.afAuth.sendPasswordResetEmail(email).then(() => {
       this.simpleModalService.displayMessage('Check your email', 'We have sent you an email with ' +
         'instructions on how to reset your password. If you do not receive this email within a few minutes, then please ' +
         'also check your junk or spam folder.');
@@ -334,7 +334,7 @@ export class AuthService {
 
   signOut() {
     localStorage.removeItem('uid');
-    this.afAuth.auth.signOut().then(() => {
+    this.afAuth.signOut().then(() => {
       window.location.reload();
     });
   }

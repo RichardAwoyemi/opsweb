@@ -21,13 +21,18 @@ export class FormRegisterComponent implements OnInit {
 
   register() {
     if (!this.referredByUser) {
-      this.authService.register(this.model['email'], this.model['password'], this.model['firstName'],
-        this.model['lastName']).then(() => {
-      });
+      this.authService.register(
+        this.model['email'],
+        this.model['password'],
+        this.model['firstName'],
+        this.model['lastName']);
     } else {
-      this.authService.registerWithReferral(this.model['email'], this.model['password'], this.model['firstName'],
-        this.model['lastName'], this.referredByUser).then(() => {
-      });
+      this.authService.registerWithReferral(
+        this.model['email'],
+        this.model['password'],
+        this.model['firstName'],
+        this.model['lastName'],
+        this.referredByUser);
     }
   }
 }

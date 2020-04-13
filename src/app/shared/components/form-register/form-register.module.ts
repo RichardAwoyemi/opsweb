@@ -9,7 +9,7 @@ import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSet
 @NgModule({
   imports: [
     FormsModule,
-    RecaptchaModule.forRoot(),
+    RecaptchaModule,
     RecaptchaFormsModule,
     SocialLoginButtonGroupModule,
     CommonModule,
@@ -30,6 +30,5 @@ import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSet
     }
   ]
 })
-
 export class FormRegisterModule {
 }
