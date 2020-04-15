@@ -5,7 +5,6 @@ import { IComponent } from '../../../../shared/models/component';
 import { ActiveComponents, ActiveElements, ActiveSettings } from '../../builder';
 import { BuilderService } from '../../builder.service';
 import { BuilderComponentsService } from '../builder-components.service';
-import { BuilderHeroService } from './builder-hero.service';
 
 @Component({
   selector: 'app-builder-hero',
@@ -42,7 +41,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   constructor(
     private builderService: BuilderService,
-    private builderHeroService: BuilderHeroService,
     private builderComponentsService: BuilderComponentsService,
     private elementRef: ElementRef
   ) {
@@ -67,6 +65,7 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
       .subscribe(response => {
         if (response) {
           this.activeEditComponent = response;
+          this.componentActive = this.activeEditComponentId === this.componentId;
         }
       });
 
@@ -125,19 +124,10 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    if (this.activeEditComponentId === this.componentId) {
-      this.clearActiveEditComponent();
-    } else {
-      window.postMessage({
-        'for': 'opsonion',
-        'action': 'duplicate-component-selected',
-        'message': this.componentId
-      }, '*');
       this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
       this.builderService.activeEditSetting.next(ActiveSettings.Colours);
-    }
+
   }
 
   setComponentClass() {
@@ -150,12 +140,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   clearActiveEditComponent() {
     if (this.activeElement.indexOf('heading') === -1 && this.activeElement.indexOf('subheading') === -1 && this.activeElement.indexOf('button') === -1) {
-      window.postMessage({
-        'for': 'opsonion',
-        'action': 'duplicate-component-deselected',
-        'message': this.componentId
-      }, '*');
-      this.componentActive = false;
       this.builderService.clearActiveEditComponent();
     }
   }
@@ -196,18 +180,11 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
 
   selectHeroElement(event: any, elementId: string) {
     if (!this.previewMode) {
-      window.postMessage({
-        'for': 'opsonion',
-        'action': 'duplicate-component-selected',
-        'message': this.componentId
-      }, '*');
       this.builderService.activeElement.next(elementId);
-      this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
       this.builderService.setActiveEditComponent(ActiveComponents.Hero, this.componentId);
-      this.builderService.setSidebarSetting(ActiveSettings.Options);
       this.builderService.activeEditSetting.next(ActiveSettings.Options);
       this.builderService.triggerScrollTo('hero-options');
-      window.postMessage({ 'for': 'opsonion', 'action': 'element-selected', 'message': elementId }, '*');
+      this.builderService.activeElement.next(elementId);
       event.stopPropagation();
     }
   }
@@ -252,24 +229,6 @@ export class BuilderHeroComponent implements OnInit, OnDestroy, IComponent {
   saveHeroButtonTextOption(heroButtonText) {
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderComponentsService.setPageComponentById(this.componentId, 'heroButtonText', heroButtonText);
-  }
-
-
-  @HostListener('window:message', ['$event'])
-  onMessage(e) {
-    if (e.data.for === 'opsonion') {
-      if (e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
-        this.componentActive = false;
-      }
-
-      if (e.data.action === 'duplicate-component-selected') {
-        this.componentActive = e.data.message === this.componentId;
-      }
-
-      if (e.data.action === 'element-selected') {
-        this.builderService.activeElement.next(e.data.message);
-      }
-    }
   }
 
   ngOnDestroy(): void {

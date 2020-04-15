@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActiveComponents } from '../../../builder';
@@ -10,7 +10,6 @@ import { BuilderSidebarFontNameComponent } from '../../builder-sidebar-elements/
 import { BuilderSidebarFontSizeComponent } from '../../builder-sidebar-elements/builder-sidebar-font-size/builder-sidebar-font-size.component';
 import { BuilderSidebarHeadingComponent } from '../../builder-sidebar-elements/builder-sidebar-heading/builder-sidebar-heading.component';
 import { BuilderSidebarImageSizeComponent } from '../../builder-sidebar-elements/builder-sidebar-image-size/builder-sidebar-image-size.component';
-import { BuilderSidebarLineBreakComponent } from '../../builder-sidebar-elements/builder-sidebar-line-break/builder-sidebar-heading.component';
 import { BuilderSidebarPaddingComponent } from '../../builder-sidebar-elements/builder-sidebar-padding/builder-sidebar-padding.component';
 import { BuilderSidebarSelectImageComponent } from '../../builder-sidebar-elements/builder-sidebar-select-image/builder-sidebar-select-image.component';
 import { BuilderSidebarSortPagesComponent } from '../../builder-sidebar-elements/builder-sidebar-sort-pages/builder-sidebar-sort-pages.component';
@@ -18,18 +17,19 @@ import { BuilderSidebarTextAlignmentComponent } from '../../builder-sidebar-elem
 import { BuilderSidebarThemeChangeComponent } from '../../builder-sidebar-elements/builder-sidebar-theme-change/builder-sidebar-theme-change.component';
 
 @Component({
-  selector: 'app-sidebar-navbar-component',
-  templateUrl: '../builder-sidebar-components-renderer.component.html',
+  selector: 'app-sidebar-navbar-settings',
+  templateUrl: './builder-sidebar-settings-renderer.component.html',
 })
 
-export class SidebarNavbarComponent implements OnInit, OnDestroy {
+export class SidebarNavbarSettingsComponent implements OnInit, OnDestroy {
 
-  @Input() settings;
-
+  settings: string;
   sidebar: any;
   baseData: any;
   pageComponents: any;
   componentId: any;
+  componentName = ActiveComponents.Navbar;
+  isActive = false;
   activePageIndex: number;
   activeComponentIndex: number;
   ngUnsubscribe = new Subject<void>();
@@ -42,6 +42,17 @@ export class SidebarNavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.builderService.activeEditSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.settings = response;
+        this.setupData();
+      });
+
+      this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.isActive = this.componentName === response;
+      });
 
     this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(activePageIndexResponse => {
@@ -126,6 +137,8 @@ export class SidebarNavbarComponent implements OnInit, OnDestroy {
           { component: BuilderSidebarFontSizeComponent, elementInfo: { name: 'navbarLinkStyle' } },
         ];
         break;
+        default:
+          this.sidebar = [];
     }
   }
 

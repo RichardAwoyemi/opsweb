@@ -43,8 +43,7 @@ export class BuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routerService.setCurrentRoute();
     this.websiteService.websiteName.next(UtilService.generateWebsiteName());
     this.builderService.setActiveEditComponent(ActiveComponents.Placeholder);
-    this.builderService.activeEditSetting.next(ActiveElements.Default);
-    this.builderService.setSidebarSetting(ActiveSettings.Templates);
+    this.builderService.activeEditSetting.next(ActiveSettings.Templates);
 
     this.ngxLoader.start();
     this.builderService.websiteMode.next(false);

@@ -7,6 +7,7 @@ import { IModalComponent } from '../../../../shared/models/modal';
 import { ActiveComponents, ActiveComponentsPartialSelector, ActiveSettings } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderService } from '../../builder.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   selector: 'app-builder-delete-component-modal',
@@ -54,27 +55,21 @@ export class BuilderDeleteComponentModalComponent implements IModalComponent, On
   onConfirmButtonClick() {
     let pageComponents = this.builderComponentsService.pageComponents.getValue();
 
-    if (BuilderComponentsService.isComponent(ActiveComponents.Navbar, this.componentId) === true) {
-      const components = this.builderComponentsService.deleteComponentByName(ActiveComponentsPartialSelector.Navbar);
-      pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
-    }
-    if (BuilderComponentsService.isComponent(ActiveComponents.Hero, this.componentId) === true) {
-      const components = this.builderComponentsService.deleteComponentByName(ActiveComponentsPartialSelector.Hero);
-      pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
-    }
-    if (BuilderComponentsService.isComponent(ActiveComponents.Features, this.componentId) === true) {
+    let activeComponent = '';
+    if (BuilderComponentsService.isComponent(ActiveComponents.Navbar, this.componentId)) { activeComponent = ActiveComponents.Navbar; }
+    if (BuilderComponentsService.isComponent(ActiveComponents.Footer, this.componentId)) { activeComponent = ActiveComponents.Footer; }
+    if (activeComponent === '') {
       let components = BuilderComponentsService.deleteComponentById(this.components, this.componentId);
       components = BuilderComponentsService.addPlaceholdersOnSinglePage(components);
       pageComponents['pages'][this.activePageIndex]['components'] = components;
-    }
-    if (BuilderComponentsService.isComponent(ActiveComponents.Footer, this.componentId) === true) {
-      const components = this.builderComponentsService.deleteComponentByName(ActiveComponentsPartialSelector.Footer);
+    } else {
+      const components = this.builderComponentsService.deleteComponentByName(ActiveComponentsPartialSelector[UtilService.toTitleCase(activeComponent)]);
       pageComponents = BuilderComponentsService.updateComponents(components, pageComponents);
     }
 
-    this.builderComponentsService.pageComponents.next(pageComponents);
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
+    this.builderService.clearActiveEditComponent();
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
+    this.builderComponentsService.pageComponents.next(pageComponents);
     this.toastrService.success('Your component has been deleted.', 'Great!');
     this.activeModal.dismiss();
   }

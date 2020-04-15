@@ -1,45 +1,20 @@
-import { HostListener, Injectable } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings } from './builder';
-import { TourService } from '../../shared/services/tour.service';
 import { UtilService } from 'src/app/shared/services/util.service';
+import { TourService } from '../../shared/services/tour.service';
+import { ActiveComponents, ActiveElements, ActiveOrientations, ActiveSettings } from './builder';
 
 @Injectable()
 export class BuilderService {
   activeEditComponent = new BehaviorSubject<string>(null);
-  activeEditComponentId = new BehaviorSubject<string>(null);
+  activeEditComponentId = new BehaviorSubject<string>(ActiveComponents.Placeholder);
   activeEditSetting = new BehaviorSubject<string>(null);
   activePageSetting = new BehaviorSubject<string>('Home');
   activePageIndex = new BehaviorSubject<number>(0);
   activeElement = new BehaviorSubject<string>(null);
-  activeOrientation = new BehaviorSubject<string>(ActiveOrientations.Desktop);
-  SIDEBAR_INACTIVE_TAB = 'tab-pane fade tab-padding';
-  SIDEBAR_INACTIVE_MENU = 'nav-link';
-  SIDEBAR_ACTIVE_TAB = 'tab-pane fade active show tab-padding';
-  SIDEBAR_ACTIVE_MENU = 'nav-link active';
-  sidebarTemplatesMenu = new BehaviorSubject<string>(this.SIDEBAR_ACTIVE_MENU);
-  sidebarTemplatesTab = new BehaviorSubject<string>(this.SIDEBAR_ACTIVE_TAB);
-  sidebarPagesMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
-  sidebarPagesTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
-  sidebarComponentsMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
-  sidebarComponentsTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
-  sidebarColoursMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
-  sidebarColoursTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
-  sidebarLayoutMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
-  sidebarLayoutTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
-  sidebarOptionsMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
-  sidebarOptionsTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
-  sidebarDataMenu = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_MENU);
-  sidebarDataTab = new BehaviorSubject<string>(this.SIDEBAR_INACTIVE_TAB);
-  TOOLBAR_ACTIVE_BUTTON = 'toolbar-button toolbar-button-active';
-  TOOLBAR_INACTIVE_BUTTON = 'toolbar-button';
-  toolbarColoursButton = new BehaviorSubject<string>(this.TOOLBAR_ACTIVE_BUTTON);
-  toolbarComponentsButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
-  toolbarLayoutButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
-  toolbarOptionsButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
-  toolbarDesktopOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_ACTIVE_BUTTON);
-  toolbarTabletOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
-  toolbarMobileOrientationButton = new BehaviorSubject<string>(this.TOOLBAR_INACTIVE_BUTTON);
+  activeOrientation = new BehaviorSubject<string>(null);
+  activeScreenSize = new BehaviorSubject<string>(null);
   previewMode = new BehaviorSubject<boolean>(false);
   websiteMode = new BehaviorSubject<boolean>(false);
   fullScreenMode = new BehaviorSubject<boolean>(false);
@@ -47,6 +22,29 @@ export class BuilderService {
   fontUnits = new BehaviorSubject<string[]>(['px', 'em']);
   shepherdDefaultStepOptions: any = TourService.setupBuilderTourStepOptions;
   shepherdDefaultSteps: any = TourService.setupBuilderTourSteps();
+
+  constructor(
+    private breakpointObserver: BreakpointObserver
+  ) {
+    this.breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge
+    ]).subscribe(result => {
+      if (result.breakpoints[Breakpoints.XSmall] || result.breakpoints[Breakpoints.Small]) {
+        this.activeScreenSize.next(ActiveOrientations.Mobile);
+      } else if (result.breakpoints[Breakpoints.Medium]) {
+        this.activeScreenSize.next(ActiveOrientations.Tablet);
+      } else {
+        this.activeScreenSize.next(ActiveOrientations.Desktop);
+      }
+      if (!this.activeOrientation.getValue() && !this.websiteMode.getValue()) {
+        this.activeOrientation.next(this.activeScreenSize.getValue());
+      }
+    });
+  }
 
   static removeLineBreaks(e: any) {
     const element = e.target;
@@ -73,94 +71,19 @@ export class BuilderService {
     }
   }
 
-  resetAll() {
-    this.resetMenu();
-    this.resetTabs();
-    this.resetToolbar();
-  }
-
-  resetMenu() {
-    this.sidebarTemplatesMenu.next(this.SIDEBAR_INACTIVE_MENU);
-    this.sidebarPagesMenu.next(this.SIDEBAR_INACTIVE_MENU);
-    this.sidebarComponentsMenu.next(this.SIDEBAR_INACTIVE_MENU);
-    this.sidebarColoursMenu.next(this.SIDEBAR_INACTIVE_MENU);
-    this.sidebarLayoutMenu.next(this.SIDEBAR_INACTIVE_MENU);
-    this.sidebarOptionsMenu.next(this.SIDEBAR_INACTIVE_MENU);
-    this.sidebarDataMenu.next(this.SIDEBAR_INACTIVE_MENU);
-  }
-
-  resetTabs() {
-    this.sidebarTemplatesTab.next(this.SIDEBAR_INACTIVE_TAB);
-    this.sidebarPagesTab.next(this.SIDEBAR_INACTIVE_MENU);
-    this.sidebarComponentsTab.next(this.SIDEBAR_INACTIVE_TAB);
-    this.sidebarColoursTab.next(this.SIDEBAR_INACTIVE_TAB);
-    this.sidebarLayoutTab.next(this.SIDEBAR_INACTIVE_TAB);
-    this.sidebarOptionsTab.next(this.SIDEBAR_INACTIVE_TAB);
-    this.sidebarDataTab.next(this.SIDEBAR_INACTIVE_TAB);
-  }
-
-  resetToolbar() {
-    this.toolbarColoursButton.next(this.TOOLBAR_INACTIVE_BUTTON);
-    this.toolbarComponentsButton.next(this.TOOLBAR_INACTIVE_BUTTON);
-    this.toolbarLayoutButton.next(this.TOOLBAR_INACTIVE_BUTTON);
-    this.toolbarOptionsButton.next(this.TOOLBAR_INACTIVE_BUTTON);
-  }
-
-  setSidebarSetting(tempSetting) {
-    const includeButtonTab = ['Layout', 'Colours', 'Options', 'Components'];
-    const setting = UtilService.toTitleCase(tempSetting);
-    this.resetAll();
-    this[`sidebar${setting}Menu`].next(this.SIDEBAR_ACTIVE_MENU);
-    this[`sidebar${setting}Tab`].next(this.SIDEBAR_ACTIVE_TAB);
-    if (includeButtonTab.includes(setting)) {
-      this[`toolbar${setting}Button`].next(this.TOOLBAR_ACTIVE_BUTTON);
-    }
-    this.triggerScrollTo(`${this.activeEditComponent.getValue()}-${setting.toLowerCase()}`);
-  }
-
-  setActiveEditComponent(componentName: string, componentId: string = null) {
-    if (componentId != null) {
-      this.activeEditComponentId.next(componentId);
-    }
+  setActiveEditComponent(componentName: string, componentId: string = ActiveComponents.Placeholder) {
+    this.activeEditComponentId.next(componentId);
     this.activeEditComponent.next(componentName);
-    this.setSidebarSetting(ActiveSettings.Colours);
-  }
-
-  processIncomingMessages(e: any) {
-    if (e.data.action) {
-      if (e.data.action.includes('colour')) {
-        this.setSidebarSetting(UtilService.toTitleCase(ActiveSettings.Colours));
-      }
-      if (e.data.action.includes('option')) {
-        this.setSidebarSetting(UtilService.toTitleCase(ActiveSettings.Options));
-      }
-      if (e.data.action.includes('layout') || e.data.action.includes('postion')) {
-        this.setSidebarSetting(UtilService.toTitleCase(ActiveSettings.Layout));
-      }
-    }
   }
 
   // noinspection JSUnusedLocalSymbols
   triggerScrollTo(elementId = null) {
   }
 
-  @HostListener('window:message', ['$event'])
-  onMessage(e) {
-    if (e.data.for === 'opsonion') {
-      if (e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
-        this.activeEditComponentId.next(null);
-      }
-      if (e.data.action === 'duplicate-component-selected') {
-        this.activeEditComponentId.next(e.data.message);
-      }
-    }
-  }
-
   clearActiveEditComponent() {
     this.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.activeEditComponent.next(ActiveComponents.Placeholder);
     this.activeElement.next(ActiveElements.Default);
-    this.setSidebarSetting(ActiveSettings.Components);
     window.postMessage({ 'for': 'opsonion', 'action': 'deselect-text', }, '*');
   }
 }

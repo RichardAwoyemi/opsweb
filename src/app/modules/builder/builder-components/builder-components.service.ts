@@ -1,54 +1,29 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ActiveComponents, ActiveComponentsPartialSelector } from '../builder';
-import { UtilService } from '../../../shared/services/util.service';
-import { StorageService } from '../../../shared/services/storage.service';
-import { BuilderService } from '../builder.service';
 import { SimpleModalService } from 'src/app/shared/components/simple-modal/simple-modal.service';
+import { StorageService } from '../../../shared/services/storage.service';
+import { UtilService } from '../../../shared/services/util.service';
+import { ActiveComponents, ActiveComponentsPartialSelector } from '../builder';
+import { BuilderService } from '../builder.service';
 
 @Injectable()
 export class BuilderComponentsService {
-  public static webComponents = [
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Navbar),
-      'selector': ActiveComponentsPartialSelector.Navbar
-    },
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Hero),
-      'selector': ActiveComponentsPartialSelector.Hero
-    },
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Footer),
-      'selector': ActiveComponentsPartialSelector.Footer
-    },
-    {
-      'name': UtilService.toTitleCase(ActiveComponents.Features),
-      'selector': ActiveComponentsPartialSelector.Features
-    }
-  ];
-
   activeComponentIndex = new BehaviorSubject<number>(0);
   pageComponents = new BehaviorSubject<any>(null);
   activeTemplate = new BehaviorSubject<any>(null);
 
+
   constructor(
     private simpleModalService: SimpleModalService,
     private builderService: BuilderService
-  ) {
+    ) {
   }
 
   static getComponentCleanName(componentSelectorName) {
-    switch (componentSelectorName['componentName']) {
-      case ActiveComponentsPartialSelector.Navbar:
-        return UtilService.toTitleCase(ActiveComponents.Navbar);
-      case ActiveComponentsPartialSelector.Hero:
-        return UtilService.toTitleCase(ActiveComponents.Hero);
-      case ActiveComponentsPartialSelector.Features:
-        return UtilService.toTitleCase(ActiveComponents.Features);
-      case ActiveComponentsPartialSelector.Footer:
-        return UtilService.toTitleCase(ActiveComponents.Footer);
-      default:
-        return UtilService.toTitleCase(ActiveComponents.Placeholder);
+    if (Object.values(ActiveComponents).includes(componentSelectorName['componentType'])) {
+        return UtilService.toTitleCase(componentSelectorName['componentType']);
+    } else {
+      return UtilService.toTitleCase(ActiveComponents.Placeholder);
     }
   }
 

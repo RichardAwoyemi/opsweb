@@ -3,31 +3,25 @@
      id="slide" style="padding-left: 0; margin-left: 0; padding-top: 56px;">
   <div style="height: 100%; width: 100%">
     <div class="row">
-      <div class="col-2" style="padding: 0; margin: 0">
+      <div class="sidebar-menu-tab-icons" style="padding: 0; margin: 0">
         <app-builder-sidebar-menu></app-builder-sidebar-menu>
       </div>
-      <div [ngStyle]="{ 'height': innerHeight - 56 + 'px' }" class="col-10 sidebar-scroll"
+      <div [ngStyle]="{ 'height': innerHeight - 56 + 'px' }" class="sidebar-menu-tab-content sidebar-scroll"
            style="background-color: #29303A">
         <div class="tab-content">
 
-          
-          <div [ngClass]="sidebarTemplatesTab" id="tab-templates">
+
+          <div [ngClass]="setTabClass(templatesTab)" id="tab-templates">
             <app-builder-sidebar-templates></app-builder-sidebar-templates>
           </div>
-          <div [ngClass]="sidebarColoursTab" id="tab-colours">
-            <app-builder-sidebar-colours></app-builder-sidebar-colours>
-          </div>
-          <div [ngClass]="sidebarComponentsTab" id="tab-components">
+          <div [ngClass]="setTabClass(componentsTab)" id="tab-components">
             <app-builder-sidebar-components></app-builder-sidebar-components>
           </div>
-          <div [ngClass]="sidebarLayoutTab" id="tab-layout">
-            <app-builder-sidebar-layout></app-builder-sidebar-layout>
-          </div>
-          <div [ngClass]="sidebarOptionsTab" id="tab-options">
-            <app-builder-sidebar-options></app-builder-sidebar-options>
-          </div>
-          <div [ngClass]="sidebarPagesTab" id="tab-pages">
+          <div [ngClass]="setTabClass(pagesTab)" id="tab-pages">
             <app-builder-sidebar-pages></app-builder-sidebar-pages>
+          </div>
+          <div [ngClass]="setTabClass(componentSettingsTab)" id="tab-components">
+            <app-builder-sidebar-component-settings></app-builder-sidebar-component-settings>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { TemplateService } from 'src/app/shared/services/template.service';
 import { IComponent } from '../../../../shared/models/component';
 import { UtilService } from '../../../../shared/services/util.service';
 import { ActiveComponents, ActiveComponentsPartialSelector, ActiveElements, ActiveSettings } from '../../builder';
@@ -161,11 +160,9 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   }
 
   selectFooterCopyright(event: any, elementId: string) {
-    this.builderService.setActiveEditComponent(ActiveComponents.Footer);
-    this.builderService.setSidebarSetting(ActiveSettings.Options);
+    this.builderService.setActiveEditComponent(this.componentName, this.componentId);
     this.builderService.activeElement.next(elementId);
     this.builderService.activeEditSetting.next(ActiveSettings.Options);
-    this.builderService.triggerScrollTo('footer-options-copyright');
     event.stopPropagation();
   }
 
@@ -231,7 +228,7 @@ export class BuilderFooterComponent implements OnInit, OnDestroy, IComponent {
   }
 
   setPagesLayoutOneClass() {
-    return (this.checkFooterSocialLinks()) ? 'col-md-4 text-center' : 'col-md-8 text-right';
+    return (this.checkFooterSocialLinks()) ? 'col-md text-center' : 'col-md text-right';
   }
 
   ngOnDestroy(): void {

@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
-import { ActiveTemplates } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
 

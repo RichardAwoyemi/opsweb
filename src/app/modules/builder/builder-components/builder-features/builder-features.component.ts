@@ -53,6 +53,7 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       .subscribe(response => {
         if (response) {
           this.activeEditComponentId = response;
+          this.componentActive = this.activeEditComponentId === this.componentId;
         }
       });
 
@@ -63,13 +64,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
         }
       });
 
-    this.builderFeaturesService.featuresBreakpoint.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.setFeaturesWidth();
-        }
-      });
-
     this.builderService.activeElement.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
@@ -77,24 +71,17 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
         }
       });
 
-    this.builderService.toolbarMobileOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+    this.builderService.activeScreenSize.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
-        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-          this.setFeaturesWidth(ActiveOrientations.Mobile);
+        if (response) {
+          this.builderFeaturesService.setFeaturesWidth();
         }
       });
 
-    this.builderService.toolbarDesktopOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
+    this.builderService.activeOrientation.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
-        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-          this.setFeaturesWidth(ActiveOrientations.Desktop);
-        }
-      });
-
-    this.builderService.toolbarTabletOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response === this.builderService.TOOLBAR_ACTIVE_BUTTON) {
-          this.setFeaturesWidth(ActiveOrientations.Tablet);
+        if (response) {
+          this.builderFeaturesService.setFeaturesWidth();
         }
       });
 
@@ -131,44 +118,19 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
       });
   }
 
-  setFeaturesWidth(orientation: string = null) {
-    this.builderFeaturesService.setFeaturesWidth(orientation);
-  }
-
   setActiveEditComponent() {
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    if (this.activeEditComponentId === this.componentId) {
-      this.clearActiveEditComponent();
-    } else {
-      window.postMessage({
-        'for': 'opsonion',
-        'action': 'duplicate-component-selected',
-        'message': this.componentId
-      }, '*');
-      this.builderService.activeEditComponentId.next(this.componentId);
-      this.builderService.setActiveEditComponent(this.componentName, this.componentId);
-      this.builderService.activeEditSetting.next(ActiveSettings.Colours);
-    }
+    this.builderService.activeEditComponentId.next(this.componentId);
+    this.builderService.setActiveEditComponent(this.componentName, this.componentId);
+    this.builderService.activeEditSetting.next(ActiveSettings.Colours);
   }
 
   selectFeaturesElement(event: any, elementId: string) {
     if (!this.previewMode) {
-      window.postMessage({
-        'for': 'opsonion',
-        'action': 'duplicate-component-selected',
-        'message': this.componentId
-      }, '*');
       this.builderService.activeEditComponentId.next(this.componentId);
       this.builderService.setActiveEditComponent(ActiveComponents.Features, this.componentId);
       this.builderService.activeEditSetting.next(ActiveSettings.Options);
-      this.builderService.setSidebarSetting(ActiveSettings.Options);
-      if (elementId.indexOf('subheading') > -1) {
-        this.builderService.triggerScrollTo('features-subheading-options');
-      } else if (elementId.indexOf('heading') > -1) {
-        this.builderService.triggerScrollTo('features-heading-options');
-      }
-      window.postMessage({ 'for': 'opsonion', 'action': 'element-selected', 'message': elementId }, '*');
+      this.builderService.activeElement.next(elementId);
       event.stopPropagation();
     }
   }
@@ -183,12 +145,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
 
   clearActiveEditComponent() {
     if (this.activeElement.indexOf('heading') === -1 && this.activeElement.indexOf('subheading') === -1) {
-      window.postMessage({
-        'for': 'opsonion',
-        'action': 'duplicate-component-deselected',
-        'message': this.componentId
-      }, '*');
-      this.componentActive = false;
       this.builderService.clearActiveEditComponent();
     }
   }
@@ -204,23 +160,6 @@ export class BuilderFeaturesComponent implements OnInit, IComponent, OnDestroy {
 
   setContentEditable() {
     return !this.previewMode;
-  }
-
-  @HostListener('window:message', ['$event'])
-  onMessage(e) {
-    if (e.data.for === 'opsonion') {
-      if (e.data.action === 'clear-active-components' || e.data.action === 'unique-component-selected' || e.data.action === 'duplicate-component-deselected') {
-        this.componentActive = false;
-      }
-
-      if (e.data.action === 'duplicate-component-selected') {
-        this.componentActive = e.data.message === this.componentId;
-      }
-
-      if (e.data.action === 'element-selected') {
-        this.builderService.activeElement.next(e.data.message);
-      }
-    }
   }
 
   setFeaturesOuterStyle() {

@@ -1,0 +1,3 @@
+<ng-container *ngIf="isActive">
+  <app-sidebar-element *ngFor='let setting of sidebar' [element]="setting" [baseData]="baseData"></app-sidebar-element>
+</ng-container>

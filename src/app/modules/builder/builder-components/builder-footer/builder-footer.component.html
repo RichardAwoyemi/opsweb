@@ -26,7 +26,7 @@
   <footer (click)="setActiveEditComponent()" (dblclick)="clearActiveEditComponent()" *ngIf="footerComponentLayout === 1"
     [ngClass]="setComponentClass()" [ngStyle]="footerStyle">
     <div class="row">
-      <div class="col-md-4 text-left">
+      <div class="col-md text-left">
         <div [ngStyle]="footerCopyrightStyle">
           <span (click)="selectFooterCopyright($event, 'footer-copyright')"
             [class]="setActiveElementStyle(activeElement, 'footer-copyright')" [ngClass]="setFooterCopyrightClass()"
@@ -45,7 +45,7 @@
             </ng-container>
           </div>
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-md text-right" *ngIf="checkFooterSocialLinks()">
           <ng-container *ngTemplateOutlet="footerSocialsTemplate"></ng-container>
         </div>
       </ng-container>

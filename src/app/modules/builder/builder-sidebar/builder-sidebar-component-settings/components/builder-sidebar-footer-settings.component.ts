@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActiveComponents } from '../../../builder';
@@ -11,24 +11,24 @@ import { BuilderSidebarFontSizeComponent } from '../../builder-sidebar-elements/
 import { BuilderSidebarFormInputComponent } from '../../builder-sidebar-elements/builder-sidebar-form-input/builder-sidebar-form-input.component';
 import { BuilderSidebarHeadingComponent } from '../../builder-sidebar-elements/builder-sidebar-heading/builder-sidebar-heading.component';
 import { BuilderSidebarImageOptionsComponent } from '../../builder-sidebar-elements/builder-sidebar-image-options/builder-sidebar-image-options.component';
-import { BuilderSidebarLineBreakComponent } from '../../builder-sidebar-elements/builder-sidebar-line-break/builder-sidebar-heading.component';
+import { BuilderSidebarLinksTickboxComponent } from '../../builder-sidebar-elements/builder-sidebar-links-tickbox/builder-sidebar-links-tickbox.component';
 import { BuilderSidebarPaddingComponent } from '../../builder-sidebar-elements/builder-sidebar-padding/builder-sidebar-padding.component';
 import { BuilderSidebarThemeChangeComponent } from '../../builder-sidebar-elements/builder-sidebar-theme-change/builder-sidebar-theme-change.component';
-import { BuilderSidebarLinksTickboxComponent } from '../../builder-sidebar-elements/builder-sidebar-links-tickbox/builder-sidebar-links-tickbox.component';
 
 @Component({
-  selector: 'app-sidebar-footer-component',
-  templateUrl: '../builder-sidebar-components-renderer.component.html',
+  selector: 'app-sidebar-footer-settings',
+  templateUrl: './builder-sidebar-settings-renderer.component.html',
 })
 
-export class SidebarFooterComponent implements OnInit, OnDestroy {
+export class SidebarFooterSettingsComponent implements OnInit, OnDestroy {
 
-  @Input() settings;
-
+  settings: string;
   sidebar: any;
   baseData: any;
   pageComponents: any;
   componentId: any;
+  componentName = ActiveComponents.Footer;
+  isActive = false;
   activePageIndex: number;
   activeComponentIndex: number;
   ngUnsubscribe = new Subject<void>();
@@ -41,6 +41,17 @@ export class SidebarFooterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.builderService.activeEditSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.settings = response;
+        this.setupData();
+      });
+
+      this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.isActive = this.componentName === response;
+      });
 
     this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(activePageIndexResponse => {
@@ -72,7 +83,7 @@ export class SidebarFooterComponent implements OnInit, OnDestroy {
 
   setupData() {
     this.baseData = {
-      componentName: ActiveComponents.Footer,
+      componentName: this.componentName,
       pageIndex: this.activePageIndex,
       componentIndex: this.activeComponentIndex,
       componentService: this.builderFooterService,
@@ -209,6 +220,8 @@ export class SidebarFooterComponent implements OnInit, OnDestroy {
           { component: BuilderSidebarFontSizeComponent, elementInfo: { name: 'footerCopyrightStyle' } }
         ];
         break;
+        default:
+          this.sidebar = [];
     }
   }
 

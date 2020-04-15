@@ -137,12 +137,12 @@ export class BuilderSidebarPagesComponent implements OnInit, OnDestroy {
   }
 
   viewPage(menuOption) {
+    this.builderService.clearActiveEditComponent();
     this.builderService.activePageSetting.next(menuOption);
   }
 
   openComponentsPanel() {
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 
   openDeleteComponentModal(componentId) {

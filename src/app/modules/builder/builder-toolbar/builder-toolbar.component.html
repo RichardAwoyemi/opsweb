@@ -10,28 +10,28 @@
         <div *ngIf="activeEditComponent">
         <span *ngIf="toggleMenuItemVisibility(ACTIVE_COLOURS_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_COLOURS_SETTING)"
-                  [ngClass]="toolbarButtonColoursStyle"
+                  [ngClass]="setActiveMenuButtonClass(ACTIVE_COLOURS_SETTING)"
                   class="toolbar-colours">
           Colours
           </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_COMPONENTS_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_COMPONENTS_SETTING)"
-                  [ngClass]="toolbarButtonComponentsStyle"
+                  [ngClass]="setActiveMenuButtonClass(ACTIVE_COMPONENTS_SETTING)"
                   class="toolbar-components">
           Components
         </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_LAYOUT_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_LAYOUT_SETTING)"
-                  [ngClass]="toolbarButtonLayoutStyle"
+                  [ngClass]="setActiveMenuButtonClass(ACTIVE_LAYOUT_SETTING)"
                   class="toolbar-layout">
           Layout
         </button>&nbsp;
         </span>
           <span *ngIf="toggleMenuItemVisibility(ACTIVE_OPTIONS_SETTING)">
           <button (click)="setActiveEditSetting(ACTIVE_OPTIONS_SETTING)"
-                  [ngClass]="toolbarButtonOptionsStyle"
+                  [ngClass]="setActiveMenuButtonClass(ACTIVE_OPTIONS_SETTING)"
                   class="toolbar-options">
           Options
         </button>
@@ -42,7 +42,7 @@
     <div class="col-md-3">
       <div class="text-right">
         <button (click)="setSecondaryToolbarButtonClass(ACTIVE_DESKTOP_ORIENTATION)"
-                [ngClass]="toolbarButtonDesktopOrientation"
+                [ngClass]="setActiveOrientationButtonClass(ACTIVE_DESKTOP_ORIENTATION)"
                 class="toolbar-orientation-desktop">
           <svg aria-hidden="true"
                class="toolbar-orientation-desktop" focusable="false" height="23"
@@ -56,7 +56,7 @@
           </svg>
         </button>&nbsp;
         <button (click)="setSecondaryToolbarButtonClass(ACTIVE_TABLET_ORIENTATION)"
-                [ngClass]="toolbarButtonTabletOrientation"
+                [ngClass]="setActiveOrientationButtonClass(ACTIVE_TABLET_ORIENTATION)"
                 class="toolbar-orientation-tablet">
           <svg aria-hidden="true"
                class="toolbar-orientation-tablet" focusable="false" height="24"
@@ -70,7 +70,7 @@
           </svg>
         </button>&nbsp;
         <button (click)="setSecondaryToolbarButtonClass(ACTIVE_MOBILE_ORIENTATION)"
-                [ngClass]="toolbarButtonMobileOrientation"
+                [ngClass]="setActiveOrientationButtonClass(ACTIVE_MOBILE_ORIENTATION)"
                 class="toolbar-orientation-mobile">
           <svg aria-hidden="true"
                class="toolbar-orientation-mobile" focusable="false" height="20"

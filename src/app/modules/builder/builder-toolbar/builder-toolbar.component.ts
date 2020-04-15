@@ -11,23 +11,19 @@ import { UtilService } from 'src/app/shared/services/util.service';
   styleUrls: ['./builder-toolbar.component.css']
 })
 export class BuilderToolbarComponent implements OnInit, OnDestroy {
+  activeButtonClass = 'toolbar-button toolbar-button-active';
+  inactiveButtonClass = 'toolbar-button';
+  activeOrientation: string;
   activeEditComponent: string;
-  ACTIVE_COLOURS_SETTING: string = ActiveSettings.Colours;
-  ACTIVE_COMPONENTS_SETTING: string = ActiveSettings.Components;
-  ACTIVE_LAYOUT_SETTING: string = ActiveSettings.Layout;
-  ACTIVE_OPTIONS_SETTING: string = ActiveSettings.Options;
-  ACTIVE_DESKTOP_ORIENTATION: string = ActiveOrientations.Desktop;
-  ACTIVE_TABLET_ORIENTATION: string = ActiveOrientations.Tablet;
-  ACTIVE_MOBILE_ORIENTATION: string = ActiveOrientations.Mobile;
-  previewMode = false;
-  toolbarButtonDesktopOrientation: string = this.builderService.TOOLBAR_ACTIVE_BUTTON;
-  toolbarButtonMobileOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  toolbarButtonTabletOrientation: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  ACTIVE_COLOURS_SETTING = ActiveSettings.Colours;
+  ACTIVE_COMPONENTS_SETTING = ActiveSettings.Components;
+  ACTIVE_LAYOUT_SETTING = ActiveSettings.Layout;
+  ACTIVE_OPTIONS_SETTING = ActiveSettings.Options;
+  ACTIVE_DESKTOP_ORIENTATION = ActiveOrientations.Desktop;
+  ACTIVE_TABLET_ORIENTATION = ActiveOrientations.Tablet;
+  ACTIVE_MOBILE_ORIENTATION = ActiveOrientations.Mobile;
   toolbarClass = 'toolbar no-select';
-  toolbarButtonColoursStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  toolbarButtonComponentsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  toolbarButtonLayoutStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
-  toolbarButtonOptionsStyle: string = this.builderService.TOOLBAR_INACTIVE_BUTTON;
+  previewMode = false;
   ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -52,121 +48,37 @@ export class BuilderToolbarComponent implements OnInit, OnDestroy {
           this.toolbarClass = 'toolbar no-select';
         }
       });
+  }
 
-    this.builderService.toolbarColoursButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.toolbarButtonColoursStyle = response;
-        }
-      });
+  setActiveOrientationButtonClass(orientation) {
+    return (this.builderService.activeOrientation.getValue() === orientation) ? this.activeButtonClass : this.inactiveButtonClass;
+  }
 
-    this.builderService.toolbarComponentsButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.toolbarButtonComponentsStyle = response;
-        }
-      });
-
-    this.builderService.toolbarLayoutButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.toolbarButtonLayoutStyle = response;
-        }
-      });
-
-    this.builderService.toolbarOptionsButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.toolbarButtonOptionsStyle = response;
-        }
-      });
-
-    this.builderService.toolbarDesktopOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.toolbarButtonDesktopOrientation = response;
-        }
-      });
-
-    this.builderService.toolbarTabletOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.toolbarButtonTabletOrientation = response;
-        }
-      });
-
-    this.builderService.toolbarMobileOrientationButton.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.toolbarButtonMobileOrientation = response;
-        }
-      });
+  setActiveMenuButtonClass(menuItem) {
+    return (this.builderService.activeEditSetting.getValue() === menuItem) ? this.activeButtonClass : this.inactiveButtonClass;
   }
 
   setActiveEditSetting(settingName: string) {
-    this.builderService.activeEditSetting.next(settingName);
-    if ([ActiveSettings.Colours,ActiveSettings.Components, ActiveSettings.Layout, ActiveSettings.Options]
+    if ([ActiveSettings.Colours, ActiveSettings.Components, ActiveSettings.Layout, ActiveSettings.Options]
       .includes(ActiveSettings[UtilService.toTitleCase(settingName)])) {
-      this.builderService.setSidebarSetting(settingName);
-      this.setPrimaryToolbarButtonClass(settingName);
-    }
-  }
-
-  setPrimaryToolbarButtonClass(activeSetting) {
-    this.builderService.toolbarColoursButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
-    this.builderService.toolbarComponentsButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
-    this.builderService.toolbarLayoutButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
-    this.builderService.toolbarOptionsButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
-
-    if (activeSetting === ActiveSettings.Colours) {
-      this.builderService.toolbarColoursButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
-    }
-    if (activeSetting === ActiveSettings.Components) {
-      this.builderService.toolbarComponentsButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
-    }
-    if (activeSetting === ActiveSettings.Layout) {
-      this.builderService.toolbarLayoutButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
-    }
-    if (activeSetting === ActiveSettings.Options) {
-      this.builderService.toolbarOptionsButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
+      this.builderService.activeEditSetting.next(settingName);
     }
   }
 
   toggleMenuItemVisibility(menuItem) {
     if (this.activeEditComponent === ActiveComponents.Placeholder) {
-      if (menuItem === ActiveSettings.Colours) {
+      if ([ActiveSettings.Colours, ActiveSettings.Layout, ActiveSettings.Options, ActiveSettings.Components].includes(menuItem)) {
         return false;
-      }
-      if (menuItem === ActiveSettings.Layout) {
-        return false;
-      }
-      if (menuItem === ActiveSettings.Options) {
-        return false;
-      }
-    } else {
-      if (menuItem === ActiveSettings.Components) {
-        return false;
+      } else {
+        return true;
       }
     }
     return true;
   }
 
-  setSecondaryToolbarButtonClass(activeOrientation: string) {
-    this.builderService.toolbarDesktopOrientationButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
-    this.builderService.toolbarTabletOrientationButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
-    this.builderService.toolbarMobileOrientationButton.next(this.builderService.TOOLBAR_INACTIVE_BUTTON);
-
-    if (activeOrientation === ActiveOrientations.Desktop) {
-      this.builderService.toolbarDesktopOrientationButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
-      this.builderService.activeOrientation.next(ActiveOrientations.Desktop);
-    }
-    if (activeOrientation === ActiveOrientations.Tablet) {
-      this.builderService.toolbarTabletOrientationButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
-      this.builderService.activeOrientation.next(ActiveOrientations.Tablet);
-    }
-    if (activeOrientation === ActiveOrientations.Mobile) {
-      this.builderService.toolbarMobileOrientationButton.next(this.builderService.TOOLBAR_ACTIVE_BUTTON);
-      this.builderService.activeOrientation.next(ActiveOrientations.Mobile);
+  setSecondaryToolbarButtonClass(activeOrientation) {
+    if (Object.values(ActiveOrientations).includes(activeOrientation)) {
+      this.builderService.activeOrientation.next(activeOrientation);
     }
   }
 

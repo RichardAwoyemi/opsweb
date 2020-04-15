@@ -2,6 +2,23 @@
   background-color: #0E1318 !important;
 }
 
+.sidebar-menu-tab-icons {
+  flex-basis: 70px;
+  -webkit-box-flex: 1;
+  flex-shrink: 2;
+  flex-grow: 1;
+  min-width: max-content;
+  max-width: 100%;
+}
+
+.sidebar-menu-tab-content {
+  -webkit-box-flex: 0;
+  flex: 2 1 65%;
+  max-width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 .sidebar-scroll::-webkit-scrollbar-thumb {
   background: #7E7E7E;
 }

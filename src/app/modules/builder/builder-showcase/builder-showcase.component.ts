@@ -92,10 +92,9 @@ export class BuilderShowcaseComponent implements OnInit, AfterViewInit, OnDestro
 
   clearActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.activeEditComponentId.next(null);
+    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
     this.builderService.activeElement.next(ActiveElements.Default);
     window.postMessage({ 'for': 'opsonion', 'action': 'deselect-text', }, '*');
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 }

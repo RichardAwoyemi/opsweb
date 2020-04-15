@@ -146,7 +146,6 @@ export class BuilderShowcaseToolbarComponent implements OnInit, OnDestroy {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.builderService.activeElement.next(ActiveElements.Default);
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
     this.builderService.previewMode.next(!this.previewMode);
   }
 

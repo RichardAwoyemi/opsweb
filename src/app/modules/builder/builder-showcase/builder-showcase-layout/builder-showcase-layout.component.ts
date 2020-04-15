@@ -106,11 +106,10 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
   recycleShowcase(components) {
     this.builderComponents = [];
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.activeEditComponentId.next(null);
+    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
     this.builderService.activeElement.next(ActiveElements.Default);
     this.builderComponentsService.activeComponentIndex.next(null);
     this.builderService.activeEditSetting.next(ActiveSettings.Components);
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
 
     let pageIndex = null;
     for (let i = 0; i < components.length; i++) {
@@ -157,7 +156,6 @@ export class BuilderShowcaseLayoutComponent implements OnInit, OnDestroy {
           this.simpleModalService.displayMessage('Oops!', 'This item is not a valid component.');
           break;
       }
-      this.builderService.processIncomingMessages(e);
     }
   }
 

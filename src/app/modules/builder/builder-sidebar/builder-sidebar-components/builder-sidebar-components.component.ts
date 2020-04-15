@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TemplateService } from '../../../../shared/services/template.service';
-import { ActiveComponents, ActiveSettings } from '../../builder';
+import { ActiveComponents, ActiveSettings, ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderComponentsService } from '../../builder-components/builder-components.service';
 import { BuilderService } from '../../builder.service';
+import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,7 +16,7 @@ import { BuilderService } from '../../builder.service';
 export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   searchText: string;
   activeEditComponent: string;
-  webComponents: any;
+  webComponents = [];
   defaultStyle: any;
   navbarMenuOptions: any;
   footerMenuOptions: any;
@@ -29,7 +30,16 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.webComponents = BuilderComponentsService.webComponents;
+    Object.keys(ActiveComponents).map(key => {
+      if (key !== 'Placeholder') {
+        this.webComponents.push(
+          {
+            'name': UtilService.toTitleCase(ActiveComponents[key]),
+            'selector': ActiveComponentsPartialSelector[key]
+          }
+        );
+      }
+    });
 
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
@@ -53,8 +63,7 @@ export class BuilderSidebarComponentsComponent implements OnInit, OnDestroy {
 
   clearActiveComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.activeEditComponentId.next(null);
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
+    this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
   }
 
   getComponent(componentToAdd: string) {

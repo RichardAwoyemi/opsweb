@@ -51,13 +51,11 @@ export class BuilderPlaceholderComponent implements OnInit, OnDestroy {
 
   setActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 
   clearActiveEditComponent() {
     this.builderService.activeEditComponent.next(ActiveComponents.Placeholder);
     this.builderService.activeEditComponentId.next(ActiveComponents.Placeholder);
-    this.builderService.setSidebarSetting(ActiveSettings.Components);
   }
 
   ngOnDestroy(): void {

@@ -164,7 +164,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.activePageIndex.next(pageIndex);
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-      this.builderService.setSidebarSetting(ActiveSettings.Options);
       this.builderService.activeElement.next(elementId);
       this.builderService.activeEditSetting.next(ActiveSettings.Options);
       this.builderService.triggerScrollTo('navbar-options-menu');
@@ -199,7 +198,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-      this.builderService.setSidebarSetting(ActiveSettings.Options);
       this.builderService.activeElement.next(elementId);
       this.builderService.activeEditSetting.next(ActiveSettings.Options);
     }
@@ -235,7 +233,6 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
       this.builderService.activePageIndex.next(this.builderComponentsService.getPageIndex('Home'));
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
-      this.builderService.setSidebarSetting(ActiveSettings.Options);
       this.builderService.activeElement.next(elementId);
     }
     event.stopPropagation();

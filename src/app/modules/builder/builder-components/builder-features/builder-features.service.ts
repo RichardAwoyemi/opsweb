@@ -1,7 +1,6 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UtilService } from '../../../../shared/services/util.service';
 import { ActiveComponentsPartialSelector } from '../../builder';
 import { BuilderService } from '../../builder.service';
@@ -9,39 +8,26 @@ import { BuilderComponentsService } from '../builder-components.service';
 
 @Injectable()
 export class BuilderFeaturesService {
-  featuresBreakpoint = new BehaviorSubject<string>(null);
   private FEATURES_THEME_PATH = './assets/data/web-themes/features.json';
 
   constructor(
     private httpClient: HttpClient,
-    private breakpointObserver: BreakpointObserver,
     private builderComponentsService: BuilderComponentsService,
     private builderService: BuilderService
   ) {
-    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium, Breakpoints.Large, Breakpoints.XLarge]).subscribe(result => {
-      if (result.breakpoints[Breakpoints.XSmall] || result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset]) {
-        this.featuresBreakpoint.next('small');
-      }
-      if (result.breakpoints[Breakpoints.Medium]) {
-        this.featuresBreakpoint.next('medium');
-      }
-      if (result.breakpoints[Breakpoints.Large] || result.breakpoints[Breakpoints.XLarge]) {
-        this.featuresBreakpoint.next('large');
-      }
-    });
   }
 
   getFeaturesThemes(): Observable<any> {
     return this.httpClient.get(this.FEATURES_THEME_PATH);
   }
 
-  setNumberOfFeatures(activeEditComponentId: string, number: number, orientation: string = null) {
+  setNumberOfFeatures(activeEditComponentId: string, number: number) {
     const componentIndexArray = this.builderComponentsService.getActiveTargetComponentById(activeEditComponentId);
     const tempFeaturesItemArray = this.builderComponentsService.pageComponents.getValue()['pages'][componentIndexArray.activePageIndex]['components'][componentIndexArray.activeComponentIndex]['featuresItemArray'];
     if (number && !isNaN(number) && number <= 8) {
       let multiplier: number;
-      const breakpoint = this.featuresBreakpoint.getValue();
-      const showcaseOrientation = orientation || this.builderService.activeOrientation.getValue();
+      const breakpoint = this.builderService.activeScreenSize.getValue();
+      const showcaseOrientation = this.builderService.activeOrientation.getValue();
       if (breakpoint === 'small' || showcaseOrientation === 'mobile') {
         multiplier = number * 4;
       } else if (breakpoint === 'medium' || showcaseOrientation === 'tablet') {
@@ -70,7 +56,7 @@ export class BuilderFeaturesService {
     }
   }
 
-  setFeaturesWidth(orientation: string = null) {
+  setFeaturesWidth() {
     const featureComponents = this.builderComponentsService.getTargetComponentByName(ActiveComponentsPartialSelector.Features);
     const pageComponents = this.builderComponentsService.pageComponents.getValue();
     if (featureComponents.length > 0) {
@@ -82,8 +68,8 @@ export class BuilderFeaturesService {
         const number = component['featuresItemArray'].length;
 
         let multiplier: number;
-        const breakpoint = this.featuresBreakpoint.getValue();
-        const showcaseOrientation = orientation || this.builderService.activeOrientation.getValue();
+        const breakpoint = this.builderService.activeScreenSize.getValue();
+        const showcaseOrientation = this.builderService.activeOrientation.getValue();
         if (breakpoint === 'small' || showcaseOrientation === 'mobile') {
           multiplier = number * 4;
         } else if (breakpoint === 'medium' || showcaseOrientation === 'tablet') {

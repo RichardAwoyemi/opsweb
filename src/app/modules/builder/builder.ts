@@ -17,7 +17,6 @@ export enum ActiveComponents {
   Placeholder = 'placeholder',
   Footer = 'footer',
   Features = 'features',
-  Heading = 'heading'
 }
 
 export enum ActiveComponentsPartialSelector {
@@ -26,7 +25,6 @@ export enum ActiveComponentsPartialSelector {
   Placeholder = 'app-builder-placeholder',
   Footer = 'app-builder-footer',
   Features = 'app-builder-features',
-  Heading = 'app-builder-heading'
 }
 
 export enum ActiveTemplates {

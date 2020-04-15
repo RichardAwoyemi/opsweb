@@ -58,7 +58,7 @@ export class WebsiteService {
               pages: response['pages'],
               template: template['id']
             }, { merge: true });
-            this.builderService.setSidebarSetting(ActiveSettings.Components);
+            this.builderService.activeEditSetting.next(ActiveSettings.Components);
             this.builderService.activePageIndex.next(0);
             this.toastrService.success('Your website has been created.', 'Great!');
             this.router.navigateByUrl(`/builder/${documentId}`).then(() => {

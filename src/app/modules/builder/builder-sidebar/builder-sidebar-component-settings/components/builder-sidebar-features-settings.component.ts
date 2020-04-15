@@ -1,34 +1,34 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Options } from 'ng5-slider';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BuilderService } from '../../../builder.service';
+import { ActiveComponents } from '../../../builder';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderFeaturesService } from '../../../builder-components/builder-features/builder-features.service';
-import { ActiveComponents } from '../../../builder';
-import { BuilderSidebarHeadingComponent } from '../../builder-sidebar-elements/builder-sidebar-heading/builder-sidebar-heading.component';
-import { BuilderSidebarLineBreakComponent } from '../../builder-sidebar-elements/builder-sidebar-line-break/builder-sidebar-heading.component';
-import { BuilderSidebarPaddingComponent } from '../../builder-sidebar-elements/builder-sidebar-padding/builder-sidebar-padding.component';
-import { BuilderSidebarTextAlignmentComponent } from '../../builder-sidebar-elements/builder-sidebar-text-alignment/builder-sidebar-text-alignment.component';
+import { BuilderService } from '../../../builder.service';
 import { BuilderSidebarColourPickerComponent } from '../../builder-sidebar-elements/builder-sidebar-colour-picker/builder-sidebar-colour-picker.component';
-import { BuilderSidebarThemeChangeComponent } from '../../builder-sidebar-elements/builder-sidebar-theme-change/builder-sidebar-theme-change.component';
-import { BuilderSidebarItemCountSliderComponent } from '../../builder-sidebar-elements/builder-sidebar-item-count-slider/builder-sidebar-item-count-slider.component';
 import { BuilderSidebarFontNameComponent } from '../../builder-sidebar-elements/builder-sidebar-font-name/builder-sidebar-font-name.component';
 import { BuilderSidebarFontSizeComponent } from '../../builder-sidebar-elements/builder-sidebar-font-size/builder-sidebar-font-size.component';
+import { BuilderSidebarHeadingComponent } from '../../builder-sidebar-elements/builder-sidebar-heading/builder-sidebar-heading.component';
+import { BuilderSidebarItemCountSliderComponent } from '../../builder-sidebar-elements/builder-sidebar-item-count-slider/builder-sidebar-item-count-slider.component';
+import { BuilderSidebarPaddingComponent } from '../../builder-sidebar-elements/builder-sidebar-padding/builder-sidebar-padding.component';
+import { BuilderSidebarTextAlignmentComponent } from '../../builder-sidebar-elements/builder-sidebar-text-alignment/builder-sidebar-text-alignment.component';
+import { BuilderSidebarThemeChangeComponent } from '../../builder-sidebar-elements/builder-sidebar-theme-change/builder-sidebar-theme-change.component';
 
 @Component({
-  selector: 'app-sidebar-features-component',
-  templateUrl: '../builder-sidebar-components-renderer.component.html',
+  selector: 'app-sidebar-features-settings',
+  templateUrl: './builder-sidebar-settings-renderer.component.html',
 })
 
-export class SidebarFeaturesComponent implements OnInit, OnDestroy {
+export class SidebarFeaturesSettingsComponent implements OnInit, OnDestroy {
 
-  @Input() settings;
-
+  settings: string;
   sidebar: any;
   baseData: any;
   pageComponents: any;
   componentId: any;
+  componentName = ActiveComponents.Features;
+  isActive = false;
   activePageIndex: number;
   activeComponentIndex: number;
   featuresCountSliderOptions: Options = { showTicksValues: true, floor: 1, ceil: 8, step: 1 };
@@ -42,6 +42,16 @@ export class SidebarFeaturesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.builderService.activeEditSetting.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.settings = response;
+        this.setupData();
+      });
+
+    this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(response => {
+        this.isActive = this.componentName === response;
+      });
 
     this.builderService.activePageIndex.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(activePageIndexResponse => {
@@ -73,7 +83,7 @@ export class SidebarFeaturesComponent implements OnInit, OnDestroy {
 
   setupData() {
     this.baseData = {
-      componentName: ActiveComponents.Features,
+      componentName: this.componentName,
       pageIndex: this.activePageIndex,
       componentIndex: this.activeComponentIndex,
       componentService: this.builderFeaturesService,
@@ -121,6 +131,8 @@ export class SidebarFeaturesComponent implements OnInit, OnDestroy {
           { component: BuilderSidebarFontSizeComponent, elementInfo: { name: 'featuresSubheadingStyle' } },
         ];
         break;
+      default:
+        this.sidebar = [];
     }
   }
 

@@ -1,4 +1,4 @@
-<div class="form-group">
+<div *ngIf="styleObject" class="form-group">
   <div class="row">
     <div class="col-md-6">
       <label style="color: rgba(255, 255, 255, 0.65);">Size</label>
@@ -6,7 +6,7 @@
     <div class="col-md-6 text-right">
       <a (click)="resetFontSize()" class="fw-600 fs-12" href="#">Reset</a>
     </div>
-    <div *ngIf="elementFontSize" class="col-md-6">
+    <div class="col-md-6">
       <label style="width: 100%">
         <input (keyup)="setFontSize()" (ngModelChange)="setFontSize()"
                [(ngModel)]="elementFontSize"
@@ -15,7 +15,7 @@
                style="width: 100%" type="number">
       </label>
     </div>
-    <div *ngIf="elementFontUnit" class="col-md-6">
+    <div class="col-md-6">
       <label style="width: 100%">
         <select (change)="onFontSizeUnitChange()" [(ngModel)]="elementFontUnit"
                 class="form-control form-control-lg">

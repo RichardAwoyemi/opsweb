@@ -1,7 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UtilService } from 'src/app/shared/services/util.service';
 import { debounce } from '../../../../shared/decorators/debounce.decorator';
 import { ActiveComponents, ActiveSettings } from '../../builder';
 import { BuilderService } from '../../builder.service';
@@ -13,15 +12,9 @@ import { BuilderService } from '../../builder.service';
 })
 export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
   innerHeight: number;
-  SIDEBAR_ACTIVE_MENU = 'nav-link active';
-  SIDEBAR_INACTIVE_MENU = 'nav-link';
+  activeButtonClass = 'nav-link active';
+  inactiveButtonClass = 'nav-link';
   activeEditComponent: string;
-  sidebarTemplatesMenu: string = this.SIDEBAR_ACTIVE_MENU;
-  sidebarComponentsMenu: string = this.SIDEBAR_INACTIVE_MENU;
-  sidebarColoursMenu: string = this.SIDEBAR_INACTIVE_MENU;
-  sidebarLayoutMenu: string = this.SIDEBAR_INACTIVE_MENU;
-  sidebarOptionsMenu: string = this.SIDEBAR_INACTIVE_MENU;
-  sidebarPagesMenu: string = this.SIDEBAR_INACTIVE_MENU;
   ACTIVE_TEMPLATES_SETTING: string = ActiveSettings.Templates;
   ACTIVE_COMPONENTS_SETTING: string = ActiveSettings.Components;
   ACTIVE_COLOURS_SETTING: string = ActiveSettings.Colours;
@@ -39,48 +32,6 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.builderService.sidebarTemplatesMenu.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarTemplatesMenu = response;
-        }
-      });
-
-    this.builderService.sidebarComponentsMenu.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarComponentsMenu = response;
-        }
-      });
-
-    this.builderService.sidebarColoursMenu.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarColoursMenu = response;
-        }
-      });
-
-    this.builderService.sidebarLayoutMenu.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarLayoutMenu = response;
-        }
-      });
-
-    this.builderService.sidebarOptionsMenu.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarOptionsMenu = response;
-        }
-      });
-
-    this.builderService.sidebarPagesMenu.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarPagesMenu = response;
-        }
-      });
-
     this.builderService.activeEditComponent.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
         if (response) {
@@ -95,9 +46,12 @@ export class BuilderSidebarMenuComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
   }
 
+  setMenuClass(menuItem) {
+    return (this.builderService.activeEditSetting.getValue() === menuItem) ? this.activeButtonClass : this.inactiveButtonClass;
+  }
+
   setActiveEditSetting(settingName: string) {
     this.builderService.activeEditSetting.next(settingName);
-    this.builderService.setSidebarSetting(settingName);
   }
 
   validateActiveEditComponent() {

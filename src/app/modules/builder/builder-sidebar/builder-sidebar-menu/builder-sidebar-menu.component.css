@@ -6,6 +6,16 @@
   fill: #FFFFFF !important;
 }
 
+.active a.menu-text {
+  color: #FFFFFF !important;
+  pointer-events: none;
+}
+
+a.menu-text {
+  color: #757575 !important;
+  pointer-events: none;
+}
+
 .nav-item .nav-icon {
   fill: #757575 !important;
 }

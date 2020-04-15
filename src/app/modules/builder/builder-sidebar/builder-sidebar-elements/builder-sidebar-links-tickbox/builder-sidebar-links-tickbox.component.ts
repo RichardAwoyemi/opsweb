@@ -4,7 +4,6 @@ import { takeUntil } from 'rxjs/operators';
 import { WebsiteService } from 'src/app/shared/services/website.service';
 import { BuilderComponentsService } from '../../../builder-components/builder-components.service';
 import { BuilderService } from '../../../builder.service';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-sidebar-links-tickbox',

@@ -1,9 +1,10 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-
-import { BuilderService } from '../builder.service';
-import { debounce } from '../../../shared/decorators/debounce.decorator';
 import { takeUntil } from 'rxjs/operators';
+import { debounce } from '../../../shared/decorators/debounce.decorator';
+import { BuilderService } from '../builder.service';
+import { ActiveSettings } from '../builder';
+
 
 @Component({
   selector: 'app-builder-sidebar',
@@ -12,12 +13,14 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class BuilderSidebarComponent implements OnInit, OnDestroy {
   innerHeight: number;
-  sidebarTemplatesTab = 'tab-pane fade active show tab-padding';
-  sidebarComponentsTab = 'tab-pane fade tab-padding';
-  sidebarColoursTab = 'tab-pane fade tab-padding';
-  sidebarLayoutTab = 'tab-pane fade tab-padding';
-  sidebarOptionsTab = 'tab-pane fade tab-padding';
-  sidebarPagesTab = 'tab-pane fade tab-padding';
+  activeEditSetting: string;
+  activeTab = 'tab-pane fade active show tab-padding';
+  inactiveTab = 'tab-pane fade tab-padding';
+  componentSettingsTab = [ActiveSettings.Colours, ActiveSettings.Layout, ActiveSettings.Options];
+  templatesTab = [ActiveSettings.Templates];
+  componentsTab = [ActiveSettings.Components];
+  pagesTab = [ActiveSettings.Pages];
+
   ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -28,47 +31,14 @@ export class BuilderSidebarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
-    this.builderService.sidebarTemplatesTab.pipe(takeUntil(this.ngUnsubscribe))
+    this.builderService.activeEditSetting.pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(response => {
-        if (response) {
-          this.sidebarTemplatesTab = response;
-        }
+        this.activeEditSetting = response;
       });
+  }
 
-    this.builderService.sidebarComponentsTab.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarComponentsTab = response;
-        }
-      });
-
-    this.builderService.sidebarColoursTab.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarColoursTab = response;
-        }
-      });
-
-    this.builderService.sidebarLayoutTab.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarLayoutTab = response;
-        }
-      });
-
-    this.builderService.sidebarOptionsTab.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarOptionsTab = response;
-        }
-      });
-
-    this.builderService.sidebarPagesTab.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(response => {
-        if (response) {
-          this.sidebarPagesTab = response;
-        }
-      });
+  setTabClass(tab) {
+    return (tab.includes(this.activeEditSetting)) ? this.activeTab : this.inactiveTab;
   }
 
   @HostListener('window:resize', ['$event'])
