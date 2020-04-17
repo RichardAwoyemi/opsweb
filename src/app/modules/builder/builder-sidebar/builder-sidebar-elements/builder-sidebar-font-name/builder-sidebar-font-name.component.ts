@@ -7,7 +7,8 @@ import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-sidebar-font-name',
-  templateUrl: './builder-sidebar-font-name.component.html'
+  templateUrl: './builder-sidebar-font-name.component.html',
+  styleUrls: ['./builder-sidebar-font-name.component.css']
 })
 
 export class BuilderSidebarFontNameComponent implements OnInit, OnDestroy {

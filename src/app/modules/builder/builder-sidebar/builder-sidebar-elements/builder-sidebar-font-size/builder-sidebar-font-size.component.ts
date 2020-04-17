@@ -8,7 +8,8 @@ import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-sidebar-font-size',
-  templateUrl: './builder-sidebar-font-size.component.html'
+  templateUrl: './builder-sidebar-font-size.component.html',
+  styleUrls: ['./builder-sidebar-font-size.component.css']
 })
 
 export class BuilderSidebarFontSizeComponent implements OnInit, OnDestroy {

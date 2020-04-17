@@ -1,8 +1,9 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">Rename website</h5>
-    <button (click)="onCloseButtonClick()" class="close" type="button">
-      <span aria-hidden="true" class="builder-modal-website-rename-close">&times;</span>
+    <button class="builder-modal website-rename-cross close"
+            (click)="onCloseButtonClick()" type="button">
+      <span class="builder-modal website-rename-cross" aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
@@ -10,11 +11,10 @@
     <strong>{{ newWebsiteName }}</strong>?
   </div>
   <div class="modal-footer">
-    <button (click)="onConfirmButtonClick()"
-            class="builder-modal-website-rename-yes btn btn-secondary" type="button">Yes
-    </button>&nbsp;
-    <button (click)="onCloseButtonClick()"
-            class="builder-modal-website-rename-no btn btn-secondary" type="button">No
-    </button>
+    <button class="builder-modal website-rename-yes btn btn-secondary"
+            (click)="onConfirmButtonClick()" type="button">Yes</button>&nbsp;
+    <button class="builder-modal website-rename-no btn btn-secondary"
+            (click)="onCloseButtonClick()" type="button">No</button>
   </div>
 </div>
+<!-- TAGGED -->

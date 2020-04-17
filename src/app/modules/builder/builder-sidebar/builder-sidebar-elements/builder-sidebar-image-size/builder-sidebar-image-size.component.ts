@@ -8,7 +8,8 @@ import { UtilService } from 'src/app/shared/services/util.service';
 
 @Component({
   selector: 'app-sidebar-image-size',
-  templateUrl: './builder-sidebar-image-size.component.html'
+  templateUrl: './builder-sidebar-image-size.component.html',
+  styleUrls: ['./builder-sidebar-image-size.component.css']
 })
 
 export class BuilderSidebarImageSizeComponent implements OnInit, OnDestroy {

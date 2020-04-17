@@ -7,7 +7,8 @@ import { BuilderService } from '../../../builder.service';
 
 @Component({
   selector: 'app-sidebar-item-count-slider',
-  templateUrl: './builder-sidebar-item-count-slider.component.html'
+  templateUrl: './builder-sidebar-item-count-slider.component.html',
+  styleUrls: ['./builder-sidebar-item-count-slider.component.css']
 })
 
 export class BuilderSidebarItemCountSliderComponent implements OnInit, OnDestroy {

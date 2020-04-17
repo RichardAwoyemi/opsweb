@@ -7,11 +7,13 @@
         </div>
       </div>
       <button [attr.class]="'btn btn-secondary edit-component-button ' + componentName + '-edit-button'" type="button">
-        <i class="ti-pencil"></i>
+        <i [attr.class]="'ti-pencil edit-component-pencil ' + componentName + '-edit-pencil'"></i>
       </button>
-      <button (click)="deleteComponent()" class="btn btn-secondary" type="button">
-        <i class="ti-close"></i>
+      <button [attr.class]="'btn btn-secondary close-component-button ' + componentName + '-close-button'" type="button"
+              (click)="deleteComponent()">
+        <i [attr.class]="'ti-close close-component-cross ' + componentName + '-close-cross'"></i>
       </button>
     </div>
   </div>
 </div>
+<!-- TAGGED -->

@@ -1,14 +1,16 @@
 <app-builder-component-toolbar *ngIf="!previewMode" [componentId]="componentId"
                                [componentName]="componentName"></app-builder-component-toolbar>
-<div [attr.id]="componentId" [ngClass]="setContextMenu()">
-  <nav (click)="setActiveEditComponent();"
+<div class="builder-components navbar-click outer-container" [attr.id]="componentId" [ngClass]="setContextMenu()">
+  <nav class="builder-components navbar-click navbar navbar-expand-md navbar-showcase"
+       (click)="setActiveEditComponent();"
        (dblclick)="clearActiveEditComponent();"
        [ngClass]="setComponentClass()"
        [ngStyle]="navbarStyle"
        class="navbar navbar-expand-md navbar-showcase">
     <span class="navbar-brand">
       <ng-container *ngIf="isNavbarLogoImageNull() == true">
-        <span (blur)="removeLineBreaks($event); saveNavbarLogoBrandOption();"
+        <span class="builder-components navbar-logo-click"
+              (blur)="removeLineBreaks($event); saveNavbarLogoBrandOption();"
               (click)="selectNavbarLogoBrand($event, 'navbar-logo-brand')"
               (keydown.enter)="saveNavbarLogoBrandOption(); $event.preventDefault()"
               [attr.contenteditable]="setContentEditable()"
@@ -61,3 +63,4 @@
     </div>
   </nav>
 </div>
+<!--HALF-TAGGED-->

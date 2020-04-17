@@ -8,7 +8,8 @@ import { element } from 'protractor';
 
 @Component({
   selector: 'app-sidebar-links-dropdown',
-  templateUrl: './builder-sidebar-links-dropdown.component.html'
+  templateUrl: './builder-sidebar-links-dropdown.component.html',
+  styleUrls: ['./builder-sidebar-links-dropdown.component.css']
 })
 
 export class BuilderSidebarLinksDropdownComponent implements OnInit, OnDestroy {

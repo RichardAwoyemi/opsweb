@@ -4,7 +4,8 @@ import { BuilderSidebarItem } from './builder-sidebar-items';
 
 @Component({
   selector: 'app-sidebar-element',
-  template: `<ng-template sidebar-element-host></ng-template>`
+  template: `<ng-template sidebar-element-host></ng-template>`,
+  styleUrls: ['./builder-sidebar-element.component.css'],
 })
 export class BuilderSidebarElementComponent implements OnInit {
   @Input() element: BuilderSidebarItem;

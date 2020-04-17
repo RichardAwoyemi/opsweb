@@ -1,8 +1,9 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">{{ activePage }}</h5>
-    <button (click)="onCloseButtonClick()" class="close" type="button">
-      <span aria-hidden="true" class="builder-modal-page-rename-close">&times;</span>
+    <button class="builder-modal page-rename-cross close"
+            (click)="onCloseButtonClick()" type="button">
+      <span class="builder-modal page-rename-cross" aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
@@ -18,12 +19,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button (click)="onConfirmButtonClick()"
-            [disabled]="disableSaveButton" class="builder-modal-page-rename-save btn btn-secondary"
-            type="button">Save
-    </button>&nbsp;
-    <button (click)="onCloseButtonClick()"
-            class="builder-modal-page-rename-cancel btn btn-secondary" type="button">Cancel
-    </button>
+    <button class="builder-modal page-rename-save btn btn-secondary" 
+            (click)="onConfirmButtonClick()" type="button"
+            [disabled]="disableSaveButton">Save</button>&nbsp;
+    <button class="builder-modal page-rename-cancel btn btn-secondary" 
+            (click)="onCloseButtonClick()" type="button">Cancel</button>
   </div>
 </div>
+<!-- TAGGED -->

@@ -1,8 +1,9 @@
 <div class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">Select image</h5>
-    <button (click)="onCloseButtonClick()" class="close" type="button">
-      <span aria-hidden="true" class="builder-modal-image-select-cancel">&times;</span>
+    <button class="builder-modal image-select-cross"
+            (click)="onCloseButtonClick()" class="close" type="button">
+      <span class="builder-modal image-select-cross" aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
@@ -30,11 +31,10 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button (click)="onConfirmButtonClick()"
-            class="builder-modal-image-select-save btn btn-secondary" type="button">Save
-    </button>&nbsp;
-    <button (click)="onCloseButtonClick()"
-            class="builder-modal-image-select-cancel btn btn-secondary" type="button">Cancel
-    </button>
+    <button class="builder-modal image-select-save btn btn-secondary"
+            (click)="onConfirmButtonClick()" type="button">Save</button>&nbsp;
+    <button class="builder-modal image-select-cancel btn btn-secondary"
+            (click)="onCloseButtonClick()" type="button">Cancel</button>
   </div>
 </div>
+<!-- TAGGED -->

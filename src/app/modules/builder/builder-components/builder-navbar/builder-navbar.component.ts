@@ -234,6 +234,7 @@ export class BuilderNavbarComponent implements OnInit, OnDestroy, IComponent {
     } else {
       this.builderService.setActiveEditComponent(ActiveComponents.Navbar, this.componentId);
       this.builderService.activeElement.next(elementId);
+      this.builderService.activeEditSetting.next(ActiveSettings.Options);
     }
     event.stopPropagation();
   }
