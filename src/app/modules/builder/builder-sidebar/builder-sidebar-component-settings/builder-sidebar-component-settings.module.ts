@@ -7,6 +7,7 @@ import { SidebarHeroSettingsComponent } from './components/builder-sidebar-hero-
 import { SidebarNavbarSettingsComponent } from './components/builder-sidebar-navbar-settings.component';
 import { BuilderSidebarElementModule } from '../builder-sidebar-elements/builder-sidebar-element.module';
 import { BuilderSidebarComponentSettingsComponent } from './builder-sidebar-component-settings.component';
+import { ImgurService } from '../../../../shared/services/imgur.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { BuilderSidebarComponentSettingsComponent } from './builder-sidebar-comp
     SidebarNavbarSettingsComponent,
     SidebarFooterSettingsComponent,
   ],
-  providers: []
+  providers: [
+    ImgurService
+  ]
 })
 
 export class BuilderSidebarCompmonentSettingsModule {
