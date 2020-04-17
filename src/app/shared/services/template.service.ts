@@ -18,6 +18,7 @@ export class TemplateService {
   static availableTemplates: Template[];
   activeTemplate = new BehaviorSubject<Object>(null);
   selectedTemplate: Subject<Template> = new Subject<Template>();
+  multiPageComponents = [ActiveComponents.Navbar, ActiveComponents.Footer]
   private placeholder =
     {
       'componentType': ActiveComponents.Placeholder,
@@ -78,12 +79,19 @@ export class TemplateService {
 
   getComponent(tempComponentName: string, template, index: number = null, pageComponents = null) {
     let pages = {};
+    let componentId = null;
     const componentName = UtilService.toTitleCase(tempComponentName);
     (pageComponents == null) ? pages = this.builderComponentsService.pageComponents.getValue() : pages = pageComponents;
+    if (Object.values(this.multiPageComponents).includes(ActiveComponents[componentName])) {
+      componentId = this.getMultiPageComponentId(pages, ActiveComponentsPartialSelector[componentName]);
+    };
+    if (componentId === null) {
+      componentId = `${ActiveComponents[componentName]}-${UtilService.generateRandomString(8)}`;
+    }
     return UtilService.shallowClone({
       ...(index == null ? {} : { 'componentIndex': index }),
       'componentType': ActiveComponents[componentName],
-      'componentId': `${ActiveComponents[componentName]}-${UtilService.generateRandomString(8)}`,
+      'componentId': componentId,
       [`${ActiveComponents[componentName]}Theme`]: ActiveThemes.Default,
       'componentName': ActiveComponentsPartialSelector[componentName],
       'style': template[ActiveComponents[componentName]]['style'],
@@ -136,6 +144,14 @@ export class TemplateService {
     }
     return pageComponents;
   }
+
+  getMultiPageComponentId(pageComponent, partialSelector) {
+    if (this.builderComponentsService.checkIfComponentExists(partialSelector, pageComponent)) {
+      const position = this.builderComponentsService.getTargetComponentByName(partialSelector, pageComponent)[0];
+      return pageComponent['pages'][position['activePageIndex']]['components'][position['activeComponentIndex']]['componentId'];
+  }
+  return null;
+}
 
   private generatePageComponents(pageComponents, template = null) {
     for (let i = 0; i < pageComponents['pages'].length; i++) {

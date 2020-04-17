@@ -244,9 +244,10 @@ export class BuilderComponentsService {
     };
   }
 
-  getTargetComponentByName(componentName) {
+  getTargetComponentByName(componentName, pageComponentInput = null) {
+    let pageComponents = {};
+    (pageComponentInput === null) ? pageComponents = this.pageComponents.getValue() : pageComponents = pageComponentInput;
     const targetComponentArray = [];
-    const pageComponents = this.pageComponents.getValue();
     for (let i = 0; i < pageComponents['pages'].length; i++) {
       for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
         if (pageComponents['pages'][i]['components'][j]['componentName'] === componentName) {
@@ -324,8 +325,9 @@ export class BuilderComponentsService {
     this.pageComponents.next(pageComponents);
   }
 
-  checkIfComponentExists(componentName) {
-    const pageComponents = this.pageComponents.getValue();
+  checkIfComponentExists(componentName, pageComponentInput = null) {
+    let pageComponents = {};
+    (pageComponentInput === null) ? pageComponents = this.pageComponents.getValue() : pageComponents = pageComponentInput;
     for (let i = 0; i < pageComponents['pages'].length; i++) {
       for (let j = 0; j < pageComponents['pages'][i]['components'].length; j++) {
         if (pageComponents['pages'][i]['components'][j]['componentName'] === componentName) {
